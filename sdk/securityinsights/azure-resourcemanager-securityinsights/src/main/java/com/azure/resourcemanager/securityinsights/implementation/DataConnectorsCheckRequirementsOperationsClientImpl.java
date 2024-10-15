@@ -33,24 +33,24 @@ import reactor.core.publisher.Mono;
  */
 public final class DataConnectorsCheckRequirementsOperationsClientImpl
     implements DataConnectorsCheckRequirementsOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DataConnectorsCheckRequirementsOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SecurityInsightsImpl client;
 
     /**
      * Initializes an instance of DataConnectorsCheckRequirementsOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DataConnectorsCheckRequirementsOperationsClientImpl(SecurityInsightsImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    DataConnectorsCheckRequirementsOperationsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(DataConnectorsCheckRequirementsOperationsService.class,
+            client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,27 +60,21 @@ public final class DataConnectorsCheckRequirementsOperationsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityInsightsData")
-    private interface DataConnectorsCheckRequirementsOperationsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/dataConnectorsCheckRequirements")
-        @ExpectedResponses({200})
+    public interface DataConnectorsCheckRequirementsOperationsService {
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/dataConnectorsCheckRequirements")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataConnectorRequirementsStateInner>> post(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<DataConnectorRequirementsStateInner>> post(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @BodyParam("application/json") DataConnectorsCheckRequirements dataConnectorsCheckRequirements,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get requirements state for a data connector type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataConnectorsCheckRequirements The parameters for requirements check message.
@@ -88,24 +82,18 @@ public final class DataConnectorsCheckRequirementsOperationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return requirements state for a data connector type along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataConnectorRequirementsStateInner>> postWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        DataConnectorsCheckRequirements dataConnectorsCheckRequirements) {
+    private Mono<Response<DataConnectorRequirementsStateInner>> postWithResponseAsync(String resourceGroupName,
+        String workspaceName, DataConnectorsCheckRequirements dataConnectorsCheckRequirements) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -115,33 +103,22 @@ public final class DataConnectorsCheckRequirementsOperationsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (dataConnectorsCheckRequirements == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter dataConnectorsCheckRequirements is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter dataConnectorsCheckRequirements is required and cannot be null."));
         } else {
             dataConnectorsCheckRequirements.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .post(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            dataConnectorsCheckRequirements,
-                            accept,
-                            context))
+            .withContext(context -> service.post(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, dataConnectorsCheckRequirements,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get requirements state for a data connector type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataConnectorsCheckRequirements The parameters for requirements check message.
@@ -150,25 +127,18 @@ public final class DataConnectorsCheckRequirementsOperationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return requirements state for a data connector type along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataConnectorRequirementsStateInner>> postWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        DataConnectorsCheckRequirements dataConnectorsCheckRequirements,
-        Context context) {
+    private Mono<Response<DataConnectorRequirementsStateInner>> postWithResponseAsync(String resourceGroupName,
+        String workspaceName, DataConnectorsCheckRequirements dataConnectorsCheckRequirements, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -178,30 +148,20 @@ public final class DataConnectorsCheckRequirementsOperationsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (dataConnectorsCheckRequirements == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter dataConnectorsCheckRequirements is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter dataConnectorsCheckRequirements is required and cannot be null."));
         } else {
             dataConnectorsCheckRequirements.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .post(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                dataConnectorsCheckRequirements,
-                accept,
-                context);
+        return service.post(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, dataConnectorsCheckRequirements, accept, context);
     }
 
     /**
      * Get requirements state for a data connector type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataConnectorsCheckRequirements The parameters for requirements check message.
@@ -211,9 +171,7 @@ public final class DataConnectorsCheckRequirementsOperationsClientImpl
      * @return requirements state for a data connector type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataConnectorRequirementsStateInner> postAsync(
-        String resourceGroupName,
-        String workspaceName,
+    private Mono<DataConnectorRequirementsStateInner> postAsync(String resourceGroupName, String workspaceName,
         DataConnectorsCheckRequirements dataConnectorsCheckRequirements) {
         return postWithResponseAsync(resourceGroupName, workspaceName, dataConnectorsCheckRequirements)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -221,26 +179,7 @@ public final class DataConnectorsCheckRequirementsOperationsClientImpl
 
     /**
      * Get requirements state for a data connector type.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dataConnectorsCheckRequirements The parameters for requirements check message.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return requirements state for a data connector type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataConnectorRequirementsStateInner post(
-        String resourceGroupName,
-        String workspaceName,
-        DataConnectorsCheckRequirements dataConnectorsCheckRequirements) {
-        return postAsync(resourceGroupName, workspaceName, dataConnectorsCheckRequirements).block();
-    }
-
-    /**
-     * Get requirements state for a data connector type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataConnectorsCheckRequirements The parameters for requirements check message.
@@ -251,12 +190,27 @@ public final class DataConnectorsCheckRequirementsOperationsClientImpl
      * @return requirements state for a data connector type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataConnectorRequirementsStateInner> postWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        DataConnectorsCheckRequirements dataConnectorsCheckRequirements,
-        Context context) {
+    public Response<DataConnectorRequirementsStateInner> postWithResponse(String resourceGroupName,
+        String workspaceName, DataConnectorsCheckRequirements dataConnectorsCheckRequirements, Context context) {
         return postWithResponseAsync(resourceGroupName, workspaceName, dataConnectorsCheckRequirements, context)
             .block();
+    }
+
+    /**
+     * Get requirements state for a data connector type.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param dataConnectorsCheckRequirements The parameters for requirements check message.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return requirements state for a data connector type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataConnectorRequirementsStateInner post(String resourceGroupName, String workspaceName,
+        DataConnectorsCheckRequirements dataConnectorsCheckRequirements) {
+        return postWithResponse(resourceGroupName, workspaceName, dataConnectorsCheckRequirements, Context.NONE)
+            .getValue();
     }
 }

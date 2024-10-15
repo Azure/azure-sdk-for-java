@@ -5,24 +5,30 @@
 package com.azure.resourcemanager.billingbenefits.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Commitment towards the benefit. */
+/**
+ * Commitment towards the benefit.
+ */
 @Fluent
 public final class Commitment extends Price {
     /*
      * Commitment grain.
      */
-    @JsonProperty(value = "grain")
     private CommitmentGrain grain;
 
-    /** Creates an instance of Commitment class. */
+    /**
+     * Creates an instance of Commitment class.
+     */
     public Commitment() {
     }
 
     /**
      * Get the grain property: Commitment grain.
-     *
+     * 
      * @return the grain value.
      */
     public CommitmentGrain grain() {
@@ -31,7 +37,7 @@ public final class Commitment extends Price {
 
     /**
      * Set the grain property: Commitment grain.
-     *
+     * 
      * @param grain the grain value to set.
      * @return the Commitment object itself.
      */
@@ -40,14 +46,18 @@ public final class Commitment extends Price {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Commitment withCurrencyCode(String currencyCode) {
         super.withCurrencyCode(currencyCode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Commitment withAmount(Double amount) {
         super.withAmount(amount);
@@ -56,11 +66,52 @@ public final class Commitment extends Price {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("currencyCode", currencyCode());
+        jsonWriter.writeNumberField("amount", amount());
+        jsonWriter.writeStringField("grain", this.grain == null ? null : this.grain.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Commitment from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Commitment if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Commitment.
+     */
+    public static Commitment fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Commitment deserializedCommitment = new Commitment();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("currencyCode".equals(fieldName)) {
+                    deserializedCommitment.withCurrencyCode(reader.getString());
+                } else if ("amount".equals(fieldName)) {
+                    deserializedCommitment.withAmount(reader.getNullable(JsonReader::getDouble));
+                } else if ("grain".equals(fieldName)) {
+                    deserializedCommitment.grain = CommitmentGrain.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommitment;
+        });
     }
 }

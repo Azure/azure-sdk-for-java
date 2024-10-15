@@ -6,65 +6,34 @@ package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.policyinsights.PolicyInsightsManager;
 import com.azure.resourcemanager.policyinsights.models.PolicyTrackedResource;
 import com.azure.resourcemanager.policyinsights.models.PolicyTrackedResourcesResourceType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PolicyTrackedResourcesListQueryResultsForManagementGroupMockTests {
     @Test
     public void testListQueryResultsForManagementGroup() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"trackedResourceId\":\"q\",\"policyDetails\":{\"policyDefinitionId\":\"cxzrzdcgdzben\",\"policyAssignmentId\":\"bcawetz\",\"policyAssignmentDisplayName\":\"dtjwfljhznamt\",\"policyAssignmentScope\":\"tmzwcjjn\",\"policySetDefinitionId\":\"tjzmi\",\"policyDefinitionReferenceId\":\"gbgatzuuvbxn\"},\"createdBy\":{\"policyDetails\":{\"policyDefinitionId\":\"wggahttzlswvaj\",\"policyAssignmentId\":\"utlxjoqzasunwqrj\",\"policyAssignmentDisplayName\":\"rg\",\"policyAssignmentScope\":\"aohcmbuocn\",\"policySetDefinitionId\":\"ohmbpyr\",\"policyDefinitionReferenceId\":\"ameb\"},\"deploymentId\":\"dyvkfkmr\",\"deploymentTime\":\"2021-07-02T14:54:32Z\"},\"lastModifiedBy\":{\"policyDetails\":{\"policyDefinitionId\":\"v\",\"policyAssignmentId\":\"tod\",\"policyAssignmentDisplayName\":\"pyapucygvoav\",\"policyAssignmentScope\":\"nssxlgh\",\"policySetDefinitionId\":\"egjlgvvpa\",\"policyDefinitionReferenceId\":\"ksgbuxan\"},\"deploymentId\":\"ygdhgaqipirpiwr\",\"deploymentTime\":\"2021-06-02T13:21:22Z\"},\"lastUpdateUtc\":\"2021-06-05T11:42:14Z\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"trackedResourceId\":\"hjjklff\",\"policyDetails\":{\"policyDefinitionId\":\"uwqlgzrfzeey\",\"policyAssignmentId\":\"izikayuhq\",\"policyAssignmentDisplayName\":\"jbsybbqw\",\"policyAssignmentScope\":\"t\",\"policySetDefinitionId\":\"gmfpgvmp\",\"policyDefinitionReferenceId\":\"as\"},\"createdBy\":{\"policyDetails\":{\"policyDefinitionId\":\"qfxssmwutw\",\"policyAssignmentId\":\"srezp\",\"policyAssignmentDisplayName\":\"hneuyowqkd\",\"policyAssignmentScope\":\"t\",\"policySetDefinitionId\":\"ib\",\"policyDefinitionReferenceId\":\"cgpik\"},\"deploymentId\":\"imejzanl\",\"deploymentTime\":\"2021-04-29T09:22:09Z\"},\"lastModifiedBy\":{\"policyDetails\":{\"policyDefinitionId\":\"rmbzo\",\"policyAssignmentId\":\"kixrj\",\"policyAssignmentDisplayName\":\"irgzp\",\"policyAssignmentScope\":\"lazszrn\",\"policySetDefinitionId\":\"iin\",\"policyDefinitionReferenceId\":\"pwp\"},\"deploymentId\":\"lwbtlhf\",\"deploymentTime\":\"2021-08-09T06:27:36Z\"},\"lastUpdateUtc\":\"2021-03-04T11:32:38Z\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        PolicyInsightsManager manager = PolicyInsightsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<PolicyTrackedResource> response = manager.policyTrackedResources()
+            .listQueryResultsForManagementGroup("fiqwoy", PolicyTrackedResourcesResourceType.DEFAULT, 1594620072,
+                "apcohhouc", com.azure.core.util.Context.NONE);
 
-        PolicyInsightsManager manager =
-            PolicyInsightsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<PolicyTrackedResource> response =
-            manager
-                .policyTrackedResources()
-                .listQueryResultsForManagementGroup(
-                    "jxbkzbzkdvn", PolicyTrackedResourcesResourceType.DEFAULT, 2052002179, "budurgkakmo", Context.NONE);
     }
 }

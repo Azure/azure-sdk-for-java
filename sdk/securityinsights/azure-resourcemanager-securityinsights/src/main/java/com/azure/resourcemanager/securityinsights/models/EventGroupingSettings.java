@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Event grouping settings property bag. */
+/**
+ * Event grouping settings property bag.
+ */
 @Fluent
-public final class EventGroupingSettings {
+public final class EventGroupingSettings implements JsonSerializable<EventGroupingSettings> {
     /*
      * The event grouping aggregation kinds
      */
-    @JsonProperty(value = "aggregationKind")
     private EventGroupingAggregationKind aggregationKind;
 
     /**
+     * Creates an instance of EventGroupingSettings class.
+     */
+    public EventGroupingSettings() {
+    }
+
+    /**
      * Get the aggregationKind property: The event grouping aggregation kinds.
-     *
+     * 
      * @return the aggregationKind value.
      */
     public EventGroupingAggregationKind aggregationKind() {
@@ -27,7 +38,7 @@ public final class EventGroupingSettings {
 
     /**
      * Set the aggregationKind property: The event grouping aggregation kinds.
-     *
+     * 
      * @param aggregationKind the aggregationKind value to set.
      * @return the EventGroupingSettings object itself.
      */
@@ -38,9 +49,47 @@ public final class EventGroupingSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("aggregationKind",
+            this.aggregationKind == null ? null : this.aggregationKind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventGroupingSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventGroupingSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventGroupingSettings.
+     */
+    public static EventGroupingSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventGroupingSettings deserializedEventGroupingSettings = new EventGroupingSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("aggregationKind".equals(fieldName)) {
+                    deserializedEventGroupingSettings.aggregationKind
+                        = EventGroupingAggregationKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventGroupingSettings;
+        });
     }
 }

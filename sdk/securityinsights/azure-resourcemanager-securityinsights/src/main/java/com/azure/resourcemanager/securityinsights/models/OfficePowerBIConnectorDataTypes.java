@@ -6,20 +6,31 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The available data types for Office Microsoft PowerBI data connector. */
+/**
+ * The available data types for Office Microsoft PowerBI data connector.
+ */
 @Fluent
-public final class OfficePowerBIConnectorDataTypes {
+public final class OfficePowerBIConnectorDataTypes implements JsonSerializable<OfficePowerBIConnectorDataTypes> {
     /*
      * Logs data type.
      */
-    @JsonProperty(value = "logs", required = true)
     private OfficePowerBIConnectorDataTypesLogs logs;
 
     /**
+     * Creates an instance of OfficePowerBIConnectorDataTypes class.
+     */
+    public OfficePowerBIConnectorDataTypes() {
+    }
+
+    /**
      * Get the logs property: Logs data type.
-     *
+     * 
      * @return the logs value.
      */
     public OfficePowerBIConnectorDataTypesLogs logs() {
@@ -28,7 +39,7 @@ public final class OfficePowerBIConnectorDataTypes {
 
     /**
      * Set the logs property: Logs data type.
-     *
+     * 
      * @param logs the logs value to set.
      * @return the OfficePowerBIConnectorDataTypes object itself.
      */
@@ -39,19 +50,57 @@ public final class OfficePowerBIConnectorDataTypes {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (logs() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property logs in model OfficePowerBIConnectorDataTypes"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property logs in model OfficePowerBIConnectorDataTypes"));
         } else {
             logs().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OfficePowerBIConnectorDataTypes.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("logs", this.logs);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OfficePowerBIConnectorDataTypes from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OfficePowerBIConnectorDataTypes if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OfficePowerBIConnectorDataTypes.
+     */
+    public static OfficePowerBIConnectorDataTypes fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OfficePowerBIConnectorDataTypes deserializedOfficePowerBIConnectorDataTypes
+                = new OfficePowerBIConnectorDataTypes();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("logs".equals(fieldName)) {
+                    deserializedOfficePowerBIConnectorDataTypes.logs
+                        = OfficePowerBIConnectorDataTypesLogs.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOfficePowerBIConnectorDataTypes;
+        });
+    }
 }

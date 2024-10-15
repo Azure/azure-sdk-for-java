@@ -6,6 +6,7 @@ package com.azure.resourcemanager.containerservice.generated;
 
 import com.azure.resourcemanager.containerservice.fluent.models.OpenShiftManagedClusterInner;
 import com.azure.resourcemanager.containerservice.models.NetworkProfile;
+import com.azure.resourcemanager.containerservice.models.OSType;
 import com.azure.resourcemanager.containerservice.models.OpenShiftAgentPoolProfileRole;
 import com.azure.resourcemanager.containerservice.models.OpenShiftContainerServiceVMSize;
 import com.azure.resourcemanager.containerservice.models.OpenShiftManagedClusterAadIdentityProvider;
@@ -14,7 +15,6 @@ import com.azure.resourcemanager.containerservice.models.OpenShiftManagedCluster
 import com.azure.resourcemanager.containerservice.models.OpenShiftManagedClusterIdentityProvider;
 import com.azure.resourcemanager.containerservice.models.OpenShiftManagedClusterMasterPoolProfile;
 import com.azure.resourcemanager.containerservice.models.OpenShiftRouterProfile;
-import com.azure.resourcemanager.containerservice.models.OSType;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;

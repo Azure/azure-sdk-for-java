@@ -6,25 +6,27 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.resourcemanager.securityinsights.fluent.models.BookmarkExpandResponseInner;
 
-/** An immutable client-side representation of BookmarkExpandResponse. */
+/**
+ * An immutable client-side representation of BookmarkExpandResponse.
+ */
 public interface BookmarkExpandResponse {
     /**
      * Gets the metadata property: The metadata from the expansion operation results.
-     *
+     * 
      * @return the metadata value.
      */
     ExpansionResultsMetadata metadata();
 
     /**
      * Gets the value property: The expansion result values.
-     *
+     * 
      * @return the value value.
      */
     BookmarkExpandResponseValue value();
 
     /**
      * Gets the inner com.azure.resourcemanager.securityinsights.fluent.models.BookmarkExpandResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     BookmarkExpandResponseInner innerModel();

@@ -6,64 +6,43 @@ package com.azure.resourcemanager.advisor.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.advisor.AdvisorManager;
+import com.azure.resourcemanager.advisor.models.Category;
 import com.azure.resourcemanager.advisor.models.ConfigData;
 import com.azure.resourcemanager.advisor.models.CpuThreshold;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.advisor.models.DigestConfigState;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ConfigurationsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"exclude\":false,\"lowCpuThreshold\":\"10\",\"digests\":[{\"name\":\"gxhnisk\",\"actionGroupResourceId\":\"bkpyc\",\"frequency\":746894532,\"categories\":[\"Security\",\"Performance\"],\"language\":\"jdauwhvy\",\"state\":\"Active\"},{\"name\":\"tdhxujznbmpowuwp\",\"actionGroupResourceId\":\"qlveualupjmkh\",\"frequency\":1026184790,\"categories\":[\"Security\",\"HighAvailability\"],\"language\":\"s\",\"state\":\"Disabled\"},{\"name\":\"iplrbpbewtghfgb\",\"actionGroupResourceId\":\"gw\",\"frequency\":748159283,\"categories\":[\"Cost\"],\"language\":\"jkbegibtnmxiebww\",\"state\":\"Active\"}]},\"id\":\"ayqcgw\",\"name\":\"tzjuzgwyzmhtxo\",\"type\":\"gmtsavjcbpwxqpsr\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"exclude\":true,\"lowCpuThreshold\":\"5\",\"digests\":[]},\"id\":\"xxjnspydptk\",\"name\":\"enkouknvudw\",\"type\":\"iukbldngkpoci\"}]}";
-
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        AdvisorManager manager =
-            AdvisorManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AdvisorManager manager = AdvisorManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ConfigData> response = manager.configurations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(true, response.iterator().next().exclude());
-        Assertions.assertEquals(CpuThreshold.FIVE, response.iterator().next().lowCpuThreshold());
+        Assertions.assertEquals(false, response.iterator().next().exclude());
+        Assertions.assertEquals(CpuThreshold.ONE_ZERO, response.iterator().next().lowCpuThreshold());
+        Assertions.assertEquals("gxhnisk", response.iterator().next().digests().get(0).name());
+        Assertions.assertEquals("bkpyc", response.iterator().next().digests().get(0).actionGroupResourceId());
+        Assertions.assertEquals(746894532, response.iterator().next().digests().get(0).frequency());
+        Assertions.assertEquals(Category.SECURITY, response.iterator().next().digests().get(0).categories().get(0));
+        Assertions.assertEquals("jdauwhvy", response.iterator().next().digests().get(0).language());
+        Assertions.assertEquals(DigestConfigState.ACTIVE, response.iterator().next().digests().get(0).state());
     }
 }

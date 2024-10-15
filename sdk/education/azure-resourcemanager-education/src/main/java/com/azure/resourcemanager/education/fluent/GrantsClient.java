@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.education.fluent.models.GrantDetailsInner;
 
-/** An instance of this class provides access to all the operations defined in GrantsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GrantsClient.
+ */
 public interface GrantsClient {
     /**
      * Get a list of grants that Microsoft has provided.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of grants that Microsoft has provided as paginated response with {@link PagedIterable}.
@@ -25,7 +27,7 @@ public interface GrantsClient {
 
     /**
      * Get a list of grants that Microsoft has provided.
-     *
+     * 
      * @param includeAllocatedBudget May be used to include information about budget that has been allocated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -38,57 +40,57 @@ public interface GrantsClient {
 
     /**
      * Get details for a specific grant linked to the provided billing account and billing profile.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details for a specific grant linked to the provided billing account and billing profile as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<GrantDetailsInner> list(String billingAccountName, String billingProfileName);
 
     /**
      * Get details for a specific grant linked to the provided billing account and billing profile.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param includeAllocatedBudget May be used to include information about budget that has been allocated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details for a specific grant linked to the provided billing account and billing profile as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GrantDetailsInner> list(
-        String billingAccountName, String billingProfileName, Boolean includeAllocatedBudget, Context context);
+    PagedIterable<GrantDetailsInner> list(String billingAccountName, String billingProfileName,
+        Boolean includeAllocatedBudget, Context context);
 
     /**
      * Get details for a specific grant linked to the provided billing account and billing profile.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param includeAllocatedBudget May be used to include information about budget that has been allocated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details for a specific grant linked to the provided billing account and billing profile along with {@link
-     *     Response}.
+     * @return details for a specific grant linked to the provided billing account and billing profile along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GrantDetailsInner> getWithResponse(
-        String billingAccountName, String billingProfileName, Boolean includeAllocatedBudget, Context context);
+    Response<GrantDetailsInner> getWithResponse(String billingAccountName, String billingProfileName,
+        Boolean includeAllocatedBudget, Context context);
 
     /**
      * Get details for a specific grant linked to the provided billing account and billing profile.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

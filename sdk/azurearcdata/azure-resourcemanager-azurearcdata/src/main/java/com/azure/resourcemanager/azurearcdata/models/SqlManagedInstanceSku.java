@@ -5,56 +5,57 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The resource model definition representing SKU for Azure Managed Instance - Azure Arc. */
+/**
+ * The resource model definition representing SKU for Azure Managed Instance - Azure Arc.
+ */
 @Fluent
-public final class SqlManagedInstanceSku {
+public final class SqlManagedInstanceSku implements JsonSerializable<SqlManagedInstanceSku> {
     /*
      * The name of the SKU.
      */
-    @JsonProperty(value = "name", required = true)
     private String name = "vCore";
 
     /*
      * The pricing tier for the instance.
      */
-    @JsonProperty(value = "tier")
     private SqlManagedInstanceSkuTier tier;
 
     /*
      * Whether dev/test is enabled. When the dev field is set to true, the resource is used for dev/test purpose.
      */
-    @JsonProperty(value = "dev")
     private Boolean dev;
 
     /*
      * The SKU size. When the name field is the combination of tier and some other value, this would be the standalone
      * code.
      */
-    @JsonProperty(value = "size")
     private String size;
 
     /*
      * The family property.
      */
-    @JsonProperty(value = "family")
     private String family;
 
     /*
      * The capacity property.
      */
-    @JsonProperty(value = "capacity")
     private Integer capacity;
 
-    /** Creates an instance of SqlManagedInstanceSku class. */
+    /**
+     * Creates an instance of SqlManagedInstanceSku class.
+     */
     public SqlManagedInstanceSku() {
-        name = "vCore";
     }
 
     /**
      * Get the name property: The name of the SKU.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +64,7 @@ public final class SqlManagedInstanceSku {
 
     /**
      * Set the name property: The name of the SKU.
-     *
+     * 
      * @param name the name value to set.
      * @return the SqlManagedInstanceSku object itself.
      */
@@ -74,7 +75,7 @@ public final class SqlManagedInstanceSku {
 
     /**
      * Get the tier property: The pricing tier for the instance.
-     *
+     * 
      * @return the tier value.
      */
     public SqlManagedInstanceSkuTier tier() {
@@ -83,7 +84,7 @@ public final class SqlManagedInstanceSku {
 
     /**
      * Set the tier property: The pricing tier for the instance.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the SqlManagedInstanceSku object itself.
      */
@@ -95,7 +96,7 @@ public final class SqlManagedInstanceSku {
     /**
      * Get the dev property: Whether dev/test is enabled. When the dev field is set to true, the resource is used for
      * dev/test purpose.
-     *
+     * 
      * @return the dev value.
      */
     public Boolean dev() {
@@ -105,7 +106,7 @@ public final class SqlManagedInstanceSku {
     /**
      * Set the dev property: Whether dev/test is enabled. When the dev field is set to true, the resource is used for
      * dev/test purpose.
-     *
+     * 
      * @param dev the dev value to set.
      * @return the SqlManagedInstanceSku object itself.
      */
@@ -117,7 +118,7 @@ public final class SqlManagedInstanceSku {
     /**
      * Get the size property: The SKU size. When the name field is the combination of tier and some other value, this
      * would be the standalone code.
-     *
+     * 
      * @return the size value.
      */
     public String size() {
@@ -127,7 +128,7 @@ public final class SqlManagedInstanceSku {
     /**
      * Set the size property: The SKU size. When the name field is the combination of tier and some other value, this
      * would be the standalone code.
-     *
+     * 
      * @param size the size value to set.
      * @return the SqlManagedInstanceSku object itself.
      */
@@ -138,7 +139,7 @@ public final class SqlManagedInstanceSku {
 
     /**
      * Get the family property: The family property.
-     *
+     * 
      * @return the family value.
      */
     public String family() {
@@ -147,7 +148,7 @@ public final class SqlManagedInstanceSku {
 
     /**
      * Set the family property: The family property.
-     *
+     * 
      * @param family the family value to set.
      * @return the SqlManagedInstanceSku object itself.
      */
@@ -158,7 +159,7 @@ public final class SqlManagedInstanceSku {
 
     /**
      * Get the capacity property: The capacity property.
-     *
+     * 
      * @return the capacity value.
      */
     public Integer capacity() {
@@ -167,7 +168,7 @@ public final class SqlManagedInstanceSku {
 
     /**
      * Set the capacity property: The capacity property.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the SqlManagedInstanceSku object itself.
      */
@@ -178,9 +179,59 @@ public final class SqlManagedInstanceSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("tier", this.tier == null ? null : this.tier.toString());
+        jsonWriter.writeBooleanField("dev", this.dev);
+        jsonWriter.writeStringField("size", this.size);
+        jsonWriter.writeStringField("family", this.family);
+        jsonWriter.writeNumberField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlManagedInstanceSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlManagedInstanceSku if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlManagedInstanceSku.
+     */
+    public static SqlManagedInstanceSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlManagedInstanceSku deserializedSqlManagedInstanceSku = new SqlManagedInstanceSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tier".equals(fieldName)) {
+                    deserializedSqlManagedInstanceSku.tier = SqlManagedInstanceSkuTier.fromString(reader.getString());
+                } else if ("dev".equals(fieldName)) {
+                    deserializedSqlManagedInstanceSku.dev = reader.getNullable(JsonReader::getBoolean);
+                } else if ("size".equals(fieldName)) {
+                    deserializedSqlManagedInstanceSku.size = reader.getString();
+                } else if ("family".equals(fieldName)) {
+                    deserializedSqlManagedInstanceSku.family = reader.getString();
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedSqlManagedInstanceSku.capacity = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlManagedInstanceSku;
+        });
     }
 }

@@ -34,7 +34,6 @@ import java.util.stream.Collectors;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
-// TODO (jean) do you want to reconsider this test since azure-sdk CI build will always use the source version of azure-monitor-opentelemetry-exporter not the one from maven central
 @SpringBootTest(
     classes = {Application.class, SpringMonitorTest.TestConfig.class},
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -179,17 +178,6 @@ class SpringMonitorTest {
         return telemetryItems.stream()
             .filter(telemetry -> telemetry.getName().equals(type))
             .collect(Collectors.toList());
-    }
-
-    @Test
-    void verifyOpenTelemetryVersion() {
-        String currentOTelVersion = OtelVersion.VERSION;
-        assertThat(OpenTelemetryVersionCheckRunner.STARTER_OTEL_VERSION)
-            .as(
-                "Dear developer, You may have updated the OpenTelemetry dependencies of spring-cloud-azure-starter-monitor without updating the OTel starter version declared in "
-                    + OpenTelemetryVersionCheckRunner.class
-                    + ".")
-            .isEqualTo(currentOTelVersion);
     }
 
     private static boolean isSpecialOtelResourceMetric(MetricsData baseData) {

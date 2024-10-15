@@ -12,22 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ReservationOrderAliasRequestPropertiesReservedResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReservationOrderAliasRequestPropertiesReservedResourceProperties model =
-            BinaryData
-                .fromString("{\"instanceFlexibility\":\"Off\"}")
+        ReservationOrderAliasRequestPropertiesReservedResourceProperties model
+            = BinaryData.fromString("{\"instanceFlexibility\":\"On\"}")
                 .toObject(ReservationOrderAliasRequestPropertiesReservedResourceProperties.class);
-        Assertions.assertEquals(InstanceFlexibility.OFF, model.instanceFlexibility());
+        Assertions.assertEquals(InstanceFlexibility.ON, model.instanceFlexibility());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReservationOrderAliasRequestPropertiesReservedResourceProperties model =
-            new ReservationOrderAliasRequestPropertiesReservedResourceProperties()
-                .withInstanceFlexibility(InstanceFlexibility.OFF);
-        model =
-            BinaryData
-                .fromObject(model)
-                .toObject(ReservationOrderAliasRequestPropertiesReservedResourceProperties.class);
-        Assertions.assertEquals(InstanceFlexibility.OFF, model.instanceFlexibility());
+        ReservationOrderAliasRequestPropertiesReservedResourceProperties model
+            = new ReservationOrderAliasRequestPropertiesReservedResourceProperties()
+                .withInstanceFlexibility(InstanceFlexibility.ON);
+        model = BinaryData.fromObject(model)
+            .toObject(ReservationOrderAliasRequestPropertiesReservedResourceProperties.class);
+        Assertions.assertEquals(InstanceFlexibility.ON, model.instanceFlexibility());
     }
 }

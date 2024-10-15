@@ -7,31 +7,51 @@ package com.azure.resourcemanager.education.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.education.models.JoinRequestStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** join requests. */
+/**
+ * join requests.
+ */
 @Fluent
 public final class JoinRequestDetailsInner extends ProxyResource {
     /*
      * join request properties.
      */
-    @JsonProperty(value = "properties")
     private JoinRequestProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of JoinRequestDetailsInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of JoinRequestDetailsInner class.
+     */
     public JoinRequestDetailsInner() {
     }
 
     /**
      * Get the innerProperties property: join request properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private JoinRequestProperties innerProperties() {
@@ -40,7 +60,7 @@ public final class JoinRequestDetailsInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -48,8 +68,38 @@ public final class JoinRequestDetailsInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the firstName property: First Name.
-     *
+     * 
      * @return the firstName value.
      */
     public String firstName() {
@@ -58,7 +108,7 @@ public final class JoinRequestDetailsInner extends ProxyResource {
 
     /**
      * Set the firstName property: First Name.
-     *
+     * 
      * @param firstName the firstName value to set.
      * @return the JoinRequestDetailsInner object itself.
      */
@@ -72,7 +122,7 @@ public final class JoinRequestDetailsInner extends ProxyResource {
 
     /**
      * Get the lastName property: Last Name.
-     *
+     * 
      * @return the lastName value.
      */
     public String lastName() {
@@ -81,7 +131,7 @@ public final class JoinRequestDetailsInner extends ProxyResource {
 
     /**
      * Set the lastName property: Last Name.
-     *
+     * 
      * @param lastName the lastName value to set.
      * @return the JoinRequestDetailsInner object itself.
      */
@@ -95,7 +145,7 @@ public final class JoinRequestDetailsInner extends ProxyResource {
 
     /**
      * Get the email property: join request email.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -104,7 +154,7 @@ public final class JoinRequestDetailsInner extends ProxyResource {
 
     /**
      * Set the email property: join request email.
-     *
+     * 
      * @param email the email value to set.
      * @return the JoinRequestDetailsInner object itself.
      */
@@ -118,7 +168,7 @@ public final class JoinRequestDetailsInner extends ProxyResource {
 
     /**
      * Get the status property: Join request status.
-     *
+     * 
      * @return the status value.
      */
     public JoinRequestStatus status() {
@@ -127,7 +177,7 @@ public final class JoinRequestDetailsInner extends ProxyResource {
 
     /**
      * Set the status property: Join request status.
-     *
+     * 
      * @param status the status value to set.
      * @return the JoinRequestDetailsInner object itself.
      */
@@ -141,12 +191,57 @@ public final class JoinRequestDetailsInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JoinRequestDetailsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JoinRequestDetailsInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JoinRequestDetailsInner.
+     */
+    public static JoinRequestDetailsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JoinRequestDetailsInner deserializedJoinRequestDetailsInner = new JoinRequestDetailsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedJoinRequestDetailsInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedJoinRequestDetailsInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedJoinRequestDetailsInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedJoinRequestDetailsInner.innerProperties = JoinRequestProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedJoinRequestDetailsInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJoinRequestDetailsInner;
+        });
     }
 }

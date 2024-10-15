@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
+import java.util.UUID;
 
 public class MongoClusterManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
@@ -42,13 +43,11 @@ public class MongoClusterManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        mongoClusterManager = MongoClusterManager
-            .configure()
+        mongoClusterManager = MongoClusterManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -59,10 +58,7 @@ public class MongoClusterManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -79,29 +75,30 @@ public class MongoClusterManagerTests extends TestProxyTestBase {
         MongoCluster mongoCluster = null;
         String clusterName = "cluster" + randomPadding();
         try {
-            String loginUser = "ClusterLoginUser";
-            String loginPwd = "!QA2ws#ED4rf";
+            String loginUser = "loginUser" + randomPadding();
+            String loginPwd = UUID.randomUUID().toString().replace("-", "@").substring(0, 13);
             // @embedmeStart
             mongoCluster = mongoClusterManager.mongoClusters()
                 .define(clusterName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
-                .withProperties(
-                    new MongoClusterProperties()
-                        .withAdministrator(new AdministratorProperties().withUserName(loginUser).withPassword(loginPwd))
-                        .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                        .withStorage(new StorageProperties().withSizeGb(128L))
-                        .withCompute(new ComputeProperties().withTier("M30"))
-                        .withHighAvailability(new HighAvailabilityProperties().withTargetMode(HighAvailabilityMode.DISABLED))
-                        .withSharding(new ShardingProperties().withShardCount(1))
-                        .withServerVersion("7.0")
-                    )
+                .withProperties(new MongoClusterProperties()
+                    .withAdministrator(new AdministratorProperties().withUserName(loginUser).withPassword(loginPwd))
+                    .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                    .withStorage(new StorageProperties().withSizeGb(128L))
+                    .withCompute(new ComputeProperties().withTier("M30"))
+                    .withHighAvailability(
+                        new HighAvailabilityProperties().withTargetMode(HighAvailabilityMode.DISABLED))
+                    .withSharding(new ShardingProperties().withShardCount(1))
+                    .withServerVersion("7.0"))
                 .create();
             // @embedmeEnd
             mongoCluster.refresh();
             Assertions.assertEquals(clusterName, mongoCluster.name());
-            Assertions.assertEquals(mongoCluster.name(), mongoClusterManager.mongoClusters().getById(mongoCluster.id()).name());
-            Assertions.assertTrue(mongoClusterManager.mongoClusters().listByResourceGroup(resourceGroupName).stream().count() > 0);
+            Assertions.assertEquals(mongoCluster.name(),
+                mongoClusterManager.mongoClusters().getById(mongoCluster.id()).name());
+            Assertions.assertTrue(
+                mongoClusterManager.mongoClusters().listByResourceGroup(resourceGroupName).stream().count() > 0);
         } finally {
             if (mongoCluster != null) {
                 mongoClusterManager.mongoClusters().deleteById(mongoCluster.id());

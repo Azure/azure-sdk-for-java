@@ -6,20 +6,31 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties data connector on tenant level. */
+/**
+ * Properties data connector on tenant level.
+ */
 @Fluent
-public class DataConnectorTenantId {
+public class DataConnectorTenantId implements JsonSerializable<DataConnectorTenantId> {
     /*
      * The tenant id to connect to, and get the data from.
      */
-    @JsonProperty(value = "tenantId", required = true)
     private String tenantId;
 
     /**
+     * Creates an instance of DataConnectorTenantId class.
+     */
+    public DataConnectorTenantId() {
+    }
+
+    /**
      * Get the tenantId property: The tenant id to connect to, and get the data from.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -28,7 +39,7 @@ public class DataConnectorTenantId {
 
     /**
      * Set the tenantId property: The tenant id to connect to, and get the data from.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the DataConnectorTenantId object itself.
      */
@@ -39,16 +50,52 @@ public class DataConnectorTenantId {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (tenantId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property tenantId in model DataConnectorTenantId"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property tenantId in model DataConnectorTenantId"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DataConnectorTenantId.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataConnectorTenantId from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataConnectorTenantId if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataConnectorTenantId.
+     */
+    public static DataConnectorTenantId fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataConnectorTenantId deserializedDataConnectorTenantId = new DataConnectorTenantId();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedDataConnectorTenantId.tenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataConnectorTenantId;
+        });
+    }
 }

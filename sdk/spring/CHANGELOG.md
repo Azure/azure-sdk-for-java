@@ -8,6 +8,19 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Breaking Changes
 - when `spring.jms.cache.enabled` and `spring.jms.servicebus.pool.enabled` both not set, use `JmsPoolConnectionFactory` as default instead of `CachingConnectionFactory` [#42306](https://github.com/Azure/azure-sdk-for-java/pull/42306).
 
+## 5.17.1 (2024-10-11)
+- This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.12, 3.2.0-3.2.10, 3.3.0-3.3.4. (Note: 3.0.x (x>13), 3.1.y (y>12), 3.2.z (z>10) and 3.3.m (m>4) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2022.0.0-2022.0.5, 2023.0.0-2023.0.3. (Note: 2022.0.x (x>5) and 2023.0.y (y>3) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure
+
+#### Bugs Fixed
+- Fixed issue that some classes do not support Java 17.
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#5171-2024-10-11) for more details.
+
 ## 5.17.0 (2024-10-09)
 - This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.12, 3.2.0-3.2.10, 3.3.0-3.3.4. (Note: 3.0.x (x>13), 3.1.y (y>12), 3.2.z (z>10) and 3.3.m (m>4) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2022.0.0-2022.0.5, 2023.0.0-2023.0.3. (Note: 2022.0.x (x>5) and 2023.0.y (y>3) should be supported, but they aren't tested with this release.)
