@@ -15,6 +15,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
@@ -23,8 +24,7 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.params.provider.Arguments;
@@ -58,13 +58,28 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTest
 
     HttpPipeline getPipeline(HttpClient httpClient, boolean forCleanup) {
         TokenCredential credential;
-        if (interceptorManager.isLiveMode()) {
-            credential = new AzurePowerShellCredentialBuilder().additionallyAllowedTenants("*").build();
-        } else if (interceptorManager.isRecordMode()) {
-            credential = new DefaultAzureCredentialBuilder().additionallyAllowedTenants("*").build();
-            List<TestProxySanitizer> customSanitizers = new ArrayList<>();
-            customSanitizers.add(new TestProxySanitizer("token", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
-            interceptorManager.addSanitizers(customSanitizers);
+
+        if (!interceptorManager.isPlaybackMode()) {
+            String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
+            String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
+            String tenantId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID");
+
+            Objects.requireNonNull(clientId, "The client id cannot be null");
+            Objects.requireNonNull(clientKey, "The client key cannot be null");
+            Objects.requireNonNull(tenantId, "The tenant id cannot be null");
+
+            credential = new ClientSecretCredentialBuilder()
+                .clientSecret(clientKey)
+                .clientId(clientId)
+                .tenantId(tenantId)
+                .additionallyAllowedTenants("*")
+                .build();
+
+            if (interceptorManager.isRecordMode()) {
+                List<TestProxySanitizer> customSanitizers = new ArrayList<>();
+                customSanitizers.add(new TestProxySanitizer("token", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+                interceptorManager.addSanitizers(customSanitizers);
+            }
         } else {
             credential = new MockTokenCredential();
 
@@ -118,6 +133,6 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTest
      * @return A stream of {@link HttpClient HTTP clients} to test.
      */
     static Stream<Arguments> createHttpClients() {
-        return TestProxyTestBase.getHttpClients().map(Arguments::of);
+        return TestBase.getHttpClients().map(Arguments::of);
     }
 }
