@@ -13,6 +13,14 @@ import com.azure.security.keyvault.keys.models.JsonWebKey;
 
 /**
  * A key client which is used to synchronously wrap or unwrap another key.
+ *
+ * <p>When a {@link KeyEncryptionKeyClient} gets created using a {@code Azure Key Vault key identifier}, the first time
+ * a cryptographic operation is attempted, the client will attempt to retrieve the key material from the service, cache
+ * it, and perform all future cryptographic operations locally, deferring to the service when that's not possible. If
+ * key retrieval and caching fails because of a non-retryable error, the client will not make any further attempts and
+ * will fall back to performing all cryptographic operations on the service side. Conversely, when a
+ * {@link KeyEncryptionKeyClient} created using a {@link JsonWebKey JSON Web Key}, all cryptographic operations will be
+ * performed locally.</p>
  */
 @ServiceClient(builder = KeyEncryptionKeyClientBuilder.class)
 public final class KeyEncryptionKeyClient extends CryptographyClient implements KeyEncryptionKey {
@@ -23,9 +31,12 @@ public final class KeyEncryptionKeyClient extends CryptographyClient implements 
      * @param keyId The identifier of the key to use for cryptography operations.
      * @param pipeline The {@link HttpPipeline} that the HTTP requests and responses flow through.
      * @param version {@link CryptographyServiceVersion} of the service to be used when making requests.
+     * @param disableKeyCaching Indicates if local key caching should be disabled and all cryptographic operations
+     * deferred to the service.
      */
-    KeyEncryptionKeyClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version) {
-        super(keyId, pipeline, version);
+    KeyEncryptionKeyClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version,
+                           boolean disableKeyCaching) {
+        super(keyId, pipeline, version, disableKeyCaching);
     }
 
     /**

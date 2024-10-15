@@ -9,12 +9,10 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyClientImpl;
-import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils;
 import com.azure.security.keyvault.keys.cryptography.implementation.LocalKeyCryptographyClient;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
@@ -37,8 +35,9 @@ import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.initializeLocalClient;
+import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.createLocalClient;
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.isThrowableRetryable;
+import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.retrieveJwkAndCreateLocalAsyncClient;
 
 /**
  * The {@link CryptographyAsyncClient} provides asynchronous methods to perform cryptographic operations using
@@ -81,6 +80,14 @@ import static com.azure.security.keyvault.keys.cryptography.implementation.Crypt
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withJsonWebKey.instantiation -->
  * <br>
+ *
+ * <p>When a {@link CryptographyAsyncClient} gets created using a {@code Azure Key Vault key identifier}, the first
+ * time a cryptographic operation is attempted, the client will attempt to retrieve the key material from the service,
+ * cache it, and perform all future cryptographic operations locally, deferring to the service when that's not possible.
+ * If key retrieval and caching fails because of a non-retryable error, the client will not make any further attempts
+ * and will fall back to performing all cryptographic operations on the service side. Conversely, when a
+ * {@link CryptographyAsyncClient} created using a {@link JsonWebKey JSON Web Key}, all cryptographic operations will be
+ * performed locally.</p>
  *
  * <hr>
  *
@@ -143,7 +150,7 @@ public class CryptographyAsyncClient {
 
     private final HttpPipeline pipeline;
 
-    private volatile boolean attemptedToInitializeLocalClient = false;
+    private volatile boolean skipLocalClientCreation;
     private volatile LocalKeyCryptographyClient localKeyCryptographyClient;
 
     final CryptographyClientImpl implClient;
@@ -155,11 +162,15 @@ public class CryptographyAsyncClient {
      * @param keyId The Azure Key Vault key identifier to use for cryptography operations.
      * @param pipeline {@link HttpPipeline} that the HTTP requests and responses flow through.
      * @param version {@link CryptographyServiceVersion} of the service to be used when making requests.
+     * @param disableKeyCaching Indicates if local key caching should be disabled and all cryptographic operations
+     * deferred to the service.
      */
-    CryptographyAsyncClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version) {
+    CryptographyAsyncClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version,
+                            boolean disableKeyCaching) {
+        this.implClient = new CryptographyClientImpl(keyId, pipeline, version);
         this.keyId = keyId;
         this.pipeline = pipeline;
-        this.implClient = new CryptographyClientImpl(keyId, pipeline, version);
+        this.skipLocalClientCreation = disableKeyCaching;
     }
 
     /**
@@ -188,8 +199,7 @@ public class CryptographyAsyncClient {
         this.pipeline = null;
 
         try {
-            this.localKeyCryptographyClient = initializeLocalClient(jsonWebKey, null);
-            this.attemptedToInitializeLocalClient = true;
+            this.localKeyCryptographyClient = createLocalClient(jsonWebKey, null);
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(
                 new RuntimeException("Could not initialize local cryptography client.", e));
@@ -871,11 +881,10 @@ public class CryptographyAsyncClient {
     }
 
     private Mono<Boolean> isLocalClientAvailable() {
-        if (!attemptedToInitializeLocalClient) {
-            return retrieveJwkAndInitializeLocalAsyncClient()
+        if (!skipLocalClientCreation && localKeyCryptographyClient == null) {
+            return retrieveJwkAndCreateLocalAsyncClient(implClient)
                 .map(localClient -> {
                     localKeyCryptographyClient = localClient;
-                    attemptedToInitializeLocalClient = true;
 
                     return true;
                 })
@@ -884,7 +893,7 @@ public class CryptographyAsyncClient {
                         LOGGER.log(LogLevel.VERBOSE, () -> "Could not set up local cryptography for this operation. "
                             + "Defaulting to service-side cryptography.", t);
                     } else {
-                        attemptedToInitializeLocalClient = true;
+                        skipLocalClientCreation = true;
 
                         LOGGER.log(LogLevel.VERBOSE, () -> "Could not set up local cryptography. Defaulting to"
                             + "service-side cryptography for all operations.", t);
@@ -895,28 +904,5 @@ public class CryptographyAsyncClient {
         }
 
         return Mono.just(localKeyCryptographyClient != null);
-    }
-
-    private Mono<LocalKeyCryptographyClient> retrieveJwkAndInitializeLocalAsyncClient() {
-        // Technically the collection portion of a key identifier should never be null/empty, but we still check for it.
-        if (!CoreUtils.isNullOrEmpty(implClient.getKeyCollection())) {
-            // Get the JWK from the service and validate it. Then attempt to create a local cryptography client or
-            // default to using service-side cryptography.
-            Mono<JsonWebKey> jsonWebKeyMono = CryptographyUtils.SECRETS_COLLECTION.equals(implClient.getKeyCollection())
-                ? implClient.getSecretKeyAsync()
-                : implClient.getKeyAsync().map(keyVaultKeyResponse -> keyVaultKeyResponse.getValue().getKey());
-
-            return jsonWebKeyMono.handle((jsonWebKey, sink) -> {
-                if (!jsonWebKey.isValid()) {
-                    sink.error(new IllegalStateException("The retrieved JSON Web Key is not valid."));
-                } else {
-                    sink.next(initializeLocalClient(jsonWebKey, implClient));
-                }
-            });
-        } else {
-            // Couldn't/didn't create a local cryptography client.
-            return Mono.error(new IllegalStateException(
-                "Could not create a local cryptography client. Key collection is null or empty."));
-        }
     }
 }
