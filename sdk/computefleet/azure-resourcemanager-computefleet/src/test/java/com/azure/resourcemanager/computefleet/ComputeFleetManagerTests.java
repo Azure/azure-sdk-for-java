@@ -157,16 +157,14 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
                     new FleetProperties()
                         .withSpotPriorityProfile(
                             new SpotPriorityProfile()
-                                .withMaintain(true)
+                                .withMaintain(false)
                                 .withCapacity(1)
                                 .withEvictionPolicy(EvictionPolicy.DELETE)
                                 .withAllocationStrategy(SpotAllocationStrategy.LOWEST_PRICE)
                         )
                         .withVmSizesProfile(
                             Arrays.asList(
-                                new VmSizeProfile().withName("Standard_D4s_v3"),
-                                new VmSizeProfile().withName("Standard_D2s_v5"),
-                                new VmSizeProfile().withName("Standard_E2s_v3")
+                                new VmSizeProfile().withName("Standard_D4s_v3")
                             )
                         )
                         .withComputeProfile(
