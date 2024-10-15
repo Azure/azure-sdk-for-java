@@ -29,16 +29,22 @@ class ServiceBusSessionReceiverClientTest {
     @Mock
     private ServiceBusReceiverAsyncClient asyncClient;
 
+    private AutoCloseable mocksCloseable;
+
     @BeforeEach
     void beforeEach(TestInfo testInfo) {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
         when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null,
             "fqdn", "entity", null, ReceiverKind.ASYNC_RECEIVER));
     }
 
     @AfterEach
-    void afterEach(TestInfo testInfo) {
+    void afterEach(TestInfo testInfo) throws Exception {
         Mockito.framework().clearInlineMock(this);
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
 

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.time.Duration;
@@ -25,17 +26,25 @@ class LockContainerTest {
     private Consumer<String> onRemoved;
     private LockContainer<String> container;
 
+    private AutoCloseable mocksCloseable;
+
     @BeforeEach
     void beforeEach() {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
         container = new LockContainer<>(interval, onRemoved);
     }
 
     @AfterEach
-    void afterEach() {
+    void afterEach() throws Exception {
+        Mockito.framework().clearInlineMock(this);
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
         if (container != null) {
             container.close();
         }
+
     }
 
     @Test

@@ -124,12 +124,13 @@ public class ServiceBusReactorSessionTest {
 
     private ServiceBusReactorSession serviceBusReactorSession;
     private final ServiceBusAmqpLinkProvider linkProvider = new ServiceBusAmqpLinkProvider();
+    private AutoCloseable mocksCloseable;
 
     @BeforeEach
     void setup(TestInfo testInfo) {
         LOGGER.info("[{}] Setting up.", testInfo.getDisplayName());
 
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
         when(tokenManagerEntity.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
         when(tokenManagerViaQueue.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
 
@@ -199,10 +200,13 @@ public class ServiceBusReactorSessionTest {
     }
 
     @AfterEach
-    void teardown(TestInfo testInfo) {
+    void teardown(TestInfo testInfo) throws Exception {
         LOGGER.info("[{}] Tearing down.", testInfo.getDisplayName());
-
         Mockito.framework().clearInlineMock(this);
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     /**

@@ -8,11 +8,13 @@ import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES;
@@ -25,10 +27,20 @@ public class ServiceBusMessageBatchTest {
 
     private MessageSerializer serializer = new ServiceBusMessageSerializer();
     private ServiceBusTracer tracer = new ServiceBusTracer(null, "namespace", "entity");
+    private AutoCloseable mocksCloseable;
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    public void teardown() throws Exception {
+        Mockito.framework().clearInlineMock(this);
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     @ParameterizedTest

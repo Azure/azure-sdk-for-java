@@ -132,11 +132,13 @@ class ManagementChannelTests {
     @Captor
     private ArgumentCaptor<DeliveryState> amqpDeliveryStateCaptor;
 
+    private AutoCloseable mocksCloseable;
+
     @BeforeEach
     void setup(TestInfo testInfo) {
         LOGGER.info("[{}] Setting up.", testInfo.getDisplayName());
 
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         authorizationResponseCode = AmqpResponseCode.OK;
 
@@ -160,9 +162,13 @@ class ManagementChannelTests {
     }
 
     @AfterEach
-    void teardown(TestInfo testInfo) {
+    void teardown(TestInfo testInfo) throws Exception {
         LOGGER.info("[{}] Tearing down.", testInfo.getDisplayName());
         Mockito.framework().clearInlineMock(this);
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     /**
