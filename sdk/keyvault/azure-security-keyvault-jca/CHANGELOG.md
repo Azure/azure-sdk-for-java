@@ -1,5 +1,14 @@
 # Release History
 
+## 2.9.0 (2024-10-15)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `conscrypt-openjdk-uber` from `2.2.1` to version `2.5.2`.
+- Upgraded `jackson-databind` from `2.13.5` to version `2.17.2`.
+
 ## 2.8.1 (2023-12-04)
 
 ### Other Changes
