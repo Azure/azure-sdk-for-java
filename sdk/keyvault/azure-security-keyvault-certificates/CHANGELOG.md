@@ -2,6 +2,9 @@
 
 ## 4.7.0 (2024-10-15)
 
+## Features Added
+- Added support for Continuous Access Evaluation (CAE). ([#41814](https://github.com/Azure/azure-sdk-for-java/pull/41814))
+
 ### Other Changes
 
 #### Dependency Updates
