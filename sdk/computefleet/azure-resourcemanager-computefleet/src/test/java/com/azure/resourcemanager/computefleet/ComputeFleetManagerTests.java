@@ -165,7 +165,7 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
                         .withVmSizesProfile(
                             Arrays.asList(
                                 new VmSizeProfile().withName("Standard_D4s_v3"),
-                                new VmSizeProfile().withName("Standard_D2s_v3"),
+                                new VmSizeProfile().withName("Standard_D2s_v5"),
                                 new VmSizeProfile().withName("Standard_E2s_v3")
                             )
                         )
