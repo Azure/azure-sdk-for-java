@@ -13,18 +13,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ServiceBusMessageBatchTest {
-    @Mock
-    private ErrorContextProvider errorContextProvider;
-
     private MessageSerializer serializer = new ServiceBusMessageSerializer();
     private ServiceBusTracer tracer = new ServiceBusTracer(null, "namespace", "entity");
     private AutoCloseable mocksCloseable;
@@ -46,6 +43,7 @@ public class ServiceBusMessageBatchTest {
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void nullMessage(boolean isV2) {
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(isV2, 1024, errorContextProvider, tracer, serializer);
         assertThrows(NullPointerException.class, () -> batch.tryAddMessage(null));
     }
@@ -57,6 +55,7 @@ public class ServiceBusMessageBatchTest {
     @ValueSource(booleans = {true, false})
     public void payloadExceededException(boolean isV2) {
         // Arrange
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
         when(errorContextProvider.getErrorContext()).thenReturn(new AmqpErrorContext("test-namespace"));
 
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(isV2, 1024, errorContextProvider, tracer, serializer);
@@ -77,6 +76,7 @@ public class ServiceBusMessageBatchTest {
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void withinPayloadSize(boolean isV2) {
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
         final int maxSize = MAX_MESSAGE_LENGTH_BYTES;
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(isV2, maxSize, errorContextProvider, tracer,
             serializer);
@@ -94,6 +94,7 @@ public class ServiceBusMessageBatchTest {
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void setsPartitionId(boolean isV2) {
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
         // Act
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(isV2, MAX_MESSAGE_LENGTH_BYTES, errorContextProvider,
             tracer, serializer);

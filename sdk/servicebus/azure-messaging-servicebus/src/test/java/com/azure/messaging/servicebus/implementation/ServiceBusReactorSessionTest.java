@@ -39,7 +39,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
@@ -83,44 +82,8 @@ public class ServiceBusReactorSessionTest {
     private static final String VIA_ENTITY_PATH_SENDER_LINK_NAME = "VIA-" + VIA_ENTITY_PATH;
     private static final String CLIENT_IDENTIFIER = "clientIdentifier";
 
-    @Mock
-    private Reactor reactor;
-    @Mock
-    private Selectable selectable;
-    @Mock
-    private TokenManagerProvider tokenManagerProvider;
-    @Mock
-    private MessageSerializer messageSerializer;
-    @Mock
-    private ReactorProvider reactorProvider;
-    @Mock
-    private ReactorHandlerProvider handlerProvider;
-    @Mock
-    private Session session;
-    @Mock
-    Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
-    @Mock
-    private TokenManager tokenManagerViaQueue;
-    @Mock
-    private TokenManager tokenManagerEntity;
-    @Mock
-    private SessionHandler handler;
-    @Mock
-    private Sender senderEntity;
-    @Mock
-    private Sender senderViaEntity;
-    @Mock
-    private Record record;
-    @Mock
-    private SendLinkHandler sendViaEntityLinkHandler;
-    @Mock
-    private SendLinkHandler sendEntityLinkHandler;
     @Captor
     private ArgumentCaptor<Runnable> dispatcherCaptor;
-    @Mock
-    private ReactorDispatcher dispatcher;
-    @Mock
-    private AmqpConnection connection;
 
     private ServiceBusReactorSession serviceBusReactorSession;
     private final ServiceBusAmqpLinkProvider linkProvider = new ServiceBusAmqpLinkProvider();
@@ -131,6 +94,44 @@ public class ServiceBusReactorSessionTest {
         LOGGER.info("[{}] Setting up.", testInfo.getDisplayName());
 
         mocksCloseable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void teardown(TestInfo testInfo) throws Exception {
+        LOGGER.info("[{}] Tearing down.", testInfo.getDisplayName());
+        Mockito.framework().clearInlineMock(this);
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
+    }
+
+    /**
+     * Test for create Sender Link when via-queue is used.
+     */
+    @Test
+    void createViaSenderLink() throws IOException {
+        // Arrange
+        //
+        final Reactor reactor = mock(Reactor.class);
+        final Selectable selectable = mock(Selectable.class);
+        final TokenManagerProvider tokenManagerProvider = mock(TokenManagerProvider.class);
+        final MessageSerializer messageSerializer = mock(MessageSerializer.class);
+        final ReactorProvider reactorProvider = mock(ReactorProvider.class);
+        final ReactorHandlerProvider handlerProvider = mock(ReactorHandlerProvider.class);
+        final Session session = mock(Session.class);
+        final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier = mock(Mono.class);
+        final TokenManager tokenManagerViaQueue = mock(TokenManager.class);
+        final TokenManager tokenManagerEntity = mock(TokenManager.class);
+        final SessionHandler handler = mock(SessionHandler.class);
+        final Sender senderEntity = mock(Sender.class);
+        final Sender senderViaEntity = mock(Sender.class);
+        final Record record = mock(Record.class);
+        final SendLinkHandler sendViaEntityLinkHandler = mock(SendLinkHandler.class);
+        final SendLinkHandler sendEntityLinkHandler = mock(SendLinkHandler.class);
+        final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
+        final AmqpConnection connection = mock(AmqpConnection.class);
+
         when(tokenManagerEntity.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
         when(tokenManagerViaQueue.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
 
@@ -197,24 +198,7 @@ public class ServiceBusReactorSessionTest {
             handlerProvider, linkProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer, retryOptions,
             new ServiceBusCreateSessionOptions(false), true);
         when(connection.getShutdownSignals()).thenReturn(Flux.never());
-    }
-
-    @AfterEach
-    void teardown(TestInfo testInfo) throws Exception {
-        LOGGER.info("[{}] Tearing down.", testInfo.getDisplayName());
-        Mockito.framework().clearInlineMock(this);
-
-        if (mocksCloseable != null) {
-            mocksCloseable.close();
-        }
-    }
-
-    /**
-     * Test for create Sender Link when via-queue is used.
-     */
-    @Test
-    void createViaSenderLink() throws IOException {
-        // Arrange
+        //
         doNothing().when(dispatcher).invoke(any(Runnable.class));
 
         // Act
@@ -243,6 +227,93 @@ public class ServiceBusReactorSessionTest {
     @Test
     void createViaSenderLinkDestinationEntityAuthorizeFails() throws IOException {
         // Arrange
+        //
+        final Reactor reactor = mock(Reactor.class);
+        final Selectable selectable = mock(Selectable.class);
+        final TokenManagerProvider tokenManagerProvider = mock(TokenManagerProvider.class);
+        final MessageSerializer messageSerializer = mock(MessageSerializer.class);
+        final ReactorProvider reactorProvider = mock(ReactorProvider.class);
+        final ReactorHandlerProvider handlerProvider = mock(ReactorHandlerProvider.class);
+        final Session session = mock(Session.class);
+        final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier = mock(Mono.class);
+        final TokenManager tokenManagerViaQueue = mock(TokenManager.class);
+        final TokenManager tokenManagerEntity = mock(TokenManager.class);
+        final SessionHandler handler = mock(SessionHandler.class);
+        final Sender senderEntity = mock(Sender.class);
+        final Sender senderViaEntity = mock(Sender.class);
+        final Record record = mock(Record.class);
+        final SendLinkHandler sendViaEntityLinkHandler = mock(SendLinkHandler.class);
+        final SendLinkHandler sendEntityLinkHandler = mock(SendLinkHandler.class);
+        final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
+        final AmqpConnection connection = mock(AmqpConnection.class);
+
+        when(tokenManagerEntity.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
+        when(tokenManagerViaQueue.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
+
+        doNothing().when(selectable).setChannel(any());
+        doNothing().when(selectable).onReadable(any());
+        doNothing().when(selectable).onFree(any());
+        doNothing().when(selectable).setReading(true);
+        doNothing().when(reactor).update(selectable);
+        when(reactor.selectable()).thenReturn(selectable);
+
+        final ReplayProcessor<EndpointState> endpointStateReplayProcessor = ReplayProcessor.cacheLast();
+        when(handler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
+        FluxSink<EndpointState> sink1 = endpointStateReplayProcessor.sink();
+        sink1.next(EndpointState.ACTIVE);
+        when(handler.getSessionName()).thenReturn(SESSION_NAME);
+        when(handler.getHostname()).thenReturn(HOSTNAME);
+        when(handler.getConnectionId()).thenReturn(CONNECTION_ID);
+
+        when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, VIA_ENTITY_PATH_SENDER_LINK_NAME, VIA_ENTITY_PATH))
+            .thenReturn(sendViaEntityLinkHandler);
+        when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, ENTITY_PATH))
+            .thenReturn(sendEntityLinkHandler);
+
+        Delivery delivery = mock(Delivery.class);
+        when(delivery.getRemoteState()).thenReturn(Accepted.getInstance());
+        when(delivery.getTag()).thenReturn("tag".getBytes());
+        when(sendViaEntityLinkHandler.getDeliveredMessages()).thenReturn(Flux.just(delivery));
+        when(sendEntityLinkHandler.getDeliveredMessages()).thenReturn(Flux.just(delivery));
+
+        when(sendViaEntityLinkHandler.getLinkCredits()).thenReturn(Flux.just(100));
+        when(sendEntityLinkHandler.getLinkCredits()).thenReturn(Flux.just(100));
+
+        when(sendViaEntityLinkHandler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
+        when(sendEntityLinkHandler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
+
+        when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, VIA_ENTITY_PATH)).thenReturn(tokenManagerViaQueue);
+        when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, ENTITY_PATH)).thenReturn(tokenManagerEntity);
+
+        when(tokenManagerEntity.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
+        when(tokenManagerEntity.authorize()).thenReturn(Mono.just(1L));
+        when(tokenManagerViaQueue.authorize()).thenReturn(Mono.just(1L));
+
+        when(session.sender(VIA_ENTITY_PATH_SENDER_LINK_NAME)).thenReturn(senderViaEntity);
+        when(session.sender(ENTITY_PATH)).thenReturn(senderEntity);
+        doNothing().when(session).open();
+        doNothing().when(senderViaEntity).setSource(any(Source.class));
+        doNothing().when(senderEntity).setSource(any(Source.class));
+
+        doNothing().when(senderViaEntity).setSenderSettleMode(SenderSettleMode.UNSETTLED);
+        doNothing().when(senderEntity).setSenderSettleMode(SenderSettleMode.UNSETTLED);
+
+        doNothing().when(senderViaEntity).setTarget(any(Target.class));
+        doNothing().when(senderEntity).setTarget(any(Target.class));
+        when(senderEntity.attachments()).thenReturn(record);
+        when(senderViaEntity.attachments()).thenReturn(record);
+
+        when(reactorProvider.getReactorDispatcher()).thenReturn(dispatcher);
+
+        when(connection.getShutdownSignals()).thenReturn(Flux.empty());
+        // TODO (anu): use 'ProtonSession' instead of 'ProtonSessionWrapper' and update the test.
+        final ProtonSessionWrapper sessionWrapper = new ProtonSessionWrapper(session, handler, reactorProvider);
+
+        serviceBusReactorSession = new ServiceBusReactorSession(connection, sessionWrapper,
+            handlerProvider, linkProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer, retryOptions,
+            new ServiceBusCreateSessionOptions(false), true);
+        when(connection.getShutdownSignals()).thenReturn(Flux.never());
+        //
         final Throwable authorizeError = new RuntimeException("Failed to Authorize EntityPath");
         doNothing().when(dispatcher).invoke(any(Runnable.class));
         when(tokenManagerEntity.authorize()).thenReturn(Mono.error(authorizeError));
@@ -265,6 +336,93 @@ public class ServiceBusReactorSessionTest {
     @Test
     void createSenderLink() throws IOException {
         // Arrange
+        //
+        final Reactor reactor = mock(Reactor.class);
+        final Selectable selectable = mock(Selectable.class);
+        final TokenManagerProvider tokenManagerProvider = mock(TokenManagerProvider.class);
+        final MessageSerializer messageSerializer = mock(MessageSerializer.class);
+        final ReactorProvider reactorProvider = mock(ReactorProvider.class);
+        final ReactorHandlerProvider handlerProvider = mock(ReactorHandlerProvider.class);
+        final Session session = mock(Session.class);
+        final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier = mock(Mono.class);
+        final TokenManager tokenManagerViaQueue = mock(TokenManager.class);
+        final TokenManager tokenManagerEntity = mock(TokenManager.class);
+        final SessionHandler handler = mock(SessionHandler.class);
+        final Sender senderEntity = mock(Sender.class);
+        final Sender senderViaEntity = mock(Sender.class);
+        final Record record = mock(Record.class);
+        final SendLinkHandler sendViaEntityLinkHandler = mock(SendLinkHandler.class);
+        final SendLinkHandler sendEntityLinkHandler = mock(SendLinkHandler.class);
+        final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
+        final AmqpConnection connection = mock(AmqpConnection.class);
+
+        when(tokenManagerEntity.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
+        when(tokenManagerViaQueue.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
+
+        doNothing().when(selectable).setChannel(any());
+        doNothing().when(selectable).onReadable(any());
+        doNothing().when(selectable).onFree(any());
+        doNothing().when(selectable).setReading(true);
+        doNothing().when(reactor).update(selectable);
+        when(reactor.selectable()).thenReturn(selectable);
+
+        final ReplayProcessor<EndpointState> endpointStateReplayProcessor = ReplayProcessor.cacheLast();
+        when(handler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
+        FluxSink<EndpointState> sink1 = endpointStateReplayProcessor.sink();
+        sink1.next(EndpointState.ACTIVE);
+        when(handler.getSessionName()).thenReturn(SESSION_NAME);
+        when(handler.getHostname()).thenReturn(HOSTNAME);
+        when(handler.getConnectionId()).thenReturn(CONNECTION_ID);
+
+        when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, VIA_ENTITY_PATH_SENDER_LINK_NAME, VIA_ENTITY_PATH))
+            .thenReturn(sendViaEntityLinkHandler);
+        when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, ENTITY_PATH))
+            .thenReturn(sendEntityLinkHandler);
+
+        Delivery delivery = mock(Delivery.class);
+        when(delivery.getRemoteState()).thenReturn(Accepted.getInstance());
+        when(delivery.getTag()).thenReturn("tag".getBytes());
+        when(sendViaEntityLinkHandler.getDeliveredMessages()).thenReturn(Flux.just(delivery));
+        when(sendEntityLinkHandler.getDeliveredMessages()).thenReturn(Flux.just(delivery));
+
+        when(sendViaEntityLinkHandler.getLinkCredits()).thenReturn(Flux.just(100));
+        when(sendEntityLinkHandler.getLinkCredits()).thenReturn(Flux.just(100));
+
+        when(sendViaEntityLinkHandler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
+        when(sendEntityLinkHandler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
+
+        when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, VIA_ENTITY_PATH)).thenReturn(tokenManagerViaQueue);
+        when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, ENTITY_PATH)).thenReturn(tokenManagerEntity);
+
+        when(tokenManagerEntity.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
+        when(tokenManagerEntity.authorize()).thenReturn(Mono.just(1L));
+        when(tokenManagerViaQueue.authorize()).thenReturn(Mono.just(1L));
+
+        when(session.sender(VIA_ENTITY_PATH_SENDER_LINK_NAME)).thenReturn(senderViaEntity);
+        when(session.sender(ENTITY_PATH)).thenReturn(senderEntity);
+        doNothing().when(session).open();
+        doNothing().when(senderViaEntity).setSource(any(Source.class));
+        doNothing().when(senderEntity).setSource(any(Source.class));
+
+        doNothing().when(senderViaEntity).setSenderSettleMode(SenderSettleMode.UNSETTLED);
+        doNothing().when(senderEntity).setSenderSettleMode(SenderSettleMode.UNSETTLED);
+
+        doNothing().when(senderViaEntity).setTarget(any(Target.class));
+        doNothing().when(senderEntity).setTarget(any(Target.class));
+        when(senderEntity.attachments()).thenReturn(record);
+        when(senderViaEntity.attachments()).thenReturn(record);
+
+        when(reactorProvider.getReactorDispatcher()).thenReturn(dispatcher);
+
+        when(connection.getShutdownSignals()).thenReturn(Flux.empty());
+        // TODO (anu): use 'ProtonSession' instead of 'ProtonSessionWrapper' and update the test.
+        final ProtonSessionWrapper sessionWrapper = new ProtonSessionWrapper(session, handler, reactorProvider);
+
+        serviceBusReactorSession = new ServiceBusReactorSession(connection, sessionWrapper,
+            handlerProvider, linkProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer, retryOptions,
+            new ServiceBusCreateSessionOptions(false), true);
+        when(connection.getShutdownSignals()).thenReturn(Flux.never());
+        //
         doNothing().when(dispatcher).invoke(any(Runnable.class));
 
         // Act
@@ -291,6 +449,93 @@ public class ServiceBusReactorSessionTest {
     @Test
     void createCoordinatorLink() throws IOException {
         // Arrange
+        //
+        final Reactor reactor = mock(Reactor.class);
+        final Selectable selectable = mock(Selectable.class);
+        final TokenManagerProvider tokenManagerProvider = mock(TokenManagerProvider.class);
+        final MessageSerializer messageSerializer = mock(MessageSerializer.class);
+        final ReactorProvider reactorProvider = mock(ReactorProvider.class);
+        final ReactorHandlerProvider handlerProvider = mock(ReactorHandlerProvider.class);
+        final Session session = mock(Session.class);
+        final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier = mock(Mono.class);
+        final TokenManager tokenManagerViaQueue = mock(TokenManager.class);
+        final TokenManager tokenManagerEntity = mock(TokenManager.class);
+        final SessionHandler handler = mock(SessionHandler.class);
+        final Sender senderEntity = mock(Sender.class);
+        final Sender senderViaEntity = mock(Sender.class);
+        final Record record = mock(Record.class);
+        final SendLinkHandler sendViaEntityLinkHandler = mock(SendLinkHandler.class);
+        final SendLinkHandler sendEntityLinkHandler = mock(SendLinkHandler.class);
+        final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
+        final AmqpConnection connection = mock(AmqpConnection.class);
+
+        when(tokenManagerEntity.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
+        when(tokenManagerViaQueue.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
+
+        doNothing().when(selectable).setChannel(any());
+        doNothing().when(selectable).onReadable(any());
+        doNothing().when(selectable).onFree(any());
+        doNothing().when(selectable).setReading(true);
+        doNothing().when(reactor).update(selectable);
+        when(reactor.selectable()).thenReturn(selectable);
+
+        final ReplayProcessor<EndpointState> endpointStateReplayProcessor = ReplayProcessor.cacheLast();
+        when(handler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
+        FluxSink<EndpointState> sink1 = endpointStateReplayProcessor.sink();
+        sink1.next(EndpointState.ACTIVE);
+        when(handler.getSessionName()).thenReturn(SESSION_NAME);
+        when(handler.getHostname()).thenReturn(HOSTNAME);
+        when(handler.getConnectionId()).thenReturn(CONNECTION_ID);
+
+        when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, VIA_ENTITY_PATH_SENDER_LINK_NAME, VIA_ENTITY_PATH))
+            .thenReturn(sendViaEntityLinkHandler);
+        when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, ENTITY_PATH))
+            .thenReturn(sendEntityLinkHandler);
+
+        Delivery delivery = mock(Delivery.class);
+        when(delivery.getRemoteState()).thenReturn(Accepted.getInstance());
+        when(delivery.getTag()).thenReturn("tag".getBytes());
+        when(sendViaEntityLinkHandler.getDeliveredMessages()).thenReturn(Flux.just(delivery));
+        when(sendEntityLinkHandler.getDeliveredMessages()).thenReturn(Flux.just(delivery));
+
+        when(sendViaEntityLinkHandler.getLinkCredits()).thenReturn(Flux.just(100));
+        when(sendEntityLinkHandler.getLinkCredits()).thenReturn(Flux.just(100));
+
+        when(sendViaEntityLinkHandler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
+        when(sendEntityLinkHandler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
+
+        when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, VIA_ENTITY_PATH)).thenReturn(tokenManagerViaQueue);
+        when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, ENTITY_PATH)).thenReturn(tokenManagerEntity);
+
+        when(tokenManagerEntity.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
+        when(tokenManagerEntity.authorize()).thenReturn(Mono.just(1L));
+        when(tokenManagerViaQueue.authorize()).thenReturn(Mono.just(1L));
+
+        when(session.sender(VIA_ENTITY_PATH_SENDER_LINK_NAME)).thenReturn(senderViaEntity);
+        when(session.sender(ENTITY_PATH)).thenReturn(senderEntity);
+        doNothing().when(session).open();
+        doNothing().when(senderViaEntity).setSource(any(Source.class));
+        doNothing().when(senderEntity).setSource(any(Source.class));
+
+        doNothing().when(senderViaEntity).setSenderSettleMode(SenderSettleMode.UNSETTLED);
+        doNothing().when(senderEntity).setSenderSettleMode(SenderSettleMode.UNSETTLED);
+
+        doNothing().when(senderViaEntity).setTarget(any(Target.class));
+        doNothing().when(senderEntity).setTarget(any(Target.class));
+        when(senderEntity.attachments()).thenReturn(record);
+        when(senderViaEntity.attachments()).thenReturn(record);
+
+        when(reactorProvider.getReactorDispatcher()).thenReturn(dispatcher);
+
+        when(connection.getShutdownSignals()).thenReturn(Flux.empty());
+        // TODO (anu): use 'ProtonSession' instead of 'ProtonSessionWrapper' and update the test.
+        ProtonSessionWrapper sessionWrapper1 = new ProtonSessionWrapper(session, handler, reactorProvider);
+
+        serviceBusReactorSession = new ServiceBusReactorSession(connection, sessionWrapper1,
+            handlerProvider, linkProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer, retryOptions,
+            new ServiceBusCreateSessionOptions(false), true);
+        when(connection.getShutdownSignals()).thenReturn(Flux.never());
+        //
         final String transactionLinkName = "coordinator";
         final Sender coordinatorSenderEntity = mock(Sender.class);
         doNothing().when(coordinatorSenderEntity).setSource(any(Source.class));
@@ -300,9 +545,9 @@ public class ServiceBusReactorSessionTest {
         when(coordinatorSenderEntity.attachments()).thenReturn(record);
         when(session.sender(transactionLinkName)).thenReturn(coordinatorSenderEntity);
         // TODO (anu): use 'ProtonSession' instead of 'ProtonSessionWrapper' and update the test.
-        final ProtonSessionWrapper sessionWrapper = new ProtonSessionWrapper(session, handler, reactorProvider);
+        ProtonSessionWrapper sessionWrapper2 = new ProtonSessionWrapper(session, handler, reactorProvider);
 
-        final ServiceBusReactorSession serviceBusReactorSession = new ServiceBusReactorSession(connection, sessionWrapper,
+        final ServiceBusReactorSession serviceBusReactorSession = new ServiceBusReactorSession(connection, sessionWrapper2,
             handlerProvider, linkProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer,
             retryOptions, new ServiceBusCreateSessionOptions(true), true);
 

@@ -11,7 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
@@ -26,6 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -35,13 +35,6 @@ public class ServiceBusSenderClientTest {
     private static final String ENTITY_NAME = "my-servicebus-entity";
     private static final String CLIENT_IDENTIFIER = "my-client-identifier";
 
-    @Mock
-    private ServiceBusSenderAsyncClient asyncSender;
-    @Mock
-    ServiceBusTransactionContext transactionContext;
-
-    private ServiceBusSenderClient sender;
-
     private static final Duration RETRY_TIMEOUT = Duration.ofSeconds(10);
     private static final String TEST_CONTENTS = "My message for service bus queue!";
     private static final BinaryData TEST_CONTENTS_BINARY = BinaryData.fromString(TEST_CONTENTS);
@@ -50,15 +43,10 @@ public class ServiceBusSenderClientTest {
     @BeforeEach
     void setup() {
         mocksCloseable = MockitoAnnotations.openMocks(this);
-        when(asyncSender.getEntityPath()).thenReturn(ENTITY_NAME);
-        when(asyncSender.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
-        when(asyncSender.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
-        sender = new ServiceBusSenderClient(asyncSender, RETRY_TIMEOUT);
     }
 
     @AfterEach
     void teardown() throws Exception {
-        sender.close();
         Mockito.framework().clearInlineMock(this);
 
         if (mocksCloseable != null) {
@@ -68,9 +56,20 @@ public class ServiceBusSenderClientTest {
 
     @Test
     void verifyProperties() {
+        //
+        final ServiceBusSenderAsyncClient asyncSender = mock(ServiceBusSenderAsyncClient.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        when(asyncSender.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(asyncSender.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncSender.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        ServiceBusSenderClient sender = new ServiceBusSenderClient(asyncSender, RETRY_TIMEOUT);
+        //
         Assertions.assertEquals(ENTITY_NAME, sender.getEntityPath());
         Assertions.assertEquals(NAMESPACE, sender.getFullyQualifiedNamespace());
         Assertions.assertEquals(CLIENT_IDENTIFIER, sender.getIdentifier());
+        //
+        sender.close();
+        //
     }
 
     /**
@@ -78,7 +77,18 @@ public class ServiceBusSenderClientTest {
      */
     @Test
     void createBatchNull() {
+        //
+        final ServiceBusSenderAsyncClient asyncSender = mock(ServiceBusSenderAsyncClient.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        when(asyncSender.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(asyncSender.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncSender.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        ServiceBusSenderClient sender = new ServiceBusSenderClient(asyncSender, RETRY_TIMEOUT);
+        //
         Assertions.assertThrows(NullPointerException.class, () -> sender.createMessageBatch(null));
+        //
+        sender.close();
+        //
     }
 
     /**
@@ -88,6 +98,14 @@ public class ServiceBusSenderClientTest {
     @ValueSource(booleans = {true, false})
     void createBatchDefault(boolean isV2) {
         // Arrange
+        //
+        final ServiceBusSenderAsyncClient asyncSender = mock(ServiceBusSenderAsyncClient.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        when(asyncSender.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(asyncSender.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncSender.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        ServiceBusSenderClient sender = new ServiceBusSenderClient(asyncSender, RETRY_TIMEOUT);
+        //
         ServiceBusMessageBatch batch =  new ServiceBusMessageBatch(isV2, MAX_MESSAGE_LENGTH_BYTES, null, null,
             null);
         when(asyncSender.createMessageBatch()).thenReturn(Mono.just(batch));
@@ -99,6 +117,9 @@ public class ServiceBusSenderClientTest {
         Assertions.assertEquals(MAX_MESSAGE_LENGTH_BYTES, batchMessage.getMaxSizeInBytes());
         Assertions.assertEquals(0, batchMessage.getCount());
         verify(asyncSender).createMessageBatch();
+        //
+        sender.close();
+        //
     }
 
     /**
@@ -107,6 +128,14 @@ public class ServiceBusSenderClientTest {
     @Test
     void createBatchWhenSizeTooBigThanOnSendLink() {
         // Arrange
+        //
+        final ServiceBusSenderAsyncClient asyncSender = mock(ServiceBusSenderAsyncClient.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        when(asyncSender.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(asyncSender.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncSender.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        ServiceBusSenderClient sender = new ServiceBusSenderClient(asyncSender, RETRY_TIMEOUT);
+        //
         int maxLinkSize = 1024;
         int batchSize = maxLinkSize + 10;
 
@@ -117,6 +146,9 @@ public class ServiceBusSenderClientTest {
         // Act & Assert
         Assertions.assertThrows(IllegalArgumentException.class, () -> sender.createMessageBatch(options));
         verify(asyncSender, times(1)).createMessageBatch(options);
+        //
+        sender.close();
+        //
     }
 
     /**
@@ -126,6 +158,14 @@ public class ServiceBusSenderClientTest {
     @ValueSource(booleans = {true, false})
     void createsMessageBatchWithSize(boolean isV2) {
         // Arrange
+        //
+        final ServiceBusSenderAsyncClient asyncSender = mock(ServiceBusSenderAsyncClient.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        when(asyncSender.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(asyncSender.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncSender.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        ServiceBusSenderClient sender = new ServiceBusSenderClient(asyncSender, RETRY_TIMEOUT);
+        //
         int batchSize = 1024;
 
         final CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(batchSize);
@@ -138,6 +178,9 @@ public class ServiceBusSenderClientTest {
 
         //Assert
         Assertions.assertEquals(batch, messageBatch);
+        //
+        sender.close();
+        //
     }
 
     /**
@@ -146,6 +189,14 @@ public class ServiceBusSenderClientTest {
     @Test
     void sendMessageListWithTransaction() {
         // Arrange
+        //
+        final ServiceBusSenderAsyncClient asyncSender = mock(ServiceBusSenderAsyncClient.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        when(asyncSender.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(asyncSender.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncSender.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        ServiceBusSenderClient sender = new ServiceBusSenderClient(asyncSender, RETRY_TIMEOUT);
+        //
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(),
@@ -158,6 +209,9 @@ public class ServiceBusSenderClientTest {
 
         // Assert
         verify(asyncSender).sendMessages(messages, transactionContext);
+        //
+        sender.close();
+        //
     }
 
     /**
@@ -166,6 +220,14 @@ public class ServiceBusSenderClientTest {
     @Test
     void sendMessageList() {
         // Arrange
+        //
+        final ServiceBusSenderAsyncClient asyncSender = mock(ServiceBusSenderAsyncClient.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        when(asyncSender.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(asyncSender.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncSender.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        ServiceBusSenderClient sender = new ServiceBusSenderClient(asyncSender, RETRY_TIMEOUT);
+        //
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(),
@@ -178,6 +240,9 @@ public class ServiceBusSenderClientTest {
 
         // Assert
         verify(asyncSender).sendMessages(messages);
+        //
+        sender.close();
+        //
     }
 
     /**
@@ -186,6 +251,14 @@ public class ServiceBusSenderClientTest {
     @Test
     void sendListMessageNullTransaction() {
         // Arrange
+        //
+        final ServiceBusSenderAsyncClient asyncSender = mock(ServiceBusSenderAsyncClient.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        when(asyncSender.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(asyncSender.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncSender.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        ServiceBusSenderClient sender = new ServiceBusSenderClient(asyncSender, RETRY_TIMEOUT);
+        //
         final ServiceBusTransactionContext nullTransaction = null;
         final ServiceBusMessage testData =
             new ServiceBusMessage(TEST_CONTENTS_BINARY);
@@ -201,6 +274,9 @@ public class ServiceBusSenderClientTest {
             Assertions.assertTrue(ex instanceof NullPointerException);
         }
         verify(asyncSender).sendMessages(messages, nullTransaction);
+        //
+        sender.close();
+        //
     }
 
     /**
@@ -209,6 +285,14 @@ public class ServiceBusSenderClientTest {
     @Test
     void sendSingleMessageNullTransaction() {
         // Arrange
+        //
+        final ServiceBusSenderAsyncClient asyncSender = mock(ServiceBusSenderAsyncClient.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        when(asyncSender.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(asyncSender.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncSender.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        ServiceBusSenderClient sender = new ServiceBusSenderClient(asyncSender, RETRY_TIMEOUT);
+        //
         final ServiceBusTransactionContext nullTransaction = null;
         final ServiceBusMessage testData =
             new ServiceBusMessage(TEST_CONTENTS_BINARY);
@@ -223,6 +307,9 @@ public class ServiceBusSenderClientTest {
             Assertions.assertTrue(ex instanceof NullPointerException);
         }
         verify(asyncSender).sendMessage(testData, nullTransaction);
+        //
+        sender.close();
+        //
     }
 
     /**
@@ -231,6 +318,14 @@ public class ServiceBusSenderClientTest {
     @Test
     void sendSingleMessageWithTransaction() {
         // Arrange
+        //
+        final ServiceBusSenderAsyncClient asyncSender = mock(ServiceBusSenderAsyncClient.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        when(asyncSender.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(asyncSender.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncSender.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        ServiceBusSenderClient sender = new ServiceBusSenderClient(asyncSender, RETRY_TIMEOUT);
+        //
         final ServiceBusMessage testData =
             new ServiceBusMessage(TEST_CONTENTS_BINARY);
 
@@ -241,6 +336,9 @@ public class ServiceBusSenderClientTest {
 
         // Assert
         verify(asyncSender).sendMessage(testData, transactionContext);
+        //
+        sender.close();
+        //
     }
 
     /**
@@ -249,6 +347,14 @@ public class ServiceBusSenderClientTest {
     @Test
     void sendSingleMessage() {
         // Arrange
+        //
+        final ServiceBusSenderAsyncClient asyncSender = mock(ServiceBusSenderAsyncClient.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        when(asyncSender.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(asyncSender.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncSender.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        ServiceBusSenderClient sender = new ServiceBusSenderClient(asyncSender, RETRY_TIMEOUT);
+        //
         final ServiceBusMessage testData =
             new ServiceBusMessage(TEST_CONTENTS_BINARY);
 
@@ -259,6 +365,9 @@ public class ServiceBusSenderClientTest {
 
         // Assert
         verify(asyncSender).sendMessage(testData);
+        //
+        sender.close();
+        //
     }
 
     /**
@@ -267,6 +376,14 @@ public class ServiceBusSenderClientTest {
     @Test
     void scheduleMessage() {
         // Arrange
+        //
+        final ServiceBusSenderAsyncClient asyncSender = mock(ServiceBusSenderAsyncClient.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        when(asyncSender.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(asyncSender.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncSender.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        ServiceBusSenderClient sender = new ServiceBusSenderClient(asyncSender, RETRY_TIMEOUT);
+        //
         final ServiceBusMessage testData =
             new ServiceBusMessage(TEST_CONTENTS_BINARY);
         final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now();
@@ -280,6 +397,9 @@ public class ServiceBusSenderClientTest {
         // Assert
         Assertions.assertEquals(expected, actual);
         verify(asyncSender).scheduleMessage(testData, scheduledEnqueueTime);
+        //
+        sender.close();
+        //
 
     }
 
@@ -289,6 +409,14 @@ public class ServiceBusSenderClientTest {
     @Test
     void scheduleMessageWithTransaction() {
         // Arrange
+        //
+        final ServiceBusSenderAsyncClient asyncSender = mock(ServiceBusSenderAsyncClient.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        when(asyncSender.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(asyncSender.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncSender.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        ServiceBusSenderClient sender = new ServiceBusSenderClient(asyncSender, RETRY_TIMEOUT);
+        //
         final ServiceBusMessage testData =
             new ServiceBusMessage(TEST_CONTENTS_BINARY);
         final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now();
@@ -302,6 +430,9 @@ public class ServiceBusSenderClientTest {
         // Assert
         Assertions.assertEquals(expected, actual);
         verify(asyncSender).scheduleMessage(testData, scheduledEnqueueTime, transactionContext);
+        //
+        sender.close();
+        //
     }
 
     /**
@@ -310,6 +441,14 @@ public class ServiceBusSenderClientTest {
     @Test
     void scheduleMessages() {
         // Arrange
+        //
+        final ServiceBusSenderAsyncClient asyncSender = mock(ServiceBusSenderAsyncClient.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        when(asyncSender.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(asyncSender.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncSender.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        ServiceBusSenderClient sender = new ServiceBusSenderClient(asyncSender, RETRY_TIMEOUT);
+        //
         final long totalMessages = 2;
         final ServiceBusMessage testData =
             new ServiceBusMessage(TEST_CONTENTS_BINARY);
@@ -334,6 +473,9 @@ public class ServiceBusSenderClientTest {
         Assertions.assertEquals(totalMessages, actualTotalMessages.get());
 
         verify(asyncSender).scheduleMessages(testDataMessages, scheduledEnqueueTime);
+        //
+        sender.close();
+        //
     }
 
     /**
@@ -342,6 +484,14 @@ public class ServiceBusSenderClientTest {
     @Test
     void scheduleMessagesWithTransaction() {
         // Arrange
+        //
+        final ServiceBusSenderAsyncClient asyncSender = mock(ServiceBusSenderAsyncClient.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        when(asyncSender.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(asyncSender.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncSender.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        ServiceBusSenderClient sender = new ServiceBusSenderClient(asyncSender, RETRY_TIMEOUT);
+        //
         final long totalMessages = 2;
         final ServiceBusMessage testData =
             new ServiceBusMessage(TEST_CONTENTS_BINARY);
@@ -366,6 +516,9 @@ public class ServiceBusSenderClientTest {
         Assertions.assertEquals(totalMessages, actualTotalMessages.get());
 
         verify(asyncSender).scheduleMessages(testDataMessages, scheduledEnqueueTime, transactionContext);
+        //
+        sender.close();
+        //
     }
 
     /**
@@ -374,6 +527,14 @@ public class ServiceBusSenderClientTest {
     @Test
     void cancelScheduleMessages() {
         // Arrange
+        //
+        final ServiceBusSenderAsyncClient asyncSender = mock(ServiceBusSenderAsyncClient.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        when(asyncSender.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(asyncSender.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncSender.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        ServiceBusSenderClient sender = new ServiceBusSenderClient(asyncSender, RETRY_TIMEOUT);
+        //
         final List<Long> sequenceNumbers = new ArrayList<>();
         sequenceNumbers.add(1L);
         sequenceNumbers.add(2L);
@@ -385,6 +546,9 @@ public class ServiceBusSenderClientTest {
 
         // Assert
         verify(asyncSender).cancelScheduledMessages(sequenceNumbers);
+        //
+        sender.close();
+        //
     }
 
     /**
@@ -393,6 +557,14 @@ public class ServiceBusSenderClientTest {
     @Test
     void cancelScheduleMessage() {
         // Arrange
+        //
+        final ServiceBusSenderAsyncClient asyncSender = mock(ServiceBusSenderAsyncClient.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        when(asyncSender.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(asyncSender.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncSender.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        ServiceBusSenderClient sender = new ServiceBusSenderClient(asyncSender, RETRY_TIMEOUT);
+        //
         final long sequenceNumber = 1;
 
         when(asyncSender.cancelScheduledMessage(sequenceNumber)).thenReturn(Mono.empty());
@@ -402,5 +574,8 @@ public class ServiceBusSenderClientTest {
 
         // Assert
         verify(asyncSender).cancelScheduledMessage(sequenceNumber);
+        //
+        sender.close();
+        //
     }
 }

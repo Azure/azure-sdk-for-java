@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Subscription;
@@ -61,38 +60,18 @@ class ServiceBusReceiveLinkProcessorTest {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiveLinkProcessorTest.class);
 
     private static final int PREFETCH = 5;
-    @Mock
-    private ServiceBusReceiveLink link1;
-    @Mock
-    private ServiceBusReceiveLink link2;
-    @Mock
-    private ServiceBusReceiveLink link3;
-    @Mock
-    private AmqpRetryPolicy retryPolicy;
-    @Mock
-    private Message message1;
-    @Mock
-    private Message message2;
 
     @Captor
     private ArgumentCaptor<Supplier<Integer>> creditSupplierCaptor;
 
     private final TestPublisher<AmqpEndpointState> endpointProcessor = TestPublisher.createCold();
     private final TestPublisher<Message> messagePublisher = TestPublisher.createCold();
-    private ServiceBusReceiveLinkProcessor linkProcessor;
-    private ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch;
     private AutoCloseable mocksCloseable;
 
     @BeforeEach
     void setup() {
         mocksCloseable = MockitoAnnotations.openMocks(this);
 
-        linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
-        linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
-
-        when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
-        when(link1.receive()).thenReturn(messagePublisher.flux());
-        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
     }
 
     @AfterEach
@@ -106,6 +85,20 @@ class ServiceBusReceiveLinkProcessorTest {
 
     @Test
     void constructor() {
+        //
+        final ServiceBusReceiveLink link1 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link2 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link3 = mock(ServiceBusReceiveLink.class);
+        final AmqpRetryPolicy retryPolicy = mock(AmqpRetryPolicy.class);
+        final Message message1 = mock(Message.class);
+        final Message message2 = mock(Message.class);
+        final ServiceBusReceiveLinkProcessor linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
+        final ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
+
+        when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
+        when(link1.receive()).thenReturn(messagePublisher.flux());
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
+        //
         assertThrows(NullPointerException.class, () -> new ServiceBusReceiveLinkProcessor(PREFETCH, null));
         assertThrows(IllegalArgumentException.class, () -> new ServiceBusReceiveLinkProcessor(-1, retryPolicy));
     }
@@ -116,6 +109,20 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void createNewLink() throws InterruptedException {
         // Arrange
+        //
+        final ServiceBusReceiveLink link1 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link2 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link3 = mock(ServiceBusReceiveLink.class);
+        final AmqpRetryPolicy retryPolicy = mock(AmqpRetryPolicy.class);
+        final Message message1 = mock(Message.class);
+        final Message message2 = mock(Message.class);
+        final ServiceBusReceiveLinkProcessor linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
+        final ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
+
+        when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
+        when(link1.receive()).thenReturn(messagePublisher.flux());
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
+        //
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         when(link1.getCredits()).thenReturn(1);
         when(link1.addCredits(eq(PREFETCH - 1))).thenAnswer(invocation -> {
@@ -152,6 +159,20 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void respectsBackpressureInRange() {
         // Arrange
+        //
+        final ServiceBusReceiveLink link1 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link2 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link3 = mock(ServiceBusReceiveLink.class);
+        final AmqpRetryPolicy retryPolicy = mock(AmqpRetryPolicy.class);
+        final Message message1 = mock(Message.class);
+        final Message message2 = mock(Message.class);
+        final ServiceBusReceiveLinkProcessor linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
+        final ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
+
+        when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
+        when(link1.receive()).thenReturn(messagePublisher.flux());
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
+        //
         final int backpressure = 15;
         // Because one message was emitted.
         ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
@@ -173,6 +194,20 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void respectsBackpressureLessThanMinimum() throws InterruptedException {
         // Arrange
+        //
+        final ServiceBusReceiveLink link1 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link2 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link3 = mock(ServiceBusReceiveLink.class);
+        final AmqpRetryPolicy retryPolicy = mock(AmqpRetryPolicy.class);
+        final Message message1 = mock(Message.class);
+        final Message message2 = mock(Message.class);
+        final ServiceBusReceiveLinkProcessor linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
+        final ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
+
+        when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
+        when(link1.receive()).thenReturn(messagePublisher.flux());
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
+        //
         final Semaphore semaphore = new Semaphore(1);
         final int backpressure = -1;
         ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
@@ -210,6 +245,20 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void onSubscribingTwiceThrowsException() {
         // Arrange
+        //
+        final ServiceBusReceiveLink link1 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link2 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link3 = mock(ServiceBusReceiveLink.class);
+        final AmqpRetryPolicy retryPolicy = mock(AmqpRetryPolicy.class);
+        final Message message1 = mock(Message.class);
+        final Message message2 = mock(Message.class);
+        final ServiceBusReceiveLinkProcessor linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
+        final ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
+
+        when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
+        when(link1.receive()).thenReturn(messagePublisher.flux());
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
+        //
         ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
 
@@ -229,6 +278,20 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void newLinkOnClose() {
         // Arrange
+        //
+        final ServiceBusReceiveLink link1 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link2 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link3 = mock(ServiceBusReceiveLink.class);
+        final AmqpRetryPolicy retryPolicy = mock(AmqpRetryPolicy.class);
+        final Message message1 = mock(Message.class);
+        final Message message2 = mock(Message.class);
+        final ServiceBusReceiveLinkProcessor linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
+        final ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
+
+        when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
+        when(link1.receive()).thenReturn(messagePublisher.flux());
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
+        //
         final int count = 4;
         final Message message3 = mock(Message.class);
         final Message message4 = mock(Message.class);
@@ -287,6 +350,20 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void newLinkOnRetryableError() {
         // Arrange
+        //
+        final ServiceBusReceiveLink link1 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link2 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link3 = mock(ServiceBusReceiveLink.class);
+        final AmqpRetryPolicy retryPolicy = mock(AmqpRetryPolicy.class);
+        final Message message1 = mock(Message.class);
+        final Message message2 = mock(Message.class);
+        final ServiceBusReceiveLinkProcessor linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
+        final ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
+
+        when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
+        when(link1.receive()).thenReturn(messagePublisher.flux());
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
+        //
         final ServiceBusReceiveLink[] connections = new ServiceBusReceiveLink[]{link1, link2};
 
         final ServiceBusReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
@@ -324,6 +401,20 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void nonRetryableError() {
         // Arrange
+        //
+        final ServiceBusReceiveLink link1 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link2 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link3 = mock(ServiceBusReceiveLink.class);
+        final AmqpRetryPolicy retryPolicy = mock(AmqpRetryPolicy.class);
+        final Message message1 = mock(Message.class);
+        final Message message2 = mock(Message.class);
+        final ServiceBusReceiveLinkProcessor linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
+        final ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
+
+        when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
+        when(link1.receive()).thenReturn(messagePublisher.flux());
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
+        //
         final ServiceBusReceiveLink[] connections = new ServiceBusReceiveLink[]{link1, link2};
         TestPublisher<AmqpEndpointState> endpointStates = TestPublisher.createCold();
         endpointStates.next(AmqpEndpointState.ACTIVE);
@@ -369,6 +460,20 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void noSubscribers() {
         // Arrange
+        //
+        final ServiceBusReceiveLink link1 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link2 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link3 = mock(ServiceBusReceiveLink.class);
+        final AmqpRetryPolicy retryPolicy = mock(AmqpRetryPolicy.class);
+        final Message message1 = mock(Message.class);
+        final Message message2 = mock(Message.class);
+        final ServiceBusReceiveLinkProcessor linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
+        final ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
+
+        when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
+        when(link1.receive()).thenReturn(messagePublisher.flux());
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
+        //
         final Subscription subscription = mock(Subscription.class);
 
         // Act
@@ -384,6 +489,20 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void noSubscribersWhenTerminated() {
         // Arrange
+        //
+        final ServiceBusReceiveLink link1 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link2 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link3 = mock(ServiceBusReceiveLink.class);
+        final AmqpRetryPolicy retryPolicy = mock(AmqpRetryPolicy.class);
+        final Message message1 = mock(Message.class);
+        final Message message2 = mock(Message.class);
+        final ServiceBusReceiveLinkProcessor linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
+        final ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
+
+        when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
+        when(link1.receive()).thenReturn(messagePublisher.flux());
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
+        //
         final Subscription subscription = mock(Subscription.class);
 
         linkProcessor.cancel();
@@ -402,6 +521,20 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void retriesUntilExhausted() {
         // Arrange
+        //
+        final ServiceBusReceiveLink link1 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link2 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link3 = mock(ServiceBusReceiveLink.class);
+        final AmqpRetryPolicy retryPolicy = mock(AmqpRetryPolicy.class);
+        final Message message1 = mock(Message.class);
+        final Message message2 = mock(Message.class);
+        final ServiceBusReceiveLinkProcessor linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
+        final ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
+
+        when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
+        when(link1.receive()).thenReturn(messagePublisher.flux());
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
+        //
         final Duration delay = Duration.ofSeconds(1);
         final ServiceBusReceiveLink[] connections = new ServiceBusReceiveLink[]{link1, link2, link3};
 
@@ -450,6 +583,20 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void doNotRetryWhenParentConnectionIsClosed() {
         // Arrange
+        //
+        final ServiceBusReceiveLink link1 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link2 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link3 = mock(ServiceBusReceiveLink.class);
+        final AmqpRetryPolicy retryPolicy = mock(AmqpRetryPolicy.class);
+        final Message message1 = mock(Message.class);
+        final Message message2 = mock(Message.class);
+        final ServiceBusReceiveLinkProcessor linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
+        final ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
+
+        when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
+        when(link1.receive()).thenReturn(messagePublisher.flux());
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
+        //
         final TestPublisher<ServiceBusReceiveLink> linkGenerator = TestPublisher.createCold();
         final ServiceBusReceiveLinkProcessor processor = linkGenerator.flux().subscribeWith(linkProcessor);
         final TestPublisher<AmqpEndpointState> endpointStates = TestPublisher.createCold();
@@ -481,6 +628,20 @@ class ServiceBusReceiveLinkProcessorTest {
 
     @Test
     void requiresNonNull() {
+        //
+        final ServiceBusReceiveLink link1 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link2 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link3 = mock(ServiceBusReceiveLink.class);
+        final AmqpRetryPolicy retryPolicy = mock(AmqpRetryPolicy.class);
+        final Message message1 = mock(Message.class);
+        final Message message2 = mock(Message.class);
+        final ServiceBusReceiveLinkProcessor linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
+        final ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
+
+        when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
+        when(link1.receive()).thenReturn(messagePublisher.flux());
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
+        //
         assertThrows(NullPointerException.class,
             () -> linkProcessor.onNext(null));
 
@@ -494,6 +655,20 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void stopsEmittingAfterBackPressure() {
         // Arrange
+        //
+        final ServiceBusReceiveLink link1 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link2 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link3 = mock(ServiceBusReceiveLink.class);
+        final AmqpRetryPolicy retryPolicy = mock(AmqpRetryPolicy.class);
+        final Message message1 = mock(Message.class);
+        final Message message2 = mock(Message.class);
+        final ServiceBusReceiveLinkProcessor linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
+        final ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
+
+        when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
+        when(link1.receive()).thenReturn(messagePublisher.flux());
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
+        //
         final int backpressure = 5;
         ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
@@ -516,6 +691,20 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void receivesUntilFirstLinkClosed() {
         // Arrange
+        //
+        final ServiceBusReceiveLink link1 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link2 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link3 = mock(ServiceBusReceiveLink.class);
+        final AmqpRetryPolicy retryPolicy = mock(AmqpRetryPolicy.class);
+        final Message message1 = mock(Message.class);
+        final Message message2 = mock(Message.class);
+        final ServiceBusReceiveLinkProcessor linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
+        final ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
+
+        when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
+        when(link1.receive()).thenReturn(messagePublisher.flux());
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
+        //
         ServiceBusReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
 
         final Duration shortWait = Duration.ofSeconds(5);
@@ -559,6 +748,20 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void receivesFromFirstLink() throws InterruptedException {
         // Arrange
+        //
+        final ServiceBusReceiveLink link1 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link2 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link3 = mock(ServiceBusReceiveLink.class);
+        final AmqpRetryPolicy retryPolicy = mock(AmqpRetryPolicy.class);
+        final Message message1 = mock(Message.class);
+        final Message message2 = mock(Message.class);
+        final ServiceBusReceiveLinkProcessor linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
+        final ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
+
+        when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
+        when(link1.receive()).thenReturn(messagePublisher.flux());
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
+        //
         final CountDownLatch countDownLatch = new CountDownLatch(2);
 
         when(link1.getCredits()).thenReturn(0);
@@ -608,6 +811,20 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void backpressureRequestOnlyEmitsThatAmount() {
         // Arrange
+        //
+        final ServiceBusReceiveLink link1 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link2 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link3 = mock(ServiceBusReceiveLink.class);
+        final AmqpRetryPolicy retryPolicy = mock(AmqpRetryPolicy.class);
+        final Message message1 = mock(Message.class);
+        final Message message2 = mock(Message.class);
+        final ServiceBusReceiveLinkProcessor linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
+        final ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
+
+        when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
+        when(link1.receive()).thenReturn(messagePublisher.flux());
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
+        //
         final int backpressure = PREFETCH;
         final int existingCredits = 1;
         final int expectedCredits = backpressure - existingCredits;
@@ -663,6 +880,20 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void updateDispositionDoesNotAddCredit() {
         // Arrange
+        //
+        final ServiceBusReceiveLink link1 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link2 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link3 = mock(ServiceBusReceiveLink.class);
+        final AmqpRetryPolicy retryPolicy = mock(AmqpRetryPolicy.class);
+        final Message message1 = mock(Message.class);
+        final Message message2 = mock(Message.class);
+        final ServiceBusReceiveLinkProcessor linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
+        final ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
+
+        when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
+        when(link1.receive()).thenReturn(messagePublisher.flux());
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
+        //
         ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
         final String lockToken = "lockToken";
@@ -689,6 +920,20 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void updateDispositionClosesLinkOnTimeout() {
         // Arrange
+        //
+        final ServiceBusReceiveLink link1 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link2 = mock(ServiceBusReceiveLink.class);
+        final ServiceBusReceiveLink link3 = mock(ServiceBusReceiveLink.class);
+        final AmqpRetryPolicy retryPolicy = mock(AmqpRetryPolicy.class);
+        final Message message1 = mock(Message.class);
+        final Message message2 = mock(Message.class);
+        final ServiceBusReceiveLinkProcessor linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
+        final ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
+
+        when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
+        when(link1.receive()).thenReturn(messagePublisher.flux());
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
+        //
         final ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
 

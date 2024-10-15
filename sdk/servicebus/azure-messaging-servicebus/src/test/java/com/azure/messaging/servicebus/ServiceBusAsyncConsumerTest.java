@@ -55,31 +55,14 @@ class ServiceBusAsyncConsumerTest {
 
     private ServiceBusReceiveLinkProcessor linkProcessor;
 
-    @Mock
-    private ServiceBusAmqpConnection connection;
-    @Mock
-    private ServiceBusReceiveLink link;
-    @Mock
-    private AmqpRetryPolicy retryPolicy;
-    @Mock
-    private MessageSerializer serializer;
+
 
     private AutoCloseable mocksCloseable;
 
     @BeforeEach
     void setup(TestInfo testInfo) {
         LOGGER.info("[{}]: Setting up.", testInfo.getDisplayName());
-
         mocksCloseable = MockitoAnnotations.openMocks(this);
-
-        when(link.getEndpointStates()).thenReturn(endpointStateFlux);
-        when(link.receive()).thenReturn(messageFlux);
-        when(link.addCredits(anyInt())).thenReturn(Mono.empty());
-
-        linkProcessor = linkFlux.subscribeWith(new ServiceBusReceiveLinkProcessor(10, retryPolicy));
-
-        when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
-        when(link.updateDisposition(anyString(), any(DeliveryState.class))).thenReturn(Mono.empty());
     }
 
     @AfterEach
@@ -103,6 +86,21 @@ class ServiceBusAsyncConsumerTest {
     @Test
     void receiveNoAutoComplete() {
         // Arrange
+        //
+        final ServiceBusAmqpConnection connection = mock(ServiceBusAmqpConnection.class);
+        final ServiceBusReceiveLink link = mock(ServiceBusReceiveLink.class);
+        final AmqpRetryPolicy retryPolicy = mock(AmqpRetryPolicy.class);
+        final MessageSerializer serializer = mock(MessageSerializer.class);
+
+        when(link.getEndpointStates()).thenReturn(endpointStateFlux);
+        when(link.receive()).thenReturn(messageFlux);
+        when(link.addCredits(anyInt())).thenReturn(Mono.empty());
+
+        linkProcessor = linkFlux.subscribeWith(new ServiceBusReceiveLinkProcessor(10, retryPolicy));
+
+        when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
+        when(link.updateDisposition(anyString(), any(DeliveryState.class))).thenReturn(Mono.empty());
+        //
         final int prefetch = 10;
         final Duration maxAutoLockRenewDuration = Duration.ofSeconds(0);
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
@@ -149,6 +147,21 @@ class ServiceBusAsyncConsumerTest {
     @Test
     void canDispose() {
         // Arrange
+        //
+        final ServiceBusAmqpConnection connection = mock(ServiceBusAmqpConnection.class);
+        final ServiceBusReceiveLink link = mock(ServiceBusReceiveLink.class);
+        final AmqpRetryPolicy retryPolicy = mock(AmqpRetryPolicy.class);
+        final MessageSerializer serializer = mock(MessageSerializer.class);
+
+        when(link.getEndpointStates()).thenReturn(endpointStateFlux);
+        when(link.receive()).thenReturn(messageFlux);
+        when(link.addCredits(anyInt())).thenReturn(Mono.empty());
+
+        linkProcessor = linkFlux.subscribeWith(new ServiceBusReceiveLinkProcessor(10, retryPolicy));
+
+        when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
+        when(link.updateDisposition(anyString(), any(DeliveryState.class))).thenReturn(Mono.empty());
+        //
         final int prefetch = 10;
         final Duration maxAutoLockRenewDuration = Duration.ofSeconds(40);
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
@@ -190,6 +203,21 @@ class ServiceBusAsyncConsumerTest {
     @Test
     void onError() {
         // Arrange
+        //
+        final ServiceBusAmqpConnection connection = mock(ServiceBusAmqpConnection.class);
+        final ServiceBusReceiveLink link = mock(ServiceBusReceiveLink.class);
+        final AmqpRetryPolicy retryPolicy = mock(AmqpRetryPolicy.class);
+        final MessageSerializer serializer = mock(MessageSerializer.class);
+
+        when(link.getEndpointStates()).thenReturn(endpointStateFlux);
+        when(link.receive()).thenReturn(messageFlux);
+        when(link.addCredits(anyInt())).thenReturn(Mono.empty());
+
+        linkProcessor = linkFlux.subscribeWith(new ServiceBusReceiveLinkProcessor(10, retryPolicy));
+
+        when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
+        when(link.updateDisposition(anyString(), any(DeliveryState.class))).thenReturn(Mono.empty());
+        //
         final int prefetch = 10;
         final Duration maxAutoLockRenewDuration = Duration.ofSeconds(40);
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);

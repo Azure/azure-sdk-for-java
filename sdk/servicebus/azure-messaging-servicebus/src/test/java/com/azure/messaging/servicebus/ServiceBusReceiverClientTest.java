@@ -17,7 +17,6 @@ import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.opentest4j.AssertionFailedError;
@@ -70,31 +69,12 @@ class ServiceBusReceiverClientTest {
 
     private ServiceBusReceiverClient client;
 
-    @Mock
-    private ServiceBusReceiverAsyncClient asyncClient;
-    @Mock
-    private Map<String, Object> propertiesToModify;
-    @Mock
-    private ServiceBusTransactionContext transactionContext;
-    @Mock
-    private ServiceBusReceivedMessage message;
-    @Mock
-    private Consumer<Throwable> onErrorConsumer;
-    @Mock
-    private ReceiverOptions sessionReceiverOptions;
 
     private AutoCloseable mocksCloseable;
 
     @BeforeEach
     void setup() {
         mocksCloseable = MockitoAnnotations.openMocks(this);
-        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
-        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
-        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
-        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
-        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
-        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
-        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
     }
 
     @AfterEach
@@ -108,12 +88,42 @@ class ServiceBusReceiverClientTest {
 
     @Test
     void nullConstructor() {
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         assertThrows(NullPointerException.class, () -> new ServiceBusReceiverClient(null, false, OPERATION_TIMEOUT));
         assertThrows(NullPointerException.class, () -> new ServiceBusReceiverClient(asyncClient, false, null));
     }
 
     @Test
     void properties() {
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         assertEquals(NAMESPACE, client.getFullyQualifiedNamespace());
         assertEquals(ENTITY_PATH, client.getEntityPath());
         assertEquals(CLIENT_IDENTIFIER, client.getIdentifier());
@@ -122,6 +132,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void sessionIdCheck() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         when(asyncClient.getSessionId()).thenReturn(SESSION_ID);
 
         // Assert
@@ -130,8 +155,23 @@ class ServiceBusReceiverClientTest {
 
     @Test
     void abandonMessageWithTransaction() {
-        AbandonOptions options = new AbandonOptions().setTransactionContext(transactionContext);
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
+        AbandonOptions options = new AbandonOptions().setTransactionContext(transactionContext);
         when(asyncClient.abandon(eq(message), eq(options))).thenReturn(Mono.empty());
 
         // Act
@@ -144,6 +184,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void abandonMessage() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         when(asyncClient.abandon(eq(message))).thenReturn(Mono.empty());
 
         // Act
@@ -155,8 +210,23 @@ class ServiceBusReceiverClientTest {
 
     @Test
     void abandonMessageWithProperties() {
-        AbandonOptions options = new AbandonOptions().setPropertiesToModify(propertiesToModify);
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
+        AbandonOptions options = new AbandonOptions().setPropertiesToModify(propertiesToModify);
         when(asyncClient.abandon(eq(message), eq(options))).thenReturn(Mono.empty());
 
         // Act
@@ -172,6 +242,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void autoRenewMessageLock() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final Duration maxDuration = Duration.ofSeconds(8);
         final TestPublisher<Void> publisher = TestPublisher.create();
 
@@ -196,6 +281,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void autoRenewMessageLockFails() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final Duration maxDuration = Duration.ofSeconds(8);
         final TestPublisher<Void> publisher = TestPublisher.create();
         final Throwable testError = new IllegalAccessException("Some exception");
@@ -220,6 +320,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void autoRenewMessageLockFailsNull() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final Duration maxDuration = Duration.ofSeconds(8);
         final TestPublisher<Void> publisher = TestPublisher.create();
         final Throwable testError = new IllegalAccessException("Some exception");
@@ -242,6 +357,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void autoRenewSessionLock() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final Duration maxDuration = Duration.ofSeconds(8);
         final TestPublisher<Void> publisher = TestPublisher.create();
 
@@ -264,6 +394,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void autoRenewSessionLockFails() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final Duration maxDuration = Duration.ofSeconds(8);
         final TestPublisher<Void> publisher = TestPublisher.create();
         final Throwable testError = new IllegalAccessException("Some exception");
@@ -286,6 +431,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void autoRenewSessionLockFailsNull() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final Duration maxDuration = Duration.ofSeconds(8);
         final TestPublisher<Void> publisher = TestPublisher.create();
         final Throwable testError = new IllegalAccessException("Some exception");
@@ -304,8 +464,23 @@ class ServiceBusReceiverClientTest {
 
     @Test
     void completeMessageWithTransaction() {
-        CompleteOptions options = new CompleteOptions().setTransactionContext(transactionContext);
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
+        CompleteOptions options = new CompleteOptions().setTransactionContext(transactionContext);
         when(asyncClient.complete(eq(message), eq(options))).thenReturn(Mono.empty());
 
         // Act
@@ -318,6 +493,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void completeMessage() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         when(asyncClient.complete(eq(message))).thenReturn(Mono.empty());
 
         // Act
@@ -330,6 +520,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void deferMessage() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         when(asyncClient.defer(eq(message))).thenReturn(Mono.empty());
 
         // Act
@@ -341,10 +546,25 @@ class ServiceBusReceiverClientTest {
 
     @Test
     void deferMessageWithPropertiesWithTransaction() {
+        // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         DeferOptions options = new DeferOptions()
             .setTransactionContext(transactionContext)
             .setPropertiesToModify(propertiesToModify);
-        // Arrange
         when(asyncClient.defer(eq(message), eq(options))).thenReturn(Mono.empty());
 
         // Act
@@ -356,9 +576,24 @@ class ServiceBusReceiverClientTest {
 
     @Test
     void deferMessageWithProperties() {
+        // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         DeferOptions options = new DeferOptions()
             .setPropertiesToModify(propertiesToModify);
-        // Arrange
         when(asyncClient.defer(eq(message), eq(options))).thenReturn(Mono.empty());
 
         // Act
@@ -371,6 +606,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void deadLetterMessage() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         when(asyncClient.deadLetter(eq(message))).thenReturn(Mono.empty());
 
         // Act
@@ -383,6 +633,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void deadLetterMessageWithOptionsWithTransaction() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final DeadLetterOptions options = new DeadLetterOptions()
             .setDeadLetterErrorDescription("foo")
             .setDeadLetterReason("bar")
@@ -402,6 +667,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void deadLetterMessageWithOptions() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final DeadLetterOptions options = new DeadLetterOptions()
             .setDeadLetterErrorDescription("foo")
             .setDeadLetterReason("bar")
@@ -420,6 +700,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void getSessionState() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final byte[] contents = new byte[]{10, 111, 23};
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
         when(asyncClient.getSessionState()).thenReturn(Mono.just(contents));
@@ -434,6 +729,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void getSessionStateNull() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
         when(asyncClient.getSessionState()).thenReturn(Mono.empty());
 
@@ -447,6 +757,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void peekMessage() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message3 = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
         when(asyncClient.peekMessage(SESSION_ID)).thenReturn(Mono.just(message));
@@ -461,6 +786,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void peekMessageEmptyEntity() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
         when(asyncClient.peekMessage(SESSION_ID)).thenReturn(Mono.empty());
 
@@ -474,6 +814,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void peekMessageFromSequence() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message3 = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final long sequenceNumber = 154;
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
@@ -492,6 +847,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void peekMessagesEmptyEntity() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final int maxMessages = 10;
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
         when(asyncClient.peekMessages(maxMessages, SESSION_ID)).thenReturn(Flux.empty());
@@ -512,6 +882,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void peekMessagesMax() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final int maxMessages = 10;
         Flux<ServiceBusReceivedMessage> messages = Flux.create(sink -> {
             final AtomicInteger emittedMessages = new AtomicInteger();
@@ -557,6 +942,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void peekMessagesLessThan() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final int maxMessages = 10;
         final int returnedMessages = 7;
         Flux<ServiceBusReceivedMessage> messages = Flux.create(sink -> {
@@ -602,6 +1002,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void peekMessagesMaxSequenceNumber() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final int maxMessages = 10;
         final long sequenceNumber = 100;
         final Flux<ServiceBusReceivedMessage> messages = Flux.create(sink -> sink.onRequest(number -> {
@@ -630,6 +1045,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void receiveMessageNullWaitTime() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final int maxMessages = 10;
 
         // Act & Assert
@@ -642,6 +1072,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void receiveMessageNegativeWaitTime() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final int maxMessages = 10;
         Duration negativeReceiveWaitTime = Duration.ofSeconds(-10);
 
@@ -655,6 +1100,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void receiveMessagesWithUserSpecifiedTimeout() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message3 = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final int maxMessages = 10;
         final int numberToEmit = 5;
         final Duration receiveTimeout = Duration.ofSeconds(2);
@@ -702,6 +1162,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void receiveMessagesMax() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final int maxMessages = 10;
         final int numberToEmit = maxMessages + 5;
         final AtomicInteger emittedMessages = new AtomicInteger();
@@ -749,6 +1224,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void receiveMessagesTimeout() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final int maxMessages = 10;
         final int numberToEmit = 5;
 
@@ -792,6 +1282,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void receiveDeferredMessage() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message3 = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final long sequenceNumber = 231412;
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
@@ -809,6 +1314,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void receiveDeferredMessageBatch() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message3 = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final long sequenceNumber = 154;
         final long sequenceNumber2 = 13124;
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
@@ -832,6 +1352,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void renewMessageLock() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final OffsetDateTime response = Instant.ofEpochSecond(1585259339).atOffset(ZoneOffset.UTC);
         when(asyncClient.renewMessageLock(message)).thenReturn(Mono.just(response));
 
@@ -845,6 +1380,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void renewSessionLock() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final String sessionId = "a-session-id";
         final OffsetDateTime response = Instant.ofEpochSecond(1585259339).atOffset(ZoneOffset.UTC);
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
@@ -861,6 +1411,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void setSessionState() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final byte[] contents = new byte[]{10, 111, 23};
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
         when(asyncClient.setSessionState(contents)).thenReturn(Mono.empty());
@@ -875,6 +1440,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void iterationReplaysUpstreamTerminalError() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final int messageCount = 10;
         final AmqpException terminalError = new AmqpException(false, "non-retriable terminal error.", new AmqpErrorContext("contoso.com"));
         final AtomicInteger state = new AtomicInteger(0);
@@ -925,6 +1505,21 @@ class ServiceBusReceiverClientTest {
     @Test
     void iterationAfterCloseEmitsError() {
         // Arrange
+        //
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
+        when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
+        //
         final int messageCount = 10;
         final AtomicInteger state = new AtomicInteger(0);
 

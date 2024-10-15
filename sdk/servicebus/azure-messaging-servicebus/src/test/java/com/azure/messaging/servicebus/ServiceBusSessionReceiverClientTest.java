@@ -9,7 +9,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
@@ -19,23 +18,15 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class ServiceBusSessionReceiverClientTest {
-
-    @Mock
-    private ServiceBusSessionReceiverAsyncClient sessionAsyncClient;
-
-    @Mock
-    private ServiceBusReceiverAsyncClient asyncClient;
-
     private AutoCloseable mocksCloseable;
 
     @BeforeEach
     void beforeEach(TestInfo testInfo) {
         mocksCloseable = MockitoAnnotations.openMocks(this);
-        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null,
-            "fqdn", "entity", null, ReceiverKind.ASYNC_RECEIVER));
     }
 
     @AfterEach
@@ -50,6 +41,12 @@ class ServiceBusSessionReceiverClientTest {
 
     @Test
     void acceptSession() {
+        //
+        final ServiceBusSessionReceiverAsyncClient sessionAsyncClient = mock(ServiceBusSessionReceiverAsyncClient.class);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null,
+            "fqdn", "entity", null, ReceiverKind.ASYNC_RECEIVER));
+        //
         when(sessionAsyncClient.acceptSession(anyString())).thenReturn(Mono.just(asyncClient));
         ServiceBusSessionReceiverClient sessionClient = new ServiceBusSessionReceiverClient(sessionAsyncClient,
             false,
@@ -60,6 +57,12 @@ class ServiceBusSessionReceiverClientTest {
 
     @Test
     void acceptSessionTimeout() {
+        //
+        final ServiceBusSessionReceiverAsyncClient sessionAsyncClient = mock(ServiceBusSessionReceiverAsyncClient.class);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null,
+            "fqdn", "entity", null, ReceiverKind.ASYNC_RECEIVER));
+        //
         when(sessionAsyncClient.acceptSession(anyString())).thenReturn(Mono.just(asyncClient)
             .delayElement(Duration.ofMillis(500)));
         ServiceBusSessionReceiverClient sessionClient = new ServiceBusSessionReceiverClient(sessionAsyncClient,
@@ -72,6 +75,12 @@ class ServiceBusSessionReceiverClientTest {
 
     @Test
     void acceptNextSession() {
+        //
+        final ServiceBusSessionReceiverAsyncClient sessionAsyncClient = mock(ServiceBusSessionReceiverAsyncClient.class);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null,
+            "fqdn", "entity", null, ReceiverKind.ASYNC_RECEIVER));
+        //
         when(sessionAsyncClient.acceptNextSession()).thenReturn(Mono.just(asyncClient));
         ServiceBusSessionReceiverClient sessionClient = new ServiceBusSessionReceiverClient(sessionAsyncClient,
             false,
@@ -82,6 +91,12 @@ class ServiceBusSessionReceiverClientTest {
 
     @Test
     void acceptNextSessionTimeout() {
+        //
+        final ServiceBusSessionReceiverAsyncClient sessionAsyncClient = mock(ServiceBusSessionReceiverAsyncClient.class);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null,
+            "fqdn", "entity", null, ReceiverKind.ASYNC_RECEIVER));
+        //
         when(sessionAsyncClient.acceptNextSession()).thenReturn(Mono.just(asyncClient)
             .delayElement(Duration.ofMillis(500)));
         ServiceBusSessionReceiverClient sessionClient = new ServiceBusSessionReceiverClient(sessionAsyncClient,

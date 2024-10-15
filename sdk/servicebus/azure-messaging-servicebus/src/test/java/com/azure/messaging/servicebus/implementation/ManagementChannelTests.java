@@ -38,7 +38,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
@@ -94,10 +93,6 @@ class ManagementChannelTests {
 
     // Mocked response values from the RequestResponseChannel.
     private final Message responseMessage = Proton.message();
-    private final Map<String, Object> applicationProperties = new HashMap<>();
-    private AmqpResponseCode authorizationResponseCode;
-
-    private ManagementChannel managementChannel;
 
     // Get rules message with a default rule and two customized rules, one is correlation rule, the another one is sql
     // rule.
@@ -121,12 +116,6 @@ class ManagementChannelTests {
         29, 49
     };
 
-    @Mock
-    private TokenManager tokenManager;
-    @Mock
-    private MessageSerializer messageSerializer;
-    @Mock
-    private RequestResponseChannel requestResponseChannel;
     @Captor
     private ArgumentCaptor<Message> messageCaptor;
     @Captor
@@ -139,26 +128,6 @@ class ManagementChannelTests {
         LOGGER.info("[{}] Setting up.", testInfo.getDisplayName());
 
         mocksCloseable = MockitoAnnotations.openMocks(this);
-
-        authorizationResponseCode = AmqpResponseCode.OK;
-
-        Flux<AmqpResponseCode> results = Flux.create(sink -> sink.onRequest(requested -> {
-            LOGGER.info("Requested {} authorization results.", requested);
-            sink.next(authorizationResponseCode);
-        }));
-
-        applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.OK.getValue());
-        responseMessage.setApplicationProperties(new ApplicationProperties(applicationProperties));
-
-        when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
-        when(tokenManager.getAuthorizationResults()).thenReturn(results);
-
-        when(requestResponseChannel.sendWithAck(any(Message.class))).thenReturn(Mono.just(responseMessage));
-        when(requestResponseChannel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.just(responseMessage));
-
-        ChannelCacheWrapper channelCache = new ChannelCacheWrapper(Mono.just(requestResponseChannel));
-        managementChannel = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH,
-            tokenManager, messageSerializer, TIMEOUT);
     }
 
     @AfterEach
@@ -178,6 +147,32 @@ class ManagementChannelTests {
     @ParameterizedTest
     void setsSessionState(byte[] state) {
         // Arrange
+        //
+        final TokenManager tokenManager = mock(TokenManager.class);
+        final MessageSerializer messageSerializer = mock(MessageSerializer.class);
+        final RequestResponseChannel requestResponseChannel = mock(RequestResponseChannel.class);
+        final AmqpResponseCode authorizationResponseCode = AmqpResponseCode.OK;
+
+
+        Flux<AmqpResponseCode> results = Flux.create(sink -> sink.onRequest(requested -> {
+            LOGGER.info("Requested {} authorization results.", requested);
+            sink.next(authorizationResponseCode);
+        }));
+
+        final Map<String, Object> applicationProperties = new HashMap<>();
+        applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.OK.getValue());
+        responseMessage.setApplicationProperties(new ApplicationProperties(applicationProperties));
+
+        when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
+        when(tokenManager.getAuthorizationResults()).thenReturn(results);
+
+        when(requestResponseChannel.sendWithAck(any(Message.class))).thenReturn(Mono.just(responseMessage));
+        when(requestResponseChannel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.just(responseMessage));
+
+        ChannelCacheWrapper channelCache = new ChannelCacheWrapper(Mono.just(requestResponseChannel));
+        final ManagementChannel managementChannel = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH,
+            tokenManager, messageSerializer, TIMEOUT);
+        //
         final String sessionId = "A session-id";
 
         // Act
@@ -206,8 +201,8 @@ class ManagementChannelTests {
         }
 
         // Assert application properties
-        final Map<String, Object> applicationProperties = sentMessage.getApplicationProperties().getValue();
-        assertEquals(OPERATION_SET_SESSION_STATE, applicationProperties.get(MANAGEMENT_OPERATION_KEY));
+        final Map<String, Object> applicationProperties2 = sentMessage.getApplicationProperties().getValue();
+        assertEquals(OPERATION_SET_SESSION_STATE, applicationProperties2.get(MANAGEMENT_OPERATION_KEY));
     }
 
     /**
@@ -216,6 +211,32 @@ class ManagementChannelTests {
     @Test
     void setSessionStateNoSessionId() {
         // Arrange
+        //
+        final TokenManager tokenManager = mock(TokenManager.class);
+        final MessageSerializer messageSerializer = mock(MessageSerializer.class);
+        final RequestResponseChannel requestResponseChannel = mock(RequestResponseChannel.class);
+        final AmqpResponseCode authorizationResponseCode = AmqpResponseCode.OK;
+
+
+        Flux<AmqpResponseCode> results = Flux.create(sink -> sink.onRequest(requested -> {
+            LOGGER.info("Requested {} authorization results.", requested);
+            sink.next(authorizationResponseCode);
+        }));
+
+        final Map<String, Object> applicationProperties = new HashMap<>();
+        applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.OK.getValue());
+        responseMessage.setApplicationProperties(new ApplicationProperties(applicationProperties));
+
+        when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
+        when(tokenManager.getAuthorizationResults()).thenReturn(results);
+
+        when(requestResponseChannel.sendWithAck(any(Message.class))).thenReturn(Mono.just(responseMessage));
+        when(requestResponseChannel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.just(responseMessage));
+
+        ChannelCacheWrapper channelCache = new ChannelCacheWrapper(Mono.just(requestResponseChannel));
+        final ManagementChannel managementChannel = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH,
+            tokenManager, messageSerializer, TIMEOUT);
+        //
         final byte[] sessionState = new byte[]{10, 11, 8, 88, 15};
 
         // Act & Assert
@@ -236,6 +257,32 @@ class ManagementChannelTests {
     @Test
     void getSessionState() {
         // Arrange
+        //
+        final TokenManager tokenManager = mock(TokenManager.class);
+        final MessageSerializer messageSerializer = mock(MessageSerializer.class);
+        final RequestResponseChannel requestResponseChannel = mock(RequestResponseChannel.class);
+        final AmqpResponseCode authorizationResponseCode = AmqpResponseCode.OK;
+
+
+        Flux<AmqpResponseCode> results = Flux.create(sink -> sink.onRequest(requested -> {
+            LOGGER.info("Requested {} authorization results.", requested);
+            sink.next(authorizationResponseCode);
+        }));
+
+        final Map<String, Object> applicationProperties = new HashMap<>();
+        applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.OK.getValue());
+        responseMessage.setApplicationProperties(new ApplicationProperties(applicationProperties));
+
+        when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
+        when(tokenManager.getAuthorizationResults()).thenReturn(results);
+
+        when(requestResponseChannel.sendWithAck(any(Message.class))).thenReturn(Mono.just(responseMessage));
+        when(requestResponseChannel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.just(responseMessage));
+
+        ChannelCacheWrapper channelCache = new ChannelCacheWrapper(Mono.just(requestResponseChannel));
+        final ManagementChannel managementChannel = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH,
+            tokenManager, messageSerializer, TIMEOUT);
+        //
         final byte[] sessionState = new byte[]{10, 11, 8, 88, 15};
         final String sessionId = "A session-id";
 
@@ -261,8 +308,8 @@ class ManagementChannelTests {
         assertEquals(sessionId, hashMap.get(ManagementConstants.SESSION_ID));
 
         // Assert application properties
-        final Map<String, Object> applicationProperties = sentMessage.getApplicationProperties().getValue();
-        assertEquals(OPERATION_GET_SESSION_STATE, applicationProperties.get(MANAGEMENT_OPERATION_KEY));
+        final Map<String, Object> applicationProperties2 = sentMessage.getApplicationProperties().getValue();
+        assertEquals(OPERATION_GET_SESSION_STATE, applicationProperties2.get(MANAGEMENT_OPERATION_KEY));
     }
 
     /**
@@ -271,6 +318,32 @@ class ManagementChannelTests {
     @Test
     void getSessionStateNoSessionId() {
         // Act & Assert
+        //
+        final TokenManager tokenManager = mock(TokenManager.class);
+        final MessageSerializer messageSerializer = mock(MessageSerializer.class);
+        final RequestResponseChannel requestResponseChannel = mock(RequestResponseChannel.class);
+        final AmqpResponseCode authorizationResponseCode = AmqpResponseCode.OK;
+
+
+        Flux<AmqpResponseCode> results = Flux.create(sink -> sink.onRequest(requested -> {
+            LOGGER.info("Requested {} authorization results.", requested);
+            sink.next(authorizationResponseCode);
+        }));
+
+        final Map<String, Object> applicationProperties = new HashMap<>();
+        applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.OK.getValue());
+        responseMessage.setApplicationProperties(new ApplicationProperties(applicationProperties));
+
+        when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
+        when(tokenManager.getAuthorizationResults()).thenReturn(results);
+
+        when(requestResponseChannel.sendWithAck(any(Message.class))).thenReturn(Mono.just(responseMessage));
+        when(requestResponseChannel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.just(responseMessage));
+
+        ChannelCacheWrapper channelCache = new ChannelCacheWrapper(Mono.just(requestResponseChannel));
+        final ManagementChannel managementChannel = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH,
+            tokenManager, messageSerializer, TIMEOUT);
+        //
         StepVerifier.create(managementChannel.getSessionState(null, LINK_NAME))
             .expectError(NullPointerException.class)
             .verify(TIMEOUT);
@@ -288,6 +361,32 @@ class ManagementChannelTests {
     @Test
     void getSessionStateNull() {
         // Arrange
+        //
+        final TokenManager tokenManager = mock(TokenManager.class);
+        final MessageSerializer messageSerializer = mock(MessageSerializer.class);
+        final RequestResponseChannel requestResponseChannel = mock(RequestResponseChannel.class);
+        final AmqpResponseCode authorizationResponseCode = AmqpResponseCode.OK;
+
+
+        Flux<AmqpResponseCode> results = Flux.create(sink -> sink.onRequest(requested -> {
+            LOGGER.info("Requested {} authorization results.", requested);
+            sink.next(authorizationResponseCode);
+        }));
+
+        final Map<String, Object> applicationProperties = new HashMap<>();
+        applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.OK.getValue());
+        responseMessage.setApplicationProperties(new ApplicationProperties(applicationProperties));
+
+        when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
+        when(tokenManager.getAuthorizationResults()).thenReturn(results);
+
+        when(requestResponseChannel.sendWithAck(any(Message.class))).thenReturn(Mono.just(responseMessage));
+        when(requestResponseChannel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.just(responseMessage));
+
+        ChannelCacheWrapper channelCache = new ChannelCacheWrapper(Mono.just(requestResponseChannel));
+        final ManagementChannel managementChannel = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH,
+            tokenManager, messageSerializer, TIMEOUT);
+        //
         final String sessionId = "A session-id";
 
         final Map<String, Object> responseBody = new HashMap<>();
@@ -310,8 +409,8 @@ class ManagementChannelTests {
         assertEquals(sessionId, hashMap.get(ManagementConstants.SESSION_ID));
 
         // Assert application properties
-        final Map<String, Object> applicationProperties = sentMessage.getApplicationProperties().getValue();
-        assertEquals(OPERATION_GET_SESSION_STATE, applicationProperties.get(MANAGEMENT_OPERATION_KEY));
+        final Map<String, Object> applicationProperties2 = sentMessage.getApplicationProperties().getValue();
+        assertEquals(OPERATION_GET_SESSION_STATE, applicationProperties2.get(MANAGEMENT_OPERATION_KEY));
     }
 
     /**
@@ -320,6 +419,32 @@ class ManagementChannelTests {
     @Test
     void renewSessionLock() {
         // Arrange
+        //
+        final TokenManager tokenManager = mock(TokenManager.class);
+        final MessageSerializer messageSerializer = mock(MessageSerializer.class);
+        final RequestResponseChannel requestResponseChannel = mock(RequestResponseChannel.class);
+        final AmqpResponseCode authorizationResponseCode = AmqpResponseCode.OK;
+
+
+        Flux<AmqpResponseCode> results = Flux.create(sink -> sink.onRequest(requested -> {
+            LOGGER.info("Requested {} authorization results.", requested);
+            sink.next(authorizationResponseCode);
+        }));
+
+        final Map<String, Object> applicationProperties = new HashMap<>();
+        applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.OK.getValue());
+        responseMessage.setApplicationProperties(new ApplicationProperties(applicationProperties));
+
+        when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
+        when(tokenManager.getAuthorizationResults()).thenReturn(results);
+
+        when(requestResponseChannel.sendWithAck(any(Message.class))).thenReturn(Mono.just(responseMessage));
+        when(requestResponseChannel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.just(responseMessage));
+
+        ChannelCacheWrapper channelCache = new ChannelCacheWrapper(Mono.just(requestResponseChannel));
+        final ManagementChannel managementChannel = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH,
+            tokenManager, messageSerializer, TIMEOUT);
+        //
         final Instant instant = Instant.ofEpochSecond(1587997482L);
         final Date expirationDate = Date.from(instant);
         final String sessionId = "A session-id";
@@ -345,8 +470,8 @@ class ManagementChannelTests {
         assertEquals(sessionId, hashMap.get(ManagementConstants.SESSION_ID));
 
         // Assert application properties
-        final Map<String, Object> applicationProperties = sentMessage.getApplicationProperties().getValue();
-        assertEquals(OPERATION_RENEW_SESSION_LOCK, applicationProperties.get(MANAGEMENT_OPERATION_KEY));
+        final Map<String, Object> applicationProperties2 = sentMessage.getApplicationProperties().getValue();
+        assertEquals(OPERATION_RENEW_SESSION_LOCK, applicationProperties2.get(MANAGEMENT_OPERATION_KEY));
     }
 
     /**
@@ -354,6 +479,32 @@ class ManagementChannelTests {
      */
     @Test
     void renewSessionLockNoSessionId() {
+        //
+        final TokenManager tokenManager = mock(TokenManager.class);
+        final MessageSerializer messageSerializer = mock(MessageSerializer.class);
+        final RequestResponseChannel requestResponseChannel = mock(RequestResponseChannel.class);
+        final AmqpResponseCode authorizationResponseCode = AmqpResponseCode.OK;
+
+
+        Flux<AmqpResponseCode> results = Flux.create(sink -> sink.onRequest(requested -> {
+            LOGGER.info("Requested {} authorization results.", requested);
+            sink.next(authorizationResponseCode);
+        }));
+
+        final Map<String, Object> applicationProperties = new HashMap<>();
+        applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.OK.getValue());
+        responseMessage.setApplicationProperties(new ApplicationProperties(applicationProperties));
+
+        when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
+        when(tokenManager.getAuthorizationResults()).thenReturn(results);
+
+        when(requestResponseChannel.sendWithAck(any(Message.class))).thenReturn(Mono.just(responseMessage));
+        when(requestResponseChannel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.just(responseMessage));
+
+        ChannelCacheWrapper channelCache = new ChannelCacheWrapper(Mono.just(requestResponseChannel));
+        final ManagementChannel managementChannel = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH,
+            tokenManager, messageSerializer, TIMEOUT);
+        //
         // Act & Assert
         StepVerifier.create(managementChannel.renewSessionLock(null, LINK_NAME))
             .expectError(NullPointerException.class)
@@ -373,6 +524,32 @@ class ManagementChannelTests {
     @ParameterizedTest
     void updateDisposition(String sessionId, String associatedLinkName) {
         // Arrange
+        //
+        final TokenManager tokenManager = mock(TokenManager.class);
+        final MessageSerializer messageSerializer = mock(MessageSerializer.class);
+        final RequestResponseChannel requestResponseChannel = mock(RequestResponseChannel.class);
+        final AmqpResponseCode authorizationResponseCode = AmqpResponseCode.OK;
+
+
+        Flux<AmqpResponseCode> results = Flux.create(sink -> sink.onRequest(requested -> {
+            LOGGER.info("Requested {} authorization results.", requested);
+            sink.next(authorizationResponseCode);
+        }));
+
+        final Map<String, Object> applicationProperties = new HashMap<>();
+        applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.OK.getValue());
+        responseMessage.setApplicationProperties(new ApplicationProperties(applicationProperties));
+
+        when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
+        when(tokenManager.getAuthorizationResults()).thenReturn(results);
+
+        when(requestResponseChannel.sendWithAck(any(Message.class))).thenReturn(Mono.just(responseMessage));
+        when(requestResponseChannel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.just(responseMessage));
+
+        ChannelCacheWrapper channelCache = new ChannelCacheWrapper(Mono.just(requestResponseChannel));
+        final ManagementChannel managementChannel = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH,
+            tokenManager, messageSerializer, TIMEOUT);
+        //
         final Map<String, Object> propertiesToModify = new HashMap<>();
         propertiesToModify.put("test-key", "test-value");
         final DeadLetterOptions options = new DeadLetterOptions()
@@ -420,13 +597,13 @@ class ManagementChannelTests {
         }
 
         // Assert application properties
-        final Map<String, Object> applicationProperties = sentMessage.getApplicationProperties().getValue();
-        assertEquals(OPERATION_UPDATE_DISPOSITION, applicationProperties.get(MANAGEMENT_OPERATION_KEY));
+        final Map<String, Object> applicationProperties2 = sentMessage.getApplicationProperties().getValue();
+        assertEquals(OPERATION_UPDATE_DISPOSITION, applicationProperties2.get(MANAGEMENT_OPERATION_KEY));
 
         if (hasName) {
-            assertEquals(associatedLinkName, applicationProperties.get(ASSOCIATED_LINK_NAME_KEY));
+            assertEquals(associatedLinkName, applicationProperties2.get(ASSOCIATED_LINK_NAME_KEY));
         } else {
-            assertFalse(applicationProperties.containsKey(ASSOCIATED_LINK_NAME_KEY));
+            assertFalse(applicationProperties2.containsKey(ASSOCIATED_LINK_NAME_KEY));
         }
     }
 
@@ -436,6 +613,32 @@ class ManagementChannelTests {
     @Test
     void updateDispositionWithTransaction() {
         // Arrange
+        //
+        final TokenManager tokenManager = mock(TokenManager.class);
+        final MessageSerializer messageSerializer = mock(MessageSerializer.class);
+        final RequestResponseChannel requestResponseChannel = mock(RequestResponseChannel.class);
+        final AmqpResponseCode authorizationResponseCode = AmqpResponseCode.OK;
+
+
+        Flux<AmqpResponseCode> results = Flux.create(sink -> sink.onRequest(requested -> {
+            LOGGER.info("Requested {} authorization results.", requested);
+            sink.next(authorizationResponseCode);
+        }));
+
+        final Map<String, Object> applicationProperties = new HashMap<>();
+        applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.OK.getValue());
+        responseMessage.setApplicationProperties(new ApplicationProperties(applicationProperties));
+
+        when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
+        when(tokenManager.getAuthorizationResults()).thenReturn(results);
+
+        when(requestResponseChannel.sendWithAck(any(Message.class))).thenReturn(Mono.just(responseMessage));
+        when(requestResponseChannel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.just(responseMessage));
+
+        ChannelCacheWrapper channelCache = new ChannelCacheWrapper(Mono.just(requestResponseChannel));
+        final ManagementChannel managementChannel = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH,
+            tokenManager, messageSerializer, TIMEOUT);
+        //
         final String associatedLinkName = "associatedLinkName";
         final String txnIdString = "Transaction-ID";
         final DeadLetterOptions options = new DeadLetterOptions()
@@ -470,8 +673,34 @@ class ManagementChannelTests {
     @Test
     void unauthorized() {
         // Arrange
+        //
+        final TokenManager tokenManager = mock(TokenManager.class);
+        final MessageSerializer messageSerializer = mock(MessageSerializer.class);
+        final RequestResponseChannel requestResponseChannel = mock(RequestResponseChannel.class);
+        final AmqpResponseCode[] authorizationResponseCode = new AmqpResponseCode[1];
+        authorizationResponseCode[0] = AmqpResponseCode.OK;
+
+        Flux<AmqpResponseCode> results = Flux.create(sink -> sink.onRequest(requested -> {
+            LOGGER.info("Requested {} authorization results.", requested);
+            sink.next(authorizationResponseCode[0]);
+        }));
+
+        final Map<String, Object> applicationProperties = new HashMap<>();
+        applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.OK.getValue());
+        responseMessage.setApplicationProperties(new ApplicationProperties(applicationProperties));
+
+        when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
+        when(tokenManager.getAuthorizationResults()).thenReturn(results);
+
+        when(requestResponseChannel.sendWithAck(any(Message.class))).thenReturn(Mono.just(responseMessage));
+        when(requestResponseChannel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.just(responseMessage));
+
+        ChannelCacheWrapper channelCache = new ChannelCacheWrapper(Mono.just(requestResponseChannel));
+        final ManagementChannel managementChannel = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH,
+            tokenManager, messageSerializer, TIMEOUT);
+        //
         final String sessionId = "A session-id";
-        authorizationResponseCode = AmqpResponseCode.UNAUTHORIZED;
+        authorizationResponseCode[0] = AmqpResponseCode.UNAUTHORIZED;
 
         // Act & Assert
         StepVerifier.create(managementChannel.getSessionState(sessionId, LINK_NAME))
@@ -543,6 +772,31 @@ class ManagementChannelTests {
     @Test
     void getDeferredMessagesWithEmptyArrayReturnsAnEmptyFlux() {
         // Arrange, act, assert
+        //
+        final TokenManager tokenManager = mock(TokenManager.class);
+        final MessageSerializer messageSerializer = mock(MessageSerializer.class);
+        final RequestResponseChannel requestResponseChannel = mock(RequestResponseChannel.class);
+        final AmqpResponseCode authorizationResponseCode = AmqpResponseCode.OK;
+
+        Flux<AmqpResponseCode> results = Flux.create(sink -> sink.onRequest(requested -> {
+            LOGGER.info("Requested {} authorization results.", requested);
+            sink.next(authorizationResponseCode);
+        }));
+
+        final Map<String, Object> applicationProperties = new HashMap<>();
+        applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.OK.getValue());
+        responseMessage.setApplicationProperties(new ApplicationProperties(applicationProperties));
+
+        when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
+        when(tokenManager.getAuthorizationResults()).thenReturn(results);
+
+        when(requestResponseChannel.sendWithAck(any(Message.class))).thenReturn(Mono.just(responseMessage));
+        when(requestResponseChannel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.just(responseMessage));
+
+        ChannelCacheWrapper channelCache = new ChannelCacheWrapper(Mono.just(requestResponseChannel));
+        final ManagementChannel managementChannel = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH,
+            tokenManager, messageSerializer, TIMEOUT);
+        //
         StepVerifier.create(managementChannel.receiveDeferredMessages(ServiceBusReceiveMode.PEEK_LOCK, null, null, new ArrayList<>()))
             .expectComplete()
             .verify(TIMEOUT);
@@ -551,6 +805,31 @@ class ManagementChannelTests {
     @Test
     void getDeferredMessagesWithNullThrows() {
         // Arrange, act, assert
+        //
+        final TokenManager tokenManager = mock(TokenManager.class);
+        final MessageSerializer messageSerializer = mock(MessageSerializer.class);
+        final RequestResponseChannel requestResponseChannel = mock(RequestResponseChannel.class);
+        final AmqpResponseCode authorizationResponseCode = AmqpResponseCode.OK;
+
+        Flux<AmqpResponseCode> results = Flux.create(sink -> sink.onRequest(requested -> {
+            LOGGER.info("Requested {} authorization results.", requested);
+            sink.next(authorizationResponseCode);
+        }));
+
+        final Map<String, Object> applicationProperties = new HashMap<>();
+        applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.OK.getValue());
+        responseMessage.setApplicationProperties(new ApplicationProperties(applicationProperties));
+
+        when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
+        when(tokenManager.getAuthorizationResults()).thenReturn(results);
+
+        when(requestResponseChannel.sendWithAck(any(Message.class))).thenReturn(Mono.just(responseMessage));
+        when(requestResponseChannel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.just(responseMessage));
+
+        ChannelCacheWrapper channelCache = new ChannelCacheWrapper(Mono.just(requestResponseChannel));
+        final ManagementChannel managementChannel = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH,
+            tokenManager, messageSerializer, TIMEOUT);
+        //
         StepVerifier.create(managementChannel.receiveDeferredMessages(ServiceBusReceiveMode.PEEK_LOCK, null, null, null))
             .expectError(NullPointerException.class)
             .verify(TIMEOUT);
@@ -559,6 +838,31 @@ class ManagementChannelTests {
     @Test
     void cancelScheduledMessagesWithEmptyIterable() {
         // Arrange, act, assert
+        //
+        final TokenManager tokenManager = mock(TokenManager.class);
+        final MessageSerializer messageSerializer = mock(MessageSerializer.class);
+        final RequestResponseChannel requestResponseChannel = mock(RequestResponseChannel.class);
+        final AmqpResponseCode authorizationResponseCode = AmqpResponseCode.OK;
+
+        Flux<AmqpResponseCode> results = Flux.create(sink -> sink.onRequest(requested -> {
+            LOGGER.info("Requested {} authorization results.", requested);
+            sink.next(authorizationResponseCode);
+        }));
+
+        final Map<String, Object> applicationProperties = new HashMap<>();
+        applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.OK.getValue());
+        responseMessage.setApplicationProperties(new ApplicationProperties(applicationProperties));
+
+        when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
+        when(tokenManager.getAuthorizationResults()).thenReturn(results);
+
+        when(requestResponseChannel.sendWithAck(any(Message.class))).thenReturn(Mono.just(responseMessage));
+        when(requestResponseChannel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.just(responseMessage));
+
+        ChannelCacheWrapper channelCache = new ChannelCacheWrapper(Mono.just(requestResponseChannel));
+        final ManagementChannel managementChannel = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH,
+            tokenManager, messageSerializer, TIMEOUT);
+        //
         StepVerifier.create(managementChannel.cancelScheduledMessages(new ArrayList<>(), null))
             .expectComplete()
             .verify(TIMEOUT);
@@ -567,6 +871,31 @@ class ManagementChannelTests {
     @Test
     void createRule() {
         // Arrange
+        //
+        final TokenManager tokenManager = mock(TokenManager.class);
+        final MessageSerializer messageSerializer = mock(MessageSerializer.class);
+        final RequestResponseChannel requestResponseChannel = mock(RequestResponseChannel.class);
+        final AmqpResponseCode authorizationResponseCode = AmqpResponseCode.OK;
+
+        Flux<AmqpResponseCode> results = Flux.create(sink -> sink.onRequest(requested -> {
+            LOGGER.info("Requested {} authorization results.", requested);
+            sink.next(authorizationResponseCode);
+        }));
+
+        final Map<String, Object> applicationProperties = new HashMap<>();
+        applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.OK.getValue());
+        responseMessage.setApplicationProperties(new ApplicationProperties(applicationProperties));
+
+        when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
+        when(tokenManager.getAuthorizationResults()).thenReturn(results);
+
+        when(requestResponseChannel.sendWithAck(any(Message.class))).thenReturn(Mono.just(responseMessage));
+        when(requestResponseChannel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.just(responseMessage));
+
+        ChannelCacheWrapper channelCache = new ChannelCacheWrapper(Mono.just(requestResponseChannel));
+        final ManagementChannel managementChannel = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH,
+            tokenManager, messageSerializer, TIMEOUT);
+        //
         final String ruleName = "foo-bar";
         CreateRuleOptions options = new CreateRuleOptions();
 
@@ -596,6 +925,31 @@ class ManagementChannelTests {
     @Test
     void getRules() {
         // Arrange, act, assert
+        //
+        final TokenManager tokenManager = mock(TokenManager.class);
+        final MessageSerializer messageSerializer = mock(MessageSerializer.class);
+        final RequestResponseChannel requestResponseChannel = mock(RequestResponseChannel.class);
+        final AmqpResponseCode authorizationResponseCode = AmqpResponseCode.OK;
+
+        Flux<AmqpResponseCode> results = Flux.create(sink -> sink.onRequest(requested -> {
+            LOGGER.info("Requested {} authorization results.", requested);
+            sink.next(authorizationResponseCode);
+        }));
+
+        final Map<String, Object> applicationProperties = new HashMap<>();
+        applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.OK.getValue());
+        responseMessage.setApplicationProperties(new ApplicationProperties(applicationProperties));
+
+        when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
+        when(tokenManager.getAuthorizationResults()).thenReturn(results);
+
+        when(requestResponseChannel.sendWithAck(any(Message.class))).thenReturn(Mono.just(responseMessage));
+        when(requestResponseChannel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.just(responseMessage));
+
+        ChannelCacheWrapper channelCache = new ChannelCacheWrapper(Mono.just(requestResponseChannel));
+        final ManagementChannel managementChannel = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH,
+            tokenManager, messageSerializer, TIMEOUT);
+        //
         final  Message message = Proton.message();
         message.decode(THREE_RULE_MESSAGE, 0, THREE_RULE_MESSAGE.length);
         responseMessage.setBody(message.getBody());
@@ -636,6 +990,31 @@ class ManagementChannelTests {
     @Test
     void deleteRule() {
         // Arrange
+        //
+        final TokenManager tokenManager = mock(TokenManager.class);
+        final MessageSerializer messageSerializer = mock(MessageSerializer.class);
+        final RequestResponseChannel requestResponseChannel = mock(RequestResponseChannel.class);
+        final AmqpResponseCode authorizationResponseCode = AmqpResponseCode.OK;
+
+        Flux<AmqpResponseCode> results = Flux.create(sink -> sink.onRequest(requested -> {
+            LOGGER.info("Requested {} authorization results.", requested);
+            sink.next(authorizationResponseCode);
+        }));
+
+        final Map<String, Object> applicationProperties = new HashMap<>();
+        applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.OK.getValue());
+        responseMessage.setApplicationProperties(new ApplicationProperties(applicationProperties));
+
+        when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
+        when(tokenManager.getAuthorizationResults()).thenReturn(results);
+
+        when(requestResponseChannel.sendWithAck(any(Message.class))).thenReturn(Mono.just(responseMessage));
+        when(requestResponseChannel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.just(responseMessage));
+
+        ChannelCacheWrapper channelCache = new ChannelCacheWrapper(Mono.just(requestResponseChannel));
+        final ManagementChannel managementChannel = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH,
+            tokenManager, messageSerializer, TIMEOUT);
+        //
         String ruleName = "exist-rule";
 
         // Act & Assert

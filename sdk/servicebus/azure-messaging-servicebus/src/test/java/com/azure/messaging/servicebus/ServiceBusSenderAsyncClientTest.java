@@ -108,24 +108,6 @@ class ServiceBusSenderAsyncClientTest {
     private static final String CLIENT_IDENTIFIER = "my-client-identifier";
     private static final ServiceBusSenderInstrumentation DEFAULT_INSTRUMENTATION = new ServiceBusSenderInstrumentation(null, null, NAMESPACE, ENTITY_NAME);
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
-    @Mock
-    private AmqpSendLink sendLink;
-    @Mock
-    private ServiceBusReactorAmqpConnection connection;
-    @Mock
-    private TokenCredential tokenCredential;
-    @Mock
-    private ErrorContextProvider errorContextProvider;
-    @Mock
-    private ServiceBusManagementNode managementNode;
-    @Mock
-    private ServiceBusMessage message;
-    @Mock
-    private Runnable onClientClose;
-    @Mock
-    ServiceBusTransactionContext transactionContext;
-    @Mock
-    AmqpTransaction amqpTransaction;
 
     @Captor
     private ArgumentCaptor<Message> singleMessageCaptor;
@@ -155,6 +137,33 @@ class ServiceBusSenderAsyncClientTest {
     @BeforeEach
     void setup() {
         mocksCloseable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void teardown() throws Exception {
+        Mockito.framework().clearInlineMock(this);
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
+    }
+
+    /**
+     * Verifies that the correct Service Bus properties are set.
+     */
+    @Test
+    void verifyProperties() {
+        //
+
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
 
         connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
@@ -184,22 +193,7 @@ class ServiceBusSenderAsyncClientTest {
         ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
         when((transactionContext.getTransactionId())).thenReturn(txnId);
         when(amqpTransaction.getTransactionId()).thenReturn(txnId);
-    }
-
-    @AfterEach
-    void teardown() throws Exception {
-        Mockito.framework().clearInlineMock(this);
-
-        if (mocksCloseable != null) {
-            mocksCloseable.close();
-        }
-    }
-
-    /**
-     * Verifies that the correct Service Bus properties are set.
-     */
-    @Test
-    void verifyProperties() {
+        //
         Assertions.assertEquals(ENTITY_NAME, sender.getEntityPath());
         Assertions.assertEquals(NAMESPACE, sender.getFullyQualifiedNamespace());
         Assertions.assertEquals(CLIENT_IDENTIFIER, sender.getIdentifier());
@@ -210,6 +204,47 @@ class ServiceBusSenderAsyncClientTest {
      */
     @Test
     void createBatchNull() {
+        //
+
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
         StepVerifier.create(sender.createMessageBatch(null))
             .expectErrorMatches(error -> error instanceof NullPointerException)
             .verify(DEFAULT_TIMEOUT);
@@ -227,7 +262,47 @@ class ServiceBusSenderAsyncClientTest {
     @MethodSource("selectStack")
     void createBatchDefault(boolean isV2) {
         // Arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull(), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
@@ -249,7 +324,47 @@ class ServiceBusSenderAsyncClientTest {
     @MethodSource("selectStack")
     void createBatchWhenSizeTooBig(boolean isV2) {
         // Arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         int maxLinkSize = 1024;
         int batchSize = maxLinkSize + 10;
 
@@ -275,7 +390,47 @@ class ServiceBusSenderAsyncClientTest {
     @MethodSource("selectStack")
     void createsMessageBatchWithSize(boolean isV2) {
         // Arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         int maxLinkSize = 10000;
         int batchSize = 1024;
 
@@ -318,7 +473,47 @@ class ServiceBusSenderAsyncClientTest {
     @MethodSource("selectStack")
     void scheduleMessageSizeTooBig(boolean isV2) {
         // Arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         int maxLinkSize = 1024;
         int batchSize = maxLinkSize + 10;
 
@@ -348,7 +543,47 @@ class ServiceBusSenderAsyncClientTest {
     @MethodSource("selectStack")
     void sendMultipleMessagesWithTransaction(boolean isV2) {
         // Arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message3 = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.toBytes();
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(isV2, 256 * 1024,
@@ -390,7 +625,47 @@ class ServiceBusSenderAsyncClientTest {
     @MethodSource("selectStack")
     void sendMultipleMessages(boolean isV2) {
         // Arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message2 = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.toBytes();
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(isV2, 256 * 1024,
@@ -423,7 +698,47 @@ class ServiceBusSenderAsyncClientTest {
     @SuppressWarnings("unchecked")
     void sendMultipleMessagesTracesSpans(boolean isV2) {
         // Arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message2 = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.toBytes();
         final Tracer tracer1 = mock(Tracer.class);
@@ -484,7 +799,47 @@ class ServiceBusSenderAsyncClientTest {
     @SuppressWarnings("unchecked")
     void sendCancelledIsInstrumented(boolean isV2) {
         // Arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         final Tracer tracer1 = mock(Tracer.class);
         final TestMeter meter = new TestMeter();
         when(tracer1.isEnabled()).thenReturn(true);
@@ -537,7 +892,47 @@ class ServiceBusSenderAsyncClientTest {
     @SuppressWarnings("unchecked")
     void sendCancelledMetricsOnly(boolean isV2) {
         // Arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         final TestMeter meter = new TestMeter();
         ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(null, meter, NAMESPACE, ENTITY_NAME);
 
@@ -569,7 +964,47 @@ class ServiceBusSenderAsyncClientTest {
     @MethodSource("selectStack")
     void sendMessageReportsMetrics(boolean isV2) {
         // Arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         TestMeter meter = new TestMeter();
         ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(null, meter, NAMESPACE, ENTITY_NAME);
 
@@ -608,7 +1043,47 @@ class ServiceBusSenderAsyncClientTest {
     @MethodSource("selectStack")
     void sendMessageReportsMetricsAndTraces(boolean isV2) {
         // Arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         TestMeter meter = new TestMeter();
         Tracer tracer = mock(Tracer.class);
         when(tracer.isEnabled()).thenReturn(true);
@@ -648,7 +1123,47 @@ class ServiceBusSenderAsyncClientTest {
     @MethodSource("selectStack")
     void sendMessageBatchReportsMetrics(boolean isV2) {
         // Arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         TestMeter meter = new TestMeter();
         ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(null, meter, NAMESPACE, ENTITY_NAME);
 
@@ -682,7 +1197,47 @@ class ServiceBusSenderAsyncClientTest {
     @MethodSource("selectStack")
     void failedSendMessageReportsMetrics(boolean isV2) {
         // Arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         TestMeter meter = new TestMeter();
         ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(null, meter, NAMESPACE, ENTITY_NAME);
 
@@ -715,7 +1270,47 @@ class ServiceBusSenderAsyncClientTest {
     @MethodSource("selectStack")
     void sendMessagesListWithTransaction(boolean isV2) {
         // Arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message2 = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         final int count = 4;
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
 
@@ -750,7 +1345,47 @@ class ServiceBusSenderAsyncClientTest {
     @MethodSource("selectStack")
     void sendMessagesList(boolean isV2) {
         // Arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message2 = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         final int count = 4;
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
 
@@ -779,7 +1414,47 @@ class ServiceBusSenderAsyncClientTest {
     @MethodSource("selectStack")
     void sendMessagesListExceedSize(boolean isV2) {
         // Arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         final int count = 4;
         final Mono<Integer> linkMaxSize = Mono.just(1);
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
@@ -801,7 +1476,47 @@ class ServiceBusSenderAsyncClientTest {
     @MethodSource("selectStack")
     void sendSingleMessageThatExceedsSize(boolean isV2) {
         // arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message2 = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         ServiceBusMessage message = TestUtils.getServiceBusMessages(1, UUID.randomUUID().toString()).get(0);
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
@@ -824,7 +1539,47 @@ class ServiceBusSenderAsyncClientTest {
     @MethodSource("selectStack")
     void sendSingleMessageWithTransaction(boolean isV2) {
         // Arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message2 = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         final ServiceBusMessage testData = new ServiceBusMessage(TEST_CONTENTS);
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
@@ -859,7 +1614,47 @@ class ServiceBusSenderAsyncClientTest {
     @MethodSource("selectStack")
     void sendSingleMessage(boolean isV2) {
         // Arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message2 = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         final ServiceBusMessage testData =
             new ServiceBusMessage(TEST_CONTENTS);
 
@@ -887,7 +1682,47 @@ class ServiceBusSenderAsyncClientTest {
     @MethodSource("selectStack")
     void scheduleMessage(boolean isV2) {
         // Arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         long sequenceNumberReturned = 10;
         OffsetDateTime instant = mock(OffsetDateTime.class);
 
@@ -914,7 +1749,47 @@ class ServiceBusSenderAsyncClientTest {
     @MethodSource("selectStack")
     void scheduleMessageWithTransaction(boolean isV2) {
         // Arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         final long sequenceNumberReturned = 10;
         final OffsetDateTime instant = mock(OffsetDateTime.class);
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull(), eq(CLIENT_IDENTIFIER)))
@@ -940,7 +1815,47 @@ class ServiceBusSenderAsyncClientTest {
     @MethodSource("selectStack")
     void cancelScheduleMessage(boolean isV2) {
         // Arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         final long sequenceNumberReturned = 10;
         when(managementNode.cancelScheduledMessages(anyList(), isNull())).thenReturn(Mono.empty());
 
@@ -965,7 +1880,47 @@ class ServiceBusSenderAsyncClientTest {
     @MethodSource("selectStack")
     void cancelScheduleMessages(boolean isV2) {
         // Arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         final List<Long> sequenceNumbers = new ArrayList<>();
         sequenceNumbers.add(10L);
         sequenceNumbers.add(11L);
@@ -997,7 +1952,47 @@ class ServiceBusSenderAsyncClientTest {
     @MethodSource("selectStack")
     void verifyMessageOrdering(boolean isV2) {
         // Arrange
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message2 = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         final ServiceBusMessage firstMessage = new ServiceBusMessage("First message " + UUID.randomUUID());
         final ServiceBusMessage secondMessage = new ServiceBusMessage("Second message " + UUID.randomUUID());
         final ServiceBusMessage thirdMessage = new ServiceBusMessage("Third message " + UUID.randomUUID());
@@ -1040,6 +2035,46 @@ class ServiceBusSenderAsyncClientTest {
     @SuppressWarnings("unchecked")
     void canBatchMessagesInIterable() {
         // Arrange
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
         final ServiceBusSenderAsyncClient sender = mock(ServiceBusSenderAsyncClient.class);
         final ServiceBusMessageBatch batch0 = mock(ServiceBusMessageBatch.class);
         when(batch0.tryAddMessage(any(ServiceBusMessage.class))).thenReturn(true, true, true, true, false);
@@ -1082,7 +2117,47 @@ class ServiceBusSenderAsyncClientTest {
     @ParameterizedTest
     @MethodSource("selectStack")
     void callsClientClose(boolean isV2) {
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         // Act
         sender.close();
 
@@ -1096,7 +2171,47 @@ class ServiceBusSenderAsyncClientTest {
     @ParameterizedTest
     @MethodSource("selectStack")
     void callsClientCloseOnce(boolean isV2) {
-        arrangeIfV2(isV2);
+        //
+        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
+        final TokenCredential tokenCredential = mock(TokenCredential.class);
+        final ErrorContextProvider errorContextProvider = mock(ErrorContextProvider.class);
+        final ServiceBusManagementNode managementNode = mock(ServiceBusManagementNode.class);
+        final ServiceBusMessage message = mock(ServiceBusMessage.class);
+        final Runnable onClientClose = mock(Runnable.class);
+        final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
+        final AmqpTransaction amqpTransaction = mock(AmqpTransaction.class);
+
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+
+        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
+            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
+
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionCacheWrapper,
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
+            .thenReturn(just(managementNode));
+
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkName()).thenReturn(LINK_NAME);
+
+        doNothing().when(onClientClose).run();
+
+        ByteBuffer txnId = ByteBuffer.wrap(TXN_ID_STRING.getBytes());
+        when((transactionContext.getTransactionId())).thenReturn(txnId);
+        when(amqpTransaction.getTransactionId()).thenReturn(txnId);
+        //
+        arrangeIfV2(isV2, connection, onClientClose);
         // Act
         sender.close();
         sender.close();
@@ -1124,10 +2239,11 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     // Once on V2 completely, block of code in this function should be moved to JUnit setup() method.
-    private void arrangeIfV2(boolean isV2) {
+    private void arrangeIfV2(boolean isV2, ServiceBusReactorAmqpConnection connection, Runnable onClientClose) {
         if (!isV2) {
             return;
         }
+
         when(connection.connectAndAwaitToActive()).thenReturn(Mono.just(connection));
         final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache = new ReactorConnectionCache<>(
             () -> connection, NAMESPACE, ENTITY_NAME,
