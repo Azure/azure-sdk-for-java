@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixes the thread unsafe use of javax.crypto.Mac instance in ServiceBusSharedKeyCredential. ([42353](https://github.com/Azure/azure-sdk-for-java/pull/42353))
+
 ### Other Changes
 
 ## 7.17.4 (2024-09-27)
