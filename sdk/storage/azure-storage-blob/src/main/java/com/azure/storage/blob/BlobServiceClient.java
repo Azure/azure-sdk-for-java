@@ -145,7 +145,7 @@ public final class BlobServiceClient {
      */
     public BlobContainerClient getBlobContainerClient(String containerName) {
         if (CoreUtils.isNullOrEmpty(containerName)) {
-            containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
+            containerName = BlobContainerClient.ROOT_CONTAINER_NAME;
         }
         return new BlobContainerClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
             getAccountName(), containerName, customerProvidedKey, encryptionScope, blobContainerEncryptionScope);

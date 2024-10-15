@@ -28,6 +28,7 @@ import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchyS
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.ListBlobsFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ListBlobsHierarchySegmentResponse;
+import com.azure.storage.blob.implementation.util.BlobConstants;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
@@ -93,17 +94,17 @@ public final class BlobContainerAsyncClient {
     /**
      * Special container name for the root container in the Storage account.
      */
-    public static final String ROOT_CONTAINER_NAME = "$root";
+    public static final String ROOT_CONTAINER_NAME = BlobConstants.ROOT_CONTAINER_NAME;
 
     /**
      * Special container name for the static website container in the Storage account.
      */
-    public static final String STATIC_WEBSITE_CONTAINER_NAME = "$web";
+    public static final String STATIC_WEBSITE_CONTAINER_NAME = BlobConstants.STATIC_WEBSITE_CONTAINER_NAME;
 
     /**
      * Special container name for the logs container in the Storage account.
      */
-    public static final String LOG_CONTAINER_NAME = "$logs";
+    public static final String LOG_CONTAINER_NAME = BlobConstants.LOG_CONTAINER_NAME;
 
     private static final ClientLogger LOGGER = new ClientLogger(BlobContainerAsyncClient.class);
     private final AzureBlobStorageImpl azureBlobStorage;

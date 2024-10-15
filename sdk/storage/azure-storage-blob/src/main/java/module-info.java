@@ -6,6 +6,7 @@ module com.azure.storage.blob {
 
     requires com.azure.storage.internal.avro;
     requires com.azure.core;
+    requires java.sql;
 
     exports com.azure.storage.blob;
     exports com.azure.storage.blob.models;

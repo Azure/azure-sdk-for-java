@@ -17,6 +17,7 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
+import com.azure.storage.blob.implementation.util.BlobConstants;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -79,7 +80,7 @@ public final class BlockBlobClient extends BlobClientBase {
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
      */
-    public static final long MAX_UPLOAD_BLOB_BYTES_LONG = 5000L * Constants.MB;
+    public static final long MAX_UPLOAD_BLOB_BYTES_LONG = BlobConstants.MAX_UPLOAD_BLOB_BYTES_LONG;
     /**
      * Indicates the maximum number of bytes that can be sent in a call to stageBlock.
      * @deprecated Use {@link #MAX_STAGE_BLOCK_BYTES_LONG}
@@ -89,11 +90,11 @@ public final class BlockBlobClient extends BlobClientBase {
     /**
      * Indicates the maximum number of bytes that can be sent in a call to stageBlock.
      */
-    public static final long MAX_STAGE_BLOCK_BYTES_LONG = 4000L * Constants.MB;
+    public static final long MAX_STAGE_BLOCK_BYTES_LONG = BlobConstants.MAX_STAGE_BLOCK_BYTES_LONG;
     /**
      * Indicates the maximum number of blocks allowed in a block blob.
      */
-    public static final int MAX_BLOCKS = 50000;
+    public static final int MAX_BLOCKS = BlobConstants.MAX_BLOCKS;
 
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.

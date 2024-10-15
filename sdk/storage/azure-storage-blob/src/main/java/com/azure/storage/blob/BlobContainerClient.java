@@ -34,6 +34,7 @@ import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.FilterBlobSegment;
 import com.azure.storage.blob.implementation.models.ListBlobsFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ListBlobsHierarchySegmentResponse;
+import com.azure.storage.blob.implementation.util.BlobConstants;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
@@ -94,17 +95,17 @@ public final class BlobContainerClient {
     /**
      * Special container name for the root container in the Storage account.
      */
-    public static final String ROOT_CONTAINER_NAME = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
+    public static final String ROOT_CONTAINER_NAME = BlobConstants.ROOT_CONTAINER_NAME;
 
     /**
      * Special container name for the static website container in the Storage account.
      */
-    public static final String STATIC_WEBSITE_CONTAINER_NAME = BlobContainerAsyncClient.STATIC_WEBSITE_CONTAINER_NAME;
+    public static final String STATIC_WEBSITE_CONTAINER_NAME = BlobConstants.STATIC_WEBSITE_CONTAINER_NAME;
 
     /**
      * Special container name for the logs container in the Storage account.
      */
-    public static final String LOG_CONTAINER_NAME = BlobContainerAsyncClient.LOG_CONTAINER_NAME;
+    public static final String LOG_CONTAINER_NAME = BlobConstants.LOG_CONTAINER_NAME;
     private static final ClientLogger LOGGER = new ClientLogger(BlobContainerClient.class);
     private final AzureBlobStorageImpl azureBlobStorage;
 
@@ -1038,16 +1039,27 @@ public final class BlobContainerClient {
             ArrayList<ListBlobsIncludeItem> include =
                 finalOptions.getDetails().toList().isEmpty() ? null : finalOptions.getDetails().toList();
 
-            Supplier<PagedResponse<BlobItem>> operation = () -> {
-                ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse> response =
-                    this.azureBlobStorage.getContainers().listBlobFlatSegmentWithResponse(containerName,
-                        finalOptions.getPrefix(), nextMarker, finalOptions.getMaxResultsPerPage(), include, null,
-                        null, Context.NONE);
+            Callable<ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse>> operation = () ->
+                this.azureBlobStorage.getContainers().listBlobFlatSegmentWithResponse(
+                    containerName,
+                    finalOptions.getPrefix(),
+                    nextMarker,
+                    finalOptions.getMaxResultsPerPage(),
+                    include,
+                    null,
+                    null,
+                    Context.NONE
+                );
 
-                List<BlobItem> value = response.getValue().getSegment() == null ? Collections.emptyList()
+                // Use StorageImplUtils.sendRequest for the operation instead of directly calling operation.get()
+                ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse> response =
+                    StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
+
+                List<BlobItem> value = response.getValue().getSegment() == null
+                    ? Collections.emptyList()
                     : response.getValue().getSegment().getBlobItems().stream()
-                        .map(ModelHelper::populateBlobItem)
-                        .collect(Collectors.toList());
+                    .map(ModelHelper::populateBlobItem)
+                    .collect(Collectors.toList());
 
                 return new PagedResponseBase<>(
                     response.getRequest(),
@@ -1055,15 +1067,10 @@ public final class BlobContainerClient {
                     response.getHeaders(),
                     value,
                     response.getValue().getNextMarker(),
-                    response.getDeserializedHeaders());
-            };
-            try {
-                return timeout != null ? CoreUtils.getResultWithTimeout(SharedExecutorService.getInstance()
-                    .submit(operation::get), timeout) : operation.get();
-            } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException("Failed to retrieve blobs with timeout.", e));
-            }
+                    response.getDeserializedHeaders()
+                );
         };
+
         return new PagedIterable<>(pageSize -> retriever.apply(continuationToken, pageSize), retriever);
     }
 
@@ -1160,19 +1167,9 @@ public final class BlobContainerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BlobItem> listBlobsByHierarchy(String delimiter, ListBlobsOptions options, Duration timeout) {
         BiFunction<String, Integer, PagedResponse<BlobItem>> func = (marker, pageSize) -> {
-            ListBlobsOptions finalOptions;
+            ListBlobsOptions finalOptions = options == null ? new ListBlobsOptions() : options;
             if (pageSize != null) {
-                if (options == null) {
-                    finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize);
-                } else {
-                    // Note that this prefers the value passed to .byPage(int) over the value on the options
-                    finalOptions = new ListBlobsOptions()
-                        .setMaxResultsPerPage(pageSize)
-                        .setPrefix(options.getPrefix())
-                        .setDetails(options.getDetails());
-                }
-            } else {
-                finalOptions = options == null ? new ListBlobsOptions() : options;
+                finalOptions.setMaxResultsPerPage(pageSize);
             }
             return listBlobsHierarchySegment(marker, delimiter, finalOptions, timeout);
         };

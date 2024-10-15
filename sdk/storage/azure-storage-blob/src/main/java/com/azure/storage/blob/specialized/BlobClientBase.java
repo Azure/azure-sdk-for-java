@@ -180,32 +180,35 @@ public class BlobClientBase {
      * @param client the async blob client
      */
     protected BlobClientBase(BlobAsyncClientBase client) {
-        if (client.getSnapshotId() != null && client.getVersionId() != null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'snapshot' and 'versionId' cannot be used at the same time."));
-        }
-        this.client = client;
-        this.azureBlobStorage = new AzureBlobStorageImplBuilder()
-            .pipeline(client.getHttpPipeline())
-            .url(client.getAccountUrl())
-            .version(client.getServiceVersion().getVersion())
-            .buildClient();
-        this.serviceVersion = client.getServiceVersion();
-
-        this.accountName = client.getAccountName();
-        this.containerName = client.getContainerName();
-        this.blobName = client.getBlobName();
-        this.snapshot = client.getSnapshotId();
-        this.customerProvidedKey = client.getCustomerProvidedKey();
-        this.encryptionScope = new EncryptionScope().setEncryptionScope(client.getEncryptionScope());
-        this.versionId = client.getVersionId();
-        /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
-           when the sas token has already been applied. */
-        try {
-            URI.create(getBlobUrl());
-        } catch (IllegalArgumentException ex) {
-            throw LOGGER.logExceptionAsError(ex);
-        }
+        this(client, client.getHttpPipeline(), client.getAccountUrl(), client.getServiceVersion(), client.getAccountName(),
+            client.getContainerName(), client.getBlobName(), client.getSnapshotId(), client.getCustomerProvidedKey(),
+            new EncryptionScope().setEncryptionScope(client.getEncryptionScope()), client.getVersionId());
+//        if (client.getSnapshotId() != null && client.getVersionId() != null) {
+//            throw LOGGER.logExceptionAsError(
+//                new IllegalArgumentException("'snapshot' and 'versionId' cannot be used at the same time."));
+//        }
+//        this.client = client;
+//        this.azureBlobStorage = new AzureBlobStorageImplBuilder()
+//            .pipeline(client.getHttpPipeline())
+//            .url(client.getAccountUrl())
+//            .version(client.getServiceVersion().getVersion())
+//            .buildClient();
+//        this.serviceVersion = client.getServiceVersion();
+//
+//        this.accountName = client.getAccountName();
+//        this.containerName = client.getContainerName();
+//        this.blobName = client.getBlobName();
+//        this.snapshot = client.getSnapshotId();
+//        this.customerProvidedKey = client.getCustomerProvidedKey();
+//        this.encryptionScope = new EncryptionScope().setEncryptionScope(client.getEncryptionScope());
+//        this.versionId = client.getVersionId();
+//        /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
+//           when the sas token has already been applied. */
+//        try {
+//            URI.create(getBlobUrl());
+//        } catch (IllegalArgumentException ex) {
+//            throw LOGGER.logExceptionAsError(ex);
+//        }
     }
 
     /**
@@ -392,7 +395,6 @@ public class BlobClientBase {
             .serviceVersion(this.serviceVersion)
             .customerProvidedKey(encryptionKey)
             .encryptionScope(this.getEncryptionScope()).buildClient();
-        //return client.getContainerClientBuilder().buildClient();
     }
 
     /**
@@ -441,7 +443,6 @@ public class BlobClientBase {
             return null;
         }
         return encryptionScope.getEncryptionScope();
-        //return client.getEncryptionScope();
     }
 
     /**
@@ -918,7 +919,7 @@ public class BlobClientBase {
 
             LongRunningOperationStatus operationStatus = ModelHelper.mapStatusToLongRunningOperationStatus(status);
             return new PollResponse<>(operationStatus, result);
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             return new PollResponse<>(LongRunningOperationStatus.fromString("POLLING_FAILED", true), lastInfo);
         }
     }
@@ -1105,6 +1106,7 @@ public class BlobClientBase {
         }
         String sourceAuth = options.getSourceAuthorization() == null
             ? null : options.getSourceAuthorization().toString();
+        Context finalContext = context == null ? Context.NONE : context;
 
         Callable<ResponseBase<BlobsCopyFromURLHeaders, Void>> operation = () ->
             this.azureBlobStorage.getBlobs().copyFromURLWithResponse(containerName, blobName, options.getCopySource(),
@@ -1115,7 +1117,7 @@ public class BlobClientBase {
                 destRequestConditions.getIfNoneMatch(), destRequestConditions.getTagsConditions(),
                 destRequestConditions.getLeaseId(), null, null, ModelHelper.tagsToString(options.getTags()),
                 immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(), options.hasLegalHold(),
-                sourceAuth, options.getCopySourceTagsMode(), this.encryptionScope, context);
+                sourceAuth, options.getCopySourceTagsMode(), this.encryptionScope, finalContext);
 
         ResponseBase<BlobsCopyFromURLHeaders, Void> response = sendRequest(operation, timeout, BlobStorageException.class);
         return new SimpleResponse<>(response, response.getDeserializedHeaders().getXMsCopyId());
