@@ -1,6 +1,8 @@
 package com.azure.ai.openai.implementation.websocket;
 
-public final class ClientEndpointConfiguration {
+
+//TODO jpalvarezl: Make this an abstract class and pull up common fields and methods
+public class ClientEndpointConfiguration {
 
     private final String protocol;
 

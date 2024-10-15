@@ -35,7 +35,7 @@ public class RealtimesImpl {
 
     private final String endpoint;
 
-    RealtimesImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
+    public RealtimesImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
         this.service
                 = RestProxy.create(RealtimesService.class, httpPipeline, serializerAdapter);
         this.endpoint = endpoint;

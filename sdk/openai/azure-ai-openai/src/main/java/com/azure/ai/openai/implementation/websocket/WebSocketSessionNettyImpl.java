@@ -123,6 +123,7 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
 
         handshaker = WebSocketClientHandshakerFactory.newHandshaker(uri, WebSocketVersion.V13, protocol, true,
                 new DefaultHttpHeaders().add(HttpHeaderName.USER_AGENT.getCaseInsensitiveName(), userAgent));
+        // TODO jpalvarez: Add auth headers, openai-beta header, etc.
 
         clientHandler = new WebSocketClientHandler(handshaker, loggerReference, messageDecoder, messageHandler);
 

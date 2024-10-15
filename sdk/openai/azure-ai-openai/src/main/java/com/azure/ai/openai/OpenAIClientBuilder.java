@@ -365,7 +365,7 @@ public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>
             : new OpenAIClient(buildInnerClient());
     }
 
-    // TODO: jpalvarezl this would be the entry point, should we want to integrate Realtime into Inference
+    //TODO jpalvarezl: this would be the entry point, should we want to integrate Realtime into Inference
     // All the webSocketClient setup in RealtimeClientBuilder would have to be moved here or made usable from here.
     public RealtimeAsyncClient buildRealtimeAsyncClient() {
         return useNonAzureOpenAIService()
@@ -373,7 +373,7 @@ public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>
             : new RealtimeAsyncClient(buildInnerClient().getRealtime());
     }
 
-    // TODO: jpalvarezl this would be the entry point, should we want to integrate Realtime into Inference
+    //TODO jpalvarezl: this would be the entry point, should we want to integrate Realtime into Inference
     // All the webSocketClient setup in RealtimeClientBuilder would have to be moved here or made usable from here.
     public RealtimeClient buildRealtimeClient() {
         return useNonAzureOpenAIService()
