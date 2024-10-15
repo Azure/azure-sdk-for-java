@@ -245,6 +245,13 @@ public class AppendBlobApiTests extends BlobTestBase {
     }
 
     @Test
+    public void createIfNotExistsSimple() {
+        bc = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
+
+        assertDoesNotThrow(() -> bc.createIfNotExists());
+    }
+
+    @Test
     public void createIfNotExistsMin() {
         String blobName = cc.getBlobClient(generateBlobName()).getBlobName();
         bc = cc.getBlobClient(blobName).getAppendBlobClient();

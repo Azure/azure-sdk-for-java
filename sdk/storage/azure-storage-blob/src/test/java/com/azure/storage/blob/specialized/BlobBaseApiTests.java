@@ -4,9 +4,13 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.test.utils.TestUtils;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
+import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobQueryArrowField;
 import com.azure.storage.blob.models.BlobQueryArrowFieldType;
 import com.azure.storage.blob.models.BlobQueryArrowSerialization;
@@ -19,6 +23,8 @@ import com.azure.storage.blob.models.BlobQuerySerialization;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.options.BlobQueryOptions;
+import com.azure.storage.blob.sas.BlobContainerSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
@@ -29,6 +35,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -47,8 +54,11 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class BlobBaseApiTests extends BlobTestBase {
     private BlobClient bc;
@@ -691,6 +701,20 @@ public class BlobBaseApiTests extends BlobTestBase {
         });
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @Test
+    public void nullQueryResponse() {
+        String expression = "garbage";
+        BlobQueryOptions options = new BlobQueryOptions(expression);
+
+        BlobAsyncClientBase clientMock = mock(BlobAsyncClientBase.class);
+        when(clientMock.queryWithResponse(options)).thenReturn(Mono.empty());
+
+        BlobClientBase bc = new BlobClientBase(clientMock);
+
+        assertThrows(IllegalStateException.class, () -> bc.openQueryInputStreamWithResponse(options));
+    }
+
     private static class RandomOtherSerialization implements BlobQuerySerialization {
 
     }
@@ -855,5 +879,48 @@ public class BlobBaseApiTests extends BlobTestBase {
             assertEquals(nonFatalError.getName(), expectedType);
             numErrors++;
         }
+    }
+
+    @Test
+    public void abortCopyBaseSimple() {
+        // Data has to be large enough and copied between accounts to give us enough time to abort
+        new SpecializedBlobClientBuilder()
+            .blobClient(bc)
+            .buildBlockBlobClient()
+            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024,
+                true);
+
+        BlobContainerClient cu2 = alternateBlobServiceClient.getBlobContainerClient(generateBlobName());
+        cu2.create();
+        BlobClient bu2 = cu2.getBlobClient(generateBlobName());
+
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        SyncPoller<BlobCopyInfo, Void> poller = setPlaybackSyncPollerPollInterval(
+            bu2.beginCopy(bc.getBlobUrl() + "?" + sas, null, null, null, null, null, null));
+        PollResponse<BlobCopyInfo> lastResponse = poller.poll();
+        assertNotNull(lastResponse);
+        assertNotNull(lastResponse.getValue());
+        assertDoesNotThrow(() -> bu2.abortCopyFromUrl(lastResponse.getValue().getCopyId()));
+        // cleanup:
+        // Normal test cleanup will not clean up containers in the alternate account.
+        assertResponseStatusCode(cu2.deleteWithResponse(null, null, null),
+            202);
+    }
+
+    @Test
+    public void syncCopyBaseSimple() {
+        BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        assertDoesNotThrow(() -> bu2.copyFromUrl(bc.getBlobUrl() + "?" + sas));
+    }
+
+    @Test
+    public void snapshotBase() {
+        BlobClientBase bc2 = bc.createSnapshot();
+        String fakeVersion = "2020-04-17T20:37:16.5129130Z";
+        BlobClientBase badClient = bc2.getSnapshotClient(fakeVersion);
+        assertEquals(fakeVersion, badClient.getSnapshotId());
     }
 }

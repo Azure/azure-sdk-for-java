@@ -243,6 +243,13 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     @Test
+    public void createIfNotExistsSimple() {
+        bc = cc.getBlobClient(generateBlobName()).getPageBlobClient();
+
+        assertDoesNotThrow(() -> bc.createIfNotExists(PageBlobClient.PAGE_BYTES));
+    }
+
+    @Test
     public void createIfNotExistsBlobThatAlreadyExists() {
         String blobName = cc.getBlobClient(generateBlobName()).getBlobName();
         bc = cc.getBlobClient(blobName).getPageBlobClient();
@@ -1401,6 +1408,12 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     @Test
+    public void resizeSimple() {
+        bc.resize(PageBlobClient.PAGE_BYTES * 2);
+        assertEquals(PageBlobClient.PAGE_BYTES * 2, bc.getProperties().getBlobSize());
+    }
+
+    @Test
     public void resizeMin() {
         assertResponseStatusCode(bc.resizeWithResponse(PageBlobClient.PAGE_BYTES, null, null, null),  200);
     }
@@ -1455,6 +1468,14 @@ public class PageBlobApiTests extends BlobTestBase {
         assertEquals(result, bc.getProperties().getBlobSequenceNumber());
         assertTrue(validateBasicHeaders(response.getHeaders()));
         assertEquals(response.getValue().getBlobSequenceNumber(), result);
+    }
+
+    @ParameterizedTest
+    @MethodSource("sequenceNumberSupplier")
+    public void sequenceNumberSimple(SequenceNumberActionType action, Long number, Long result) {
+        bc.updateSequenceNumber(action, number);
+
+        assertEquals(result, bc.getProperties().getBlobSequenceNumber());
     }
 
     private static Stream<Arguments> sequenceNumberSupplier() {

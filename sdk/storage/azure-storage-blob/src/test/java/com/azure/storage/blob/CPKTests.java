@@ -32,6 +32,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @LiveOnly
@@ -53,6 +54,8 @@ public class CPKTests extends BlobTestBase {
             .credential(ENVIRONMENT.getPrimaryAccount().getCredential()));
 
         cpkContainer = builder.buildClient();
+        assertNotNull(cpkContainer.getCustomerProvidedKey().getEncryptionKey());
+
         cpkBlockBlob = cpkContainer.getBlobClient(generateBlobName()).getBlockBlobClient();
         cpkPageBlob = cpkContainer.getBlobClient(generateBlobName()).getPageBlobClient();
         cpkAppendBlob = cpkContainer.getBlobClient(generateBlobName()).getAppendBlobClient();
