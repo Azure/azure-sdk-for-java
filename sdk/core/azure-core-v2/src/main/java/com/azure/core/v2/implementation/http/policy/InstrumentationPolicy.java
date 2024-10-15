@@ -18,19 +18,22 @@ import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import io.clientcore.core.util.Context;
 import io.clientcore.core.util.binarydata.BinaryData;
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
 import static com.azure.core.v2.util.tracing.Tracer.DISABLE_TRACING_KEY;
-import static io.clientcore.core.http.models.HttpHeaderName.X_MS_CLIENT_REQUEST_ID;
-import static io.clientcore.core.http.models.HttpHeaderName.X_MS_REQUEST_ID;
-import static io.clientcore.core.http.pipeline.HttpLoggingPolicy.RETRY_COUNT_CONTEXT;
+import static io.clientcore.core.http.models.HttpHeaderName.fromString;
 
 /**
  * Pipeline policy that initiates distributed tracing.
  */
 public class InstrumentationPolicy implements HttpPipelinePolicy {
-
+    /**
+     * Key for {@link Context} to pass request retry count metadata for logging.
+     */
+    private static final String RETRY_COUNT_CONTEXT = "requestRetryCount";
+    private static final HttpHeaderName X_MS_CLIENT_REQUEST_ID = fromString("x-ms-client-request-id");
+    private static final HttpHeaderName X_MS_REQUEST_ID = fromString("x-ms-request-id");
     // TODO (limolkova):
     // following attributes are kept for backward compatibility with current ApplicationInsights agent.
     // We'll need to update them to stable semconv attribute names (as an optimization) prior to tracing stability
@@ -76,22 +79,23 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         // Build new child span representing this outgoing request.
         String methodName = request.getHttpMethod().toString();
         StartSpanOptions spanOptions = new StartSpanOptions(SpanKind.CLIENT).setAttribute(HTTP_METHOD, methodName)
-            .setAttribute(HTTP_URL, urlSanitizer.getRedactedUrl(request.getUrl()))
-            .setAttribute(SERVER_ADDRESS, request.getUrl().getHost())
-            .setAttribute(SERVER_PORT, getPort(request.getUrl()));
+            .setAttribute(HTTP_URL, urlSanitizer.getRedactedUrl(request.getUri()))
+            .setAttribute(SERVER_ADDRESS, request.getUri().getHost())
+            .setAttribute(SERVER_PORT, getPort(request.getUri()));
         Context span = tracer.start(methodName, spanOptions, request.getRequestOptions().getContext());
 
         addPostSamplingAttributes(span, request);
 
         // TODO (alzimmer): Add injectContext(BiConsumer<HttpHeaderName, String>, Context)
-        tracer.injectContext((k, v) -> request.getHeaders().set(HttpHeaderName.fromString(k), v), span);
+        tracer.injectContext((k, v) -> request.getHeaders().set(fromString(k), v), span);
         return span;
     }
 
-    private static int getPort(URL url) {
-        int port = url.getPort();
+    private static int getPort(URI uri) {
+        int port = uri.getPort();
         if (port == -1) {
-            port = url.getDefaultPort();
+            // default port?
+            port = uri.getPort();
         }
         return port;
     }

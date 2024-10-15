@@ -449,38 +449,6 @@ public final class CoreUtils {
     }
 
     /**
-     * Calls {@link Future#get(long, TimeUnit)} and returns the value if the {@code future} completes before the timeout
-     * is triggered. If the timeout is triggered, the {@code future} is {@link Future#cancel(boolean) cancelled}
-     * interrupting the execution of the task that the {@link Future} represented.
-     * <p>
-     * If the timeout is {@link Duration#isZero()} or is {@link Duration#isNegative()} then the timeout will be ignored
-     * and an infinite timeout will be used.
-     *
-     * @param <T> The type of value returned by the {@code future}.
-     * @param future The {@link Future} to get the value from.
-     * @param timeout The timeout value. If the timeout is {@link Duration#isZero()} or is {@link Duration#isNegative()}
-     * then the timeout will be ignored and an infinite timeout will be used.
-     * @return The value from the {@code future}.
-     * @throws NullPointerException If {@code future} is null.
-     * @throws CancellationException If the computation was cancelled.
-     * @throws ExecutionException If the computation threw an exception.
-     * @throws InterruptedException If the current thread was interrupted while waiting.
-     * @throws TimeoutException If the wait timed out.
-     * @throws RuntimeException If the {@code future} threw an exception during processing.
-     * @throws Error If the {@code future} threw an {@link Error} during processing.
-     */
-    public static <T> T getResultWithTimeout(Future<T> future, Duration timeout)
-        throws InterruptedException, ExecutionException, TimeoutException {
-        Objects.requireNonNull(future, "'future' cannot be null.");
-
-        if (timeout == null) {
-            return future.get();
-        }
-
-        return ImplUtils.getResultWithTimeout(future, timeout.toMillis());
-    }
-
-    /**
      * Helper method that safely adds a {@link Runtime#addShutdownHook(Thread)} to the JVM that will close the
      * {@code executorService} when the JVM is shutting down.
      * <p>

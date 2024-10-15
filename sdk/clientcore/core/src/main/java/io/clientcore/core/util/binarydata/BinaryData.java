@@ -575,7 +575,7 @@ public abstract class BinaryData implements Closeable {
      * @throws IOException If deserialization fails.
      * @see ObjectSerializer
      */
-    public <T> T toObject(Type type) {
+    public <T> T toObject(Type type) throws IOException {
         return toObject(type, SERIALIZER);
     }
 
@@ -654,7 +654,7 @@ public abstract class BinaryData implements Closeable {
      * @see ObjectSerializer
      * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
      */
-    public abstract <T> T toObject(Type type, ObjectSerializer serializer);
+    public abstract <T> T toObject(Type type, ObjectSerializer serializer) throws IOException;
 
     /**
      * Returns an {@link InputStream} representation of this {@link BinaryData}.

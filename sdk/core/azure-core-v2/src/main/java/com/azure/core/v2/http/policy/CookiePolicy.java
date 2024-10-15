@@ -56,7 +56,7 @@ public class CookiePolicy implements HttpPipelinePolicy {
     @SuppressWarnings("deprecation")
     private static void beforeRequest(HttpRequest httpRequest, CookieHandler cookies) {
         try {
-            final URI uri = httpRequest.getUrl().toURI();
+            final URI uri = httpRequest.getUri();
 
             Map<String, List<String>> cookieHeaders = new HashMap<>();
             for (HttpHeader header : httpRequest.getHeaders()) {
@@ -67,7 +67,7 @@ public class CookiePolicy implements HttpPipelinePolicy {
             for (Map.Entry<String, List<String>> entry : requestCookies.entrySet()) {
                 httpRequest.getHeaders().set(HttpHeaderName.fromString(entry.getKey()), entry.getValue());
             }
-        } catch (URISyntaxException | IOException e) {
+        } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }
     }
@@ -78,9 +78,9 @@ public class CookiePolicy implements HttpPipelinePolicy {
             responseHeaders.put(String.valueOf(header.getName()), header.getValues());
         }
         try {
-            final URI uri = httpRequest.getUrl().toURI();
+            final URI uri = httpRequest.getUri();
             cookies.put(uri, responseHeaders);
-        } catch (URISyntaxException | IOException e) {
+        } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }
         return response;

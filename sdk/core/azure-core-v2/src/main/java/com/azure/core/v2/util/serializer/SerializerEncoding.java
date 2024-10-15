@@ -6,6 +6,7 @@ package com.azure.core.v2.util.serializer;
 import com.azure.core.v2.util.CoreUtils;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.implementation.util.ImplUtils;
 import io.clientcore.core.util.ClientLogger;
 
 /**

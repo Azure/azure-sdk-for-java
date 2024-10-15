@@ -71,7 +71,7 @@ public final class AzureSasCredentialPolicy implements HttpPipelinePolicy {
     @Override
     public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
 
-        if (requireHttps && !"https".equals(httpRequest.getUrl().getProtocol())) {
+        if (requireHttps && !"https".equals(httpRequest.getUri().getScheme())) {
             throw LOGGER.logThrowableAsError(
                 new IllegalStateException("Shared access signature credentials require HTTPS to prevent leaking"
                     + " the shared access signature."));
@@ -82,8 +82,8 @@ public final class AzureSasCredentialPolicy implements HttpPipelinePolicy {
             signature = signature.substring(1);
         }
 
-        String query = httpRequest.getUrl().getQuery();
-        String url = httpRequest.getUrl().toString();
+        String query = httpRequest.getUri().getQuery();
+        String url = httpRequest.getUri().toString();
         if (query == null || query.isEmpty()) {
             if (url.endsWith("?")) {
                 url = url + signature;
@@ -93,7 +93,7 @@ public final class AzureSasCredentialPolicy implements HttpPipelinePolicy {
         } else {
             url = url + "&" + signature;
         }
-        httpRequest.setUrl(url);
+        httpRequest.setUri(url);
 
         return next.process();
     }

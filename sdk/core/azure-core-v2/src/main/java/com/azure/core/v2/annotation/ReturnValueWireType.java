@@ -4,7 +4,7 @@
 package com.azure.core.v2.annotation;
 
 import com.azure.core.v2.http.rest.Page;
-import io.clientcore.core.implementation.util.Base64Url;
+import io.clientcore.core.implementation.util.Base64Uri;
 import io.clientcore.core.implementation.util.DateTimeRfc1123;
 
 import java.lang.annotation.Retention;
@@ -19,7 +19,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * are:
  *
  * <ol>
- * <li>{@link Base64Url}</li>
+ * <li>{@link Base64Uri}</li>
  * <li>{@link DateTimeRfc1123}</li>
  * <li>{@link Page}</li>
  * <li>{@link List List&lt;T&gt;} where {@code T} can be one of the four values above.</li>

@@ -104,7 +104,7 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
 
     @Override
     public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
-        if (!"https".equals(httpRequest.getUrl().getProtocol())) {
+        if (!"https".equals(httpRequest.getUri().getScheme())) {
             throw LOGGER.logThrowableAsError(
                 new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
         }

@@ -3,7 +3,7 @@
 
 package com.azure.core.v2.http.policy;
 
-import io.clientcore.core.implementation.util.UrlBuilder;
+import io.clientcore.core.implementation.util.UriBuilder;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
@@ -11,6 +11,7 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 
 /**
  * The {@code ProtocolPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy is
@@ -52,13 +53,13 @@ public class ProtocolPolicy implements HttpPipelinePolicy {
 
     @Override
     public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
-        final UrlBuilder urlBuilder = UrlBuilder.parse(httpRequest.getUrl());
+        final UriBuilder urlBuilder = UriBuilder.parse(httpRequest.getUri());
         if (overwrite || urlBuilder.getScheme() == null) {
             LOGGER.atVerbose().addKeyValue("protocol", protocol).log("Setting protocol");
 
             try {
-                httpRequest.setUrl(urlBuilder.setScheme(protocol).toUrl());
-            } catch (MalformedURLException e) {
+                httpRequest.setUri(urlBuilder.setScheme(protocol).toUri());
+            } catch (URISyntaxException e) {
                 throw LOGGER.logThrowableAsError(
                     new RuntimeException("Failed to set the HTTP request protocol to " + protocol + ".", e));
             }

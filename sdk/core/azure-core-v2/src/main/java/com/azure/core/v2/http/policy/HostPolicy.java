@@ -3,15 +3,14 @@
 
 package com.azure.core.v2.http.policy;
 
-import io.clientcore.core.implementation.util.UrlBuilder;
-import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
-import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
-import java.net.MalformedURLException;
+import io.clientcore.core.implementation.util.UriBuilder;
+import io.clientcore.core.util.ClientLogger;
+import java.net.URISyntaxException;
 
 /**
  * The {@code HostPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy is used
@@ -51,10 +50,10 @@ public class HostPolicy implements HttpPipelinePolicy {
     public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         LOGGER.atVerbose().addKeyValue("host", host).log("Setting host");
 
-        final UrlBuilder urlBuilder = UrlBuilder.parse(httpRequest.getUrl());
+        final UriBuilder urlBuilder = UriBuilder.parse(httpRequest.getUri());
         try {
-            httpRequest.setUrl(urlBuilder.setHost(host).toUrl());
-        } catch (MalformedURLException e) {
+            httpRequest.setUri(urlBuilder.setHost(host).toUri());
+        } catch (URISyntaxException e) {
             throw LOGGER.logThrowableAsError(new RuntimeException(String.format("Host URL '%s' is invalid.", host), e));
         }
         return next.process();

@@ -3,7 +3,7 @@
 
 package com.azure.core.v2.http.policy;
 
-import io.clientcore.core.implementation.util.UrlBuilder;
+import io.clientcore.core.implementation.util.UriBuilder;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
@@ -11,6 +11,7 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 
 /**
  * The {@code PortPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy is used
@@ -28,7 +29,7 @@ import java.net.MalformedURLException;
  * <!-- src_embed com.azure.core.http.policy.PortPolicy.constructor -->
  * <!-- end com.azure.core.http.policy.PortPolicy.constructor -->
  *
- * @see com.azure.core.http.policy
+ * @see com.azure.core.v2.http.policy
  * @see HttpPipelinePolicy
  * @see HttpPipeline
  * @see HttpRequest
@@ -53,13 +54,13 @@ public class PortPolicy implements HttpPipelinePolicy {
 
     @Override
     public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
-        final UrlBuilder urlBuilder = UrlBuilder.parse(httpRequest.getUrl());
+        final UriBuilder urlBuilder = UriBuilder.parse(httpRequest.getUri());
         if (overwrite || urlBuilder.getPort() == null) {
             LOGGER.atVerbose().addKeyValue("port", port).log("Changing host");
 
             try {
-                httpRequest.setUrl(urlBuilder.setPort(port).toUrl());
-            } catch (MalformedURLException e) {
+                httpRequest.setUri(urlBuilder.setPort(port).toUri());
+            } catch (URISyntaxException e) {
                 throw LOGGER.logThrowableAsError(
                     new RuntimeException("Failed to set the HTTP request port to " + port + ".", e));
             }
