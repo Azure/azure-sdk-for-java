@@ -22,7 +22,7 @@ import java.util.Map;
 @ServiceClientBuilder(serviceClients = { RealtimeAsyncClient.class, RealtimeClient.class })
 public class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientBuilder> {
 
-    private static final String OPENAI_BASE_URL = "https://api.openai.com";
+    private static final String OPENAI_BASE_URL = "wss://api.openai.com";
 
     private static final ClientLogger LOGGER = new ClientLogger(RealtimeClientBuilder.class);
 
