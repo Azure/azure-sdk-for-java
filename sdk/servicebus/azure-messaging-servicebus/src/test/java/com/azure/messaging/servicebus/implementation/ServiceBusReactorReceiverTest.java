@@ -72,8 +72,6 @@ class ServiceBusReactorReceiverTest {
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
     private final AmqpRetryPolicy retryPolicy = new FixedAmqpRetryPolicy(retryOptions);
     @Mock
-    private ReceiveLinkHandler receiveLinkHandler;
-    @Mock
     private AmqpConnection connection;
 
     private ServiceBusReactorReceiver reactorReceiver;
@@ -95,17 +93,24 @@ class ServiceBusReactorReceiverTest {
             return null;
         }).when(reactorDispatcher).invoke(any(), any());
 
-        when(receiveLinkHandler.getDeliveredMessages()).thenReturn(deliveryProcessor);
-        when(receiveLinkHandler.getLinkName()).thenReturn(LINK_NAME);
-        when(receiveLinkHandler.getEndpointStates()).thenReturn(endpointStates);
+        ReceiveLinkHandler receiveLinkHandler = new ReceiveLinkHandler(CONNECTION_ID, "", LINK_NAME, "", null) {
+            @Override
+            public Flux<Delivery> getDeliveredMessages() {
+                return deliveryProcessor;
+            }
+
+            @Override
+            public Flux<EndpointState> getEndpointStates() {
+                return endpointStates;
+            }
+        };
 
         when(tokenManager.getAuthorizationResults()).thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.OK)));
-        when(receiveLinkHandler.getConnectionId()).thenReturn(CONNECTION_ID);
 
         when(connection.getShutdownSignals()).thenReturn(Flux.never());
 
-        reactorReceiver = new ServiceBusReactorReceiver(connection, ENTITY_PATH, receiver, new ReceiveLinkHandlerWrapper(receiveLinkHandler),
-            tokenManager, reactorDispatcher, retryOptions);
+        reactorReceiver = new ServiceBusReactorReceiver(connection, ENTITY_PATH, receiver,
+            new ReceiveLinkHandlerWrapper(receiveLinkHandler), tokenManager, reactorDispatcher, retryOptions);
     }
 
     @AfterEach
