@@ -15,19 +15,17 @@ import java.util.Map;
 
 class AzureServiceBusJmsPropertiesEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
-    static final int ORDER = ConfigDataEnvironmentPostProcessor.ORDER + 3;
-
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
         if (!environment.containsProperty("spring.jms.servicebus.pool.enabled") && !environment.containsProperty("spring.jms.cache.enabled")) {
-            Map<String, Object> servicebusJmsMode = new HashMap<>();
-            servicebusJmsMode.put("spring.jms.servicebus.pool.enabled", "true");
-            environment.getPropertySources().addFirst(new MapPropertySource("servicebusJmsMode", servicebusJmsMode));
+            Map<String, Object> azureServiceBusJms = new HashMap<>();
+            azureServiceBusJms.put("spring.jms.servicebus.pool.enabled", "true");
+            environment.getPropertySources().addFirst(new MapPropertySource("azureServiceBusJms", azureServiceBusJms));
         }
     }
 
     @Override
     public int getOrder() {
-        return ORDER;
+        return Ordered.LOWEST_PRECEDENCE;
     }
 }
