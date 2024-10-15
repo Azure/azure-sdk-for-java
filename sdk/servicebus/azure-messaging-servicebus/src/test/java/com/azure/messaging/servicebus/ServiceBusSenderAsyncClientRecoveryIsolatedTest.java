@@ -44,8 +44,6 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
@@ -112,12 +110,6 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
         .setDelay(Duration.ofSeconds(1))
         .setTryTimeout(OPERATION_TIMEOUT);
     private final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
-    @Mock
-    private Runnable onClientClosed;
-    @Captor
-    private ArgumentCaptor<List<Message>> sendMessagesCaptor0;
-    @Captor
-    private ArgumentCaptor<List<Message>> sendMessagesCaptor1;
 
     private AutoCloseable mocksCloseable;
 
@@ -134,9 +126,24 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    private ArgumentCaptor<List<Message>> createSendMessagesCaptor0() {
+        return ArgumentCaptor.forClass(List.class);
+    }
+
+    @SuppressWarnings("unchecked")
+    private ArgumentCaptor<List<Message>> createSendMessagesCaptor1() {
+        return ArgumentCaptor.forClass(List.class);
+    }
+
     @Test
     @Execution(ExecutionMode.SAME_THREAD)
     void shouldRecoverFromRetriableSendLinkError() {
+        //
+        final Runnable onClientClosed = mock(Runnable.class);
+        final ArgumentCaptor<List<Message>> sendMessagesCaptor0 = createSendMessagesCaptor0();
+        final ArgumentCaptor<List<Message>> sendMessagesCaptor1 =  createSendMessagesCaptor1();
+        //
         // A Connection with one Session and two AmqpSendLink in that Session.
         final int sessionsCnt = 1;
         final int[] linksPerSession = new int[] { 2 };
@@ -172,7 +179,7 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             final List<ServiceBusMessage> messagesToSend = createMessagesToSend(messagesCount);
 
             final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache = createConnectionCache(connectionSupplier);
-            final ServiceBusSenderAsyncClient sender = createSenderAsyncClient(connectionCache, false);
+            final ServiceBusSenderAsyncClient sender = createSenderAsyncClient(connectionCache, onClientClosed, false);
             try {
                 // The Producer.send that internally attempt to use the first AmqpSendLink, but upon transient-error
                 // on the first link, the retry obtains and uses second AmqpSendLink.
@@ -202,6 +209,11 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
     @Test
     @Execution(ExecutionMode.SAME_THREAD)
     void shouldBubbleUpNonRetriableSendLinkError() {
+        //
+        final Runnable onClientClosed = mock(Runnable.class);
+        final ArgumentCaptor<List<Message>> sendMessagesCaptor0 = createSendMessagesCaptor0();
+        final ArgumentCaptor<List<Message>> sendMessagesCaptor1 =  createSendMessagesCaptor1();
+        //
         // A Connection with one Session and two AmqpSendLink in that Session.
         final int sessionsCnt = 1;
         final int[] linksPerSession = new int[] { 2 };
@@ -240,7 +252,7 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             final List<ServiceBusMessage> messagesToSend = createMessagesToSend(messagesCount);
 
             final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache = createConnectionCache(connectionSupplier);
-            final ServiceBusSenderAsyncClient sender = createSenderAsyncClient(connectionCache, false);
+            final ServiceBusSenderAsyncClient sender = createSenderAsyncClient(connectionCache, onClientClosed, false);
             try {
                 // The Producer.send that internally attempt to use the first AmqpSendLink, but upon transient-error
                 // on the first link, the retry obtains second AmqpSendLink, which has non-transient-error.
@@ -275,6 +287,11 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
     @Test
     @Execution(ExecutionMode.SAME_THREAD)
     void shouldRecoverFromRetriableSessionError() {
+        //
+        final Runnable onClientClosed = mock(Runnable.class);
+        final ArgumentCaptor<List<Message>> sendMessagesCaptor0 = createSendMessagesCaptor0();
+        final ArgumentCaptor<List<Message>> sendMessagesCaptor1 =  createSendMessagesCaptor1();
+        //
         // A Connection with two Session and one AmqpSendLink per Session.
         final int sessionsCnt = 2;
         final int[] linksPerSession = new int[] { 1, 1 };
@@ -312,7 +329,7 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             final List<ServiceBusMessage> messagesToSend = createMessagesToSend(messagesCount);
 
             final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache = createConnectionCache(connectionSupplier);
-            final ServiceBusSenderAsyncClient sender = createSenderAsyncClient(connectionCache, false);
+            final ServiceBusSenderAsyncClient sender = createSenderAsyncClient(connectionCache, onClientClosed, false);
             try {
                 // The Producer.send that internally attempt to use AmqpSendLink in the first Session, but upon
                 // transient-error on the first session, the retry obtains second Session and uses AmqpSendLink in it.
@@ -341,6 +358,11 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
     @Test
     @Execution(ExecutionMode.SAME_THREAD)
     void shouldBubbleUpNonRetriableSessionError() {
+        //
+        final Runnable onClientClosed = mock(Runnable.class);
+        final ArgumentCaptor<List<Message>> sendMessagesCaptor0 = createSendMessagesCaptor0();
+        final ArgumentCaptor<List<Message>> sendMessagesCaptor1 =  createSendMessagesCaptor1();
+        //
         // A Connection with two Session and one AmqpSendLink per Session.
         final int sessionsCnt = 2;
         final int[] linksPerSession = new int[] { 1, 1 };
@@ -379,7 +401,7 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             final List<ServiceBusMessage> messagesToSend = createMessagesToSend(messagesCount);
 
             final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache = createConnectionCache(connectionSupplier);
-            final ServiceBusSenderAsyncClient sender = createSenderAsyncClient(connectionCache, false);
+            final ServiceBusSenderAsyncClient sender = createSenderAsyncClient(connectionCache, onClientClosed, false);
             try {
                 // The Producer.send that internally attempt to use AmqpSendLink in the first Session, but upon
                 // transient-error on the first session, the retry obtains second Session which has non-transient error.
@@ -414,6 +436,11 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
     @Test
     @Execution(ExecutionMode.SAME_THREAD)
     void shouldSenderReusableAfterNonRetriableLinkAndSessionError() {
+        //
+        final Runnable onClientClosed = mock(Runnable.class);
+        final ArgumentCaptor<List<Message>> sendMessagesCaptor0 = createSendMessagesCaptor0();
+        final ArgumentCaptor<List<Message>> sendMessagesCaptor1 =  createSendMessagesCaptor1();
+        //
         // A Connection with three Session and one AmqpSendLink per Session.
         final int sessionsCnt = 3;
         final int[] linksPerSession = new int[] { 1, 1, 1 };
@@ -476,7 +503,7 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             final ServiceBusMessage messageToSend = createMessageToSend();
 
             final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache = createConnectionCache(connectionSupplier);
-            final ServiceBusSenderAsyncClient sender = createSenderAsyncClient(connectionCache, false);
+            final ServiceBusSenderAsyncClient sender = createSenderAsyncClient(connectionCache, onClientClosed, false);
             try {
                 // The Producer.send that internally attempt to use AmqpSendLink in the first Session, but fails
                 // with a non-transient-error on the AmqpSendLink.
@@ -532,6 +559,11 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
     @Test
     @Execution(ExecutionMode.SAME_THREAD)
     void shouldRecoverFromRetriableConnectionError() {
+        //
+        final Runnable onClientClosed = mock(Runnable.class);
+        final ArgumentCaptor<List<Message>> sendMessagesCaptor0 = createSendMessagesCaptor0();
+        final ArgumentCaptor<List<Message>> sendMessagesCaptor1 =  createSendMessagesCaptor1();
+        //
         final int endpointsCount = 4;
         final List<SessionLinkCount> sessionLinkCountList = new ArrayList<>(endpointsCount);
         sessionLinkCountList.add(new SessionLinkCount(1, new int[] { 1 }));
@@ -605,7 +637,7 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             final List<ServiceBusMessage> messagesToSend = createMessagesToSend(messagesCount);
 
             final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache = createConnectionCache(connectionSupplier);
-            final ServiceBusSenderAsyncClient sender = createSenderAsyncClient(connectionCache, false);
+            final ServiceBusSenderAsyncClient sender = createSenderAsyncClient(connectionCache, onClientClosed, false);
             try {
                 try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
                     verifier.create(() -> sender.sendMessages(messagesToSend))
@@ -658,7 +690,7 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
     }
 
     private ServiceBusSenderAsyncClient createSenderAsyncClient(
-        ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache, boolean isSharedConnection) {
+        ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache, Runnable onClientClosed, boolean isSharedConnection) {
         final ConnectionCacheWrapper connectionSupport = new ConnectionCacheWrapper(connectionCache);
         return new ServiceBusSenderAsyncClient(QUEUE_NAME, MessagingEntityType.QUEUE, connectionSupport, RETRY_OPTIONS,
             DEFAULT_INSTRUMENTATION, messageSerializer, onClientClosed, "", CLIENT_IDENTIFIER);
@@ -900,20 +932,20 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
 
         @Override
         public void close() {
-            Mockito.framework().clearInlineMock(connectionOptions);
-            Mockito.framework().clearInlineMock(connection);
-            Mockito.framework().clearInlineMock(connectionHandler);
-            Mockito.framework().clearInlineMock(reactor);
-            Mockito.framework().clearInlineMock(reactorDispatcher);
-            Mockito.framework().clearInlineMock(reactorExecutor);
-            Mockito.framework().clearInlineMock(reactorProvider);
-            Mockito.framework().clearInlineMock(handlerProvider);
-            Mockito.framework().clearInlineMock(linkProvider);
-            Mockito.framework().clearInlineMock(tokenManager);
-            Mockito.framework().clearInlineMock(tokenManagerProvider);
-            Mockito.framework().clearInlineMock(messageSerializer);
-
-            mockSendSessions.close();
+//            Mockito.framework().clearInlineMock(connectionOptions);
+//            Mockito.framework().clearInlineMock(connection);
+//            Mockito.framework().clearInlineMock(connectionHandler);
+//            Mockito.framework().clearInlineMock(reactor);
+//            Mockito.framework().clearInlineMock(reactorDispatcher);
+//            Mockito.framework().clearInlineMock(reactorExecutor);
+//            Mockito.framework().clearInlineMock(reactorProvider);
+//            Mockito.framework().clearInlineMock(handlerProvider);
+//            Mockito.framework().clearInlineMock(linkProvider);
+//            Mockito.framework().clearInlineMock(tokenManager);
+//            Mockito.framework().clearInlineMock(tokenManagerProvider);
+//            Mockito.framework().clearInlineMock(messageSerializer);
+//
+//            mockSendSessions.close();
         }
     }
 
@@ -1214,14 +1246,14 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
 
         @Override
         public void close() {
-            Mockito.framework().clearInlineMock(session);
-            Mockito.framework().clearInlineMock(sessionAttachments);
-            Mockito.framework().clearInlineMock(sessionHandler);
-
-            for (MockSendLink sendLink : mockSendLinks) {
-                sendLink.close();
-            }
-            terminalMockSendLink.close();
+//            Mockito.framework().clearInlineMock(session);
+//            Mockito.framework().clearInlineMock(sessionAttachments);
+//            Mockito.framework().clearInlineMock(sessionHandler);
+//
+//            for (MockSendLink sendLink : mockSendLinks) {
+//                sendLink.close();
+//            }
+//            terminalMockSendLink.close();
         }
     }
 
@@ -1305,10 +1337,10 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
 
         @Override
         public void close() {
-            Mockito.framework().clearInlineMock(sender);
-            Mockito.framework().clearInlineMock(senderAttachments);
-            Mockito.framework().clearInlineMock(amqpSendLink);
-            Mockito.framework().clearInlineMock(sendLinkHandler);
+//            Mockito.framework().clearInlineMock(sender);
+//            Mockito.framework().clearInlineMock(senderAttachments);
+//            Mockito.framework().clearInlineMock(amqpSendLink);
+//            Mockito.framework().clearInlineMock(sendLinkHandler);
         }
     }
 }

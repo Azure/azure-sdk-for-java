@@ -23,7 +23,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
-import org.mockito.Mock;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.EmitterProcessor;
@@ -49,6 +51,8 @@ import static org.mockito.Mockito.when;
 /**
  * Tests for {@link ServiceBusReactorReceiver}
  */
+@Execution(ExecutionMode.SAME_THREAD)
+@Isolated
 class ServiceBusReactorReceiverTest {
     private static final String ENTITY_PATH = "queue-name";
     private static final String LINK_NAME = "a-link-name";
@@ -61,22 +65,9 @@ class ServiceBusReactorReceiverTest {
 
     private final EmitterProcessor<Delivery> deliveryProcessor = EmitterProcessor.create();
 
-    @Mock
-    private Receiver receiver;
-    @Mock
-    private TokenManager tokenManager;
-    @Mock
-    private ReactorProvider reactorProvider;
-    @Mock
-    private ReactorDispatcher reactorDispatcher;
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
     private final AmqpRetryPolicy retryPolicy = new FixedAmqpRetryPolicy(retryOptions);
-    @Mock
-    private ReceiveLinkHandler receiveLinkHandler;
-    @Mock
-    private AmqpConnection connection;
 
-    private ServiceBusReactorReceiver reactorReceiver;
     private AutoCloseable openMocks;
 
     @BeforeEach
@@ -84,6 +75,32 @@ class ServiceBusReactorReceiverTest {
         LOGGER.info("[{}] Setting up.", testInfo.getDisplayName());
 
         openMocks = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void teardown(TestInfo testInfo) throws Exception {
+        LOGGER.info("[{}] Tearing down.", testInfo.getDisplayName());
+
+        Mockito.framework().clearInlineMock(this);
+        if (openMocks != null) {
+            openMocks.close();
+        }
+    }
+
+    /**
+     * Gets the session id for a sessionful receiver.
+     */
+    @Test
+    @Execution(ExecutionMode.SAME_THREAD)
+    void getsSessionId() throws IOException {
+        // Arrange
+        //
+        final Receiver receiver = mock(Receiver.class);
+        final TokenManager tokenManager = mock(TokenManager.class);
+        final ReactorProvider reactorProvider = mock(ReactorProvider.class);
+        final ReactorDispatcher reactorDispatcher = mock(ReactorDispatcher.class);
+        final ReceiveLinkHandler receiveLinkHandler = mock(ReceiveLinkHandler.class);
+        final AmqpConnection connection = mock(AmqpConnection.class);
 
         doAnswer(invocation -> {
             LOGGER.info("Running work on dispatcher.");
@@ -104,24 +121,9 @@ class ServiceBusReactorReceiverTest {
 
         when(connection.getShutdownSignals()).thenReturn(Flux.never());
 
-        reactorReceiver = new ServiceBusReactorReceiver(connection, ENTITY_PATH, receiver, new ReceiveLinkHandlerWrapper(receiveLinkHandler),
+        final ServiceBusReactorReceiver reactorReceiver = new ServiceBusReactorReceiver(connection, ENTITY_PATH, receiver, new ReceiveLinkHandlerWrapper(receiveLinkHandler),
             tokenManager, reactorDispatcher, retryOptions);
-    }
-
-    @AfterEach
-    void teardown(TestInfo testInfo) throws Exception {
-        LOGGER.info("[{}] Tearing down.", testInfo.getDisplayName());
-
-        openMocks.close();
-        Mockito.framework().clearInlineMock(this);
-    }
-
-    /**
-     * Gets the session id for a sessionful receiver.
-     */
-    @Test
-    void getsSessionId() {
-        // Arrange
+        //
         final String actualSession = "a-session-id-from-service";
         final Map<Symbol, Object> properties = new HashMap<>();
         properties.put(SESSION_FILTER, actualSession);
@@ -142,8 +144,39 @@ class ServiceBusReactorReceiverTest {
      * A non session receive link does not have a session id.
      */
     @Test
-    void sessionReceiverNoSessionId() {
+    @Execution(ExecutionMode.SAME_THREAD)
+    void sessionReceiverNoSessionId() throws IOException {
         // Arrange
+        //
+        final Receiver receiver = mock(Receiver.class);
+        final TokenManager tokenManager = mock(TokenManager.class);
+        final ReactorProvider reactorProvider = mock(ReactorProvider.class);
+        final ReactorDispatcher reactorDispatcher = mock(ReactorDispatcher.class);
+        final ReceiveLinkHandler receiveLinkHandler = mock(ReceiveLinkHandler.class);
+        final AmqpConnection connection = mock(AmqpConnection.class);
+
+        doAnswer(invocation -> {
+            LOGGER.info("Running work on dispatcher.");
+            return null;
+        }).when(reactorDispatcher).invoke(any());
+
+        doAnswer(invocation -> {
+            LOGGER.info("Running work on dispatcher.");
+            return null;
+        }).when(reactorDispatcher).invoke(any(), any());
+
+        when(receiveLinkHandler.getDeliveredMessages()).thenReturn(deliveryProcessor);
+        when(receiveLinkHandler.getLinkName()).thenReturn(LINK_NAME);
+        when(receiveLinkHandler.getEndpointStates()).thenReturn(endpointStates);
+
+        when(tokenManager.getAuthorizationResults()).thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.OK)));
+        when(receiveLinkHandler.getConnectionId()).thenReturn(CONNECTION_ID);
+
+        when(connection.getShutdownSignals()).thenReturn(Flux.never());
+
+        final ServiceBusReactorReceiver reactorReceiver = new ServiceBusReactorReceiver(connection, ENTITY_PATH, receiver, new ReceiveLinkHandlerWrapper(receiveLinkHandler),
+            tokenManager, reactorDispatcher, retryOptions);
+        //
         final Map<Symbol, Object> properties = new HashMap<>();
 
         final Source remoteSource = mock(Source.class);
@@ -161,8 +194,39 @@ class ServiceBusReactorReceiverTest {
      * Gets locked until for sessioned receiver.
      */
     @Test
-    void getSessionLockedUntil() {
+    @Execution(ExecutionMode.SAME_THREAD)
+    void getSessionLockedUntil() throws IOException {
         // Arrange
+        //
+        final Receiver receiver = mock(Receiver.class);
+        final TokenManager tokenManager = mock(TokenManager.class);
+        final ReactorProvider reactorProvider = mock(ReactorProvider.class);
+        final ReactorDispatcher reactorDispatcher = mock(ReactorDispatcher.class);
+        final ReceiveLinkHandler receiveLinkHandler = mock(ReceiveLinkHandler.class);
+        final AmqpConnection connection = mock(AmqpConnection.class);
+
+        doAnswer(invocation -> {
+            LOGGER.info("Running work on dispatcher.");
+            return null;
+        }).when(reactorDispatcher).invoke(any());
+
+        doAnswer(invocation -> {
+            LOGGER.info("Running work on dispatcher.");
+            return null;
+        }).when(reactorDispatcher).invoke(any(), any());
+
+        when(receiveLinkHandler.getDeliveredMessages()).thenReturn(deliveryProcessor);
+        when(receiveLinkHandler.getLinkName()).thenReturn(LINK_NAME);
+        when(receiveLinkHandler.getEndpointStates()).thenReturn(endpointStates);
+
+        when(tokenManager.getAuthorizationResults()).thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.OK)));
+        when(receiveLinkHandler.getConnectionId()).thenReturn(CONNECTION_ID);
+
+        when(connection.getShutdownSignals()).thenReturn(Flux.never());
+
+        final ServiceBusReactorReceiver reactorReceiver = new ServiceBusReactorReceiver(connection, ENTITY_PATH, receiver, new ReceiveLinkHandlerWrapper(receiveLinkHandler),
+            tokenManager, reactorDispatcher, retryOptions);
+        //
         // 2020-04-28 06:42:27
         final long ticks = 637236529470000000L;
         final OffsetDateTime lockedUntil = Instant.ofEpochSecond(1588056147L).atOffset(ZoneOffset.UTC);

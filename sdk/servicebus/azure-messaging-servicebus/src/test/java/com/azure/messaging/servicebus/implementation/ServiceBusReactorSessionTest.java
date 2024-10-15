@@ -37,8 +37,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
@@ -64,6 +66,8 @@ import static org.mockito.Mockito.when;
 /**
  * Test for {@link ServiceBusReactorSession}.
  */
+@Execution(ExecutionMode.SAME_THREAD)
+@Isolated
 public class ServiceBusReactorSessionTest {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReactorSessionTest.class);
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
@@ -81,9 +85,6 @@ public class ServiceBusReactorSessionTest {
     private static final String VIA_ENTITY_PATH = "viaEntityPath";
     private static final String VIA_ENTITY_PATH_SENDER_LINK_NAME = "VIA-" + VIA_ENTITY_PATH;
     private static final String CLIENT_IDENTIFIER = "clientIdentifier";
-
-    @Captor
-    private ArgumentCaptor<Runnable> dispatcherCaptor;
 
     private ServiceBusReactorSession serviceBusReactorSession;
     private final ServiceBusAmqpLinkProvider linkProvider = new ServiceBusAmqpLinkProvider();
@@ -106,10 +107,16 @@ public class ServiceBusReactorSessionTest {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    private Mono<ClaimsBasedSecurityNode> getCbsNodeSupplier() {
+        return  mock(Mono.class);
+    }
+
     /**
      * Test for create Sender Link when via-queue is used.
      */
     @Test
+    @Execution(ExecutionMode.SAME_THREAD)
     void createViaSenderLink() throws IOException {
         // Arrange
         //
@@ -120,7 +127,7 @@ public class ServiceBusReactorSessionTest {
         final ReactorProvider reactorProvider = mock(ReactorProvider.class);
         final ReactorHandlerProvider handlerProvider = mock(ReactorHandlerProvider.class);
         final Session session = mock(Session.class);
-        final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier = mock(Mono.class);
+        final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier = getCbsNodeSupplier();
         final TokenManager tokenManagerViaQueue = mock(TokenManager.class);
         final TokenManager tokenManagerEntity = mock(TokenManager.class);
         final SessionHandler handler = mock(SessionHandler.class);
@@ -131,6 +138,7 @@ public class ServiceBusReactorSessionTest {
         final SendLinkHandler sendEntityLinkHandler = mock(SendLinkHandler.class);
         final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
         final AmqpConnection connection = mock(AmqpConnection.class);
+        final ArgumentCaptor<Runnable> dispatcherCaptor = ArgumentCaptor.forClass(Runnable.class);
 
         when(tokenManagerEntity.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
         when(tokenManagerViaQueue.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
@@ -225,6 +233,7 @@ public class ServiceBusReactorSessionTest {
      * Test for create Sender Link when via-queue is used but `transferEntityPath` authorization fails.
      */
     @Test
+    @Execution(ExecutionMode.SAME_THREAD)
     void createViaSenderLinkDestinationEntityAuthorizeFails() throws IOException {
         // Arrange
         //
@@ -235,7 +244,7 @@ public class ServiceBusReactorSessionTest {
         final ReactorProvider reactorProvider = mock(ReactorProvider.class);
         final ReactorHandlerProvider handlerProvider = mock(ReactorHandlerProvider.class);
         final Session session = mock(Session.class);
-        final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier = mock(Mono.class);
+        final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier = getCbsNodeSupplier();
         final TokenManager tokenManagerViaQueue = mock(TokenManager.class);
         final TokenManager tokenManagerEntity = mock(TokenManager.class);
         final SessionHandler handler = mock(SessionHandler.class);
@@ -246,6 +255,7 @@ public class ServiceBusReactorSessionTest {
         final SendLinkHandler sendEntityLinkHandler = mock(SendLinkHandler.class);
         final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
         final AmqpConnection connection = mock(AmqpConnection.class);
+        final ArgumentCaptor<Runnable> dispatcherCaptor = ArgumentCaptor.forClass(Runnable.class);
 
         when(tokenManagerEntity.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
         when(tokenManagerViaQueue.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
@@ -334,6 +344,7 @@ public class ServiceBusReactorSessionTest {
      * Test for create Sender Link.
      */
     @Test
+    @Execution(ExecutionMode.SAME_THREAD)
     void createSenderLink() throws IOException {
         // Arrange
         //
@@ -344,7 +355,7 @@ public class ServiceBusReactorSessionTest {
         final ReactorProvider reactorProvider = mock(ReactorProvider.class);
         final ReactorHandlerProvider handlerProvider = mock(ReactorHandlerProvider.class);
         final Session session = mock(Session.class);
-        final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier = mock(Mono.class);
+        final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier = getCbsNodeSupplier();
         final TokenManager tokenManagerViaQueue = mock(TokenManager.class);
         final TokenManager tokenManagerEntity = mock(TokenManager.class);
         final SessionHandler handler = mock(SessionHandler.class);
@@ -355,6 +366,7 @@ public class ServiceBusReactorSessionTest {
         final SendLinkHandler sendEntityLinkHandler = mock(SendLinkHandler.class);
         final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
         final AmqpConnection connection = mock(AmqpConnection.class);
+        final ArgumentCaptor<Runnable> dispatcherCaptor = ArgumentCaptor.forClass(Runnable.class);
 
         when(tokenManagerEntity.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
         when(tokenManagerViaQueue.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
@@ -447,6 +459,7 @@ public class ServiceBusReactorSessionTest {
      * Test for create Sender Link.
      */
     @Test
+    @Execution(ExecutionMode.SAME_THREAD)
     void createCoordinatorLink() throws IOException {
         // Arrange
         //
@@ -457,7 +470,7 @@ public class ServiceBusReactorSessionTest {
         final ReactorProvider reactorProvider = mock(ReactorProvider.class);
         final ReactorHandlerProvider handlerProvider = mock(ReactorHandlerProvider.class);
         final Session session = mock(Session.class);
-        final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier = mock(Mono.class);
+        final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier = getCbsNodeSupplier();
         final TokenManager tokenManagerViaQueue = mock(TokenManager.class);
         final TokenManager tokenManagerEntity = mock(TokenManager.class);
         final SessionHandler handler = mock(SessionHandler.class);
@@ -468,6 +481,7 @@ public class ServiceBusReactorSessionTest {
         final SendLinkHandler sendEntityLinkHandler = mock(SendLinkHandler.class);
         final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
         final AmqpConnection connection = mock(AmqpConnection.class);
+        final ArgumentCaptor<Runnable> dispatcherCaptor = ArgumentCaptor.forClass(Runnable.class);
 
         when(tokenManagerEntity.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
         when(tokenManagerViaQueue.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));

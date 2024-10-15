@@ -40,8 +40,8 @@ class LockContainerTest {
     @Test
     void constructor() {
         //
-        final Consumer<String> onRemoved = mock(Consumer.class);
-        final LockContainer<String> container= new LockContainer<>(interval, onRemoved);
+        final Consumer<String> onRemoved = getOnRemovedConsumer();
+        final LockContainer<String> container = new LockContainer<>(interval, onRemoved);
         //
         assertThrows(NullPointerException.class, () -> new LockContainer<>(null));
         assertThrows(NullPointerException.class, () -> new LockContainer<>(interval, null));
@@ -53,12 +53,17 @@ class LockContainerTest {
         //
     }
 
+    @SuppressWarnings("unchecked")
+    private Consumer<String> getOnRemovedConsumer() {
+        return mock(Consumer.class);
+    }
+
     @Test
     void addsAndContains() {
         // Arrange
         //
-        final Consumer<String> onRemoved = mock(Consumer.class);
-        final LockContainer<String> container= new LockContainer<>(interval, onRemoved);
+        final Consumer<String> onRemoved = getOnRemovedConsumer();
+        final LockContainer<String> container = new LockContainer<>(interval, onRemoved);
         //
         final String key = "key1";
         final String value = "value";
@@ -82,8 +87,8 @@ class LockContainerTest {
     void addsAndUpdates() {
         // Arrange
         //
-        final Consumer<String> onRemoved = mock(Consumer.class);
-        final LockContainer<String> container= new LockContainer<>(interval, onRemoved);
+        final Consumer<String> onRemoved = getOnRemovedConsumer();
+        final LockContainer<String> container = new LockContainer<>(interval, onRemoved);
         //
         final String key = "key1";
         final String value = "value";
@@ -109,8 +114,8 @@ class LockContainerTest {
     void remove() {
         // Arrange
         //
-        final Consumer<String> onRemoved = mock(Consumer.class);
-        final LockContainer<String> container= new LockContainer<>(interval, onRemoved);
+        final Consumer<String> onRemoved = getOnRemovedConsumer();
+        final LockContainer<String> container = new LockContainer<>(interval, onRemoved);
         //
         final String key = "key1";
         final String value = "value";

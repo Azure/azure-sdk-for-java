@@ -90,10 +90,10 @@ class ServiceBusReceiverClientTest {
     void nullConstructor() {
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -107,14 +107,24 @@ class ServiceBusReceiverClientTest {
         assertThrows(NullPointerException.class, () -> new ServiceBusReceiverClient(asyncClient, false, null));
     }
 
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> getProperties() {
+        return mock(Map.class);
+    }
+
+    @SuppressWarnings("unchecked")
+    private Consumer<Throwable> getErrorConsumer() {
+        return mock(Consumer.class);
+    }
+
     @Test
     void properties() {
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -134,10 +144,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -158,10 +168,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -186,10 +196,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -213,10 +223,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -244,10 +254,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -283,10 +293,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -322,10 +332,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -359,10 +369,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -396,10 +406,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -433,10 +443,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -467,10 +477,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -495,10 +505,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -522,10 +532,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -549,10 +559,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -579,10 +589,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -608,10 +618,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -635,10 +645,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -669,10 +679,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -702,10 +712,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -731,10 +741,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -759,10 +769,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message3 = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -788,10 +798,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -816,10 +826,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message3 = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -849,10 +859,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -884,10 +894,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -944,10 +954,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -1004,10 +1014,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -1047,10 +1057,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -1074,10 +1084,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -1102,10 +1112,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message3 = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -1164,10 +1174,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -1226,10 +1236,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -1284,10 +1294,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message3 = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -1316,10 +1326,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message3 = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -1354,10 +1364,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -1382,10 +1392,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -1413,10 +1423,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -1442,10 +1452,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -1507,10 +1517,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         //
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final Map<String, Object> propertiesToModify = mock(Map.class);
+        final Map<String, Object> propertiesToModify = getProperties();
         final ServiceBusTransactionContext transactionContext = mock(ServiceBusTransactionContext.class);
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final Consumer<Throwable> onErrorConsumer = mock(Consumer.class);
+        final Consumer<Throwable> onErrorConsumer = getErrorConsumer();
         final ReceiverOptions sessionReceiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
