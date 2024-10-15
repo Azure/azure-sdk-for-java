@@ -14,7 +14,6 @@ import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRes
 import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult;
 import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
-import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -52,8 +51,9 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
 
         SyncPoller<KeyVaultBackupOperation, String> backupPoller =
             setPlaybackSyncPollerPollInterval(client.beginBackup(blobStorageUrl, sasToken));
+        PollResponse<KeyVaultBackupOperation> pollResponse = backupPoller.waitForCompletion();
 
-        backupPoller.waitForCompletion();
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
 
         String backupBlobUri = backupPoller.getFinalResult();
 
@@ -72,8 +72,9 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
         // Create a backup
         SyncPoller<KeyVaultBackupOperation, String> backupPoller =
             setPlaybackSyncPollerPollInterval(client.beginBackup(blobStorageUrl, sasToken));
+        PollResponse<KeyVaultBackupOperation> pollResponse = backupPoller.waitForCompletion();
 
-        backupPoller.waitForCompletion();
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
 
         // Restore the backup
         String backupFolderUrl = backupPoller.getFinalResult();
@@ -99,7 +100,6 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
     public void beginSelectiveKeyRestore(HttpClient httpClient) {
         KeyClient keyClient = new KeyClientBuilder()
             .vaultUrl(getEndpoint())
-            .serviceVersion(KeyServiceVersion.V7_2)
             .pipeline(getPipeline(httpClient, false))
             .buildClient();
 
@@ -115,20 +115,19 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
         // Create a backup
         SyncPoller<KeyVaultBackupOperation, String> backupPoller =
             setPlaybackSyncPollerPollInterval(client.beginBackup(blobStorageUrl, sasToken));
+        PollResponse<KeyVaultBackupOperation> backupPollResponse = backupPoller.waitForCompletion();
 
-        backupPoller.waitForCompletion();
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, backupPollResponse.getStatus());
 
         // Restore one key from said backup
         String backupFolderUrl = backupPoller.getFinalResult();
         SyncPoller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> selectiveKeyRestorePoller =
             setPlaybackSyncPollerPollInterval(client.beginSelectiveKeyRestore(createdKey.getName(), backupFolderUrl,
                 sasToken));
+        PollResponse<KeyVaultSelectiveKeyRestoreOperation> restorePollResponse =
+            selectiveKeyRestorePoller.waitForCompletion();
 
-        selectiveKeyRestorePoller.waitForCompletion();
-
-        PollResponse<KeyVaultSelectiveKeyRestoreOperation> response = selectiveKeyRestorePoller.poll();
-
-        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, restorePollResponse.getStatus());
 
         // For some reason, the service might still think a restore operation is running even after returning a success
         // signal. This gives it some time to "clear" the operation.

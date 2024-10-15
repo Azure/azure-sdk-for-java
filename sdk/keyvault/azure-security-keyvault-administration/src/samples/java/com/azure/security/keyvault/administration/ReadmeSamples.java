@@ -299,11 +299,10 @@ public class ReadmeSamples {
     public void beginBackup() {
         // BEGIN: readme-sample-beginBackup
         String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
-        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+        String sasToken = "<sas-token>";
 
         SyncPoller<KeyVaultBackupOperation, String> backupPoller =
             keyVaultBackupClient.beginBackup(blobStorageUrl, sasToken);
-
         PollResponse<KeyVaultBackupOperation> pollResponse = backupPoller.poll();
 
         System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
@@ -328,21 +327,20 @@ public class ReadmeSamples {
     public void beginRestore() {
         // BEGIN: readme-sample-beginRestore
         String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
-        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+        String sasToken = "<sas-token>";
 
-        SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> backupPoller =
+        SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller =
             keyVaultBackupClient.beginRestore(folderUrl, sasToken);
-
-        PollResponse<KeyVaultRestoreOperation> pollResponse = backupPoller.poll();
+        PollResponse<KeyVaultRestoreOperation> pollResponse = restorePoller.poll();
 
         System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
 
-        PollResponse<KeyVaultRestoreOperation> finalPollResponse = backupPoller.waitForCompletion();
+        PollResponse<KeyVaultRestoreOperation> finalPollResponse = restorePoller.waitForCompletion();
 
         if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
             System.out.printf("Backup restored successfully.%n");
         } else {
-            KeyVaultRestoreOperation operation = backupPoller.poll().getValue();
+            KeyVaultRestoreOperation operation = restorePoller.poll().getValue();
 
             System.out.printf("Restore failed with error: %s.%n", operation.getError().getMessage());
         }
@@ -355,22 +353,21 @@ public class ReadmeSamples {
     public void beginSelectiveKeyRestore() {
         // BEGIN: readme-sample-beginSelectiveKeyRestore
         String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
-        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+        String sasToken = "<sas-token>";
         String keyName = "myKey";
 
-        SyncPoller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> backupPoller =
+        SyncPoller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> restorePoller =
             keyVaultBackupClient.beginSelectiveKeyRestore(folderUrl, sasToken, keyName);
-
-        PollResponse<KeyVaultSelectiveKeyRestoreOperation> pollResponse = backupPoller.poll();
+        PollResponse<KeyVaultSelectiveKeyRestoreOperation> pollResponse = restorePoller.poll();
 
         System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
 
-        PollResponse<KeyVaultSelectiveKeyRestoreOperation> finalPollResponse = backupPoller.waitForCompletion();
+        PollResponse<KeyVaultSelectiveKeyRestoreOperation> finalPollResponse = restorePoller.waitForCompletion();
 
         if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
             System.out.printf("Key restored successfully.%n");
         } else {
-            KeyVaultSelectiveKeyRestoreOperation operation = backupPoller.poll().getValue();
+            KeyVaultSelectiveKeyRestoreOperation operation = restorePoller.poll().getValue();
 
             System.out.printf("Key restore failed with error: %s.%n", operation.getError().getMessage());
         }
@@ -383,7 +380,7 @@ public class ReadmeSamples {
     public void beginBackupAsync() {
         // BEGIN: readme-sample-beginBackupAsync
         String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
-        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+        String sasToken = "<sas-token>";
 
         keyVaultBackupAsyncClient.beginBackup(blobStorageUrl, sasToken)
             .setPollInterval(Duration.ofSeconds(1)) // You can set a custom polling interval.
@@ -403,7 +400,7 @@ public class ReadmeSamples {
     public void beginRestoreAsync() {
         // BEGIN: readme-sample-beginRestoreAsync
         String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
-        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+        String sasToken = "<sas-token>";
 
         keyVaultBackupAsyncClient.beginRestore(folderUrl, sasToken)
             .setPollInterval(Duration.ofSeconds(1)) // You can set a custom polling interval.
@@ -423,7 +420,7 @@ public class ReadmeSamples {
     public void beginSelectiveKeyRestoreAsync() {
         // BEGIN: readme-sample-beginSelectiveKeyRestoreAsync
         String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
-        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+        String sasToken = "<sas-token>";
         String keyName = "myKey";
 
         keyVaultBackupAsyncClient.beginSelectiveKeyRestore(folderUrl, sasToken, keyName)

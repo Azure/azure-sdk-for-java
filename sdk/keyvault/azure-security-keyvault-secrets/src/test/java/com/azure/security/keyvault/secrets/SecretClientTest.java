@@ -7,6 +7,8 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.secrets.implementation.models.KeyVaultErrorException;
@@ -27,6 +29,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SecretClientTest extends SecretClientTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(SecretClientTest.class);
+
     private SecretClient secretClient;
 
     @Override
@@ -42,6 +46,11 @@ public class SecretClientTest extends SecretClientTestBase {
         secretClient = getClientBuilder(buildSyncAssertingClient(interceptorManager.isPlaybackMode()
             ? interceptorManager.getPlaybackClient() : httpClient), testTenantId, getEndpoint(), serviceVersion)
             .buildClient();
+
+        if (!interceptorManager.isLiveMode()) {
+            // Remove `id` and `name` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
+        }
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
@@ -494,6 +503,6 @@ public class SecretClientTest extends SecretClientTestBase {
             }
         }
 
-        System.err.printf("Deleted Secret %s was not purged \n", secretName);
+        LOGGER.log(LogLevel.VERBOSE, () -> "Deleted Secret " + secretName + " was not purged");
     }
 }

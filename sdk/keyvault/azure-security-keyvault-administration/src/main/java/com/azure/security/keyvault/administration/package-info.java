@@ -326,11 +326,9 @@
  * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultBackupClient.beginBackup#String-String -->
  * <pre>
  * String blobStorageUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&quot;;
- * String sasToken = &quot;sv=2020-02-10&amp;ss=b&amp;srt=o&amp;sp=rwdlactfx&amp;se=2021-06-17T07:13:07Z&amp;st=2021-06-16T23:13:07Z&quot;
- *     + &quot;&amp;spr=https&amp;sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D&quot;;
+ * String sasToken = &quot;&lt;sas-token&gt;&quot;;
  *
  * SyncPoller&lt;KeyVaultBackupOperation, String&gt; backupPoller = client.beginBackup&#40;blobStorageUrl, sasToken&#41;;
- *
  * PollResponse&lt;KeyVaultBackupOperation&gt; pollResponse = backupPoller.poll&#40;&#41;;
  *
  * System.out.printf&#40;&quot;The current status of the operation is: %s.%n&quot;, pollResponse.getStatus&#40;&#41;&#41;;
@@ -368,22 +366,20 @@
  * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultBackupClient.beginRestore#String-String -->
  * <pre>
  * String folderUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&#47;mhsm-myaccount-2020090117323313&quot;;
- * String sasToken = &quot;sv=2020-02-10&amp;ss=b&amp;srt=o&amp;sp=rwdlactfx&amp;se=2021-06-17T07:13:07Z&amp;st=2021-06-16T23:13:07Z&quot;
- *     + &quot;&amp;spr=https&amp;sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D&quot;;
+ * String sasToken = &quot;&lt;sas-token&gt;&quot;;
  *
- * SyncPoller&lt;KeyVaultRestoreOperation, KeyVaultRestoreResult&gt; backupPoller =
+ * SyncPoller&lt;KeyVaultRestoreOperation, KeyVaultRestoreResult&gt; restorePoller =
  *     client.beginRestore&#40;folderUrl, sasToken&#41;;
- *
- * PollResponse&lt;KeyVaultRestoreOperation&gt; pollResponse = backupPoller.poll&#40;&#41;;
+ * PollResponse&lt;KeyVaultRestoreOperation&gt; pollResponse = restorePoller.poll&#40;&#41;;
  *
  * System.out.printf&#40;&quot;The current status of the operation is: %s.%n&quot;, pollResponse.getStatus&#40;&#41;&#41;;
  *
- * PollResponse&lt;KeyVaultRestoreOperation&gt; finalPollResponse = backupPoller.waitForCompletion&#40;&#41;;
+ * PollResponse&lt;KeyVaultRestoreOperation&gt; finalPollResponse = restorePoller.waitForCompletion&#40;&#41;;
  *
  * if &#40;finalPollResponse.getStatus&#40;&#41; == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41; &#123;
  *     System.out.printf&#40;&quot;Backup restored successfully.%n&quot;&#41;;
  * &#125; else &#123;
- *     KeyVaultRestoreOperation operation = backupPoller.poll&#40;&#41;.getValue&#40;&#41;;
+ *     KeyVaultRestoreOperation operation = restorePoller.poll&#40;&#41;.getValue&#40;&#41;;
  *
  *     System.out.printf&#40;&quot;Restore failed with error: %s.%n&quot;, operation.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
  * &#125;

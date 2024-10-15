@@ -42,6 +42,7 @@ public class CertificateClientBuilderTest {
             .vaultUrl(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient();
 
         assertNotNull(certificateClient);
@@ -53,6 +54,7 @@ public class CertificateClientBuilderTest {
         CertificateClient certificateClient = new CertificateClientBuilder()
             .vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient();
 
         assertNotNull(certificateClient);
@@ -65,6 +67,7 @@ public class CertificateClientBuilderTest {
             .vaultUrl(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient();
 
         assertNotNull(certificateAsyncClient);
@@ -76,6 +79,7 @@ public class CertificateClientBuilderTest {
         CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
             .vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient();
 
         assertNotNull(certificateAsyncClient);
@@ -147,6 +151,7 @@ public class CertificateClientBuilderTest {
             .credential(new TestUtils.TestCredential())
             .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
             .retryPolicy(new RetryPolicy())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient());
     }
 
@@ -159,6 +164,7 @@ public class CertificateClientBuilderTest {
             .credential(new TestUtils.TestCredential())
             .addPolicy(new TestUtils.PerCallPolicy())
             .addPolicy(new TestUtils.PerRetryPolicy())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient();
 
         HttpPipeline pipeline = certificateAsyncClient.getHttpPipeline();
