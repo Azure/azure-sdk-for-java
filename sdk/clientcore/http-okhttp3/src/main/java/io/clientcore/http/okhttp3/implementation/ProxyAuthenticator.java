@@ -63,6 +63,8 @@ public final class ProxyAuthenticator implements Authenticator {
     private static final ClientLogger LOGGER = new ClientLogger(ProxyAuthenticator.class);
 
     private final ChallengeHandler compositeChallengeHandler;
+    private final ProxyAuthenticationInfoInterceptor proxyInterceptor;
+    private String lastAuthorizationHeader;
 
     /**
      * Constructs a {@link ProxyAuthenticator} which handles authenticating against proxy servers.
@@ -71,6 +73,7 @@ public final class ProxyAuthenticator implements Authenticator {
      */
     public ProxyAuthenticator(ChallengeHandler compositeChallengeHandler) {
         this.compositeChallengeHandler = compositeChallengeHandler;
+        this.proxyInterceptor = new ProxyAuthenticationInfoInterceptor();
     }
 
     /**
@@ -80,7 +83,7 @@ public final class ProxyAuthenticator implements Authenticator {
      * @return An {@link Interceptor} that attempts to read headers from the response.
      */
     public Interceptor getProxyAuthenticationInfoInterceptor() {
-        return new ProxyAuthenticationInfoInterceptor(compositeChallengeHandler);
+        return this.proxyInterceptor;
     }
 
     /**
@@ -91,19 +94,30 @@ public final class ProxyAuthenticator implements Authenticator {
      */
     @Override
     public Request authenticate(Route route, Response response) {
+        // Handle preemptive authentication
         if (PREEMPTIVE_AUTHENTICATE.equalsIgnoreCase(response.message())) {
+            // If we have already authenticated, apply the stored Proxy-Authorization header.
+            if (lastAuthorizationHeader != null) {
+                return response.request().newBuilder()
+                    .header(PROXY_AUTHORIZATION, lastAuthorizationHeader)
+                    .build();
+            }
+            // If no previous authorization, return the request unchanged.
             return response.request();
         }
 
         Request.Builder requestBuilder = response.request().newBuilder();
         HttpRequest httpRequest = new HttpRequest(HttpMethod.valueOf(PROXY_METHOD), PROXY_URI_PATH);
-        HttpResponse<?> httpResponse = new HttpResponse<>(httpRequest, response.code(), OkHttpResponse.fromOkHttpHeaders(response.headers()), response.body());
+        HttpResponse<?> httpResponse = new HttpResponse<>(httpRequest, response.code(), OkHttpResponse.fromOkHttpHeaders(response.headers()), NO_BODY);
         String authorizationHeader;
+        ConcurrentHashMap<String, String> lastChallengeMap = proxyInterceptor.getLastChallenge();
 
-        compositeChallengeHandler.handleChallenge(httpRequest, httpResponse, null, 0, null);
+        compositeChallengeHandler.handleChallenge(httpRequest, httpResponse, null, 0, new AtomicReference<>(lastChallengeMap));
         authorizationHeader = httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
 
         if (authorizationHeader != null) {
+            // Store the Proxy-Authorization header for future preemptive requests.
+            lastAuthorizationHeader = authorizationHeader;
             requestBuilder.header(PROXY_AUTHORIZATION, authorizationHeader);
         }
 
@@ -115,18 +129,7 @@ public final class ProxyAuthenticator implements Authenticator {
      */
     private static class ProxyAuthenticationInfoInterceptor implements Interceptor {
         private static final String NONCE = "nonce";
-        private final ChallengeHandler compositeChallengeHandler;
-
-        /**
-         * Constructs an {@link Interceptor} which intercepts responses from the server when using proxy authentication
-         * in an attempt to retrieve authentication info response headers.
-         *
-         * @param compositeChallengeHandler {@link ChallengeHandler} that consumes authentication info response
-         * headers.
-         */
-        ProxyAuthenticationInfoInterceptor(ChallengeHandler compositeChallengeHandler) {
-            this.compositeChallengeHandler = compositeChallengeHandler;
-        }
+        private final ConcurrentHashMap<String, String> lastChallenge = new ConcurrentHashMap<>();  // Manages the state of nonce.
 
         /**
          * Attempts to intercept the 'Proxy-Authentication-Info' response header sent from the server. If the header is
@@ -163,19 +166,15 @@ public final class ProxyAuthenticator implements Authenticator {
                 String nextNonce = processAuthenticationInfoHeader(authenticationInfoPieces);
 
                 if (nextNonce != null) {
-                    AtomicReference<ConcurrentHashMap<String, String>> updatedChallenge
-                        = new AtomicReference<>(new ConcurrentHashMap<>(authenticationInfoPieces));
-                    updatedChallenge.get().put(NONCE, nextNonce);
-
-                    // Handle the updated challenge via the stateless challenge handler.
-                    HttpRequest httpRequest = new HttpRequest(HttpMethod.CONNECT, PROXY_URI_PATH);
-                    HttpResponse<?> httpResponse = new HttpResponse<>(httpRequest, response.code(),
-                        OkHttpResponse.fromOkHttpHeaders(response.headers()), response.body());
-                    compositeChallengeHandler.handleChallenge(httpRequest, httpResponse, null, 0, updatedChallenge);
+                    lastChallenge.put(NONCE, nextNonce);
                 }
             }
 
             return response;
+        }
+
+        private ConcurrentHashMap<String, String> getLastChallenge() {
+            return this.lastChallenge;
         }
     }
 

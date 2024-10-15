@@ -3,6 +3,7 @@
 
 package io.clientcore.http.okhttp3.implementation;
 
+import io.clientcore.core.implementation.util.auth.BasicHandler;
 import io.clientcore.core.implementation.util.auth.DigestHandler;
 import io.clientcore.core.util.auth.AuthUtils;
 import io.clientcore.core.util.auth.ChallengeHandler;
@@ -94,7 +95,8 @@ public class ProxyAuthenticatorTests {
     @ParameterizedTest
     @MethodSource("authorizationIsAppliedSupplier")
     public void authorizationIsApplied(Headers challengeHeaders, Predicate<String> expectedPredicate) {
-        ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(ChallengeHandler.of(new DigestHandler("1", "1")));
+        ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(
+            ChallengeHandler.of(new DigestHandler("1", "1"), new BasicHandler("1", "1")));
 
         Response response = mockResponse("This is a test", challengeHeaders);
         Route route = new Route(DEFAULT_ADDRESS, new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)),
@@ -127,7 +129,7 @@ public class ProxyAuthenticatorTests {
     @ParameterizedTest
     @MethodSource("authorizationCanBePipelinedSupplier")
     public void authorizationCanBePipelined(Headers challengeHeaders, Predicate<String> expectedPredicate) {
-        ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(ChallengeHandler.of(new DigestHandler("1", "1")));
+        ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(ChallengeHandler.of(new DigestHandler("1", "1"), new BasicHandler("1", "1")));
 
         Response response = mockResponse("This is a test", challengeHeaders);
         Route route = new Route(DEFAULT_ADDRESS, new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)),

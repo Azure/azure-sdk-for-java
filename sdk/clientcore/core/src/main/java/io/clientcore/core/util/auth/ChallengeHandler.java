@@ -3,8 +3,11 @@
 
 package io.clientcore.core.util.auth;
 
+import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponse;
+import io.clientcore.core.implementation.util.auth.BasicHandler;
+import io.clientcore.core.implementation.util.auth.DigestHandler;
 
 import java.util.Arrays;
 import java.util.List;
@@ -50,10 +53,28 @@ public interface ChallengeHandler {
 
         @Override
         public void handleChallenge(HttpRequest request, HttpResponse<?> response, String cnonce, int nonceCount, AtomicReference<ConcurrentHashMap<String, String>> lastChallenge) {
-            for (ChallengeHandler handler : challengeHandlers) {
-                handler.handleChallenge(request, response, cnonce, nonceCount, lastChallenge);
-                return;
+
+            String proxyAuthenticateHeader = response.getHeaders().getValue(HttpHeaderName.PROXY_AUTHENTICATE);
+
+            // Check if the response contains a 'Digest' challenge and prioritize that handler.
+            if (proxyAuthenticateHeader != null && proxyAuthenticateHeader.contains("Digest")) {
+                for (ChallengeHandler handler : challengeHandlers) {
+                    if (handler instanceof DigestHandler) {
+                        handler.handleChallenge(request, response, cnonce, nonceCount, lastChallenge);
+                        return;
+                    }
+                }
             }
+
+            // If no Digest challenge is found, fall back to BasicHandler or any other available handlers.
+            for (ChallengeHandler handler : challengeHandlers) {
+                if (handler instanceof BasicHandler) {
+                    handler.handleChallenge(request, response, cnonce, nonceCount, lastChallenge);
+                    return;
+                }
+            }
+
+            // If none of the handlers could process the challenge, throw an exception.
             throw new UnsupportedOperationException("None of the challenge handlers could handle the challenge.");
         }
     }
