@@ -8,13 +8,12 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
-import com.azure.core.management.SubResource;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.computefleet.models.ApiEntityReference;
 import com.azure.resourcemanager.computefleet.models.BaseVirtualMachineProfile;
 import com.azure.resourcemanager.computefleet.models.CachingTypes;
@@ -26,14 +25,10 @@ import com.azure.resourcemanager.computefleet.models.DiskDeleteOptionTypes;
 import com.azure.resourcemanager.computefleet.models.EvictionPolicy;
 import com.azure.resourcemanager.computefleet.models.Fleet;
 import com.azure.resourcemanager.computefleet.models.FleetProperties;
-import com.azure.resourcemanager.computefleet.models.IPVersion;
 import com.azure.resourcemanager.computefleet.models.ImageReference;
 import com.azure.resourcemanager.computefleet.models.LinuxConfiguration;
 import com.azure.resourcemanager.computefleet.models.NetworkApiVersion;
 import com.azure.resourcemanager.computefleet.models.OperatingSystemTypes;
-import com.azure.resourcemanager.computefleet.models.PublicIPAddressSku;
-import com.azure.resourcemanager.computefleet.models.PublicIPAddressSkuName;
-import com.azure.resourcemanager.computefleet.models.PublicIPAddressSkuTier;
 import com.azure.resourcemanager.computefleet.models.RegularPriorityAllocationStrategy;
 import com.azure.resourcemanager.computefleet.models.RegularPriorityProfile;
 import com.azure.resourcemanager.computefleet.models.SpotAllocationStrategy;
@@ -47,17 +42,16 @@ import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetNetwo
 import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetNetworkProfile;
 import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetOSDisk;
 import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetOSProfile;
-import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetPublicIPAddressConfiguration;
-import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetPublicIPAddressConfigurationProperties;
 import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetStorageProfile;
 import com.azure.resourcemanager.computefleet.models.VmSizeProfile;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.IpVersion;
+import com.azure.resourcemanager.network.models.LoadBalancer;
+import com.azure.resourcemanager.network.models.LoadBalancerSkuType;
 import com.azure.resourcemanager.network.models.Network;
-import com.azure.resourcemanager.network.models.PublicIpPrefix;
-import com.azure.resourcemanager.network.models.PublicIpPrefixSku;
-import com.azure.resourcemanager.network.models.PublicIpPrefixSkuName;
-import com.azure.resourcemanager.network.models.PublicIpPrefixSkuTier;
+import com.azure.resourcemanager.network.models.PublicIPSkuType;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
+import com.azure.resourcemanager.network.models.TransportProtocol;
 import com.azure.resourcemanager.resources.ResourceManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -77,7 +71,7 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         computeFleetManager = ComputeFleetManager
@@ -124,8 +118,8 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
             String fleetName = "fleet" + randomPadding();
             String vmName = "vm" + randomPadding();
             String vnetName = "vnet" + randomPadding();
+            String loadBalancerName = "loadBalancer" + randomPadding();
             String publicIpName = "publicIp" + randomPadding();
-            String publicIpPrefixName = "publicIpPrefix" + randomPadding();
             String adminUser = "adminUser" + randomPadding();
             String adminPwd = UUID.randomUUID().toString().replace("-", "@").substring(0, 13);
             // @embedStart
@@ -133,21 +127,33 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
                 .define(vnetName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
-                .withAddressSpace("10.0.0.0/16")
-                .withSubnet("default", "10.0.0.0/24")
+                .withAddressSpace("172.16.0.0/16")
+                .defineSubnet("default")
+                .withAddressPrefix("172.16.0.0/24")
+                .attach()
                 .create();
 
-            PublicIpPrefix publicIpPrefix = networkManager.publicIpPrefixes()
-                .define(publicIpPrefixName)
+            PublicIpAddress publicIpAddress = networkManager.publicIpAddresses()
+                .define(publicIpName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
-                .withSku(
-                    new PublicIpPrefixSku()
-                        .withName(PublicIpPrefixSkuName.STANDARD)
-                        .withTier(PublicIpPrefixSkuTier.REGIONAL)
-                )
-                .withPrefixLength(28)
-                .withPublicIpAddressVersion(IpVersion.IPV4)
+                .withSku(PublicIPSkuType.STANDARD)
+                .withIpAddressVersion(IpVersion.IPV4)
+                .withStaticIP()
+                .create();
+
+            LoadBalancer loadBalancer = networkManager.loadBalancers()
+                .define(loadBalancerName)
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroupName)
+                .defineLoadBalancingRule(loadBalancerName + "-lbrule")
+                .withProtocol(TransportProtocol.TCP)
+                .fromExistingPublicIPAddress(publicIpAddress)
+                .fromFrontendPort(80)
+                .toBackend(loadBalancerName + "-backend")
+                .toBackendPort(80)
+                .attach()
+                .withSku(LoadBalancerSkuType.STANDARD)
                 .create();
 
             fleet = computeFleetManager.fleets()
@@ -228,24 +234,10 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
                                                                                             new ApiEntityReference()
                                                                                                 .withId(network.subnets().get("default").id())
                                                                                         )
-                                                                                        .withPublicIPAddressConfiguration(
-                                                                                            new VirtualMachineScaleSetPublicIPAddressConfiguration()
-                                                                                                .withName(publicIpName)
-                                                                                                .withSku(
-                                                                                                    new PublicIPAddressSku()
-                                                                                                        .withName(PublicIPAddressSkuName.STANDARD)
-                                                                                                        .withTier(PublicIPAddressSkuTier.REGIONAL)
-                                                                                                )
-                                                                                                .withProperties(
-                                                                                                    new VirtualMachineScaleSetPublicIPAddressConfigurationProperties()
-                                                                                                        .withDeleteOption(DeleteOptions.DELETE)
-                                                                                                        .withPublicIPAddressVersion(IPVersion.IPV4)
-                                                                                                        .withIdleTimeoutInMinutes(9)
-                                                                                                        .withPublicIPPrefix(
-                                                                                                            new SubResource()
-                                                                                                                .withId(publicIpPrefix.id())
-                                                                                                        )
-                                                                                                )
+                                                                                        .withLoadBalancerBackendAddressPools(
+                                                                                            loadBalancer.loadBalancingRules()
+                                                                                                .get(loadBalancerName + "-lbrule")
+                                                                                                .innerModel().backendAddressPools()
                                                                                         )
                                                                                 )
                                                                         )
@@ -253,7 +245,7 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
                                                             )
                                                     )
                                                 )
-                                                .withNetworkApiVersion(NetworkApiVersion.TWO_ZERO_TWO_ZERO_ONE_ONE_ZERO_ONE)
+                                                .withNetworkApiVersion(NetworkApiVersion.fromString("2022-07-01"))
                                         )
                                 )
                                 .withComputeApiVersion("2024-03-01")
