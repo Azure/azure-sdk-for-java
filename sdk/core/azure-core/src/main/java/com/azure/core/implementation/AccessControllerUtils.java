@@ -8,8 +8,8 @@ import java.util.function.Supplier;
 /**
  * Utility class for {@code AccessController} APIs.
  * <p>
- * This class exists to warden off usages of {@code java.security} APIs into a separate class that if it has loading
- * issues usages of {@code AccessController} APIs will be skipped.
+ * This class exists to isolate usages of {@code java.security} APIs into a separate class. If this class has loading
+ * issues, usages of {@code AccessController} APIs will be skipped.
  */
 public final class AccessControllerUtils {
     private static final boolean CAN_BE_USED;
@@ -38,7 +38,7 @@ public final class AccessControllerUtils {
      * @param <T> The return value of the action.
      * @param privilegedAction The privileged action to run.
      * @return The results of running the action.
-     * @throws RuntimeException If an error occurs during execution.
+     * @throws RuntimeException If an error occurs while running the action.
      */
     @SuppressWarnings({ "removal" })
     public static <T> T doPrivileged(Supplier<T> privilegedAction) {
