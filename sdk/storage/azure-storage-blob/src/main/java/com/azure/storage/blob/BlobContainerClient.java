@@ -16,8 +16,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
@@ -67,10 +65,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.function.Consumer;
 
@@ -1040,35 +1035,28 @@ public final class BlobContainerClient {
                 finalOptions.getDetails().toList().isEmpty() ? null : finalOptions.getDetails().toList();
 
             Callable<ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse>> operation = () ->
-                this.azureBlobStorage.getContainers().listBlobFlatSegmentWithResponse(
-                    containerName,
-                    finalOptions.getPrefix(),
-                    nextMarker,
-                    finalOptions.getMaxResultsPerPage(),
-                    include,
-                    null,
-                    null,
-                    Context.NONE
-                );
+                this.azureBlobStorage.getContainers().listBlobFlatSegmentWithResponse(containerName,
+                    finalOptions.getPrefix(), nextMarker, finalOptions.getMaxResultsPerPage(), include, null, null,
+                    Context.NONE);
 
-                // Use StorageImplUtils.sendRequest for the operation instead of directly calling operation.get()
-                ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse> response =
-                    StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
+            // Use StorageImplUtils.sendRequest for the operation instead of directly calling operation.get()
+            ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse> response =
+                StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
 
-                List<BlobItem> value = response.getValue().getSegment() == null
-                    ? Collections.emptyList()
-                    : response.getValue().getSegment().getBlobItems().stream()
-                    .map(ModelHelper::populateBlobItem)
-                    .collect(Collectors.toList());
+            List<BlobItem> value = response.getValue().getSegment() == null
+                ? Collections.emptyList()
+                : response.getValue().getSegment().getBlobItems().stream()
+                .map(ModelHelper::populateBlobItem)
+                .collect(Collectors.toList());
 
-                return new PagedResponseBase<>(
-                    response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    value,
-                    response.getValue().getNextMarker(),
-                    response.getDeserializedHeaders()
-                );
+            return new PagedResponseBase<>(
+                response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                value,
+                response.getValue().getNextMarker(),
+                response.getDeserializedHeaders()
+            );
         };
 
         return new PagedIterable<>(pageSize -> retriever.apply(continuationToken, pageSize), retriever);

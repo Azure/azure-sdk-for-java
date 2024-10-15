@@ -3,19 +3,14 @@
 
 package com.azure.storage.blob.implementation.util;
 
-import com.azure.core.util.BinaryData;
-import com.azure.core.util.FluxUtil;
 import com.azure.storage.common.implementation.Constants;
-
-import java.nio.channels.AsynchronousFileChannel;
-import java.nio.file.Path;
 
 /**
  * Constants used in Blob Client classes.
  * <p>
  * RESERVED FOR INTERNAL USE.
  */
-final public class BlobConstants {
+public final class BlobConstants {
     /**
      * Special container name for the root container in the Storage account.
      */
@@ -43,10 +38,7 @@ final public class BlobConstants {
      */
     public static final int BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE = 8 * Constants.MB;
     /**
-     * The default block size used in {@link FluxUtil#readFile(AsynchronousFileChannel)}.
-     * This is to make sure we're using same size when using {@link BinaryData#fromFile(Path, int)}
-     * and {@link BinaryData#fromFile(Path, Long, Long, int)}
-     * to represent the content.
+     * The default block size used in BlobBaseClient and BlobBaseAsyncClient's uploadFromFile.
      */
     public static final int DEFAULT_FILE_READ_CHUNK_SIZE = 1024 * 64;
     /**
