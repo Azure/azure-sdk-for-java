@@ -22,8 +22,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -120,10 +119,19 @@ public abstract class KeyClientTestBase extends TestProxyTestBase {
         KeyServiceVersion serviceVersion) {
         TokenCredential credential;
 
-        if (interceptorManager.isLiveMode()) {
-            credential = new AzurePowerShellCredentialBuilder().build();
-        } else if (interceptorManager.isRecordMode()) {
-            credential = new DefaultAzureCredentialBuilder().build();
+        if (!interceptorManager.isPlaybackMode()) {
+            String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
+            String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
+            String tenantId = testTenantId == null
+                ? Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID")
+                : testTenantId;
+
+            credential = new ClientSecretCredentialBuilder()
+                .clientSecret(Objects.requireNonNull(clientKey, "The client key cannot be null"))
+                .clientId(Objects.requireNonNull(clientId, "The client id cannot be null"))
+                .tenantId(Objects.requireNonNull(tenantId, "The tenant id cannot be null"))
+                .additionallyAllowedTenants("*")
+                .build();
         } else {
             credential = new MockTokenCredential();
 
