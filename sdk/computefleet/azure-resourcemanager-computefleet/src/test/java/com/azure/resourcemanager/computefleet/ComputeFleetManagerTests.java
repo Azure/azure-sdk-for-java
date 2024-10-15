@@ -13,7 +13,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.resourcemanager.computefleet.models.ApiEntityReference;
 import com.azure.resourcemanager.computefleet.models.BaseVirtualMachineProfile;
 import com.azure.resourcemanager.computefleet.models.CachingTypes;
@@ -72,26 +72,26 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         computeFleetManager = ComputeFleetManager
             .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
         networkManager = NetworkManager
             .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
         resourceManager = ResourceManager
             .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
 
-        canRegisterProviders(Arrays.asList("Microsoft.Resources", "Microsoft.Network", "Microsoft.AzureFleet"));
+        canRegisterProviders(Arrays.asList("Microsoft.AzureFleet"));
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -117,8 +117,6 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
     @LiveOnly
     public void testCreateComputeFleet() {
         Fleet fleet = null;
-        Network network = null;
-        LoadBalancer loadBalancer = null;
         try {
             String fleetName = "fleet" + randomPadding();
             String vmName = "vm" + randomPadding();
@@ -127,7 +125,7 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
             String adminUser = "adminUser" + randomPadding();
             String adminPwd = UUID.randomUUID().toString().replace("-", "@").substring(0, 13);
             // @embedStart
-            network = networkManager.networks()
+            Network network = networkManager.networks()
                 .define(vnetName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
@@ -137,7 +135,7 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
                 .attach()
                 .create();
 
-            loadBalancer = networkManager.loadBalancers()
+            LoadBalancer loadBalancer = networkManager.loadBalancers()
                 .define(loadBalancerName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
@@ -240,7 +238,7 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
                                                             )
                                                     )
                                                 )
-                                                .withNetworkApiVersion(NetworkApiVersion.fromString("2022-07-01"))
+                                                .withNetworkApiVersion(NetworkApiVersion.fromString("2024-03-01"))
                                         )
                                 )
                                 .withComputeApiVersion("2024-03-01")
@@ -261,12 +259,6 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
         } finally {
             if (fleet != null) {
                 computeFleetManager.fleets().deleteById(fleet.id());
-            }
-            if (loadBalancer != null) {
-                networkManager.loadBalancers().deleteById(loadBalancer.id());
-            }
-            if (network != null) {
-                networkManager.networks().deleteById(network.id());
             }
         }
     }
