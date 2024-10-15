@@ -45,18 +45,19 @@ import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetOSPro
 import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetStorageProfile;
 import com.azure.resourcemanager.computefleet.models.VmSizeProfile;
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.LoadBalancerSkuType;
 import com.azure.resourcemanager.network.models.Network;
-import com.azure.resourcemanager.network.models.PublicIPSkuType;
-import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.TransportProtocol;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.resources.models.Provider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -76,19 +77,21 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
 
         computeFleetManager = ComputeFleetManager
             .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .authenticate(credential, profile);
 
         networkManager = NetworkManager
             .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .authenticate(credential, profile);
 
         resourceManager = ResourceManager
             .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .authenticate(credential, profile)
             .withDefaultSubscription();
+
+        canRegisterProviders(Arrays.asList("Microsoft.Resources", "Microsoft.Network", "Microsoft.AzureFleet"));
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -114,16 +117,17 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
     @LiveOnly
     public void testCreateComputeFleet() {
         Fleet fleet = null;
+        Network network = null;
+        LoadBalancer loadBalancer = null;
         try {
             String fleetName = "fleet" + randomPadding();
             String vmName = "vm" + randomPadding();
             String vnetName = "vnet" + randomPadding();
             String loadBalancerName = "loadBalancer" + randomPadding();
-            String publicIpName = "publicIp" + randomPadding();
             String adminUser = "adminUser" + randomPadding();
             String adminPwd = UUID.randomUUID().toString().replace("-", "@").substring(0, 13);
             // @embedStart
-            Network network = networkManager.networks()
+            network = networkManager.networks()
                 .define(vnetName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
@@ -133,22 +137,13 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
                 .attach()
                 .create();
 
-            PublicIpAddress publicIpAddress = networkManager.publicIpAddresses()
-                .define(publicIpName)
-                .withRegion(REGION)
-                .withExistingResourceGroup(resourceGroupName)
-                .withSku(PublicIPSkuType.STANDARD)
-                .withIpAddressVersion(IpVersion.IPV4)
-                .withStaticIP()
-                .create();
-
-            LoadBalancer loadBalancer = networkManager.loadBalancers()
+            loadBalancer = networkManager.loadBalancers()
                 .define(loadBalancerName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .defineLoadBalancingRule(loadBalancerName + "-lbrule")
                 .withProtocol(TransportProtocol.TCP)
-                .fromExistingPublicIPAddress(publicIpAddress)
+                .fromExistingSubnet(network, "default")
                 .fromFrontendPort(80)
                 .toBackend(loadBalancerName + "-backend")
                 .toBackendPort(80)
@@ -267,10 +262,30 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
             if (fleet != null) {
                 computeFleetManager.fleets().deleteById(fleet.id());
             }
+            if (loadBalancer != null) {
+                networkManager.loadBalancers().deleteById(loadBalancer.id());
+            }
+            if (network != null) {
+                networkManager.networks().deleteById(network.id());
+            }
         }
     }
 
     private static String randomPadding() {
         return String.format("%05d", Math.abs(RANDOM.nextInt() % 100000));
+    }
+
+    private void canRegisterProviders(List<String> providerNamespaces) {
+        providerNamespaces.forEach(providerNamespace -> {
+            Provider provider = resourceManager.providers().getByName(providerNamespace);
+            if (!"Registered".equalsIgnoreCase(provider.registrationState())
+                && !"Registering".equalsIgnoreCase(provider.registrationState())) {
+                provider = resourceManager.providers().register(providerNamespace);
+            }
+            while (!"Registered".equalsIgnoreCase(provider.registrationState())) {
+                ResourceManagerUtils.sleep(Duration.ofSeconds(5));
+                provider = resourceManager.providers().getByName(provider.namespace());
+            }
+        });
     }
 }
