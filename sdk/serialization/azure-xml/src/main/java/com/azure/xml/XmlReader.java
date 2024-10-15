@@ -198,26 +198,26 @@ public final class XmlReader implements AutoCloseable {
         return reader.getName();
     }
 
-    //    /**
-    //     * Gets the namespace URI for the current XML element.
-    //     * <p>
-    //     * If the current element doesn't have a namespace URI, {@link XMLConstants#NULL_NS_URI} will be returned.
-    //     *
-    //     * @return The namespace URI for the current XML element.
-    //     */
-    //    public String getElementNamespaceUri() {
-    //        String namespaceUri = reader.getNamespaceURI();
-    //        return namespaceUri == null ? XMLConstants.NULL_NS_URI : namespaceUri;
-    //    }
-    //
-    //    /**
-    //     * Gets the local name for the current XML element.
-    //     *
-    //     * @return The local name for the current XML element.
-    //     */
-    //    public String getElementLocalName() {
-    //        return reader.getLocalName();
-    //    }
+    /**
+     * Gets the namespace URI for the current XML element.
+     * <p>
+     * If the current element doesn't have a namespace URI, {@link XMLConstants#NULL_NS_URI} will be returned.
+     *
+     * @return The namespace URI for the current XML element.
+     */
+    public String getElementNamespaceUri() {
+        String namespaceUri = reader.getNamespaceURI();
+        return namespaceUri == null ? XMLConstants.NULL_NS_URI : namespaceUri;
+    }
+
+    /**
+     * Gets the local name for the current XML element.
+     *
+     * @return The local name for the current XML element.
+     */
+    public String getElementLocalName() {
+        return reader.getLocalName();
+    }
 
     /**
      * Checks if the current element name matches the provided local name.
@@ -254,13 +254,13 @@ public final class XmlReader implements AutoCloseable {
      * @param callback The callback to process the next element.
      * @throws XMLStreamException If the next element cannot be processed.
      */
-    public void processNextElement(XmlProcessElementCallback callback) throws XMLStreamException {
+    public void processNextElement(XmlElementConsumer callback) throws XMLStreamException {
         String namespaceUri = reader.getNamespaceURI();
         if (namespaceUri == null) {
             namespaceUri = XMLConstants.NULL_NS_URI;
         }
         String localName = reader.getLocalName();
-        callback.process(namespaceUri, localName, this);
+        callback.consume(namespaceUri, localName, this);
     }
 
     /**
