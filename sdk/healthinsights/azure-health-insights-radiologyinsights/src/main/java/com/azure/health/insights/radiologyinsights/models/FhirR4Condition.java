@@ -5,6 +5,7 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -491,8 +492,11 @@ public final class FhirR4Condition extends FhirR4DomainResource {
         jsonWriter.writeArrayField("stage", this.stage, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("note", this.note, (writer, element) -> writer.writeJson(element));
         if (getAdditionalProperties() != null) {
-            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
-                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            for (Map.Entry<String, BinaryData> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(),
+                    additionalProperty.getValue() == null
+                        ? null
+                        : additionalProperty.getValue().toObject(Object.class));
             }
         }
         return jsonWriter.writeEndObject();
@@ -540,7 +544,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
             String recordedDate = null;
             List<FhirR4ConditionStage> stage = null;
             List<FhirR4Annotation> note = null;
-            Map<String, Object> additionalProperties = null;
+            Map<String, BinaryData> additionalProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -608,7 +612,8 @@ public final class FhirR4Condition extends FhirR4DomainResource {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();
                     }
-                    additionalProperties.put(fieldName, reader.readUntyped());
+                    additionalProperties.put(fieldName,
+                        reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 }
             }
             FhirR4Condition deserializedFhirR4Condition = new FhirR4Condition(resourceType);

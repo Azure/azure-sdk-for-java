@@ -7,9 +7,8 @@ package com.azure.analytics.purview.datamap.generated;
 import com.azure.analytics.purview.datamap.models.QueryOptions;
 import com.azure.analytics.purview.datamap.models.QueryResult;
 import com.azure.analytics.purview.datamap.models.SearchResultValue;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
-import java.io.IOException;
+import com.azure.core.util.BinaryData;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -19,13 +18,12 @@ import org.junit.jupiter.api.Test;
 public final class DiscoveryQueryObjectTypeTests extends DataMapClientTestBase {
     @Test
     @Disabled
-    public void testDiscoveryQueryObjectTypeTests() throws IOException {
+    public void testDiscoveryQueryObjectTypeTests() {
         // method invocation
         QueryResult response = discoveryClient.query(new QueryOptions().setLimit(10)
-            .setFilter(JacksonAdapter.createDefaultSerializerAdapter()
-                .deserialize(
-                    "{\"or\":[{\"objectType\":\"Dashboards\"},{\"objectType\":\"Data pipelines\"},{\"objectType\":\"Files\"},{\"objectType\":\"Folders\"},{\"objectType\":\"Glossary terms\"},{\"objectType\":\"Reports\"},{\"objectType\":\"Stored procedures\"},{\"objectType\":\"Tables\"}]}",
-                    Object.class, SerializerEncoding.JSON)));
+            .setFilter(BinaryData.fromBytes(
+                "{or=[{objectType=Dashboards}, {objectType=Data pipelines}, {objectType=Files}, {objectType=Folders}, {objectType=Glossary terms}, {objectType=Reports}, {objectType=Stored procedures}, {objectType=Tables}]}"
+                    .getBytes(StandardCharsets.UTF_8))));
 
         // response assertion
         Assertions.assertNotNull(response);

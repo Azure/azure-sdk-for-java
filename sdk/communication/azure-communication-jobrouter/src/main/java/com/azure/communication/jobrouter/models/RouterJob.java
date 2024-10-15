@@ -6,6 +6,7 @@ package com.azure.communication.jobrouter.models;
 import com.azure.communication.jobrouter.implementation.JsonMergePatchHelper;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -522,8 +523,10 @@ public final class RouterJob implements JsonSerializable<RouterJob> {
             jsonWriter.writeStringField("dispositionCode", this.dispositionCode);
             jsonWriter.writeArrayField("requestedWorkerSelectors", this.requestedWorkerSelectors,
                 (writer, element) -> writer.writeJson(element));
-            jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeJson(element));
-            jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeMapField("labels", this.labels,
+                (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+            jsonWriter.writeMapField("tags", this.tags,
+                (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
             jsonWriter.writeArrayField("notes", this.notes, (writer, element) -> writer.writeJson(element));
             jsonWriter.writeJsonField("matchingMode", this.matchingMode);
             return jsonWriter.writeEndObject();
@@ -587,14 +590,26 @@ public final class RouterJob implements JsonSerializable<RouterJob> {
             if (this.labels == null) {
                 jsonWriter.writeNullField("labels");
             } else {
-                jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeJson(element));
+                jsonWriter.writeMapField("labels", this.labels, (writer, element) -> {
+                    if (element != null) {
+                        writer.writeUntyped(element == null ? null : element.toObject(Object.class));
+                    } else {
+                        writer.writeNull();
+                    }
+                });
             }
         }
         if (updatedProperties.contains("tags")) {
             if (this.tags == null) {
                 jsonWriter.writeNullField("tags");
             } else {
-                jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeJson(element));
+                jsonWriter.writeMapField("tags", this.tags, (writer, element) -> {
+                    if (element != null) {
+                        writer.writeUntyped(element == null ? null : element.toObject(Object.class));
+                    } else {
+                        writer.writeNull();
+                    }
+                });
             }
         }
         if (updatedProperties.contains("notes")) {
@@ -664,14 +679,16 @@ public final class RouterJob implements JsonSerializable<RouterJob> {
                         = reader.readArray(reader1 -> RouterWorkerSelector.fromJson(reader1));
                     deserializedRouterJob.attachedWorkerSelectors = attachedWorkerSelectors;
                 } else if ("labels".equals(fieldName)) {
-                    Map<String, RouterValue> labels = reader.readMap(reader1 -> RouterValue.fromJson(reader1));
+                    Map<String, BinaryData> labels = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedRouterJob.labels = labels;
                 } else if ("assignments".equals(fieldName)) {
                     Map<String, RouterJobAssignment> assignments
                         = reader.readMap(reader1 -> RouterJobAssignment.fromJson(reader1));
                     deserializedRouterJob.assignments = assignments;
                 } else if ("tags".equals(fieldName)) {
-                    Map<String, RouterValue> tags = reader.readMap(reader1 -> RouterValue.fromJson(reader1));
+                    Map<String, BinaryData> tags = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedRouterJob.tags = tags;
                 } else if ("notes".equals(fieldName)) {
                     List<RouterJobNote> notes = reader.readArray(reader1 -> RouterJobNote.fromJson(reader1));

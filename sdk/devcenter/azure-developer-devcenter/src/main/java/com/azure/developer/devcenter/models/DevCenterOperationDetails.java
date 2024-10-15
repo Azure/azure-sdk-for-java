@@ -6,6 +6,7 @@ package com.azure.developer.devcenter.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.models.ResponseError;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -67,7 +68,7 @@ public final class DevCenterOperationDetails implements JsonSerializable<DevCent
      * Custom operation properties, populated only for a successful operation.
      */
     @Generated
-    private Object properties;
+    private BinaryData properties;
 
     /*
      * Operation Error message.
@@ -161,7 +162,7 @@ public final class DevCenterOperationDetails implements JsonSerializable<DevCent
      * @return the properties value.
      */
     @Generated
-    public Object getProperties() {
+    public BinaryData getProperties() {
         return this.properties;
     }
 
@@ -189,7 +190,9 @@ public final class DevCenterOperationDetails implements JsonSerializable<DevCent
         jsonWriter.writeStringField("endTime",
             this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
         jsonWriter.writeNumberField("percentComplete", this.percentComplete);
-        jsonWriter.writeUntypedField("properties", this.properties);
+        if (this.properties != null) {
+            jsonWriter.writeUntypedField("properties", this.properties.toObject(Object.class));
+        }
         jsonWriter.writeJsonField("error", this.error);
         return jsonWriter.writeEndObject();
     }
@@ -213,7 +216,7 @@ public final class DevCenterOperationDetails implements JsonSerializable<DevCent
             OffsetDateTime startTime = null;
             OffsetDateTime endTime = null;
             Double percentComplete = null;
-            Object properties = null;
+            BinaryData properties = null;
             ResponseError error = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -235,7 +238,8 @@ public final class DevCenterOperationDetails implements JsonSerializable<DevCent
                 } else if ("percentComplete".equals(fieldName)) {
                     percentComplete = reader.getNullable(JsonReader::getDouble);
                 } else if ("properties".equals(fieldName)) {
-                    properties = reader.readUntyped();
+                    properties
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("error".equals(fieldName)) {
                     error = ResponseError.fromJson(reader);
                 } else {

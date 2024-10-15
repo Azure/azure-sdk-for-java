@@ -6,6 +6,7 @@ package com.azure.communication.jobrouter.models;
 import com.azure.communication.jobrouter.implementation.JsonMergePatchHelper;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -382,8 +383,10 @@ public final class RouterWorker implements JsonSerializable<RouterWorker> {
             jsonWriter.writeStartObject();
             jsonWriter.writeArrayField("queues", this.queues, (writer, element) -> writer.writeString(element));
             jsonWriter.writeNumberField("capacity", this.capacity);
-            jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeJson(element));
-            jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeMapField("labels", this.labels,
+                (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+            jsonWriter.writeMapField("tags", this.tags,
+                (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
             jsonWriter.writeArrayField("channels", this.channels, (writer, element) -> writer.writeJson(element));
             jsonWriter.writeBooleanField("availableForOffers", this.availableForOffers);
             jsonWriter.writeNumberField("maxConcurrentOffers", this.maxConcurrentOffers);
@@ -412,14 +415,26 @@ public final class RouterWorker implements JsonSerializable<RouterWorker> {
             if (this.labels == null) {
                 jsonWriter.writeNullField("labels");
             } else {
-                jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeJson(element));
+                jsonWriter.writeMapField("labels", this.labels, (writer, element) -> {
+                    if (element != null) {
+                        writer.writeUntyped(element == null ? null : element.toObject(Object.class));
+                    } else {
+                        writer.writeNull();
+                    }
+                });
             }
         }
         if (updatedProperties.contains("tags")) {
             if (this.tags == null) {
                 jsonWriter.writeNullField("tags");
             } else {
-                jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeJson(element));
+                jsonWriter.writeMapField("tags", this.tags, (writer, element) -> {
+                    if (element != null) {
+                        writer.writeUntyped(element == null ? null : element.toObject(Object.class));
+                    } else {
+                        writer.writeNull();
+                    }
+                });
             }
         }
         if (updatedProperties.contains("channels")) {
@@ -474,10 +489,12 @@ public final class RouterWorker implements JsonSerializable<RouterWorker> {
                 } else if ("capacity".equals(fieldName)) {
                     deserializedRouterWorker.capacity = reader.getNullable(JsonReader::getInt);
                 } else if ("labels".equals(fieldName)) {
-                    Map<String, RouterValue> labels = reader.readMap(reader1 -> RouterValue.fromJson(reader1));
+                    Map<String, BinaryData> labels = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedRouterWorker.labels = labels;
                 } else if ("tags".equals(fieldName)) {
-                    Map<String, RouterValue> tags = reader.readMap(reader1 -> RouterValue.fromJson(reader1));
+                    Map<String, BinaryData> tags = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedRouterWorker.tags = tags;
                 } else if ("channels".equals(fieldName)) {
                     List<RouterChannel> channels = reader.readArray(reader1 -> RouterChannel.fromJson(reader1));

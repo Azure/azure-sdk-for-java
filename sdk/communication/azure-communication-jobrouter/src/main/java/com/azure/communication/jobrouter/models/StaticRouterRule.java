@@ -6,6 +6,7 @@ package com.azure.communication.jobrouter.models;
 import com.azure.communication.jobrouter.implementation.JsonMergePatchHelper;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -77,7 +78,9 @@ public final class StaticRouterRule extends RouterRule {
         } else {
             jsonWriter.writeStartObject();
             jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-            jsonWriter.writeJsonField("value", this.value);
+            if (this.value != null) {
+                jsonWriter.writeUntypedField("value", this.value.toObject(Object.class));
+            }
             return jsonWriter.writeEndObject();
         }
     }
@@ -90,7 +93,9 @@ public final class StaticRouterRule extends RouterRule {
             if (this.value == null) {
                 jsonWriter.writeNullField("value");
             } else {
-                jsonWriter.writeJsonField("value", this.value);
+                if (this.value != null) {
+                    jsonWriter.writeUntypedField("value", this.value.toObject(Object.class));
+                }
             }
         }
         return jsonWriter.writeEndObject();
@@ -114,7 +119,8 @@ public final class StaticRouterRule extends RouterRule {
                 if ("kind".equals(fieldName)) {
                     deserializedStaticRouterRule.kind = RouterRuleKind.fromString(reader.getString());
                 } else if ("value".equals(fieldName)) {
-                    deserializedStaticRouterRule.value = RouterValue.fromJson(reader);
+                    deserializedStaticRouterRule.value
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else {
                     reader.skipChildren();
                 }

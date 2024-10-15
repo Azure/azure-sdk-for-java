@@ -50,7 +50,7 @@ public final class DeploymentEnvironmentsClient {
      * {@code
      * {
      *     parameters (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     name: String (Required)
      *     environmentType: String (Required)
@@ -97,7 +97,7 @@ public final class DeploymentEnvironmentsClient {
      * {@code
      * {
      *     parameters (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     name: String (Required)
      *     environmentType: String (Required)
@@ -147,7 +147,7 @@ public final class DeploymentEnvironmentsClient {
      * {@code
      * {
      *     parameters (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     name: String (Required)
      *     environmentType: String (Required)
@@ -198,7 +198,7 @@ public final class DeploymentEnvironmentsClient {
      * {@code
      * {
      *     parameters (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     name: String (Required)
      *     environmentType: String (Required)
@@ -229,7 +229,7 @@ public final class DeploymentEnvironmentsClient {
      * {@code
      * {
      *     parameters (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     name: String (Required)
      *     environmentType: String (Required)
@@ -288,7 +288,7 @@ public final class DeploymentEnvironmentsClient {
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     percentComplete: Double (Optional)
-     *     properties: Object (Optional)
+     *     properties: BinaryData (Optional)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)

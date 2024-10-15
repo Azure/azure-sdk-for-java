@@ -6,6 +6,7 @@ package com.azure.communication.jobrouter.models;
 import com.azure.communication.jobrouter.implementation.JsonMergePatchHelper;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -165,7 +166,9 @@ public final class RouterQueueSelector implements JsonSerializable<RouterQueueSe
             jsonWriter.writeStringField("key", this.key);
             jsonWriter.writeStringField("labelOperator",
                 this.labelOperator == null ? null : this.labelOperator.toString());
-            jsonWriter.writeJsonField("value", this.value);
+            if (this.value != null) {
+                jsonWriter.writeUntypedField("value", this.value.toObject(Object.class));
+            }
             return jsonWriter.writeEndObject();
         }
     }
@@ -191,7 +194,9 @@ public final class RouterQueueSelector implements JsonSerializable<RouterQueueSe
             if (this.value == null) {
                 jsonWriter.writeNullField("value");
             } else {
-                jsonWriter.writeJsonField("value", this.value);
+                if (this.value != null) {
+                    jsonWriter.writeUntypedField("value", this.value.toObject(Object.class));
+                }
             }
         }
         return jsonWriter.writeEndObject();
@@ -217,7 +222,8 @@ public final class RouterQueueSelector implements JsonSerializable<RouterQueueSe
                 } else if ("labelOperator".equals(fieldName)) {
                     deserializedRouterQueueSelector.labelOperator = LabelOperator.fromString(reader.getString());
                 } else if ("value".equals(fieldName)) {
-                    deserializedRouterQueueSelector.value = RouterValue.fromJson(reader);
+                    deserializedRouterQueueSelector.value
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else {
                     reader.skipChildren();
                 }

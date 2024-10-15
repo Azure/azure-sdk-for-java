@@ -5,6 +5,7 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -177,8 +178,11 @@ public class FhirR4DomainResource extends FhirR4Resource {
         jsonWriter.writeArrayField("modifierExtension", this.modifierExtension,
             (writer, element) -> writer.writeJson(element));
         if (getAdditionalProperties() != null) {
-            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
-                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            for (Map.Entry<String, BinaryData> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(),
+                    additionalProperty.getValue() == null
+                        ? null
+                        : additionalProperty.getValue().toObject(Object.class));
             }
         }
         return jsonWriter.writeEndObject();
@@ -236,7 +240,7 @@ public class FhirR4DomainResource extends FhirR4Resource {
             List<FhirR4Resource> contained = null;
             List<FhirR4Extension> extension = null;
             List<FhirR4Extension> modifierExtension = null;
-            Map<String, Object> additionalProperties = null;
+            Map<String, BinaryData> additionalProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -262,7 +266,8 @@ public class FhirR4DomainResource extends FhirR4Resource {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();
                     }
-                    additionalProperties.put(fieldName, reader.readUntyped());
+                    additionalProperties.put(fieldName,
+                        reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 }
             }
             FhirR4DomainResource deserializedFhirR4DomainResource = new FhirR4DomainResource(resourceType);

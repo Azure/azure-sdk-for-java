@@ -6,6 +6,7 @@ package com.azure.communication.jobrouter.models;
 import com.azure.communication.jobrouter.implementation.JsonMergePatchHelper;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -138,7 +139,7 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
             jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
             jsonWriter.writeStringField("classificationPolicyId", this.classificationPolicyId);
             jsonWriter.writeMapField("labelsToUpsert", this.labelsToUpsert,
-                (writer, element) -> writer.writeJson(element));
+                (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
             return jsonWriter.writeEndObject();
         }
     }
@@ -165,8 +166,13 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
             if (this.labelsToUpsert == null) {
                 jsonWriter.writeNullField("labelsToUpsert");
             } else {
-                jsonWriter.writeMapField("labelsToUpsert", this.labelsToUpsert,
-                    (writer, element) -> writer.writeJson(element));
+                jsonWriter.writeMapField("labelsToUpsert", this.labelsToUpsert, (writer, element) -> {
+                    if (element != null) {
+                        writer.writeUntyped(element == null ? null : element.toObject(Object.class));
+                    } else {
+                        writer.writeNull();
+                    }
+                });
             }
         }
         return jsonWriter.writeEndObject();
@@ -195,7 +201,8 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
                 } else if ("classificationPolicyId".equals(fieldName)) {
                     deserializedReclassifyExceptionAction.classificationPolicyId = reader.getString();
                 } else if ("labelsToUpsert".equals(fieldName)) {
-                    Map<String, RouterValue> labelsToUpsert = reader.readMap(reader1 -> RouterValue.fromJson(reader1));
+                    Map<String, BinaryData> labelsToUpsert = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedReclassifyExceptionAction.labelsToUpsert = labelsToUpsert;
                 } else {
                     reader.skipChildren();

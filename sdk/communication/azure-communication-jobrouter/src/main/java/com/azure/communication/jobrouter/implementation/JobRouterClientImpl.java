@@ -588,7 +588,7 @@ public final class JobRouterClientImpl {
      *          (Optional){
      *             key: String (Optional, Required on create)
      *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
-     *             value: Object (Optional)
+     *             value: BinaryData (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
      *             status: String(active/expired) (Optional)
@@ -599,7 +599,7 @@ public final class JobRouterClientImpl {
      *         (recursive schema, see above)
      *     ]
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     assignments (Optional): {
      *         String (Required): {
@@ -611,7 +611,7 @@ public final class JobRouterClientImpl {
      *         }
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     notes (Optional): [
      *          (Optional){
@@ -646,7 +646,7 @@ public final class JobRouterClientImpl {
      *          (Optional){
      *             key: String (Optional, Required on create)
      *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
-     *             value: Object (Optional)
+     *             value: BinaryData (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
      *             status: String(active/expired) (Optional)
@@ -657,7 +657,7 @@ public final class JobRouterClientImpl {
      *         (recursive schema, see above)
      *     ]
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     assignments (Optional): {
      *         String (Required): {
@@ -669,7 +669,7 @@ public final class JobRouterClientImpl {
      *         }
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     notes (Optional): [
      *          (Optional){
@@ -734,7 +734,7 @@ public final class JobRouterClientImpl {
      *          (Optional){
      *             key: String (Optional, Required on create)
      *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
-     *             value: Object (Optional)
+     *             value: BinaryData (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
      *             status: String(active/expired) (Optional)
@@ -745,7 +745,7 @@ public final class JobRouterClientImpl {
      *         (recursive schema, see above)
      *     ]
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     assignments (Optional): {
      *         String (Required): {
@@ -757,7 +757,7 @@ public final class JobRouterClientImpl {
      *         }
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     notes (Optional): [
      *          (Optional){
@@ -792,7 +792,7 @@ public final class JobRouterClientImpl {
      *          (Optional){
      *             key: String (Optional, Required on create)
      *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
-     *             value: Object (Optional)
+     *             value: BinaryData (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
      *             status: String(active/expired) (Optional)
@@ -803,7 +803,7 @@ public final class JobRouterClientImpl {
      *         (recursive schema, see above)
      *     ]
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     assignments (Optional): {
      *         String (Required): {
@@ -815,7 +815,7 @@ public final class JobRouterClientImpl {
      *         }
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     notes (Optional): [
      *          (Optional){
@@ -870,7 +870,7 @@ public final class JobRouterClientImpl {
      *          (Optional){
      *             key: String (Optional, Required on create)
      *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
-     *             value: Object (Optional)
+     *             value: BinaryData (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
      *             status: String(active/expired) (Optional)
@@ -881,7 +881,7 @@ public final class JobRouterClientImpl {
      *         (recursive schema, see above)
      *     ]
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     assignments (Optional): {
      *         String (Required): {
@@ -893,7 +893,7 @@ public final class JobRouterClientImpl {
      *         }
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     notes (Optional): [
      *          (Optional){
@@ -945,7 +945,7 @@ public final class JobRouterClientImpl {
      *          (Optional){
      *             key: String (Optional, Required on create)
      *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
-     *             value: Object (Optional)
+     *             value: BinaryData (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
      *             status: String(active/expired) (Optional)
@@ -956,7 +956,7 @@ public final class JobRouterClientImpl {
      *         (recursive schema, see above)
      *     ]
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     assignments (Optional): {
      *         String (Required): {
@@ -968,7 +968,7 @@ public final class JobRouterClientImpl {
      *         }
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     notes (Optional): [
      *          (Optional){
@@ -1488,7 +1488,7 @@ public final class JobRouterClientImpl {
      *          (Optional){
      *             key: String (Optional, Required on create)
      *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
-     *             value: Object (Optional)
+     *             value: BinaryData (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
      *             status: String(active/expired) (Optional)
@@ -1499,7 +1499,7 @@ public final class JobRouterClientImpl {
      *         (recursive schema, see above)
      *     ]
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     assignments (Optional): {
      *         String (Required): {
@@ -1511,7 +1511,7 @@ public final class JobRouterClientImpl {
      *         }
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     notes (Optional): [
      *          (Optional){
@@ -1584,7 +1584,7 @@ public final class JobRouterClientImpl {
      *          (Optional){
      *             key: String (Optional, Required on create)
      *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
-     *             value: Object (Optional)
+     *             value: BinaryData (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
      *             status: String(active/expired) (Optional)
@@ -1595,7 +1595,7 @@ public final class JobRouterClientImpl {
      *         (recursive schema, see above)
      *     ]
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     assignments (Optional): {
      *         String (Required): {
@@ -1607,7 +1607,7 @@ public final class JobRouterClientImpl {
      *         }
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     notes (Optional): [
      *          (Optional){
@@ -1698,7 +1698,7 @@ public final class JobRouterClientImpl {
      *          (Optional){
      *             key: String (Optional, Required on create)
      *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
-     *             value: Object (Optional)
+     *             value: BinaryData (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
      *             status: String(active/expired) (Optional)
@@ -1709,7 +1709,7 @@ public final class JobRouterClientImpl {
      *         (recursive schema, see above)
      *     ]
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     assignments (Optional): {
      *         String (Required): {
@@ -1721,7 +1721,7 @@ public final class JobRouterClientImpl {
      *         }
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     notes (Optional): [
      *          (Optional){
@@ -1792,7 +1792,7 @@ public final class JobRouterClientImpl {
      *          (Optional){
      *             key: String (Optional, Required on create)
      *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
-     *             value: Object (Optional)
+     *             value: BinaryData (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
      *             status: String(active/expired) (Optional)
@@ -1803,7 +1803,7 @@ public final class JobRouterClientImpl {
      *         (recursive schema, see above)
      *     ]
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     assignments (Optional): {
      *         String (Required): {
@@ -1815,7 +1815,7 @@ public final class JobRouterClientImpl {
      *         }
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     notes (Optional): [
      *          (Optional){
@@ -2297,10 +2297,10 @@ public final class JobRouterClientImpl {
      *     ]
      *     capacity: Integer (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     channels (Optional): [
      *          (Optional){
@@ -2346,10 +2346,10 @@ public final class JobRouterClientImpl {
      *     ]
      *     capacity: Integer (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     channels (Optional): [
      *          (Optional){
@@ -2425,10 +2425,10 @@ public final class JobRouterClientImpl {
      *     ]
      *     capacity: Integer (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     channels (Optional): [
      *          (Optional){
@@ -2474,10 +2474,10 @@ public final class JobRouterClientImpl {
      *     ]
      *     capacity: Integer (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     channels (Optional): [
      *          (Optional){
@@ -2543,10 +2543,10 @@ public final class JobRouterClientImpl {
      *     ]
      *     capacity: Integer (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     channels (Optional): [
      *          (Optional){
@@ -2609,10 +2609,10 @@ public final class JobRouterClientImpl {
      *     ]
      *     capacity: Integer (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     channels (Optional): [
      *          (Optional){
@@ -2727,10 +2727,10 @@ public final class JobRouterClientImpl {
      *     ]
      *     capacity: Integer (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     channels (Optional): [
      *          (Optional){
@@ -2812,10 +2812,10 @@ public final class JobRouterClientImpl {
      *     ]
      *     capacity: Integer (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     channels (Optional): [
      *          (Optional){
@@ -2915,10 +2915,10 @@ public final class JobRouterClientImpl {
      *     ]
      *     capacity: Integer (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     channels (Optional): [
      *          (Optional){
@@ -2998,10 +2998,10 @@ public final class JobRouterClientImpl {
      *     ]
      *     capacity: Integer (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     channels (Optional): [
      *          (Optional){
@@ -3093,7 +3093,7 @@ public final class JobRouterClientImpl {
      *          (Optional){
      *             key: String (Optional, Required on create)
      *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
-     *             value: Object (Optional)
+     *             value: BinaryData (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
      *             status: String(active/expired) (Optional)
@@ -3104,7 +3104,7 @@ public final class JobRouterClientImpl {
      *         (recursive schema, see above)
      *     ]
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     assignments (Optional): {
      *         String (Required): {
@@ -3116,7 +3116,7 @@ public final class JobRouterClientImpl {
      *         }
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     notes (Optional): [
      *          (Optional){
@@ -3174,7 +3174,7 @@ public final class JobRouterClientImpl {
      *          (Optional){
      *             key: String (Optional, Required on create)
      *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
-     *             value: Object (Optional)
+     *             value: BinaryData (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
      *             status: String(active/expired) (Optional)
@@ -3185,7 +3185,7 @@ public final class JobRouterClientImpl {
      *         (recursive schema, see above)
      *     ]
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     assignments (Optional): {
      *         String (Required): {
@@ -3197,7 +3197,7 @@ public final class JobRouterClientImpl {
      *         }
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     notes (Optional): [
      *          (Optional){
@@ -3247,10 +3247,10 @@ public final class JobRouterClientImpl {
      *     ]
      *     capacity: Integer (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     channels (Optional): [
      *          (Optional){
@@ -3320,10 +3320,10 @@ public final class JobRouterClientImpl {
      *     ]
      *     capacity: Integer (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     channels (Optional): [
      *          (Optional){

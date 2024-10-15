@@ -2155,7 +2155,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2172,7 +2172,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2220,7 +2220,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2237,7 +2237,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2274,7 +2274,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2309,7 +2309,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2350,7 +2350,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2394,7 +2394,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2456,7 +2456,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2498,7 +2498,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2870,7 +2870,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2911,7 +2911,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }

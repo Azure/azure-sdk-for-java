@@ -327,7 +327,7 @@ public final class RadiologyInsightsClientImpl {
      *                             implicitRules: String (Optional)
      *                             language: String (Optional)
      *                              (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                         }
      *                     ]
@@ -564,7 +564,7 @@ public final class RadiologyInsightsClientImpl {
      *                             implicitRules: String (Optional)
      *                             language: String (Optional)
      *                              (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                         }
      *                     ]
@@ -832,7 +832,7 @@ public final class RadiologyInsightsClientImpl {
      *                             implicitRules: String (Optional)
      *                             language: String (Optional)
      *                              (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                         }
      *                     ]
@@ -1069,7 +1069,7 @@ public final class RadiologyInsightsClientImpl {
      *                             implicitRules: String (Optional)
      *                             language: String (Optional)
      *                              (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                         }
      *                     ]
@@ -1336,7 +1336,7 @@ public final class RadiologyInsightsClientImpl {
      *                             implicitRules: String (Optional)
      *                             language: String (Optional)
      *                              (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                         }
      *                     ]
@@ -1573,7 +1573,7 @@ public final class RadiologyInsightsClientImpl {
      *                             implicitRules: String (Optional)
      *                             language: String (Optional)
      *                              (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                         }
      *                     ]
@@ -1847,7 +1847,7 @@ public final class RadiologyInsightsClientImpl {
      *                             implicitRules: String (Optional)
      *                             language: String (Optional)
      *                              (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                         }
      *                     ]
@@ -2084,7 +2084,7 @@ public final class RadiologyInsightsClientImpl {
      *                             implicitRules: String (Optional)
      *                             language: String (Optional)
      *                              (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                         }
      *                     ]
@@ -2358,7 +2358,7 @@ public final class RadiologyInsightsClientImpl {
      *                             implicitRules: String (Optional)
      *                             language: String (Optional)
      *                              (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                         }
      *                     ]
@@ -2595,7 +2595,7 @@ public final class RadiologyInsightsClientImpl {
      *                             implicitRules: String (Optional)
      *                             language: String (Optional)
      *                              (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                         }
      *                     ]
@@ -2870,7 +2870,7 @@ public final class RadiologyInsightsClientImpl {
      *                             implicitRules: String (Optional)
      *                             language: String (Optional)
      *                              (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                         }
      *                     ]
@@ -3107,7 +3107,7 @@ public final class RadiologyInsightsClientImpl {
      *                             implicitRules: String (Optional)
      *                             language: String (Optional)
      *                              (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                         }
      *                     ]

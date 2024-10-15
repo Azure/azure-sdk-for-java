@@ -627,7 +627,7 @@ public final class DevBoxesClient {
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     percentComplete: Double (Optional)
-     *     properties: Object (Optional)
+     *     properties: BinaryData (Optional)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -676,7 +676,7 @@ public final class DevBoxesClient {
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     percentComplete: Double (Optional)
-     *     properties: Object (Optional)
+     *     properties: BinaryData (Optional)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -732,7 +732,7 @@ public final class DevBoxesClient {
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     percentComplete: Double (Optional)
-     *     properties: Object (Optional)
+     *     properties: BinaryData (Optional)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -781,7 +781,7 @@ public final class DevBoxesClient {
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     percentComplete: Double (Optional)
-     *     properties: Object (Optional)
+     *     properties: BinaryData (Optional)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)

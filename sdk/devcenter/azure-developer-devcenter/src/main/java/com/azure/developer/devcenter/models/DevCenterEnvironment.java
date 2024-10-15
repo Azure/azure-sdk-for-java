@@ -6,6 +6,7 @@ package com.azure.developer.devcenter.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.models.ResponseError;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,7 +25,7 @@ public final class DevCenterEnvironment implements JsonSerializable<DevCenterEnv
      * Parameters object for the environment.
      */
     @Generated
-    private Map<String, Object> parameters;
+    private Map<String, BinaryData> parameters;
 
     /*
      * Environment name.
@@ -97,7 +98,7 @@ public final class DevCenterEnvironment implements JsonSerializable<DevCenterEnv
      * @return the parameters value.
      */
     @Generated
-    public Map<String, Object> getParameters() {
+    public Map<String, BinaryData> getParameters() {
         return this.parameters;
     }
 
@@ -108,7 +109,7 @@ public final class DevCenterEnvironment implements JsonSerializable<DevCenterEnv
      * @return the DevCenterEnvironment object itself.
      */
     @Generated
-    public DevCenterEnvironment setParameters(Map<String, Object> parameters) {
+    public DevCenterEnvironment setParameters(Map<String, BinaryData> parameters) {
         this.parameters = parameters;
         return this;
     }
@@ -203,7 +204,8 @@ public final class DevCenterEnvironment implements JsonSerializable<DevCenterEnv
         jsonWriter.writeStringField("environmentType", this.environmentTypeName);
         jsonWriter.writeStringField("catalogName", this.catalogName);
         jsonWriter.writeStringField("environmentDefinitionName", this.environmentDefinitionName);
-        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("parameters", this.parameters,
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         return jsonWriter.writeEndObject();
     }
 

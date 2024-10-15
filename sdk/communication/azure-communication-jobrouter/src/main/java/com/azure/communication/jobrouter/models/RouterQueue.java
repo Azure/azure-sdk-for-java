@@ -6,6 +6,7 @@ package com.azure.communication.jobrouter.models;
 import com.azure.communication.jobrouter.implementation.JsonMergePatchHelper;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -223,7 +224,8 @@ public final class RouterQueue implements JsonSerializable<RouterQueue> {
             jsonWriter.writeStartObject();
             jsonWriter.writeStringField("name", this.name);
             jsonWriter.writeStringField("distributionPolicyId", this.distributionPolicyId);
-            jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeMapField("labels", this.labels,
+                (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
             jsonWriter.writeStringField("exceptionPolicyId", this.exceptionPolicyId);
             return jsonWriter.writeEndObject();
         }
@@ -250,7 +252,13 @@ public final class RouterQueue implements JsonSerializable<RouterQueue> {
             if (this.labels == null) {
                 jsonWriter.writeNullField("labels");
             } else {
-                jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeJson(element));
+                jsonWriter.writeMapField("labels", this.labels, (writer, element) -> {
+                    if (element != null) {
+                        writer.writeUntyped(element == null ? null : element.toObject(Object.class));
+                    } else {
+                        writer.writeNull();
+                    }
+                });
             }
         }
         if (updatedProperties.contains("exceptionPolicyId")) {
@@ -288,7 +296,8 @@ public final class RouterQueue implements JsonSerializable<RouterQueue> {
                 } else if ("distributionPolicyId".equals(fieldName)) {
                     deserializedRouterQueue.distributionPolicyId = reader.getString();
                 } else if ("labels".equals(fieldName)) {
-                    Map<String, RouterValue> labels = reader.readMap(reader1 -> RouterValue.fromJson(reader1));
+                    Map<String, BinaryData> labels = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedRouterQueue.labels = labels;
                 } else if ("exceptionPolicyId".equals(fieldName)) {
                     deserializedRouterQueue.exceptionPolicyId = reader.getString();

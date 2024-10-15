@@ -5,6 +5,7 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -57,7 +58,7 @@ public class FhirR4Resource implements JsonSerializable<FhirR4Resource> {
      * Based on [FHIR Resource](https://www.hl7.org/fhir/r4/resource.html
      */
     @Generated
-    private Map<String, Object> additionalProperties;
+    private Map<String, BinaryData> additionalProperties;
 
     /**
      * Creates an instance of FhirR4Resource class.
@@ -175,7 +176,7 @@ public class FhirR4Resource implements JsonSerializable<FhirR4Resource> {
      * @return the additionalProperties value.
      */
     @Generated
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, BinaryData> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
@@ -188,7 +189,7 @@ public class FhirR4Resource implements JsonSerializable<FhirR4Resource> {
      * @return the FhirR4Resource object itself.
      */
     @Generated
-    public FhirR4Resource setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public FhirR4Resource setAdditionalProperties(Map<String, BinaryData> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
@@ -206,8 +207,11 @@ public class FhirR4Resource implements JsonSerializable<FhirR4Resource> {
         jsonWriter.writeStringField("implicitRules", this.implicitRules);
         jsonWriter.writeStringField("language", this.language);
         if (additionalProperties != null) {
-            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
-                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            for (Map.Entry<String, BinaryData> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(),
+                    additionalProperty.getValue() == null
+                        ? null
+                        : additionalProperty.getValue().toObject(Object.class));
             }
         }
         return jsonWriter.writeEndObject();
@@ -230,7 +234,7 @@ public class FhirR4Resource implements JsonSerializable<FhirR4Resource> {
             FhirR4Meta meta = null;
             String implicitRules = null;
             String language = null;
-            Map<String, Object> additionalProperties = null;
+            Map<String, BinaryData> additionalProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -248,7 +252,8 @@ public class FhirR4Resource implements JsonSerializable<FhirR4Resource> {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();
                     }
-                    additionalProperties.put(fieldName, reader.readUntyped());
+                    additionalProperties.put(fieldName,
+                        reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 }
             }
             FhirR4Resource deserializedFhirR4Resource = new FhirR4Resource(resourceType);

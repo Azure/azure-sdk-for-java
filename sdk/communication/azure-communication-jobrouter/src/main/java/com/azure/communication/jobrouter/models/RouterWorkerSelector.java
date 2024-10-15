@@ -7,6 +7,7 @@ import com.azure.communication.jobrouter.implementation.JsonMergePatchHelper;
 import com.azure.communication.jobrouter.implementation.utils.CustomizationHelper;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -230,7 +231,9 @@ public final class RouterWorkerSelector implements JsonSerializable<RouterWorker
             jsonWriter.writeStringField("key", this.key);
             jsonWriter.writeStringField("labelOperator",
                 this.labelOperator == null ? null : this.labelOperator.toString());
-            jsonWriter.writeJsonField("value", this.value);
+            if (this.value != null) {
+                jsonWriter.writeUntypedField("value", this.value.toObject(Object.class));
+            }
             CustomizationHelper.serializeDurationToSeconds(jsonWriter, "expiresAfterSeconds", this.expiresAfterSeconds);
             jsonWriter.writeBooleanField("expedite", this.expedite);
             return jsonWriter.writeEndObject();
@@ -258,7 +261,9 @@ public final class RouterWorkerSelector implements JsonSerializable<RouterWorker
             if (this.value == null) {
                 jsonWriter.writeNullField("value");
             } else {
-                jsonWriter.writeJsonField("value", this.value);
+                if (this.value != null) {
+                    jsonWriter.writeUntypedField("value", this.value.toObject(Object.class));
+                }
             }
         }
         if (updatedProperties.contains("expiresAfterSeconds")) {
@@ -299,7 +304,8 @@ public final class RouterWorkerSelector implements JsonSerializable<RouterWorker
                 } else if ("labelOperator".equals(fieldName)) {
                     deserializedRouterWorkerSelector.labelOperator = LabelOperator.fromString(reader.getString());
                 } else if ("value".equals(fieldName)) {
-                    deserializedRouterWorkerSelector.value = RouterValue.fromJson(reader);
+                    deserializedRouterWorkerSelector.value
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("expiresAfterSeconds".equals(fieldName)) {
                     deserializedRouterWorkerSelector.expiresAfterSeconds
                         = reader.getNullable(CustomizationHelper::deserializeDurationFromSeconds);
