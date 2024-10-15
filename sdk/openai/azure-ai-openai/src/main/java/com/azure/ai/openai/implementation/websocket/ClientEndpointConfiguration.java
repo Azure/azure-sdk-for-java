@@ -1,29 +1,30 @@
 package com.azure.ai.openai.implementation.websocket;
 
 
-//TODO jpalvarezl: Make this an abstract class and pull up common fields and methods
-public class ClientEndpointConfiguration {
+import io.netty.handler.codec.http.HttpHeaders;
 
-    private final String protocol;
+import java.net.URI;
 
-    private final String userAgent;
+public abstract class ClientEndpointConfiguration {
+
+    protected final String baseUrl;
+
+    protected final String userAgent;
 
     private static final MessageEncoder MESSAGE_ENCODER = new MessageEncoder();
 
     private static final MessageDecoder MESSAGE_DECODER = new MessageDecoder();
 
-    public ClientEndpointConfiguration(String protocol, String userAgent) {
-        this.protocol = protocol;
+    public ClientEndpointConfiguration(String baseUrl, String userAgent) {
+        this.baseUrl = baseUrl;
         this.userAgent = userAgent;
     }
 
-    public String getProtocol() {
-        return protocol;
+    public URI getUri() {
+        return URI.create(getURIString());
     }
 
-    public String getUserAgent() {
-        return userAgent;
-    }
+    public abstract HttpHeaders getHeaders();
 
     public MessageEncoder getMessageEncoder() {
         return MESSAGE_ENCODER;
@@ -32,4 +33,6 @@ public class ClientEndpointConfiguration {
     public MessageDecoder getMessageDecoder() {
         return MESSAGE_DECODER;
     }
+
+    protected abstract String getURIString();
 }

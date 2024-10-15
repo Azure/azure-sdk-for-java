@@ -2,10 +2,12 @@ package com.azure.ai.openai.implementation.websocket;
 
 import com.azure.ai.openai.OpenAIServiceVersion;
 import com.azure.core.credential.KeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpHeaderName;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.HttpHeaders;
 
+import java.net.URI;
 import java.util.UUID;
 
 public class AzureClientEndpointConfiguration  extends ClientEndpointConfiguration {
@@ -21,6 +23,7 @@ public class AzureClientEndpointConfiguration  extends ClientEndpointConfigurati
     // Headers
     private final String requestId = UUID.randomUUID().toString();
     private final KeyCredential keyCredential;
+    private final TokenCredential tokenCredential;
     // userAgent is already defined in the parent class
 
 
@@ -28,12 +31,27 @@ public class AzureClientEndpointConfiguration  extends ClientEndpointConfigurati
         super(protocol, userAgent);
         this.deployment = deployment;
         this.keyCredential = keyCredential;
+        this.tokenCredential = null;
     }
 
+    public AzureClientEndpointConfiguration(String protocol, String userAgent, String deployment, TokenCredential tokenCredential) {
+        super(protocol, userAgent);
+        this.deployment = deployment;
+        this.tokenCredential = tokenCredential;
+        this.keyCredential = null;
+    }
+
+    @Override
     public HttpHeaders getHeaders() {
         return new DefaultHttpHeaders()
             .add("x-ms-client-request-id", requestId)
             .add("api-key", keyCredential.getKey())
-            .add(HttpHeaderName.USER_AGENT.getCaseInsensitiveName(), super.getUserAgent());
+            .add(HttpHeaderName.USER_AGENT.getCaseInsensitiveName(), super.userAgent);
     }
+
+    @Override
+    protected String getURIString() {
+        return baseUrl + path + "?deployment=" + deployment + "&version=" + serviceVersion.getVersion();
+    }
+
 }

@@ -14,6 +14,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.HttpClientCodec;
+import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.websocketx.CloseWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
@@ -39,9 +40,10 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
     private final AtomicReference<ClientLogger> loggerReference;
     private final MessageEncoder messageEncoder;
     private final MessageDecoder messageDecoder;
-    private final String path;
-    private final String protocol;
-    private final String userAgent;
+
+    private final URI uri;
+    private final HttpHeaders headers;
+
     private final Consumer<Object> messageHandler;
     private final Consumer<WebSocketSession> openHandler;
     private final Consumer<CloseReason> closeHandler;
@@ -76,22 +78,20 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
         }
     }
 
-    WebSocketSessionNettyImpl(ClientEndpointConfiguration cec, String path,
+    WebSocketSessionNettyImpl(ClientEndpointConfiguration cec,
                               AtomicReference<ClientLogger> loggerReference, Consumer<Object> messageHandler,
                               Consumer<WebSocketSession> openHandler, Consumer<CloseReason> closeHandler) {
-        this.path = path;
+        this.uri = cec.getUri();
         this.loggerReference = loggerReference;
         this.messageEncoder = cec.getMessageEncoder();
         this.messageDecoder = cec.getMessageDecoder();
-        this.protocol = cec.getProtocol();
-        this.userAgent = cec.getUserAgent();
+        this.headers = cec.getHeaders();
         this.messageHandler = messageHandler;
         this.openHandler = openHandler;
         this.closeHandler = closeHandler;
     }
 
     void connect() throws URISyntaxException, SSLException, InterruptedException, ExecutionException {
-        URI uri = new URI(path);
         String scheme = uri.getScheme() == null ? "ws" : uri.getScheme();
         final String host = uri.getHost() == null ? "127.0.0.1" : uri.getHost();
         final int port;
@@ -121,9 +121,8 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
 
         group = new NioEventLoopGroup();
 
-        handshaker = WebSocketClientHandshakerFactory.newHandshaker(uri, WebSocketVersion.V13, protocol, true,
-                new DefaultHttpHeaders().add(HttpHeaderName.USER_AGENT.getCaseInsensitiveName(), userAgent));
-        // TODO jpalvarez: Add auth headers, openai-beta header, etc.
+        // the `null` parameter corresponds to subprotocol
+        handshaker = WebSocketClientHandshakerFactory.newHandshaker(uri, WebSocketVersion.V13, null, true, this.headers);
 
         clientHandler = new WebSocketClientHandler(handshaker, loggerReference, messageDecoder, messageHandler);
 
