@@ -35,6 +35,7 @@ import com.azure.resourcemanager.hybridcompute.fluent.MachinesClient;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineAssessPatchesResultInner;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineInner;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineInstallPatchesResultInner;
+import com.azure.resourcemanager.hybridcompute.models.InstanceViewTypes;
 import com.azure.resourcemanager.hybridcompute.models.MachineInstallPatchesParameters;
 import com.azure.resourcemanager.hybridcompute.models.MachineListResult;
 import java.nio.ByteBuffer;
@@ -88,7 +89,7 @@ public final class MachinesClientImpl implements MachinesClient {
         Mono<Response<MachineInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("machineName") String machineName,
-            @QueryParam("$expand") String expand, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("$expand") InstanceViewTypes expand, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{name}/assessPatches")
@@ -270,7 +271,7 @@ public final class MachinesClientImpl implements MachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MachineInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
-        String machineName, String expand) {
+        String machineName, InstanceViewTypes expand) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -307,7 +308,7 @@ public final class MachinesClientImpl implements MachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MachineInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
-        String machineName, String expand, Context context) {
+        String machineName, InstanceViewTypes expand, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -341,7 +342,7 @@ public final class MachinesClientImpl implements MachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MachineInner> getByResourceGroupAsync(String resourceGroupName, String machineName) {
-        final String expand = null;
+        final InstanceViewTypes expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, machineName, expand)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -360,7 +361,7 @@ public final class MachinesClientImpl implements MachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MachineInner> getByResourceGroupWithResponse(String resourceGroupName, String machineName,
-        String expand, Context context) {
+        InstanceViewTypes expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, machineName, expand, context).block();
     }
 
@@ -376,7 +377,7 @@ public final class MachinesClientImpl implements MachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MachineInner getByResourceGroup(String resourceGroupName, String machineName) {
-        final String expand = null;
+        final InstanceViewTypes expand = null;
         return getByResourceGroupWithResponse(resourceGroupName, machineName, expand, Context.NONE).getValue();
     }
 

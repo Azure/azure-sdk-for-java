@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.30 (Unreleased)
+## 1.0.0-beta.31 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.30 (2024-10-09)
+
+### Bugs Fixed
+
+- [Fixed a regression in 1.0.0-beta.29 where exception type name was not exported](https://github.com/Azure/azure-sdk-for-java/pull/42241)
 
 ## 1.0.0-beta.29 (2024-10-02)
 

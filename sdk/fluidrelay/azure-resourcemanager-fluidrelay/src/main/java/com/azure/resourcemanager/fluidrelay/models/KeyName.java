@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.fluidrelay.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for KeyName. */
+/**
+ * The key to regenerate.
+ */
 public enum KeyName {
-    /** Enum value key1. */
+    /**
+     * Enum value key1.
+     */
     KEY1("key1"),
 
-    /** Enum value key2. */
+    /**
+     * Enum value key2.
+     */
     KEY2("key2");
 
-    /** The actual serialized value for a KeyName instance. */
+    /**
+     * The actual serialized value for a KeyName instance.
+     */
     private final String value;
 
     KeyName(String value) {
@@ -24,11 +29,10 @@ public enum KeyName {
 
     /**
      * Parses a serialized value to a KeyName instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed KeyName object, or null if unable to parse.
      */
-    @JsonCreator
     public static KeyName fromString(String value) {
         if (value == null) {
             return null;
@@ -42,7 +46,9 @@ public enum KeyName {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

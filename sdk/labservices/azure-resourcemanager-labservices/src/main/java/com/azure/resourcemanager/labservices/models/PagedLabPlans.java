@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.labservices.fluent.models.LabPlanInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Paged list of lab plans. */
+/**
+ * Paged list of lab plans.
+ */
 @Immutable
-public final class PagedLabPlans {
+public final class PagedLabPlans implements JsonSerializable<PagedLabPlans> {
     /*
      * The array page of lab plans.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<LabPlanInner> value;
 
     /*
      * The link to get the next page of lab plan results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
+     * Creates an instance of PagedLabPlans class.
+     */
+    public PagedLabPlans() {
+    }
+
+    /**
      * Get the value property: The array page of lab plans.
-     *
+     * 
      * @return the value value.
      */
     public List<LabPlanInner> value() {
@@ -35,7 +45,7 @@ public final class PagedLabPlans {
 
     /**
      * Get the nextLink property: The link to get the next page of lab plan results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -44,12 +54,50 @@ public final class PagedLabPlans {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PagedLabPlans from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PagedLabPlans if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PagedLabPlans.
+     */
+    public static PagedLabPlans fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PagedLabPlans deserializedPagedLabPlans = new PagedLabPlans();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<LabPlanInner> value = reader.readArray(reader1 -> LabPlanInner.fromJson(reader1));
+                    deserializedPagedLabPlans.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPagedLabPlans.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPagedLabPlans;
+        });
     }
 }

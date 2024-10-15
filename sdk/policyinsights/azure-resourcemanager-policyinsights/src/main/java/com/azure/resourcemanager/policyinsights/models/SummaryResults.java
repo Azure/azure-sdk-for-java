@@ -5,51 +5,53 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Compliance summary on a particular summary level. */
+/**
+ * Compliance summary on a particular summary level.
+ */
 @Fluent
-public final class SummaryResults {
+public final class SummaryResults implements JsonSerializable<SummaryResults> {
     /*
      * HTTP POST URI for queryResults action on Microsoft.PolicyInsights to retrieve raw results for the compliance
      * summary. This property will not be available by default in future API versions, but could be queried explicitly.
      */
-    @JsonProperty(value = "queryResultsUri")
     private String queryResultsUri;
 
     /*
      * Number of non-compliant resources.
      */
-    @JsonProperty(value = "nonCompliantResources")
     private Integer nonCompliantResources;
 
     /*
      * Number of non-compliant policies.
      */
-    @JsonProperty(value = "nonCompliantPolicies")
     private Integer nonCompliantPolicies;
 
     /*
      * The resources summary at this level.
      */
-    @JsonProperty(value = "resourceDetails")
     private List<ComplianceDetail> resourceDetails;
 
     /*
      * The policy artifact summary at this level. For query scope level, it represents policy assignment summary. For
      * policy assignment level, it represents policy definitions summary.
      */
-    @JsonProperty(value = "policyDetails")
     private List<ComplianceDetail> policyDetails;
 
     /*
      * The policy definition group summary at this level.
      */
-    @JsonProperty(value = "policyGroupDetails")
     private List<ComplianceDetail> policyGroupDetails;
 
-    /** Creates an instance of SummaryResults class. */
+    /**
+     * Creates an instance of SummaryResults class.
+     */
     public SummaryResults() {
     }
 
@@ -57,7 +59,7 @@ public final class SummaryResults {
      * Get the queryResultsUri property: HTTP POST URI for queryResults action on Microsoft.PolicyInsights to retrieve
      * raw results for the compliance summary. This property will not be available by default in future API versions,
      * but could be queried explicitly.
-     *
+     * 
      * @return the queryResultsUri value.
      */
     public String queryResultsUri() {
@@ -68,7 +70,7 @@ public final class SummaryResults {
      * Set the queryResultsUri property: HTTP POST URI for queryResults action on Microsoft.PolicyInsights to retrieve
      * raw results for the compliance summary. This property will not be available by default in future API versions,
      * but could be queried explicitly.
-     *
+     * 
      * @param queryResultsUri the queryResultsUri value to set.
      * @return the SummaryResults object itself.
      */
@@ -79,7 +81,7 @@ public final class SummaryResults {
 
     /**
      * Get the nonCompliantResources property: Number of non-compliant resources.
-     *
+     * 
      * @return the nonCompliantResources value.
      */
     public Integer nonCompliantResources() {
@@ -88,7 +90,7 @@ public final class SummaryResults {
 
     /**
      * Set the nonCompliantResources property: Number of non-compliant resources.
-     *
+     * 
      * @param nonCompliantResources the nonCompliantResources value to set.
      * @return the SummaryResults object itself.
      */
@@ -99,7 +101,7 @@ public final class SummaryResults {
 
     /**
      * Get the nonCompliantPolicies property: Number of non-compliant policies.
-     *
+     * 
      * @return the nonCompliantPolicies value.
      */
     public Integer nonCompliantPolicies() {
@@ -108,7 +110,7 @@ public final class SummaryResults {
 
     /**
      * Set the nonCompliantPolicies property: Number of non-compliant policies.
-     *
+     * 
      * @param nonCompliantPolicies the nonCompliantPolicies value to set.
      * @return the SummaryResults object itself.
      */
@@ -119,7 +121,7 @@ public final class SummaryResults {
 
     /**
      * Get the resourceDetails property: The resources summary at this level.
-     *
+     * 
      * @return the resourceDetails value.
      */
     public List<ComplianceDetail> resourceDetails() {
@@ -128,7 +130,7 @@ public final class SummaryResults {
 
     /**
      * Set the resourceDetails property: The resources summary at this level.
-     *
+     * 
      * @param resourceDetails the resourceDetails value to set.
      * @return the SummaryResults object itself.
      */
@@ -140,7 +142,7 @@ public final class SummaryResults {
     /**
      * Get the policyDetails property: The policy artifact summary at this level. For query scope level, it represents
      * policy assignment summary. For policy assignment level, it represents policy definitions summary.
-     *
+     * 
      * @return the policyDetails value.
      */
     public List<ComplianceDetail> policyDetails() {
@@ -150,7 +152,7 @@ public final class SummaryResults {
     /**
      * Set the policyDetails property: The policy artifact summary at this level. For query scope level, it represents
      * policy assignment summary. For policy assignment level, it represents policy definitions summary.
-     *
+     * 
      * @param policyDetails the policyDetails value to set.
      * @return the SummaryResults object itself.
      */
@@ -161,7 +163,7 @@ public final class SummaryResults {
 
     /**
      * Get the policyGroupDetails property: The policy definition group summary at this level.
-     *
+     * 
      * @return the policyGroupDetails value.
      */
     public List<ComplianceDetail> policyGroupDetails() {
@@ -170,7 +172,7 @@ public final class SummaryResults {
 
     /**
      * Set the policyGroupDetails property: The policy definition group summary at this level.
-     *
+     * 
      * @param policyGroupDetails the policyGroupDetails value to set.
      * @return the SummaryResults object itself.
      */
@@ -181,7 +183,7 @@ public final class SummaryResults {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -194,5 +196,64 @@ public final class SummaryResults {
         if (policyGroupDetails() != null) {
             policyGroupDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("queryResultsUri", this.queryResultsUri);
+        jsonWriter.writeNumberField("nonCompliantResources", this.nonCompliantResources);
+        jsonWriter.writeNumberField("nonCompliantPolicies", this.nonCompliantPolicies);
+        jsonWriter.writeArrayField("resourceDetails", this.resourceDetails,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("policyDetails", this.policyDetails, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("policyGroupDetails", this.policyGroupDetails,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SummaryResults from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SummaryResults if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SummaryResults.
+     */
+    public static SummaryResults fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SummaryResults deserializedSummaryResults = new SummaryResults();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("queryResultsUri".equals(fieldName)) {
+                    deserializedSummaryResults.queryResultsUri = reader.getString();
+                } else if ("nonCompliantResources".equals(fieldName)) {
+                    deserializedSummaryResults.nonCompliantResources = reader.getNullable(JsonReader::getInt);
+                } else if ("nonCompliantPolicies".equals(fieldName)) {
+                    deserializedSummaryResults.nonCompliantPolicies = reader.getNullable(JsonReader::getInt);
+                } else if ("resourceDetails".equals(fieldName)) {
+                    List<ComplianceDetail> resourceDetails
+                        = reader.readArray(reader1 -> ComplianceDetail.fromJson(reader1));
+                    deserializedSummaryResults.resourceDetails = resourceDetails;
+                } else if ("policyDetails".equals(fieldName)) {
+                    List<ComplianceDetail> policyDetails
+                        = reader.readArray(reader1 -> ComplianceDetail.fromJson(reader1));
+                    deserializedSummaryResults.policyDetails = policyDetails;
+                } else if ("policyGroupDetails".equals(fieldName)) {
+                    List<ComplianceDetail> policyGroupDetails
+                        = reader.readArray(reader1 -> ComplianceDetail.fromJson(reader1));
+                    deserializedSummaryResults.policyGroupDetails = policyGroupDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSummaryResults;
+        });
     }
 }

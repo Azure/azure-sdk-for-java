@@ -5,22 +5,34 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.DeletedAutomationAccount;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response model for the list deleted automation account. */
+/**
+ * The response model for the list deleted automation account.
+ */
 @Fluent
-public final class DeletedAutomationAccountListResultInner {
+public final class DeletedAutomationAccountListResultInner
+    implements JsonSerializable<DeletedAutomationAccountListResultInner> {
     /*
      * Gets or sets the list of deleted automation accounts.
      */
-    @JsonProperty(value = "value")
     private List<DeletedAutomationAccount> value;
 
     /**
+     * Creates an instance of DeletedAutomationAccountListResultInner class.
+     */
+    public DeletedAutomationAccountListResultInner() {
+    }
+
+    /**
      * Get the value property: Gets or sets the list of deleted automation accounts.
-     *
+     * 
      * @return the value value.
      */
     public List<DeletedAutomationAccount> value() {
@@ -29,7 +41,7 @@ public final class DeletedAutomationAccountListResultInner {
 
     /**
      * Set the value property: Gets or sets the list of deleted automation accounts.
-     *
+     * 
      * @param value the value value to set.
      * @return the DeletedAutomationAccountListResultInner object itself.
      */
@@ -40,12 +52,51 @@ public final class DeletedAutomationAccountListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeletedAutomationAccountListResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeletedAutomationAccountListResultInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeletedAutomationAccountListResultInner.
+     */
+    public static DeletedAutomationAccountListResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeletedAutomationAccountListResultInner deserializedDeletedAutomationAccountListResultInner
+                = new DeletedAutomationAccountListResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DeletedAutomationAccount> value
+                        = reader.readArray(reader1 -> DeletedAutomationAccount.fromJson(reader1));
+                    deserializedDeletedAutomationAccountListResultInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeletedAutomationAccountListResultInner;
+        });
     }
 }

@@ -9,7 +9,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-public class ResourceHealthTests extends TestBase {
+public class ResourceHealthTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
 
     private static final Region REGION = Region.US_WEST3;

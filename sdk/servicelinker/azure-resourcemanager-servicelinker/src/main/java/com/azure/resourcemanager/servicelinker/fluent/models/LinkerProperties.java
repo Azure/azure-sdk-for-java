@@ -5,61 +5,78 @@
 package com.azure.resourcemanager.servicelinker.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicelinker.models.AuthInfoBase;
 import com.azure.resourcemanager.servicelinker.models.ClientType;
+import com.azure.resourcemanager.servicelinker.models.ConfigurationInfo;
+import com.azure.resourcemanager.servicelinker.models.PublicNetworkSolution;
 import com.azure.resourcemanager.servicelinker.models.SecretStore;
 import com.azure.resourcemanager.servicelinker.models.TargetServiceBase;
 import com.azure.resourcemanager.servicelinker.models.VNetSolution;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of the linker. */
+/**
+ * The properties of the Linker.
+ */
 @Fluent
-public final class LinkerProperties {
+public class LinkerProperties implements JsonSerializable<LinkerProperties> {
     /*
      * The target service properties
      */
-    @JsonProperty(value = "targetService")
     private TargetServiceBase targetService;
 
     /*
      * The authentication type.
      */
-    @JsonProperty(value = "authInfo")
     private AuthInfoBase authInfo;
 
     /*
      * The application client type
      */
-    @JsonProperty(value = "clientType")
     private ClientType clientType;
 
     /*
      * The provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The VNet solution.
      */
-    @JsonProperty(value = "vNetSolution")
     private VNetSolution vNetSolution;
 
     /*
      * An option to store secret value in secure place
      */
-    @JsonProperty(value = "secretStore")
     private SecretStore secretStore;
 
     /*
      * connection scope in source service.
      */
-    @JsonProperty(value = "scope")
     private String scope;
+
+    /*
+     * The network solution.
+     */
+    private PublicNetworkSolution publicNetworkSolution;
+
+    /*
+     * The connection information consumed by applications, including secrets, connection strings.
+     */
+    private ConfigurationInfo configurationInfo;
+
+    /**
+     * Creates an instance of LinkerProperties class.
+     */
+    public LinkerProperties() {
+    }
 
     /**
      * Get the targetService property: The target service properties.
-     *
+     * 
      * @return the targetService value.
      */
     public TargetServiceBase targetService() {
@@ -68,7 +85,7 @@ public final class LinkerProperties {
 
     /**
      * Set the targetService property: The target service properties.
-     *
+     * 
      * @param targetService the targetService value to set.
      * @return the LinkerProperties object itself.
      */
@@ -79,7 +96,7 @@ public final class LinkerProperties {
 
     /**
      * Get the authInfo property: The authentication type.
-     *
+     * 
      * @return the authInfo value.
      */
     public AuthInfoBase authInfo() {
@@ -88,7 +105,7 @@ public final class LinkerProperties {
 
     /**
      * Set the authInfo property: The authentication type.
-     *
+     * 
      * @param authInfo the authInfo value to set.
      * @return the LinkerProperties object itself.
      */
@@ -99,7 +116,7 @@ public final class LinkerProperties {
 
     /**
      * Get the clientType property: The application client type.
-     *
+     * 
      * @return the clientType value.
      */
     public ClientType clientType() {
@@ -108,7 +125,7 @@ public final class LinkerProperties {
 
     /**
      * Set the clientType property: The application client type.
-     *
+     * 
      * @param clientType the clientType value to set.
      * @return the LinkerProperties object itself.
      */
@@ -119,7 +136,7 @@ public final class LinkerProperties {
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -127,8 +144,19 @@ public final class LinkerProperties {
     }
 
     /**
+     * Set the provisioningState property: The provisioning state.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the LinkerProperties object itself.
+     */
+    LinkerProperties withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Get the vNetSolution property: The VNet solution.
-     *
+     * 
      * @return the vNetSolution value.
      */
     public VNetSolution vNetSolution() {
@@ -137,7 +165,7 @@ public final class LinkerProperties {
 
     /**
      * Set the vNetSolution property: The VNet solution.
-     *
+     * 
      * @param vNetSolution the vNetSolution value to set.
      * @return the LinkerProperties object itself.
      */
@@ -148,7 +176,7 @@ public final class LinkerProperties {
 
     /**
      * Get the secretStore property: An option to store secret value in secure place.
-     *
+     * 
      * @return the secretStore value.
      */
     public SecretStore secretStore() {
@@ -157,7 +185,7 @@ public final class LinkerProperties {
 
     /**
      * Set the secretStore property: An option to store secret value in secure place.
-     *
+     * 
      * @param secretStore the secretStore value to set.
      * @return the LinkerProperties object itself.
      */
@@ -168,7 +196,7 @@ public final class LinkerProperties {
 
     /**
      * Get the scope property: connection scope in source service.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -177,7 +205,7 @@ public final class LinkerProperties {
 
     /**
      * Set the scope property: connection scope in source service.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the LinkerProperties object itself.
      */
@@ -187,8 +215,50 @@ public final class LinkerProperties {
     }
 
     /**
+     * Get the publicNetworkSolution property: The network solution.
+     * 
+     * @return the publicNetworkSolution value.
+     */
+    public PublicNetworkSolution publicNetworkSolution() {
+        return this.publicNetworkSolution;
+    }
+
+    /**
+     * Set the publicNetworkSolution property: The network solution.
+     * 
+     * @param publicNetworkSolution the publicNetworkSolution value to set.
+     * @return the LinkerProperties object itself.
+     */
+    public LinkerProperties withPublicNetworkSolution(PublicNetworkSolution publicNetworkSolution) {
+        this.publicNetworkSolution = publicNetworkSolution;
+        return this;
+    }
+
+    /**
+     * Get the configurationInfo property: The connection information consumed by applications, including secrets,
+     * connection strings.
+     * 
+     * @return the configurationInfo value.
+     */
+    public ConfigurationInfo configurationInfo() {
+        return this.configurationInfo;
+    }
+
+    /**
+     * Set the configurationInfo property: The connection information consumed by applications, including secrets,
+     * connection strings.
+     * 
+     * @param configurationInfo the configurationInfo value to set.
+     * @return the LinkerProperties object itself.
+     */
+    public LinkerProperties withConfigurationInfo(ConfigurationInfo configurationInfo) {
+        this.configurationInfo = configurationInfo;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -204,5 +274,70 @@ public final class LinkerProperties {
         if (secretStore() != null) {
             secretStore().validate();
         }
+        if (publicNetworkSolution() != null) {
+            publicNetworkSolution().validate();
+        }
+        if (configurationInfo() != null) {
+            configurationInfo().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("targetService", this.targetService);
+        jsonWriter.writeJsonField("authInfo", this.authInfo);
+        jsonWriter.writeStringField("clientType", this.clientType == null ? null : this.clientType.toString());
+        jsonWriter.writeJsonField("vNetSolution", this.vNetSolution);
+        jsonWriter.writeJsonField("secretStore", this.secretStore);
+        jsonWriter.writeStringField("scope", this.scope);
+        jsonWriter.writeJsonField("publicNetworkSolution", this.publicNetworkSolution);
+        jsonWriter.writeJsonField("configurationInfo", this.configurationInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkerProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinkerProperties.
+     */
+    public static LinkerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkerProperties deserializedLinkerProperties = new LinkerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetService".equals(fieldName)) {
+                    deserializedLinkerProperties.targetService = TargetServiceBase.fromJson(reader);
+                } else if ("authInfo".equals(fieldName)) {
+                    deserializedLinkerProperties.authInfo = AuthInfoBase.fromJson(reader);
+                } else if ("clientType".equals(fieldName)) {
+                    deserializedLinkerProperties.clientType = ClientType.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedLinkerProperties.provisioningState = reader.getString();
+                } else if ("vNetSolution".equals(fieldName)) {
+                    deserializedLinkerProperties.vNetSolution = VNetSolution.fromJson(reader);
+                } else if ("secretStore".equals(fieldName)) {
+                    deserializedLinkerProperties.secretStore = SecretStore.fromJson(reader);
+                } else if ("scope".equals(fieldName)) {
+                    deserializedLinkerProperties.scope = reader.getString();
+                } else if ("publicNetworkSolution".equals(fieldName)) {
+                    deserializedLinkerProperties.publicNetworkSolution = PublicNetworkSolution.fromJson(reader);
+                } else if ("configurationInfo".equals(fieldName)) {
+                    deserializedLinkerProperties.configurationInfo = ConfigurationInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkerProperties;
+        });
     }
 }

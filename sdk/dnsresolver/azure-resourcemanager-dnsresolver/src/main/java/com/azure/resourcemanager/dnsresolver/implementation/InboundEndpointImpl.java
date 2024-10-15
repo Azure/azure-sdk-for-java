@@ -112,34 +112,18 @@ public final class InboundEndpointImpl implements InboundEndpoint, InboundEndpoi
     }
 
     public InboundEndpoint create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInboundEndpoints()
-                .createOrUpdate(
-                    resourceGroupName,
-                    dnsResolverName,
-                    inboundEndpointName,
-                    this.innerModel(),
-                    createIfMatch,
-                    createIfNoneMatch,
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getInboundEndpoints()
+            .createOrUpdate(resourceGroupName, dnsResolverName, inboundEndpointName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, Context.NONE);
         return this;
     }
 
     public InboundEndpoint create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInboundEndpoints()
-                .createOrUpdate(
-                    resourceGroupName,
-                    dnsResolverName,
-                    inboundEndpointName,
-                    this.innerModel(),
-                    createIfMatch,
-                    createIfNoneMatch,
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getInboundEndpoints()
+            .createOrUpdate(resourceGroupName, dnsResolverName, inboundEndpointName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, context);
         return this;
     }
 
@@ -158,56 +142,42 @@ public final class InboundEndpointImpl implements InboundEndpoint, InboundEndpoi
     }
 
     public InboundEndpoint apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInboundEndpoints()
-                .update(
-                    resourceGroupName,
-                    dnsResolverName,
-                    inboundEndpointName,
-                    updateParameters,
-                    updateIfMatch,
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getInboundEndpoints()
+            .update(resourceGroupName, dnsResolverName, inboundEndpointName, updateParameters, updateIfMatch,
+                Context.NONE);
         return this;
     }
 
     public InboundEndpoint apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInboundEndpoints()
-                .update(
-                    resourceGroupName, dnsResolverName, inboundEndpointName, updateParameters, updateIfMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getInboundEndpoints()
+            .update(resourceGroupName, dnsResolverName, inboundEndpointName, updateParameters, updateIfMatch, context);
         return this;
     }
 
-    InboundEndpointImpl(
-        InboundEndpointInner innerObject, com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
+    InboundEndpointImpl(InboundEndpointInner innerObject,
+        com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dnsResolverName = Utils.getValueFromIdByName(innerObject.id(), "dnsResolvers");
-        this.inboundEndpointName = Utils.getValueFromIdByName(innerObject.id(), "inboundEndpoints");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.dnsResolverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dnsResolvers");
+        this.inboundEndpointName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "inboundEndpoints");
     }
 
     public InboundEndpoint refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInboundEndpoints()
-                .getWithResponse(resourceGroupName, dnsResolverName, inboundEndpointName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInboundEndpoints()
+            .getWithResponse(resourceGroupName, dnsResolverName, inboundEndpointName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public InboundEndpoint refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInboundEndpoints()
-                .getWithResponse(resourceGroupName, dnsResolverName, inboundEndpointName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInboundEndpoints()
+            .getWithResponse(resourceGroupName, dnsResolverName, inboundEndpointName, context)
+            .getValue();
         return this;
     }
 

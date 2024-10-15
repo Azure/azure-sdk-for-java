@@ -6,49 +6,55 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.ContentSource;
 import com.azure.resourcemanager.automation.models.DscConfigurationParameter;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The properties to create or update configuration. */
+/**
+ * The properties to create or update configuration.
+ */
 @Fluent
-public final class DscConfigurationCreateOrUpdateProperties {
+public final class DscConfigurationCreateOrUpdateProperties
+    implements JsonSerializable<DscConfigurationCreateOrUpdateProperties> {
     /*
      * Gets or sets verbose log option.
      */
-    @JsonProperty(value = "logVerbose")
     private Boolean logVerbose;
 
     /*
      * Gets or sets progress log option.
      */
-    @JsonProperty(value = "logProgress")
     private Boolean logProgress;
 
     /*
      * Gets or sets the source.
      */
-    @JsonProperty(value = "source", required = true)
     private ContentSource source;
 
     /*
      * Gets or sets the configuration parameters.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, DscConfigurationParameter> parameters;
 
     /*
      * Gets or sets the description of the configuration.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of DscConfigurationCreateOrUpdateProperties class.
+     */
+    public DscConfigurationCreateOrUpdateProperties() {
+    }
+
+    /**
      * Get the logVerbose property: Gets or sets verbose log option.
-     *
+     * 
      * @return the logVerbose value.
      */
     public Boolean logVerbose() {
@@ -57,7 +63,7 @@ public final class DscConfigurationCreateOrUpdateProperties {
 
     /**
      * Set the logVerbose property: Gets or sets verbose log option.
-     *
+     * 
      * @param logVerbose the logVerbose value to set.
      * @return the DscConfigurationCreateOrUpdateProperties object itself.
      */
@@ -68,7 +74,7 @@ public final class DscConfigurationCreateOrUpdateProperties {
 
     /**
      * Get the logProgress property: Gets or sets progress log option.
-     *
+     * 
      * @return the logProgress value.
      */
     public Boolean logProgress() {
@@ -77,7 +83,7 @@ public final class DscConfigurationCreateOrUpdateProperties {
 
     /**
      * Set the logProgress property: Gets or sets progress log option.
-     *
+     * 
      * @param logProgress the logProgress value to set.
      * @return the DscConfigurationCreateOrUpdateProperties object itself.
      */
@@ -88,7 +94,7 @@ public final class DscConfigurationCreateOrUpdateProperties {
 
     /**
      * Get the source property: Gets or sets the source.
-     *
+     * 
      * @return the source value.
      */
     public ContentSource source() {
@@ -97,7 +103,7 @@ public final class DscConfigurationCreateOrUpdateProperties {
 
     /**
      * Set the source property: Gets or sets the source.
-     *
+     * 
      * @param source the source value to set.
      * @return the DscConfigurationCreateOrUpdateProperties object itself.
      */
@@ -108,7 +114,7 @@ public final class DscConfigurationCreateOrUpdateProperties {
 
     /**
      * Get the parameters property: Gets or sets the configuration parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, DscConfigurationParameter> parameters() {
@@ -117,7 +123,7 @@ public final class DscConfigurationCreateOrUpdateProperties {
 
     /**
      * Set the parameters property: Gets or sets the configuration parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DscConfigurationCreateOrUpdateProperties object itself.
      */
@@ -128,7 +134,7 @@ public final class DscConfigurationCreateOrUpdateProperties {
 
     /**
      * Get the description property: Gets or sets the description of the configuration.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -137,7 +143,7 @@ public final class DscConfigurationCreateOrUpdateProperties {
 
     /**
      * Set the description property: Gets or sets the description of the configuration.
-     *
+     * 
      * @param description the description value to set.
      * @return the DscConfigurationCreateOrUpdateProperties object itself.
      */
@@ -148,29 +154,79 @@ public final class DscConfigurationCreateOrUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (source() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property source in model DscConfigurationCreateOrUpdateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property source in model DscConfigurationCreateOrUpdateProperties"));
         } else {
             source().validate();
         }
         if (parameters() != null) {
-            parameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DscConfigurationCreateOrUpdateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("source", this.source);
+        jsonWriter.writeBooleanField("logVerbose", this.logVerbose);
+        jsonWriter.writeBooleanField("logProgress", this.logProgress);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DscConfigurationCreateOrUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DscConfigurationCreateOrUpdateProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DscConfigurationCreateOrUpdateProperties.
+     */
+    public static DscConfigurationCreateOrUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DscConfigurationCreateOrUpdateProperties deserializedDscConfigurationCreateOrUpdateProperties
+                = new DscConfigurationCreateOrUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("source".equals(fieldName)) {
+                    deserializedDscConfigurationCreateOrUpdateProperties.source = ContentSource.fromJson(reader);
+                } else if ("logVerbose".equals(fieldName)) {
+                    deserializedDscConfigurationCreateOrUpdateProperties.logVerbose
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("logProgress".equals(fieldName)) {
+                    deserializedDscConfigurationCreateOrUpdateProperties.logProgress
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, DscConfigurationParameter> parameters
+                        = reader.readMap(reader1 -> DscConfigurationParameter.fromJson(reader1));
+                    deserializedDscConfigurationCreateOrUpdateProperties.parameters = parameters;
+                } else if ("description".equals(fieldName)) {
+                    deserializedDscConfigurationCreateOrUpdateProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDscConfigurationCreateOrUpdateProperties;
+        });
+    }
 }

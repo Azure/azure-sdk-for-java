@@ -1,6 +1,6 @@
 ## Release History
 
-### 5.17.0-beta.1 (Unreleased)
+### 5.18.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,16 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 5.17.1 (2024-10-11)
+
+#### Bugs Fixed
+* Fixed issue that some classes do not support Java 17.
+
+### 5.17.0 (2024-10-09)
+
+#### Other Changes
+* regular release
 
 ### 5.16.0 (2024-09-09)
 

@@ -14,6 +14,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -46,6 +47,7 @@ import com.azure.storage.blob.models.LeaseStatusType;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.specialized.BlobClientBase;
+import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
@@ -105,6 +107,7 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH;
+import static com.azure.storage.common.test.shared.StorageCommonTestUtils.convertInputStreamToByteArray;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -1106,6 +1109,45 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         Files.deleteIfExists(file.toPath());
     }
 
+    @LiveOnly
+    @ParameterizedTest
+    @MethodSource("downloadFileSupplier")
+    public void downloadFileAsync(int fileSize, EncryptionVersion version) throws IOException {
+        File file = getRandomFile(fileSize);
+        File outFile = new File(testResourceNamer.randomName(prefix, 60) + ".txt");
+
+        beac = getEncryptionAsyncClient(version);
+
+        StepVerifier.create(beac.uploadFromFile(file.toPath().toString(), true)
+            .then(beac.downloadToFileWithResponse(outFile.toPath().toString(), null,
+                new ParallelTransferOptions().setBlockSizeLong((long) (4 * 1024 * 1024)), null,
+                null, false)))
+            .assertNext(r -> assertEquals(BlobType.BLOCK_BLOB, r.getValue().getBlobType()))
+            .verifyComplete();
+
+        compareFiles(file, outFile, 0, fileSize);
+
+        Files.deleteIfExists(outFile.toPath());
+        Files.deleteIfExists(file.toPath());
+    }
+
+    @LiveOnly
+    @ParameterizedTest
+    @MethodSource("downloadFileSupplier")
+    public void downloadStream(int fileSize, EncryptionVersion version) throws IOException {
+        byte[] data = getRandomByteArray(fileSize);
+        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+        Files.write(file.toPath(), data);
+
+        ebc = getEncryptionClient(version);
+        ebc.uploadFromFile(file.toPath().toString(), true);
+
+        BlobInputStream stream = ebc.openInputStream();
+        TestUtils.assertArraysEqual(convertInputStreamToByteArray(stream), data);
+
+        Files.deleteIfExists(file.toPath());
+    }
+
     private static Stream<Arguments> downloadFileSupplier() {
         return Stream.of(
             Arguments.of(0, EncryptionVersion.V1), // empty file
@@ -1115,10 +1157,13 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
             Arguments.of(50 * Constants.MB, EncryptionVersion.V1), // large file requiring multiple requests
             Arguments.of(0, EncryptionVersion.V2), // empty file
             Arguments.of(20, EncryptionVersion.V2), // small file
-            //Arguments.of(16 * 1024 * 1024, EncryptionVersion.V2), // medium file in several chunks
-            //todo isbr: uncomment after 4mb boundary bug is fixed
+            Arguments.of(16 * 1024 * 1024, EncryptionVersion.V2), // medium file in several chunks
             Arguments.of(8 * 1026 * 1024 + 10, EncryptionVersion.V2), // medium file not aligned to block
-            Arguments.of(50 * Constants.MB, EncryptionVersion.V2) // large file requiring multiple requests
+            Arguments.of(50 * Constants.MB, EncryptionVersion.V2), // large file requiring multiple requests
+            Arguments.of((4 * Constants.MB) + 1, EncryptionVersion.V2), // 4mb file bug
+            Arguments.of(4 * Constants.MB, EncryptionVersion.V2), // 4mb file bug
+            Arguments.of((4 * Constants.MB) + 27, EncryptionVersion.V2), // 4mb file bug
+            Arguments.of(16 * Constants.MB, EncryptionVersion.V2) // 4mb file bug
         );
     }
 
@@ -1774,6 +1819,31 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     }
 
     @ParameterizedTest
+    @MethodSource("uploadAndDownloadFileDifferentRegionLengthSupplier")
+    public void uploadAndDownloadToFileDifferentRegionLengthAsync(int regionLength, int fileSize) throws IOException {
+        File file = getRandomFile(fileSize);
+        beac = mockAesKey(getEncryptedClientBuilder(fakeKey, null,
+            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2_1)
+            .blobName(generateBlobName())
+            .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
+                .setAuthenticatedRegionDataLengthInBytes(regionLength))
+            .buildEncryptedBlobAsyncClient());
+
+        File outFile = new File(testResourceNamer.randomName(prefix, 60) + ".txt");
+        Files.deleteIfExists(outFile.toPath());
+
+        StepVerifier.create(beac.uploadFromFile(file.toPath().toString(), true)
+            .then(beac.downloadToFile(outFile.toPath().toString(), true)))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        compareFiles(file, outFile, 0, file.length());
+
+        file.deleteOnExit();
+        outFile.deleteOnExit();
+    }
+
+    @ParameterizedTest
     @MethodSource("uploadAndDownloadDifferentRegionLengthSupplier")
     public void uploadAndDownloadRegionLengthWithDiffBlobClients(int regionLength, int dataSize) {
         ByteBuffer data = getRandomData(dataSize);
@@ -1892,13 +1962,14 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
 
     private static Stream<Arguments> uploadAndDownloadFileDifferentRegionLengthSupplier() {
         return Stream.of(
-//            Arguments.of(4 * Constants.KB, 4 * Constants.MB), // add these back once issue #41709 is resolved
-//            Arguments.of(Constants.KB, 8 * Constants.MB), // add these back once issue #41709 is resolved
+            Arguments.of(4 * Constants.KB, 4 * Constants.MB), // tests 4MB V2 download bug
+            Arguments.of(Constants.KB, 8 * Constants.MB), // tests 4MB V2 download bug
             Arguments.of(10 * Constants.KB, 4 * Constants.MB), // unaligned
             Arguments.of(16, Constants.KB), // minimum boundary
             Arguments.of(25, Constants.KB), // unaligned
             Arguments.of(6 * Constants.MB, Constants.KB), // testing region smaller than data size
-            Arguments.of(6 * Constants.MB, 8 * Constants.MB) // testing greater than default 4MB region size
+            Arguments.of(6 * Constants.MB, 8 * Constants.MB), // testing greater than default 4MB region size
+            Arguments.of(Constants.KB, 16 * Constants.MB) // 4mb download bug
         );
     }
 

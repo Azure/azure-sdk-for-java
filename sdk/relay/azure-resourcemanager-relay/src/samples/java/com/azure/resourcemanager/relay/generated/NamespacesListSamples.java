@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.relay.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Namespaces List. */
+/**
+ * Samples for Namespaces List.
+ */
 public final class NamespacesListSamples {
     /*
-     * x-ms-original-file: specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/NameSpaces/RelayNameSpaceListBySubscription.json
+     * x-ms-original-file: specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/NameSpaces/
+     * RelayNameSpaceListBySubscription.json
      */
     /**
      * Sample code: RelayNameSpaceListBySubscription.
-     *
+     * 
      * @param manager Entry point to RelayManager.
      */
     public static void relayNameSpaceListBySubscription(com.azure.resourcemanager.relay.RelayManager manager) {
-        manager.namespaces().list(Context.NONE);
+        manager.namespaces().list(com.azure.core.util.Context.NONE);
     }
 }

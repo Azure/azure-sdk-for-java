@@ -6,21 +6,33 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Definition of create source control sync job properties. */
+/**
+ * Definition of create source control sync job properties.
+ */
 @Fluent
-public final class SourceControlSyncJobCreateProperties {
+public final class SourceControlSyncJobCreateProperties
+    implements JsonSerializable<SourceControlSyncJobCreateProperties> {
     /*
      * The commit id of the source control sync job. If not syncing to a commitId, enter an empty string.
      */
-    @JsonProperty(value = "commitId", required = true)
     private String commitId;
+
+    /**
+     * Creates an instance of SourceControlSyncJobCreateProperties class.
+     */
+    public SourceControlSyncJobCreateProperties() {
+    }
 
     /**
      * Get the commitId property: The commit id of the source control sync job. If not syncing to a commitId, enter an
      * empty string.
-     *
+     * 
      * @return the commitId value.
      */
     public String commitId() {
@@ -30,7 +42,7 @@ public final class SourceControlSyncJobCreateProperties {
     /**
      * Set the commitId property: The commit id of the source control sync job. If not syncing to a commitId, enter an
      * empty string.
-     *
+     * 
      * @param commitId the commitId value to set.
      * @return the SourceControlSyncJobCreateProperties object itself.
      */
@@ -41,17 +53,54 @@ public final class SourceControlSyncJobCreateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (commitId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property commitId in model SourceControlSyncJobCreateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property commitId in model SourceControlSyncJobCreateProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SourceControlSyncJobCreateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("commitId", this.commitId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SourceControlSyncJobCreateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SourceControlSyncJobCreateProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SourceControlSyncJobCreateProperties.
+     */
+    public static SourceControlSyncJobCreateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SourceControlSyncJobCreateProperties deserializedSourceControlSyncJobCreateProperties
+                = new SourceControlSyncJobCreateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("commitId".equals(fieldName)) {
+                    deserializedSourceControlSyncJobCreateProperties.commitId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSourceControlSyncJobCreateProperties;
+        });
+    }
 }

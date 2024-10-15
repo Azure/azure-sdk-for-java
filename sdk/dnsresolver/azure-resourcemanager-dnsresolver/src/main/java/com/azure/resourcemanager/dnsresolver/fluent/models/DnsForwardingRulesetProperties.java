@@ -7,37 +7,46 @@ package com.azure.resourcemanager.dnsresolver.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dnsresolver.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Represents the properties of a DNS forwarding ruleset. */
+/**
+ * Represents the properties of a DNS forwarding ruleset.
+ */
 @Fluent
-public final class DnsForwardingRulesetProperties {
+public final class DnsForwardingRulesetProperties implements JsonSerializable<DnsForwardingRulesetProperties> {
     /*
      * The reference to the DNS resolver outbound endpoints that are used to route DNS queries matching the forwarding
      * rules in the ruleset to the target DNS servers.
      */
-    @JsonProperty(value = "dnsResolverOutboundEndpoints", required = true)
     private List<SubResource> dnsResolverOutboundEndpoints;
 
     /*
-     * The current provisioning state of the DNS forwarding ruleset. This is a read-only property and any attempt to
-     * set this value will be ignored.
+     * The current provisioning state of the DNS forwarding ruleset. This is a read-only property and any attempt to set
+     * this value will be ignored.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The resourceGuid for the DNS forwarding ruleset.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
+
+    /**
+     * Creates an instance of DnsForwardingRulesetProperties class.
+     */
+    public DnsForwardingRulesetProperties() {
+    }
 
     /**
      * Get the dnsResolverOutboundEndpoints property: The reference to the DNS resolver outbound endpoints that are used
      * to route DNS queries matching the forwarding rules in the ruleset to the target DNS servers.
-     *
+     * 
      * @return the dnsResolverOutboundEndpoints value.
      */
     public List<SubResource> dnsResolverOutboundEndpoints() {
@@ -47,12 +56,12 @@ public final class DnsForwardingRulesetProperties {
     /**
      * Set the dnsResolverOutboundEndpoints property: The reference to the DNS resolver outbound endpoints that are used
      * to route DNS queries matching the forwarding rules in the ruleset to the target DNS servers.
-     *
+     * 
      * @param dnsResolverOutboundEndpoints the dnsResolverOutboundEndpoints value to set.
      * @return the DnsForwardingRulesetProperties object itself.
      */
-    public DnsForwardingRulesetProperties withDnsResolverOutboundEndpoints(
-        List<SubResource> dnsResolverOutboundEndpoints) {
+    public DnsForwardingRulesetProperties
+        withDnsResolverOutboundEndpoints(List<SubResource> dnsResolverOutboundEndpoints) {
         this.dnsResolverOutboundEndpoints = dnsResolverOutboundEndpoints;
         return this;
     }
@@ -60,7 +69,7 @@ public final class DnsForwardingRulesetProperties {
     /**
      * Get the provisioningState property: The current provisioning state of the DNS forwarding ruleset. This is a
      * read-only property and any attempt to set this value will be ignored.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -69,7 +78,7 @@ public final class DnsForwardingRulesetProperties {
 
     /**
      * Get the resourceGuid property: The resourceGuid for the DNS forwarding ruleset.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -78,18 +87,63 @@ public final class DnsForwardingRulesetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dnsResolverOutboundEndpoints() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dnsResolverOutboundEndpoints in model"
-                            + " DnsForwardingRulesetProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dnsResolverOutboundEndpoints in model DnsForwardingRulesetProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DnsForwardingRulesetProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("dnsResolverOutboundEndpoints", this.dnsResolverOutboundEndpoints,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DnsForwardingRulesetProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DnsForwardingRulesetProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DnsForwardingRulesetProperties.
+     */
+    public static DnsForwardingRulesetProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DnsForwardingRulesetProperties deserializedDnsForwardingRulesetProperties
+                = new DnsForwardingRulesetProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dnsResolverOutboundEndpoints".equals(fieldName)) {
+                    List<SubResource> dnsResolverOutboundEndpoints
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedDnsForwardingRulesetProperties.dnsResolverOutboundEndpoints
+                        = dnsResolverOutboundEndpoints;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDnsForwardingRulesetProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("resourceGuid".equals(fieldName)) {
+                    deserializedDnsForwardingRulesetProperties.resourceGuid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDnsForwardingRulesetProperties;
+        });
+    }
 }

@@ -12,22 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ReservationOrderAliasResponsePropertiesReservedResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReservationOrderAliasResponsePropertiesReservedResourceProperties model =
-            BinaryData
-                .fromString("{\"instanceFlexibility\":\"Off\"}")
+        ReservationOrderAliasResponsePropertiesReservedResourceProperties model
+            = BinaryData.fromString("{\"instanceFlexibility\":\"Off\"}")
                 .toObject(ReservationOrderAliasResponsePropertiesReservedResourceProperties.class);
         Assertions.assertEquals(InstanceFlexibility.OFF, model.instanceFlexibility());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReservationOrderAliasResponsePropertiesReservedResourceProperties model =
-            new ReservationOrderAliasResponsePropertiesReservedResourceProperties()
+        ReservationOrderAliasResponsePropertiesReservedResourceProperties model
+            = new ReservationOrderAliasResponsePropertiesReservedResourceProperties()
                 .withInstanceFlexibility(InstanceFlexibility.OFF);
-        model =
-            BinaryData
-                .fromObject(model)
-                .toObject(ReservationOrderAliasResponsePropertiesReservedResourceProperties.class);
+        model = BinaryData.fromObject(model)
+            .toObject(ReservationOrderAliasResponsePropertiesReservedResourceProperties.class);
         Assertions.assertEquals(InstanceFlexibility.OFF, model.instanceFlexibility());
     }
 }

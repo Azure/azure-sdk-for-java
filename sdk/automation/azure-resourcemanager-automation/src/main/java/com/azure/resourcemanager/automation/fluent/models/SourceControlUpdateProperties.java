@@ -5,51 +5,57 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.SourceControlSecurityTokenProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of the update source control. */
+/**
+ * The properties of the update source control.
+ */
 @Fluent
-public final class SourceControlUpdateProperties {
+public final class SourceControlUpdateProperties implements JsonSerializable<SourceControlUpdateProperties> {
     /*
      * The repo branch of the source control.
      */
-    @JsonProperty(value = "branch")
     private String branch;
 
     /*
      * The folder path of the source control. Path must be relative.
      */
-    @JsonProperty(value = "folderPath")
     private String folderPath;
 
     /*
      * The auto sync of the source control. Default is false.
      */
-    @JsonProperty(value = "autoSync")
     private Boolean autoSync;
 
     /*
      * The auto publish of the source control. Default is true.
      */
-    @JsonProperty(value = "publishRunbook")
     private Boolean publishRunbook;
 
     /*
      * The authorization token for the repo of the source control.
      */
-    @JsonProperty(value = "securityToken")
     private SourceControlSecurityTokenProperties securityToken;
 
     /*
      * The user description of the source control.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of SourceControlUpdateProperties class.
+     */
+    public SourceControlUpdateProperties() {
+    }
+
+    /**
      * Get the branch property: The repo branch of the source control.
-     *
+     * 
      * @return the branch value.
      */
     public String branch() {
@@ -58,7 +64,7 @@ public final class SourceControlUpdateProperties {
 
     /**
      * Set the branch property: The repo branch of the source control.
-     *
+     * 
      * @param branch the branch value to set.
      * @return the SourceControlUpdateProperties object itself.
      */
@@ -69,7 +75,7 @@ public final class SourceControlUpdateProperties {
 
     /**
      * Get the folderPath property: The folder path of the source control. Path must be relative.
-     *
+     * 
      * @return the folderPath value.
      */
     public String folderPath() {
@@ -78,7 +84,7 @@ public final class SourceControlUpdateProperties {
 
     /**
      * Set the folderPath property: The folder path of the source control. Path must be relative.
-     *
+     * 
      * @param folderPath the folderPath value to set.
      * @return the SourceControlUpdateProperties object itself.
      */
@@ -89,7 +95,7 @@ public final class SourceControlUpdateProperties {
 
     /**
      * Get the autoSync property: The auto sync of the source control. Default is false.
-     *
+     * 
      * @return the autoSync value.
      */
     public Boolean autoSync() {
@@ -98,7 +104,7 @@ public final class SourceControlUpdateProperties {
 
     /**
      * Set the autoSync property: The auto sync of the source control. Default is false.
-     *
+     * 
      * @param autoSync the autoSync value to set.
      * @return the SourceControlUpdateProperties object itself.
      */
@@ -109,7 +115,7 @@ public final class SourceControlUpdateProperties {
 
     /**
      * Get the publishRunbook property: The auto publish of the source control. Default is true.
-     *
+     * 
      * @return the publishRunbook value.
      */
     public Boolean publishRunbook() {
@@ -118,7 +124,7 @@ public final class SourceControlUpdateProperties {
 
     /**
      * Set the publishRunbook property: The auto publish of the source control. Default is true.
-     *
+     * 
      * @param publishRunbook the publishRunbook value to set.
      * @return the SourceControlUpdateProperties object itself.
      */
@@ -129,7 +135,7 @@ public final class SourceControlUpdateProperties {
 
     /**
      * Get the securityToken property: The authorization token for the repo of the source control.
-     *
+     * 
      * @return the securityToken value.
      */
     public SourceControlSecurityTokenProperties securityToken() {
@@ -138,7 +144,7 @@ public final class SourceControlUpdateProperties {
 
     /**
      * Set the securityToken property: The authorization token for the repo of the source control.
-     *
+     * 
      * @param securityToken the securityToken value to set.
      * @return the SourceControlUpdateProperties object itself.
      */
@@ -149,7 +155,7 @@ public final class SourceControlUpdateProperties {
 
     /**
      * Get the description property: The user description of the source control.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -158,7 +164,7 @@ public final class SourceControlUpdateProperties {
 
     /**
      * Set the description property: The user description of the source control.
-     *
+     * 
      * @param description the description value to set.
      * @return the SourceControlUpdateProperties object itself.
      */
@@ -169,12 +175,66 @@ public final class SourceControlUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (securityToken() != null) {
             securityToken().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("branch", this.branch);
+        jsonWriter.writeStringField("folderPath", this.folderPath);
+        jsonWriter.writeBooleanField("autoSync", this.autoSync);
+        jsonWriter.writeBooleanField("publishRunbook", this.publishRunbook);
+        jsonWriter.writeJsonField("securityToken", this.securityToken);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SourceControlUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SourceControlUpdateProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SourceControlUpdateProperties.
+     */
+    public static SourceControlUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SourceControlUpdateProperties deserializedSourceControlUpdateProperties
+                = new SourceControlUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("branch".equals(fieldName)) {
+                    deserializedSourceControlUpdateProperties.branch = reader.getString();
+                } else if ("folderPath".equals(fieldName)) {
+                    deserializedSourceControlUpdateProperties.folderPath = reader.getString();
+                } else if ("autoSync".equals(fieldName)) {
+                    deserializedSourceControlUpdateProperties.autoSync = reader.getNullable(JsonReader::getBoolean);
+                } else if ("publishRunbook".equals(fieldName)) {
+                    deserializedSourceControlUpdateProperties.publishRunbook
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("securityToken".equals(fieldName)) {
+                    deserializedSourceControlUpdateProperties.securityToken
+                        = SourceControlSecurityTokenProperties.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    deserializedSourceControlUpdateProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSourceControlUpdateProperties;
+        });
     }
 }

@@ -5,57 +5,59 @@
 package com.azure.resourcemanager.advisor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Advisor Digest configuration entity. */
+/**
+ * Advisor Digest configuration entity.
+ */
 @Fluent
-public final class DigestConfig {
+public final class DigestConfig implements JsonSerializable<DigestConfig> {
     /*
      * Name of digest configuration. Value is case-insensitive and must be unique within a subscription.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Action group resource id used by digest.
      */
-    @JsonProperty(value = "actionGroupResourceId")
     private String actionGroupResourceId;
 
     /*
      * Frequency that digest will be triggered, in days. Value must be between 7 and 30 days inclusive.
      */
-    @JsonProperty(value = "frequency")
     private Integer frequency;
 
     /*
      * Categories to send digest for. If categories are not provided, then digest will be sent for all categories.
      */
-    @JsonProperty(value = "categories")
     private List<Category> categories;
 
     /*
      * Language for digest content body. Value must be ISO 639-1 code for one of Azure portal supported languages.
      * Otherwise, it will be converted into one. Default value is English (en).
      */
-    @JsonProperty(value = "language")
     private String language;
 
     /*
      * State of digest configuration.
      */
-    @JsonProperty(value = "state")
     private DigestConfigState state;
 
-    /** Creates an instance of DigestConfig class. */
+    /**
+     * Creates an instance of DigestConfig class.
+     */
     public DigestConfig() {
     }
 
     /**
      * Get the name property: Name of digest configuration. Value is case-insensitive and must be unique within a
      * subscription.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -65,7 +67,7 @@ public final class DigestConfig {
     /**
      * Set the name property: Name of digest configuration. Value is case-insensitive and must be unique within a
      * subscription.
-     *
+     * 
      * @param name the name value to set.
      * @return the DigestConfig object itself.
      */
@@ -76,7 +78,7 @@ public final class DigestConfig {
 
     /**
      * Get the actionGroupResourceId property: Action group resource id used by digest.
-     *
+     * 
      * @return the actionGroupResourceId value.
      */
     public String actionGroupResourceId() {
@@ -85,7 +87,7 @@ public final class DigestConfig {
 
     /**
      * Set the actionGroupResourceId property: Action group resource id used by digest.
-     *
+     * 
      * @param actionGroupResourceId the actionGroupResourceId value to set.
      * @return the DigestConfig object itself.
      */
@@ -97,7 +99,7 @@ public final class DigestConfig {
     /**
      * Get the frequency property: Frequency that digest will be triggered, in days. Value must be between 7 and 30 days
      * inclusive.
-     *
+     * 
      * @return the frequency value.
      */
     public Integer frequency() {
@@ -107,7 +109,7 @@ public final class DigestConfig {
     /**
      * Set the frequency property: Frequency that digest will be triggered, in days. Value must be between 7 and 30 days
      * inclusive.
-     *
+     * 
      * @param frequency the frequency value to set.
      * @return the DigestConfig object itself.
      */
@@ -119,7 +121,7 @@ public final class DigestConfig {
     /**
      * Get the categories property: Categories to send digest for. If categories are not provided, then digest will be
      * sent for all categories.
-     *
+     * 
      * @return the categories value.
      */
     public List<Category> categories() {
@@ -129,7 +131,7 @@ public final class DigestConfig {
     /**
      * Set the categories property: Categories to send digest for. If categories are not provided, then digest will be
      * sent for all categories.
-     *
+     * 
      * @param categories the categories value to set.
      * @return the DigestConfig object itself.
      */
@@ -141,7 +143,7 @@ public final class DigestConfig {
     /**
      * Get the language property: Language for digest content body. Value must be ISO 639-1 code for one of Azure portal
      * supported languages. Otherwise, it will be converted into one. Default value is English (en).
-     *
+     * 
      * @return the language value.
      */
     public String language() {
@@ -151,7 +153,7 @@ public final class DigestConfig {
     /**
      * Set the language property: Language for digest content body. Value must be ISO 639-1 code for one of Azure portal
      * supported languages. Otherwise, it will be converted into one. Default value is English (en).
-     *
+     * 
      * @param language the language value to set.
      * @return the DigestConfig object itself.
      */
@@ -162,7 +164,7 @@ public final class DigestConfig {
 
     /**
      * Get the state property: State of digest configuration.
-     *
+     * 
      * @return the state value.
      */
     public DigestConfigState state() {
@@ -171,7 +173,7 @@ public final class DigestConfig {
 
     /**
      * Set the state property: State of digest configuration.
-     *
+     * 
      * @param state the state value to set.
      * @return the DigestConfig object itself.
      */
@@ -182,9 +184,62 @@ public final class DigestConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("actionGroupResourceId", this.actionGroupResourceId);
+        jsonWriter.writeNumberField("frequency", this.frequency);
+        jsonWriter.writeArrayField("categories", this.categories,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("language", this.language);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DigestConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DigestConfig if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DigestConfig.
+     */
+    public static DigestConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DigestConfig deserializedDigestConfig = new DigestConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDigestConfig.name = reader.getString();
+                } else if ("actionGroupResourceId".equals(fieldName)) {
+                    deserializedDigestConfig.actionGroupResourceId = reader.getString();
+                } else if ("frequency".equals(fieldName)) {
+                    deserializedDigestConfig.frequency = reader.getNullable(JsonReader::getInt);
+                } else if ("categories".equals(fieldName)) {
+                    List<Category> categories = reader.readArray(reader1 -> Category.fromString(reader1.getString()));
+                    deserializedDigestConfig.categories = categories;
+                } else if ("language".equals(fieldName)) {
+                    deserializedDigestConfig.language = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedDigestConfig.state = DigestConfigState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDigestConfig;
+        });
     }
 }

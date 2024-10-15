@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.automation.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Watcher Get. */
+/**
+ * Samples for Watcher Get.
+ */
 public final class WatcherGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getWatcher.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getWatcher.
+     * json
      */
     /**
      * Sample code: Get watcher.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getWatcher(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.watchers().getWithResponse("rg", "MyTestAutomationAccount", "MyTestWatcher", Context.NONE);
+        manager.watchers()
+            .getWithResponse("rg", "MyTestAutomationAccount", "MyTestWatcher", com.azure.core.util.Context.NONE);
     }
 }

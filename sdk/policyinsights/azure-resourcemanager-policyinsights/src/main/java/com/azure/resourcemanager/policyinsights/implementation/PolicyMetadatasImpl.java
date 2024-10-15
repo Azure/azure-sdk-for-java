@@ -23,8 +23,7 @@ public final class PolicyMetadatasImpl implements PolicyMetadatas {
 
     private final com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager;
 
-    public PolicyMetadatasImpl(
-        PolicyMetadatasClient innerClient,
+    public PolicyMetadatasImpl(PolicyMetadatasClient innerClient,
         com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -33,10 +32,7 @@ public final class PolicyMetadatasImpl implements PolicyMetadatas {
     public Response<PolicyMetadata> getResourceWithResponse(String resourceName, Context context) {
         Response<PolicyMetadataInner> inner = this.serviceClient().getResourceWithResponse(resourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PolicyMetadataImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -54,12 +50,12 @@ public final class PolicyMetadatasImpl implements PolicyMetadatas {
 
     public PagedIterable<SlimPolicyMetadata> list() {
         PagedIterable<SlimPolicyMetadataInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new SlimPolicyMetadataImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SlimPolicyMetadataImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SlimPolicyMetadata> list(Integer top, Context context) {
         PagedIterable<SlimPolicyMetadataInner> inner = this.serviceClient().list(top, context);
-        return Utils.mapPage(inner, inner1 -> new SlimPolicyMetadataImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SlimPolicyMetadataImpl(inner1, this.manager()));
     }
 
     private PolicyMetadatasClient serviceClient() {

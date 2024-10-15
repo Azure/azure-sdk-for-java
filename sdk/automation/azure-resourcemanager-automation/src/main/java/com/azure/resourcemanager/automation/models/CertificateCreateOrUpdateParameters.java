@@ -6,27 +6,38 @@ package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.CertificateCreateOrUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The parameters supplied to the create or update or replace certificate operation. */
+/**
+ * The parameters supplied to the create or update or replace certificate operation.
+ */
 @Fluent
-public final class CertificateCreateOrUpdateParameters {
+public final class CertificateCreateOrUpdateParameters
+    implements JsonSerializable<CertificateCreateOrUpdateParameters> {
     /*
      * Gets or sets the name of the certificate.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Gets or sets the properties of the certificate.
      */
-    @JsonProperty(value = "properties", required = true)
     private CertificateCreateOrUpdateProperties innerProperties = new CertificateCreateOrUpdateProperties();
 
     /**
+     * Creates an instance of CertificateCreateOrUpdateParameters class.
+     */
+    public CertificateCreateOrUpdateParameters() {
+    }
+
+    /**
      * Get the name property: Gets or sets the name of the certificate.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -35,7 +46,7 @@ public final class CertificateCreateOrUpdateParameters {
 
     /**
      * Set the name property: Gets or sets the name of the certificate.
-     *
+     * 
      * @param name the name value to set.
      * @return the CertificateCreateOrUpdateParameters object itself.
      */
@@ -46,7 +57,7 @@ public final class CertificateCreateOrUpdateParameters {
 
     /**
      * Get the innerProperties property: Gets or sets the properties of the certificate.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CertificateCreateOrUpdateProperties innerProperties() {
@@ -55,7 +66,7 @@ public final class CertificateCreateOrUpdateParameters {
 
     /**
      * Get the base64Value property: Gets or sets the base64 encoded value of the certificate.
-     *
+     * 
      * @return the base64Value value.
      */
     public String base64Value() {
@@ -64,7 +75,7 @@ public final class CertificateCreateOrUpdateParameters {
 
     /**
      * Set the base64Value property: Gets or sets the base64 encoded value of the certificate.
-     *
+     * 
      * @param base64Value the base64Value value to set.
      * @return the CertificateCreateOrUpdateParameters object itself.
      */
@@ -78,7 +89,7 @@ public final class CertificateCreateOrUpdateParameters {
 
     /**
      * Get the description property: Gets or sets the description of the certificate.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -87,7 +98,7 @@ public final class CertificateCreateOrUpdateParameters {
 
     /**
      * Set the description property: Gets or sets the description of the certificate.
-     *
+     * 
      * @param description the description value to set.
      * @return the CertificateCreateOrUpdateParameters object itself.
      */
@@ -101,7 +112,7 @@ public final class CertificateCreateOrUpdateParameters {
 
     /**
      * Get the thumbprint property: Gets or sets the thumbprint of the certificate.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -110,7 +121,7 @@ public final class CertificateCreateOrUpdateParameters {
 
     /**
      * Set the thumbprint property: Gets or sets the thumbprint of the certificate.
-     *
+     * 
      * @param thumbprint the thumbprint value to set.
      * @return the CertificateCreateOrUpdateParameters object itself.
      */
@@ -124,7 +135,7 @@ public final class CertificateCreateOrUpdateParameters {
 
     /**
      * Get the isExportable property: Gets or sets the is exportable flag of the certificate.
-     *
+     * 
      * @return the isExportable value.
      */
     public Boolean isExportable() {
@@ -133,7 +144,7 @@ public final class CertificateCreateOrUpdateParameters {
 
     /**
      * Set the isExportable property: Gets or sets the is exportable flag of the certificate.
-     *
+     * 
      * @param isExportable the isExportable value to set.
      * @return the CertificateCreateOrUpdateParameters object itself.
      */
@@ -147,25 +158,65 @@ public final class CertificateCreateOrUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model CertificateCreateOrUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model CertificateCreateOrUpdateParameters"));
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model CertificateCreateOrUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model CertificateCreateOrUpdateParameters"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CertificateCreateOrUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateCreateOrUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateCreateOrUpdateParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CertificateCreateOrUpdateParameters.
+     */
+    public static CertificateCreateOrUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateCreateOrUpdateParameters deserializedCertificateCreateOrUpdateParameters
+                = new CertificateCreateOrUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCertificateCreateOrUpdateParameters.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCertificateCreateOrUpdateParameters.innerProperties
+                        = CertificateCreateOrUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateCreateOrUpdateParameters;
+        });
+    }
 }

@@ -14,8 +14,7 @@ public final class OperationResultsDescriptionImpl implements OperationResultsDe
 
     private final com.azure.resourcemanager.botservice.BotServiceManager serviceManager;
 
-    OperationResultsDescriptionImpl(
-        OperationResultsDescriptionInner innerObject,
+    OperationResultsDescriptionImpl(OperationResultsDescriptionInner innerObject,
         com.azure.resourcemanager.botservice.BotServiceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

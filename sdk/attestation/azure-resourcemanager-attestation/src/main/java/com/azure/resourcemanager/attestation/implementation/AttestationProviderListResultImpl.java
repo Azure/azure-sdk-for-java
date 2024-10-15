@@ -18,8 +18,7 @@ public final class AttestationProviderListResultImpl implements AttestationProvi
 
     private final com.azure.resourcemanager.attestation.AttestationManager serviceManager;
 
-    AttestationProviderListResultImpl(
-        AttestationProviderListResultInner innerObject,
+    AttestationProviderListResultImpl(AttestationProviderListResultInner innerObject,
         com.azure.resourcemanager.attestation.AttestationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -32,12 +31,9 @@ public final class AttestationProviderListResultImpl implements AttestationProvi
     public List<AttestationProvider> value() {
         List<AttestationProviderInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new AttestationProviderImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new AttestationProviderImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

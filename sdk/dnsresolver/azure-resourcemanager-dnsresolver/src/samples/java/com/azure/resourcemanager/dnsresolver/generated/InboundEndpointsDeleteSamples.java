@@ -4,22 +4,24 @@
 
 package com.azure.resourcemanager.dnsresolver.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for InboundEndpoints Delete. */
+/**
+ * Samples for InboundEndpoints Delete.
+ */
 public final class InboundEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_Delete.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_Delete.
+     * json
      */
     /**
      * Sample code: Delete inbound endpoint for DNS resolver.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void deleteInboundEndpointForDNSResolver(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager
-            .inboundEndpoints()
-            .delete("sampleResourceGroup", "sampleDnsResolver", "sampleInboundEndpoint", null, Context.NONE);
+    public static void
+        deleteInboundEndpointForDNSResolver(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.inboundEndpoints()
+            .delete("sampleResourceGroup", "sampleDnsResolver", "sampleInboundEndpoint", null,
+                com.azure.core.util.Context.NONE);
     }
 }

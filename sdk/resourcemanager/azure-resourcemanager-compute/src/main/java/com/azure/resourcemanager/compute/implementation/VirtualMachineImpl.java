@@ -275,7 +275,7 @@ class VirtualMachineImpl
             .getVirtualMachines()
             .deallocateAsync(this.resourceGroupName(), this.name())
             // Refresh after deallocate to ensure the inner is updatable (due to a change in behavior in Managed Disks)
-            .map(aVoid -> this.refreshAsync())
+            .then(this.refreshAsync())
             .then();
     }
 
@@ -292,7 +292,7 @@ class VirtualMachineImpl
             .getVirtualMachines()
             .deallocateAsync(this.resourceGroupName(), this.name(), hibernate)
             // Refresh after deallocate to ensure the inner is updatable (due to a change in behavior in Managed Disks)
-            .map(aVoid -> this.refreshAsync())
+            .then(this.refreshAsync())
             .then();
     }
 
@@ -399,7 +399,7 @@ class VirtualMachineImpl
             .serviceClient()
             .getVirtualMachines()
             .convertToManagedDisksAsync(this.resourceGroupName(), this.name())
-            .flatMap(aVoid -> refreshAsync())
+            .then(refreshAsync())
             .then();
     }
 
@@ -2197,6 +2197,9 @@ class VirtualMachineImpl
                 .serviceClient()
                 .getVirtualMachines()
                 .updateAsync(resourceGroupName(), vmName, updateParameter)
+                .onErrorResume(e -> refreshAsync()
+                        .onErrorComplete() // ignore refresh error
+                        .then(Mono.error(e)))
                 .map(
                     virtualMachineInner -> {
                         reset(virtualMachineInner);
