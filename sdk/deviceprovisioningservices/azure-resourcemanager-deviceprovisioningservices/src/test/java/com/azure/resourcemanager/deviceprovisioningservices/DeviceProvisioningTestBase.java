@@ -8,7 +8,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -28,7 +28,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class DeviceProvisioningTestBase extends TestBase {
+public class DeviceProvisioningTestBase extends TestProxyTestBase {
     protected static final String DEFAULT_INSTANCE_NAME = "JavaDpsControlPlaneSDKTest";
     protected static final Region DEFAULT_REGION = Region.US_WEST_CENTRAL;
 

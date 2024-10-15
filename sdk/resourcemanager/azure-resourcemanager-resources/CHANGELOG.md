@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Added data boundary client of api-version 2024-03-01.
+- Added data boundary client of api-version 2024-08-01.
 
 ## 2.43.0 (2024-09-27)
 

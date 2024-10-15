@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Status while trying to fetch the deployment information. */
+/**
+ * Status while trying to fetch the deployment information.
+ */
 public final class DeploymentFetchStatus extends ExpandableStringEnum<DeploymentFetchStatus> {
-    /** Static value Success for DeploymentFetchStatus. */
+    /**
+     * Static value Success for DeploymentFetchStatus.
+     */
     public static final DeploymentFetchStatus SUCCESS = fromString("Success");
 
-    /** Static value Unauthorized for DeploymentFetchStatus. */
+    /**
+     * Static value Unauthorized for DeploymentFetchStatus.
+     */
     public static final DeploymentFetchStatus UNAUTHORIZED = fromString("Unauthorized");
 
-    /** Static value NotFound for DeploymentFetchStatus. */
+    /**
+     * Static value NotFound for DeploymentFetchStatus.
+     */
     public static final DeploymentFetchStatus NOT_FOUND = fromString("NotFound");
 
     /**
+     * Creates a new instance of DeploymentFetchStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeploymentFetchStatus() {
+    }
+
+    /**
      * Creates or finds a DeploymentFetchStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DeploymentFetchStatus.
      */
-    @JsonCreator
     public static DeploymentFetchStatus fromString(String name) {
         return fromString(name, DeploymentFetchStatus.class);
     }
 
     /**
      * Gets known DeploymentFetchStatus values.
-     *
+     * 
      * @return known DeploymentFetchStatus values.
      */
     public static Collection<DeploymentFetchStatus> values() {

@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.marketplaceordering.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for MarketplaceAgreements GetAgreement. */
+/**
+ * Samples for MarketplaceAgreements GetAgreement.
+ */
 public final class MarketplaceAgreementsGetAgreementSamples {
     /*
-     * x-ms-original-file: specification/marketplaceordering/resource-manager/Microsoft.MarketplaceOrdering/stable/2021-01-01/examples/GetAgreementMarketplaceTerms.json
+     * x-ms-original-file:
+     * specification/marketplaceordering/resource-manager/Microsoft.MarketplaceOrdering/stable/2021-01-01/examples/
+     * GetAgreementMarketplaceTerms.json
      */
     /**
      * Sample code: SetMarketplaceTerms.
-     *
+     * 
      * @param manager Entry point to MarketplaceOrderingManager.
      */
-    public static void setMarketplaceTerms(
-        com.azure.resourcemanager.marketplaceordering.MarketplaceOrderingManager manager) {
-        manager.marketplaceAgreements().getAgreementWithResponse("pubid", "offid", "planid", Context.NONE);
+    public static void
+        setMarketplaceTerms(com.azure.resourcemanager.marketplaceordering.MarketplaceOrderingManager manager) {
+        manager.marketplaceAgreements()
+            .getAgreementWithResponse("pubid", "offid", "planid", com.azure.core.util.Context.NONE);
     }
 }

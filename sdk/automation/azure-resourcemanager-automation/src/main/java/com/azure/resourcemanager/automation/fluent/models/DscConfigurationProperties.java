@@ -5,82 +5,84 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.ContentSource;
 import com.azure.resourcemanager.automation.models.DscConfigurationParameter;
 import com.azure.resourcemanager.automation.models.DscConfigurationProvisioningState;
 import com.azure.resourcemanager.automation.models.DscConfigurationState;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
-/** Definition of the configuration property type. */
+/**
+ * Definition of the configuration property type.
+ */
 @Fluent
-public final class DscConfigurationProperties {
+public final class DscConfigurationProperties implements JsonSerializable<DscConfigurationProperties> {
     /*
      * Gets or sets the provisioning state of the configuration.
      */
-    @JsonProperty(value = "provisioningState")
     private DscConfigurationProvisioningState provisioningState;
 
     /*
      * Gets or sets the job count of the configuration.
      */
-    @JsonProperty(value = "jobCount")
     private Integer jobCount;
 
     /*
      * Gets or sets the configuration parameters.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, DscConfigurationParameter> parameters;
 
     /*
      * Gets or sets the source.
      */
-    @JsonProperty(value = "source")
     private ContentSource source;
 
     /*
      * Gets or sets the state of the configuration.
      */
-    @JsonProperty(value = "state")
     private DscConfigurationState state;
 
     /*
      * Gets or sets verbose log option.
      */
-    @JsonProperty(value = "logVerbose")
     private Boolean logVerbose;
 
     /*
      * Gets or sets the creation time.
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /*
      * Gets or sets the last modified time.
      */
-    @JsonProperty(value = "lastModifiedTime")
     private OffsetDateTime lastModifiedTime;
 
     /*
      * Gets the number of compiled node configurations.
      */
-    @JsonProperty(value = "nodeConfigurationCount")
     private Integer nodeConfigurationCount;
 
     /*
      * Gets or sets the description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of DscConfigurationProperties class.
+     */
+    public DscConfigurationProperties() {
+    }
+
+    /**
      * Get the provisioningState property: Gets or sets the provisioning state of the configuration.
-     *
+     * 
      * @return the provisioningState value.
      */
     public DscConfigurationProvisioningState provisioningState() {
@@ -89,7 +91,7 @@ public final class DscConfigurationProperties {
 
     /**
      * Set the provisioningState property: Gets or sets the provisioning state of the configuration.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the DscConfigurationProperties object itself.
      */
@@ -100,7 +102,7 @@ public final class DscConfigurationProperties {
 
     /**
      * Get the jobCount property: Gets or sets the job count of the configuration.
-     *
+     * 
      * @return the jobCount value.
      */
     public Integer jobCount() {
@@ -109,7 +111,7 @@ public final class DscConfigurationProperties {
 
     /**
      * Set the jobCount property: Gets or sets the job count of the configuration.
-     *
+     * 
      * @param jobCount the jobCount value to set.
      * @return the DscConfigurationProperties object itself.
      */
@@ -120,7 +122,7 @@ public final class DscConfigurationProperties {
 
     /**
      * Get the parameters property: Gets or sets the configuration parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, DscConfigurationParameter> parameters() {
@@ -129,7 +131,7 @@ public final class DscConfigurationProperties {
 
     /**
      * Set the parameters property: Gets or sets the configuration parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DscConfigurationProperties object itself.
      */
@@ -140,7 +142,7 @@ public final class DscConfigurationProperties {
 
     /**
      * Get the source property: Gets or sets the source.
-     *
+     * 
      * @return the source value.
      */
     public ContentSource source() {
@@ -149,7 +151,7 @@ public final class DscConfigurationProperties {
 
     /**
      * Set the source property: Gets or sets the source.
-     *
+     * 
      * @param source the source value to set.
      * @return the DscConfigurationProperties object itself.
      */
@@ -160,7 +162,7 @@ public final class DscConfigurationProperties {
 
     /**
      * Get the state property: Gets or sets the state of the configuration.
-     *
+     * 
      * @return the state value.
      */
     public DscConfigurationState state() {
@@ -169,7 +171,7 @@ public final class DscConfigurationProperties {
 
     /**
      * Set the state property: Gets or sets the state of the configuration.
-     *
+     * 
      * @param state the state value to set.
      * @return the DscConfigurationProperties object itself.
      */
@@ -180,7 +182,7 @@ public final class DscConfigurationProperties {
 
     /**
      * Get the logVerbose property: Gets or sets verbose log option.
-     *
+     * 
      * @return the logVerbose value.
      */
     public Boolean logVerbose() {
@@ -189,7 +191,7 @@ public final class DscConfigurationProperties {
 
     /**
      * Set the logVerbose property: Gets or sets verbose log option.
-     *
+     * 
      * @param logVerbose the logVerbose value to set.
      * @return the DscConfigurationProperties object itself.
      */
@@ -200,7 +202,7 @@ public final class DscConfigurationProperties {
 
     /**
      * Get the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -209,7 +211,7 @@ public final class DscConfigurationProperties {
 
     /**
      * Set the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the DscConfigurationProperties object itself.
      */
@@ -220,7 +222,7 @@ public final class DscConfigurationProperties {
 
     /**
      * Get the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -229,7 +231,7 @@ public final class DscConfigurationProperties {
 
     /**
      * Set the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the DscConfigurationProperties object itself.
      */
@@ -240,7 +242,7 @@ public final class DscConfigurationProperties {
 
     /**
      * Get the nodeConfigurationCount property: Gets the number of compiled node configurations.
-     *
+     * 
      * @return the nodeConfigurationCount value.
      */
     public Integer nodeConfigurationCount() {
@@ -249,7 +251,7 @@ public final class DscConfigurationProperties {
 
     /**
      * Set the nodeConfigurationCount property: Gets the number of compiled node configurations.
-     *
+     * 
      * @param nodeConfigurationCount the nodeConfigurationCount value to set.
      * @return the DscConfigurationProperties object itself.
      */
@@ -260,7 +262,7 @@ public final class DscConfigurationProperties {
 
     /**
      * Get the description property: Gets or sets the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -269,7 +271,7 @@ public final class DscConfigurationProperties {
 
     /**
      * Set the description property: Gets or sets the description.
-     *
+     * 
      * @param description the description value to set.
      * @return the DscConfigurationProperties object itself.
      */
@@ -280,22 +282,93 @@ public final class DscConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (parameters() != null) {
-            parameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (source() != null) {
             source().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeNumberField("jobCount", this.jobCount);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("source", this.source);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeBooleanField("logVerbose", this.logVerbose);
+        jsonWriter.writeStringField("creationTime",
+            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
+        jsonWriter.writeStringField("lastModifiedTime",
+            this.lastModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedTime));
+        jsonWriter.writeNumberField("nodeConfigurationCount", this.nodeConfigurationCount);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DscConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DscConfigurationProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DscConfigurationProperties.
+     */
+    public static DscConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DscConfigurationProperties deserializedDscConfigurationProperties = new DscConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedDscConfigurationProperties.provisioningState
+                        = DscConfigurationProvisioningState.fromString(reader.getString());
+                } else if ("jobCount".equals(fieldName)) {
+                    deserializedDscConfigurationProperties.jobCount = reader.getNullable(JsonReader::getInt);
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, DscConfigurationParameter> parameters
+                        = reader.readMap(reader1 -> DscConfigurationParameter.fromJson(reader1));
+                    deserializedDscConfigurationProperties.parameters = parameters;
+                } else if ("source".equals(fieldName)) {
+                    deserializedDscConfigurationProperties.source = ContentSource.fromJson(reader);
+                } else if ("state".equals(fieldName)) {
+                    deserializedDscConfigurationProperties.state = DscConfigurationState.fromString(reader.getString());
+                } else if ("logVerbose".equals(fieldName)) {
+                    deserializedDscConfigurationProperties.logVerbose = reader.getNullable(JsonReader::getBoolean);
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedDscConfigurationProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedDscConfigurationProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("nodeConfigurationCount".equals(fieldName)) {
+                    deserializedDscConfigurationProperties.nodeConfigurationCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("description".equals(fieldName)) {
+                    deserializedDscConfigurationProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDscConfigurationProperties;
+        });
     }
 }

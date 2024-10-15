@@ -20,38 +20,30 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public GraphicalRunbookContent convertGraphRunbookContent(
-        String resourceGroupName, String automationAccountName, GraphicalRunbookContentInner parameters) {
-        GraphicalRunbookContentInner inner =
-            this.serviceClient().convertGraphRunbookContent(resourceGroupName, automationAccountName, parameters);
+    public Response<GraphicalRunbookContent> convertGraphRunbookContentWithResponse(String resourceGroupName,
+        String automationAccountName, GraphicalRunbookContentInner parameters, Context context) {
+        Response<GraphicalRunbookContentInner> inner = this.serviceClient()
+            .convertGraphRunbookContentWithResponse(resourceGroupName, automationAccountName, parameters, context);
         if (inner != null) {
-            return new GraphicalRunbookContentImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new GraphicalRunbookContentImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<GraphicalRunbookContent> convertGraphRunbookContentWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        GraphicalRunbookContentInner parameters,
-        Context context) {
-        Response<GraphicalRunbookContentInner> inner =
-            this
-                .serviceClient()
-                .convertGraphRunbookContentWithResponse(resourceGroupName, automationAccountName, parameters, context);
+    public GraphicalRunbookContent convertGraphRunbookContent(String resourceGroupName, String automationAccountName,
+        GraphicalRunbookContentInner parameters) {
+        GraphicalRunbookContentInner inner
+            = this.serviceClient().convertGraphRunbookContent(resourceGroupName, automationAccountName, parameters);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new GraphicalRunbookContentImpl(inner.getValue(), this.manager()));
+            return new GraphicalRunbookContentImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -5,12 +5,9 @@
 package com.azure.resourcemanager.automanage.implementation;
 
 import com.azure.core.management.SystemData;
-import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.automanage.fluent.models.ReportInner;
+import com.azure.resourcemanager.automanage.models.AssignmentReportProperties;
 import com.azure.resourcemanager.automanage.models.Report;
-import com.azure.resourcemanager.automanage.models.ReportResource;
-import java.util.Collections;
-import java.util.List;
 
 public final class ReportImpl implements Report {
     private ReportInner innerObject;
@@ -34,53 +31,12 @@ public final class ReportImpl implements Report {
         return this.innerModel().type();
     }
 
+    public AssignmentReportProperties properties() {
+        return this.innerModel().properties();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
-    }
-
-    public String startTime() {
-        return this.innerModel().startTime();
-    }
-
-    public String endTime() {
-        return this.innerModel().endTime();
-    }
-
-    public String lastModifiedTime() {
-        return this.innerModel().lastModifiedTime();
-    }
-
-    public String duration() {
-        return this.innerModel().duration();
-    }
-
-    public String typePropertiesType() {
-        return this.innerModel().typePropertiesType();
-    }
-
-    public String status() {
-        return this.innerModel().status();
-    }
-
-    public String configurationProfile() {
-        return this.innerModel().configurationProfile();
-    }
-
-    public List<ReportResource> resources() {
-        List<ReportResource> inner = this.innerModel().resources();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public ManagementError error() {
-        return this.innerModel().error();
-    }
-
-    public String reportFormatVersion() {
-        return this.innerModel().reportFormatVersion();
     }
 
     public ReportInner innerModel() {

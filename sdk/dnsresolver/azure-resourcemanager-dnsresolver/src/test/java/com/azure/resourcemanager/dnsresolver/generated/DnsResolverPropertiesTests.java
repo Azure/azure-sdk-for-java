@@ -8,23 +8,20 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dnsresolver.fluent.models.DnsResolverProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DnsResolverPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        DnsResolverProperties model =
-            BinaryData
-                .fromString(
-                    "{\"virtualNetwork\":{\"id\":\"mbpazlobcufpdzn\"},\"dnsResolverState\":\"Connected\",\"provisioningState\":\"Deleting\",\"resourceGuid\":\"jnqglhqgnu\"}")
-                .toObject(DnsResolverProperties.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DnsResolverProperties model = BinaryData.fromString(
+            "{\"virtualNetwork\":{\"id\":\"mbpazlobcufpdzn\"},\"dnsResolverState\":\"Connected\",\"provisioningState\":\"Deleting\",\"resourceGuid\":\"jnqglhqgnu\"}")
+            .toObject(DnsResolverProperties.class);
         Assertions.assertEquals("mbpazlobcufpdzn", model.virtualNetwork().id());
     }
 
-    @Test
-    public void testSerialize() {
-        DnsResolverProperties model =
-            new DnsResolverProperties().withVirtualNetwork(new SubResource().withId("mbpazlobcufpdzn"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DnsResolverProperties model
+            = new DnsResolverProperties().withVirtualNetwork(new SubResource().withId("mbpazlobcufpdzn"));
         model = BinaryData.fromObject(model).toObject(DnsResolverProperties.class);
         Assertions.assertEquals("mbpazlobcufpdzn", model.virtualNetwork().id());
     }

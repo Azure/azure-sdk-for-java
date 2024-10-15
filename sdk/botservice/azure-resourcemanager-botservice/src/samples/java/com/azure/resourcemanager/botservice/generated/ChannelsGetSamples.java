@@ -4,57 +4,68 @@
 
 package com.azure.resourcemanager.botservice.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Channels Get. */
+/**
+ * Samples for Channels Get.
+ */
 public final class ChannelsGetSamples {
     /*
-     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/GetDirectLineSpeechChannel.json
+     * x-ms-original-file:
+     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/
+     * GetDirectLineSpeechChannel.json
      */
     /**
-     * Sample code: Get DirectLine Speech Bot.
-     *
+     * Sample code: Get DirectLine Speech Channel.
+     * 
      * @param manager Entry point to BotServiceManager.
      */
-    public static void getDirectLineSpeechBot(com.azure.resourcemanager.botservice.BotServiceManager manager) {
-        manager
-            .channels()
-            .getWithResponse("OneResourceGroupName", "samplebotname", "DirectLineSpeechChannel", Context.NONE);
+    public static void getDirectLineSpeechChannel(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.channels()
+            .getWithResponse("OneResourceGroupName", "samplebotname", "DirectLineSpeechChannel",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/GetLineChannel.json
+     * x-ms-original-file:
+     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/
+     * GetAlexaChannel.json
      */
     /**
-     * Sample code: Get Line Bot.
-     *
+     * Sample code: Get Alexa Channel.
+     * 
      * @param manager Entry point to BotServiceManager.
      */
-    public static void getLineBot(com.azure.resourcemanager.botservice.BotServiceManager manager) {
-        manager.channels().getWithResponse("OneResourceGroupName", "samplebotname", "LineChannel", Context.NONE);
+    public static void getAlexaChannel(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.channels()
+            .getWithResponse("OneResourceGroupName", "samplebotname", "AlexaChannel", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/GetChannel.json
+     * x-ms-original-file:
+     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/GetLineChannel
+     * .json
      */
     /**
-     * Sample code: Get Bot.
-     *
+     * Sample code: Get Line Channel.
+     * 
      * @param manager Entry point to BotServiceManager.
      */
-    public static void getBot(com.azure.resourcemanager.botservice.BotServiceManager manager) {
-        manager.channels().getWithResponse("OneResourceGroupName", "samplebotname", "EmailChannel", Context.NONE);
+    public static void getLineChannel(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.channels()
+            .getWithResponse("OneResourceGroupName", "samplebotname", "LineChannel", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/GetAlexaChannel.json
+     * x-ms-original-file:
+     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/GetChannel.
+     * json
      */
     /**
-     * Sample code: Get Alexa Bot.
-     *
+     * Sample code: Get Channel.
+     * 
      * @param manager Entry point to BotServiceManager.
      */
-    public static void getAlexaBot(com.azure.resourcemanager.botservice.BotServiceManager manager) {
-        manager.channels().getWithResponse("OneResourceGroupName", "samplebotname", "AlexaChannel", Context.NONE);
+    public static void getChannel(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.channels()
+            .getWithResponse("OneResourceGroupName", "samplebotname", "EmailChannel", com.azure.core.util.Context.NONE);
     }
 }

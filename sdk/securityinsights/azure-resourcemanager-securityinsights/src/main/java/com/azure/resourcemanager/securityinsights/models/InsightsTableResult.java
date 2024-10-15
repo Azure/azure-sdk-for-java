@@ -5,27 +5,37 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Query results for table insights query. */
+/**
+ * Query results for table insights query.
+ */
 @Fluent
-public final class InsightsTableResult {
+public final class InsightsTableResult implements JsonSerializable<InsightsTableResult> {
     /*
      * Columns Metadata of the table
      */
-    @JsonProperty(value = "columns")
     private List<InsightsTableResultColumnsItem> columns;
 
     /*
      * Rows data of the table
      */
-    @JsonProperty(value = "rows")
     private List<List<String>> rows;
 
     /**
+     * Creates an instance of InsightsTableResult class.
+     */
+    public InsightsTableResult() {
+    }
+
+    /**
      * Get the columns property: Columns Metadata of the table.
-     *
+     * 
      * @return the columns value.
      */
     public List<InsightsTableResultColumnsItem> columns() {
@@ -34,7 +44,7 @@ public final class InsightsTableResult {
 
     /**
      * Set the columns property: Columns Metadata of the table.
-     *
+     * 
      * @param columns the columns value to set.
      * @return the InsightsTableResult object itself.
      */
@@ -45,7 +55,7 @@ public final class InsightsTableResult {
 
     /**
      * Get the rows property: Rows data of the table.
-     *
+     * 
      * @return the rows value.
      */
     public List<List<String>> rows() {
@@ -54,7 +64,7 @@ public final class InsightsTableResult {
 
     /**
      * Set the rows property: Rows data of the table.
-     *
+     * 
      * @param rows the rows value to set.
      * @return the InsightsTableResult object itself.
      */
@@ -65,12 +75,56 @@ public final class InsightsTableResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (columns() != null) {
             columns().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("columns", this.columns, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("rows", this.rows,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InsightsTableResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InsightsTableResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InsightsTableResult.
+     */
+    public static InsightsTableResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InsightsTableResult deserializedInsightsTableResult = new InsightsTableResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("columns".equals(fieldName)) {
+                    List<InsightsTableResultColumnsItem> columns
+                        = reader.readArray(reader1 -> InsightsTableResultColumnsItem.fromJson(reader1));
+                    deserializedInsightsTableResult.columns = columns;
+                } else if ("rows".equals(fieldName)) {
+                    List<List<String>> rows
+                        = reader.readArray(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    deserializedInsightsTableResult.rows = rows;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInsightsTableResult;
+        });
     }
 }

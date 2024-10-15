@@ -12,8 +12,7 @@ public final class RoleAssignmentEntityImpl implements RoleAssignmentEntity {
 
     private final com.azure.resourcemanager.billingbenefits.BillingBenefitsManager serviceManager;
 
-    RoleAssignmentEntityImpl(
-        RoleAssignmentEntityInner innerObject,
+    RoleAssignmentEntityImpl(RoleAssignmentEntityInner innerObject,
         com.azure.resourcemanager.billingbenefits.BillingBenefitsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

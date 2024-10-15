@@ -109,24 +109,20 @@ public final class WebhookImpl implements Webhook, Webhook.Definition, Webhook.U
     }
 
     public Webhook create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebhooks()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, webhookName, createParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebhooks()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, webhookName, createParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Webhook create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebhooks()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, webhookName, createParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebhooks()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, webhookName, createParameters,
+                context)
+            .getValue();
         return this;
     }
 
@@ -143,51 +139,42 @@ public final class WebhookImpl implements Webhook, Webhook.Definition, Webhook.U
     }
 
     public Webhook apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebhooks()
-                .updateWithResponse(
-                    resourceGroupName, automationAccountName, webhookName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebhooks()
+            .updateWithResponse(resourceGroupName, automationAccountName, webhookName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Webhook apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebhooks()
-                .updateWithResponse(resourceGroupName, automationAccountName, webhookName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebhooks()
+            .updateWithResponse(resourceGroupName, automationAccountName, webhookName, updateParameters, context)
+            .getValue();
         return this;
     }
 
     WebhookImpl(WebhookInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.automationAccountName = Utils.getValueFromIdByName(innerObject.id(), "automationAccounts");
-        this.webhookName = Utils.getValueFromIdByName(innerObject.id(), "webhooks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.automationAccountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "automationAccounts");
+        this.webhookName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "webhooks");
     }
 
     public Webhook refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebhooks()
-                .getWithResponse(resourceGroupName, automationAccountName, webhookName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebhooks()
+            .getWithResponse(resourceGroupName, automationAccountName, webhookName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Webhook refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebhooks()
-                .getWithResponse(resourceGroupName, automationAccountName, webhookName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebhooks()
+            .getWithResponse(resourceGroupName, automationAccountName, webhookName, context)
+            .getValue();
         return this;
     }
 

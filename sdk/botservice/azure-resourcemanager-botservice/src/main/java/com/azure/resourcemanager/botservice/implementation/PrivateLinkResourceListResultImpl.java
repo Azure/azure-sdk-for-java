@@ -15,8 +15,7 @@ public final class PrivateLinkResourceListResultImpl implements PrivateLinkResou
 
     private final com.azure.resourcemanager.botservice.BotServiceManager serviceManager;
 
-    PrivateLinkResourceListResultImpl(
-        PrivateLinkResourceListResultInner innerObject,
+    PrivateLinkResourceListResultImpl(PrivateLinkResourceListResultInner innerObject,
         com.azure.resourcemanager.botservice.BotServiceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

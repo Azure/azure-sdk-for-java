@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.EntityExpandResponseValue;
 import com.azure.resourcemanager.securityinsights.models.ExpansionResultsMetadata;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The entity expansion result operation response. */
+/**
+ * The entity expansion result operation response.
+ */
 @Fluent
-public final class EntityExpandResponseInner {
+public final class EntityExpandResponseInner implements JsonSerializable<EntityExpandResponseInner> {
     /*
      * The metadata from the expansion operation results.
      */
-    @JsonProperty(value = "metaData")
     private ExpansionResultsMetadata metadata;
 
     /*
      * The expansion result values.
      */
-    @JsonProperty(value = "value")
     private EntityExpandResponseValue value;
 
     /**
+     * Creates an instance of EntityExpandResponseInner class.
+     */
+    public EntityExpandResponseInner() {
+    }
+
+    /**
      * Get the metadata property: The metadata from the expansion operation results.
-     *
+     * 
      * @return the metadata value.
      */
     public ExpansionResultsMetadata metadata() {
@@ -35,7 +45,7 @@ public final class EntityExpandResponseInner {
 
     /**
      * Set the metadata property: The metadata from the expansion operation results.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the EntityExpandResponseInner object itself.
      */
@@ -46,7 +56,7 @@ public final class EntityExpandResponseInner {
 
     /**
      * Get the value property: The expansion result values.
-     *
+     * 
      * @return the value value.
      */
     public EntityExpandResponseValue value() {
@@ -55,7 +65,7 @@ public final class EntityExpandResponseInner {
 
     /**
      * Set the value property: The expansion result values.
-     *
+     * 
      * @param value the value value to set.
      * @return the EntityExpandResponseInner object itself.
      */
@@ -66,7 +76,7 @@ public final class EntityExpandResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -76,5 +86,44 @@ public final class EntityExpandResponseInner {
         if (value() != null) {
             value().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("metaData", this.metadata);
+        jsonWriter.writeJsonField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EntityExpandResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EntityExpandResponseInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EntityExpandResponseInner.
+     */
+    public static EntityExpandResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EntityExpandResponseInner deserializedEntityExpandResponseInner = new EntityExpandResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metaData".equals(fieldName)) {
+                    deserializedEntityExpandResponseInner.metadata = ExpansionResultsMetadata.fromJson(reader);
+                } else if ("value".equals(fieldName)) {
+                    deserializedEntityExpandResponseInner.value = EntityExpandResponseValue.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEntityExpandResponseInner;
+        });
     }
 }

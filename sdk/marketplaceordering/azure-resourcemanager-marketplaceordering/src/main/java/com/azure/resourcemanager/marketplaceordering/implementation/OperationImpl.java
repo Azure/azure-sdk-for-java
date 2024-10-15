@@ -13,8 +13,7 @@ public final class OperationImpl implements Operation {
 
     private final com.azure.resourcemanager.marketplaceordering.MarketplaceOrderingManager serviceManager;
 
-    OperationImpl(
-        OperationInner innerObject,
+    OperationImpl(OperationInner innerObject,
         com.azure.resourcemanager.marketplaceordering.MarketplaceOrderingManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

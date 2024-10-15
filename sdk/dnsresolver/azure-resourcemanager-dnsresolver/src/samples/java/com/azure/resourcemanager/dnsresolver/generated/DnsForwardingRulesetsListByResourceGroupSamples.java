@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.dnsresolver.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DnsForwardingRulesets ListByResourceGroup. */
+/**
+ * Samples for DnsForwardingRulesets ListByResourceGroup.
+ */
 public final class DnsForwardingRulesetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_ListByResourceGroup.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/
+     * DnsForwardingRuleset_ListByResourceGroup.json
      */
     /**
      * Sample code: List DNS forwarding rulesets by resource group.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void listDNSForwardingRulesetsByResourceGroup(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager.dnsForwardingRulesets().listByResourceGroup("sampleResourceGroup", null, Context.NONE);
+    public static void
+        listDNSForwardingRulesetsByResourceGroup(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsForwardingRulesets()
+            .listByResourceGroup("sampleResourceGroup", null, com.azure.core.util.Context.NONE);
     }
 }

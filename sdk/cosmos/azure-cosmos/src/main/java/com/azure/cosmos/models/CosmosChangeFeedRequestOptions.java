@@ -184,6 +184,27 @@ public final class CosmosChangeFeedRequestOptions {
         return this;
     }
 
+    /***
+     * Whether the query should be completed when all available changes when the query starts have been fetched.
+     *
+     * @param completeAfterAllCurrentChangesRetrieved flag to indicate whether to complete the query when all changes up to current moment have been fetched.
+     * @return the CosmosChangeFeedRequestOptions.
+     */
+    public CosmosChangeFeedRequestOptions setCompleteAfterAllCurrentChangesRetrieved(
+        boolean completeAfterAllCurrentChangesRetrieved) {
+        this.actualRequestOptions.setCompleteAfterAllCurrentChangesRetrieved(completeAfterAllCurrentChangesRetrieved);
+        return this;
+    }
+
+    /***
+     * Whether the query should be completed when all available changes when the query starts have been fetched.
+     *
+     * @return true if complete the query when all changes up to the current moment have been fetched.
+     */
+    public boolean isCompleteAfterAllCurrentChangesRetrieved() {
+        return this.actualRequestOptions.isCompleteAfterAllCurrentChangesRetrieved();
+    }
+
     boolean isSplitHandlingDisabled() {
         return this.actualRequestOptions.isSplitHandlingDisabled();
     }

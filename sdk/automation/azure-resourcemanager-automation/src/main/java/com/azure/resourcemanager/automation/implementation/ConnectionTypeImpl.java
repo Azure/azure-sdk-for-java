@@ -84,24 +84,20 @@ public final class ConnectionTypeImpl implements ConnectionType, ConnectionType.
     }
 
     public ConnectionType create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectionTypes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, connectionTypeName, createParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectionTypes()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, connectionTypeName, createParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConnectionType create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectionTypes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, connectionTypeName, createParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectionTypes()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, connectionTypeName, createParameters,
+                context)
+            .getValue();
         return this;
     }
 
@@ -118,53 +114,45 @@ public final class ConnectionTypeImpl implements ConnectionType, ConnectionType.
     }
 
     public ConnectionType apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectionTypes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, connectionTypeName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectionTypes()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, connectionTypeName, updateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConnectionType apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectionTypes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, connectionTypeName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectionTypes()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, connectionTypeName, updateParameters,
+                context)
+            .getValue();
         return this;
     }
 
-    ConnectionTypeImpl(
-        ConnectionTypeInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    ConnectionTypeImpl(ConnectionTypeInner innerObject,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.automationAccountName = Utils.getValueFromIdByName(innerObject.id(), "automationAccounts");
-        this.connectionTypeName = Utils.getValueFromIdByName(innerObject.id(), "connectionTypes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.automationAccountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "automationAccounts");
+        this.connectionTypeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "connectionTypes");
     }
 
     public ConnectionType refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectionTypes()
-                .getWithResponse(resourceGroupName, automationAccountName, connectionTypeName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectionTypes()
+            .getWithResponse(resourceGroupName, automationAccountName, connectionTypeName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConnectionType refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectionTypes()
-                .getWithResponse(resourceGroupName, automationAccountName, connectionTypeName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectionTypes()
+            .getWithResponse(resourceGroupName, automationAccountName, connectionTypeName, context)
+            .getValue();
         return this;
     }
 

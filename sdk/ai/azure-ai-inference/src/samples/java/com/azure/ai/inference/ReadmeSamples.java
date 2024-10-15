@@ -7,11 +7,18 @@ package com.azure.ai.inference;
 import com.azure.ai.inference.models.ChatChoice;
 import com.azure.ai.inference.models.ChatCompletions;
 import com.azure.ai.inference.models.ChatCompletionsOptions;
+import com.azure.ai.inference.models.ChatMessageContentItem;
+import com.azure.ai.inference.models.ChatMessageImageContentItem;
+import com.azure.ai.inference.models.ChatMessageImageUrl;
+import com.azure.ai.inference.models.ChatMessageTextContentItem;
 import com.azure.ai.inference.models.ChatRequestMessage;
 import com.azure.ai.inference.models.ChatRequestAssistantMessage;
 import com.azure.ai.inference.models.ChatRequestSystemMessage;
 import com.azure.ai.inference.models.ChatRequestUserMessage;
 import com.azure.ai.inference.models.ChatResponseMessage;
+import com.azure.ai.inference.models.EmbeddingItem;
+import com.azure.ai.inference.models.EmbeddingsResult;
+import com.azure.ai.inference.models.ModelInfo;
 import com.azure.ai.inference.models.StreamingChatResponseMessageUpdate;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -23,6 +30,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,7 +99,7 @@ public final class ReadmeSamples {
                 if (CoreUtils.isNullOrEmpty(chatCompletions.getChoices())) {
                     return;
                 }
-                StreamingChatResponseMessageUpdate delta = chatCompletions.getChoices().get(0).getDelta();
+                StreamingChatResponseMessageUpdate delta = chatCompletions.getChoice().getDelta();
                 if (delta.getRole() != null) {
                     System.out.println("Role = " + delta.getRole());
                 }
@@ -104,7 +113,66 @@ public final class ReadmeSamples {
 
     public void getEmbedding() {
         // BEGIN: readme-sample-getEmbedding
+        EmbeddingsClient client = new EmbeddingsClientBuilder()
+            .endpoint("{endpoint}")
+            .credential(new AzureKeyCredential("{key}"))
+            .buildClient();
+
+        List<String> promptList = new ArrayList<>();
+        String prompt = "Tell me 3 jokes about trains";
+        promptList.add(prompt);
+
+        EmbeddingsResult embeddings = client.embed(promptList);
+
+        for (EmbeddingItem item : embeddings.getData()) {
+            System.out.printf("Index: %d.%n", item.getIndex());
+            for (Float embedding : item.getEmbeddingList()) {
+                System.out.printf("%f;", embedding);
+            }
+        }
         // END: readme-sample-getEmbedding
+    }
+
+    public void getModelInfo() {
+        // BEGIN: readme-sample-getModelInfo
+        ModelInfo modelInfo = client.getModelInfo();
+
+        System.out.printf("modelName: %s, modelNameProvider: %s, modelType: %s%n",
+            modelInfo.getModelName(), modelInfo.getModelProviderName(), modelInfo.getModelType().toString());
+        // END: readme-sample-getModelInfo
+    }
+
+    public void chatWithImageFile() {
+        // BEGIN: readme-sample-chatWithImageFile
+        Path testFilePath = Paths.get("<path-to-image-file>");
+        List<ChatMessageContentItem> contentItems = new ArrayList<>();
+        contentItems.add(new ChatMessageTextContentItem("Describe the image."));
+        contentItems.add(new ChatMessageImageContentItem(testFilePath, "<image-format>"));
+
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant."));
+        chatMessages.add(ChatRequestUserMessage.fromContentItems(contentItems));
+
+        ChatCompletions completions = client.complete(new ChatCompletionsOptions(chatMessages));
+
+        System.out.printf("%s.%n", completions.getChoice().getMessage().getContent());
+        // END: readme-sample-chatWithImageFile
+    }
+
+    public void chatWithImageUrl() {
+        // BEGIN: readme-sample-chatWithImageUrl
+        List<ChatMessageContentItem> contentItems = new ArrayList<>();
+        contentItems.add(new ChatMessageTextContentItem("Describe the image."));
+        contentItems.add(new ChatMessageImageContentItem(
+            new ChatMessageImageUrl("<URL>")));
+
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant."));
+        chatMessages.add(ChatRequestUserMessage.fromContentItems(contentItems));
+
+        ChatCompletions completions = client.complete(new ChatCompletionsOptions(chatMessages));
+        System.out.printf("%s.%n", completions.getChoice().getMessage().getContent());
+        // END: readme-sample-chatWithImageUrl
     }
 
     public void enableHttpLogging() {

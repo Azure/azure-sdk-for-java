@@ -1,6 +1,6 @@
 # Release History
 
-## 4.26.0-beta.1 (Unreleased)
+## 4.27.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,19 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.26.0 (2024-10-10)
+
+### Features Added
+
+- Added `onBehalfOfCommunicationIdentifier` field to `AcsIncomingCallEventData`. [#42211](https://github.com/azure/azure-sdk-for-java/issues/42211)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
+- Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
 
 ## 4.25.0 (2024-09-20)
 

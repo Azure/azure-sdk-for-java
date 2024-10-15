@@ -10,8 +10,8 @@ package com.azure.resourcemanager.hybridcompute.generated;
 public final class MachineExtensionsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-05-20-preview/examples/
-     * extension/Extension_Get.json
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2024-07-10/examples/extension/
+     * Extension_Get.json
      */
     /**
      * Sample code: GET Machine Extension.

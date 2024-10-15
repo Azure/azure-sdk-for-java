@@ -207,6 +207,7 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
+    @Disabled("Creation of managed images are not supported for virtual machine with TrustedLaunch security type.")
     public void testCreateVirtualMachineWithTrustedLaunchFromGalleryImage() {
         Assertions.assertTrue(CreateVirtualMachineWithTrustedLaunchFromGalleryImage.runSample(azureResourceManager));
     }

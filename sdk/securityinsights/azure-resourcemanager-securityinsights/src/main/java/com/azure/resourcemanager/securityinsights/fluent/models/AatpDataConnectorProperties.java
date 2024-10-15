@@ -5,22 +5,33 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.AlertsDataTypeOfDataConnector;
 import com.azure.resourcemanager.securityinsights.models.DataConnectorTenantId;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** AATP (Azure Advanced Threat Protection) data connector properties. */
+/**
+ * AATP (Azure Advanced Threat Protection) data connector properties.
+ */
 @Fluent
 public final class AatpDataConnectorProperties extends DataConnectorTenantId {
     /*
      * The available data types for the connector.
      */
-    @JsonProperty(value = "dataTypes")
     private AlertsDataTypeOfDataConnector dataTypes;
 
     /**
+     * Creates an instance of AatpDataConnectorProperties class.
+     */
+    public AatpDataConnectorProperties() {
+    }
+
+    /**
      * Get the dataTypes property: The available data types for the connector.
-     *
+     * 
      * @return the dataTypes value.
      */
     public AlertsDataTypeOfDataConnector dataTypes() {
@@ -29,7 +40,7 @@ public final class AatpDataConnectorProperties extends DataConnectorTenantId {
 
     /**
      * Set the dataTypes property: The available data types for the connector.
-     *
+     * 
      * @param dataTypes the dataTypes value to set.
      * @return the AatpDataConnectorProperties object itself.
      */
@@ -38,7 +49,9 @@ public final class AatpDataConnectorProperties extends DataConnectorTenantId {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AatpDataConnectorProperties withTenantId(String tenantId) {
         super.withTenantId(tenantId);
@@ -47,14 +60,60 @@ public final class AatpDataConnectorProperties extends DataConnectorTenantId {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (dataTypes() != null) {
             dataTypes().validate();
         }
+        if (tenantId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property tenantId in model AatpDataConnectorProperties"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AatpDataConnectorProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tenantId", tenantId());
+        jsonWriter.writeJsonField("dataTypes", this.dataTypes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AatpDataConnectorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AatpDataConnectorProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AatpDataConnectorProperties.
+     */
+    public static AatpDataConnectorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AatpDataConnectorProperties deserializedAatpDataConnectorProperties = new AatpDataConnectorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedAatpDataConnectorProperties.withTenantId(reader.getString());
+                } else if ("dataTypes".equals(fieldName)) {
+                    deserializedAatpDataConnectorProperties.dataTypes = AlertsDataTypeOfDataConnector.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAatpDataConnectorProperties;
+        });
     }
 }

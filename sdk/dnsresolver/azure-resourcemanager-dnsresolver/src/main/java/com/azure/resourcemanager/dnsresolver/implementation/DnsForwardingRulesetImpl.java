@@ -110,32 +110,18 @@ public final class DnsForwardingRulesetImpl
     }
 
     public DnsForwardingRuleset create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDnsForwardingRulesets()
-                .createOrUpdate(
-                    resourceGroupName,
-                    dnsForwardingRulesetName,
-                    this.innerModel(),
-                    createIfMatch,
-                    createIfNoneMatch,
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDnsForwardingRulesets()
+            .createOrUpdate(resourceGroupName, dnsForwardingRulesetName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, Context.NONE);
         return this;
     }
 
     public DnsForwardingRuleset create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDnsForwardingRulesets()
-                .createOrUpdate(
-                    resourceGroupName,
-                    dnsForwardingRulesetName,
-                    this.innerModel(),
-                    createIfMatch,
-                    createIfNoneMatch,
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDnsForwardingRulesets()
+            .createOrUpdate(resourceGroupName, dnsForwardingRulesetName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, context);
         return this;
     }
 
@@ -154,49 +140,41 @@ public final class DnsForwardingRulesetImpl
     }
 
     public DnsForwardingRuleset apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDnsForwardingRulesets()
-                .update(resourceGroupName, dnsForwardingRulesetName, updateParameters, updateIfMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDnsForwardingRulesets()
+            .update(resourceGroupName, dnsForwardingRulesetName, updateParameters, updateIfMatch, Context.NONE);
         return this;
     }
 
     public DnsForwardingRuleset apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDnsForwardingRulesets()
-                .update(resourceGroupName, dnsForwardingRulesetName, updateParameters, updateIfMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDnsForwardingRulesets()
+            .update(resourceGroupName, dnsForwardingRulesetName, updateParameters, updateIfMatch, context);
         return this;
     }
 
-    DnsForwardingRulesetImpl(
-        DnsForwardingRulesetInner innerObject,
+    DnsForwardingRulesetImpl(DnsForwardingRulesetInner innerObject,
         com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dnsForwardingRulesetName = Utils.getValueFromIdByName(innerObject.id(), "dnsForwardingRulesets");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.dnsForwardingRulesetName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dnsForwardingRulesets");
     }
 
     public DnsForwardingRuleset refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDnsForwardingRulesets()
-                .getByResourceGroupWithResponse(resourceGroupName, dnsForwardingRulesetName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDnsForwardingRulesets()
+            .getByResourceGroupWithResponse(resourceGroupName, dnsForwardingRulesetName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DnsForwardingRuleset refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDnsForwardingRulesets()
-                .getByResourceGroupWithResponse(resourceGroupName, dnsForwardingRulesetName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDnsForwardingRulesets()
+            .getByResourceGroupWithResponse(resourceGroupName, dnsForwardingRulesetName, context)
+            .getValue();
         return this;
     }
 

@@ -10,5 +10,3 @@ extends:
       - name: azure-resourcemanager-resourcehealth
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerresourcehealth
-    Clouds: 'Public'
-    UseFederatedAuth: true

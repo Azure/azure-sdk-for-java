@@ -14,8 +14,7 @@ public final class DataConnectorRequirementsStateImpl implements DataConnectorRe
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    DataConnectorRequirementsStateImpl(
-        DataConnectorRequirementsStateInner innerObject,
+    DataConnectorRequirementsStateImpl(DataConnectorRequirementsStateInner innerObject,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

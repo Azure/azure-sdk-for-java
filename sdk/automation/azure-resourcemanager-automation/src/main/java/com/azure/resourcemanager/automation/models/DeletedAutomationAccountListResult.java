@@ -7,18 +7,20 @@ package com.azure.resourcemanager.automation.models;
 import com.azure.resourcemanager.automation.fluent.models.DeletedAutomationAccountListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of DeletedAutomationAccountListResult. */
+/**
+ * An immutable client-side representation of DeletedAutomationAccountListResult.
+ */
 public interface DeletedAutomationAccountListResult {
     /**
      * Gets the value property: Gets or sets the list of deleted automation accounts.
-     *
+     * 
      * @return the value value.
      */
     List<DeletedAutomationAccount> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.automation.fluent.models.DeletedAutomationAccountListResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     DeletedAutomationAccountListResultInner innerModel();

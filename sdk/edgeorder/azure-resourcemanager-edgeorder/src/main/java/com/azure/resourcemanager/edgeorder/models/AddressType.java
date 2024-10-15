@@ -5,32 +5,51 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AddressType. */
+/**
+ * Type of address.
+ */
 public final class AddressType extends ExpandableStringEnum<AddressType> {
-    /** Static value None for AddressType. */
+    /**
+     * Static value None for AddressType.
+     */
     public static final AddressType NONE = fromString("None");
 
-    /** Static value Residential for AddressType. */
+    /**
+     * Static value Residential for AddressType.
+     */
     public static final AddressType RESIDENTIAL = fromString("Residential");
 
-    /** Static value Commercial for AddressType. */
+    /**
+     * Static value Commercial for AddressType.
+     */
     public static final AddressType COMMERCIAL = fromString("Commercial");
 
     /**
+     * Creates a new instance of AddressType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AddressType() {
+    }
+
+    /**
      * Creates or finds a AddressType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AddressType.
      */
-    @JsonCreator
     public static AddressType fromString(String name) {
         return fromString(name, AddressType.class);
     }
 
-    /** @return known AddressType values. */
+    /**
+     * Gets known AddressType values.
+     * 
+     * @return known AddressType values.
+     */
     public static Collection<AddressType> values() {
         return values(AddressType.class);
     }

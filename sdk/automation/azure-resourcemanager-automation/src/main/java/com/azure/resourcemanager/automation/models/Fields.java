@@ -7,11 +7,13 @@ package com.azure.resourcemanager.automation.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Fields. */
+/**
+ * Resource collection API of Fields.
+ */
 public interface Fields {
     /**
      * Retrieve a list of fields of a given type identified by module name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param moduleName The name of module.
@@ -21,12 +23,12 @@ public interface Fields {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list fields operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<TypeField> listByType(
-        String resourceGroupName, String automationAccountName, String moduleName, String typeName);
+    PagedIterable<TypeField> listByType(String resourceGroupName, String automationAccountName, String moduleName,
+        String typeName);
 
     /**
      * Retrieve a list of fields of a given type identified by module name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param moduleName The name of module.
@@ -37,6 +39,6 @@ public interface Fields {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list fields operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<TypeField> listByType(
-        String resourceGroupName, String automationAccountName, String moduleName, String typeName, Context context);
+    PagedIterable<TypeField> listByType(String resourceGroupName, String automationAccountName, String moduleName,
+        String typeName, Context context);
 }

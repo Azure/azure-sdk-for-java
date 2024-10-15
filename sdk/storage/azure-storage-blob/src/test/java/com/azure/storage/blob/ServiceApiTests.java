@@ -10,7 +10,6 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.util.Context;
-import com.azure.core.util.paging.ContinuablePage;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.models.BlobAnalyticsLogging;
 import com.azure.storage.blob.models.BlobAudience;
@@ -289,7 +288,7 @@ public class ServiceApiTests extends BlobTestBase {
     }
 
     @Test
-    public void listContainersWithTimeoutStillBackedByPagedFlux() {
+    public void listContainersWithTimeoutStillBackedByPagedStream() {
         int numContainers = 5;
         int pageResults = 3;
 
@@ -342,6 +341,7 @@ public class ServiceApiTests extends BlobTestBase {
         assertDoesNotThrow(() -> primaryBlobServiceClient.findBlobsByTags("\"key\"='value'").iterator().hasNext());
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
     @Test
     public void findBlobsQuery() {
@@ -369,6 +369,7 @@ public class ServiceApiTests extends BlobTestBase {
         containerClient.delete();
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void findBlobsMarker() {
@@ -400,6 +401,7 @@ public class ServiceApiTests extends BlobTestBase {
         cc.delete();
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void findBlobsMaxResults() {
@@ -424,6 +426,7 @@ public class ServiceApiTests extends BlobTestBase {
         cc.delete();
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void findBlobsMaxResultsByPage() {
@@ -450,35 +453,31 @@ public class ServiceApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
-    public void findBlobsByPageAsync() {
-        BlobContainerAsyncClient containerAsyncClient =
-            primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
-        containerAsyncClient.create().block();
+    public void findBlobsByPage() {
+        BlobContainerClient cc = primaryBlobServiceClient.createBlobContainer(generateContainerName());
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
 
-        for (int i = 0; i < 15; i++) {
+        int numBlobs = 15;
+        int pageResults = 10;
+
+        for (int i = 0; i < numBlobs; i++) {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
                 new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags), null, null);
         }
+
         sleepIfRunningAgainstService(10 * 1000); // To allow tags to index
+
         String query = String.format("\"%s\"='%s'", tagKey, tagValue);
         FindBlobsOptions searchOptions = new FindBlobsOptions(query).setMaxResultsPerPage(12);
 
-        List<TaggedBlobItem> list = primaryBlobServiceAsyncClient
-            .findBlobsByTags(searchOptions)
-            .byPage(10) // byPage should take precedence
-            .take(1, true)
-            .concatMapIterable(ContinuablePage::getElements).collectList().block();
+        PagedResponse<TaggedBlobItem> response1 = primaryBlobServiceClient.findBlobsByTags(searchOptions, null,
+            Context.NONE).iterableByPage(pageResults).iterator().next();
+        assertEquals(pageResults, response1.getValue().size());
 
-        assertEquals(10, list.size());
-
-        List<TaggedBlobItem> list2 = primaryBlobServiceAsyncClient
-            .findBlobsByTags(searchOptions)
-            .byPage() // since no number is specified, it should use the max number specified in options
-            .take(1, true)
-            .concatMapIterable(ContinuablePage::getElements).collectList().block();
-
-        assertEquals(12, list2.size());
+        PagedResponse<TaggedBlobItem> response2 = primaryBlobServiceClient.findBlobsByTags(searchOptions, null,
+            Context.NONE).iterableByPage().iterator().next();
+        // since no number is specified, it should use the max number specified in options
+        assertEquals(12, response2.getValue().size());
     }
 
     @Test
@@ -496,9 +495,10 @@ public class ServiceApiTests extends BlobTestBase {
 
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
-    public void findBlobsWithTimeoutStillBackedByPagedFlux() {
+    public void findBlobsWithTimeoutStillBackedByPagedStream() {
         int numBlobs = 5;
         int pageResults = 3;
         BlobContainerClient cc = primaryBlobServiceClient.createBlobContainer(generateContainerName());
@@ -980,6 +980,7 @@ public class ServiceApiTests extends BlobTestBase {
             () -> primaryBlobServiceClient.undeleteBlobContainer(generateContainerName(), "01D60F8BB59A4652"));
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void restoreContainerIntoExistingContainerError() {

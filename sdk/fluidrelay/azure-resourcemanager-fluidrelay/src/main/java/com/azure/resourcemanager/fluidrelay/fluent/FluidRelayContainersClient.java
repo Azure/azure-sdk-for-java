@@ -11,11 +11,29 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.fluidrelay.fluent.models.FluidRelayContainerInner;
 
-/** An instance of this class provides access to all the operations defined in FluidRelayContainersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FluidRelayContainersClient.
+ */
 public interface FluidRelayContainersClient {
     /**
      * Get a Fluid Relay container.
-     *
+     * 
+     * @param resourceGroup The resource group containing the resource.
+     * @param fluidRelayServerName The Fluid Relay server resource name.
+     * @param fluidRelayContainerName The Fluid Relay container resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Fluid Relay container along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<FluidRelayContainerInner> getWithResponse(String resourceGroup, String fluidRelayServerName,
+        String fluidRelayContainerName, Context context);
+
+    /**
+     * Get a Fluid Relay container.
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @param fluidRelayContainerName The Fluid Relay container resource name.
@@ -28,8 +46,8 @@ public interface FluidRelayContainersClient {
     FluidRelayContainerInner get(String resourceGroup, String fluidRelayServerName, String fluidRelayContainerName);
 
     /**
-     * Get a Fluid Relay container.
-     *
+     * Delete a Fluid Relay container.
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @param fluidRelayContainerName The Fluid Relay container resource name.
@@ -37,15 +55,15 @@ public interface FluidRelayContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Fluid Relay container along with {@link Response}.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FluidRelayContainerInner> getWithResponse(
-        String resourceGroup, String fluidRelayServerName, String fluidRelayContainerName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroup, String fluidRelayServerName, String fluidRelayContainerName,
+        Context context);
 
     /**
      * Delete a Fluid Relay container.
-     *
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @param fluidRelayContainerName The Fluid Relay container resource name.
@@ -57,24 +75,8 @@ public interface FluidRelayContainersClient {
     void delete(String resourceGroup, String fluidRelayServerName, String fluidRelayContainerName);
 
     /**
-     * Delete a Fluid Relay container.
-     *
-     * @param resourceGroup The resource group containing the resource.
-     * @param fluidRelayServerName The Fluid Relay server resource name.
-     * @param fluidRelayContainerName The Fluid Relay container resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroup, String fluidRelayServerName, String fluidRelayContainerName, Context context);
-
-    /**
      * List all Fluid Relay containers which are children of a given Fluid Relay server.
-     *
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,7 +89,7 @@ public interface FluidRelayContainersClient {
 
     /**
      * List all Fluid Relay containers which are children of a given Fluid Relay server.
-     *
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @param context The context to associate with this operation.
@@ -97,6 +99,6 @@ public interface FluidRelayContainersClient {
      * @return paged response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FluidRelayContainerInner> listByFluidRelayServers(
-        String resourceGroup, String fluidRelayServerName, Context context);
+    PagedIterable<FluidRelayContainerInner> listByFluidRelayServers(String resourceGroup, String fluidRelayServerName,
+        Context context);
 }

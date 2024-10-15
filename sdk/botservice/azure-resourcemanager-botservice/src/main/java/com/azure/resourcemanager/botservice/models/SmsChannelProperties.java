@@ -6,46 +6,51 @@ package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The parameters to provide for the Sms channel. */
+/**
+ * The parameters to provide for the Sms channel.
+ */
 @Fluent
-public final class SmsChannelProperties {
+public final class SmsChannelProperties implements JsonSerializable<SmsChannelProperties> {
     /*
      * The Sms phone
      */
-    @JsonProperty(value = "phone", required = true)
     private String phone;
 
     /*
-     * The Sms account SID. Value only returned through POST to the action
-     * Channel List API, otherwise empty.
+     * The Sms account SID. Value only returned through POST to the action Channel List API, otherwise empty.
      */
-    @JsonProperty(value = "accountSID", required = true)
     private String accountSid;
 
     /*
-     * The Sms auth token. Value only returned through POST to the action
-     * Channel List API, otherwise empty.
+     * The Sms auth token. Value only returned through POST to the action Channel List API, otherwise empty.
      */
-    @JsonProperty(value = "authToken")
     private String authToken;
 
     /*
      * Whether this channel is validated for the bot
      */
-    @JsonProperty(value = "isValidated")
     private Boolean isValidated;
 
     /*
      * Whether this channel is enabled for the bot
      */
-    @JsonProperty(value = "isEnabled", required = true)
     private boolean isEnabled;
 
     /**
+     * Creates an instance of SmsChannelProperties class.
+     */
+    public SmsChannelProperties() {
+    }
+
+    /**
      * Get the phone property: The Sms phone.
-     *
+     * 
      * @return the phone value.
      */
     public String phone() {
@@ -54,7 +59,7 @@ public final class SmsChannelProperties {
 
     /**
      * Set the phone property: The Sms phone.
-     *
+     * 
      * @param phone the phone value to set.
      * @return the SmsChannelProperties object itself.
      */
@@ -66,7 +71,7 @@ public final class SmsChannelProperties {
     /**
      * Get the accountSid property: The Sms account SID. Value only returned through POST to the action Channel List
      * API, otherwise empty.
-     *
+     * 
      * @return the accountSid value.
      */
     public String accountSid() {
@@ -76,7 +81,7 @@ public final class SmsChannelProperties {
     /**
      * Set the accountSid property: The Sms account SID. Value only returned through POST to the action Channel List
      * API, otherwise empty.
-     *
+     * 
      * @param accountSid the accountSid value to set.
      * @return the SmsChannelProperties object itself.
      */
@@ -88,7 +93,7 @@ public final class SmsChannelProperties {
     /**
      * Get the authToken property: The Sms auth token. Value only returned through POST to the action Channel List API,
      * otherwise empty.
-     *
+     * 
      * @return the authToken value.
      */
     public String authToken() {
@@ -98,7 +103,7 @@ public final class SmsChannelProperties {
     /**
      * Set the authToken property: The Sms auth token. Value only returned through POST to the action Channel List API,
      * otherwise empty.
-     *
+     * 
      * @param authToken the authToken value to set.
      * @return the SmsChannelProperties object itself.
      */
@@ -109,7 +114,7 @@ public final class SmsChannelProperties {
 
     /**
      * Get the isValidated property: Whether this channel is validated for the bot.
-     *
+     * 
      * @return the isValidated value.
      */
     public Boolean isValidated() {
@@ -118,7 +123,7 @@ public final class SmsChannelProperties {
 
     /**
      * Set the isValidated property: Whether this channel is validated for the bot.
-     *
+     * 
      * @param isValidated the isValidated value to set.
      * @return the SmsChannelProperties object itself.
      */
@@ -129,7 +134,7 @@ public final class SmsChannelProperties {
 
     /**
      * Get the isEnabled property: Whether this channel is enabled for the bot.
-     *
+     * 
      * @return the isEnabled value.
      */
     public boolean isEnabled() {
@@ -138,7 +143,7 @@ public final class SmsChannelProperties {
 
     /**
      * Set the isEnabled property: Whether this channel is enabled for the bot.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the SmsChannelProperties object itself.
      */
@@ -149,21 +154,69 @@ public final class SmsChannelProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (phone() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property phone in model SmsChannelProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property phone in model SmsChannelProperties"));
         }
         if (accountSid() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property accountSid in model SmsChannelProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SmsChannelProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("phone", this.phone);
+        jsonWriter.writeStringField("accountSID", this.accountSid);
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeStringField("authToken", this.authToken);
+        jsonWriter.writeBooleanField("isValidated", this.isValidated);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SmsChannelProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SmsChannelProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SmsChannelProperties.
+     */
+    public static SmsChannelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SmsChannelProperties deserializedSmsChannelProperties = new SmsChannelProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("phone".equals(fieldName)) {
+                    deserializedSmsChannelProperties.phone = reader.getString();
+                } else if ("accountSID".equals(fieldName)) {
+                    deserializedSmsChannelProperties.accountSid = reader.getString();
+                } else if ("isEnabled".equals(fieldName)) {
+                    deserializedSmsChannelProperties.isEnabled = reader.getBoolean();
+                } else if ("authToken".equals(fieldName)) {
+                    deserializedSmsChannelProperties.authToken = reader.getString();
+                } else if ("isValidated".equals(fieldName)) {
+                    deserializedSmsChannelProperties.isValidated = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSmsChannelProperties;
+        });
+    }
 }

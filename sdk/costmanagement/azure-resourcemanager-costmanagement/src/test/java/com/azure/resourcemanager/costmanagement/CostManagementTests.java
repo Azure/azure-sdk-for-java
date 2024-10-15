@@ -7,7 +7,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.costmanagement.models.CostDetailsMetricType;
@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public class CostManagementTests extends TestBase {
+public class CostManagementTests extends TestProxyTestBase {
 
     @Disabled("Unsupported offer type: AIRS for get detailed report request.")
     @Test

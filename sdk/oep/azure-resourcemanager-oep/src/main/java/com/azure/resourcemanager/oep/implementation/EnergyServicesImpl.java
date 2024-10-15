@@ -13,60 +13,56 @@ import com.azure.resourcemanager.oep.fluent.EnergyServicesClient;
 import com.azure.resourcemanager.oep.fluent.models.EnergyServiceInner;
 import com.azure.resourcemanager.oep.models.EnergyService;
 import com.azure.resourcemanager.oep.models.EnergyServices;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class EnergyServicesImpl implements EnergyServices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnergyServicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EnergyServicesImpl.class);
 
     private final EnergyServicesClient innerClient;
 
     private final com.azure.resourcemanager.oep.OepManager serviceManager;
 
-    public EnergyServicesImpl(
-        EnergyServicesClient innerClient, com.azure.resourcemanager.oep.OepManager serviceManager) {
+    public EnergyServicesImpl(EnergyServicesClient innerClient,
+        com.azure.resourcemanager.oep.OepManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<EnergyService> listByResourceGroup(String resourceGroupName) {
         PagedIterable<EnergyServiceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new EnergyServiceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EnergyServiceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EnergyService> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<EnergyServiceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new EnergyServiceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EnergyServiceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EnergyService> list() {
         PagedIterable<EnergyServiceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new EnergyServiceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EnergyServiceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EnergyService> list(Context context) {
         PagedIterable<EnergyServiceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new EnergyServiceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EnergyServiceImpl(inner1, this.manager()));
+    }
+
+    public Response<EnergyService> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context) {
+        Response<EnergyServiceInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EnergyServiceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public EnergyService getByResourceGroup(String resourceGroupName, String resourceName) {
         EnergyServiceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, resourceName);
         if (inner != null) {
             return new EnergyServiceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<EnergyService> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        Response<EnergyServiceInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new EnergyServiceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -81,81 +77,57 @@ public final class EnergyServicesImpl implements EnergyServices {
     }
 
     public EnergyService getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "energyServices");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "energyServices");
         if (resourceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'energyServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'energyServices'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     public Response<EnergyService> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "energyServices");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "energyServices");
         if (resourceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'energyServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'energyServices'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "energyServices");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "energyServices");
         if (resourceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'energyServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'energyServices'.", id)));
         }
         this.delete(resourceGroupName, resourceName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "energyServices");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "energyServices");
         if (resourceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'energyServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'energyServices'.", id)));
         }
         this.delete(resourceGroupName, resourceName, context);
     }

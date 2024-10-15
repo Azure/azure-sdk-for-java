@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.dnsresolver.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dnsresolver.fluent.models.OutboundEndpointInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response to an enumeration operation on outbound endpoints for a DNS resolver. */
+/**
+ * The response to an enumeration operation on outbound endpoints for a DNS resolver.
+ */
 @Fluent
-public final class OutboundEndpointListResult {
+public final class OutboundEndpointListResult implements JsonSerializable<OutboundEndpointListResult> {
     /*
      * Enumeration of the outbound endpoints for a DNS resolver.
      */
-    @JsonProperty(value = "value")
     private List<OutboundEndpointInner> value;
 
     /*
      * The continuation token for the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
+     * Creates an instance of OutboundEndpointListResult class.
+     */
+    public OutboundEndpointListResult() {
+    }
+
+    /**
      * Get the value property: Enumeration of the outbound endpoints for a DNS resolver.
-     *
+     * 
      * @return the value value.
      */
     public List<OutboundEndpointInner> value() {
@@ -35,7 +45,7 @@ public final class OutboundEndpointListResult {
 
     /**
      * Set the value property: Enumeration of the outbound endpoints for a DNS resolver.
-     *
+     * 
      * @param value the value value to set.
      * @return the OutboundEndpointListResult object itself.
      */
@@ -46,7 +56,7 @@ public final class OutboundEndpointListResult {
 
     /**
      * Get the nextLink property: The continuation token for the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,12 +65,52 @@ public final class OutboundEndpointListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OutboundEndpointListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OutboundEndpointListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OutboundEndpointListResult.
+     */
+    public static OutboundEndpointListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OutboundEndpointListResult deserializedOutboundEndpointListResult = new OutboundEndpointListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<OutboundEndpointInner> value
+                        = reader.readArray(reader1 -> OutboundEndpointInner.fromJson(reader1));
+                    deserializedOutboundEndpointListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedOutboundEndpointListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOutboundEndpointListResult;
+        });
     }
 }

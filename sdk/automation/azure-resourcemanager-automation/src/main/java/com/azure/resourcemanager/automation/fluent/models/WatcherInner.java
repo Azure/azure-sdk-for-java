@@ -6,42 +6,62 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Definition of the watcher type. */
+/**
+ * Definition of the watcher type.
+ */
 @Fluent
 public final class WatcherInner extends ProxyResource {
     /*
      * Gets or sets the watcher properties.
      */
-    @JsonProperty(value = "properties")
     private WatcherProperties innerProperties;
 
     /*
      * Gets or sets the etag of the resource.
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The geo-location where the resource lives
      */
-    @JsonProperty(value = "location")
     private String location;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of WatcherInner class.
+     */
+    public WatcherInner() {
+    }
 
     /**
      * Get the innerProperties property: Gets or sets the watcher properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WatcherProperties innerProperties() {
@@ -50,7 +70,7 @@ public final class WatcherInner extends ProxyResource {
 
     /**
      * Get the etag property: Gets or sets the etag of the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -59,7 +79,7 @@ public final class WatcherInner extends ProxyResource {
 
     /**
      * Set the etag property: Gets or sets the etag of the resource.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the WatcherInner object itself.
      */
@@ -70,7 +90,7 @@ public final class WatcherInner extends ProxyResource {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -79,7 +99,7 @@ public final class WatcherInner extends ProxyResource {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the WatcherInner object itself.
      */
@@ -90,7 +110,7 @@ public final class WatcherInner extends ProxyResource {
 
     /**
      * Get the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -99,7 +119,7 @@ public final class WatcherInner extends ProxyResource {
 
     /**
      * Set the location property: The geo-location where the resource lives.
-     *
+     * 
      * @param location the location value to set.
      * @return the WatcherInner object itself.
      */
@@ -109,8 +129,38 @@ public final class WatcherInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the executionFrequencyInSeconds property: Gets or sets the frequency at which the watcher is invoked.
-     *
+     * 
      * @return the executionFrequencyInSeconds value.
      */
     public Long executionFrequencyInSeconds() {
@@ -119,7 +169,7 @@ public final class WatcherInner extends ProxyResource {
 
     /**
      * Set the executionFrequencyInSeconds property: Gets or sets the frequency at which the watcher is invoked.
-     *
+     * 
      * @param executionFrequencyInSeconds the executionFrequencyInSeconds value to set.
      * @return the WatcherInner object itself.
      */
@@ -134,7 +184,7 @@ public final class WatcherInner extends ProxyResource {
     /**
      * Get the scriptName property: Gets or sets the name of the script the watcher is attached to, i.e. the name of an
      * existing runbook.
-     *
+     * 
      * @return the scriptName value.
      */
     public String scriptName() {
@@ -144,7 +194,7 @@ public final class WatcherInner extends ProxyResource {
     /**
      * Set the scriptName property: Gets or sets the name of the script the watcher is attached to, i.e. the name of an
      * existing runbook.
-     *
+     * 
      * @param scriptName the scriptName value to set.
      * @return the WatcherInner object itself.
      */
@@ -158,7 +208,7 @@ public final class WatcherInner extends ProxyResource {
 
     /**
      * Get the scriptParameters property: Gets or sets the parameters of the script.
-     *
+     * 
      * @return the scriptParameters value.
      */
     public Map<String, String> scriptParameters() {
@@ -167,7 +217,7 @@ public final class WatcherInner extends ProxyResource {
 
     /**
      * Set the scriptParameters property: Gets or sets the parameters of the script.
-     *
+     * 
      * @param scriptParameters the scriptParameters value to set.
      * @return the WatcherInner object itself.
      */
@@ -181,7 +231,7 @@ public final class WatcherInner extends ProxyResource {
 
     /**
      * Get the scriptRunOn property: Gets or sets the name of the hybrid worker group the watcher will run on.
-     *
+     * 
      * @return the scriptRunOn value.
      */
     public String scriptRunOn() {
@@ -190,7 +240,7 @@ public final class WatcherInner extends ProxyResource {
 
     /**
      * Set the scriptRunOn property: Gets or sets the name of the hybrid worker group the watcher will run on.
-     *
+     * 
      * @param scriptRunOn the scriptRunOn value to set.
      * @return the WatcherInner object itself.
      */
@@ -204,7 +254,7 @@ public final class WatcherInner extends ProxyResource {
 
     /**
      * Get the status property: Gets the current status of the watcher.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -213,7 +263,7 @@ public final class WatcherInner extends ProxyResource {
 
     /**
      * Get the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -222,7 +272,7 @@ public final class WatcherInner extends ProxyResource {
 
     /**
      * Get the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -231,7 +281,7 @@ public final class WatcherInner extends ProxyResource {
 
     /**
      * Get the lastModifiedBy property: Details of the user who last modified the watcher.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
@@ -240,7 +290,7 @@ public final class WatcherInner extends ProxyResource {
 
     /**
      * Get the description property: Gets or sets the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -249,7 +299,7 @@ public final class WatcherInner extends ProxyResource {
 
     /**
      * Set the description property: Gets or sets the description.
-     *
+     * 
      * @param description the description value to set.
      * @return the WatcherInner object itself.
      */
@@ -263,12 +313,65 @@ public final class WatcherInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("etag", this.etag);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WatcherInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WatcherInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WatcherInner.
+     */
+    public static WatcherInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WatcherInner deserializedWatcherInner = new WatcherInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWatcherInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWatcherInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWatcherInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWatcherInner.innerProperties = WatcherProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedWatcherInner.etag = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWatcherInner.tags = tags;
+                } else if ("location".equals(fieldName)) {
+                    deserializedWatcherInner.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWatcherInner;
+        });
     }
 }

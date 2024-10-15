@@ -13,8 +13,8 @@ public final class AgentRegistrationImpl implements AgentRegistration {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    AgentRegistrationImpl(
-        AgentRegistrationInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    AgentRegistrationImpl(AgentRegistrationInner innerObject,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

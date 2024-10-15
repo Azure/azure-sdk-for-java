@@ -21,28 +21,40 @@ public final class WebhooksImpl implements Webhooks {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public WebhooksImpl(
-        WebhooksClient innerClient, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    public WebhooksImpl(WebhooksClient innerClient,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<String> generateUriWithResponse(String resourceGroupName, String automationAccountName,
+        Context context) {
+        return this.serviceClient().generateUriWithResponse(resourceGroupName, automationAccountName, context);
     }
 
     public String generateUri(String resourceGroupName, String automationAccountName) {
         return this.serviceClient().generateUri(resourceGroupName, automationAccountName);
     }
 
-    public Response<String> generateUriWithResponse(
-        String resourceGroupName, String automationAccountName, Context context) {
-        return this.serviceClient().generateUriWithResponse(resourceGroupName, automationAccountName, context);
+    public Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName, String webhookName,
+        Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, automationAccountName, webhookName, context);
     }
 
     public void delete(String resourceGroupName, String automationAccountName, String webhookName) {
         this.serviceClient().delete(resourceGroupName, automationAccountName, webhookName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String webhookName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, automationAccountName, webhookName, context);
+    public Response<Webhook> getWithResponse(String resourceGroupName, String automationAccountName, String webhookName,
+        Context context) {
+        Response<WebhookInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, webhookName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new WebhookImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Webhook get(String resourceGroupName, String automationAccountName, String webhookName) {
@@ -54,142 +66,91 @@ public final class WebhooksImpl implements Webhooks {
         }
     }
 
-    public Response<Webhook> getWithResponse(
-        String resourceGroupName, String automationAccountName, String webhookName, Context context) {
-        Response<WebhookInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, webhookName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new WebhookImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<Webhook> listByAutomationAccount(String resourceGroupName, String automationAccountName) {
-        PagedIterable<WebhookInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
-        return Utils.mapPage(inner, inner1 -> new WebhookImpl(inner1, this.manager()));
+        PagedIterable<WebhookInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WebhookImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Webhook> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, String filter, Context context) {
-        PagedIterable<WebhookInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new WebhookImpl(inner1, this.manager()));
+    public PagedIterable<Webhook> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        String filter, Context context) {
+        PagedIterable<WebhookInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WebhookImpl(inner1, this.manager()));
     }
 
     public Webhook getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String webhookName = Utils.getValueFromIdByName(id, "webhooks");
+        String webhookName = ResourceManagerUtils.getValueFromIdByName(id, "webhooks");
         if (webhookName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'webhooks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'webhooks'.", id)));
         }
         return this.getWithResponse(resourceGroupName, automationAccountName, webhookName, Context.NONE).getValue();
     }
 
     public Response<Webhook> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String webhookName = Utils.getValueFromIdByName(id, "webhooks");
+        String webhookName = ResourceManagerUtils.getValueFromIdByName(id, "webhooks");
         if (webhookName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'webhooks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'webhooks'.", id)));
         }
         return this.getWithResponse(resourceGroupName, automationAccountName, webhookName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String webhookName = Utils.getValueFromIdByName(id, "webhooks");
+        String webhookName = ResourceManagerUtils.getValueFromIdByName(id, "webhooks");
         if (webhookName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'webhooks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'webhooks'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, automationAccountName, webhookName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String webhookName = Utils.getValueFromIdByName(id, "webhooks");
+        String webhookName = ResourceManagerUtils.getValueFromIdByName(id, "webhooks");
         if (webhookName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'webhooks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'webhooks'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, automationAccountName, webhookName, context);
     }

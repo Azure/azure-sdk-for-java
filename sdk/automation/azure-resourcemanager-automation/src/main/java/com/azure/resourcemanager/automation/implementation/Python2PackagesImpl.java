@@ -21,19 +21,31 @@ public final class Python2PackagesImpl implements Python2Packages {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public Python2PackagesImpl(
-        Python2PackagesClient innerClient, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    public Python2PackagesImpl(Python2PackagesClient innerClient,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName, String packageName,
+        Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, automationAccountName, packageName, context);
     }
 
     public void delete(String resourceGroupName, String automationAccountName, String packageName) {
         this.serviceClient().delete(resourceGroupName, automationAccountName, packageName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String packageName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, automationAccountName, packageName, context);
+    public Response<Module> getWithResponse(String resourceGroupName, String automationAccountName, String packageName,
+        Context context) {
+        Response<ModuleInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, packageName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ModuleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Module get(String resourceGroupName, String automationAccountName, String packageName) {
@@ -45,146 +57,91 @@ public final class Python2PackagesImpl implements Python2Packages {
         }
     }
 
-    public Response<Module> getWithResponse(
-        String resourceGroupName, String automationAccountName, String packageName, Context context) {
-        Response<ModuleInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, packageName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ModuleImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<Module> listByAutomationAccount(String resourceGroupName, String automationAccountName) {
-        PagedIterable<ModuleInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
-        return Utils.mapPage(inner, inner1 -> new ModuleImpl(inner1, this.manager()));
+        PagedIterable<ModuleInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ModuleImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Module> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, Context context) {
-        PagedIterable<ModuleInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName, context);
-        return Utils.mapPage(inner, inner1 -> new ModuleImpl(inner1, this.manager()));
+    public PagedIterable<Module> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        Context context) {
+        PagedIterable<ModuleInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ModuleImpl(inner1, this.manager()));
     }
 
     public Module getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String packageName = Utils.getValueFromIdByName(id, "python2Packages");
+        String packageName = ResourceManagerUtils.getValueFromIdByName(id, "python2Packages");
         if (packageName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'python2Packages'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'python2Packages'.", id)));
         }
         return this.getWithResponse(resourceGroupName, automationAccountName, packageName, Context.NONE).getValue();
     }
 
     public Response<Module> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String packageName = Utils.getValueFromIdByName(id, "python2Packages");
+        String packageName = ResourceManagerUtils.getValueFromIdByName(id, "python2Packages");
         if (packageName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'python2Packages'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'python2Packages'.", id)));
         }
         return this.getWithResponse(resourceGroupName, automationAccountName, packageName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String packageName = Utils.getValueFromIdByName(id, "python2Packages");
+        String packageName = ResourceManagerUtils.getValueFromIdByName(id, "python2Packages");
         if (packageName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'python2Packages'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'python2Packages'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, automationAccountName, packageName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String packageName = Utils.getValueFromIdByName(id, "python2Packages");
+        String packageName = ResourceManagerUtils.getValueFromIdByName(id, "python2Packages");
         if (packageName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'python2Packages'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'python2Packages'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, automationAccountName, packageName, context);
     }

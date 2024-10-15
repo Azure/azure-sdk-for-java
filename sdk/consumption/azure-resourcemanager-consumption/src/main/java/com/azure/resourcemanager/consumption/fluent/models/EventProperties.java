@@ -5,173 +5,150 @@
 package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.consumption.models.Amount;
 import com.azure.resourcemanager.consumption.models.AmountWithExchangeRate;
 import com.azure.resourcemanager.consumption.models.EventType;
 import com.azure.resourcemanager.consumption.models.Reseller;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The event properties. */
+/**
+ * The event properties.
+ */
 @Fluent
-public final class EventProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventProperties.class);
-
+public final class EventProperties implements JsonSerializable<EventProperties> {
     /*
      * The date of the event.
      */
-    @JsonProperty(value = "transactionDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime transactionDate;
 
     /*
      * The description of the event.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
-     * The amount of new credit or commitment for NewCredit or SettleCharges
-     * event.
+     * The amount of new credit or commitment for NewCredit or SettleCharges event.
      */
-    @JsonProperty(value = "newCredit", access = JsonProperty.Access.WRITE_ONLY)
     private Amount newCredit;
 
     /*
-     * The amount of balance adjustment. The property is not available for
-     * ConsumptionCommitment lots.
+     * The amount of balance adjustment. The property is not available for ConsumptionCommitment lots.
      */
-    @JsonProperty(value = "adjustments", access = JsonProperty.Access.WRITE_ONLY)
     private Amount adjustments;
 
     /*
-     * The amount of expired credit or commitment for NewCredit or
-     * SettleCharges event.
+     * The amount of expired credit or commitment for NewCredit or SettleCharges event.
      */
-    @JsonProperty(value = "creditExpired", access = JsonProperty.Access.WRITE_ONLY)
     private Amount creditExpired;
 
     /*
-     * The amount of charges for events of type SettleCharges and
-     * PendingEligibleCharges.
+     * The amount of charges for events of type SettleCharges and PendingEligibleCharges.
      */
-    @JsonProperty(value = "charges", access = JsonProperty.Access.WRITE_ONLY)
     private Amount charges;
 
     /*
      * The balance after the event.
      */
-    @JsonProperty(value = "closedBalance", access = JsonProperty.Access.WRITE_ONLY)
     private Amount closedBalance;
 
     /*
      * Identifies the type of the event.
      */
-    @JsonProperty(value = "eventType")
     private EventType eventType;
 
     /*
-     * The number which uniquely identifies the invoice on which the event was
-     * billed. This will be empty for unbilled events.
+     * The number which uniquely identifies the invoice on which the event was billed. This will be empty for unbilled
+     * events.
      */
-    @JsonProperty(value = "invoiceNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String invoiceNumber;
 
     /*
-     * The ID that uniquely identifies the billing profile for which the event
-     * happened. The property is only available for billing account of type
-     * MicrosoftCustomerAgreement.
+     * The ID that uniquely identifies the billing profile for which the event happened. The property is only available
+     * for billing account of type MicrosoftCustomerAgreement.
      */
-    @JsonProperty(value = "billingProfileId", access = JsonProperty.Access.WRITE_ONLY)
     private String billingProfileId;
 
     /*
-     * The display name of the billing profile for which the event happened.
-     * The property is only available for billing account of type
-     * MicrosoftCustomerAgreement.
+     * The display name of the billing profile for which the event happened. The property is only available for billing
+     * account of type MicrosoftCustomerAgreement.
      */
-    @JsonProperty(value = "billingProfileDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String billingProfileDisplayName;
 
     /*
      * The ID that uniquely identifies the lot for which the event happened.
      */
-    @JsonProperty(value = "lotId", access = JsonProperty.Access.WRITE_ONLY)
     private String lotId;
 
     /*
      * Identifies the source of the lot for which the event happened.
      */
-    @JsonProperty(value = "lotSource", access = JsonProperty.Access.WRITE_ONLY)
     private String lotSource;
 
     /*
      * Amount of canceled credit.
      */
-    @JsonProperty(value = "canceledCredit", access = JsonProperty.Access.WRITE_ONLY)
     private Amount canceledCredit;
 
     /*
      * The credit currency of the event.
      */
-    @JsonProperty(value = "creditCurrency", access = JsonProperty.Access.WRITE_ONLY)
     private String creditCurrency;
 
     /*
      * The billing currency of the event.
      */
-    @JsonProperty(value = "billingCurrency", access = JsonProperty.Access.WRITE_ONLY)
     private String billingCurrency;
 
     /*
      * The reseller of the event.
      */
-    @JsonProperty(value = "reseller", access = JsonProperty.Access.WRITE_ONLY)
     private Reseller reseller;
 
     /*
-     * The amount of expired credit or commitment for NewCredit or
-     * SettleCharges event in billing currency.
+     * The amount of expired credit or commitment for NewCredit or SettleCharges event in billing currency.
      */
-    @JsonProperty(value = "creditExpiredInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
     private AmountWithExchangeRate creditExpiredInBillingCurrency;
 
     /*
-     * The amount of new credit or commitment for NewCredit or SettleCharges
-     * event in billing currency.
+     * The amount of new credit or commitment for NewCredit or SettleCharges event in billing currency.
      */
-    @JsonProperty(value = "newCreditInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
     private AmountWithExchangeRate newCreditInBillingCurrency;
 
     /*
      * The amount of balance adjustment in billing currency.
      */
-    @JsonProperty(value = "adjustmentsInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
     private AmountWithExchangeRate adjustmentsInBillingCurrency;
 
     /*
-     * The amount of charges for events of type SettleCharges and
-     * PendingEligibleCharges in billing currency.
+     * The amount of charges for events of type SettleCharges and PendingEligibleCharges in billing currency.
      */
-    @JsonProperty(value = "chargesInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
     private AmountWithExchangeRate chargesInBillingCurrency;
 
     /*
      * The balance in billing currency after the event.
      */
-    @JsonProperty(value = "closedBalanceInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
     private AmountWithExchangeRate closedBalanceInBillingCurrency;
 
     /*
      * The eTag for the resource.
      */
-    @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
+     * Creates an instance of EventProperties class.
+     */
+    public EventProperties() {
+    }
+
+    /**
      * Get the transactionDate property: The date of the event.
-     *
+     * 
      * @return the transactionDate value.
      */
     public OffsetDateTime transactionDate() {
@@ -180,7 +157,7 @@ public final class EventProperties {
 
     /**
      * Get the description property: The description of the event.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -189,7 +166,7 @@ public final class EventProperties {
 
     /**
      * Get the newCredit property: The amount of new credit or commitment for NewCredit or SettleCharges event.
-     *
+     * 
      * @return the newCredit value.
      */
     public Amount newCredit() {
@@ -199,7 +176,7 @@ public final class EventProperties {
     /**
      * Get the adjustments property: The amount of balance adjustment. The property is not available for
      * ConsumptionCommitment lots.
-     *
+     * 
      * @return the adjustments value.
      */
     public Amount adjustments() {
@@ -208,7 +185,7 @@ public final class EventProperties {
 
     /**
      * Get the creditExpired property: The amount of expired credit or commitment for NewCredit or SettleCharges event.
-     *
+     * 
      * @return the creditExpired value.
      */
     public Amount creditExpired() {
@@ -217,7 +194,7 @@ public final class EventProperties {
 
     /**
      * Get the charges property: The amount of charges for events of type SettleCharges and PendingEligibleCharges.
-     *
+     * 
      * @return the charges value.
      */
     public Amount charges() {
@@ -226,7 +203,7 @@ public final class EventProperties {
 
     /**
      * Get the closedBalance property: The balance after the event.
-     *
+     * 
      * @return the closedBalance value.
      */
     public Amount closedBalance() {
@@ -235,7 +212,7 @@ public final class EventProperties {
 
     /**
      * Get the eventType property: Identifies the type of the event.
-     *
+     * 
      * @return the eventType value.
      */
     public EventType eventType() {
@@ -244,7 +221,7 @@ public final class EventProperties {
 
     /**
      * Set the eventType property: Identifies the type of the event.
-     *
+     * 
      * @param eventType the eventType value to set.
      * @return the EventProperties object itself.
      */
@@ -256,7 +233,7 @@ public final class EventProperties {
     /**
      * Get the invoiceNumber property: The number which uniquely identifies the invoice on which the event was billed.
      * This will be empty for unbilled events.
-     *
+     * 
      * @return the invoiceNumber value.
      */
     public String invoiceNumber() {
@@ -266,7 +243,7 @@ public final class EventProperties {
     /**
      * Get the billingProfileId property: The ID that uniquely identifies the billing profile for which the event
      * happened. The property is only available for billing account of type MicrosoftCustomerAgreement.
-     *
+     * 
      * @return the billingProfileId value.
      */
     public String billingProfileId() {
@@ -276,7 +253,7 @@ public final class EventProperties {
     /**
      * Get the billingProfileDisplayName property: The display name of the billing profile for which the event happened.
      * The property is only available for billing account of type MicrosoftCustomerAgreement.
-     *
+     * 
      * @return the billingProfileDisplayName value.
      */
     public String billingProfileDisplayName() {
@@ -285,7 +262,7 @@ public final class EventProperties {
 
     /**
      * Get the lotId property: The ID that uniquely identifies the lot for which the event happened.
-     *
+     * 
      * @return the lotId value.
      */
     public String lotId() {
@@ -294,7 +271,7 @@ public final class EventProperties {
 
     /**
      * Get the lotSource property: Identifies the source of the lot for which the event happened.
-     *
+     * 
      * @return the lotSource value.
      */
     public String lotSource() {
@@ -303,7 +280,7 @@ public final class EventProperties {
 
     /**
      * Get the canceledCredit property: Amount of canceled credit.
-     *
+     * 
      * @return the canceledCredit value.
      */
     public Amount canceledCredit() {
@@ -312,7 +289,7 @@ public final class EventProperties {
 
     /**
      * Get the creditCurrency property: The credit currency of the event.
-     *
+     * 
      * @return the creditCurrency value.
      */
     public String creditCurrency() {
@@ -321,7 +298,7 @@ public final class EventProperties {
 
     /**
      * Get the billingCurrency property: The billing currency of the event.
-     *
+     * 
      * @return the billingCurrency value.
      */
     public String billingCurrency() {
@@ -330,7 +307,7 @@ public final class EventProperties {
 
     /**
      * Get the reseller property: The reseller of the event.
-     *
+     * 
      * @return the reseller value.
      */
     public Reseller reseller() {
@@ -340,7 +317,7 @@ public final class EventProperties {
     /**
      * Get the creditExpiredInBillingCurrency property: The amount of expired credit or commitment for NewCredit or
      * SettleCharges event in billing currency.
-     *
+     * 
      * @return the creditExpiredInBillingCurrency value.
      */
     public AmountWithExchangeRate creditExpiredInBillingCurrency() {
@@ -350,7 +327,7 @@ public final class EventProperties {
     /**
      * Get the newCreditInBillingCurrency property: The amount of new credit or commitment for NewCredit or
      * SettleCharges event in billing currency.
-     *
+     * 
      * @return the newCreditInBillingCurrency value.
      */
     public AmountWithExchangeRate newCreditInBillingCurrency() {
@@ -359,7 +336,7 @@ public final class EventProperties {
 
     /**
      * Get the adjustmentsInBillingCurrency property: The amount of balance adjustment in billing currency.
-     *
+     * 
      * @return the adjustmentsInBillingCurrency value.
      */
     public AmountWithExchangeRate adjustmentsInBillingCurrency() {
@@ -369,7 +346,7 @@ public final class EventProperties {
     /**
      * Get the chargesInBillingCurrency property: The amount of charges for events of type SettleCharges and
      * PendingEligibleCharges in billing currency.
-     *
+     * 
      * @return the chargesInBillingCurrency value.
      */
     public AmountWithExchangeRate chargesInBillingCurrency() {
@@ -378,7 +355,7 @@ public final class EventProperties {
 
     /**
      * Get the closedBalanceInBillingCurrency property: The balance in billing currency after the event.
-     *
+     * 
      * @return the closedBalanceInBillingCurrency value.
      */
     public AmountWithExchangeRate closedBalanceInBillingCurrency() {
@@ -387,7 +364,7 @@ public final class EventProperties {
 
     /**
      * Get the etag property: The eTag for the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -396,7 +373,7 @@ public final class EventProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -436,5 +413,88 @@ public final class EventProperties {
         if (closedBalanceInBillingCurrency() != null) {
             closedBalanceInBillingCurrency().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("eventType", this.eventType == null ? null : this.eventType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventProperties.
+     */
+    public static EventProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventProperties deserializedEventProperties = new EventProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("transactionDate".equals(fieldName)) {
+                    deserializedEventProperties.transactionDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedEventProperties.description = reader.getString();
+                } else if ("newCredit".equals(fieldName)) {
+                    deserializedEventProperties.newCredit = Amount.fromJson(reader);
+                } else if ("adjustments".equals(fieldName)) {
+                    deserializedEventProperties.adjustments = Amount.fromJson(reader);
+                } else if ("creditExpired".equals(fieldName)) {
+                    deserializedEventProperties.creditExpired = Amount.fromJson(reader);
+                } else if ("charges".equals(fieldName)) {
+                    deserializedEventProperties.charges = Amount.fromJson(reader);
+                } else if ("closedBalance".equals(fieldName)) {
+                    deserializedEventProperties.closedBalance = Amount.fromJson(reader);
+                } else if ("eventType".equals(fieldName)) {
+                    deserializedEventProperties.eventType = EventType.fromString(reader.getString());
+                } else if ("invoiceNumber".equals(fieldName)) {
+                    deserializedEventProperties.invoiceNumber = reader.getString();
+                } else if ("billingProfileId".equals(fieldName)) {
+                    deserializedEventProperties.billingProfileId = reader.getString();
+                } else if ("billingProfileDisplayName".equals(fieldName)) {
+                    deserializedEventProperties.billingProfileDisplayName = reader.getString();
+                } else if ("lotId".equals(fieldName)) {
+                    deserializedEventProperties.lotId = reader.getString();
+                } else if ("lotSource".equals(fieldName)) {
+                    deserializedEventProperties.lotSource = reader.getString();
+                } else if ("canceledCredit".equals(fieldName)) {
+                    deserializedEventProperties.canceledCredit = Amount.fromJson(reader);
+                } else if ("creditCurrency".equals(fieldName)) {
+                    deserializedEventProperties.creditCurrency = reader.getString();
+                } else if ("billingCurrency".equals(fieldName)) {
+                    deserializedEventProperties.billingCurrency = reader.getString();
+                } else if ("reseller".equals(fieldName)) {
+                    deserializedEventProperties.reseller = Reseller.fromJson(reader);
+                } else if ("creditExpiredInBillingCurrency".equals(fieldName)) {
+                    deserializedEventProperties.creditExpiredInBillingCurrency
+                        = AmountWithExchangeRate.fromJson(reader);
+                } else if ("newCreditInBillingCurrency".equals(fieldName)) {
+                    deserializedEventProperties.newCreditInBillingCurrency = AmountWithExchangeRate.fromJson(reader);
+                } else if ("adjustmentsInBillingCurrency".equals(fieldName)) {
+                    deserializedEventProperties.adjustmentsInBillingCurrency = AmountWithExchangeRate.fromJson(reader);
+                } else if ("chargesInBillingCurrency".equals(fieldName)) {
+                    deserializedEventProperties.chargesInBillingCurrency = AmountWithExchangeRate.fromJson(reader);
+                } else if ("closedBalanceInBillingCurrency".equals(fieldName)) {
+                    deserializedEventProperties.closedBalanceInBillingCurrency
+                        = AmountWithExchangeRate.fromJson(reader);
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedEventProperties.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventProperties;
+        });
     }
 }

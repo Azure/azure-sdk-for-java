@@ -15,31 +15,28 @@ public final class WindowsParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WindowsParameters model = BinaryData.fromString(
-            "{\"classificationsToInclude\":[\"ServicePack\",\"Security\"],\"kbNumbersToInclude\":[\"vnm\",\"cykvceo\",\"eil\",\"vnotyfjfcnj\"],\"kbNumbersToExclude\":[\"nxdhbt\"],\"excludeKbsRequiringReboot\":false,\"maxPatchPublishDate\":\"2021-06-24T08:22:45Z\"}")
+            "{\"classificationsToInclude\":[\"Security\"],\"kbNumbersToInclude\":[\"eiotwmcdytdx\",\"it\",\"nrjawgqwg\"],\"kbNumbersToExclude\":[\"isk\"],\"excludeKbsRequiringReboot\":false,\"maxPatchPublishDate\":\"2021-01-05T02:20:26Z\"}")
             .toObject(WindowsParameters.class);
-        Assertions.assertEquals(VMGuestPatchClassificationWindows.SERVICE_PACK,
-            model.classificationsToInclude().get(0));
-        Assertions.assertEquals("vnm", model.kbNumbersToInclude().get(0));
-        Assertions.assertEquals("nxdhbt", model.kbNumbersToExclude().get(0));
+        Assertions.assertEquals(VMGuestPatchClassificationWindows.SECURITY, model.classificationsToInclude().get(0));
+        Assertions.assertEquals("eiotwmcdytdx", model.kbNumbersToInclude().get(0));
+        Assertions.assertEquals("isk", model.kbNumbersToExclude().get(0));
         Assertions.assertEquals(false, model.excludeKbsRequiringReboot());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-24T08:22:45Z"), model.maxPatchPublishDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-05T02:20:26Z"), model.maxPatchPublishDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WindowsParameters model = new WindowsParameters()
-            .withClassificationsToInclude(Arrays.asList(VMGuestPatchClassificationWindows.SERVICE_PACK,
-                VMGuestPatchClassificationWindows.SECURITY))
-            .withKbNumbersToInclude(Arrays.asList("vnm", "cykvceo", "eil", "vnotyfjfcnj"))
-            .withKbNumbersToExclude(Arrays.asList("nxdhbt"))
+            .withClassificationsToInclude(Arrays.asList(VMGuestPatchClassificationWindows.SECURITY))
+            .withKbNumbersToInclude(Arrays.asList("eiotwmcdytdx", "it", "nrjawgqwg"))
+            .withKbNumbersToExclude(Arrays.asList("isk"))
             .withExcludeKbsRequiringReboot(false)
-            .withMaxPatchPublishDate(OffsetDateTime.parse("2021-06-24T08:22:45Z"));
+            .withMaxPatchPublishDate(OffsetDateTime.parse("2021-01-05T02:20:26Z"));
         model = BinaryData.fromObject(model).toObject(WindowsParameters.class);
-        Assertions.assertEquals(VMGuestPatchClassificationWindows.SERVICE_PACK,
-            model.classificationsToInclude().get(0));
-        Assertions.assertEquals("vnm", model.kbNumbersToInclude().get(0));
-        Assertions.assertEquals("nxdhbt", model.kbNumbersToExclude().get(0));
+        Assertions.assertEquals(VMGuestPatchClassificationWindows.SECURITY, model.classificationsToInclude().get(0));
+        Assertions.assertEquals("eiotwmcdytdx", model.kbNumbersToInclude().get(0));
+        Assertions.assertEquals("isk", model.kbNumbersToExclude().get(0));
         Assertions.assertEquals(false, model.excludeKbsRequiringReboot());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-24T08:22:45Z"), model.maxPatchPublishDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-05T02:20:26Z"), model.maxPatchPublishDate());
     }
 }
