@@ -1,5 +1,13 @@
 # Release History
 
+## 5.18.0-beta.1 (unreleased)
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Breaking Changes
+- when `spring.jms.cache.enabled` and `spring.jms.servicebus.pool.enabled` both not set, use `JmsPoolConnectionFactory` as default instead of `CachingConnectionFactory` [#42306](https://github.com/Azure/azure-sdk-for-java/pull/42306).
+
 ## 5.17.1 (2024-10-11)
 - This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.12, 3.2.0-3.2.10, 3.3.0-3.3.4. (Note: 3.0.x (x>13), 3.1.y (y>12), 3.2.z (z>10) and 3.3.m (m>4) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2022.0.0-2022.0.5, 2023.0.0-2023.0.3. (Note: 2022.0.x (x>5) and 2023.0.y (y>3) should be supported, but they aren't tested with this release.)
