@@ -602,6 +602,8 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             new TestProxySanitizer("$..passwords[*].value", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             // ContainerService
             new TestProxySanitizer("$..secret", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            // ContainerInstance
+            new TestProxySanitizer("$..storageAccountKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             // AppService
             new TestProxySanitizer("$.properties.siteConfig.machineKey.decryptionKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             // Replace "AccountKey=<accountKey>;" with "AccountKey=REDACTED;"

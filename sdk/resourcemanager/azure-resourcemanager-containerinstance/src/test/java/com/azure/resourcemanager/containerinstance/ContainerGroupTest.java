@@ -15,6 +15,7 @@ import com.azure.resourcemanager.containerinstance.models.ContainerProbe;
 import com.azure.resourcemanager.containerinstance.models.ContainerState;
 import com.azure.resourcemanager.containerinstance.models.Scheme;
 import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,7 +27,7 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
     @Test
     public void testContainerGroupWithVirtualNetwork() {
         String containerGroupName = generateRandomResourceName("container", 20);
-        Region region = Region.US_EAST;
+        Region region = Region.US_WEST3;
 
         ContainerGroup containerGroup =
             containerInstanceManager
@@ -179,5 +180,57 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
         // duration before restart should be in between healthy duration plus last probe and healthy duration plus latest probe
         Assertions.assertTrue(durationBeforeRestart.compareTo(Duration.ofSeconds(healthySeconds + probePeriodSeconds * (failureThreshold - 1))) > 0);
         Assertions.assertTrue(durationBeforeRestart.compareTo(Duration.ofSeconds(healthySeconds + probePeriodSeconds * failureThreshold)) <= 0);
+    }
+
+    @Test
+    public void testBeginCreate() {
+        final String succeededState = "Succeeded";
+        String containerGroupName = generateRandomResourceName("container", 20);
+        Region region = Region.US_WEST3;
+
+        // create resource group and virtual network, but no storage account, before create container group
+        Accepted<ContainerGroup> acceptedContainerGroup =
+            containerInstanceManager
+                .containerGroups()
+                .define(containerGroupName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withLinux()
+                .withPublicImageRegistryOnly()
+                .withoutVolume()
+                .withContainerInstance("nginx", 80)
+                .withNewVirtualNetwork("10.0.0.0/24")
+                .beginCreate();
+
+        ContainerGroup createdContainerGroup = acceptedContainerGroup.getActivationResponse().getValue();
+        Assertions.assertNotEquals(succeededState, createdContainerGroup.provisioningState());
+
+        ContainerGroup containerGroup = acceptedContainerGroup.getSyncPoller().getFinalResult();
+        Assertions.assertEquals(succeededState, containerGroup.provisioningState());
+    }
+
+    // test contains a data-plane call
+    @DoNotRecord(skipInPlayback = true)
+    @Test
+    public void testBeginCreateWithFileShareVolume() {
+        String containerGroupName = generateRandomResourceName("container", 20);
+        Region region = Region.US_WEST3;
+
+        // create storage account (and virtual network), before create container group
+        Accepted<ContainerGroup> acceptedContainerGroup =
+            containerInstanceManager
+                .containerGroups()
+                .define(containerGroupName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withLinux()
+                .withPublicImageRegistryOnly()
+                // definition step only allow creating one file share volume
+                .withNewAzureFileShareVolume("vol1", "share1")
+                .withContainerInstance("nginx", 80)
+                .withNewVirtualNetwork("10.0.0.0/24")
+                .beginCreate();
+        ContainerGroup containerGroup = acceptedContainerGroup.getSyncPoller().getFinalResult();
+        Assertions.assertEquals(1, containerGroup.volumes().size());
     }
 }
