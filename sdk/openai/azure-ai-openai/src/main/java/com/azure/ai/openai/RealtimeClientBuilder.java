@@ -1,13 +1,11 @@
 package com.azure.ai.openai;
 
-import com.azure.ai.openai.implementation.RealtimesImpl;
 import com.azure.ai.openai.implementation.websocket.ClientEndpointConfiguration;
 import com.azure.ai.openai.implementation.websocket.WebSocketClient;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryOptions;
@@ -17,7 +15,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
 
 import java.util.Map;
 
@@ -61,12 +58,12 @@ public class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientB
         return this;
     }
 
-    public RealtimeClientBuilder credentials(TokenCredential tokenCredential) {
+    public RealtimeClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
     }
 
-    public RealtimeClientBuilder credentials(KeyCredential keyCredential) {
+    public RealtimeClientBuilder credential(KeyCredential keyCredential) {
         this.keyCredential = keyCredential;
         return this;
     }
@@ -130,42 +127,4 @@ public class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientB
     public RealtimeClientBuilder() {
         this.properties = CoreUtils.getProperties(PROPERTIES);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// -------- Probably wrong approach builders --------------
-
-    // TODO jpalvarezl: remove
-    private HttpPipeline createHttpPipeline() {
-        return null;
-    }
-
-    public RealtimeAsyncClient buildAsync() {
-        String endpoint = this.endpoint == null ? OPENAI_BASE_URL : this.endpoint;
-
-        return new RealtimeAsyncClient(new RealtimesImpl(createHttpPipeline(), JacksonAdapter.createDefaultSerializerAdapter(), endpoint));
-    }
-
-    public RealtimeClient build() {
-        String endpoint = this.endpoint == null ? OPENAI_BASE_URL : this.endpoint;
-
-        return new RealtimeClient(new RealtimesImpl(createHttpPipeline(), JacksonAdapter.createDefaultSerializerAdapter(), endpoint));
-    }
-
 }

@@ -2,6 +2,7 @@ package com.azure.ai.openai.realtime;
 
 import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.RealtimeAsyncClient;
+import com.azure.ai.openai.RealtimeClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 
@@ -12,11 +13,17 @@ public class LowLevelClient {
         String deploymentOrModelId = Configuration.getGlobalConfiguration().get("MODEL_OR_DEPLOYMENT_NAME");
 
         System.out.println("Azure OpenAI Key: " + deploymentOrModelId);
-        RealtimeAsyncClient client = new OpenAIClientBuilder()
+        RealtimeAsyncClient client = new RealtimeClientBuilder()
                 .endpoint(endpoint)
+                .deploymentOrModelName(deploymentOrModelId)
                 .credential(new AzureKeyCredential(azureOpenaiKey))
-                .buildRealtimeAsyncClient();
+                .buildAsyncClient();
 
-//        client.startRealtimeSession().block(Duration.ofSeconds(10));
+
+        try {
+            client.close();
+        } catch (Exception e) {
+            System.out.println("Error closing client: " + e.getMessage());
+        }
     }
 }

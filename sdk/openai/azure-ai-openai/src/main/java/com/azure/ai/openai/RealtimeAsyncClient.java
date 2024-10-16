@@ -30,29 +30,31 @@ public final class RealtimeAsyncClient implements Closeable {
     RealtimeAsyncClient(
             WebSocketClient webSocketClient, ClientEndpointConfiguration cec, String applicationId, RetryStrategy retryStrategy) {
         this.webSocketClient = webSocketClient == null ? new WebSocketClientNettyImpl() : webSocketClient;
-    }
-
-// --------------- Code gen stuff --------------------------------
-
-//    @Generated
-//    private final RealtimesImpl serviceClient;
-//
-//    /**
-//     * Initializes an instance of RealtimeAsyncClient class.
-//     *
-//     * @param serviceClient the service client implementation.
-//     */
-//    @Generated
-
-    // TODO jpalvarezl: Leaving this in so that the project compiles
-    RealtimeAsyncClient(RealtimesImpl serviceClient) {
-        this.webSocketClient = null;
+        // TODO jpalvarezl: remove this:
+        this.serviceClient = null;
     }
 
     @Override
     public void close() throws IOException {
 
     }
+
+// --------------- Code gen stuff --------------------------------
+
+    @Generated
+    private final RealtimesImpl serviceClient;
+
+    /**
+     * Initializes an instance of RealtimeAsyncClient class.
+     *
+     * @param serviceClient the service client implementation.
+     */
+    @Generated
+    RealtimeAsyncClient(RealtimesImpl serviceClient) {
+        this.webSocketClient = null;
+        this.serviceClient = serviceClient;
+    }
+
 //    /**
 //     * Starts a real-time conversation session.
 //     * <p><strong>Request Body Schema</strong></p>
