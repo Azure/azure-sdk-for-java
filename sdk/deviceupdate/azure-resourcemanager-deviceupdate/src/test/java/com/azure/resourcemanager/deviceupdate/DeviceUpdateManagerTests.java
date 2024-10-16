@@ -72,13 +72,13 @@ public class DeviceUpdateManagerTests extends TestProxyTestBase {
         Account account = null;
         try {
             String accountName = "account" + randomPadding();
-            // @embedStart
+            // @embedmeStart
             account = deviceUpdateManager.accounts()
                 .define(accountName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             account.refresh();
             Assertions.assertEquals(account.name(), accountName);
             Assertions.assertEquals(account.name(), deviceUpdateManager.accounts().getById(account.id()).name());

@@ -74,7 +74,7 @@ public class ElasticSanManagerTests extends TestProxyTestBase {
         ElasticSan elasticSan = null;
         try {
             String elasticSanName = "elasticsan" + randomPadding();
-            // @embedStart
+            // @embedmeStart
             elasticSan = elasticSanManager.elasticSans()
                 .define(elasticSanName)
                 .withRegion(REGION)
@@ -83,7 +83,7 @@ public class ElasticSanManagerTests extends TestProxyTestBase {
                 .withBaseSizeTiB(1L)
                 .withExtendedCapacitySizeTiB(1L)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             elasticSan.refresh();
             Assertions.assertEquals(elasticSan.name(), elasticSanName);
             Assertions.assertEquals(elasticSan.name(), elasticSanManager.elasticSans().getById(elasticSan.id()).name());

@@ -128,7 +128,7 @@ public class ImageBuilderManagerTests extends TestProxyTestBase {
                         .withVersion("latest"))
                 .withBuildTimeoutInMinutes(0)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             imageTemplate.refresh();
             Assertions.assertEquals(imageTemplate.name(), templateName);
             Assertions.assertEquals(imageTemplate.name(), imageBuilderManager.virtualMachineImageTemplates().getById(imageTemplate.id()).name());

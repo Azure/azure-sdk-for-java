@@ -71,13 +71,13 @@ public class IoTFirmwareDefenseManagerTests extends TestProxyTestBase {
         Workspace workspace = null;
         try {
             String spaceName = "space" + randomPadding();
-            // @embedStart
+            // @embedmeStart
             workspace = ioTFirmwareDefenseManager.workspaces()
                 .define(spaceName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             workspace.refresh();
             Assertions.assertEquals(spaceName, workspace.name());
             Assertions.assertEquals(spaceName, ioTFirmwareDefenseManager.workspaces().getById(workspace.id()).name());

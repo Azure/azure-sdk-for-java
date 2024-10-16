@@ -74,7 +74,7 @@ public class KustoManagerTests extends TestProxyTestBase {
         Cluster cluster = null;
         try {
             String clusterName = "cluster" + randomPadding();
-            // @embedStart
+            // @embedmeStart
             cluster = kustoManager.clusters()
                 .define(clusterName)
                 .withRegion(REGION)
@@ -84,7 +84,7 @@ public class KustoManagerTests extends TestProxyTestBase {
                     .withCapacity(1)
                     .withTier(AzureSkuTier.BASIC))
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             cluster.refresh();
             Assertions.assertEquals(cluster.name(), clusterName);
             Assertions.assertEquals(cluster.name(), kustoManager.clusters().getById(cluster.id()).name());
