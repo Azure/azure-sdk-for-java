@@ -32,8 +32,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 public class CPKNTests extends BlobTestBase {
 
     private final String scope1 = "testscope1";
@@ -57,12 +55,15 @@ public class CPKNTests extends BlobTestBase {
             .credential(ENVIRONMENT.getPrimaryAccount().getCredential());
 
         cpknContainer = builder.encryptionScope(es).buildClient();
-        assertNotNull(cpknContainer.getEncryptionScope());
-
 
         cpknBlockBlob = cpknContainer.getBlobClient(generateBlobName()).getBlockBlobClient();
         cpknPageBlob = cpknContainer.getBlobClient(generateBlobName()).getPageBlobClient();
         cpknAppendBlob = cpknContainer.getBlobClient(generateBlobName()).getAppendBlobClient();
+    }
+
+    @Test
+    public void getEncryptionScope() {
+        Assertions.assertEquals(es, cpknContainer.getEncryptionScope());
     }
 
     @Test

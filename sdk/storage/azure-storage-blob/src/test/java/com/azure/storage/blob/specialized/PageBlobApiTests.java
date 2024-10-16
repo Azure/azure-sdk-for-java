@@ -246,7 +246,8 @@ public class PageBlobApiTests extends BlobTestBase {
     public void createIfNotExistsSimple() {
         bc = cc.getBlobClient(generateBlobName()).getPageBlobClient();
 
-        assertDoesNotThrow(() -> bc.createIfNotExists(PageBlobClient.PAGE_BYTES));
+        bc.createIfNotExists(PageBlobClient.PAGE_BYTES);
+        assertTrue(bc.exists());
     }
 
     @Test

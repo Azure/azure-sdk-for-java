@@ -656,7 +656,25 @@ public class ServiceApiTests extends BlobTestBase {
         } finally {
             resetProperties();
         }
-        assertNotNull(primaryBlobServiceClient.getServiceVersion());
+    }
+
+    private static Stream<Arguments> setAndGetServiceVersionSupplier() {
+        return Stream.of(
+            Arguments.of(BlobServiceVersion.V2020_02_10, BlobServiceVersion.V2020_02_10)//,
+            //Arguments.of(null, BlobServiceVersion.getLatest())
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("setAndGetServiceVersionSupplier")
+    public void setAndGetServiceVersion(BlobServiceVersion input, BlobServiceVersion expected) {
+        BlobServiceClient serviceClient = new BlobServiceClientBuilder()
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+            .serviceVersion(input)
+            .buildClient();
+
+        assertEquals(expected, serviceClient.getServiceVersion());
     }
 
     @Test
@@ -828,7 +846,7 @@ public class ServiceApiTests extends BlobTestBase {
         BlobServiceClient serviceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
             ENVIRONMENT.getPrimaryAccount().getBlobEndpointSecondary());
 
-        assertDoesNotThrow(serviceClient::getStatistics);
+        assertNotNull(serviceClient.getStatistics());
     }
 
     @Test
@@ -1094,7 +1112,8 @@ public class ServiceApiTests extends BlobTestBase {
         String containerName = generateContainerName();
         primaryBlobServiceClient.createBlobContainer(containerName);
 
-        assertDoesNotThrow(() -> primaryBlobServiceClient.deleteBlobContainer(containerName));
+        primaryBlobServiceClient.deleteBlobContainer(containerName);
+        assertFalse(primaryBlobServiceClient.getBlobContainerClient(containerName).exists());
     }
 
     @Test

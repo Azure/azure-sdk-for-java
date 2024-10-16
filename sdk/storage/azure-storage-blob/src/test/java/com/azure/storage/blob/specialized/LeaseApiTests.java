@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -424,11 +423,16 @@ public class LeaseApiTests extends BlobTestBase {
     @Test
     public void changeBlobLeaseSimple() {
         BlobClientBase bc = createBlobClient();
-        BlobLeaseClient leaseClient = createLeaseClient(bc, testResourceNamer.randomUuid());
+
+        String oldLease = testResourceNamer.randomUuid();
+        String newLease = testResourceNamer.randomUuid();
+
+        BlobLeaseClient leaseClient = createLeaseClient(bc, oldLease);
         leaseClient.acquireLease(15);
 
-        String newLeaseId = testResourceNamer.randomUuid();
-        assertDoesNotThrow(() -> leaseClient.changeLease(newLeaseId));
+        leaseClient.changeLease(newLease);
+
+        assertEquals(newLease, leaseClient.getLeaseId());
     }
 
     @Test
