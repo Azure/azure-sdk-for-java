@@ -3,39 +3,44 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.communication.callingserver.implementation.models.AddParticipantsRequestInternal;
+import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
+import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.IOException;
+import java.util.Objects;
+
 /** Options to configure the Recognize operation **/
-public class RecognizeOptions {
+public class RecognizeOptions implements JsonSerializable<RecognizeOptions> {
     /*
      * Determines the type of the recognition.
      */
-    @JsonProperty(value = "recognizeInputType", required = true)
     private RecognizeInputType recognizeInputType;
 
     /*
      * The source of the audio to be played for recognition.
      */
-    @JsonProperty(value = "playPrompt")
     private PlaySource playPrompt;
 
     /*
      * If set recognize can barge into other existing
      * queued-up/currently-processing requests.
      */
-    @JsonProperty(value = "stopCurrentOperations")
     private Boolean stopCurrentOperations;
 
     /*
      * Defines options for recognition.
      */
-    @JsonProperty(value = "recognizeConfiguration", required = true)
     private RecognizeConfigurations recognizeConfiguration;
 
     /*
      * The value to identify context of the operation.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /**
@@ -150,4 +155,49 @@ public class RecognizeOptions {
         return this;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("recognizeInputType", Objects.toString(recognizeInputType, null))
+            .writeJsonField("playPrompt", playPrompt)
+            .writeBooleanField("stopCurrentOperations", stopCurrentOperations)
+            .writeJsonField("recognizeConfiguration", recognizeConfiguration)
+            .writeStringField("operationContext", operationContext)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads an instance of {@link RecognizeOptions} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link RecognizeOptions}, or null if the {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static RecognizeOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecognizeOptions options = new RecognizeOptions();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recognizeInputType".equals(fieldName)) {
+                    options.recognizeInputType = RecognizeInputType.fromString(reader.getString());
+                } else if ("playPrompt".equals(fieldName)) {
+                    options.playPrompt = PlaySource.fromJson(reader);
+                } else if ("stopCurrentOperations".equals(fieldName)) {
+                    options.stopCurrentOperations = reader.getNullable(JsonReader::getBoolean);
+                } else if ("recognizeConfiguration".equals(fieldName)) {
+                    options.recognizeConfiguration = RecognizeConfigurations.fromJson(reader);
+                } else if ("operationContext".equals(fieldName)) {
+                    options.operationContext = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return options;
+        });
+    }
 }

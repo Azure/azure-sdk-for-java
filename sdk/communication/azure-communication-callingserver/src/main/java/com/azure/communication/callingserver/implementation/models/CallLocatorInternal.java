@@ -5,27 +5,30 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
+import java.util.Objects;
 
 /** The locator used for joining or taking action on a call. */
 @Fluent
-public final class CallLocatorInternal {
+public final class CallLocatorInternal implements JsonSerializable<CallLocatorInternal> {
     /*
      * The group call id
      */
-    @JsonProperty(value = "groupCallId")
     private String groupCallId;
 
     /*
      * The server call id.
      */
-    @JsonProperty(value = "serverCallId")
     private String serverCallId;
 
     /*
      * The call locator kind.
      */
-    @JsonProperty(value = "kind")
     private CallLocatorKindInternal kind;
 
     /**
@@ -86,5 +89,45 @@ public final class CallLocatorInternal {
     public CallLocatorInternal setKind(CallLocatorKindInternal kind) {
         this.kind = kind;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("groupCallId", groupCallId)
+            .writeStringField("serverCallId", serverCallId)
+            .writeStringField("kind", Objects.toString(kind, null))
+            .writeEndObject();
+    }
+
+    /**
+     * Reads an instance of {@link CallLocatorInternal} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link CallLocatorInternal}, or null if the {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static CallLocatorInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CallLocatorInternal callLocatorInternal = new CallLocatorInternal();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("groupCallId".equals(fieldName)) {
+                    callLocatorInternal.groupCallId = reader.getString();
+                } else if ("serverCallId".equals(fieldName)) {
+                    callLocatorInternal.serverCallId = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    callLocatorInternal.kind = CallLocatorKindInternal.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return callLocatorInternal;
+        });
     }
 }

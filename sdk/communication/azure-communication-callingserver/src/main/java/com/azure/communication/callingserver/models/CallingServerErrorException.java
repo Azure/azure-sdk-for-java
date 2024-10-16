@@ -50,21 +50,17 @@ public final class CallingServerErrorException extends HttpResponseException {
     }
 
     static {
-        ErrorConstructorProxy.setAccessor(
-            new ErrorConstructorProxy.ErrorConstructorAccessor() {
-                @Override
-                public CallingServerErrorException create(HttpResponseException internalHeaders) {
-                    CallingServerError error = null;
-                    if (internalHeaders.getValue() != null) {
-                        ObjectMapper objectMapper = new ObjectMapper();
-                        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-                        CommunicationErrorResponse communicationErrorResponse = objectMapper.convertValue(
-                            internalHeaders.getValue(), CommunicationErrorResponse.class);
-                        error = convert(communicationErrorResponse.getError());
-                    }
-                    return new CallingServerErrorException(internalHeaders.getMessage(), internalHeaders.getResponse(), error);
-                }
-            });
+        ErrorConstructorProxy.setAccessor(internalHeaders -> {
+            CallingServerError error = null;
+            if (internalHeaders.getValue() != null) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+                CommunicationErrorResponse communicationErrorResponse = objectMapper.convertValue(
+                    internalHeaders.getValue(), CommunicationErrorResponse.class);
+                error = convert(communicationErrorResponse.getError());
+            }
+            return new CallingServerErrorException(internalHeaders.getMessage(), internalHeaders.getResponse(), error);
+        });
     }
 
     /**
