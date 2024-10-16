@@ -2,6 +2,14 @@
 
 ## 2.9.0 (2024-10-15)
 
+### Features Added
+- Added the new system property `azure.keyvault.disable-challenge-resource-verification`, which can be set to `true` to disable challenge resource verification when authenticating against the Azure Key Vault service. For more information, please refer to [this link](https://devblogs.microsoft.com/azure-sdk/guidance-for-applications-using-the-key-vault-libraries/). ([#40560](https://github.com/Azure/azure-sdk-for-java/pull/40560))
+- Added support for obtaining a Managed Identity access token on a Container App, which is achieved by setting the system properties `IDENTITY_ENDPOINT` and `IDENTITY_HEADER`. For more information, [see here](https://learn.microsoft.com/azure/container-apps/managed-identity?tabs=portal%2Chttp#rest-endpoint-reference). ([#42024](https://github.com/Azure/azure-sdk-for-java/pull/42024)).
+
+### Bugs Fixed
+- Fix bug: `AccessTokenUtil` does not URL-encode its parameters when getting an access token. ([#40616](https://github.com/Azure/azure-sdk-for-java/issues/40616))
+- Changed the authentication mechanism to allow for discovering the login URI for a given Azure Key Vault instance by requesting an authentication challenge from the service, as opposed to using a hard-coded list of URIs to choose from depending on a vault's URI. This should add support for customers using Azure Stack instances, for example.
+
 ### Other Changes
 
 #### Dependency Updates
