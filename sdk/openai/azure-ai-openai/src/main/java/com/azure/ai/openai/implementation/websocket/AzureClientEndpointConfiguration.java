@@ -7,13 +7,12 @@ import com.azure.core.http.HttpHeaderName;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.HttpHeaders;
 
-import java.net.URI;
 import java.util.UUID;
 
 public class AzureClientEndpointConfiguration  extends ClientEndpointConfiguration {
 
     // Path
-    private final String path = "/openai/realtime";
+    private static final String PATH = "/openai/realtime";
 
     // Query parameters
     private final OpenAIServiceVersion serviceVersion;
@@ -52,7 +51,7 @@ public class AzureClientEndpointConfiguration  extends ClientEndpointConfigurati
 
     @Override
     protected String getURIString() {
-        return baseUrl + path + "?deployment=" + deployment + "&version=" + serviceVersion.getVersion();
+        return baseUrl + PATH + "?deployment=" + deployment + "&version=" + serviceVersion.getVersion();
     }
 
 }

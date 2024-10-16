@@ -8,14 +8,14 @@ import io.netty.handler.codec.http.HttpHeaders;
 public class NonAzureClientEndpointConfiguration extends ClientEndpointConfiguration {
 
     // Path
-    private final String path = "/v1/realtime";
+    private static final String PATH = "/v1/realtime";
 
     // Query parameters
     private final String model;
 
     // Headers
     private final KeyCredential keyCredential;
-    private final String openaiBeta = "realtime=v1";
+    private static final String OPENAI_BETA = "realtime=v1";
 
     public NonAzureClientEndpointConfiguration(String baseUrl, String userAgent, String model, KeyCredential keyCredential) {
         super(baseUrl, userAgent);
@@ -27,12 +27,12 @@ public class NonAzureClientEndpointConfiguration extends ClientEndpointConfigura
     public HttpHeaders getHeaders() {
         HttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HttpHeaderName.AUTHORIZATION.getCaseInsensitiveName(), "Bearer " + keyCredential.getKey());
-        headers.add("openai-beta", openaiBeta);
+        headers.add("openai-beta", OPENAI_BETA);
         return headers;
     }
 
     @Override
     protected String getURIString() {
-        return baseUrl + path + "?model=" + model;
+        return baseUrl + PATH + "?model=" + model;
     }
 }
