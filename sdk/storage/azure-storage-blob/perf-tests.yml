@@ -58,4 +58,5 @@ Tests:
 
 - Test: get-properties
   Class: getproperties
-  Arguments: --parallel 64 --duration 30
+  Arguments:
+  - --parallel 64 --duration 30
