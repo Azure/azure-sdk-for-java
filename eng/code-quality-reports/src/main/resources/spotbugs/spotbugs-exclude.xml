@@ -2147,12 +2147,5 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
-  <!-- Return poll status as failed instead of throwing any exception -->
-  <Match>
-    <Class name="com.azure.storage.blob.specialized.BlobClientBase"/>
-    <Method name="onPoll"/>
-    <Bug pattern="REC_CATCH_EXCEPTION"/>
-  </Match>
-
   <!-- Comment to force CI to run Spotbugs against all SDKs -->
 </FindBugsFilter>
