@@ -660,8 +660,8 @@ public class ServiceApiTests extends BlobTestBase {
 
     private static Stream<Arguments> setAndGetServiceVersionSupplier() {
         return Stream.of(
-            Arguments.of(BlobServiceVersion.V2020_02_10, BlobServiceVersion.V2020_02_10)//,
-            //Arguments.of(null, BlobServiceVersion.getLatest())
+            Arguments.of(BlobServiceVersion.V2020_02_10, BlobServiceVersion.V2020_02_10),
+            Arguments.of(null, BlobServiceVersion.getLatest())
         );
     }
 
@@ -877,7 +877,7 @@ public class ServiceApiTests extends BlobTestBase {
 
     @Test
     public void getAccountInfoSimple() {
-        assertDoesNotThrow(() -> primaryBlobServiceClient.getAccountInfo());
+        assertNotNull(primaryBlobServiceClient.getAccountInfo());
     }
 
     // This test validates a fix for a bug that caused NPE to be thrown when the account did not exist.
