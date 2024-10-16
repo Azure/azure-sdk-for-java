@@ -119,8 +119,8 @@ public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<Az
             if (options == null) {
                 options = new HttpLogOptions();
             }
-            options.addAllowedHttpHeaderName(IdentityUtil.X_VSS_E2EID);
-            options.addAllowedHttpHeaderName(IdentityUtil.X_MSEDGE_REF);
+            options.addAllowedHeaderName("x-vss-e2eid");
+            options.addAllowedHeaderName("x-msedge-ref");
             identityClientOptions.setHttpLogOptions(options);
         }
         return new AzurePipelinesCredential(clientId, tenantId, requestUrl, systemAccessToken, identityClientOptions.clone());
