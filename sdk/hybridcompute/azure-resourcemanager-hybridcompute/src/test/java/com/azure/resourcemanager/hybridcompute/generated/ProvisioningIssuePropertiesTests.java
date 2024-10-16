@@ -11,7 +11,7 @@ public final class ProvisioningIssuePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProvisioningIssueProperties model = BinaryData.fromString(
-            "{\"issueType\":\"MissingIdentityConfiguration\",\"severity\":\"Warning\",\"description\":\"gkxnyedabg\",\"suggestedResourceIds\":[\"dtj\",\"ewbcihxuuw\",\"c\"],\"suggestedAccessRules\":[{\"name\":\"cybvpayakkudzpxg\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"gstcyohpf\"]}},{\"name\":\"rkdbdgiogsjkmnwq\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"yhddvia\",\"egfnmntfpmvmemfn\"]}}]}")
+            "{\"issueType\":\"MissingPerimeterConfiguration\",\"severity\":\"Warning\",\"description\":\"nb\",\"suggestedResourceIds\":[\"xgibbda\",\"confozauors\"],\"suggestedAccessRules\":[{\"name\":\"wbqpl\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"epzl\",\"phwzsoldweyuqdu\"]}},{\"name\":\"mnnrwr\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"alywjhhgdn\",\"xmsivfomiloxggdu\",\"iqndieuzaofj\",\"hvcyyysfg\"]}}]}")
             .toObject(ProvisioningIssueProperties.class);
     }
 

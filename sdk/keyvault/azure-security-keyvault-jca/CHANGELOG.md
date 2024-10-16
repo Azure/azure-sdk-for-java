@@ -5,6 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
+- Removed `isChallengeResourceVerificationDisabled()` from `KeyVaultLoadStoreParameter`.
 
 ### Bugs Fixed
 - Fixed bug about intermediate certificate not loaded. [#39715](https://github.com/Azure/azure-sdk-for-java/issues/39715).

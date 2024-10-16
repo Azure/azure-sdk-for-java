@@ -13,48 +13,30 @@ import com.azure.resourcemanager.botservice.fluent.models.BotChannelInner;
 import com.azure.resourcemanager.botservice.fluent.models.ListChannelWithKeysResponseInner;
 import com.azure.resourcemanager.botservice.models.ChannelName;
 
-/** An instance of this class provides access to all the operations defined in ChannelsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ChannelsClient.
+ */
 public interface ChannelsClient {
     /**
      * Creates a Channel registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param channelName The name of the Channel resource.
      * @param parameters The parameters to provide for the created bot.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot channel resource definition.
+     * @return bot channel resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BotChannelInner create(
-        String resourceGroupName, String resourceName, ChannelName channelName, BotChannelInner parameters);
+    Response<BotChannelInner> createWithResponse(String resourceGroupName, String resourceName, ChannelName channelName,
+        BotChannelInner parameters, Context context);
 
     /**
      * Creates a Channel registration for a Bot Service.
-     *
-     * @param resourceGroupName The name of the Bot resource group in the user subscription.
-     * @param resourceName The name of the Bot resource.
-     * @param channelName The name of the Channel resource.
-     * @param parameters The parameters to provide for the created bot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot channel resource definition along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BotChannelInner> createWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ChannelName channelName,
-        BotChannelInner parameters,
-        Context context);
-
-    /**
-     * Updates a Channel registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param channelName The name of the Channel resource.
@@ -65,12 +47,12 @@ public interface ChannelsClient {
      * @return bot channel resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BotChannelInner update(
-        String resourceGroupName, String resourceName, ChannelName channelName, BotChannelInner parameters);
+    BotChannelInner create(String resourceGroupName, String resourceName, ChannelName channelName,
+        BotChannelInner parameters);
 
     /**
      * Updates a Channel registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param channelName The name of the Channel resource.
@@ -82,16 +64,44 @@ public interface ChannelsClient {
      * @return bot channel resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BotChannelInner> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ChannelName channelName,
-        BotChannelInner parameters,
+    Response<BotChannelInner> updateWithResponse(String resourceGroupName, String resourceName, ChannelName channelName,
+        BotChannelInner parameters, Context context);
+
+    /**
+     * Updates a Channel registration for a Bot Service.
+     * 
+     * @param resourceGroupName The name of the Bot resource group in the user subscription.
+     * @param resourceName The name of the Bot resource.
+     * @param channelName The name of the Channel resource.
+     * @param parameters The parameters to provide for the created bot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bot channel resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BotChannelInner update(String resourceGroupName, String resourceName, ChannelName channelName,
+        BotChannelInner parameters);
+
+    /**
+     * Deletes a Channel registration from a Bot Service.
+     * 
+     * @param resourceGroupName The name of the Bot resource group in the user subscription.
+     * @param resourceName The name of the Bot resource.
+     * @param channelName The name of the Bot resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String channelName,
         Context context);
 
     /**
      * Deletes a Channel registration from a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param channelName The name of the Bot resource.
@@ -103,8 +113,8 @@ public interface ChannelsClient {
     void delete(String resourceGroupName, String resourceName, String channelName);
 
     /**
-     * Deletes a Channel registration from a Bot Service.
-     *
+     * Returns a BotService Channel registration specified by the parameters.
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param channelName The name of the Bot resource.
@@ -112,15 +122,15 @@ public interface ChannelsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return bot channel resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String channelName, Context context);
+    Response<BotChannelInner> getWithResponse(String resourceGroupName, String resourceName, String channelName,
+        Context context);
 
     /**
      * Returns a BotService Channel registration specified by the parameters.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param channelName The name of the Bot resource.
@@ -133,39 +143,8 @@ public interface ChannelsClient {
     BotChannelInner get(String resourceGroupName, String resourceName, String channelName);
 
     /**
-     * Returns a BotService Channel registration specified by the parameters.
-     *
-     * @param resourceGroupName The name of the Bot resource group in the user subscription.
-     * @param resourceName The name of the Bot resource.
-     * @param channelName The name of the Bot resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot channel resource definition along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BotChannelInner> getWithResponse(
-        String resourceGroupName, String resourceName, String channelName, Context context);
-
-    /**
      * Lists a Channel registration for a Bot Service including secrets.
-     *
-     * @param resourceGroupName The name of the Bot resource group in the user subscription.
-     * @param resourceName The name of the Bot resource.
-     * @param channelName The name of the Channel resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ARM channel of list channel with keys operation response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ListChannelWithKeysResponseInner listWithKeys(
-        String resourceGroupName, String resourceName, ChannelName channelName);
-
-    /**
-     * Lists a Channel registration for a Bot Service including secrets.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param channelName The name of the Channel resource.
@@ -176,12 +155,27 @@ public interface ChannelsClient {
      * @return the ARM channel of list channel with keys operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ListChannelWithKeysResponseInner> listWithKeysWithResponse(
-        String resourceGroupName, String resourceName, ChannelName channelName, Context context);
+    Response<ListChannelWithKeysResponseInner> listWithKeysWithResponse(String resourceGroupName, String resourceName,
+        ChannelName channelName, Context context);
+
+    /**
+     * Lists a Channel registration for a Bot Service including secrets.
+     * 
+     * @param resourceGroupName The name of the Bot resource group in the user subscription.
+     * @param resourceName The name of the Bot resource.
+     * @param channelName The name of the Channel resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ARM channel of list channel with keys operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ListChannelWithKeysResponseInner listWithKeys(String resourceGroupName, String resourceName,
+        ChannelName channelName);
 
     /**
      * Returns all the Channel registrations of a particular BotService resource.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -194,7 +188,7 @@ public interface ChannelsClient {
 
     /**
      * Returns all the Channel registrations of a particular BotService resource.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param context The context to associate with this operation.

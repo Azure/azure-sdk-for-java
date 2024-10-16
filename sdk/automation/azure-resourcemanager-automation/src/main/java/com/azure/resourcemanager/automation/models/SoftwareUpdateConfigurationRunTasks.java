@@ -5,26 +5,37 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Software update configuration run tasks model. */
+/**
+ * Software update configuration run tasks model.
+ */
 @Fluent
-public final class SoftwareUpdateConfigurationRunTasks {
+public final class SoftwareUpdateConfigurationRunTasks
+    implements JsonSerializable<SoftwareUpdateConfigurationRunTasks> {
     /*
      * Pre task properties.
      */
-    @JsonProperty(value = "preTask")
     private SoftwareUpdateConfigurationRunTaskProperties preTask;
 
     /*
      * Post task properties.
      */
-    @JsonProperty(value = "postTask")
     private SoftwareUpdateConfigurationRunTaskProperties postTask;
 
     /**
+     * Creates an instance of SoftwareUpdateConfigurationRunTasks class.
+     */
+    public SoftwareUpdateConfigurationRunTasks() {
+    }
+
+    /**
      * Get the preTask property: Pre task properties.
-     *
+     * 
      * @return the preTask value.
      */
     public SoftwareUpdateConfigurationRunTaskProperties preTask() {
@@ -33,7 +44,7 @@ public final class SoftwareUpdateConfigurationRunTasks {
 
     /**
      * Set the preTask property: Pre task properties.
-     *
+     * 
      * @param preTask the preTask value to set.
      * @return the SoftwareUpdateConfigurationRunTasks object itself.
      */
@@ -44,7 +55,7 @@ public final class SoftwareUpdateConfigurationRunTasks {
 
     /**
      * Get the postTask property: Post task properties.
-     *
+     * 
      * @return the postTask value.
      */
     public SoftwareUpdateConfigurationRunTaskProperties postTask() {
@@ -53,7 +64,7 @@ public final class SoftwareUpdateConfigurationRunTasks {
 
     /**
      * Set the postTask property: Post task properties.
-     *
+     * 
      * @param postTask the postTask value to set.
      * @return the SoftwareUpdateConfigurationRunTasks object itself.
      */
@@ -64,7 +75,7 @@ public final class SoftwareUpdateConfigurationRunTasks {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -74,5 +85,47 @@ public final class SoftwareUpdateConfigurationRunTasks {
         if (postTask() != null) {
             postTask().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("preTask", this.preTask);
+        jsonWriter.writeJsonField("postTask", this.postTask);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SoftwareUpdateConfigurationRunTasks from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SoftwareUpdateConfigurationRunTasks if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SoftwareUpdateConfigurationRunTasks.
+     */
+    public static SoftwareUpdateConfigurationRunTasks fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SoftwareUpdateConfigurationRunTasks deserializedSoftwareUpdateConfigurationRunTasks
+                = new SoftwareUpdateConfigurationRunTasks();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("preTask".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationRunTasks.preTask
+                        = SoftwareUpdateConfigurationRunTaskProperties.fromJson(reader);
+                } else if ("postTask".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationRunTasks.postTask
+                        = SoftwareUpdateConfigurationRunTaskProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSoftwareUpdateConfigurationRunTasks;
+        });
     }
 }

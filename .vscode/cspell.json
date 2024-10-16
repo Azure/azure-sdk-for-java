@@ -593,6 +593,14 @@
       ]
     },
     {
+      "filename": "sdk/healthinsights/azure-health-insights-radiologyinsights/**",
+      "words": [
+        "pericholecystic",
+        "craniocaudally",
+        "angiomyolipomas"
+      ]
+    },
+    {
       "filename": "sdk/easm/*",
       "words": [
         "easm",

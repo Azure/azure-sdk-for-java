@@ -19,6 +19,56 @@ import com.azure.resourcemanager.hybridcompute.models.LicenseUpdate;
  */
 public interface LicensesClient {
     /**
+     * The operation to validate a license.
+     * 
+     * @param parameters Parameters supplied to the license validation operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of describes a license in a hybrid machine.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LicenseInner>, LicenseInner> beginValidateLicense(LicenseInner parameters);
+
+    /**
+     * The operation to validate a license.
+     * 
+     * @param parameters Parameters supplied to the license validation operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of describes a license in a hybrid machine.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LicenseInner>, LicenseInner> beginValidateLicense(LicenseInner parameters, Context context);
+
+    /**
+     * The operation to validate a license.
+     * 
+     * @param parameters Parameters supplied to the license validation operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a license in a hybrid machine.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LicenseInner validateLicense(LicenseInner parameters);
+
+    /**
+     * The operation to validate a license.
+     * 
+     * @param parameters Parameters supplied to the license validation operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a license in a hybrid machine.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LicenseInner validateLicense(LicenseInner parameters, Context context);
+
+    /**
      * The operation to create or update a license.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.

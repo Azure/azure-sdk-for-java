@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.iotcentral.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Apps List. */
+/**
+ * Samples for Apps List.
+ */
 public final class AppsListSamples {
     /*
-     * x-ms-original-file: specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/Apps_ListBySubscription.json
+     * x-ms-original-file:
+     * specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/
+     * Apps_ListBySubscription.json
      */
     /**
      * Sample code: Apps_ListBySubscription.
-     *
+     * 
      * @param manager Entry point to IotCentralManager.
      */
     public static void appsListBySubscription(com.azure.resourcemanager.iotcentral.IotCentralManager manager) {
-        manager.apps().list(Context.NONE);
+        manager.apps().list(com.azure.core.util.Context.NONE);
     }
 }

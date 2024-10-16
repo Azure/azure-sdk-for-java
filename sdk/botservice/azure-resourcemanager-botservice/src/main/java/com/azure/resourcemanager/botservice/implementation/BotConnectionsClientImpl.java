@@ -36,22 +36,28 @@ import com.azure.resourcemanager.botservice.fluent.models.ServiceProviderRespons
 import com.azure.resourcemanager.botservice.models.ConnectionSettingResponseList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BotConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BotConnectionsClient.
+ */
 public final class BotConnectionsClientImpl implements BotConnectionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BotConnectionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureBotServiceImpl client;
 
     /**
      * Initializes an instance of BotConnectionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BotConnectionsClientImpl(AzureBotServiceImpl client) {
-        this.service =
-            RestProxy.create(BotConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(BotConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -61,200 +67,136 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureBotServiceBotCo")
-    private interface BotConnectionsService {
-        @Headers({"Content-Type: application/json"})
+    public interface BotConnectionsService {
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.BotService/listAuthServiceProviders")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServiceProviderResponseListInner>> listServiceProviders(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<ServiceProviderResponseListInner>> listServiceProviders(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/connections/{connectionName}/listWithSecrets")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ConnectionSettingInner>> listWithSecrets(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @PathParam("connectionName") String connectionName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/connections/{connectionName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ConnectionSettingInner>> create(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @PathParam("connectionName") String connectionName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ConnectionSettingInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService"
-                + "/botServices/{resourceName}/connections/{connectionName}/listWithSecrets")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/connections/{connectionName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConnectionSettingInner>> listWithSecrets(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("connectionName") String connectionName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<ConnectionSettingInner>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @PathParam("connectionName") String connectionName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ConnectionSettingInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService"
-                + "/botServices/{resourceName}/connections/{connectionName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/connections/{connectionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConnectionSettingInner>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("connectionName") String connectionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ConnectionSettingInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ConnectionSettingInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @PathParam("connectionName") String connectionName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService"
-                + "/botServices/{resourceName}/connections/{connectionName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/connections/{connectionName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConnectionSettingInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("connectionName") String connectionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ConnectionSettingInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @PathParam("connectionName") String connectionName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService"
-                + "/botServices/{resourceName}/connections/{connectionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/connections")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConnectionSettingInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("connectionName") String connectionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ConnectionSettingResponseList>> listByBotService(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService"
-                + "/botServices/{resourceName}/connections/{connectionName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("connectionName") String connectionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService"
-                + "/botServices/{resourceName}/connections")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConnectionSettingResponseList>> listByBotService(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConnectionSettingResponseList>> listByBotServiceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists the available Service Providers for creating Connection Settings.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service providers response along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the list of bot service providers response along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServiceProviderResponseListInner>> listServiceProvidersWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listServiceProviders(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.listServiceProviders(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the available Service Providers for creating Connection Settings.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service providers response along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the list of bot service providers response along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServiceProviderResponseListInner>> listServiceProvidersWithResponseAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listServiceProviders(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.listServiceProviders(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Lists the available Service Providers for creating Connection Settings.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of bot service providers response on successful completion of {@link Mono}.
@@ -266,19 +208,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
 
     /**
      * Lists the available Service Providers for creating Connection Settings.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service providers response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceProviderResponseListInner listServiceProviders() {
-        return listServiceProvidersAsync().block();
-    }
-
-    /**
-     * Lists the available Service Providers for creating Connection Settings.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -291,8 +221,20 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
     }
 
     /**
+     * Lists the available Service Providers for creating Connection Settings.
+     * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of bot service providers response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ServiceProviderResponseListInner listServiceProviders() {
+        return listServiceProvidersWithResponse(Context.NONE).getValue();
+    }
+
+    /**
      * Get a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -300,16 +242,14 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Connection Setting registration for a Bot Service along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConnectionSettingInner>> listWithSecretsWithResponseAsync(
-        String resourceGroupName, String resourceName, String connectionName) {
+    private Mono<Response<ConnectionSettingInner>> listWithSecretsWithResponseAsync(String resourceGroupName,
+        String resourceName, String connectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -322,31 +262,19 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listWithSecrets(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            resourceName,
-                            connectionName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.listWithSecrets(this.client.getEndpoint(), resourceGroupName, resourceName,
+                connectionName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -355,16 +283,14 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Connection Setting registration for a Bot Service along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConnectionSettingInner>> listWithSecretsWithResponseAsync(
-        String resourceGroupName, String resourceName, String connectionName, Context context) {
+    private Mono<Response<ConnectionSettingInner>> listWithSecretsWithResponseAsync(String resourceGroupName,
+        String resourceName, String connectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -377,28 +303,18 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listWithSecrets(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                resourceName,
-                connectionName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.listWithSecrets(this.client.getEndpoint(), resourceGroupName, resourceName, connectionName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Get a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -408,32 +324,15 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @return a Connection Setting registration for a Bot Service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConnectionSettingInner> listWithSecretsAsync(
-        String resourceGroupName, String resourceName, String connectionName) {
+    private Mono<ConnectionSettingInner> listWithSecretsAsync(String resourceGroupName, String resourceName,
+        String connectionName) {
         return listWithSecretsWithResponseAsync(resourceGroupName, resourceName, connectionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a Connection Setting registration for a Bot Service.
-     *
-     * @param resourceGroupName The name of the Bot resource group in the user subscription.
-     * @param resourceName The name of the Bot resource.
-     * @param connectionName The name of the Bot Service Connection Setting resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Connection Setting registration for a Bot Service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectionSettingInner listWithSecrets(
-        String resourceGroupName, String resourceName, String connectionName) {
-        return listWithSecretsAsync(resourceGroupName, resourceName, connectionName).block();
-    }
-
-    /**
-     * Get a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -444,14 +343,31 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @return a Connection Setting registration for a Bot Service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConnectionSettingInner> listWithSecretsWithResponse(
-        String resourceGroupName, String resourceName, String connectionName, Context context) {
+    public Response<ConnectionSettingInner> listWithSecretsWithResponse(String resourceGroupName, String resourceName,
+        String connectionName, Context context) {
         return listWithSecretsWithResponseAsync(resourceGroupName, resourceName, connectionName, context).block();
     }
 
     /**
+     * Get a Connection Setting registration for a Bot Service.
+     * 
+     * @param resourceGroupName The name of the Bot resource group in the user subscription.
+     * @param resourceName The name of the Bot resource.
+     * @param connectionName The name of the Bot Service Connection Setting resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Connection Setting registration for a Bot Service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectionSettingInner listWithSecrets(String resourceGroupName, String resourceName,
+        String connectionName) {
+        return listWithSecretsWithResponse(resourceGroupName, resourceName, connectionName, Context.NONE).getValue();
+    }
+
+    /**
      * Register a new Auth Connection for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -462,13 +378,11 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @return bot channel resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConnectionSettingInner>> createWithResponseAsync(
-        String resourceGroupName, String resourceName, String connectionName, ConnectionSettingInner parameters) {
+    private Mono<Response<ConnectionSettingInner>> createWithResponseAsync(String resourceGroupName,
+        String resourceName, String connectionName, ConnectionSettingInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -481,10 +395,8 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -494,24 +406,14 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            resourceName,
-                            connectionName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.create(this.client.getEndpoint(), resourceGroupName, resourceName, connectionName,
+                    this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Register a new Auth Connection for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -523,17 +425,11 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @return bot channel resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConnectionSettingInner>> createWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String connectionName,
-        ConnectionSettingInner parameters,
-        Context context) {
+    private Mono<Response<ConnectionSettingInner>> createWithResponseAsync(String resourceGroupName,
+        String resourceName, String connectionName, ConnectionSettingInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -546,10 +442,8 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -558,22 +452,13 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                resourceName,
-                connectionName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), resourceGroupName, resourceName, connectionName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Register a new Auth Connection for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -584,33 +469,15 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @return bot channel resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConnectionSettingInner> createAsync(
-        String resourceGroupName, String resourceName, String connectionName, ConnectionSettingInner parameters) {
+    private Mono<ConnectionSettingInner> createAsync(String resourceGroupName, String resourceName,
+        String connectionName, ConnectionSettingInner parameters) {
         return createWithResponseAsync(resourceGroupName, resourceName, connectionName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Register a new Auth Connection for a Bot Service.
-     *
-     * @param resourceGroupName The name of the Bot resource group in the user subscription.
-     * @param resourceName The name of the Bot resource.
-     * @param connectionName The name of the Bot Service Connection Setting resource.
-     * @param parameters The parameters to provide for creating the Connection Setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot channel resource definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectionSettingInner create(
-        String resourceGroupName, String resourceName, String connectionName, ConnectionSettingInner parameters) {
-        return createAsync(resourceGroupName, resourceName, connectionName, parameters).block();
-    }
-
-    /**
-     * Register a new Auth Connection for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -622,18 +489,32 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @return bot channel resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConnectionSettingInner> createWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String connectionName,
-        ConnectionSettingInner parameters,
-        Context context) {
+    public Response<ConnectionSettingInner> createWithResponse(String resourceGroupName, String resourceName,
+        String connectionName, ConnectionSettingInner parameters, Context context) {
         return createWithResponseAsync(resourceGroupName, resourceName, connectionName, parameters, context).block();
     }
 
     /**
+     * Register a new Auth Connection for a Bot Service.
+     * 
+     * @param resourceGroupName The name of the Bot resource group in the user subscription.
+     * @param resourceName The name of the Bot resource.
+     * @param connectionName The name of the Bot Service Connection Setting resource.
+     * @param parameters The parameters to provide for creating the Connection Setting.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bot channel resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectionSettingInner create(String resourceGroupName, String resourceName, String connectionName,
+        ConnectionSettingInner parameters) {
+        return createWithResponse(resourceGroupName, resourceName, connectionName, parameters, Context.NONE).getValue();
+    }
+
+    /**
      * Updates a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -644,13 +525,11 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @return bot channel resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConnectionSettingInner>> updateWithResponseAsync(
-        String resourceGroupName, String resourceName, String connectionName, ConnectionSettingInner parameters) {
+    private Mono<Response<ConnectionSettingInner>> updateWithResponseAsync(String resourceGroupName,
+        String resourceName, String connectionName, ConnectionSettingInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -663,10 +542,8 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -676,24 +553,14 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            resourceName,
-                            connectionName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), resourceGroupName, resourceName, connectionName,
+                    this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -705,17 +572,11 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @return bot channel resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConnectionSettingInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String connectionName,
-        ConnectionSettingInner parameters,
-        Context context) {
+    private Mono<Response<ConnectionSettingInner>> updateWithResponseAsync(String resourceGroupName,
+        String resourceName, String connectionName, ConnectionSettingInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -728,10 +589,8 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -740,22 +599,13 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                resourceName,
-                connectionName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, resourceName, connectionName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Updates a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -766,33 +616,15 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @return bot channel resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConnectionSettingInner> updateAsync(
-        String resourceGroupName, String resourceName, String connectionName, ConnectionSettingInner parameters) {
+    private Mono<ConnectionSettingInner> updateAsync(String resourceGroupName, String resourceName,
+        String connectionName, ConnectionSettingInner parameters) {
         return updateWithResponseAsync(resourceGroupName, resourceName, connectionName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates a Connection Setting registration for a Bot Service.
-     *
-     * @param resourceGroupName The name of the Bot resource group in the user subscription.
-     * @param resourceName The name of the Bot resource.
-     * @param connectionName The name of the Bot Service Connection Setting resource.
-     * @param parameters The parameters to provide for updating the Connection Setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot channel resource definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectionSettingInner update(
-        String resourceGroupName, String resourceName, String connectionName, ConnectionSettingInner parameters) {
-        return updateAsync(resourceGroupName, resourceName, connectionName, parameters).block();
-    }
-
-    /**
-     * Updates a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -804,18 +636,32 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @return bot channel resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConnectionSettingInner> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String connectionName,
-        ConnectionSettingInner parameters,
-        Context context) {
+    public Response<ConnectionSettingInner> updateWithResponse(String resourceGroupName, String resourceName,
+        String connectionName, ConnectionSettingInner parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, resourceName, connectionName, parameters, context).block();
     }
 
     /**
+     * Updates a Connection Setting registration for a Bot Service.
+     * 
+     * @param resourceGroupName The name of the Bot resource group in the user subscription.
+     * @param resourceName The name of the Bot resource.
+     * @param connectionName The name of the Bot Service Connection Setting resource.
+     * @param parameters The parameters to provide for updating the Connection Setting.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bot channel resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectionSettingInner update(String resourceGroupName, String resourceName, String connectionName,
+        ConnectionSettingInner parameters) {
+        return updateWithResponse(resourceGroupName, resourceName, connectionName, parameters, Context.NONE).getValue();
+    }
+
+    /**
      * Get a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -823,16 +669,14 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Connection Setting registration for a Bot Service along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConnectionSettingInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String connectionName) {
+    private Mono<Response<ConnectionSettingInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
+        String connectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -845,31 +689,19 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            resourceName,
-                            connectionName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, resourceName,
+                connectionName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -878,16 +710,14 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Connection Setting registration for a Bot Service along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConnectionSettingInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String connectionName, Context context) {
+    private Mono<Response<ConnectionSettingInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
+        String connectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -900,28 +730,18 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                resourceName,
-                connectionName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, resourceName, connectionName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Get a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -931,15 +751,33 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @return a Connection Setting registration for a Bot Service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConnectionSettingInner> getAsync(
-        String resourceGroupName, String resourceName, String connectionName) {
+    private Mono<ConnectionSettingInner> getAsync(String resourceGroupName, String resourceName,
+        String connectionName) {
         return getWithResponseAsync(resourceGroupName, resourceName, connectionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a Connection Setting registration for a Bot Service.
-     *
+     * 
+     * @param resourceGroupName The name of the Bot resource group in the user subscription.
+     * @param resourceName The name of the Bot resource.
+     * @param connectionName The name of the Bot Service Connection Setting resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Connection Setting registration for a Bot Service along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ConnectionSettingInner> getWithResponse(String resourceGroupName, String resourceName,
+        String connectionName, Context context) {
+        return getWithResponseAsync(resourceGroupName, resourceName, connectionName, context).block();
+    }
+
+    /**
+     * Get a Connection Setting registration for a Bot Service.
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -950,30 +788,12 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionSettingInner get(String resourceGroupName, String resourceName, String connectionName) {
-        return getAsync(resourceGroupName, resourceName, connectionName).block();
-    }
-
-    /**
-     * Get a Connection Setting registration for a Bot Service.
-     *
-     * @param resourceGroupName The name of the Bot resource group in the user subscription.
-     * @param resourceName The name of the Bot resource.
-     * @param connectionName The name of the Bot Service Connection Setting resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Connection Setting registration for a Bot Service along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConnectionSettingInner> getWithResponse(
-        String resourceGroupName, String resourceName, String connectionName, Context context) {
-        return getWithResponseAsync(resourceGroupName, resourceName, connectionName, context).block();
+        return getWithResponse(resourceGroupName, resourceName, connectionName, Context.NONE).getValue();
     }
 
     /**
      * Deletes a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -983,13 +803,11 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String connectionName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        String connectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1002,31 +820,19 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            resourceName,
-                            connectionName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, resourceName,
+                connectionName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -1037,13 +843,11 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String connectionName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        String connectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1056,28 +860,18 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                resourceName,
-                connectionName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, resourceName, connectionName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Deletes a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -1094,22 +888,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
 
     /**
      * Deletes a Connection Setting registration for a Bot Service.
-     *
-     * @param resourceGroupName The name of the Bot resource group in the user subscription.
-     * @param resourceName The name of the Bot resource.
-     * @param connectionName The name of the Bot Service Connection Setting resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String resourceName, String connectionName) {
-        deleteAsync(resourceGroupName, resourceName, connectionName).block();
-    }
-
-    /**
-     * Deletes a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -1120,30 +899,43 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String connectionName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String connectionName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, connectionName, context).block();
     }
 
     /**
+     * Deletes a Connection Setting registration for a Bot Service.
+     * 
+     * @param resourceGroupName The name of the Bot resource group in the user subscription.
+     * @param resourceName The name of the Bot resource.
+     * @param connectionName The name of the Bot Service Connection Setting resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String resourceName, String connectionName) {
+        deleteWithResponse(resourceGroupName, resourceName, connectionName, Context.NONE);
+    }
+
+    /**
      * Returns all the Connection Settings registered to a particular BotService resource.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of bot service connection settings response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConnectionSettingInner>> listByBotServiceSinglePageAsync(
-        String resourceGroupName, String resourceName) {
+    private Mono<PagedResponse<ConnectionSettingInner>> listByBotServiceSinglePageAsync(String resourceGroupName,
+        String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1153,39 +945,21 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByBotService(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            resourceName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ConnectionSettingInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByBotService(this.client.getEndpoint(), resourceGroupName, resourceName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ConnectionSettingInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns all the Connection Settings registered to a particular BotService resource.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param context The context to associate with this operation.
@@ -1193,16 +967,14 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of bot service connection settings response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConnectionSettingInner>> listByBotServiceSinglePageAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<PagedResponse<ConnectionSettingInner>> listByBotServiceSinglePageAsync(String resourceGroupName,
+        String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1212,36 +984,21 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByBotService(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                resourceName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByBotService(this.client.getEndpoint(), resourceGroupName, resourceName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Returns all the Connection Settings registered to a particular BotService resource.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1251,14 +1008,13 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConnectionSettingInner> listByBotServiceAsync(String resourceGroupName, String resourceName) {
-        return new PagedFlux<>(
-            () -> listByBotServiceSinglePageAsync(resourceGroupName, resourceName),
+        return new PagedFlux<>(() -> listByBotServiceSinglePageAsync(resourceGroupName, resourceName),
             nextLink -> listByBotServiceNextSinglePageAsync(nextLink));
     }
 
     /**
      * Returns all the Connection Settings registered to a particular BotService resource.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param context The context to associate with this operation.
@@ -1268,16 +1024,15 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @return the list of bot service connection settings response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ConnectionSettingInner> listByBotServiceAsync(
-        String resourceGroupName, String resourceName, Context context) {
-        return new PagedFlux<>(
-            () -> listByBotServiceSinglePageAsync(resourceGroupName, resourceName, context),
+    private PagedFlux<ConnectionSettingInner> listByBotServiceAsync(String resourceGroupName, String resourceName,
+        Context context) {
+        return new PagedFlux<>(() -> listByBotServiceSinglePageAsync(resourceGroupName, resourceName, context),
             nextLink -> listByBotServiceNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Returns all the Connection Settings registered to a particular BotService resource.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1292,7 +1047,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
 
     /**
      * Returns all the Connection Settings registered to a particular BotService resource.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param context The context to associate with this operation.
@@ -1302,20 +1057,20 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @return the list of bot service connection settings response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConnectionSettingInner> listByBotService(
-        String resourceGroupName, String resourceName, Context context) {
+    public PagedIterable<ConnectionSettingInner> listByBotService(String resourceGroupName, String resourceName,
+        Context context) {
         return new PagedIterable<>(listByBotServiceAsync(resourceGroupName, resourceName, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of bot service connection settings response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectionSettingInner>> listByBotServiceNextSinglePageAsync(String nextLink) {
@@ -1323,61 +1078,42 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByBotServiceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ConnectionSettingInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ConnectionSettingInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of bot service connection settings response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConnectionSettingInner>> listByBotServiceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ConnectionSettingInner>> listByBotServiceNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByBotServiceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByBotServiceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

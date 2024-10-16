@@ -5,26 +5,28 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Follow-up recommendation options.
  */
 @Fluent
-public final class FollowupRecommendationOptions {
+public final class FollowupRecommendationOptions implements JsonSerializable<FollowupRecommendationOptions> {
 
     /*
      * Include/Exclude follow-up recommendations without a specific radiology procedure. Default is false.
      */
     @Generated
-    @JsonProperty(value = "includeRecommendationsWithNoSpecifiedModality")
     private Boolean includeRecommendationsWithNoSpecifiedModality;
 
     /*
      * Include/Exclude follow-up recommendations in references to a guideline or article. Default is false.
      */
     @Generated
-    @JsonProperty(value = "includeRecommendationsInReferences")
     private Boolean includeRecommendationsInReferences;
 
     /*
@@ -33,7 +35,6 @@ public final class FollowupRecommendationOptions {
      * is false.
      */
     @Generated
-    @JsonProperty(value = "provideFocusedSentenceEvidence")
     private Boolean provideFocusedSentenceEvidence;
 
     /**
@@ -118,5 +119,52 @@ public final class FollowupRecommendationOptions {
     public FollowupRecommendationOptions setProvideFocusedSentenceEvidence(Boolean provideFocusedSentenceEvidence) {
         this.provideFocusedSentenceEvidence = provideFocusedSentenceEvidence;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("includeRecommendationsWithNoSpecifiedModality",
+            this.includeRecommendationsWithNoSpecifiedModality);
+        jsonWriter.writeBooleanField("includeRecommendationsInReferences", this.includeRecommendationsInReferences);
+        jsonWriter.writeBooleanField("provideFocusedSentenceEvidence", this.provideFocusedSentenceEvidence);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FollowupRecommendationOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FollowupRecommendationOptions if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FollowupRecommendationOptions.
+     */
+    @Generated
+    public static FollowupRecommendationOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FollowupRecommendationOptions deserializedFollowupRecommendationOptions
+                = new FollowupRecommendationOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("includeRecommendationsWithNoSpecifiedModality".equals(fieldName)) {
+                    deserializedFollowupRecommendationOptions.includeRecommendationsWithNoSpecifiedModality
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("includeRecommendationsInReferences".equals(fieldName)) {
+                    deserializedFollowupRecommendationOptions.includeRecommendationsInReferences
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("provideFocusedSentenceEvidence".equals(fieldName)) {
+                    deserializedFollowupRecommendationOptions.provideFocusedSentenceEvidence
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedFollowupRecommendationOptions;
+        });
     }
 }

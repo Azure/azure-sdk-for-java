@@ -7,28 +7,52 @@ package com.azure.resourcemanager.fluidrelay.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.fluidrelay.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** A FluidRelay Container. */
+/**
+ * A FluidRelay Container.
+ */
 @Immutable
 public final class FluidRelayContainerInner extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private FluidRelayContainerProperties innerProperties;
 
     /*
      * System meta data for this resource, including creation and modification information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of FluidRelayContainerInner class.
+     */
+    public FluidRelayContainerInner() {
+    }
 
     /**
      * Get the innerProperties property: The resource-specific properties for this resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FluidRelayContainerProperties innerProperties() {
@@ -37,7 +61,7 @@ public final class FluidRelayContainerInner extends ProxyResource {
 
     /**
      * Get the systemData property: System meta data for this resource, including creation and modification information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -45,8 +69,38 @@ public final class FluidRelayContainerInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the frsTenantId property: The Fluid tenantId for this container.
-     *
+     * 
      * @return the frsTenantId value.
      */
     public String frsTenantId() {
@@ -55,7 +109,7 @@ public final class FluidRelayContainerInner extends ProxyResource {
 
     /**
      * Get the frsContainerId property: The frsContainerId for this container.
-     *
+     * 
      * @return the frsContainerId value.
      */
     public String frsContainerId() {
@@ -64,7 +118,7 @@ public final class FluidRelayContainerInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provision states for FluidRelay RP.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -73,7 +127,7 @@ public final class FluidRelayContainerInner extends ProxyResource {
 
     /**
      * Get the creationTime property: The creation time of this resource.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -82,7 +136,7 @@ public final class FluidRelayContainerInner extends ProxyResource {
 
     /**
      * Get the lastAccessTime property: Last time when user access this resource.
-     *
+     * 
      * @return the lastAccessTime value.
      */
     public OffsetDateTime lastAccessTime() {
@@ -91,12 +145,57 @@ public final class FluidRelayContainerInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FluidRelayContainerInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FluidRelayContainerInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FluidRelayContainerInner.
+     */
+    public static FluidRelayContainerInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FluidRelayContainerInner deserializedFluidRelayContainerInner = new FluidRelayContainerInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedFluidRelayContainerInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedFluidRelayContainerInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFluidRelayContainerInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFluidRelayContainerInner.innerProperties
+                        = FluidRelayContainerProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedFluidRelayContainerInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFluidRelayContainerInner;
+        });
     }
 }

@@ -5,36 +5,56 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
 import com.azure.resourcemanager.securityinsights.models.GeoLocation;
 import com.azure.resourcemanager.securityinsights.models.ThreatIntelligence;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
-/** Ip entity property bag. */
+/**
+ * Ip entity property bag.
+ */
 @Immutable
 public final class IpEntityProperties extends EntityCommonProperties {
     /*
      * The IP address as string, e.g. 127.0.0.1 (either in Ipv4 or Ipv6)
      */
-    @JsonProperty(value = "address", access = JsonProperty.Access.WRITE_ONLY)
     private String address;
 
     /*
      * The geo-location context attached to the ip entity
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private GeoLocation location;
 
     /*
      * A list of TI contexts attached to the ip entity.
      */
-    @JsonProperty(value = "threatIntelligence", access = JsonProperty.Access.WRITE_ONLY)
     private List<ThreatIntelligence> threatIntelligence;
+
+    /*
+     * The graph item display name which is a short humanly readable description of the graph item instance. This
+     * property is optional and might be system generated.
+     */
+    private String friendlyName;
+
+    /*
+     * A bag of custom fields that should be part of the entity and will be presented to the user.
+     */
+    private Map<String, Object> additionalData;
+
+    /**
+     * Creates an instance of IpEntityProperties class.
+     */
+    public IpEntityProperties() {
+    }
 
     /**
      * Get the address property: The IP address as string, e.g. 127.0.0.1 (either in Ipv4 or Ipv6).
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -43,7 +63,7 @@ public final class IpEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the location property: The geo-location context attached to the ip entity.
-     *
+     * 
      * @return the location value.
      */
     public GeoLocation location() {
@@ -52,7 +72,7 @@ public final class IpEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the threatIntelligence property: A list of TI contexts attached to the ip entity.
-     *
+     * 
      * @return the threatIntelligence value.
      */
     public List<ThreatIntelligence> threatIntelligence() {
@@ -60,18 +80,85 @@ public final class IpEntityProperties extends EntityCommonProperties {
     }
 
     /**
+     * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
+     * graph item instance. This property is optional and might be system generated.
+     * 
+     * @return the friendlyName value.
+     */
+    @Override
+    public String friendlyName() {
+        return this.friendlyName;
+    }
+
+    /**
+     * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
+     * to the user.
+     * 
+     * @return the additionalData value.
+     */
+    @Override
+    public Map<String, Object> additionalData() {
+        return this.additionalData;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (location() != null) {
             location().validate();
         }
         if (threatIntelligence() != null) {
             threatIntelligence().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpEntityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpEntityProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IpEntityProperties.
+     */
+    public static IpEntityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpEntityProperties deserializedIpEntityProperties = new IpEntityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("additionalData".equals(fieldName)) {
+                    Map<String, Object> additionalData = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedIpEntityProperties.additionalData = additionalData;
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedIpEntityProperties.friendlyName = reader.getString();
+                } else if ("address".equals(fieldName)) {
+                    deserializedIpEntityProperties.address = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedIpEntityProperties.location = GeoLocation.fromJson(reader);
+                } else if ("threatIntelligence".equals(fieldName)) {
+                    List<ThreatIntelligence> threatIntelligence
+                        = reader.readArray(reader1 -> ThreatIntelligence.fromJson(reader1));
+                    deserializedIpEntityProperties.threatIntelligence = threatIntelligence;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpEntityProperties;
+        });
     }
 }

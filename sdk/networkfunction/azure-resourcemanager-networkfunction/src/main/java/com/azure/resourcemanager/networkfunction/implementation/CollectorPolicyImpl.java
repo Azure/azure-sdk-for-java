@@ -100,35 +100,31 @@ public final class CollectorPolicyImpl implements CollectorPolicy, CollectorPoli
 
     private TagsObject updateParameters;
 
-    public CollectorPolicyImpl withExistingAzureTrafficCollector(
-        String resourceGroupName, String azureTrafficCollectorName) {
+    public CollectorPolicyImpl withExistingAzureTrafficCollector(String resourceGroupName,
+        String azureTrafficCollectorName) {
         this.resourceGroupName = resourceGroupName;
         this.azureTrafficCollectorName = azureTrafficCollectorName;
         return this;
     }
 
     public CollectorPolicy create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCollectorPolicies()
-                .createOrUpdate(
-                    resourceGroupName, azureTrafficCollectorName, collectorPolicyName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getCollectorPolicies()
+            .createOrUpdate(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public CollectorPolicy create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCollectorPolicies()
-                .createOrUpdate(
-                    resourceGroupName, azureTrafficCollectorName, collectorPolicyName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getCollectorPolicies()
+            .createOrUpdate(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, this.innerModel(),
+                context);
         return this;
     }
 
-    CollectorPolicyImpl(
-        String name, com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager serviceManager) {
+    CollectorPolicyImpl(String name,
+        com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager serviceManager) {
         this.innerObject = new CollectorPolicyInner();
         this.serviceManager = serviceManager;
         this.collectorPolicyName = name;
@@ -140,54 +136,46 @@ public final class CollectorPolicyImpl implements CollectorPolicy, CollectorPoli
     }
 
     public CollectorPolicy apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCollectorPolicies()
-                .updateTagsWithResponse(
-                    resourceGroupName, azureTrafficCollectorName, collectorPolicyName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCollectorPolicies()
+            .updateTagsWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, updateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public CollectorPolicy apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCollectorPolicies()
-                .updateTagsWithResponse(
-                    resourceGroupName, azureTrafficCollectorName, collectorPolicyName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCollectorPolicies()
+            .updateTagsWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, updateParameters,
+                context)
+            .getValue();
         return this;
     }
 
-    CollectorPolicyImpl(
-        CollectorPolicyInner innerObject,
+    CollectorPolicyImpl(CollectorPolicyInner innerObject,
         com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.azureTrafficCollectorName = Utils.getValueFromIdByName(innerObject.id(), "azureTrafficCollectors");
-        this.collectorPolicyName = Utils.getValueFromIdByName(innerObject.id(), "collectorPolicies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.azureTrafficCollectorName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "azureTrafficCollectors");
+        this.collectorPolicyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "collectorPolicies");
     }
 
     public CollectorPolicy refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCollectorPolicies()
-                .getWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCollectorPolicies()
+            .getWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CollectorPolicy refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCollectorPolicies()
-                .getWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCollectorPolicies()
+            .getWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, context)
+            .getValue();
         return this;
     }
 

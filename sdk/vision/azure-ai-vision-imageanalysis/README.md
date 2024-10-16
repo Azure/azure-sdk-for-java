@@ -40,7 +40,7 @@ Also note that the client library does not directly read the `VISION_ENDPOINT` a
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-vision-imageanalysis</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -87,7 +87,8 @@ ImageAnalysisAsyncClient client = new ImageAnalysisClientBuilder()
 
 #### Using Entra ID
 
-Add an additional dependency on `azure-identity` in your `pom.xml`:
+To use the [DefaultAzureCredential](https://learn.microsoft.com/java/api/com.azure.identity.defaultazurecredential)
+provider, or other credential providers, add an additional dependency on `azure-identity` in your `pom.xml`:
 
 [//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
 ```xml

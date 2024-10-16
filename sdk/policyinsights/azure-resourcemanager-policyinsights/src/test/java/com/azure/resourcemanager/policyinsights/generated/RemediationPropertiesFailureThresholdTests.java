@@ -7,21 +7,20 @@ package com.azure.resourcemanager.policyinsights.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.policyinsights.models.RemediationPropertiesFailureThreshold;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class RemediationPropertiesFailureThresholdTests {
-    @Test
-    public void testDeserialize() {
-        RemediationPropertiesFailureThreshold model =
-            BinaryData.fromString("{\"percentage\":9.04541}").toObject(RemediationPropertiesFailureThreshold.class);
-        Assertions.assertEquals(9.04541F, model.percentage());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        RemediationPropertiesFailureThreshold model
+            = BinaryData.fromString("{\"percentage\":72.42369}").toObject(RemediationPropertiesFailureThreshold.class);
+        Assertions.assertEquals(72.42369F, model.percentage());
     }
 
-    @Test
-    public void testSerialize() {
-        RemediationPropertiesFailureThreshold model =
-            new RemediationPropertiesFailureThreshold().withPercentage(9.04541F);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        RemediationPropertiesFailureThreshold model
+            = new RemediationPropertiesFailureThreshold().withPercentage(72.42369F);
         model = BinaryData.fromObject(model).toObject(RemediationPropertiesFailureThreshold.class);
-        Assertions.assertEquals(9.04541F, model.percentage());
+        Assertions.assertEquals(72.42369F, model.percentage());
     }
 }

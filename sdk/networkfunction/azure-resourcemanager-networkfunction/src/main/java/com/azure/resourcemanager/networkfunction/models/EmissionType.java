@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.networkfunction.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Emission format type. */
+/**
+ * Emission format type.
+ */
 public final class EmissionType extends ExpandableStringEnum<EmissionType> {
-    /** Static value IPFIX for EmissionType. */
+    /**
+     * Static value IPFIX for EmissionType.
+     */
     public static final EmissionType IPFIX = fromString("IPFIX");
 
     /**
+     * Creates a new instance of EmissionType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EmissionType() {
+    }
+
+    /**
      * Creates or finds a EmissionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EmissionType.
      */
-    @JsonCreator
     public static EmissionType fromString(String name) {
         return fromString(name, EmissionType.class);
     }
 
     /**
      * Gets known EmissionType values.
-     *
+     * 
      * @return known EmissionType values.
      */
     public static Collection<EmissionType> values() {

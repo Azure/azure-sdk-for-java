@@ -59,4 +59,13 @@ public class DocumentCollectionTests {
         List<SpatialSpec> spatialSpecListPostSerialization = indexingPolicyPostSerialization.getSpatialIndexes();
         Assertions.assertThat(spatialSpecListPostSerialization).isNotNull();
     }
+
+    @Test(groups = { "unit"})
+    public void initializeFromJsonStringWithDuplicateProperty() {
+        String jsonString = "{\"indexingPolicy\":{\"automatic\":true,\"indexingMode\":\"Consistent\",\"includedPaths\":[{\"path\":\"/*\"}],\"excludedPaths\":[]},\"uniqueKeyPolicy\":{},\"uniqueKeyPolicy\":{}}";
+        DocumentCollection collection = new DocumentCollection(jsonString);
+
+        assertThat(collection.getIndexingPolicy()).isNotNull();
+        assertThat(collection.getUniqueKeyPolicy()).isNotNull();
+    }
 }

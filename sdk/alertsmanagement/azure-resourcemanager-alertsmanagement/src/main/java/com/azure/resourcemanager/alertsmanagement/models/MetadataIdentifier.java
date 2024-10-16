@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Identification of the information to be retrieved by API call. */
+/**
+ * Identification of the information to be retrieved by API call.
+ */
 public final class MetadataIdentifier extends ExpandableStringEnum<MetadataIdentifier> {
-    /** Static value MonitorServiceList for MetadataIdentifier. */
+    /**
+     * Static value MonitorServiceList for MetadataIdentifier.
+     */
     public static final MetadataIdentifier MONITOR_SERVICE_LIST = fromString("MonitorServiceList");
 
     /**
+     * Creates a new instance of MetadataIdentifier value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MetadataIdentifier() {
+    }
+
+    /**
      * Creates or finds a MetadataIdentifier from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MetadataIdentifier.
      */
-    @JsonCreator
     public static MetadataIdentifier fromString(String name) {
         return fromString(name, MetadataIdentifier.class);
     }
 
     /**
      * Gets known MetadataIdentifier values.
-     *
+     * 
      * @return known MetadataIdentifier values.
      */
     public static Collection<MetadataIdentifier> values() {

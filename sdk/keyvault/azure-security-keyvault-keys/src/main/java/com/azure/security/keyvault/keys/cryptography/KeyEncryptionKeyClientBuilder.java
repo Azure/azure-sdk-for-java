@@ -465,8 +465,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     }
 
     /**
-     * Disables the ability to perform cryptographic operations locally, performing all cryptographic operations on the
-     * service side instead.
+     * Disables local key caching and defers all cryptographic operations to the service.
      *
      * <p>This method will have no effect if
      * {@link KeyEncryptionKeyClientBuilder#buildAsyncKeyEncryptionKey(JsonWebKey)} or
@@ -474,7 +473,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      */
-    public KeyEncryptionKeyClientBuilder disableLocalCryptography() {
+    public KeyEncryptionKeyClientBuilder disableKeyCaching() {
         this.isKeyCachingDisabled = true;
 
         return this;

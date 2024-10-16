@@ -85,24 +85,20 @@ public final class ConnectionImpl implements Connection, Connection.Definition, 
     }
 
     public Connection create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnections()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, connectionName, createParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnections()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, connectionName, createParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Connection create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnections()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, connectionName, createParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnections()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, connectionName, createParameters,
+                context)
+            .getValue();
         return this;
     }
 
@@ -119,51 +115,43 @@ public final class ConnectionImpl implements Connection, Connection.Definition, 
     }
 
     public Connection apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnections()
-                .updateWithResponse(
-                    resourceGroupName, automationAccountName, connectionName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnections()
+            .updateWithResponse(resourceGroupName, automationAccountName, connectionName, updateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Connection apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnections()
-                .updateWithResponse(resourceGroupName, automationAccountName, connectionName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnections()
+            .updateWithResponse(resourceGroupName, automationAccountName, connectionName, updateParameters, context)
+            .getValue();
         return this;
     }
 
     ConnectionImpl(ConnectionInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.automationAccountName = Utils.getValueFromIdByName(innerObject.id(), "automationAccounts");
-        this.connectionName = Utils.getValueFromIdByName(innerObject.id(), "connections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.automationAccountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "automationAccounts");
+        this.connectionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "connections");
     }
 
     public Connection refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnections()
-                .getWithResponse(resourceGroupName, automationAccountName, connectionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnections()
+            .getWithResponse(resourceGroupName, automationAccountName, connectionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Connection refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnections()
-                .getWithResponse(resourceGroupName, automationAccountName, connectionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnections()
+            .getWithResponse(resourceGroupName, automationAccountName, connectionName, context)
+            .getValue();
         return this;
     }
 

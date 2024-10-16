@@ -6,38 +6,47 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of the create certificate operation. */
+/**
+ * The properties of the create certificate operation.
+ */
 @Fluent
-public final class CertificateCreateOrUpdateProperties {
+public final class CertificateCreateOrUpdateProperties
+    implements JsonSerializable<CertificateCreateOrUpdateProperties> {
     /*
      * Gets or sets the base64 encoded value of the certificate.
      */
-    @JsonProperty(value = "base64Value", required = true)
     private String base64Value;
 
     /*
      * Gets or sets the description of the certificate.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Gets or sets the thumbprint of the certificate.
      */
-    @JsonProperty(value = "thumbprint")
     private String thumbprint;
 
     /*
      * Gets or sets the is exportable flag of the certificate.
      */
-    @JsonProperty(value = "isExportable")
     private Boolean isExportable;
 
     /**
+     * Creates an instance of CertificateCreateOrUpdateProperties class.
+     */
+    public CertificateCreateOrUpdateProperties() {
+    }
+
+    /**
      * Get the base64Value property: Gets or sets the base64 encoded value of the certificate.
-     *
+     * 
      * @return the base64Value value.
      */
     public String base64Value() {
@@ -46,7 +55,7 @@ public final class CertificateCreateOrUpdateProperties {
 
     /**
      * Set the base64Value property: Gets or sets the base64 encoded value of the certificate.
-     *
+     * 
      * @param base64Value the base64Value value to set.
      * @return the CertificateCreateOrUpdateProperties object itself.
      */
@@ -57,7 +66,7 @@ public final class CertificateCreateOrUpdateProperties {
 
     /**
      * Get the description property: Gets or sets the description of the certificate.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -66,7 +75,7 @@ public final class CertificateCreateOrUpdateProperties {
 
     /**
      * Set the description property: Gets or sets the description of the certificate.
-     *
+     * 
      * @param description the description value to set.
      * @return the CertificateCreateOrUpdateProperties object itself.
      */
@@ -77,7 +86,7 @@ public final class CertificateCreateOrUpdateProperties {
 
     /**
      * Get the thumbprint property: Gets or sets the thumbprint of the certificate.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -86,7 +95,7 @@ public final class CertificateCreateOrUpdateProperties {
 
     /**
      * Set the thumbprint property: Gets or sets the thumbprint of the certificate.
-     *
+     * 
      * @param thumbprint the thumbprint value to set.
      * @return the CertificateCreateOrUpdateProperties object itself.
      */
@@ -97,7 +106,7 @@ public final class CertificateCreateOrUpdateProperties {
 
     /**
      * Get the isExportable property: Gets or sets the is exportable flag of the certificate.
-     *
+     * 
      * @return the isExportable value.
      */
     public Boolean isExportable() {
@@ -106,7 +115,7 @@ public final class CertificateCreateOrUpdateProperties {
 
     /**
      * Set the isExportable property: Gets or sets the is exportable flag of the certificate.
-     *
+     * 
      * @param isExportable the isExportable value to set.
      * @return the CertificateCreateOrUpdateProperties object itself.
      */
@@ -117,17 +126,64 @@ public final class CertificateCreateOrUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (base64Value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property base64Value in model CertificateCreateOrUpdateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property base64Value in model CertificateCreateOrUpdateProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CertificateCreateOrUpdateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("base64Value", this.base64Value);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("thumbprint", this.thumbprint);
+        jsonWriter.writeBooleanField("isExportable", this.isExportable);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateCreateOrUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateCreateOrUpdateProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CertificateCreateOrUpdateProperties.
+     */
+    public static CertificateCreateOrUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateCreateOrUpdateProperties deserializedCertificateCreateOrUpdateProperties
+                = new CertificateCreateOrUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("base64Value".equals(fieldName)) {
+                    deserializedCertificateCreateOrUpdateProperties.base64Value = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedCertificateCreateOrUpdateProperties.description = reader.getString();
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedCertificateCreateOrUpdateProperties.thumbprint = reader.getString();
+                } else if ("isExportable".equals(fieldName)) {
+                    deserializedCertificateCreateOrUpdateProperties.isExportable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateCreateOrUpdateProperties;
+        });
+    }
 }

@@ -73,7 +73,7 @@ public class JsonSerializable {
      */
     protected JsonSerializable(String jsonString, ObjectMapper objectMapper) {
         // TODO: Made package private due to #153. #171 adding custom serialization options back.
-        this.propertyBag = fromJson(jsonString);
+        this.propertyBag = fromJson(jsonString, objectMapper);
         this.om = objectMapper;
     }
 
@@ -83,7 +83,7 @@ public class JsonSerializable {
      * @param jsonString the json string that represents the JsonSerializable.
      */
     public JsonSerializable(String jsonString) {
-        this.propertyBag = fromJson(jsonString);
+        this.propertyBag = fromJson(jsonString, OBJECT_MAPPER);
     }
 
     /**
@@ -639,9 +639,9 @@ public class JsonSerializable {
         }
     }
 
-    private ObjectNode fromJson(String json) {
+    private ObjectNode fromJson(String json, ObjectMapper objectMapper) {
         try {
-            return (ObjectNode) OBJECT_MAPPER.readTree(json);
+            return (ObjectNode) objectMapper.readTree(json);
         } catch (IOException e) {
             throw new IllegalArgumentException(
                 String.format("Unable to parse JSON %s", json), e);

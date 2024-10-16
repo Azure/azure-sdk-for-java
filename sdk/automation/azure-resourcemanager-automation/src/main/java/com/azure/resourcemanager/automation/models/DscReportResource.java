@@ -5,76 +5,80 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Definition of the DSC Report Resource. */
+/**
+ * Definition of the DSC Report Resource.
+ */
 @Fluent
-public final class DscReportResource {
+public final class DscReportResource implements JsonSerializable<DscReportResource> {
     /*
      * Gets or sets the ID of the resource.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * Gets or sets the source info of the resource.
      */
-    @JsonProperty(value = "sourceInfo")
     private String sourceInfo;
 
     /*
      * Gets or sets the Resource Navigation values for resources the resource depends on.
      */
-    @JsonProperty(value = "dependsOn")
     private List<DscReportResourceNavigation> dependsOn;
 
     /*
      * Gets or sets the module name of the resource.
      */
-    @JsonProperty(value = "moduleName")
     private String moduleName;
 
     /*
      * Gets or sets the module version of the resource.
      */
-    @JsonProperty(value = "moduleVersion")
     private String moduleVersion;
 
     /*
      * Gets or sets the name of the resource.
      */
-    @JsonProperty(value = "resourceName")
     private String resourceName;
 
     /*
      * Gets or sets the error of the resource.
      */
-    @JsonProperty(value = "error")
     private String error;
 
     /*
      * Gets or sets the status of the resource.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * Gets or sets the duration in seconds for the resource.
      */
-    @JsonProperty(value = "durationInSeconds")
     private Double durationInSeconds;
 
     /*
      * Gets or sets the start date of the resource.
      */
-    @JsonProperty(value = "startDate")
     private OffsetDateTime startDate;
 
     /**
+     * Creates an instance of DscReportResource class.
+     */
+    public DscReportResource() {
+    }
+
+    /**
      * Get the resourceId property: Gets or sets the ID of the resource.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -83,7 +87,7 @@ public final class DscReportResource {
 
     /**
      * Set the resourceId property: Gets or sets the ID of the resource.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the DscReportResource object itself.
      */
@@ -94,7 +98,7 @@ public final class DscReportResource {
 
     /**
      * Get the sourceInfo property: Gets or sets the source info of the resource.
-     *
+     * 
      * @return the sourceInfo value.
      */
     public String sourceInfo() {
@@ -103,7 +107,7 @@ public final class DscReportResource {
 
     /**
      * Set the sourceInfo property: Gets or sets the source info of the resource.
-     *
+     * 
      * @param sourceInfo the sourceInfo value to set.
      * @return the DscReportResource object itself.
      */
@@ -114,7 +118,7 @@ public final class DscReportResource {
 
     /**
      * Get the dependsOn property: Gets or sets the Resource Navigation values for resources the resource depends on.
-     *
+     * 
      * @return the dependsOn value.
      */
     public List<DscReportResourceNavigation> dependsOn() {
@@ -123,7 +127,7 @@ public final class DscReportResource {
 
     /**
      * Set the dependsOn property: Gets or sets the Resource Navigation values for resources the resource depends on.
-     *
+     * 
      * @param dependsOn the dependsOn value to set.
      * @return the DscReportResource object itself.
      */
@@ -134,7 +138,7 @@ public final class DscReportResource {
 
     /**
      * Get the moduleName property: Gets or sets the module name of the resource.
-     *
+     * 
      * @return the moduleName value.
      */
     public String moduleName() {
@@ -143,7 +147,7 @@ public final class DscReportResource {
 
     /**
      * Set the moduleName property: Gets or sets the module name of the resource.
-     *
+     * 
      * @param moduleName the moduleName value to set.
      * @return the DscReportResource object itself.
      */
@@ -154,7 +158,7 @@ public final class DscReportResource {
 
     /**
      * Get the moduleVersion property: Gets or sets the module version of the resource.
-     *
+     * 
      * @return the moduleVersion value.
      */
     public String moduleVersion() {
@@ -163,7 +167,7 @@ public final class DscReportResource {
 
     /**
      * Set the moduleVersion property: Gets or sets the module version of the resource.
-     *
+     * 
      * @param moduleVersion the moduleVersion value to set.
      * @return the DscReportResource object itself.
      */
@@ -174,7 +178,7 @@ public final class DscReportResource {
 
     /**
      * Get the resourceName property: Gets or sets the name of the resource.
-     *
+     * 
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -183,7 +187,7 @@ public final class DscReportResource {
 
     /**
      * Set the resourceName property: Gets or sets the name of the resource.
-     *
+     * 
      * @param resourceName the resourceName value to set.
      * @return the DscReportResource object itself.
      */
@@ -194,7 +198,7 @@ public final class DscReportResource {
 
     /**
      * Get the error property: Gets or sets the error of the resource.
-     *
+     * 
      * @return the error value.
      */
     public String error() {
@@ -203,7 +207,7 @@ public final class DscReportResource {
 
     /**
      * Set the error property: Gets or sets the error of the resource.
-     *
+     * 
      * @param error the error value to set.
      * @return the DscReportResource object itself.
      */
@@ -214,7 +218,7 @@ public final class DscReportResource {
 
     /**
      * Get the status property: Gets or sets the status of the resource.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -223,7 +227,7 @@ public final class DscReportResource {
 
     /**
      * Set the status property: Gets or sets the status of the resource.
-     *
+     * 
      * @param status the status value to set.
      * @return the DscReportResource object itself.
      */
@@ -234,7 +238,7 @@ public final class DscReportResource {
 
     /**
      * Get the durationInSeconds property: Gets or sets the duration in seconds for the resource.
-     *
+     * 
      * @return the durationInSeconds value.
      */
     public Double durationInSeconds() {
@@ -243,7 +247,7 @@ public final class DscReportResource {
 
     /**
      * Set the durationInSeconds property: Gets or sets the duration in seconds for the resource.
-     *
+     * 
      * @param durationInSeconds the durationInSeconds value to set.
      * @return the DscReportResource object itself.
      */
@@ -254,7 +258,7 @@ public final class DscReportResource {
 
     /**
      * Get the startDate property: Gets or sets the start date of the resource.
-     *
+     * 
      * @return the startDate value.
      */
     public OffsetDateTime startDate() {
@@ -263,7 +267,7 @@ public final class DscReportResource {
 
     /**
      * Set the startDate property: Gets or sets the start date of the resource.
-     *
+     * 
      * @param startDate the startDate value to set.
      * @return the DscReportResource object itself.
      */
@@ -274,12 +278,79 @@ public final class DscReportResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dependsOn() != null) {
             dependsOn().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("sourceInfo", this.sourceInfo);
+        jsonWriter.writeArrayField("dependsOn", this.dependsOn, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("moduleName", this.moduleName);
+        jsonWriter.writeStringField("moduleVersion", this.moduleVersion);
+        jsonWriter.writeStringField("resourceName", this.resourceName);
+        jsonWriter.writeStringField("error", this.error);
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeNumberField("durationInSeconds", this.durationInSeconds);
+        jsonWriter.writeStringField("startDate",
+            this.startDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startDate));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DscReportResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DscReportResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DscReportResource.
+     */
+    public static DscReportResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DscReportResource deserializedDscReportResource = new DscReportResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedDscReportResource.resourceId = reader.getString();
+                } else if ("sourceInfo".equals(fieldName)) {
+                    deserializedDscReportResource.sourceInfo = reader.getString();
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<DscReportResourceNavigation> dependsOn
+                        = reader.readArray(reader1 -> DscReportResourceNavigation.fromJson(reader1));
+                    deserializedDscReportResource.dependsOn = dependsOn;
+                } else if ("moduleName".equals(fieldName)) {
+                    deserializedDscReportResource.moduleName = reader.getString();
+                } else if ("moduleVersion".equals(fieldName)) {
+                    deserializedDscReportResource.moduleVersion = reader.getString();
+                } else if ("resourceName".equals(fieldName)) {
+                    deserializedDscReportResource.resourceName = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedDscReportResource.error = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedDscReportResource.status = reader.getString();
+                } else if ("durationInSeconds".equals(fieldName)) {
+                    deserializedDscReportResource.durationInSeconds = reader.getNullable(JsonReader::getDouble);
+                } else if ("startDate".equals(fieldName)) {
+                    deserializedDscReportResource.startDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDscReportResource;
+        });
     }
 }

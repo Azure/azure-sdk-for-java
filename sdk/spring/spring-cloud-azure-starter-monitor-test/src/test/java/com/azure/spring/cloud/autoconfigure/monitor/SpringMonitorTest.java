@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
+import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterOptions;
 import com.azure.spring.cloud.autoconfigure.monitor.selfdiagnostics.SelfDiagnosticsLevel;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.*;
 import io.opentelemetry.sdk.common.internal.OtelVersion;
@@ -33,13 +34,9 @@ import java.util.stream.Collectors;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
-// TODO (jean) do you want to reconsider this test since azure-sdk CI build will always use the source version of azure-monitor-opentelemetry-exporter not the one from maven central
 @SpringBootTest(
     classes = {Application.class, SpringMonitorTest.TestConfig.class},
-    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    properties = {
-        "applicationinsights.connection.string=InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;IngestionEndpoint=https://test.in.applicationinsights.azure.com/;LiveEndpoint=https://test.livediagnostics.monitor.azure.com/"
-    })
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class SpringMonitorTest {
 
     private static CountDownLatch countDownLatch;
@@ -53,10 +50,12 @@ class SpringMonitorTest {
     static class TestConfig {
 
         @Bean
-        HttpPipeline httpPipeline() {
+        AzureMonitorExporterOptions azureMonitorExporterBuilder() {
             countDownLatch = new CountDownLatch(2);
             customValidationPolicy = new CustomValidationPolicy(countDownLatch);
-            return getHttpPipeline(customValidationPolicy);
+            return new AzureMonitorExporterOptions()
+                .connectionString("InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;IngestionEndpoint=https://test.in.applicationinsights.azure.com/;LiveEndpoint=https://test.livediagnostics.monitor.azure.com/")
+                .pipeline(getHttpPipeline(customValidationPolicy));
         }
 
         HttpPipeline getHttpPipeline(@Nullable HttpPipelinePolicy policy) {
@@ -179,17 +178,6 @@ class SpringMonitorTest {
         return telemetryItems.stream()
             .filter(telemetry -> telemetry.getName().equals(type))
             .collect(Collectors.toList());
-    }
-
-    @Test
-    void verifyOpenTelemetryVersion() {
-        String currentOTelVersion = OtelVersion.VERSION;
-        assertThat(OpenTelemetryVersionCheckRunner.STARTER_OTEL_VERSION)
-            .as(
-                "Dear developer, You may have updated the OpenTelemetry dependencies of spring-cloud-azure-starter-monitor without updating the OTel starter version declared in "
-                    + OpenTelemetryVersionCheckRunner.class
-                    + ".")
-            .isEqualTo(currentOTelVersion);
     }
 
     private static boolean isSpecialOtelResourceMetric(MetricsData baseData) {

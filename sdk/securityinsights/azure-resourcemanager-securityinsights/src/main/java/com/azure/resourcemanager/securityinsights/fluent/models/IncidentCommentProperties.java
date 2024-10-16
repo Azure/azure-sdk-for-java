@@ -5,41 +5,50 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.ClientInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Incident comment property bag. */
+/**
+ * Incident comment property bag.
+ */
 @Fluent
-public final class IncidentCommentProperties {
+public final class IncidentCommentProperties implements JsonSerializable<IncidentCommentProperties> {
     /*
      * The time the comment was created
      */
-    @JsonProperty(value = "createdTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTimeUtc;
 
     /*
      * The time the comment was updated
      */
-    @JsonProperty(value = "lastModifiedTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTimeUtc;
 
     /*
      * The comment message
      */
-    @JsonProperty(value = "message", required = true)
     private String message;
 
     /*
      * Describes the client that created the comment
      */
-    @JsonProperty(value = "author", access = JsonProperty.Access.WRITE_ONLY)
     private ClientInfo author;
 
     /**
+     * Creates an instance of IncidentCommentProperties class.
+     */
+    public IncidentCommentProperties() {
+    }
+
+    /**
      * Get the createdTimeUtc property: The time the comment was created.
-     *
+     * 
      * @return the createdTimeUtc value.
      */
     public OffsetDateTime createdTimeUtc() {
@@ -48,7 +57,7 @@ public final class IncidentCommentProperties {
 
     /**
      * Get the lastModifiedTimeUtc property: The time the comment was updated.
-     *
+     * 
      * @return the lastModifiedTimeUtc value.
      */
     public OffsetDateTime lastModifiedTimeUtc() {
@@ -57,7 +66,7 @@ public final class IncidentCommentProperties {
 
     /**
      * Get the message property: The comment message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -66,7 +75,7 @@ public final class IncidentCommentProperties {
 
     /**
      * Set the message property: The comment message.
-     *
+     * 
      * @param message the message value to set.
      * @return the IncidentCommentProperties object itself.
      */
@@ -77,7 +86,7 @@ public final class IncidentCommentProperties {
 
     /**
      * Get the author property: Describes the client that created the comment.
-     *
+     * 
      * @return the author value.
      */
     public ClientInfo author() {
@@ -86,15 +95,14 @@ public final class IncidentCommentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (message() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property message in model IncidentCommentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property message in model IncidentCommentProperties"));
         }
         if (author() != null) {
             author().validate();
@@ -102,4 +110,49 @@ public final class IncidentCommentProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IncidentCommentProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IncidentCommentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IncidentCommentProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IncidentCommentProperties.
+     */
+    public static IncidentCommentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IncidentCommentProperties deserializedIncidentCommentProperties = new IncidentCommentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("message".equals(fieldName)) {
+                    deserializedIncidentCommentProperties.message = reader.getString();
+                } else if ("createdTimeUtc".equals(fieldName)) {
+                    deserializedIncidentCommentProperties.createdTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTimeUtc".equals(fieldName)) {
+                    deserializedIncidentCommentProperties.lastModifiedTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("author".equals(fieldName)) {
+                    deserializedIncidentCommentProperties.author = ClientInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIncidentCommentProperties;
+        });
+    }
 }

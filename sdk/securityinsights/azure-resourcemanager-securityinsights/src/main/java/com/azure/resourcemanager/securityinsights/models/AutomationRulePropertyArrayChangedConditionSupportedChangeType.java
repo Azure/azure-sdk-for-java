@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AutomationRulePropertyArrayChangedConditionSupportedChangeType. */
+/**
+ * Defines values for AutomationRulePropertyArrayChangedConditionSupportedChangeType.
+ */
 public final class AutomationRulePropertyArrayChangedConditionSupportedChangeType
     extends ExpandableStringEnum<AutomationRulePropertyArrayChangedConditionSupportedChangeType> {
-    /** Static value Added for AutomationRulePropertyArrayChangedConditionSupportedChangeType. */
+    /**
+     * Static value Added for AutomationRulePropertyArrayChangedConditionSupportedChangeType.
+     */
     public static final AutomationRulePropertyArrayChangedConditionSupportedChangeType ADDED = fromString("Added");
 
     /**
+     * Creates a new instance of AutomationRulePropertyArrayChangedConditionSupportedChangeType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AutomationRulePropertyArrayChangedConditionSupportedChangeType() {
+    }
+
+    /**
      * Creates or finds a AutomationRulePropertyArrayChangedConditionSupportedChangeType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AutomationRulePropertyArrayChangedConditionSupportedChangeType.
      */
-    @JsonCreator
     public static AutomationRulePropertyArrayChangedConditionSupportedChangeType fromString(String name) {
         return fromString(name, AutomationRulePropertyArrayChangedConditionSupportedChangeType.class);
     }
 
     /**
      * Gets known AutomationRulePropertyArrayChangedConditionSupportedChangeType values.
-     *
+     * 
      * @return known AutomationRulePropertyArrayChangedConditionSupportedChangeType values.
      */
     public static Collection<AutomationRulePropertyArrayChangedConditionSupportedChangeType> values() {

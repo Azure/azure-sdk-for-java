@@ -4,6 +4,7 @@
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobErrorCode;
@@ -11,11 +12,13 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple3;
 import reactor.util.function.Tuples;
 
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -28,14 +31,24 @@ import static java.lang.StrictMath.toIntExact;
  */
 public class ChunkedDownloadUtils {
 
-    /*
-    Download the first chunk. Construct a Mono which will emit the total count for calculating the number of chunks,
-    access conditions containing the etag to lock on, and the response from downloading the first chunk.
-     */
     public static Mono<Tuple3<Long, BlobRequestConditions, BlobDownloadAsyncResponse>> downloadFirstChunk(
         BlobRange range, ParallelTransferOptions parallelTransferOptions,
         BlobRequestConditions requestConditions, BiFunction<BlobRange, BlobRequestConditions,
         Mono<BlobDownloadAsyncResponse>> downloader, boolean eTagLock) {
+        return downloadFirstChunk(range, parallelTransferOptions, requestConditions, downloader, eTagLock, null);
+    }
+
+    /*
+    Has a context value for additional download adjustments.
+
+    Download the first chunk. Construct a Mono which will emit the total count for calculating the number of chunks,
+    access conditions containing the etag to lock on, and the response from downloading the first chunk.
+     */
+    @SuppressWarnings("unchecked")
+    public static Mono<Tuple3<Long, BlobRequestConditions, BlobDownloadAsyncResponse>> downloadFirstChunk(
+        BlobRange range, ParallelTransferOptions parallelTransferOptions,
+        BlobRequestConditions requestConditions, BiFunction<BlobRange, BlobRequestConditions,
+        Mono<BlobDownloadAsyncResponse>> downloader, boolean eTagLock, Context context) {
         // We will scope our initial download to either be one chunk or the total size.
         long initialChunkSize = range.getCount() != null
             && range.getCount() < parallelTransferOptions.getBlockSizeLong()
@@ -57,6 +70,12 @@ public class ChunkedDownloadUtils {
                 // Extract the total length of the blob from the contentRange header. e.g. "bytes 1-6/7"
                 long totalLength = extractTotalBlobLength(response.getDeserializedHeaders().getContentRange());
 
+                if (context != null) {
+                    Optional<Object> contextAdjustment = context.getData(Constants.ADJUSTED_BLOB_LENGTH_KEY);
+                    if (contextAdjustment.isPresent()) {
+                        totalLength = (long) contextAdjustment.get();
+                    }
+                }
                 /*
                 If the user either didn't specify a count or they specified a count greater than the size of the
                 remaining data, take the size of the remaining data. This is to prevent the case where the count

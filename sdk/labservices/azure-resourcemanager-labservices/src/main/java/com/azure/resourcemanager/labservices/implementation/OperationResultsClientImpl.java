@@ -25,22 +25,28 @@ import com.azure.resourcemanager.labservices.fluent.OperationResultsClient;
 import com.azure.resourcemanager.labservices.fluent.models.OperationResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OperationResultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationResultsClient.
+ */
 public final class OperationResultsClientImpl implements OperationResultsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OperationResultsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final LabServicesClientImpl client;
 
     /**
      * Initializes an instance of OperationResultsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OperationResultsClientImpl(LabServicesClientImpl client) {
-        this.service =
-            RestProxy.create(OperationResultsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(OperationResultsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -50,25 +56,22 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "LabServicesClientOpe")
-    private interface OperationResultsService {
-        @Headers({"Content-Type: application/json"})
+    public interface OperationResultsService {
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.LabServices/operationResults/{operationResultId}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationResultInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("operationResultId") String operationResultId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<OperationResultInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("operationResultId") String operationResultId, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Get an azure operation result.
-     *
-     * <p>Returns an azure operation result.
-     *
+     * 
+     * Returns an azure operation result.
+     * 
      * @param operationResultId The operation result ID / name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -78,16 +81,12 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OperationResultInner>> getWithResponseAsync(String operationResultId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (operationResultId == null) {
             return Mono
@@ -95,24 +94,16 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            operationResultId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), operationResultId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get an azure operation result.
-     *
-     * <p>Returns an azure operation result.
-     *
+     * 
+     * Returns an azure operation result.
+     * 
      * @param operationResultId The operation result ID / name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -123,16 +114,12 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OperationResultInner>> getWithResponseAsync(String operationResultId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (operationResultId == null) {
             return Mono
@@ -140,21 +127,15 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                operationResultId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            operationResultId, accept, context);
     }
 
     /**
      * Get an azure operation result.
-     *
-     * <p>Returns an azure operation result.
-     *
+     * 
+     * Returns an azure operation result.
+     * 
      * @param operationResultId The operation result ID / name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -168,25 +149,9 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
 
     /**
      * Get an azure operation result.
-     *
-     * <p>Returns an azure operation result.
-     *
-     * @param operationResultId The operation result ID / name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long running operation result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationResultInner get(String operationResultId) {
-        return getAsync(operationResultId).block();
-    }
-
-    /**
-     * Get an azure operation result.
-     *
-     * <p>Returns an azure operation result.
-     *
+     * 
+     * Returns an azure operation result.
+     * 
      * @param operationResultId The operation result ID / name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -197,5 +162,21 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationResultInner> getWithResponse(String operationResultId, Context context) {
         return getWithResponseAsync(operationResultId, context).block();
+    }
+
+    /**
+     * Get an azure operation result.
+     * 
+     * Returns an azure operation result.
+     * 
+     * @param operationResultId The operation result ID / name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long running operation result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationResultInner get(String operationResultId) {
+        return getWithResponse(operationResultId, Context.NONE).getValue();
     }
 }

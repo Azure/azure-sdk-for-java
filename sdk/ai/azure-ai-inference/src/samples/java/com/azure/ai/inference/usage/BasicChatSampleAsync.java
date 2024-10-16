@@ -6,7 +6,6 @@ package com.azure.ai.inference.usage;
 
 import com.azure.ai.inference.ChatCompletionsAsyncClient;
 import com.azure.ai.inference.ChatCompletionsClientBuilder;
-import com.azure.ai.inference.models.ChatChoice;
 import com.azure.ai.inference.models.ChatResponseMessage;
 import com.azure.ai.inference.models.CompletionsUsage;
 import com.azure.core.credential.AzureKeyCredential;
@@ -28,12 +27,10 @@ public final class BasicChatSampleAsync {
         client.complete("Tell me about Euler's Identity").subscribe(
             chatCompletions -> {
                 System.out.printf("Model ID=%s.%n", chatCompletions.getId());
-                for (ChatChoice choice : chatCompletions.getChoices()) {
-                    ChatResponseMessage message = choice.getMessage();
-                    System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
-                    System.out.println("Message:");
-                    System.out.println(message.getContent());
-                }
+                ChatResponseMessage message = chatCompletions.getChoice().getMessage();
+                System.out.printf("Chat Role: %s.%n", message.getRole());
+                System.out.println("Message:");
+                System.out.println(message.getContent());
 
                 System.out.println();
                 CompletionsUsage usage = chatCompletions.getUsage();

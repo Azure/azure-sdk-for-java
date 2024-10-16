@@ -5,37 +5,54 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The entity query kind. */
+/**
+ * The entity query kind.
+ */
 public final class EntityTimelineKind extends ExpandableStringEnum<EntityTimelineKind> {
-    /** Static value Activity for EntityTimelineKind. */
+    /**
+     * Static value Activity for EntityTimelineKind.
+     */
     public static final EntityTimelineKind ACTIVITY = fromString("Activity");
 
-    /** Static value Bookmark for EntityTimelineKind. */
+    /**
+     * Static value Bookmark for EntityTimelineKind.
+     */
     public static final EntityTimelineKind BOOKMARK = fromString("Bookmark");
 
-    /** Static value SecurityAlert for EntityTimelineKind. */
+    /**
+     * Static value SecurityAlert for EntityTimelineKind.
+     */
     public static final EntityTimelineKind SECURITY_ALERT = fromString("SecurityAlert");
 
-    /** Static value Anomaly for EntityTimelineKind. */
+    /**
+     * Static value Anomaly for EntityTimelineKind.
+     */
     public static final EntityTimelineKind ANOMALY = fromString("Anomaly");
 
     /**
+     * Creates a new instance of EntityTimelineKind value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EntityTimelineKind() {
+    }
+
+    /**
      * Creates or finds a EntityTimelineKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EntityTimelineKind.
      */
-    @JsonCreator
     public static EntityTimelineKind fromString(String name) {
         return fromString(name, EntityTimelineKind.class);
     }
 
     /**
      * Gets known EntityTimelineKind values.
-     *
+     * 
      * @return known EntityTimelineKind values.
      */
     public static Collection<EntityTimelineKind> values() {

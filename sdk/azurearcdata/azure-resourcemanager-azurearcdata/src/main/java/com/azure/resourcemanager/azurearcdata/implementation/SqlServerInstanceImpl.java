@@ -85,20 +85,16 @@ public final class SqlServerInstanceImpl
     }
 
     public SqlServerInstance create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlServerInstances()
-                .create(resourceGroupName, sqlServerInstanceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlServerInstances()
+            .create(resourceGroupName, sqlServerInstanceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SqlServerInstance create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlServerInstances()
-                .create(resourceGroupName, sqlServerInstanceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlServerInstances()
+            .create(resourceGroupName, sqlServerInstanceName, this.innerModel(), context);
         return this;
     }
 
@@ -114,50 +110,42 @@ public final class SqlServerInstanceImpl
     }
 
     public SqlServerInstance apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlServerInstances()
-                .updateWithResponse(resourceGroupName, sqlServerInstanceName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlServerInstances()
+            .updateWithResponse(resourceGroupName, sqlServerInstanceName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SqlServerInstance apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlServerInstances()
-                .updateWithResponse(resourceGroupName, sqlServerInstanceName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlServerInstances()
+            .updateWithResponse(resourceGroupName, sqlServerInstanceName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    SqlServerInstanceImpl(
-        SqlServerInstanceInner innerObject, com.azure.resourcemanager.azurearcdata.AzureArcDataManager serviceManager) {
+    SqlServerInstanceImpl(SqlServerInstanceInner innerObject,
+        com.azure.resourcemanager.azurearcdata.AzureArcDataManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.sqlServerInstanceName = Utils.getValueFromIdByName(innerObject.id(), "sqlServerInstances");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.sqlServerInstanceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sqlServerInstances");
     }
 
     public SqlServerInstance refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlServerInstances()
-                .getByResourceGroupWithResponse(resourceGroupName, sqlServerInstanceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlServerInstances()
+            .getByResourceGroupWithResponse(resourceGroupName, sqlServerInstanceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SqlServerInstance refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlServerInstances()
-                .getByResourceGroupWithResponse(resourceGroupName, sqlServerInstanceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlServerInstances()
+            .getByResourceGroupWithResponse(resourceGroupName, sqlServerInstanceName, context)
+            .getValue();
         return this;
     }
 

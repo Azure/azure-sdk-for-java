@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** type of connectivity. */
+/**
+ * type of connectivity.
+ */
 public final class ConnectivityType extends ExpandableStringEnum<ConnectivityType> {
-    /** Static value IsConnectedQuery for ConnectivityType. */
+    /**
+     * Static value IsConnectedQuery for ConnectivityType.
+     */
     public static final ConnectivityType IS_CONNECTED_QUERY = fromString("IsConnectedQuery");
 
     /**
+     * Creates a new instance of ConnectivityType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectivityType() {
+    }
+
+    /**
      * Creates or finds a ConnectivityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ConnectivityType.
      */
-    @JsonCreator
     public static ConnectivityType fromString(String name) {
         return fromString(name, ConnectivityType.class);
     }
 
     /**
      * Gets known ConnectivityType values.
-     *
+     * 
      * @return known ConnectivityType values.
      */
     public static Collection<ConnectivityType> values() {

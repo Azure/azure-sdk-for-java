@@ -34,7 +34,7 @@ public final class ConvertVirtualMachineToManagedDisks {
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
         final String userName = "tirekicker";
         final String sshPublicKey = Utils.sshPublicKey();
-        final Region region = Region.US_WEST;
+        final Region region = Region.US_WEST2;
 
         try {
             //=============================================================
@@ -60,7 +60,7 @@ public final class ConvertVirtualMachineToManagedDisks {
                         .withNewVhd(50)
                         .withLun(2)
                         .attach()
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                    .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
                     .create();
 
             System.out.println("Created a Linux VM with un-managed OS and data disks: " + linuxVM.id());

@@ -5,49 +5,74 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets or sets the type of the runbook. */
+/**
+ * Gets or sets the type of the runbook.
+ */
 public final class RunbookTypeEnum extends ExpandableStringEnum<RunbookTypeEnum> {
-    /** Static value Script for RunbookTypeEnum. */
+    /**
+     * Static value Script for RunbookTypeEnum.
+     */
     public static final RunbookTypeEnum SCRIPT = fromString("Script");
 
-    /** Static value Graph for RunbookTypeEnum. */
+    /**
+     * Static value Graph for RunbookTypeEnum.
+     */
     public static final RunbookTypeEnum GRAPH = fromString("Graph");
 
-    /** Static value PowerShellWorkflow for RunbookTypeEnum. */
+    /**
+     * Static value PowerShellWorkflow for RunbookTypeEnum.
+     */
     public static final RunbookTypeEnum POWER_SHELL_WORKFLOW = fromString("PowerShellWorkflow");
 
-    /** Static value PowerShell for RunbookTypeEnum. */
+    /**
+     * Static value PowerShell for RunbookTypeEnum.
+     */
     public static final RunbookTypeEnum POWER_SHELL = fromString("PowerShell");
 
-    /** Static value GraphPowerShellWorkflow for RunbookTypeEnum. */
+    /**
+     * Static value GraphPowerShellWorkflow for RunbookTypeEnum.
+     */
     public static final RunbookTypeEnum GRAPH_POWER_SHELL_WORKFLOW = fromString("GraphPowerShellWorkflow");
 
-    /** Static value GraphPowerShell for RunbookTypeEnum. */
+    /**
+     * Static value GraphPowerShell for RunbookTypeEnum.
+     */
     public static final RunbookTypeEnum GRAPH_POWER_SHELL = fromString("GraphPowerShell");
 
-    /** Static value Python2 for RunbookTypeEnum. */
+    /**
+     * Static value Python2 for RunbookTypeEnum.
+     */
     public static final RunbookTypeEnum PYTHON2 = fromString("Python2");
 
-    /** Static value Python3 for RunbookTypeEnum. */
+    /**
+     * Static value Python3 for RunbookTypeEnum.
+     */
     public static final RunbookTypeEnum PYTHON3 = fromString("Python3");
 
     /**
+     * Creates a new instance of RunbookTypeEnum value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RunbookTypeEnum() {
+    }
+
+    /**
      * Creates or finds a RunbookTypeEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RunbookTypeEnum.
      */
-    @JsonCreator
     public static RunbookTypeEnum fromString(String name) {
         return fromString(name, RunbookTypeEnum.class);
     }
 
     /**
      * Gets known RunbookTypeEnum values.
-     *
+     * 
      * @return known RunbookTypeEnum values.
      */
     public static Collection<RunbookTypeEnum> values() {

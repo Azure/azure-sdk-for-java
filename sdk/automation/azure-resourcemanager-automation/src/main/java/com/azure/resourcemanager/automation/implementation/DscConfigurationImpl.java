@@ -135,24 +135,20 @@ public final class DscConfigurationImpl
     }
 
     public DscConfiguration create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDscConfigurations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, configurationName, createParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDscConfigurations()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, configurationName, createParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public DscConfiguration create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDscConfigurations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, configurationName, createParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDscConfigurations()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, configurationName, createParameters,
+                context)
+            .getValue();
         return this;
     }
 
@@ -169,53 +165,44 @@ public final class DscConfigurationImpl
     }
 
     public DscConfiguration apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDscConfigurations()
-                .updateWithResponse(
-                    resourceGroupName, automationAccountName, configurationName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDscConfigurations()
+            .updateWithResponse(resourceGroupName, automationAccountName, configurationName, updateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public DscConfiguration apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDscConfigurations()
-                .updateWithResponse(
-                    resourceGroupName, automationAccountName, configurationName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDscConfigurations()
+            .updateWithResponse(resourceGroupName, automationAccountName, configurationName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    DscConfigurationImpl(
-        DscConfigurationInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    DscConfigurationImpl(DscConfigurationInner innerObject,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.automationAccountName = Utils.getValueFromIdByName(innerObject.id(), "automationAccounts");
-        this.configurationName = Utils.getValueFromIdByName(innerObject.id(), "configurations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.automationAccountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "automationAccounts");
+        this.configurationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "configurations");
     }
 
     public DscConfiguration refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDscConfigurations()
-                .getWithResponse(resourceGroupName, automationAccountName, configurationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDscConfigurations()
+            .getWithResponse(resourceGroupName, automationAccountName, configurationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DscConfiguration refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDscConfigurations()
-                .getWithResponse(resourceGroupName, automationAccountName, configurationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDscConfigurations()
+            .getWithResponse(resourceGroupName, automationAccountName, configurationName, context)
+            .getValue();
         return this;
     }
 
