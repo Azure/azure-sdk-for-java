@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.implementation.util;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.RequestConditions;
@@ -485,44 +484,6 @@ public final class ModelHelper {
     public static long getBlobLength(BlobDownloadHeaders headers) {
         return headers.getContentRange() == null ? headers.getContentLength()
             : ChunkedDownloadUtils.extractTotalBlobLength(headers.getContentRange());
-    }
-
-    public static boolean checkBlobDoesNotExistStatusCode(Throwable t) {
-        if (t instanceof BlobStorageException) {
-            BlobStorageException s = (BlobStorageException) t;
-            return s.getStatusCode() == 404;
-//                && (s.getErrorCode() == BlobErrorCode.RESOURCE_NOT_FOUND
-//                || s.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND);
-            /* HttpResponseException - file get properties is a head request so a body is not returned. Error
-             conversion logic does not properly handle errors that don't return XML. */
-        } else if (t instanceof HttpResponseException) {
-            HttpResponseException h = (HttpResponseException) t;
-            //String errorCode = h.getResponse().getHeaderValue(X_MS_ERROR_CODE);
-            return h.getResponse().getStatusCode() == 404;
-//                && (BlobErrorCode.RESOURCE_NOT_FOUND.toString().equals(errorCode)
-//                || BlobErrorCode.BLOB_NOT_FOUND.toString().equals(errorCode));
-        } else {
-            return false;
-        }
-    }
-
-    public static boolean checkContainerDoesNotExistStatusCode(Throwable t) {
-        if (t instanceof BlobStorageException) {
-            BlobStorageException s = (BlobStorageException) t;
-            return s.getStatusCode() == 404;
-//                && (s.getErrorCode() == BlobErrorCode.RESOURCE_NOT_FOUND
-//                || s.getErrorCode() == BlobErrorCode.CONTAINER_NOT_FOUND);
-            /* HttpResponseException - file get properties is a head request so a body is not returned. Error
-             conversion logic does not properly handle errors that don't return XML. */
-        } else if (t instanceof HttpResponseException) {
-            HttpResponseException h = (HttpResponseException) t;
-            //String errorCode = h.getResponse().getHeaderValue(X_MS_ERROR_CODE);
-            return h.getResponse().getStatusCode() == 404;
-//                && (BlobErrorCode.RESOURCE_NOT_FOUND.toString().equals(errorCode)
-//                || BlobErrorCode.CONTAINER_NOT_FOUND.toString().equals(errorCode));
-        } else {
-            return false;
-        }
     }
 
     public static String tagsToString(Map<String, String> tags) {

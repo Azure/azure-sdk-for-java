@@ -672,7 +672,7 @@ public class BlobClientBase {
                 if (e instanceof BlobStorageException
                     && BlobErrorCode.BLOB_USES_CUSTOMER_SPECIFIED_ENCRYPTION.equals(((BlobStorageException) e).getErrorCode())) {
                     return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), true);
-                } else if (ModelHelper.checkBlobDoesNotExistStatusCode(e)) {
+                } else if (((HttpResponseException) e).getResponse().getStatusCode() == 404) {
                     return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), false);
                 } else {
                     throw LOGGER.logExceptionAsError(e);
@@ -1689,8 +1689,8 @@ public class BlobClientBase {
                 context);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), true);
         } catch (RuntimeException e) {
-            if (ModelHelper.checkBlobDoesNotExistStatusCode(e) && e instanceof HttpResponseException) {
-                HttpResponse response = ((HttpResponseException) e).getResponse();
+            if (e instanceof BlobStorageException && ((BlobStorageException) e).getResponse().getStatusCode() == 404) {
+                HttpResponse response = ((BlobStorageException) e).getResponse();
                 return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                     false);
             } else {

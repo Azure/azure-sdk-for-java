@@ -6,7 +6,6 @@ package com.azure.storage.blob;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
@@ -347,8 +346,8 @@ public final class BlobContainerClient {
             Response<BlobContainerProperties> response = getPropertiesWithResponse(null, timeout, context);
             return new SimpleResponse<>(response, true);
         } catch (RuntimeException e) {
-            if (ModelHelper.checkContainerDoesNotExistStatusCode(e) && e instanceof HttpResponseException) {
-                HttpResponse response = ((HttpResponseException) e).getResponse();
+            if (e instanceof BlobStorageException && ((BlobStorageException) e).getResponse().getStatusCode() == 404) {
+                HttpResponse response = ((BlobStorageException) e).getResponse();
                 return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), false);
             } else {
@@ -1027,7 +1026,17 @@ public final class BlobContainerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BlobItem> listBlobs(ListBlobsOptions options, String continuationToken, Duration timeout) {
         BiFunction<String, Integer, PagedResponse<BlobItem>> retriever = (nextMarker, pageSize) -> {
-            ListBlobsOptions finalOptions = options == null ? new ListBlobsOptions() : options;
+            ListBlobsOptions finalOptions = new ListBlobsOptions();
+            if (options != null) {
+                finalOptions
+                    .setMaxResultsPerPage(options.getMaxResultsPerPage())
+                    .setPrefix(options.getPrefix())
+                    .setDetails(options.getDetails());
+            }
+            /*
+            If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
+            Otherwise, prefer the new value.
+            */
             if (pageSize != null) {
                 finalOptions.setMaxResultsPerPage(pageSize);
             }
@@ -1039,7 +1048,6 @@ public final class BlobContainerClient {
                     finalOptions.getPrefix(), nextMarker, finalOptions.getMaxResultsPerPage(), include, null, null,
                     Context.NONE);
 
-            // Use StorageImplUtils.sendRequest for the operation instead of directly calling operation.get()
             ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse> response =
                 StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
 
@@ -1155,7 +1163,17 @@ public final class BlobContainerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BlobItem> listBlobsByHierarchy(String delimiter, ListBlobsOptions options, Duration timeout) {
         BiFunction<String, Integer, PagedResponse<BlobItem>> func = (marker, pageSize) -> {
-            ListBlobsOptions finalOptions = options == null ? new ListBlobsOptions() : options;
+            ListBlobsOptions finalOptions = new ListBlobsOptions();
+            if (options != null) {
+                finalOptions
+                    .setMaxResultsPerPage(options.getMaxResultsPerPage())
+                    .setPrefix(options.getPrefix())
+                    .setDetails(options.getDetails());
+            }
+            /*
+            If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
+            Otherwise, prefer the new value.
+            */
             if (pageSize != null) {
                 finalOptions.setMaxResultsPerPage(pageSize);
             }
