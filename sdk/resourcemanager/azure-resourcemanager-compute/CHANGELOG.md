@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Supported creating `GalleryImageVersion` from source virtual machine by specifying `withSourceVirtualMachine`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
