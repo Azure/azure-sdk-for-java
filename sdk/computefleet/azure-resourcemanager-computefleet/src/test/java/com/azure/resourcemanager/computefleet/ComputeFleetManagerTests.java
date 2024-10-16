@@ -124,7 +124,7 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
             String loadBalancerName = "loadBalancer" + randomPadding();
             String adminUser = "adminUser" + randomPadding();
             String adminPwd = UUID.randomUUID().toString().replace("-", "@").substring(0, 13);
-            // @embedStart
+            // @embedmeStart
             Network network = networkManager.networks()
                 .define(vnetName)
                 .withRegion(REGION)
@@ -249,7 +249,7 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
                         )
                 )
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             fleet.refresh();
             Assertions.assertEquals(fleetName, fleet.name());
             Assertions.assertEquals(fleetName, computeFleetManager.fleets().getById(fleet.id()).name());
