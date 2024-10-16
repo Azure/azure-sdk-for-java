@@ -5,6 +5,7 @@ import com.azure.ai.openai.RealtimeAsyncClient;
 import com.azure.ai.openai.RealtimeClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
+import org.apache.tools.ant.taskdefs.Sleep;
 
 public class LowLevelClient {
     public static void main(String[] args) {
@@ -19,6 +20,13 @@ public class LowLevelClient {
                 .credential(new AzureKeyCredential(azureOpenaiKey))
                 .buildAsyncClient();
 
+        client.start().block();
+
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         try {
             client.close();
