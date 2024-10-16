@@ -48,12 +48,14 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class ServiceBusSharedKeyCredential implements TokenCredential {
     private static final String SHARED_ACCESS_SIGNATURE_FORMAT = "SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s";
     private static final String HASH_ALGORITHM = "HMACSHA256";
+    private static final String NO_HASH_ALGORITHM_ERROR_MESSAGE = "Unable to create hashing algorithm '" + HASH_ALGORITHM + "'";
+    private static final String INVALID_SHARED_ACCESS_KEY = "'sharedAccessKey' is an invalid value for the hashing algorithm.";
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSharedKeyCredential.class);
 
     private final String policyName;
-    private final Mac hmac;
     private final Duration tokenValidity;
+    private final SecretKeySpec secretKeySpec;
     private final String sharedAccessSignature;
 
     /**
@@ -100,21 +102,8 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
             throw new IllegalArgumentException("'tokenTimeToLive' has to positive and in the order-of seconds");
         }
 
-        try {
-            hmac = Mac.getInstance(HASH_ALGORITHM);
-        } catch (NoSuchAlgorithmException e) {
-            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                String.format("Unable to create hashing algorithm '%s'", HASH_ALGORITHM), e));
-        }
-
         final byte[] sasKeyBytes = sharedAccessKey.getBytes(UTF_8);
-        final SecretKeySpec finalKey = new SecretKeySpec(sasKeyBytes, HASH_ALGORITHM);
-        try {
-            hmac.init(finalKey);
-        } catch (InvalidKeyException e) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "'sharedAccessKey' is an invalid value for the hashing algorithm.", e));
-        }
+        this.secretKeySpec = new SecretKeySpec(sasKeyBytes, HASH_ALGORITHM);
         this.sharedAccessSignature = null;
     }
 
@@ -133,7 +122,7 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
         this.sharedAccessSignature = Objects.requireNonNull(sharedAccessSignature,
             "'sharedAccessSignature' cannot be null");
         this.policyName = null;
-        this.hmac = null;
+        this.secretKeySpec = null;
         this.tokenValidity = null;
     }
 
@@ -163,6 +152,16 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
 
         if (sharedAccessSignature != null) {
             return new AccessToken(sharedAccessSignature, getExpirationTime(sharedAccessSignature));
+        }
+
+        final Mac hmac;
+        try {
+            hmac = Mac.getInstance(HASH_ALGORITHM);
+            hmac.init(secretKeySpec);
+        } catch (NoSuchAlgorithmException e) {
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(NO_HASH_ALGORITHM_ERROR_MESSAGE, e));
+        } catch (InvalidKeyException e) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(INVALID_SHARED_ACCESS_KEY, e));
         }
 
         final String utf8Encoding = UTF_8.name();
