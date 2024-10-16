@@ -71,7 +71,7 @@ public class PaloAltoNetworksNgfwManagerTests extends TestProxyTestBase {
         LocalRulestackResource localRulestackResource = null;
         try {
             String localRulestackName = "localRulestack" + randomPadding();
-            // @embedStart
+            // @embedmeStart
             localRulestackResource = paloAltoNetworksNgfwManager.localRulestacks()
                 .define(localRulestackName)
                 .withRegion(REGION)
@@ -79,7 +79,7 @@ public class PaloAltoNetworksNgfwManagerTests extends TestProxyTestBase {
                 .withDefaultMode(DefaultMode.NONE)
                 .withScope(ScopeType.LOCAL)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             localRulestackResource.refresh();
             Assertions.assertEquals(localRulestackResource.name(), localRulestackName);
             Assertions.assertEquals(localRulestackResource.name(), paloAltoNetworksNgfwManager.localRulestacks().getById(localRulestackResource.id()).name());

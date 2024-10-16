@@ -71,13 +71,13 @@ public class LogAnalyticsManagerTests extends TestProxyTestBase {
         Workspace workspace = null;
         try {
             String spaceName = "space" + randomPadding();
-            // @embedStart
+            // @embedmeStart
             workspace = logAnalyticsManager.workspaces()
                 .define(spaceName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             workspace.refresh();
             Assertions.assertEquals(workspace.name(), spaceName);
             Assertions.assertEquals(workspace.name(), logAnalyticsManager.workspaces().getById(workspace.id()).name());

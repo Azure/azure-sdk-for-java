@@ -71,13 +71,13 @@ public class ContainerServiceFleetManagerTests extends TestProxyTestBase {
         Fleet fleet = null;
         try {
             String fleetName = "fleet" + randomPadding();
-            // @embedStart
+            // @embedmeStart
             fleet = containerServiceFleetManager.fleets()
                 .define(fleetName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             fleet.refresh();
             Assertions.assertEquals(fleet.name(), fleetName);
             Assertions.assertEquals(fleet.name(), containerServiceFleetManager.fleets().getById(fleet.id()).name());

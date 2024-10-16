@@ -71,7 +71,7 @@ public class DashboardManagerTests extends TestProxyTestBase {
         ManagedGrafana grafana = null;
         try {
             String grafanaName = "grafana" + randomPadding();
-            // @embedStart
+            // @embedmeStart
             grafana = dashboardManager.grafanas()
                 .define(grafanaName)
                 .withRegion(REGION)
@@ -79,7 +79,7 @@ public class DashboardManagerTests extends TestProxyTestBase {
                 .withIdentity(new ManagedServiceIdentity()
                     .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             grafana.refresh();
             Assertions.assertEquals(grafana.name(), grafanaName);
             Assertions.assertEquals(grafana.name(), dashboardManager.grafanas().getById(grafana.id()).name());

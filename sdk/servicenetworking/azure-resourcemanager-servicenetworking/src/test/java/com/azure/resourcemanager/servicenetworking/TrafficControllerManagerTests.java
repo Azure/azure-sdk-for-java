@@ -66,13 +66,13 @@ public class TrafficControllerManagerTests extends TestProxyTestBase {
         TrafficController trafficController = null;
         try {
             String interfaceName = "interface" + randomPadding();
-            // @embedStart
+            // @embedmeStart
             trafficController = trafficControllerManager.trafficControllerInterfaces()
                 .define(interfaceName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             Assertions.assertEquals(interfaceName, trafficController.name());
             Assertions.assertEquals(trafficController.name(),
                 trafficControllerManager.trafficControllerInterfaces().getById(trafficController.id()).name());

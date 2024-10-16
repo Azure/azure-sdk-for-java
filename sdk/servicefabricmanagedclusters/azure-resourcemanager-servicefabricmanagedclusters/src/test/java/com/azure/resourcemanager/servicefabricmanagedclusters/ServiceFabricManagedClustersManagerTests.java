@@ -76,7 +76,7 @@ public class ServiceFabricManagedClustersManagerTests extends TestProxyTestBase 
             String clusterName = "cluster" + randomPadding();
             String adminUser = "user" + randomPadding();
             String adminPassWord = UUID.randomUUID().toString().replace("-", "@").substring(0, 13);
-            // @embedStart
+            // @embedmeStart
             managedCluster = serviceFabricManagedClustersManager
                 .managedClusters()
                 .define(clusterName)
@@ -89,7 +89,7 @@ public class ServiceFabricManagedClustersManagerTests extends TestProxyTestBase 
                 .withClientConnectionPort(19000)
                 .withHttpGatewayConnectionPort(19080)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             managedCluster.refresh();
             Assertions.assertEquals(clusterName, managedCluster.name());
             Assertions.assertEquals(clusterName, serviceFabricManagedClustersManager.managedClusters().getById(managedCluster.id()).name());
