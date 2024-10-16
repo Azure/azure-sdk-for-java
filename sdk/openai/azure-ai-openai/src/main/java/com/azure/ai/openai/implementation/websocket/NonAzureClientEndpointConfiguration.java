@@ -17,8 +17,8 @@ public class NonAzureClientEndpointConfiguration extends ClientEndpointConfigura
     private final KeyCredential keyCredential;
     private final String openaiBeta = "realtime=v1";
 
-    public NonAzureClientEndpointConfiguration(String protocol, String userAgent, String model, KeyCredential keyCredential) {
-        super(protocol, userAgent);
+    public NonAzureClientEndpointConfiguration(String baseUrl, String userAgent, String model, KeyCredential keyCredential) {
+        super(baseUrl, userAgent);
         this.model = model;
         this.keyCredential = keyCredential;
     }

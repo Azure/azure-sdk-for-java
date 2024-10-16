@@ -1,7 +1,9 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.implementation.RealtimesImpl;
+import com.azure.ai.openai.implementation.websocket.ClientEndpointConfiguration;
 import com.azure.ai.openai.implementation.websocket.WebSocketClient;
+import com.azure.ai.openai.implementation.websocket.WebSocketClientNettyImpl;
 import com.azure.ai.openai.models.realtime.RealtimeClientEvent;
 import com.azure.ai.openai.models.realtime.RealtimeServerEvent;
 import com.azure.core.annotation.Generated;
@@ -23,17 +25,11 @@ import java.util.function.Supplier;
 
 public final class RealtimeAsyncClient implements Closeable {
 
-    RealtimeAsyncClient(WebSocketClient webSocketClient, Supplier<String> clientAccessUrlSupplier,
+    private final WebSocketClient webSocketClient;
 
-                   // WebPubSub specific field?
-//                   WebPubSubProtocolType webPubSubProtocol,
-
-                   String applicationId, String userAgent, RetryStrategy retryStrategy
-                   // WebPubSub specific fields?
-//                   boolean autoReconnect, boolean autoRestoreGroup
-
-    ) {
-
+    RealtimeAsyncClient(
+            WebSocketClient webSocketClient, ClientEndpointConfiguration cec, String applicationId, RetryStrategy retryStrategy) {
+        this.webSocketClient = webSocketClient == null ? new WebSocketClientNettyImpl() : webSocketClient;
     }
 
 // --------------- Code gen stuff --------------------------------
@@ -50,7 +46,7 @@ public final class RealtimeAsyncClient implements Closeable {
 
     // TODO jpalvarezl: Leaving this in so that the project compiles
     RealtimeAsyncClient(RealtimesImpl serviceClient) {
-
+        this.webSocketClient = null;
     }
 
     @Override

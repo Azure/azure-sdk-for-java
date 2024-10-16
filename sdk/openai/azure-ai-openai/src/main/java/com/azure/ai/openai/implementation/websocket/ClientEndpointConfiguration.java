@@ -1,6 +1,9 @@
 package com.azure.ai.openai.implementation.websocket;
 
 
+import com.azure.ai.openai.OpenAIServiceVersion;
+import com.azure.core.credential.KeyCredential;
+import com.azure.core.credential.TokenCredential;
 import io.netty.handler.codec.http.HttpHeaders;
 
 import java.net.URI;
@@ -41,4 +44,16 @@ public abstract class ClientEndpointConfiguration {
     }
 
     protected abstract String getURIString();
+
+    public static AzureClientEndpointConfiguration createAzureClientEndpointConfiguration(String baseUrl, String userAgent, String deployment, OpenAIServiceVersion serviceVersion, KeyCredential keyCredential) {
+        return new AzureClientEndpointConfiguration(baseUrl, userAgent, deployment, serviceVersion, keyCredential);
+    }
+
+    public static AzureClientEndpointConfiguration createAzureClientEndpointConfiguration(String baseUrl, String userAgent, String deployment, OpenAIServiceVersion serviceVersion, TokenCredential tokenCredential) {
+        return new AzureClientEndpointConfiguration(baseUrl, userAgent, deployment, serviceVersion, tokenCredential);
+    }
+
+    public static NonAzureClientEndpointConfiguration createNonAzureClientEndpointConfiguration(String baseUrl, String userAgent, String model, KeyCredential keyCredential) {
+        return new NonAzureClientEndpointConfiguration(baseUrl, userAgent, model, keyCredential);
+    }
 }

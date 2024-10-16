@@ -16,8 +16,7 @@ public class AzureClientEndpointConfiguration  extends ClientEndpointConfigurati
     private final String path = "/openai/realtime";
 
     // Query parameters
-    // TODO jpalvarezl expose as a constructor parameter
-    private final OpenAIServiceVersion serviceVersion = OpenAIServiceVersion.V2024_10_01_PREVIEW;
+    private final OpenAIServiceVersion serviceVersion;
     private final String deployment;
 
     // Headers
@@ -27,15 +26,17 @@ public class AzureClientEndpointConfiguration  extends ClientEndpointConfigurati
     // userAgent is already defined in the parent class
 
 
-    public AzureClientEndpointConfiguration(String protocol, String userAgent, String deployment, KeyCredential keyCredential) {
-        super(protocol, userAgent);
+    public AzureClientEndpointConfiguration(String baseUrl, String userAgent, String deployment, OpenAIServiceVersion serviceVersion, KeyCredential keyCredential) {
+        super(baseUrl, userAgent);
+        this.serviceVersion = serviceVersion;
         this.deployment = deployment;
         this.keyCredential = keyCredential;
         this.tokenCredential = null;
     }
 
-    public AzureClientEndpointConfiguration(String protocol, String userAgent, String deployment, TokenCredential tokenCredential) {
-        super(protocol, userAgent);
+    public AzureClientEndpointConfiguration(String baseUrl, String userAgent, String deployment, OpenAIServiceVersion serviceVersion, TokenCredential tokenCredential) {
+        super(baseUrl, userAgent);
+        this.serviceVersion = serviceVersion;
         this.deployment = deployment;
         this.tokenCredential = tokenCredential;
         this.keyCredential = null;
