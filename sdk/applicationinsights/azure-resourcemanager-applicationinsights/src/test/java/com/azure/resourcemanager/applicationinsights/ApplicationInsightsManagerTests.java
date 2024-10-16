@@ -83,7 +83,7 @@ public class ApplicationInsightsManagerTests extends TestProxyTestBase {
         try {
             String componentName = "component" + randomPadding;
             String spaceName = "space" + randomPadding;
-            // @embedStart
+            // @embedmeStart
             Workspace workspace = logAnalyticsManager.workspaces()
                 .define(spaceName)
                 .withRegion(REGION)
@@ -99,7 +99,7 @@ public class ApplicationInsightsManagerTests extends TestProxyTestBase {
                 .withWorkspaceResourceId(workspace.id())
                 .withIngestionMode(IngestionMode.LOG_ANALYTICS)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             component.refresh();
             Assertions.assertEquals(component.name(), componentName);
             Assertions.assertEquals(component.name(), applicationInsightsManager.components().getById(component.id()).name());

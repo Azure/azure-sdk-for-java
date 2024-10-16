@@ -82,7 +82,7 @@ public class ChaosManagerTests extends TestProxyTestBase {
         Target target = null;
         String kvName = "kv" + randomPadding();
         try {
-            // @embedStart
+            // @embedmeStart
             keyVaultManager.vaults()
                 .define(kvName)
                 .withRegion(REGION)
@@ -102,7 +102,7 @@ public class ChaosManagerTests extends TestProxyTestBase {
                         .withLocation(REGION.name())
                         .withProperties(Collections.emptyMap())
                 );
-            // @embedEnd
+            // @embedmeEnd
             Assertions.assertEquals(target.name(), "microsoft-keyvault");
             Assertions.assertTrue(Objects.nonNull(chaosManager.targets().get(
                 resourceGroupName, "microsoft.keyvault",

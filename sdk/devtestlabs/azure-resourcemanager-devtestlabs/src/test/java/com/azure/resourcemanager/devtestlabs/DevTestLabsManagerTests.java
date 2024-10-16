@@ -71,13 +71,13 @@ public class DevTestLabsManagerTests extends TestProxyTestBase {
         Lab lab = null;
         try {
             String labName = "lab" + randomPadding();
-            // @embedStart
+            // @embedmeStart
             lab = devTestLabsManager.labs()
                 .define(labName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             lab.refresh();
             Assertions.assertEquals(lab.name(), labName);
             Assertions.assertEquals(lab.name(), devTestLabsManager.labs().getById(lab.id()).name());

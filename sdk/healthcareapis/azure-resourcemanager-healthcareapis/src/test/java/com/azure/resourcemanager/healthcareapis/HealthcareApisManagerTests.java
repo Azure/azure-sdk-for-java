@@ -72,14 +72,14 @@ public class HealthcareApisManagerTests extends TestProxyTestBase {
         try {
             String randomPadding = randomPadding();
             String workspaceName = "workspace" + randomPadding;
-            // @embedStart
+            // @embedmeStart
             workspace = healthcareApisManager.workspaces()
                 .define(workspaceName)
                 .withExistingResourceGroup(resourceGroupName)
                 .withRegion(REGION)
                 .withProperties(new WorkspaceProperties().withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             workspace.refresh();
             Assertions.assertEquals(workspace.name(), workspaceName);
             Assertions.assertEquals(workspace.name(), healthcareApisManager.workspaces().getById(workspace.id()).name());
