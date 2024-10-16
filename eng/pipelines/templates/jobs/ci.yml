@@ -199,7 +199,6 @@ jobs:
           filePath: $(Build.SourcesDirectory)/eng/scripts/Save-Package-Namespaces-Property.ps1
           arguments: >
             -ArtifactStagingDirectory $(Build.ArtifactStagingDirectory)
-            -ArtifactsList ('$(ArtifactsJson)' | ConvertFrom-Json)
           pwsh: true
           workingDirectory: $(Pipeline.Workspace)
         displayName: Update package properties with namespaces

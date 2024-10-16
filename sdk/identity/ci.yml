@@ -63,6 +63,8 @@ extends:
         safeName: azureidentitybroker
         releaseInBatch: ${{ parameters.release_azureidentitybroker }}
     AdditionalModules:
+      - name: azure-identity-broker-samples
+        groupId: com.azure
       - name: azure-identity-perf
         groupId: com.azure
         # required by the above perf library

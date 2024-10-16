@@ -163,6 +163,8 @@ extends:
         safeName: azurecoretracingopentelemetry
         releaseInBatch: ${{ parameters.release_azurecoretracingopentelemetry }}
     AdditionalModules:
+      - name: azure-core-tracing-opentelemetry-samples
+        groupId: com.azure
       - name: azure-core-perf
         groupId: com.azure
         # required by the above perf library
