@@ -17,19 +17,43 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
 public final class RealtimeAsyncClient implements Closeable {
 
     private final WebSocketClient webSocketClient;
+    private final ClientEndpointConfiguration clientEndpointConfiguration;
+    private final String applicationId;
+    private final Retry sendMessageRetrySpec;
 
     RealtimeAsyncClient(
             WebSocketClient webSocketClient, ClientEndpointConfiguration cec, String applicationId, RetryStrategy retryStrategy) {
         this.webSocketClient = webSocketClient == null ? new WebSocketClientNettyImpl() : webSocketClient;
+        this.clientEndpointConfiguration = cec;
+        this.applicationId = applicationId;
+        this.sendMessageRetrySpec = Retry.from(signals -> {
+            AtomicInteger retryCount = new AtomicInteger(0);
+            return signals.concatMap(s -> {
+                Mono<Retry.RetrySignal> ret = Mono.error(s.failure());
+                // TODO jpalvarezl: replace `SendMessageFailedException` with the OpenAI Realtime type for this
+//                if (s.failure() instanceof SendMessageFailedException) {
+//                    if (((SendMessageFailedException) s.failure()).isTransient()) {
+//                        int retryAttempt = retryCount.incrementAndGet();
+//                        if (retryAttempt <= retryStrategy.getMaxRetries()) {
+//                            ret = Mono.delay(retryStrategy.calculateRetryDelay(retryAttempt)).then(Mono.just(s));
+//                        }
+//                    }
+//                }
+                return ret;
+            });
+        });
+
         // TODO jpalvarezl: remove this:
         this.serviceClient = null;
     }
@@ -52,6 +76,9 @@ public final class RealtimeAsyncClient implements Closeable {
     @Generated
     RealtimeAsyncClient(RealtimesImpl serviceClient) {
         this.webSocketClient = null;
+        this.clientEndpointConfiguration = null;
+        this.applicationId = null;
+        this.sendMessageRetrySpec = null;
         this.serviceClient = serviceClient;
     }
 
