@@ -27,6 +27,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
@@ -308,6 +309,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
     }
 
     @Test
+    @Disabled("Creating a managed image with managedDisk source that has 'TrustedLaunch' security type is not supported.")
     public void canCreateTrustedLaunchVMsFromGalleryImage() {
         final String galleryName = generateRandomResourceName("jsim", 15);
 
@@ -435,7 +437,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .fromManagedDisk(dataDisk.id())
                 .withDiskCaching(dataDisk.cachingType())
                 .withDiskSizeInGB(dataDisk.size() + 1)
-                .attach();
+                .attach(); // TODO(xiaofei) Creating a managed image with managedDisk source that has 'TrustedLaunch' security type is not supported.
         }
 
         return creatableDisk.create();

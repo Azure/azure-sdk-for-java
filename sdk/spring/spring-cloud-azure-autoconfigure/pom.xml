@@ -201,7 +201,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.63.3</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.64.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <optional>true</optional>
       <exclusions>
         <exclusion>
@@ -237,7 +237,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventgrid</artifactId>
-      <version>4.25.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;dependency} -->
+      <version>4.26.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -546,7 +546,6 @@
                 <include>io.lettuce:lettuce-core:[6.3.2.RELEASE]</include> <!-- {x-include-update;springboot3_io.lettuce:lettuce-core;external_dependency} -->
                 <include>jakarta.servlet:jakarta.servlet-api:[6.0.0]</include> <!-- {x-include-update;springboot3_jakarta.servlet:jakarta.servlet-api;external_dependency} -->
                 <include>jakarta.validation:jakarta.validation-api:[3.0.2]</include> <!-- {x-include-update;springboot3_jakarta.validation:jakarta.validation-api;external_dependency} -->
-                <include>org.apache.qpid:qpid-jms-client:[2.0.0]</include> <!-- {x-include-update;springboot3_org.apache.qpid:qpid-jms-client;external_dependency} -->
                 <include>org.hibernate.validator:hibernate-validator:[8.0.1.Final]</include> <!-- {x-include-update;springboot3_org.hibernate.validator:hibernate-validator;external_dependency} -->
                 <include>org.messaginghub:pooled-jms:[3.1.6]</include> <!-- {x-include-update;springboot3_org.messaginghub:pooled-jms;external_dependency} -->
                 <include>org.postgresql:postgresql:[42.7.4]</include> <!-- {x-include-update;springboot3_org.postgresql:postgresql;external_dependency} -->

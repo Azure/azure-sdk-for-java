@@ -56,7 +56,7 @@ public final class PoolsCreateOrUpdateMockTests {
                     .withFabricProfile(new FabricProfile())
                     .withDevCenterProjectResourceId("l"))
                 .withIdentity(
-                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_AND_USER_ASSIGNED)
+                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
                         .withUserAssignedIdentities(mapOf("jhdgqggebdunyga", new UserAssignedIdentity(), "rxcyjmoad",
                             new UserAssignedIdentity())))
                 .create();

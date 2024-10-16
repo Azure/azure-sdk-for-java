@@ -5,33 +5,46 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AutomationRulePropertyChangedConditionSupportedChangedType. */
+/**
+ * Defines values for AutomationRulePropertyChangedConditionSupportedChangedType.
+ */
 public final class AutomationRulePropertyChangedConditionSupportedChangedType
     extends ExpandableStringEnum<AutomationRulePropertyChangedConditionSupportedChangedType> {
-    /** Static value ChangedFrom for AutomationRulePropertyChangedConditionSupportedChangedType. */
-    public static final AutomationRulePropertyChangedConditionSupportedChangedType CHANGED_FROM =
-        fromString("ChangedFrom");
+    /**
+     * Static value ChangedFrom for AutomationRulePropertyChangedConditionSupportedChangedType.
+     */
+    public static final AutomationRulePropertyChangedConditionSupportedChangedType CHANGED_FROM
+        = fromString("ChangedFrom");
 
-    /** Static value ChangedTo for AutomationRulePropertyChangedConditionSupportedChangedType. */
+    /**
+     * Static value ChangedTo for AutomationRulePropertyChangedConditionSupportedChangedType.
+     */
     public static final AutomationRulePropertyChangedConditionSupportedChangedType CHANGED_TO = fromString("ChangedTo");
 
     /**
+     * Creates a new instance of AutomationRulePropertyChangedConditionSupportedChangedType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AutomationRulePropertyChangedConditionSupportedChangedType() {
+    }
+
+    /**
      * Creates or finds a AutomationRulePropertyChangedConditionSupportedChangedType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AutomationRulePropertyChangedConditionSupportedChangedType.
      */
-    @JsonCreator
     public static AutomationRulePropertyChangedConditionSupportedChangedType fromString(String name) {
         return fromString(name, AutomationRulePropertyChangedConditionSupportedChangedType.class);
     }
 
     /**
      * Gets known AutomationRulePropertyChangedConditionSupportedChangedType values.
-     *
+     * 
      * @return known AutomationRulePropertyChangedConditionSupportedChangedType values.
      */
     public static Collection<AutomationRulePropertyChangedConditionSupportedChangedType> values() {

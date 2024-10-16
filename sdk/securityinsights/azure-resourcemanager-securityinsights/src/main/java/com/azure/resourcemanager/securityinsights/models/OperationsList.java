@@ -6,28 +6,38 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.OperationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Lists the operations available in the SecurityInsights RP. */
+/**
+ * Lists the operations available in the SecurityInsights RP.
+ */
 @Fluent
-public final class OperationsList {
+public final class OperationsList implements JsonSerializable<OperationsList> {
     /*
      * URL to fetch the next set of operations.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /*
      * Array of operations
      */
-    @JsonProperty(value = "value", required = true)
     private List<OperationInner> value;
 
     /**
+     * Creates an instance of OperationsList class.
+     */
+    public OperationsList() {
+    }
+
+    /**
      * Get the nextLink property: URL to fetch the next set of operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -36,7 +46,7 @@ public final class OperationsList {
 
     /**
      * Get the value property: Array of operations.
-     *
+     * 
      * @return the value value.
      */
     public List<OperationInner> value() {
@@ -45,7 +55,7 @@ public final class OperationsList {
 
     /**
      * Set the value property: Array of operations.
-     *
+     * 
      * @param value the value value to set.
      * @return the OperationsList object itself.
      */
@@ -56,18 +66,57 @@ public final class OperationsList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model OperationsList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model OperationsList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OperationsList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationsList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationsList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OperationsList.
+     */
+    public static OperationsList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationsList deserializedOperationsList = new OperationsList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<OperationInner> value = reader.readArray(reader1 -> OperationInner.fromJson(reader1));
+                    deserializedOperationsList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedOperationsList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationsList;
+        });
+    }
 }

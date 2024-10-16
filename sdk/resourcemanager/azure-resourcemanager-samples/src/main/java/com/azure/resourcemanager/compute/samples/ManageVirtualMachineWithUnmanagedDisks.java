@@ -43,7 +43,7 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final Region region = Region.US_WEST;
+        final Region region = Region.US_WEST2;
         final String windowsVMName = Utils.randomResourceName(azureResourceManager, "wVM", 15);
         final String linuxVMName = Utils.randomResourceName(azureResourceManager, "lVM", 15);
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
@@ -71,7 +71,7 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
                     .withAdminUsername(userName)
                     .withAdminPassword(password)
                     .withUnmanagedDisks()
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                    .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)
                     .create();
 
             Date t2 = new Date();
@@ -205,7 +205,7 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
                     .withRootUsername(userName)
                     .withSsh(sshPublicKey)
                     .withUnmanagedDisks()
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                    .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
                     .create();
 
             System.out.println("Created a Linux VM (in the same virtual network): " + linuxVM.id());

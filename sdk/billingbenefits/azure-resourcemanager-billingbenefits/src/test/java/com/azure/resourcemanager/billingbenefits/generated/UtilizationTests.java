@@ -12,16 +12,15 @@ import java.util.Arrays;
 public final class UtilizationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Utilization model =
-            BinaryData
-                .fromString(
-                    "{\"trend\":\"rxnjeaseipheofl\",\"aggregates\":[{\"grain\":2.7443767,\"grainUnit\":\"enjbdlwtgrhp\",\"value\":10.934221,\"valueUnit\":\"umasxazjpq\"}]}")
-                .toObject(Utilization.class);
+        Utilization model = BinaryData.fromString(
+            "{\"trend\":\"xzlocxscp\",\"aggregates\":[{\"grain\":96.80537,\"grainUnit\":\"bcsglumma\",\"value\":4.1212263,\"valueUnit\":\"odxobnbdxkqpxok\"},{\"grain\":53.086155,\"grainUnit\":\"npime\",\"value\":26.254427,\"valueUnit\":\"xgcp\"},{\"grain\":43.47036,\"grainUnit\":\"aajrm\",\"value\":30.404997,\"valueUnit\":\"zrlovmclwhijcoej\"}]}")
+            .toObject(Utilization.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Utilization model = new Utilization().withAggregates(Arrays.asList(new UtilizationAggregates()));
+        Utilization model = new Utilization().withAggregates(
+            Arrays.asList(new UtilizationAggregates(), new UtilizationAggregates(), new UtilizationAggregates()));
         model = BinaryData.fromObject(model).toObject(Utilization.class);
     }
 }

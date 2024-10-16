@@ -12,13 +12,15 @@ import com.azure.resourcemanager.policyinsights.fluent.models.PolicyEventInner;
 import com.azure.resourcemanager.policyinsights.models.PolicyEventsResourceType;
 import java.time.OffsetDateTime;
 
-/** An instance of this class provides access to all the operations defined in PolicyEventsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PolicyEventsClient.
+ */
 public interface PolicyEventsClient {
     /**
      * Queries policy events for the resources under the management group.
-     *
+     * 
      * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
-     *     allowed.
+     * allowed.
      * @param managementGroupName Management group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -26,28 +28,28 @@ public interface PolicyEventsClient {
      * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyEventInner> listQueryResultsForManagementGroup(
-        PolicyEventsResourceType policyEventsResource, String managementGroupName);
+    PagedIterable<PolicyEventInner> listQueryResultsForManagementGroup(PolicyEventsResourceType policyEventsResource,
+        String managementGroupName);
 
     /**
      * Queries policy events for the resources under the management group.
-     *
+     * 
      * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
-     *     allowed.
+     * allowed.
      * @param managementGroupName Management group name.
      * @param top Maximum number of records to return.
      * @param orderBy Ordering expression using OData notation. One or more comma-separated column names with an
-     *     optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc".
+     * optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc".
      * @param select Select expression using OData notation. Limits the columns on each record to just those requested,
-     *     e.g. "$select=PolicyAssignmentId, ResourceId".
+     * e.g. "$select=PolicyAssignmentId, ResourceId".
      * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
-     *     the service uses ($to - 1-day).
+     * the service uses ($to - 1-day).
      * @param to ISO 8601 formatted timestamp specifying the end time of the interval to query. When not specified, the
-     *     service uses request time.
+     * service uses request time.
      * @param filter OData filter expression.
      * @param apply OData apply expression for aggregations.
      * @param skipToken Skiptoken is only provided if a previous response returned a partial result as a part of
-     *     nextLink element.
+     * nextLink element.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -55,24 +57,15 @@ public interface PolicyEventsClient {
      * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyEventInner> listQueryResultsForManagementGroup(
-        PolicyEventsResourceType policyEventsResource,
-        String managementGroupName,
-        Integer top,
-        String orderBy,
-        String select,
-        OffsetDateTime from,
-        OffsetDateTime to,
-        String filter,
-        String apply,
-        String skipToken,
-        Context context);
+    PagedIterable<PolicyEventInner> listQueryResultsForManagementGroup(PolicyEventsResourceType policyEventsResource,
+        String managementGroupName, Integer top, String orderBy, String select, OffsetDateTime from, OffsetDateTime to,
+        String filter, String apply, String skipToken, Context context);
 
     /**
      * Queries policy events for the resources under the subscription.
-     *
+     * 
      * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
-     *     allowed.
+     * allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -80,28 +73,28 @@ public interface PolicyEventsClient {
      * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyEventInner> listQueryResultsForSubscription(
-        PolicyEventsResourceType policyEventsResource, String subscriptionId);
+    PagedIterable<PolicyEventInner> listQueryResultsForSubscription(PolicyEventsResourceType policyEventsResource,
+        String subscriptionId);
 
     /**
      * Queries policy events for the resources under the subscription.
-     *
+     * 
      * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
-     *     allowed.
+     * allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param top Maximum number of records to return.
      * @param orderBy Ordering expression using OData notation. One or more comma-separated column names with an
-     *     optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc".
+     * optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc".
      * @param select Select expression using OData notation. Limits the columns on each record to just those requested,
-     *     e.g. "$select=PolicyAssignmentId, ResourceId".
+     * e.g. "$select=PolicyAssignmentId, ResourceId".
      * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
-     *     the service uses ($to - 1-day).
+     * the service uses ($to - 1-day).
      * @param to ISO 8601 formatted timestamp specifying the end time of the interval to query. When not specified, the
-     *     service uses request time.
+     * service uses request time.
      * @param filter OData filter expression.
      * @param apply OData apply expression for aggregations.
      * @param skipToken Skiptoken is only provided if a previous response returned a partial result as a part of
-     *     nextLink element.
+     * nextLink element.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -109,24 +102,15 @@ public interface PolicyEventsClient {
      * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyEventInner> listQueryResultsForSubscription(
-        PolicyEventsResourceType policyEventsResource,
-        String subscriptionId,
-        Integer top,
-        String orderBy,
-        String select,
-        OffsetDateTime from,
-        OffsetDateTime to,
-        String filter,
-        String apply,
-        String skipToken,
-        Context context);
+    PagedIterable<PolicyEventInner> listQueryResultsForSubscription(PolicyEventsResourceType policyEventsResource,
+        String subscriptionId, Integer top, String orderBy, String select, OffsetDateTime from, OffsetDateTime to,
+        String filter, String apply, String skipToken, Context context);
 
     /**
      * Queries policy events for the resources under the resource group.
-     *
+     * 
      * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
-     *     allowed.
+     * allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param resourceGroupName Resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -135,29 +119,29 @@ public interface PolicyEventsClient {
      * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyEventInner> listQueryResultsForResourceGroup(
-        PolicyEventsResourceType policyEventsResource, String subscriptionId, String resourceGroupName);
+    PagedIterable<PolicyEventInner> listQueryResultsForResourceGroup(PolicyEventsResourceType policyEventsResource,
+        String subscriptionId, String resourceGroupName);
 
     /**
      * Queries policy events for the resources under the resource group.
-     *
+     * 
      * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
-     *     allowed.
+     * allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param resourceGroupName Resource group name.
      * @param top Maximum number of records to return.
      * @param orderBy Ordering expression using OData notation. One or more comma-separated column names with an
-     *     optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc".
+     * optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc".
      * @param select Select expression using OData notation. Limits the columns on each record to just those requested,
-     *     e.g. "$select=PolicyAssignmentId, ResourceId".
+     * e.g. "$select=PolicyAssignmentId, ResourceId".
      * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
-     *     the service uses ($to - 1-day).
+     * the service uses ($to - 1-day).
      * @param to ISO 8601 formatted timestamp specifying the end time of the interval to query. When not specified, the
-     *     service uses request time.
+     * service uses request time.
      * @param filter OData filter expression.
      * @param apply OData apply expression for aggregations.
      * @param skipToken Skiptoken is only provided if a previous response returned a partial result as a part of
-     *     nextLink element.
+     * nextLink element.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -165,25 +149,15 @@ public interface PolicyEventsClient {
      * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyEventInner> listQueryResultsForResourceGroup(
-        PolicyEventsResourceType policyEventsResource,
-        String subscriptionId,
-        String resourceGroupName,
-        Integer top,
-        String orderBy,
-        String select,
-        OffsetDateTime from,
-        OffsetDateTime to,
-        String filter,
-        String apply,
-        String skipToken,
-        Context context);
+    PagedIterable<PolicyEventInner> listQueryResultsForResourceGroup(PolicyEventsResourceType policyEventsResource,
+        String subscriptionId, String resourceGroupName, Integer top, String orderBy, String select,
+        OffsetDateTime from, OffsetDateTime to, String filter, String apply, String skipToken, Context context);
 
     /**
      * Queries policy events for the resource.
-     *
+     * 
      * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
-     *     allowed.
+     * allowed.
      * @param resourceId Resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -191,29 +165,29 @@ public interface PolicyEventsClient {
      * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyEventInner> listQueryResultsForResource(
-        PolicyEventsResourceType policyEventsResource, String resourceId);
+    PagedIterable<PolicyEventInner> listQueryResultsForResource(PolicyEventsResourceType policyEventsResource,
+        String resourceId);
 
     /**
      * Queries policy events for the resource.
-     *
+     * 
      * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
-     *     allowed.
+     * allowed.
      * @param resourceId Resource ID.
      * @param top Maximum number of records to return.
      * @param orderBy Ordering expression using OData notation. One or more comma-separated column names with an
-     *     optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc".
+     * optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc".
      * @param select Select expression using OData notation. Limits the columns on each record to just those requested,
-     *     e.g. "$select=PolicyAssignmentId, ResourceId".
+     * e.g. "$select=PolicyAssignmentId, ResourceId".
      * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
-     *     the service uses ($to - 1-day).
+     * the service uses ($to - 1-day).
      * @param to ISO 8601 formatted timestamp specifying the end time of the interval to query. When not specified, the
-     *     service uses request time.
+     * service uses request time.
      * @param filter OData filter expression.
      * @param apply OData apply expression for aggregations.
      * @param expand The $expand query parameter. For example, to expand components use $expand=components.
      * @param skipToken Skiptoken is only provided if a previous response returned a partial result as a part of
-     *     nextLink element.
+     * nextLink element.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -221,25 +195,15 @@ public interface PolicyEventsClient {
      * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyEventInner> listQueryResultsForResource(
-        PolicyEventsResourceType policyEventsResource,
-        String resourceId,
-        Integer top,
-        String orderBy,
-        String select,
-        OffsetDateTime from,
-        OffsetDateTime to,
-        String filter,
-        String apply,
-        String expand,
-        String skipToken,
-        Context context);
+    PagedIterable<PolicyEventInner> listQueryResultsForResource(PolicyEventsResourceType policyEventsResource,
+        String resourceId, Integer top, String orderBy, String select, OffsetDateTime from, OffsetDateTime to,
+        String filter, String apply, String expand, String skipToken, Context context);
 
     /**
      * Queries policy events for the subscription level policy set definition.
-     *
+     * 
      * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
-     *     allowed.
+     * allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policySetDefinitionName Policy set definition name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -253,24 +217,24 @@ public interface PolicyEventsClient {
 
     /**
      * Queries policy events for the subscription level policy set definition.
-     *
+     * 
      * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
-     *     allowed.
+     * allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policySetDefinitionName Policy set definition name.
      * @param top Maximum number of records to return.
      * @param orderBy Ordering expression using OData notation. One or more comma-separated column names with an
-     *     optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc".
+     * optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc".
      * @param select Select expression using OData notation. Limits the columns on each record to just those requested,
-     *     e.g. "$select=PolicyAssignmentId, ResourceId".
+     * e.g. "$select=PolicyAssignmentId, ResourceId".
      * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
-     *     the service uses ($to - 1-day).
+     * the service uses ($to - 1-day).
      * @param to ISO 8601 formatted timestamp specifying the end time of the interval to query. When not specified, the
-     *     service uses request time.
+     * service uses request time.
      * @param filter OData filter expression.
      * @param apply OData apply expression for aggregations.
      * @param skipToken Skiptoken is only provided if a previous response returned a partial result as a part of
-     *     nextLink element.
+     * nextLink element.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -279,24 +243,15 @@ public interface PolicyEventsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PolicyEventInner> listQueryResultsForPolicySetDefinition(
-        PolicyEventsResourceType policyEventsResource,
-        String subscriptionId,
-        String policySetDefinitionName,
-        Integer top,
-        String orderBy,
-        String select,
-        OffsetDateTime from,
-        OffsetDateTime to,
-        String filter,
-        String apply,
-        String skipToken,
-        Context context);
+        PolicyEventsResourceType policyEventsResource, String subscriptionId, String policySetDefinitionName,
+        Integer top, String orderBy, String select, OffsetDateTime from, OffsetDateTime to, String filter, String apply,
+        String skipToken, Context context);
 
     /**
      * Queries policy events for the subscription level policy definition.
-     *
+     * 
      * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
-     *     allowed.
+     * allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policyDefinitionName Policy definition name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -305,29 +260,29 @@ public interface PolicyEventsClient {
      * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyEventInner> listQueryResultsForPolicyDefinition(
-        PolicyEventsResourceType policyEventsResource, String subscriptionId, String policyDefinitionName);
+    PagedIterable<PolicyEventInner> listQueryResultsForPolicyDefinition(PolicyEventsResourceType policyEventsResource,
+        String subscriptionId, String policyDefinitionName);
 
     /**
      * Queries policy events for the subscription level policy definition.
-     *
+     * 
      * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
-     *     allowed.
+     * allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policyDefinitionName Policy definition name.
      * @param top Maximum number of records to return.
      * @param orderBy Ordering expression using OData notation. One or more comma-separated column names with an
-     *     optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc".
+     * optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc".
      * @param select Select expression using OData notation. Limits the columns on each record to just those requested,
-     *     e.g. "$select=PolicyAssignmentId, ResourceId".
+     * e.g. "$select=PolicyAssignmentId, ResourceId".
      * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
-     *     the service uses ($to - 1-day).
+     * the service uses ($to - 1-day).
      * @param to ISO 8601 formatted timestamp specifying the end time of the interval to query. When not specified, the
-     *     service uses request time.
+     * service uses request time.
      * @param filter OData filter expression.
      * @param apply OData apply expression for aggregations.
      * @param skipToken Skiptoken is only provided if a previous response returned a partial result as a part of
-     *     nextLink element.
+     * nextLink element.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -335,25 +290,15 @@ public interface PolicyEventsClient {
      * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyEventInner> listQueryResultsForPolicyDefinition(
-        PolicyEventsResourceType policyEventsResource,
-        String subscriptionId,
-        String policyDefinitionName,
-        Integer top,
-        String orderBy,
-        String select,
-        OffsetDateTime from,
-        OffsetDateTime to,
-        String filter,
-        String apply,
-        String skipToken,
-        Context context);
+    PagedIterable<PolicyEventInner> listQueryResultsForPolicyDefinition(PolicyEventsResourceType policyEventsResource,
+        String subscriptionId, String policyDefinitionName, Integer top, String orderBy, String select,
+        OffsetDateTime from, OffsetDateTime to, String filter, String apply, String skipToken, Context context);
 
     /**
      * Queries policy events for the subscription level policy assignment.
-     *
+     * 
      * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
-     *     allowed.
+     * allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policyAssignmentName Policy assignment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -367,24 +312,24 @@ public interface PolicyEventsClient {
 
     /**
      * Queries policy events for the subscription level policy assignment.
-     *
+     * 
      * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
-     *     allowed.
+     * allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policyAssignmentName Policy assignment name.
      * @param top Maximum number of records to return.
      * @param orderBy Ordering expression using OData notation. One or more comma-separated column names with an
-     *     optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc".
+     * optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc".
      * @param select Select expression using OData notation. Limits the columns on each record to just those requested,
-     *     e.g. "$select=PolicyAssignmentId, ResourceId".
+     * e.g. "$select=PolicyAssignmentId, ResourceId".
      * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
-     *     the service uses ($to - 1-day).
+     * the service uses ($to - 1-day).
      * @param to ISO 8601 formatted timestamp specifying the end time of the interval to query. When not specified, the
-     *     service uses request time.
+     * service uses request time.
      * @param filter OData filter expression.
      * @param apply OData apply expression for aggregations.
      * @param skipToken Skiptoken is only provided if a previous response returned a partial result as a part of
-     *     nextLink element.
+     * nextLink element.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -393,24 +338,15 @@ public interface PolicyEventsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PolicyEventInner> listQueryResultsForSubscriptionLevelPolicyAssignment(
-        PolicyEventsResourceType policyEventsResource,
-        String subscriptionId,
-        String policyAssignmentName,
-        Integer top,
-        String orderBy,
-        String select,
-        OffsetDateTime from,
-        OffsetDateTime to,
-        String filter,
-        String apply,
-        String skipToken,
-        Context context);
+        PolicyEventsResourceType policyEventsResource, String subscriptionId, String policyAssignmentName, Integer top,
+        String orderBy, String select, OffsetDateTime from, OffsetDateTime to, String filter, String apply,
+        String skipToken, Context context);
 
     /**
      * Queries policy events for the resource group level policy assignment.
-     *
+     * 
      * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
-     *     allowed.
+     * allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param resourceGroupName Resource group name.
      * @param policyAssignmentName Policy assignment name.
@@ -421,32 +357,30 @@ public interface PolicyEventsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PolicyEventInner> listQueryResultsForResourceGroupLevelPolicyAssignment(
-        PolicyEventsResourceType policyEventsResource,
-        String subscriptionId,
-        String resourceGroupName,
+        PolicyEventsResourceType policyEventsResource, String subscriptionId, String resourceGroupName,
         String policyAssignmentName);
 
     /**
      * Queries policy events for the resource group level policy assignment.
-     *
+     * 
      * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
-     *     allowed.
+     * allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param resourceGroupName Resource group name.
      * @param policyAssignmentName Policy assignment name.
      * @param top Maximum number of records to return.
      * @param orderBy Ordering expression using OData notation. One or more comma-separated column names with an
-     *     optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc".
+     * optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc".
      * @param select Select expression using OData notation. Limits the columns on each record to just those requested,
-     *     e.g. "$select=PolicyAssignmentId, ResourceId".
+     * e.g. "$select=PolicyAssignmentId, ResourceId".
      * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
-     *     the service uses ($to - 1-day).
+     * the service uses ($to - 1-day).
      * @param to ISO 8601 formatted timestamp specifying the end time of the interval to query. When not specified, the
-     *     service uses request time.
+     * service uses request time.
      * @param filter OData filter expression.
      * @param apply OData apply expression for aggregations.
      * @param skipToken Skiptoken is only provided if a previous response returned a partial result as a part of
-     *     nextLink element.
+     * nextLink element.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -455,17 +389,7 @@ public interface PolicyEventsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PolicyEventInner> listQueryResultsForResourceGroupLevelPolicyAssignment(
-        PolicyEventsResourceType policyEventsResource,
-        String subscriptionId,
-        String resourceGroupName,
-        String policyAssignmentName,
-        Integer top,
-        String orderBy,
-        String select,
-        OffsetDateTime from,
-        OffsetDateTime to,
-        String filter,
-        String apply,
-        String skipToken,
-        Context context);
+        PolicyEventsResourceType policyEventsResource, String subscriptionId, String resourceGroupName,
+        String policyAssignmentName, Integer top, String orderBy, String select, OffsetDateTime from, OffsetDateTime to,
+        String filter, String apply, String skipToken, Context context);
 }

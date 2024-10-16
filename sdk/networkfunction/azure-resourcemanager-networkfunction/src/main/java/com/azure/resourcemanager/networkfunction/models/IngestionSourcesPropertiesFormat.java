@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.networkfunction.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Ingestion policy properties. */
+/**
+ * Ingestion policy properties.
+ */
 @Fluent
-public final class IngestionSourcesPropertiesFormat {
+public final class IngestionSourcesPropertiesFormat implements JsonSerializable<IngestionSourcesPropertiesFormat> {
     /*
      * Ingestion source type.
      */
-    @JsonProperty(value = "sourceType")
     private SourceType sourceType;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
-    /** Creates an instance of IngestionSourcesPropertiesFormat class. */
+    /**
+     * Creates an instance of IngestionSourcesPropertiesFormat class.
+     */
     public IngestionSourcesPropertiesFormat() {
     }
 
     /**
      * Get the sourceType property: Ingestion source type.
-     *
+     * 
      * @return the sourceType value.
      */
     public SourceType sourceType() {
@@ -37,7 +43,7 @@ public final class IngestionSourcesPropertiesFormat {
 
     /**
      * Set the sourceType property: Ingestion source type.
-     *
+     * 
      * @param sourceType the sourceType value to set.
      * @return the IngestionSourcesPropertiesFormat object itself.
      */
@@ -48,7 +54,7 @@ public final class IngestionSourcesPropertiesFormat {
 
     /**
      * Get the resourceId property: Resource ID.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -57,7 +63,7 @@ public final class IngestionSourcesPropertiesFormat {
 
     /**
      * Set the resourceId property: Resource ID.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the IngestionSourcesPropertiesFormat object itself.
      */
@@ -68,9 +74,49 @@ public final class IngestionSourcesPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceType", this.sourceType == null ? null : this.sourceType.toString());
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IngestionSourcesPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IngestionSourcesPropertiesFormat if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IngestionSourcesPropertiesFormat.
+     */
+    public static IngestionSourcesPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IngestionSourcesPropertiesFormat deserializedIngestionSourcesPropertiesFormat
+                = new IngestionSourcesPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceType".equals(fieldName)) {
+                    deserializedIngestionSourcesPropertiesFormat.sourceType = SourceType.fromString(reader.getString());
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedIngestionSourcesPropertiesFormat.resourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIngestionSourcesPropertiesFormat;
+        });
     }
 }

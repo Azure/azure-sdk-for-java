@@ -5,42 +5,55 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An abstract Query item for entity. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = EntityQueryItem.class)
-@JsonTypeName("EntityQueryItem")
-@JsonSubTypes({@JsonSubTypes.Type(name = "Insight", value = InsightQueryItem.class)})
+/**
+ * An abstract Query item for entity.
+ */
 @Fluent
-public class EntityQueryItem {
+public class EntityQueryItem implements JsonSerializable<EntityQueryItem> {
+    /*
+     * The kind of the entity query
+     */
+    private EntityQueryKind kind = EntityQueryKind.fromString("EntityQueryItem");
+
     /*
      * Query Template ARM ID
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Query Template ARM Name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * ARM Type
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /**
+     * Creates an instance of EntityQueryItem class.
+     */
+    public EntityQueryItem() {
+    }
+
+    /**
+     * Get the kind property: The kind of the entity query.
+     * 
+     * @return the kind value.
+     */
+    public EntityQueryKind kind() {
+        return this.kind;
+    }
+
+    /**
      * Get the id property: Query Template ARM ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -48,8 +61,19 @@ public class EntityQueryItem {
     }
 
     /**
+     * Set the id property: Query Template ARM ID.
+     * 
+     * @param id the id value to set.
+     * @return the EntityQueryItem object itself.
+     */
+    EntityQueryItem withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
      * Get the name property: Query Template ARM Name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -58,7 +82,7 @@ public class EntityQueryItem {
 
     /**
      * Set the name property: Query Template ARM Name.
-     *
+     * 
      * @param name the name value to set.
      * @return the EntityQueryItem object itself.
      */
@@ -69,7 +93,7 @@ public class EntityQueryItem {
 
     /**
      * Get the type property: ARM Type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -78,7 +102,7 @@ public class EntityQueryItem {
 
     /**
      * Set the type property: ARM Type.
-     *
+     * 
      * @param type the type value to set.
      * @return the EntityQueryItem object itself.
      */
@@ -89,9 +113,78 @@ public class EntityQueryItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EntityQueryItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EntityQueryItem if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EntityQueryItem.
+     */
+    public static EntityQueryItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Insight".equals(discriminatorValue)) {
+                    return InsightQueryItem.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static EntityQueryItem fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EntityQueryItem deserializedEntityQueryItem = new EntityQueryItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedEntityQueryItem.kind = EntityQueryKind.fromString(reader.getString());
+                } else if ("id".equals(fieldName)) {
+                    deserializedEntityQueryItem.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedEntityQueryItem.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEntityQueryItem.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEntityQueryItem;
+        });
     }
 }

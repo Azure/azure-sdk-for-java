@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.AlertSeverity;
 import com.azure.resourcemanager.securityinsights.models.AlertStatus;
 import com.azure.resourcemanager.securityinsights.models.AttackTactic;
@@ -13,167 +17,162 @@ import com.azure.resourcemanager.securityinsights.models.ConfidenceScoreStatus;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
 import com.azure.resourcemanager.securityinsights.models.KillChainIntent;
 import com.azure.resourcemanager.securityinsights.models.SecurityAlertPropertiesConfidenceReasonsItem;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 
-/** SecurityAlert entity property bag. */
+/**
+ * SecurityAlert entity property bag.
+ */
 @Fluent
 public final class SecurityAlertProperties extends EntityCommonProperties {
     /*
      * The display name of the alert.
      */
-    @JsonProperty(value = "alertDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String alertDisplayName;
 
     /*
      * The type name of the alert.
      */
-    @JsonProperty(value = "alertType", access = JsonProperty.Access.WRITE_ONLY)
     private String alertType;
 
     /*
      * Display name of the main entity being reported on.
      */
-    @JsonProperty(value = "compromisedEntity", access = JsonProperty.Access.WRITE_ONLY)
     private String compromisedEntity;
 
     /*
      * The confidence level of this alert.
      */
-    @JsonProperty(value = "confidenceLevel", access = JsonProperty.Access.WRITE_ONLY)
     private ConfidenceLevel confidenceLevel;
 
     /*
      * The confidence reasons
      */
-    @JsonProperty(value = "confidenceReasons", access = JsonProperty.Access.WRITE_ONLY)
     private List<SecurityAlertPropertiesConfidenceReasonsItem> confidenceReasons;
 
     /*
      * The confidence score of the alert.
      */
-    @JsonProperty(value = "confidenceScore", access = JsonProperty.Access.WRITE_ONLY)
     private Double confidenceScore;
 
     /*
      * The confidence score calculation status, i.e. indicating if score calculation is pending for this alert, not
      * applicable or final.
      */
-    @JsonProperty(value = "confidenceScoreStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ConfidenceScoreStatus confidenceScoreStatus;
 
     /*
      * Alert description.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * The impact end time of the alert (the time of the last event contributing to the alert).
      */
-    @JsonProperty(value = "endTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTimeUtc;
 
     /*
      * Holds the alert intent stage(s) mapping for this alert.
      */
-    @JsonProperty(value = "intent", access = JsonProperty.Access.WRITE_ONLY)
     private KillChainIntent intent;
 
     /*
      * The identifier of the alert inside the product which generated the alert.
      */
-    @JsonProperty(value = "providerAlertId", access = JsonProperty.Access.WRITE_ONLY)
     private String providerAlertId;
 
     /*
      * The time the alert was made available for consumption.
      */
-    @JsonProperty(value = "processingEndTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime processingEndTime;
 
     /*
      * The name of a component inside the product which generated the alert.
      */
-    @JsonProperty(value = "productComponentName", access = JsonProperty.Access.WRITE_ONLY)
     private String productComponentName;
 
     /*
      * The name of the product which published this alert.
      */
-    @JsonProperty(value = "productName", access = JsonProperty.Access.WRITE_ONLY)
     private String productName;
 
     /*
      * The version of the product generating the alert.
      */
-    @JsonProperty(value = "productVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String productVersion;
 
     /*
      * Manual action items to take to remediate the alert.
      */
-    @JsonProperty(value = "remediationSteps", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> remediationSteps;
 
     /*
      * The severity of the alert
      */
-    @JsonProperty(value = "severity")
     private AlertSeverity severity;
 
     /*
      * The impact start time of the alert (the time of the first event contributing to the alert).
      */
-    @JsonProperty(value = "startTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTimeUtc;
 
     /*
      * The lifecycle status of the alert.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private AlertStatus status;
 
     /*
      * Holds the product identifier of the alert for the product.
      */
-    @JsonProperty(value = "systemAlertId", access = JsonProperty.Access.WRITE_ONLY)
     private String systemAlertId;
 
     /*
      * The tactics of the alert
      */
-    @JsonProperty(value = "tactics", access = JsonProperty.Access.WRITE_ONLY)
     private List<AttackTactic> tactics;
 
     /*
      * The time the alert was generated.
      */
-    @JsonProperty(value = "timeGenerated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeGenerated;
 
     /*
      * The name of the vendor that raise the alert.
      */
-    @JsonProperty(value = "vendorName", access = JsonProperty.Access.WRITE_ONLY)
     private String vendorName;
 
     /*
      * The uri link of the alert.
      */
-    @JsonProperty(value = "alertLink", access = JsonProperty.Access.WRITE_ONLY)
     private String alertLink;
 
     /*
      * The list of resource identifiers of the alert.
      */
-    @JsonProperty(value = "resourceIdentifiers", access = JsonProperty.Access.WRITE_ONLY)
     private List<Object> resourceIdentifiers;
+
+    /*
+     * The graph item display name which is a short humanly readable description of the graph item instance. This
+     * property is optional and might be system generated.
+     */
+    private String friendlyName;
+
+    /*
+     * A bag of custom fields that should be part of the entity and will be presented to the user.
+     */
+    private Map<String, Object> additionalData;
+
+    /**
+     * Creates an instance of SecurityAlertProperties class.
+     */
+    public SecurityAlertProperties() {
+    }
 
     /**
      * Get the alertDisplayName property: The display name of the alert.
-     *
+     * 
      * @return the alertDisplayName value.
      */
     public String alertDisplayName() {
@@ -182,7 +181,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
 
     /**
      * Get the alertType property: The type name of the alert.
-     *
+     * 
      * @return the alertType value.
      */
     public String alertType() {
@@ -191,7 +190,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
 
     /**
      * Get the compromisedEntity property: Display name of the main entity being reported on.
-     *
+     * 
      * @return the compromisedEntity value.
      */
     public String compromisedEntity() {
@@ -200,7 +199,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
 
     /**
      * Get the confidenceLevel property: The confidence level of this alert.
-     *
+     * 
      * @return the confidenceLevel value.
      */
     public ConfidenceLevel confidenceLevel() {
@@ -209,7 +208,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
 
     /**
      * Get the confidenceReasons property: The confidence reasons.
-     *
+     * 
      * @return the confidenceReasons value.
      */
     public List<SecurityAlertPropertiesConfidenceReasonsItem> confidenceReasons() {
@@ -218,7 +217,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
 
     /**
      * Get the confidenceScore property: The confidence score of the alert.
-     *
+     * 
      * @return the confidenceScore value.
      */
     public Double confidenceScore() {
@@ -228,7 +227,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
     /**
      * Get the confidenceScoreStatus property: The confidence score calculation status, i.e. indicating if score
      * calculation is pending for this alert, not applicable or final.
-     *
+     * 
      * @return the confidenceScoreStatus value.
      */
     public ConfidenceScoreStatus confidenceScoreStatus() {
@@ -237,7 +236,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
 
     /**
      * Get the description property: Alert description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -247,7 +246,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
     /**
      * Get the endTimeUtc property: The impact end time of the alert (the time of the last event contributing to the
      * alert).
-     *
+     * 
      * @return the endTimeUtc value.
      */
     public OffsetDateTime endTimeUtc() {
@@ -256,7 +255,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
 
     /**
      * Get the intent property: Holds the alert intent stage(s) mapping for this alert.
-     *
+     * 
      * @return the intent value.
      */
     public KillChainIntent intent() {
@@ -265,7 +264,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
 
     /**
      * Get the providerAlertId property: The identifier of the alert inside the product which generated the alert.
-     *
+     * 
      * @return the providerAlertId value.
      */
     public String providerAlertId() {
@@ -274,7 +273,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
 
     /**
      * Get the processingEndTime property: The time the alert was made available for consumption.
-     *
+     * 
      * @return the processingEndTime value.
      */
     public OffsetDateTime processingEndTime() {
@@ -283,7 +282,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
 
     /**
      * Get the productComponentName property: The name of a component inside the product which generated the alert.
-     *
+     * 
      * @return the productComponentName value.
      */
     public String productComponentName() {
@@ -292,7 +291,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
 
     /**
      * Get the productName property: The name of the product which published this alert.
-     *
+     * 
      * @return the productName value.
      */
     public String productName() {
@@ -301,7 +300,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
 
     /**
      * Get the productVersion property: The version of the product generating the alert.
-     *
+     * 
      * @return the productVersion value.
      */
     public String productVersion() {
@@ -310,7 +309,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
 
     /**
      * Get the remediationSteps property: Manual action items to take to remediate the alert.
-     *
+     * 
      * @return the remediationSteps value.
      */
     public List<String> remediationSteps() {
@@ -319,7 +318,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
 
     /**
      * Get the severity property: The severity of the alert.
-     *
+     * 
      * @return the severity value.
      */
     public AlertSeverity severity() {
@@ -328,7 +327,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
 
     /**
      * Set the severity property: The severity of the alert.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the SecurityAlertProperties object itself.
      */
@@ -340,7 +339,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
     /**
      * Get the startTimeUtc property: The impact start time of the alert (the time of the first event contributing to
      * the alert).
-     *
+     * 
      * @return the startTimeUtc value.
      */
     public OffsetDateTime startTimeUtc() {
@@ -349,7 +348,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
 
     /**
      * Get the status property: The lifecycle status of the alert.
-     *
+     * 
      * @return the status value.
      */
     public AlertStatus status() {
@@ -358,7 +357,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
 
     /**
      * Get the systemAlertId property: Holds the product identifier of the alert for the product.
-     *
+     * 
      * @return the systemAlertId value.
      */
     public String systemAlertId() {
@@ -367,7 +366,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
 
     /**
      * Get the tactics property: The tactics of the alert.
-     *
+     * 
      * @return the tactics value.
      */
     public List<AttackTactic> tactics() {
@@ -376,7 +375,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
 
     /**
      * Get the timeGenerated property: The time the alert was generated.
-     *
+     * 
      * @return the timeGenerated value.
      */
     public OffsetDateTime timeGenerated() {
@@ -385,7 +384,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
 
     /**
      * Get the vendorName property: The name of the vendor that raise the alert.
-     *
+     * 
      * @return the vendorName value.
      */
     public String vendorName() {
@@ -394,7 +393,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
 
     /**
      * Get the alertLink property: The uri link of the alert.
-     *
+     * 
      * @return the alertLink value.
      */
     public String alertLink() {
@@ -403,7 +402,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
 
     /**
      * Get the resourceIdentifiers property: The list of resource identifiers of the alert.
-     *
+     * 
      * @return the resourceIdentifiers value.
      */
     public List<Object> resourceIdentifiers() {
@@ -411,15 +410,137 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
     }
 
     /**
+     * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
+     * graph item instance. This property is optional and might be system generated.
+     * 
+     * @return the friendlyName value.
+     */
+    @Override
+    public String friendlyName() {
+        return this.friendlyName;
+    }
+
+    /**
+     * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
+     * to the user.
+     * 
+     * @return the additionalData value.
+     */
+    @Override
+    public Map<String, Object> additionalData() {
+        return this.additionalData;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (confidenceReasons() != null) {
             confidenceReasons().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("severity", this.severity == null ? null : this.severity.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityAlertProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityAlertProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecurityAlertProperties.
+     */
+    public static SecurityAlertProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityAlertProperties deserializedSecurityAlertProperties = new SecurityAlertProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("additionalData".equals(fieldName)) {
+                    Map<String, Object> additionalData = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedSecurityAlertProperties.additionalData = additionalData;
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedSecurityAlertProperties.friendlyName = reader.getString();
+                } else if ("alertDisplayName".equals(fieldName)) {
+                    deserializedSecurityAlertProperties.alertDisplayName = reader.getString();
+                } else if ("alertType".equals(fieldName)) {
+                    deserializedSecurityAlertProperties.alertType = reader.getString();
+                } else if ("compromisedEntity".equals(fieldName)) {
+                    deserializedSecurityAlertProperties.compromisedEntity = reader.getString();
+                } else if ("confidenceLevel".equals(fieldName)) {
+                    deserializedSecurityAlertProperties.confidenceLevel
+                        = ConfidenceLevel.fromString(reader.getString());
+                } else if ("confidenceReasons".equals(fieldName)) {
+                    List<SecurityAlertPropertiesConfidenceReasonsItem> confidenceReasons
+                        = reader.readArray(reader1 -> SecurityAlertPropertiesConfidenceReasonsItem.fromJson(reader1));
+                    deserializedSecurityAlertProperties.confidenceReasons = confidenceReasons;
+                } else if ("confidenceScore".equals(fieldName)) {
+                    deserializedSecurityAlertProperties.confidenceScore = reader.getNullable(JsonReader::getDouble);
+                } else if ("confidenceScoreStatus".equals(fieldName)) {
+                    deserializedSecurityAlertProperties.confidenceScoreStatus
+                        = ConfidenceScoreStatus.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedSecurityAlertProperties.description = reader.getString();
+                } else if ("endTimeUtc".equals(fieldName)) {
+                    deserializedSecurityAlertProperties.endTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("intent".equals(fieldName)) {
+                    deserializedSecurityAlertProperties.intent = KillChainIntent.fromString(reader.getString());
+                } else if ("providerAlertId".equals(fieldName)) {
+                    deserializedSecurityAlertProperties.providerAlertId = reader.getString();
+                } else if ("processingEndTime".equals(fieldName)) {
+                    deserializedSecurityAlertProperties.processingEndTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("productComponentName".equals(fieldName)) {
+                    deserializedSecurityAlertProperties.productComponentName = reader.getString();
+                } else if ("productName".equals(fieldName)) {
+                    deserializedSecurityAlertProperties.productName = reader.getString();
+                } else if ("productVersion".equals(fieldName)) {
+                    deserializedSecurityAlertProperties.productVersion = reader.getString();
+                } else if ("remediationSteps".equals(fieldName)) {
+                    List<String> remediationSteps = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSecurityAlertProperties.remediationSteps = remediationSteps;
+                } else if ("severity".equals(fieldName)) {
+                    deserializedSecurityAlertProperties.severity = AlertSeverity.fromString(reader.getString());
+                } else if ("startTimeUtc".equals(fieldName)) {
+                    deserializedSecurityAlertProperties.startTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedSecurityAlertProperties.status = AlertStatus.fromString(reader.getString());
+                } else if ("systemAlertId".equals(fieldName)) {
+                    deserializedSecurityAlertProperties.systemAlertId = reader.getString();
+                } else if ("tactics".equals(fieldName)) {
+                    List<AttackTactic> tactics
+                        = reader.readArray(reader1 -> AttackTactic.fromString(reader1.getString()));
+                    deserializedSecurityAlertProperties.tactics = tactics;
+                } else if ("timeGenerated".equals(fieldName)) {
+                    deserializedSecurityAlertProperties.timeGenerated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("vendorName".equals(fieldName)) {
+                    deserializedSecurityAlertProperties.vendorName = reader.getString();
+                } else if ("alertLink".equals(fieldName)) {
+                    deserializedSecurityAlertProperties.alertLink = reader.getString();
+                } else if ("resourceIdentifiers".equals(fieldName)) {
+                    List<Object> resourceIdentifiers = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedSecurityAlertProperties.resourceIdentifiers = resourceIdentifiers;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityAlertProperties;
+        });
     }
 }

@@ -7,32 +7,34 @@ package com.azure.resourcemanager.securityinsights.models;
 import com.azure.resourcemanager.securityinsights.fluent.models.RepoInner;
 import java.util.List;
 
-/** An immutable client-side representation of Repo. */
+/**
+ * An immutable client-side representation of Repo.
+ */
 public interface Repo {
     /**
      * Gets the url property: The url to access the repository.
-     *
+     * 
      * @return the url value.
      */
     String url();
 
     /**
      * Gets the fullName property: The name of the repository.
-     *
+     * 
      * @return the fullName value.
      */
     String fullName();
 
     /**
      * Gets the branches property: Array of branches.
-     *
+     * 
      * @return the branches value.
      */
     List<String> branches();
 
     /**
      * Gets the inner com.azure.resourcemanager.securityinsights.fluent.models.RepoInner object.
-     *
+     * 
      * @return the inner object.
      */
     RepoInner innerModel();

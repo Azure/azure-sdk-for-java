@@ -5,33 +5,42 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Instruction steps to enable the connector. */
+/**
+ * Instruction steps to enable the connector.
+ */
 @Fluent
-public class InstructionSteps {
+public class InstructionSteps implements JsonSerializable<InstructionSteps> {
     /*
      * Instruction step title
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * Instruction step description
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Instruction step details
      */
-    @JsonProperty(value = "instructions")
     private List<InstructionStepsInstructionsItem> instructions;
 
     /**
+     * Creates an instance of InstructionSteps class.
+     */
+    public InstructionSteps() {
+    }
+
+    /**
      * Get the title property: Instruction step title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -40,7 +49,7 @@ public class InstructionSteps {
 
     /**
      * Set the title property: Instruction step title.
-     *
+     * 
      * @param title the title value to set.
      * @return the InstructionSteps object itself.
      */
@@ -51,7 +60,7 @@ public class InstructionSteps {
 
     /**
      * Get the description property: Instruction step description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -60,7 +69,7 @@ public class InstructionSteps {
 
     /**
      * Set the description property: Instruction step description.
-     *
+     * 
      * @param description the description value to set.
      * @return the InstructionSteps object itself.
      */
@@ -71,7 +80,7 @@ public class InstructionSteps {
 
     /**
      * Get the instructions property: Instruction step details.
-     *
+     * 
      * @return the instructions value.
      */
     public List<InstructionStepsInstructionsItem> instructions() {
@@ -80,7 +89,7 @@ public class InstructionSteps {
 
     /**
      * Set the instructions property: Instruction step details.
-     *
+     * 
      * @param instructions the instructions value to set.
      * @return the InstructionSteps object itself.
      */
@@ -91,12 +100,56 @@ public class InstructionSteps {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (instructions() != null) {
             instructions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("instructions", this.instructions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InstructionSteps from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InstructionSteps if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InstructionSteps.
+     */
+    public static InstructionSteps fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InstructionSteps deserializedInstructionSteps = new InstructionSteps();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("title".equals(fieldName)) {
+                    deserializedInstructionSteps.title = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedInstructionSteps.description = reader.getString();
+                } else if ("instructions".equals(fieldName)) {
+                    List<InstructionStepsInstructionsItem> instructions
+                        = reader.readArray(reader1 -> InstructionStepsInstructionsItem.fromJson(reader1));
+                    deserializedInstructionSteps.instructions = instructions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInstructionSteps;
+        });
     }
 }

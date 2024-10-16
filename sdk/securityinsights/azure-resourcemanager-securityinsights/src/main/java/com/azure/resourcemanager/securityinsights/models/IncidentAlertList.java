@@ -7,18 +7,20 @@ package com.azure.resourcemanager.securityinsights.models;
 import com.azure.resourcemanager.securityinsights.fluent.models.IncidentAlertListInner;
 import java.util.List;
 
-/** An immutable client-side representation of IncidentAlertList. */
+/**
+ * An immutable client-side representation of IncidentAlertList.
+ */
 public interface IncidentAlertList {
     /**
      * Gets the value property: Array of incident alerts.
-     *
+     * 
      * @return the value value.
      */
     List<SecurityAlert> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.securityinsights.fluent.models.IncidentAlertListInner object.
-     *
+     * 
      * @return the inner object.
      */
     IncidentAlertListInner innerModel();

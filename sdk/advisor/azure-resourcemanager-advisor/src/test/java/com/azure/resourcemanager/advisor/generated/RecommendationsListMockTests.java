@@ -6,86 +6,55 @@ package com.azure.resourcemanager.advisor.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.advisor.AdvisorManager;
 import com.azure.resourcemanager.advisor.models.Category;
 import com.azure.resourcemanager.advisor.models.Impact;
 import com.azure.resourcemanager.advisor.models.ResourceRecommendationBase;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class RecommendationsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"category\":\"Performance\",\"impact\":\"High\",\"impactedField\":\"d\",\"impactedValue\":\"wyhzdx\",\"lastUpdated\":\"2021-03-28T04:38:02Z\",\"metadata\":{\"xzb\":\"datazmnvdfznudaod\",\"dzu\":\"datacblylpstdbhhxsr\",\"fiwjmygtdssls\":\"dataerscdntne\"},\"recommendationTypeId\":\"mweriofzpy\",\"shortDescription\":{\"problem\":\"mwabnetshhszhedp\",\"solution\":\"wiwubm\"},\"suppressionIds\":[\"8a4432a2-3b19-409f-b383-7d1bdd4d7ba2\",\"1cecd4e7-eb54-4f9b-8761-32ac7c3dfe2a\",\"398819e6-d82f-42db-ae6b-793d00ab60ef\",\"32b8ef21-341e-4099-a263-ec8c50cf166b\"],\"extendedProperties\":{\"xogaokonzmnsikv\":\"ldnkwwtppjfl\",\"qkdltfz\":\"kqze\",\"gureodkwobdag\":\"mhhv\",\"gqxndlkzgxhuripl\":\"tibqdxbxwakb\"},\"resourceMetadata\":{\"resourceId\":\"dxunkbebxmubyyn\",\"source\":\"lrb\",\"action\":{\"wlauwzizxbmpg\":\"dataoievseotgqrlltm\",\"p\":\"datajefuzmuvpbttdumo\"},\"singular\":\"ebmnzbtbhjpglk\",\"plural\":\"ohdneuel\"},\"description\":\"hsd\",\"label\":\"t\",\"learnMoreLink\":\"fikdowwqu\",\"potentialBenefits\":\"xzxcl\",\"actions\":[{\"wdsjnkalju\":\"datahqzonosggbhcoh\",\"kfvhqcrailvpn\":\"dataiiswacffgdkzze\",\"mh\":\"datapfuflrw\"},{\"wqapnedgfbcvk\":\"dataxyjrxsagafcnih\",\"pkeqdcvdrhvoo\":\"datavq\"},{\"vnhdldwmgxcxr\":\"dataotbobzdopcj\",\"niyqslui\":\"datalpmutwuoegrpkhj\"},{\"modfvuefywsbpfvm\":\"datadggkzzlvmbmpa\",\"yzvqt\":\"datayhrfouyftaakcpw\",\"zksmondj\":\"datanubexk\"}],\"remediation\":{\"omgkopkwho\":\"dataxvy\",\"ajqgxy\":\"datav\",\"xozap\":\"datamocmbqfqvmk\",\"dd\":\"datahelxprglya\"},\"exposedMetadataProperties\":{\"ibrhosxsdqr\":\"databcuejrjxgci\",\"luszdtmhrkwof\":\"datazoymibmrqyibahw\",\"piexpbtgiw\":\"datayvoqa\",\"nwashrtd\":\"datawo\"}},\"id\":\"kcnqxwbpo\",\"name\":\"ulpiuj\",\"type\":\"aasipqi\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"category\":\"HighAvailability\",\"impact\":\"Medium\",\"impactedField\":\"vvjektcxsenhwlrs\",\"impactedValue\":\"rzpwvlqdqgbiq\",\"lastUpdated\":\"2021-02-23T11:21:53Z\",\"metadata\":{\"kymuctqhjfbebr\":\"dataaetcktvfcivfs\"},\"recommendationTypeId\":\"xerf\",\"shortDescription\":{\"problem\":\"tttxfvjrb\",\"solution\":\"phxepcyvahf\"},\"suppressionIds\":[\"240ce7b3-f1ad-44b8-97ad-777c1c4a1715\"],\"extendedProperties\":{\"uujqgidokgjljyo\":\"qxj\"},\"resourceMetadata\":{\"resourceId\":\"cltbgsncghkjesz\",\"source\":\"bijhtxfvgxbf\",\"action\":{},\"singular\":\"nehmpvecx\",\"plural\":\"debfqkkrbmpukgri\"},\"description\":\"lzlfbxzpuz\",\"label\":\"ispnqzahmgkbrp\",\"learnMoreLink\":\"dhibnuq\",\"potentialBenefits\":\"pikad\",\"actions\":[{\"ijggmebfsiar\":\"dataqagnbuyn\",\"pnazzm\":\"datautrc\",\"bh\":\"datajrunmpxtt\"}],\"remediation\":{\"nkxmyskpbhenbtk\":\"datal\",\"yxczfclh\":\"dataxywnytnrsynlqidy\",\"wrqlfktsthsuco\":\"dataaxdbabph\"},\"exposedMetadataProperties\":{\"wrqpue\":\"datayyazttbt\",\"xibxujwbhqwalm\":\"datackzywbiexzfeyue\",\"ux\":\"datazyoxaepdkzjan\",\"zt\":\"datahdwbavxbniwdjs\"}},\"id\":\"dbpgnxytxhp\",\"name\":\"xbzpfzab\",\"type\":\"lcuhxwtctyqiklb\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AdvisorManager manager = AdvisorManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<ResourceRecommendationBase> response
+            = manager.recommendations().list("ssl", 1696619816, "fmmdnbbg", com.azure.core.util.Context.NONE);
 
-        AdvisorManager manager =
-            AdvisorManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<ResourceRecommendationBase> response =
-            manager.recommendations().list("zf", 585426916, "eyp", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals(Category.HIGH_AVAILABILITY, response.iterator().next().category());
-        Assertions.assertEquals(Impact.MEDIUM, response.iterator().next().impact());
-        Assertions.assertEquals("vvjektcxsenhwlrs", response.iterator().next().impactedField());
-        Assertions.assertEquals("rzpwvlqdqgbiq", response.iterator().next().impactedValue());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-23T11:21:53Z"), response.iterator().next().lastUpdated());
-        Assertions.assertEquals("xerf", response.iterator().next().recommendationTypeId());
-        Assertions.assertEquals("tttxfvjrb", response.iterator().next().shortDescription().problem());
-        Assertions.assertEquals("phxepcyvahf", response.iterator().next().shortDescription().solution());
-        Assertions
-            .assertEquals(
-                UUID.fromString("240ce7b3-f1ad-44b8-97ad-777c1c4a1715"),
-                response.iterator().next().suppressionIds().get(0));
-        Assertions.assertEquals("qxj", response.iterator().next().extendedProperties().get("uujqgidokgjljyo"));
-        Assertions.assertEquals("cltbgsncghkjesz", response.iterator().next().resourceMetadata().resourceId());
-        Assertions.assertEquals("bijhtxfvgxbf", response.iterator().next().resourceMetadata().source());
-        Assertions.assertEquals("nehmpvecx", response.iterator().next().resourceMetadata().singular());
-        Assertions.assertEquals("debfqkkrbmpukgri", response.iterator().next().resourceMetadata().plural());
-        Assertions.assertEquals("lzlfbxzpuz", response.iterator().next().description());
-        Assertions.assertEquals("ispnqzahmgkbrp", response.iterator().next().label());
-        Assertions.assertEquals("dhibnuq", response.iterator().next().learnMoreLink());
-        Assertions.assertEquals("pikad", response.iterator().next().potentialBenefits());
+        Assertions.assertEquals(Category.PERFORMANCE, response.iterator().next().category());
+        Assertions.assertEquals(Impact.HIGH, response.iterator().next().impact());
+        Assertions.assertEquals("d", response.iterator().next().impactedField());
+        Assertions.assertEquals("wyhzdx", response.iterator().next().impactedValue());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-28T04:38:02Z"), response.iterator().next().lastUpdated());
+        Assertions.assertEquals("mweriofzpy", response.iterator().next().recommendationTypeId());
+        Assertions.assertEquals("mwabnetshhszhedp", response.iterator().next().shortDescription().problem());
+        Assertions.assertEquals("wiwubm", response.iterator().next().shortDescription().solution());
+        Assertions.assertEquals(UUID.fromString("8a4432a2-3b19-409f-b383-7d1bdd4d7ba2"),
+            response.iterator().next().suppressionIds().get(0));
+        Assertions.assertEquals("ldnkwwtppjfl", response.iterator().next().extendedProperties().get("xogaokonzmnsikv"));
+        Assertions.assertEquals("dxunkbebxmubyyn", response.iterator().next().resourceMetadata().resourceId());
+        Assertions.assertEquals("lrb", response.iterator().next().resourceMetadata().source());
+        Assertions.assertEquals("ebmnzbtbhjpglk", response.iterator().next().resourceMetadata().singular());
+        Assertions.assertEquals("ohdneuel", response.iterator().next().resourceMetadata().plural());
+        Assertions.assertEquals("hsd", response.iterator().next().description());
+        Assertions.assertEquals("t", response.iterator().next().label());
+        Assertions.assertEquals("fikdowwqu", response.iterator().next().learnMoreLink());
+        Assertions.assertEquals("xzxcl", response.iterator().next().potentialBenefits());
     }
 }

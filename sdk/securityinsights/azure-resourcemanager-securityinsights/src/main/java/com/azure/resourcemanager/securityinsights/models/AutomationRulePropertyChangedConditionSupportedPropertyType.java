@@ -5,38 +5,53 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AutomationRulePropertyChangedConditionSupportedPropertyType. */
+/**
+ * Defines values for AutomationRulePropertyChangedConditionSupportedPropertyType.
+ */
 public final class AutomationRulePropertyChangedConditionSupportedPropertyType
     extends ExpandableStringEnum<AutomationRulePropertyChangedConditionSupportedPropertyType> {
-    /** Static value IncidentSeverity for AutomationRulePropertyChangedConditionSupportedPropertyType. */
-    public static final AutomationRulePropertyChangedConditionSupportedPropertyType INCIDENT_SEVERITY =
-        fromString("IncidentSeverity");
+    /**
+     * Static value IncidentSeverity for AutomationRulePropertyChangedConditionSupportedPropertyType.
+     */
+    public static final AutomationRulePropertyChangedConditionSupportedPropertyType INCIDENT_SEVERITY
+        = fromString("IncidentSeverity");
 
-    /** Static value IncidentStatus for AutomationRulePropertyChangedConditionSupportedPropertyType. */
-    public static final AutomationRulePropertyChangedConditionSupportedPropertyType INCIDENT_STATUS =
-        fromString("IncidentStatus");
+    /**
+     * Static value IncidentStatus for AutomationRulePropertyChangedConditionSupportedPropertyType.
+     */
+    public static final AutomationRulePropertyChangedConditionSupportedPropertyType INCIDENT_STATUS
+        = fromString("IncidentStatus");
 
-    /** Static value IncidentOwner for AutomationRulePropertyChangedConditionSupportedPropertyType. */
-    public static final AutomationRulePropertyChangedConditionSupportedPropertyType INCIDENT_OWNER =
-        fromString("IncidentOwner");
+    /**
+     * Static value IncidentOwner for AutomationRulePropertyChangedConditionSupportedPropertyType.
+     */
+    public static final AutomationRulePropertyChangedConditionSupportedPropertyType INCIDENT_OWNER
+        = fromString("IncidentOwner");
+
+    /**
+     * Creates a new instance of AutomationRulePropertyChangedConditionSupportedPropertyType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AutomationRulePropertyChangedConditionSupportedPropertyType() {
+    }
 
     /**
      * Creates or finds a AutomationRulePropertyChangedConditionSupportedPropertyType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AutomationRulePropertyChangedConditionSupportedPropertyType.
      */
-    @JsonCreator
     public static AutomationRulePropertyChangedConditionSupportedPropertyType fromString(String name) {
         return fromString(name, AutomationRulePropertyChangedConditionSupportedPropertyType.class);
     }
 
     /**
      * Gets known AutomationRulePropertyChangedConditionSupportedPropertyType values.
-     *
+     * 
      * @return known AutomationRulePropertyChangedConditionSupportedPropertyType values.
      */
     public static Collection<AutomationRulePropertyChangedConditionSupportedPropertyType> values() {
