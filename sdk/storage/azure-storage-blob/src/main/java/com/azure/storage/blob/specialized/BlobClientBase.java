@@ -5,7 +5,6 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
@@ -667,12 +666,11 @@ public class BlobClientBase {
                     snapshot, versionId, null, null, null, null, null, null, null, null, customerProvidedKey, context);
             return new SimpleResponse<>(sendRequest(operation, timeout, BlobStorageException.class), true);
         } catch (RuntimeException e) {
-            if (e instanceof HttpResponseException) {
-                HttpResponse response = ((HttpResponseException) e).getResponse();
-                if (e instanceof BlobStorageException
-                    && BlobErrorCode.BLOB_USES_CUSTOMER_SPECIFIED_ENCRYPTION.equals(((BlobStorageException) e).getErrorCode())) {
+            if (e instanceof BlobStorageException) {
+                HttpResponse response = ((BlobStorageException) e).getResponse();
+                if (BlobErrorCode.BLOB_USES_CUSTOMER_SPECIFIED_ENCRYPTION.equals(((BlobStorageException) e).getErrorCode())) {
                     return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), true);
-                } else if (((HttpResponseException) e).getResponse().getStatusCode() == 404) {
+                } else if (((BlobStorageException) e).getResponse().getStatusCode() == 404) {
                     return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), false);
                 } else {
                     throw LOGGER.logExceptionAsError(e);
