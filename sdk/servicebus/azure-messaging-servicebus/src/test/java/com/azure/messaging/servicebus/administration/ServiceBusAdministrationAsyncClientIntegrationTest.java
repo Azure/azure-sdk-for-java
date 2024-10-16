@@ -51,7 +51,6 @@ import reactor.test.StepVerifier;
 
 import java.time.Clock;
 import java.time.Duration;
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Collections;
@@ -1190,7 +1189,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
     void updateSubscriptionWithRule(HttpClient httpClient) {
         // Arrange
         final String userMetadata = "some-metadata-for-testing-subscriptions";
-        final String updatedUserMetadata = "updated-metadata: 1729039743";
+        final String updatedUserMetadata = "updated-metadata: 1728929824";
         final Duration updatedAutoDeleteOnIdle = Duration.ofDays(6);
 
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
