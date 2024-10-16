@@ -47,6 +47,12 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
     private OffsetDateTime expirationDateTime;
 
     /*
+     * Date and time (UTC) when the document model was last modified.
+     */
+    @Generated
+    private OffsetDateTime modifiedDateTime;
+
+    /*
      * API version used to create this document classifier.
      */
     @Generated
@@ -123,6 +129,16 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
     @Generated
     public OffsetDateTime getExpirationDateTime() {
         return this.expirationDateTime;
+    }
+
+    /**
+     * Get the modifiedDateTime property: Date and time (UTC) when the document model was last modified.
+     * 
+     * @return the modifiedDateTime value.
+     */
+    @Generated
+    public OffsetDateTime getModifiedDateTime() {
+        return this.modifiedDateTime;
     }
 
     /**
@@ -204,6 +220,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
             Map<String, ClassifierDocumentTypeDetails> docTypes = null;
             String description = null;
             OffsetDateTime expirationDateTime = null;
+            OffsetDateTime modifiedDateTime = null;
             String baseClassifierId = null;
             List<Warning> warnings = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -224,6 +241,9 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
                 } else if ("expirationDateTime".equals(fieldName)) {
                     expirationDateTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("modifiedDateTime".equals(fieldName)) {
+                    modifiedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("baseClassifierId".equals(fieldName)) {
                     baseClassifierId = reader.getString();
                 } else if ("warnings".equals(fieldName)) {
@@ -237,6 +257,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
             deserializedDocumentClassifierDetails.classifierId = classifierId;
             deserializedDocumentClassifierDetails.description = description;
             deserializedDocumentClassifierDetails.expirationDateTime = expirationDateTime;
+            deserializedDocumentClassifierDetails.modifiedDateTime = modifiedDateTime;
             deserializedDocumentClassifierDetails.baseClassifierId = baseClassifierId;
             deserializedDocumentClassifierDetails.warnings = warnings;
 

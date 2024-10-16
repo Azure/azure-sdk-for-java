@@ -7,6 +7,7 @@ import com.azure.ai.documentintelligence.models.AuthorizeClassifierCopyRequest;
 import com.azure.ai.documentintelligence.models.AuthorizeCopyRequest;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.AzureBlobFileListContentSource;
+import com.azure.ai.documentintelligence.models.BatchAnalysisJob;
 import com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest;
 import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.ClassifierCopyAuthorization;
@@ -44,6 +45,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static com.azure.ai.documentintelligence.TestUtils.DEFAULT_TIMEOUT;
+import static com.azure.ai.documentintelligence.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -548,4 +550,36 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
             }
         }
     }
+<<<<<<< HEAD
+=======
+
+    @RecordWithoutRequestBody
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("Disabled until file available on main")
+    public void analyzeBatchDocuments(HttpClient httpClient,
+                                      DocumentIntelligenceServiceVersion serviceVersion) {
+        client = getModelAdminAsyncClient(httpClient, serviceVersion);
+        String jobId = interceptorManager.isPlaybackMode() ? "REDACTED" : "jobId" + UUID.randomUUID();
+        buildBatchModelRunner((trainingFilesUrl) -> {
+            SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller =
+                client
+                    .beginBuildDocumentModel(new BuildDocumentModelRequest("modelID" + UUID.randomUUID(), DocumentBuildMode.TEMPLATE).setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl)))
+                    .setPollInterval(durationTestMode)
+                    .getSyncPoller();
+
+            String modelId = buildModelPoller.getFinalResult().getModelId();
+
+            StepVerifier.create(client.createBatchAnalysisJob(jobId, new BatchAnalysisJob(modelId).setInputBlobContainer(trainingFilesUrl).setOutputBlobContainer(trainingFilesUrl)))
+//                .assertNext({
+//                    assertNotNull(batchAnalysisJob.getCreatedDateTime());
+//            assertEquals(batchAnalysisJob.getJobId(), jobId);
+//            assertEquals(batchAnalysisJob.getModelId(), modelId);
+//                })
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
+
+        });
+    }
+>>>>>>> 16a7d39f915 (DI-GA_regen)
 }

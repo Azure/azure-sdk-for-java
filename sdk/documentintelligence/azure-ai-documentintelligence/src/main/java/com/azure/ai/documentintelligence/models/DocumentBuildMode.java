@@ -25,12 +25,6 @@ public final class DocumentBuildMode extends ExpandableStringEnum<DocumentBuildM
     public static final DocumentBuildMode NEURAL = fromString("neural");
 
     /**
-     * Enable documents of all types using generative AI techniques.
-     */
-    @Generated
-    public static final DocumentBuildMode GENERATIVE = fromString("generative");
-
-    /**
      * Creates a new instance of DocumentBuildMode value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

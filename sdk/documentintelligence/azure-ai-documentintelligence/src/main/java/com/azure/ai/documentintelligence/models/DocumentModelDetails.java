@@ -46,6 +46,12 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     private OffsetDateTime expirationDateTime;
 
     /*
+     * Date and time (UTC) when the document model was last modified.
+     */
+    @Generated
+    private OffsetDateTime modifiedDateTime;
+
+    /*
      * API version used to create this document model.
      */
     @Generated
@@ -152,6 +158,16 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     @Generated
     public OffsetDateTime getExpirationDateTime() {
         return this.expirationDateTime;
+    }
+
+    /**
+     * Get the modifiedDateTime property: Date and time (UTC) when the document model was last modified.
+     * 
+     * @return the modifiedDateTime value.
+     */
+    @Generated
+    public OffsetDateTime getModifiedDateTime() {
+        return this.modifiedDateTime;
     }
 
     /**
@@ -296,6 +312,9 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
                     deserializedDocumentModelDetails.description = reader.getString();
                 } else if ("expirationDateTime".equals(fieldName)) {
                     deserializedDocumentModelDetails.expirationDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("modifiedDateTime".equals(fieldName)) {
+                    deserializedDocumentModelDetails.modifiedDateTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("apiVersion".equals(fieldName)) {
                     deserializedDocumentModelDetails.apiVersion = reader.getString();

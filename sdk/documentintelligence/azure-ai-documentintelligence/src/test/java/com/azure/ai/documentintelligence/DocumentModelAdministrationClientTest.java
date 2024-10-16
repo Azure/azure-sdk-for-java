@@ -6,6 +6,7 @@ package com.azure.ai.documentintelligence;
 import com.azure.ai.documentintelligence.models.AuthorizeCopyRequest;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.AzureBlobFileListContentSource;
+import com.azure.ai.documentintelligence.models.BatchAnalysisJob;
 import com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest;
 import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.ClassifierDocumentTypeDetails;
@@ -387,6 +388,30 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
                     classifierDocumentTypeDetails.getAzureBlobFileListSource().getContainerUrl()));
 
             validateClassifierModelData(documentClassifierDetails);
+        });
+    }
+
+    @RecordWithoutRequestBody
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("Disabled until file available on main")
+    public void analyzeBatchDocuments(HttpClient httpClient,
+                                      DocumentIntelligenceServiceVersion serviceVersion) {
+        String jobId = interceptorManager.isPlaybackMode() ? "REDACTED" : "jobId" + UUID.randomUUID();
+        client = getModelAdministrationClient(httpClient, serviceVersion);
+        buildBatchModelRunner((trainingFilesUrl) -> {
+            SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller =
+                client
+                    .beginBuildDocumentModel(new BuildDocumentModelRequest("modelID" + UUID.randomUUID(), DocumentBuildMode.TEMPLATE).setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl)))
+                    .setPollInterval(durationTestMode);
+            buildModelPoller.waitForCompletion();
+
+            String modelId = buildModelPoller.getFinalResult().getModelId();
+
+            BatchAnalysisJob batchAnalysisJob = client.createBatchAnalysisJob(jobId, new BatchAnalysisJob(modelId).setInputBlobContainer(trainingFilesUrl).setOutputBlobContainer(trainingFilesUrl));
+            assertNotNull(batchAnalysisJob.getCreatedDateTime());
+            assertEquals(batchAnalysisJob.getJobId(), jobId);
+            assertEquals(batchAnalysisJob.getModelId(), modelId);
         });
     }
 }

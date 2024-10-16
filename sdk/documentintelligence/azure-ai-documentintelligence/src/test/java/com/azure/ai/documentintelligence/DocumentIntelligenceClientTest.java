@@ -3,9 +3,6 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeBatchDocumentsRequest;
-import com.azure.ai.documentintelligence.models.AnalyzeBatchResult;
-import com.azure.ai.documentintelligence.models.AnalyzeBatchResultOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
 import com.azure.ai.documentintelligence.models.AnalyzeOutputOption;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;

@@ -3,23 +3,16 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeBatchDocumentsRequest;
-import com.azure.ai.documentintelligence.models.AnalyzeBatchResult;
-import com.azure.ai.documentintelligence.models.AnalyzeBatchResultOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
 import com.azure.ai.documentintelligence.models.AnalyzeOutputOption;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest;
-import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.ClassifierDocumentTypeDetails;
 import com.azure.ai.documentintelligence.models.ClassifyDocumentRequest;
-import com.azure.ai.documentintelligence.models.DocumentBuildMode;
 import com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
-import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
-import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
@@ -37,7 +30,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.azure.ai.documentintelligence.TestUtils.BATCH_SAMPLE_PDF;
 import static com.azure.ai.documentintelligence.TestUtils.CONTENT_FORM_JPG;
 import static com.azure.ai.documentintelligence.TestUtils.CONTENT_GERMAN_PDF;
 import static com.azure.ai.documentintelligence.TestUtils.DEFAULT_TIMEOUT;
@@ -50,7 +42,6 @@ import static com.azure.ai.documentintelligence.TestUtils.MULTIPAGE_INVOICE_PDF;
 import static com.azure.ai.documentintelligence.TestUtils.RECEIPT_CONTOSO_JPG;
 import static com.azure.ai.documentintelligence.TestUtils.W2_JPG;
 import static com.azure.ai.documentintelligence.TestUtils.urlRunner;
-import static com.azure.ai.documentintelligence.models.AnalyzeOutputOption.PDF;
 
 public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceClientTestBase {
 
