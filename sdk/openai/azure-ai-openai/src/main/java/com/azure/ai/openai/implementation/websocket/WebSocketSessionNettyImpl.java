@@ -43,6 +43,7 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
 
     private final URI uri;
     private final HttpHeaders headers;
+    private final String subProtocol;
 
     private final Consumer<Object> messageHandler;
     private final Consumer<WebSocketSession> openHandler;
@@ -85,6 +86,7 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
         this.loggerReference = loggerReference;
         this.messageEncoder = cec.getMessageEncoder();
         this.messageDecoder = cec.getMessageDecoder();
+        this.subProtocol = cec.getSubProtocol();
         this.headers = cec.getHeaders();
         this.messageHandler = messageHandler;
         this.openHandler = openHandler;
@@ -121,8 +123,7 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
 
         group = new NioEventLoopGroup();
 
-        // the `null` parameter corresponds to subprotocol
-        handshaker = WebSocketClientHandshakerFactory.newHandshaker(uri, WebSocketVersion.V13, null, true, this.headers);
+        handshaker = WebSocketClientHandshakerFactory.newHandshaker(uri, WebSocketVersion.V13, this.subProtocol, true, this.headers);
 
         clientHandler = new WebSocketClientHandler(handshaker, loggerReference, messageDecoder, messageHandler);
 

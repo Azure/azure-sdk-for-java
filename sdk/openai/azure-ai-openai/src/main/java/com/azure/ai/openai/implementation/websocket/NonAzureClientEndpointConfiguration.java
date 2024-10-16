@@ -26,7 +26,7 @@ public class NonAzureClientEndpointConfiguration extends ClientEndpointConfigura
     @Override
     public HttpHeaders getHeaders() {
         HttpHeaders headers = new DefaultHttpHeaders();
-        headers.add(HttpHeaderName.AUTHORIZATION.getCaseInsensitiveName(), keyCredential.getKey());
+        headers.add(HttpHeaderName.AUTHORIZATION.getCaseInsensitiveName(), "Bearer " + keyCredential.getKey());
         headers.add("openai-beta", openaiBeta);
         return headers;
     }

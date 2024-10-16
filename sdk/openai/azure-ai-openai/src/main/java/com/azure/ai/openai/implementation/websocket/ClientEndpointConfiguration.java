@@ -11,6 +11,8 @@ public abstract class ClientEndpointConfiguration {
 
     protected final String userAgent;
 
+    protected final String subProtocol = "realtime";
+
     private static final MessageEncoder MESSAGE_ENCODER = new MessageEncoder();
 
     private static final MessageDecoder MESSAGE_DECODER = new MessageDecoder();
@@ -32,6 +34,10 @@ public abstract class ClientEndpointConfiguration {
 
     public MessageDecoder getMessageDecoder() {
         return MESSAGE_DECODER;
+    }
+
+    public String getSubProtocol() {
+        return subProtocol;
     }
 
     protected abstract String getURIString();
