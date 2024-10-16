@@ -249,7 +249,7 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
                         )
                 )
                 .create();
-            // @embedStart
+            // @embedEnd
             fleet.refresh();
             Assertions.assertEquals(fleetName, fleet.name());
             Assertions.assertEquals(fleetName, computeFleetManager.fleets().getById(fleet.id()).name());
