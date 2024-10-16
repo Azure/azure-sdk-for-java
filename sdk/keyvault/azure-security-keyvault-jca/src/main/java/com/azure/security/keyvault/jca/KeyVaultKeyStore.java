@@ -402,7 +402,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
             keyVaultCertificates.updateKeyVaultClient(parameter.getUri(), parameter.getTenantId(),
                 parameter.getClientId(), parameter.getClientSecret(), parameter.getManagedIdentity(),
-                parameter.isChallengeResourceVerificationDisabled());
+                parameter.disableChallengeResourceVerification);
         }
 
         classpathCertificates.loadCertificatesFromClasspath();
