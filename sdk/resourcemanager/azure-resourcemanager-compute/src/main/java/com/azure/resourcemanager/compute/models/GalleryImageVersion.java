@@ -129,6 +129,22 @@ public interface GalleryImageVersion
              * @return the next definition stage
              */
             WithCreate withSourceCustomImage(VirtualMachineCustomImage customImage);
+
+            /**
+             * Specifies that the provided virtual machine needs to be used as source of the image version.
+             *
+             * @param vmId resource ID of the virtual machine
+             * @return the next definition stage
+             */
+            WithCreate withSourceVirtualMachine(String vmId);
+
+            /**
+             * Specifies that the provided virtual machine needs to be used as source of the image version.
+             *
+             * @param virtualMachine virtual machine instance
+             * @return the next definition stage
+             */
+            WithCreate withSourceVirtualMachine(VirtualMachine virtualMachine);
         }
 
         /**
