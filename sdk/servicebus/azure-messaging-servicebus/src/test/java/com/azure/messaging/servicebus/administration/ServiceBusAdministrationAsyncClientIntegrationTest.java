@@ -1190,7 +1190,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
     void updateSubscriptionWithRule(HttpClient httpClient) {
         // Arrange
         final String userMetadata = "some-metadata-for-testing-subscriptions";
-        final String updatedUserMetadata = "updated-metadata: " + Instant.now().getEpochSecond();
+        final String updatedUserMetadata = "updated-metadata: 1729039743";
         final Duration updatedAutoDeleteOnIdle = Duration.ofDays(6);
 
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
