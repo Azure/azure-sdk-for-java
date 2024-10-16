@@ -27,7 +27,7 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
     @Test
     public void testContainerGroupWithVirtualNetwork() {
         String containerGroupName = generateRandomResourceName("container", 20);
-        Region region = Region.US_EAST;
+        Region region = Region.US_WEST3;
 
         ContainerGroup containerGroup =
             containerInstanceManager
@@ -207,16 +207,22 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
 
         ContainerGroup containerGroup = acceptedContainerGroup.getSyncPoller().getFinalResult();
         Assertions.assertEquals(succeededState, containerGroup.provisioningState());
+    }
 
-        containerInstanceManager.containerGroups().deleteById(containerGroup.id());
+    // test contains a data-plane call
+    @DoNotRecord(skipInPlayback = true)
+    @Test
+    public void testBeginCreateWithFileShareVolume() {
+        String containerGroupName = generateRandomResourceName("container", 20);
+        Region region = Region.US_WEST3;
 
         // create storage account (and virtual network), before create container group
-        acceptedContainerGroup =
+        Accepted<ContainerGroup> acceptedContainerGroup =
             containerInstanceManager
                 .containerGroups()
                 .define(containerGroupName)
                 .withRegion(region)
-                .withExistingResourceGroup(rgName)
+                .withNewResourceGroup(rgName)
                 .withLinux()
                 .withPublicImageRegistryOnly()
                 // definition step only allow creating one file share volume
@@ -224,7 +230,7 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
                 .withContainerInstance("nginx", 80)
                 .withNewVirtualNetwork("10.0.0.0/24")
                 .beginCreate();
-        containerGroup = acceptedContainerGroup.getSyncPoller().getFinalResult();
+        ContainerGroup containerGroup = acceptedContainerGroup.getSyncPoller().getFinalResult();
         Assertions.assertEquals(1, containerGroup.volumes().size());
     }
 }
