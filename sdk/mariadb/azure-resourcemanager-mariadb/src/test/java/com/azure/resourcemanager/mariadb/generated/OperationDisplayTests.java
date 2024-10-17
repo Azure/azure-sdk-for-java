@@ -10,11 +10,9 @@ import com.azure.resourcemanager.mariadb.models.OperationDisplay;
 public final class OperationDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationDisplay model =
-            BinaryData
-                .fromString(
-                    "{\"provider\":\"ixzbinjeputtmryw\",\"resource\":\"zoqftiyqzrnkcqvy\",\"operation\":\"whzlsicohoq\",\"description\":\"wvl\"}")
-                .toObject(OperationDisplay.class);
+        OperationDisplay model = BinaryData.fromString(
+            "{\"provider\":\"klyaxuconu\",\"resource\":\"zf\",\"operation\":\"eyp\",\"description\":\"rmjmwvvjektc\"}")
+            .toObject(OperationDisplay.class);
     }
 
     @org.junit.jupiter.api.Test

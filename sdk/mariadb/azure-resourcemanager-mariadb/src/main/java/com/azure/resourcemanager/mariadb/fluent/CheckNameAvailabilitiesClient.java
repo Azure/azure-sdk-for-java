@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.mariadb.fluent.models.NameAvailabilityInner;
 import com.azure.resourcemanager.mariadb.models.NameAvailabilityRequest;
 
-/** An instance of this class provides access to all the operations defined in CheckNameAvailabilitiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CheckNameAvailabilitiesClient.
+ */
 public interface CheckNameAvailabilitiesClient {
     /**
      * Check the availability of name for resource.
-     *
+     * 
      * @param nameAvailabilityRequest The required parameters for checking if resource name is available.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,12 +26,12 @@ public interface CheckNameAvailabilitiesClient {
      * @return represents a resource name availability along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NameAvailabilityInner> executeWithResponse(
-        NameAvailabilityRequest nameAvailabilityRequest, Context context);
+    Response<NameAvailabilityInner> executeWithResponse(NameAvailabilityRequest nameAvailabilityRequest,
+        Context context);
 
     /**
      * Check the availability of name for resource.
-     *
+     * 
      * @param nameAvailabilityRequest The required parameters for checking if resource name is available.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.mariadb.generated;
 
-/** Samples for FirewallRules Get. */
+/**
+ * Samples for FirewallRules Get.
+ */
 public final class FirewallRulesGetSamples {
     /*
-     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/FirewallRuleGet.json
+     * x-ms-original-file:
+     * specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/FirewallRuleGet.json
      */
     /**
      * Sample code: FirewallRuleGet.
-     *
+     * 
      * @param manager Entry point to MariaDBManager.
      */
     public static void firewallRuleGet(com.azure.resourcemanager.mariadb.MariaDBManager manager) {

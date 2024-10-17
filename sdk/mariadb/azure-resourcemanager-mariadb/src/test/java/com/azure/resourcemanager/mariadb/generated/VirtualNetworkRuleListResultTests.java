@@ -10,11 +10,9 @@ import com.azure.resourcemanager.mariadb.models.VirtualNetworkRuleListResult;
 public final class VirtualNetworkRuleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworkRuleListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"virtualNetworkSubnetId\":\"odxobnbdxkqpxok\",\"ignoreMissingVnetServiceEndpoint\":true,\"state\":\"Unknown\"},\"id\":\"pimexgstxgcpodg\",\"name\":\"aajrm\",\"type\":\"djwzrlov\"}],\"nextLink\":\"lwhijcoejctbzaq\"}")
-                .toObject(VirtualNetworkRuleListResult.class);
+        VirtualNetworkRuleListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"virtualNetworkSubnetId\":\"pcyshu\",\"ignoreMissingVnetServiceEndpoint\":true,\"state\":\"Ready\"},\"id\":\"ljjgpbtoqcjmkl\",\"name\":\"a\",\"type\":\"bqidtqaj\"},{\"properties\":{\"virtualNetworkSubnetId\":\"ulpkudjkrl\",\"ignoreMissingVnetServiceEndpoint\":true,\"state\":\"InProgress\"},\"id\":\"fepgzgq\",\"name\":\"xzlocxscp\",\"type\":\"ierhhbcsglummaj\"}],\"nextLink\":\"aodxo\"}")
+            .toObject(VirtualNetworkRuleListResult.class);
     }
 
     @org.junit.jupiter.api.Test

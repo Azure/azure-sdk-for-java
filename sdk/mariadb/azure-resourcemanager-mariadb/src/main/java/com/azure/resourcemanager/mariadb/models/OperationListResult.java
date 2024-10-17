@@ -7,18 +7,20 @@ package com.azure.resourcemanager.mariadb.models;
 import com.azure.resourcemanager.mariadb.fluent.models.OperationListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of OperationListResult. */
+/**
+ * An immutable client-side representation of OperationListResult.
+ */
 public interface OperationListResult {
     /**
      * Gets the value property: The list of resource provider operations.
-     *
+     * 
      * @return the value value.
      */
     List<Operation> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.mariadb.fluent.models.OperationListResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationListResultInner innerModel();
