@@ -749,8 +749,8 @@ public final class DocumentTranslationClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<TranslationStatus, Void> beginStartTranslationWithModelAsync(BinaryData startTranslationDetails,
-        RequestOptions requestOptions) {
+    public PollerFlux<TranslationStatus, TranslationStatus>
+        beginStartTranslationWithModelAsync(BinaryData startTranslationDetails, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.startTranslationWithResponseAsync(startTranslationDetails, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
@@ -759,7 +759,8 @@ public final class DocumentTranslationClientImpl {
                     ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(TranslationStatus.class), TypeReference.createInstance(Void.class));
+            TypeReference.createInstance(TranslationStatus.class),
+            TypeReference.createInstance(TranslationStatus.class));
     }
 
     /**
@@ -832,8 +833,8 @@ public final class DocumentTranslationClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TranslationStatus, Void> beginStartTranslationWithModel(BinaryData startTranslationDetails,
-        RequestOptions requestOptions) {
+    public SyncPoller<TranslationStatus, TranslationStatus>
+        beginStartTranslationWithModel(BinaryData startTranslationDetails, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.startTranslationWithResponse(startTranslationDetails, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
@@ -842,7 +843,8 @@ public final class DocumentTranslationClientImpl {
                     ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(TranslationStatus.class), TypeReference.createInstance(Void.class));
+            TypeReference.createInstance(TranslationStatus.class),
+            TypeReference.createInstance(TranslationStatus.class));
     }
 
     /**

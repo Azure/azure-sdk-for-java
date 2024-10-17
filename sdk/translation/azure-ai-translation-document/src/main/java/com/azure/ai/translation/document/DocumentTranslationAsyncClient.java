@@ -667,7 +667,8 @@ public final class DocumentTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<TranslationStatus, Void> beginStartTranslation(StartTranslationDetails startTranslationDetails) {
+    public PollerFlux<TranslationStatus, TranslationStatus>
+        beginStartTranslation(StartTranslationDetails startTranslationDetails) {
         // Generated convenience method for beginStartTranslationWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginStartTranslationWithModelAsync(BinaryData.fromObject(startTranslationDetails),

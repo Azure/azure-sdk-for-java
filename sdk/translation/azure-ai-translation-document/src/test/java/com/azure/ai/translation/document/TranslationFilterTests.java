@@ -192,8 +192,9 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
             targetInputs.add(targetInput);
             BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
 
-            SyncPoller<TranslationStatus, Void> poller = setPlaybackSyncPollerPollInterval(documentTranslationClient
-                .beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+            SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
+                    documentTranslationClient
+                            .beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
             String translationId = poller.poll().getValue().getId();
             translationIds.add(translationId);

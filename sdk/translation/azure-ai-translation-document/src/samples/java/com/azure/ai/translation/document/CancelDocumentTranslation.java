@@ -28,7 +28,7 @@ public class CancelDocumentTranslation {
             .credential(new AzureKeyCredential("{key}"))
             .buildClient();
        
-        SyncPoller<TranslationStatus, Void> response
+        SyncPoller<TranslationStatus, TranslationStatus> response
             = documentTranslationClient
                 .beginStartTranslation(
                     new StartTranslationDetails(Arrays.asList(new BatchRequest(

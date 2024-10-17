@@ -31,7 +31,7 @@ public class StartDocumentTranslation {
                 .buildClient();
 
         // BEGIN:startDocumentTranslation
-        SyncPoller<TranslationStatus, Void> response
+        SyncPoller<TranslationStatus, TranslationStatus> response
             = documentTranslationClient
                 .beginStartTranslation(
                     new StartTranslationDetails(Arrays.asList(new BatchRequest(
