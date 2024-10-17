@@ -5,62 +5,78 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * AgentJob level output for the task that validates connection to SQL Server and also validates source server
  * requirements.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
-@JsonTypeName("AgentJobLevelOutput")
 @Immutable
 public final class ConnectToSourceSqlServerTaskOutputAgentJobLevel extends ConnectToSourceSqlServerTaskOutput {
     /*
+     * Type of result - database level or task level
+     */
+    private String resultType = "AgentJobLevelOutput";
+
+    /*
      * AgentJob name
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The type of AgentJob.
      */
-    @JsonProperty(value = "jobCategory", access = JsonProperty.Access.WRITE_ONLY)
     private String jobCategory;
 
     /*
      * The state of the original AgentJob.
      */
-    @JsonProperty(value = "isEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isEnabled;
 
     /*
      * The owner of the AgentJob
      */
-    @JsonProperty(value = "jobOwner", access = JsonProperty.Access.WRITE_ONLY)
     private String jobOwner;
 
     /*
      * UTC Date and time when the AgentJob was last executed.
      */
-    @JsonProperty(value = "lastExecutedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastExecutedOn;
 
     /*
      * Information about eligibility of agent job for migration.
      */
-    @JsonProperty(value = "migrationEligibility", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationEligibilityInfo migrationEligibility;
 
-    /** Creates an instance of ConnectToSourceSqlServerTaskOutputAgentJobLevel class. */
+    /*
+     * Result identifier
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ConnectToSourceSqlServerTaskOutputAgentJobLevel class.
+     */
     public ConnectToSourceSqlServerTaskOutputAgentJobLevel() {
     }
 
     /**
+     * Get the resultType property: Type of result - database level or task level.
+     * 
+     * @return the resultType value.
+     */
+    @Override
+    public String resultType() {
+        return this.resultType;
+    }
+
+    /**
      * Get the name property: AgentJob name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -69,7 +85,7 @@ public final class ConnectToSourceSqlServerTaskOutputAgentJobLevel extends Conne
 
     /**
      * Get the jobCategory property: The type of AgentJob.
-     *
+     * 
      * @return the jobCategory value.
      */
     public String jobCategory() {
@@ -78,7 +94,7 @@ public final class ConnectToSourceSqlServerTaskOutputAgentJobLevel extends Conne
 
     /**
      * Get the isEnabled property: The state of the original AgentJob.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -87,7 +103,7 @@ public final class ConnectToSourceSqlServerTaskOutputAgentJobLevel extends Conne
 
     /**
      * Get the jobOwner property: The owner of the AgentJob.
-     *
+     * 
      * @return the jobOwner value.
      */
     public String jobOwner() {
@@ -96,7 +112,7 @@ public final class ConnectToSourceSqlServerTaskOutputAgentJobLevel extends Conne
 
     /**
      * Get the lastExecutedOn property: UTC Date and time when the AgentJob was last executed.
-     *
+     * 
      * @return the lastExecutedOn value.
      */
     public OffsetDateTime lastExecutedOn() {
@@ -105,7 +121,7 @@ public final class ConnectToSourceSqlServerTaskOutputAgentJobLevel extends Conne
 
     /**
      * Get the migrationEligibility property: Information about eligibility of agent job for migration.
-     *
+     * 
      * @return the migrationEligibility value.
      */
     public MigrationEligibilityInfo migrationEligibility() {
@@ -113,15 +129,78 @@ public final class ConnectToSourceSqlServerTaskOutputAgentJobLevel extends Conne
     }
 
     /**
+     * Get the id property: Result identifier.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (migrationEligibility() != null) {
             migrationEligibility().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resultType", this.resultType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectToSourceSqlServerTaskOutputAgentJobLevel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectToSourceSqlServerTaskOutputAgentJobLevel if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectToSourceSqlServerTaskOutputAgentJobLevel.
+     */
+    public static ConnectToSourceSqlServerTaskOutputAgentJobLevel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectToSourceSqlServerTaskOutputAgentJobLevel deserializedConnectToSourceSqlServerTaskOutputAgentJobLevel
+                = new ConnectToSourceSqlServerTaskOutputAgentJobLevel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputAgentJobLevel.id = reader.getString();
+                } else if ("resultType".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputAgentJobLevel.resultType = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputAgentJobLevel.name = reader.getString();
+                } else if ("jobCategory".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputAgentJobLevel.jobCategory = reader.getString();
+                } else if ("isEnabled".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputAgentJobLevel.isEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("jobOwner".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputAgentJobLevel.jobOwner = reader.getString();
+                } else if ("lastExecutedOn".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputAgentJobLevel.lastExecutedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("migrationEligibility".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputAgentJobLevel.migrationEligibility
+                        = MigrationEligibilityInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectToSourceSqlServerTaskOutputAgentJobLevel;
+        });
     }
 }

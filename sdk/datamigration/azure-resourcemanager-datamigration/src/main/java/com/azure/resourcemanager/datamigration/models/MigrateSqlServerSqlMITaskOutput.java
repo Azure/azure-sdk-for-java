@@ -5,40 +5,45 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Output for task that migrates SQL Server databases to Azure SQL Database Managed Instance. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "resultType",
-    defaultImpl = MigrateSqlServerSqlMITaskOutput.class)
-@JsonTypeName("MigrateSqlServerSqlMITaskOutput")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "MigrationLevelOutput", value = MigrateSqlServerSqlMITaskOutputMigrationLevel.class),
-    @JsonSubTypes.Type(name = "DatabaseLevelOutput", value = MigrateSqlServerSqlMITaskOutputDatabaseLevel.class),
-    @JsonSubTypes.Type(name = "AgentJobLevelOutput", value = MigrateSqlServerSqlMITaskOutputAgentJobLevel.class),
-    @JsonSubTypes.Type(name = "LoginLevelOutput", value = MigrateSqlServerSqlMITaskOutputLoginLevel.class),
-    @JsonSubTypes.Type(name = "ErrorOutput", value = MigrateSqlServerSqlMITaskOutputError.class)
-})
+/**
+ * Output for task that migrates SQL Server databases to Azure SQL Database Managed Instance.
+ */
 @Immutable
-public class MigrateSqlServerSqlMITaskOutput {
+public class MigrateSqlServerSqlMITaskOutput implements JsonSerializable<MigrateSqlServerSqlMITaskOutput> {
+    /*
+     * Result type
+     */
+    private String resultType = "MigrateSqlServerSqlMITaskOutput";
+
     /*
      * Result identifier
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
-    /** Creates an instance of MigrateSqlServerSqlMITaskOutput class. */
+    /**
+     * Creates an instance of MigrateSqlServerSqlMITaskOutput class.
+     */
     public MigrateSqlServerSqlMITaskOutput() {
     }
 
     /**
+     * Get the resultType property: Result type.
+     * 
+     * @return the resultType value.
+     */
+    public String resultType() {
+        return this.resultType;
+    }
+
+    /**
      * Get the id property: Result identifier.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -46,10 +51,93 @@ public class MigrateSqlServerSqlMITaskOutput {
     }
 
     /**
+     * Set the id property: Result identifier.
+     * 
+     * @param id the id value to set.
+     * @return the MigrateSqlServerSqlMITaskOutput object itself.
+     */
+    MigrateSqlServerSqlMITaskOutput withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resultType", this.resultType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrateSqlServerSqlMITaskOutput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrateSqlServerSqlMITaskOutput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrateSqlServerSqlMITaskOutput.
+     */
+    public static MigrateSqlServerSqlMITaskOutput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("resultType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("MigrationLevelOutput".equals(discriminatorValue)) {
+                    return MigrateSqlServerSqlMITaskOutputMigrationLevel.fromJson(readerToUse.reset());
+                } else if ("DatabaseLevelOutput".equals(discriminatorValue)) {
+                    return MigrateSqlServerSqlMITaskOutputDatabaseLevel.fromJson(readerToUse.reset());
+                } else if ("AgentJobLevelOutput".equals(discriminatorValue)) {
+                    return MigrateSqlServerSqlMITaskOutputAgentJobLevel.fromJson(readerToUse.reset());
+                } else if ("LoginLevelOutput".equals(discriminatorValue)) {
+                    return MigrateSqlServerSqlMITaskOutputLoginLevel.fromJson(readerToUse.reset());
+                } else if ("ErrorOutput".equals(discriminatorValue)) {
+                    return MigrateSqlServerSqlMITaskOutputError.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static MigrateSqlServerSqlMITaskOutput fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrateSqlServerSqlMITaskOutput deserializedMigrateSqlServerSqlMITaskOutput
+                = new MigrateSqlServerSqlMITaskOutput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resultType".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutput.resultType = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutput.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrateSqlServerSqlMITaskOutput;
+        });
     }
 }

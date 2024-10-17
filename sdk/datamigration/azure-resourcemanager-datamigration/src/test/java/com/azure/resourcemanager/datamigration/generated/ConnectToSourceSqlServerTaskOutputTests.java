@@ -10,9 +10,8 @@ import com.azure.resourcemanager.datamigration.models.ConnectToSourceSqlServerTa
 public final class ConnectToSourceSqlServerTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectToSourceSqlServerTaskOutput model =
-            BinaryData
-                .fromString("{\"resultType\":\"ConnectToSourceSqlServerTaskOutput\",\"id\":\"wzbtdhxu\"}")
+        ConnectToSourceSqlServerTaskOutput model
+            = BinaryData.fromString("{\"resultType\":\"ConnectToSourceSqlServerTaskOutput\",\"id\":\"nxytxh\"}")
                 .toObject(ConnectToSourceSqlServerTaskOutput.class);
     }
 
