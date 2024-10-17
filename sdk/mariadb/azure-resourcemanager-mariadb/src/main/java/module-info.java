@@ -10,10 +10,6 @@ module com.azure.resourcemanager.mariadb {
     exports com.azure.resourcemanager.mariadb.fluent.models;
     exports com.azure.resourcemanager.mariadb.models;
 
-    opens com.azure.resourcemanager.mariadb.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.mariadb.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.mariadb.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.mariadb.models to com.azure.core;
 }

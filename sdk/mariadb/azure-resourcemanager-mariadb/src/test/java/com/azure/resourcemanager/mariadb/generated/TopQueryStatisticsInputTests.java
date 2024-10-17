@@ -12,35 +12,31 @@ import org.junit.jupiter.api.Assertions;
 public final class TopQueryStatisticsInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TopQueryStatisticsInput model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"numberOfTopQueries\":338198941,\"aggregationFunction\":\"uosvmkfssxqukk\",\"observedMetric\":\"plgmgsxnk\",\"observationStartTime\":\"2021-10-15T20:07:23Z\",\"observationEndTime\":\"2021-07-28T04:14:11Z\",\"aggregationWindow\":\"deslp\"}}")
-                .toObject(TopQueryStatisticsInput.class);
-        Assertions.assertEquals(338198941, model.numberOfTopQueries());
-        Assertions.assertEquals("uosvmkfssxqukk", model.aggregationFunction());
-        Assertions.assertEquals("plgmgsxnk", model.observedMetric());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-15T20:07:23Z"), model.observationStartTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-28T04:14:11Z"), model.observationEndTime());
-        Assertions.assertEquals("deslp", model.aggregationWindow());
+        TopQueryStatisticsInput model = BinaryData.fromString(
+            "{\"properties\":{\"numberOfTopQueries\":795615702,\"aggregationFunction\":\"eyueaxibxujwb\",\"observedMetric\":\"qwalmuzyoxaepd\",\"observationStartTime\":\"2021-06-08T12:36:20Z\",\"observationEndTime\":\"2021-11-04T14:15:47Z\",\"aggregationWindow\":\"ancuxrhd\"}}")
+            .toObject(TopQueryStatisticsInput.class);
+        Assertions.assertEquals(795615702, model.numberOfTopQueries());
+        Assertions.assertEquals("eyueaxibxujwb", model.aggregationFunction());
+        Assertions.assertEquals("qwalmuzyoxaepd", model.observedMetric());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-08T12:36:20Z"), model.observationStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-04T14:15:47Z"), model.observationEndTime());
+        Assertions.assertEquals("ancuxrhd", model.aggregationWindow());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TopQueryStatisticsInput model =
-            new TopQueryStatisticsInput()
-                .withNumberOfTopQueries(338198941)
-                .withAggregationFunction("uosvmkfssxqukk")
-                .withObservedMetric("plgmgsxnk")
-                .withObservationStartTime(OffsetDateTime.parse("2021-10-15T20:07:23Z"))
-                .withObservationEndTime(OffsetDateTime.parse("2021-07-28T04:14:11Z"))
-                .withAggregationWindow("deslp");
+        TopQueryStatisticsInput model = new TopQueryStatisticsInput().withNumberOfTopQueries(795615702)
+            .withAggregationFunction("eyueaxibxujwb")
+            .withObservedMetric("qwalmuzyoxaepd")
+            .withObservationStartTime(OffsetDateTime.parse("2021-06-08T12:36:20Z"))
+            .withObservationEndTime(OffsetDateTime.parse("2021-11-04T14:15:47Z"))
+            .withAggregationWindow("ancuxrhd");
         model = BinaryData.fromObject(model).toObject(TopQueryStatisticsInput.class);
-        Assertions.assertEquals(338198941, model.numberOfTopQueries());
-        Assertions.assertEquals("uosvmkfssxqukk", model.aggregationFunction());
-        Assertions.assertEquals("plgmgsxnk", model.observedMetric());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-15T20:07:23Z"), model.observationStartTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-28T04:14:11Z"), model.observationEndTime());
-        Assertions.assertEquals("deslp", model.aggregationWindow());
+        Assertions.assertEquals(795615702, model.numberOfTopQueries());
+        Assertions.assertEquals("eyueaxibxujwb", model.aggregationFunction());
+        Assertions.assertEquals("qwalmuzyoxaepd", model.observedMetric());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-08T12:36:20Z"), model.observationStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-04T14:15:47Z"), model.observationEndTime());
+        Assertions.assertEquals("ancuxrhd", model.aggregationWindow());
     }
 }

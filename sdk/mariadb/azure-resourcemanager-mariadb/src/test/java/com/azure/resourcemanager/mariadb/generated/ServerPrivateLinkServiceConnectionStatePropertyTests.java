@@ -12,22 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerPrivateLinkServiceConnectionStatePropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerPrivateLinkServiceConnectionStateProperty model =
-            BinaryData
-                .fromString("{\"status\":\"Pending\",\"description\":\"odjpslwejd\",\"actionsRequired\":\"None\"}")
-                .toObject(ServerPrivateLinkServiceConnectionStateProperty.class);
-        Assertions.assertEquals(PrivateLinkServiceConnectionStateStatus.PENDING, model.status());
-        Assertions.assertEquals("odjpslwejd", model.description());
+        ServerPrivateLinkServiceConnectionStateProperty model = BinaryData
+            .fromString("{\"status\":\"Rejected\",\"description\":\"mayhuybbkpodepoo\",\"actionsRequired\":\"None\"}")
+            .toObject(ServerPrivateLinkServiceConnectionStateProperty.class);
+        Assertions.assertEquals(PrivateLinkServiceConnectionStateStatus.REJECTED, model.status());
+        Assertions.assertEquals("mayhuybbkpodepoo", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerPrivateLinkServiceConnectionStateProperty model =
-            new ServerPrivateLinkServiceConnectionStateProperty()
-                .withStatus(PrivateLinkServiceConnectionStateStatus.PENDING)
-                .withDescription("odjpslwejd");
+        ServerPrivateLinkServiceConnectionStateProperty model = new ServerPrivateLinkServiceConnectionStateProperty()
+            .withStatus(PrivateLinkServiceConnectionStateStatus.REJECTED)
+            .withDescription("mayhuybbkpodepoo");
         model = BinaryData.fromObject(model).toObject(ServerPrivateLinkServiceConnectionStateProperty.class);
-        Assertions.assertEquals(PrivateLinkServiceConnectionStateStatus.PENDING, model.status());
-        Assertions.assertEquals("odjpslwejd", model.description());
+        Assertions.assertEquals(PrivateLinkServiceConnectionStateStatus.REJECTED, model.status());
+        Assertions.assertEquals("mayhuybbkpodepoo", model.description());
     }
 }
