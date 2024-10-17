@@ -36,12 +36,12 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * <p>
  * The shared access key can be obtained by creating a <i>shared access policy</i> for the Service Bus namespace or for
  * a specific Service Bus instance. See
- * <a href="https://docs.microsoft.com/en-us/azure/event-hubs/
+ * <a href="https://learn.microsoft.com/azure/event-hubs/
  * authorize-access-shared-access-signature#shared-access-authorization-policies">Shared access authorization policies
  * </a> for more information.
  * </p>
  *
- * @see <a href="https://docs.microsoft.com/en-us/azure/event-hubs/authorize-access-shared-access-signature">Authorize
+ * @see <a href="https://learn.microsoft.com/azure/event-hubs/authorize-access-shared-access-signature">Authorize
  *     access with shared access signature.</a>
  */
 @Immutable
@@ -137,12 +137,21 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
      */
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
+        return Mono.fromCallable(() -> getTokenSync(request));
+    }
+
+    @Override
+    public AccessToken getTokenSync(TokenRequestContext request) {
         if (request.getScopes().size() != 1) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'scopes' should only contain a single argument that is the token audience or resource name."));
         }
 
-        return Mono.fromCallable(() -> generateSharedAccessSignature(request.getScopes().get(0)));
+        try {
+            return generateSharedAccessSignature(request.getScopes().get(0));
+        } catch (UnsupportedEncodingException ex) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
+        }
     }
 
     private AccessToken generateSharedAccessSignature(final String resource) throws UnsupportedEncodingException {
@@ -186,7 +195,7 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
         String[] parts = sharedAccessSignature.split("&");
         return Arrays.stream(parts)
             .map(part -> part.split("="))
-            .filter(pair -> pair.length == 2 && pair[0].equalsIgnoreCase("se"))
+            .filter(pair -> pair.length == 2 && "se".equalsIgnoreCase(pair[0]))
             .findFirst()
             .map(pair -> pair[1])
             .map(expirationTimeStr -> {
