@@ -12,25 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class EncryptionKeyDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EncryptionKeyDetails model =
-            BinaryData
-                .fromString("{\"kekType\":\"MicrosoftManaged\",\"kekUrl\":\"hbzhfepg\",\"kekVaultResourceID\":\"qex\"}")
-                .toObject(EncryptionKeyDetails.class);
-        Assertions.assertEquals(EncryptionKekType.MICROSOFT_MANAGED, model.kekType());
-        Assertions.assertEquals("hbzhfepg", model.kekUrl());
-        Assertions.assertEquals("qex", model.kekVaultResourceId());
+        EncryptionKeyDetails model = BinaryData
+            .fromString(
+                "{\"kekType\":\"CustomerManaged\",\"kekUrl\":\"uujitcjc\",\"kekVaultResourceID\":\"zevndhkrwpdappds\"}")
+            .toObject(EncryptionKeyDetails.class);
+        Assertions.assertEquals(EncryptionKekType.CUSTOMER_MANAGED, model.kekType());
+        Assertions.assertEquals("uujitcjc", model.kekUrl());
+        Assertions.assertEquals("zevndhkrwpdappds", model.kekVaultResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EncryptionKeyDetails model =
-            new EncryptionKeyDetails()
-                .withKekType(EncryptionKekType.MICROSOFT_MANAGED)
-                .withKekUrl("hbzhfepg")
-                .withKekVaultResourceId("qex");
+        EncryptionKeyDetails model = new EncryptionKeyDetails().withKekType(EncryptionKekType.CUSTOMER_MANAGED)
+            .withKekUrl("uujitcjc")
+            .withKekVaultResourceId("zevndhkrwpdappds");
         model = BinaryData.fromObject(model).toObject(EncryptionKeyDetails.class);
-        Assertions.assertEquals(EncryptionKekType.MICROSOFT_MANAGED, model.kekType());
-        Assertions.assertEquals("hbzhfepg", model.kekUrl());
-        Assertions.assertEquals("qex", model.kekVaultResourceId());
+        Assertions.assertEquals(EncryptionKekType.CUSTOMER_MANAGED, model.kekType());
+        Assertions.assertEquals("uujitcjc", model.kekUrl());
+        Assertions.assertEquals("zevndhkrwpdappds", model.kekVaultResourceId());
     }
 }

@@ -5,91 +5,84 @@
 package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Specifies the job properties. */
+/**
+ * Specifies the job properties.
+ */
 @Fluent
-public final class JobDetails {
+public final class JobDetails implements JsonSerializable<JobDetails> {
     /*
      * The resource identifier of the storage account where data will be imported to or exported from.
      */
-    @JsonProperty(value = "storageAccountId")
     private String storageAccountId;
 
     /*
      * The type of job
      */
-    @JsonProperty(value = "jobType")
     private String jobType;
 
     /*
      * Specifies the return address information for the job.
      */
-    @JsonProperty(value = "returnAddress")
     private ReturnAddress returnAddress;
 
     /*
      * Specifies the return carrier and customer's account with the carrier.
      */
-    @JsonProperty(value = "returnShipping")
     private ReturnShipping returnShipping;
 
     /*
      * Contains information about the Microsoft datacenter to which the drives should be shipped.
      */
-    @JsonProperty(value = "shippingInformation")
     private ShippingInformation shippingInformation;
 
     /*
      * Contains information about the package being shipped by the customer to the Microsoft data center.
      */
-    @JsonProperty(value = "deliveryPackage")
     private DeliveryPackageInformation deliveryPackage;
 
     /*
-     * Contains information about the package being shipped from the Microsoft data center to the customer to return
-     * the drives. The format is the same as the deliveryPackage property above. This property is not included if the
-     * drives have not yet been returned.
+     * Contains information about the package being shipped from the Microsoft data center to the customer to return the
+     * drives. The format is the same as the deliveryPackage property above. This property is not included if the drives
+     * have not yet been returned.
      */
-    @JsonProperty(value = "returnPackage")
     private PackageInformation returnPackage;
 
     /*
      * The virtual blob directory to which the copy logs and backups of drive manifest files (if enabled) will be
      * stored.
      */
-    @JsonProperty(value = "diagnosticsPath")
     private String diagnosticsPath;
 
     /*
      * Default value is Error. Indicates whether error logging or verbose logging will be enabled.
      */
-    @JsonProperty(value = "logLevel")
     private String logLevel;
 
     /*
      * Default value is false. Indicates whether the manifest files on the drives should be copied to block blobs.
      */
-    @JsonProperty(value = "backupDriveManifest")
     private Boolean backupDriveManifest;
 
     /*
      * Current state of the job.
      */
-    @JsonProperty(value = "state")
     private String state;
 
     /*
      * Indicates whether a request has been submitted to cancel the job.
      */
-    @JsonProperty(value = "cancelRequested")
     private Boolean cancelRequested;
 
     /*
      * Overall percentage completed for the job.
      */
-    @JsonProperty(value = "percentComplete")
     private Long percentComplete;
 
     /*
@@ -97,43 +90,40 @@ public final class JobDetails {
      * insufficient drive space. If all blobs were exported successfully, then this element is not included in the
      * response.
      */
-    @JsonProperty(value = "incompleteBlobListUri")
     private String incompleteBlobListUri;
 
     /*
-     * List of up to ten drives that comprise the job. The drive list is a required element for an import job; it is
-     * not specified for export jobs.
+     * List of up to ten drives that comprise the job. The drive list is a required element for an import job; it is not
+     * specified for export jobs.
      */
-    @JsonProperty(value = "driveList")
     private List<DriveStatus> driveList;
 
     /*
-     * A property containing information about the blobs to be exported for an export job. This property is included
-     * for export jobs only.
+     * A property containing information about the blobs to be exported for an export job. This property is included for
+     * export jobs only.
      */
-    @JsonProperty(value = "export")
     private Export export;
 
     /*
      * Specifies the provisioning state of the job.
      */
-    @JsonProperty(value = "provisioningState")
     private String provisioningState;
 
     /*
      * Contains information about the encryption key.
      */
-    @JsonProperty(value = "encryptionKey")
     private EncryptionKeyDetails encryptionKey;
 
-    /** Creates an instance of JobDetails class. */
+    /**
+     * Creates an instance of JobDetails class.
+     */
     public JobDetails() {
     }
 
     /**
      * Get the storageAccountId property: The resource identifier of the storage account where data will be imported to
      * or exported from.
-     *
+     * 
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -143,7 +133,7 @@ public final class JobDetails {
     /**
      * Set the storageAccountId property: The resource identifier of the storage account where data will be imported to
      * or exported from.
-     *
+     * 
      * @param storageAccountId the storageAccountId value to set.
      * @return the JobDetails object itself.
      */
@@ -154,7 +144,7 @@ public final class JobDetails {
 
     /**
      * Get the jobType property: The type of job.
-     *
+     * 
      * @return the jobType value.
      */
     public String jobType() {
@@ -163,7 +153,7 @@ public final class JobDetails {
 
     /**
      * Set the jobType property: The type of job.
-     *
+     * 
      * @param jobType the jobType value to set.
      * @return the JobDetails object itself.
      */
@@ -174,7 +164,7 @@ public final class JobDetails {
 
     /**
      * Get the returnAddress property: Specifies the return address information for the job.
-     *
+     * 
      * @return the returnAddress value.
      */
     public ReturnAddress returnAddress() {
@@ -183,7 +173,7 @@ public final class JobDetails {
 
     /**
      * Set the returnAddress property: Specifies the return address information for the job.
-     *
+     * 
      * @param returnAddress the returnAddress value to set.
      * @return the JobDetails object itself.
      */
@@ -194,7 +184,7 @@ public final class JobDetails {
 
     /**
      * Get the returnShipping property: Specifies the return carrier and customer's account with the carrier.
-     *
+     * 
      * @return the returnShipping value.
      */
     public ReturnShipping returnShipping() {
@@ -203,7 +193,7 @@ public final class JobDetails {
 
     /**
      * Set the returnShipping property: Specifies the return carrier and customer's account with the carrier.
-     *
+     * 
      * @param returnShipping the returnShipping value to set.
      * @return the JobDetails object itself.
      */
@@ -215,7 +205,7 @@ public final class JobDetails {
     /**
      * Get the shippingInformation property: Contains information about the Microsoft datacenter to which the drives
      * should be shipped.
-     *
+     * 
      * @return the shippingInformation value.
      */
     public ShippingInformation shippingInformation() {
@@ -225,7 +215,7 @@ public final class JobDetails {
     /**
      * Set the shippingInformation property: Contains information about the Microsoft datacenter to which the drives
      * should be shipped.
-     *
+     * 
      * @param shippingInformation the shippingInformation value to set.
      * @return the JobDetails object itself.
      */
@@ -237,7 +227,7 @@ public final class JobDetails {
     /**
      * Get the deliveryPackage property: Contains information about the package being shipped by the customer to the
      * Microsoft data center.
-     *
+     * 
      * @return the deliveryPackage value.
      */
     public DeliveryPackageInformation deliveryPackage() {
@@ -247,7 +237,7 @@ public final class JobDetails {
     /**
      * Set the deliveryPackage property: Contains information about the package being shipped by the customer to the
      * Microsoft data center.
-     *
+     * 
      * @param deliveryPackage the deliveryPackage value to set.
      * @return the JobDetails object itself.
      */
@@ -260,7 +250,7 @@ public final class JobDetails {
      * Get the returnPackage property: Contains information about the package being shipped from the Microsoft data
      * center to the customer to return the drives. The format is the same as the deliveryPackage property above. This
      * property is not included if the drives have not yet been returned.
-     *
+     * 
      * @return the returnPackage value.
      */
     public PackageInformation returnPackage() {
@@ -271,7 +261,7 @@ public final class JobDetails {
      * Set the returnPackage property: Contains information about the package being shipped from the Microsoft data
      * center to the customer to return the drives. The format is the same as the deliveryPackage property above. This
      * property is not included if the drives have not yet been returned.
-     *
+     * 
      * @param returnPackage the returnPackage value to set.
      * @return the JobDetails object itself.
      */
@@ -283,7 +273,7 @@ public final class JobDetails {
     /**
      * Get the diagnosticsPath property: The virtual blob directory to which the copy logs and backups of drive manifest
      * files (if enabled) will be stored.
-     *
+     * 
      * @return the diagnosticsPath value.
      */
     public String diagnosticsPath() {
@@ -293,7 +283,7 @@ public final class JobDetails {
     /**
      * Set the diagnosticsPath property: The virtual blob directory to which the copy logs and backups of drive manifest
      * files (if enabled) will be stored.
-     *
+     * 
      * @param diagnosticsPath the diagnosticsPath value to set.
      * @return the JobDetails object itself.
      */
@@ -305,7 +295,7 @@ public final class JobDetails {
     /**
      * Get the logLevel property: Default value is Error. Indicates whether error logging or verbose logging will be
      * enabled.
-     *
+     * 
      * @return the logLevel value.
      */
     public String logLevel() {
@@ -315,7 +305,7 @@ public final class JobDetails {
     /**
      * Set the logLevel property: Default value is Error. Indicates whether error logging or verbose logging will be
      * enabled.
-     *
+     * 
      * @param logLevel the logLevel value to set.
      * @return the JobDetails object itself.
      */
@@ -327,7 +317,7 @@ public final class JobDetails {
     /**
      * Get the backupDriveManifest property: Default value is false. Indicates whether the manifest files on the drives
      * should be copied to block blobs.
-     *
+     * 
      * @return the backupDriveManifest value.
      */
     public Boolean backupDriveManifest() {
@@ -337,7 +327,7 @@ public final class JobDetails {
     /**
      * Set the backupDriveManifest property: Default value is false. Indicates whether the manifest files on the drives
      * should be copied to block blobs.
-     *
+     * 
      * @param backupDriveManifest the backupDriveManifest value to set.
      * @return the JobDetails object itself.
      */
@@ -348,7 +338,7 @@ public final class JobDetails {
 
     /**
      * Get the state property: Current state of the job.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -357,7 +347,7 @@ public final class JobDetails {
 
     /**
      * Set the state property: Current state of the job.
-     *
+     * 
      * @param state the state value to set.
      * @return the JobDetails object itself.
      */
@@ -368,7 +358,7 @@ public final class JobDetails {
 
     /**
      * Get the cancelRequested property: Indicates whether a request has been submitted to cancel the job.
-     *
+     * 
      * @return the cancelRequested value.
      */
     public Boolean cancelRequested() {
@@ -377,7 +367,7 @@ public final class JobDetails {
 
     /**
      * Set the cancelRequested property: Indicates whether a request has been submitted to cancel the job.
-     *
+     * 
      * @param cancelRequested the cancelRequested value to set.
      * @return the JobDetails object itself.
      */
@@ -388,7 +378,7 @@ public final class JobDetails {
 
     /**
      * Get the percentComplete property: Overall percentage completed for the job.
-     *
+     * 
      * @return the percentComplete value.
      */
     public Long percentComplete() {
@@ -397,7 +387,7 @@ public final class JobDetails {
 
     /**
      * Set the percentComplete property: Overall percentage completed for the job.
-     *
+     * 
      * @param percentComplete the percentComplete value to set.
      * @return the JobDetails object itself.
      */
@@ -410,7 +400,7 @@ public final class JobDetails {
      * Get the incompleteBlobListUri property: A blob path that points to a block blob containing a list of blob names
      * that were not exported due to insufficient drive space. If all blobs were exported successfully, then this
      * element is not included in the response.
-     *
+     * 
      * @return the incompleteBlobListUri value.
      */
     public String incompleteBlobListUri() {
@@ -421,7 +411,7 @@ public final class JobDetails {
      * Set the incompleteBlobListUri property: A blob path that points to a block blob containing a list of blob names
      * that were not exported due to insufficient drive space. If all blobs were exported successfully, then this
      * element is not included in the response.
-     *
+     * 
      * @param incompleteBlobListUri the incompleteBlobListUri value to set.
      * @return the JobDetails object itself.
      */
@@ -433,7 +423,7 @@ public final class JobDetails {
     /**
      * Get the driveList property: List of up to ten drives that comprise the job. The drive list is a required element
      * for an import job; it is not specified for export jobs.
-     *
+     * 
      * @return the driveList value.
      */
     public List<DriveStatus> driveList() {
@@ -443,7 +433,7 @@ public final class JobDetails {
     /**
      * Set the driveList property: List of up to ten drives that comprise the job. The drive list is a required element
      * for an import job; it is not specified for export jobs.
-     *
+     * 
      * @param driveList the driveList value to set.
      * @return the JobDetails object itself.
      */
@@ -455,7 +445,7 @@ public final class JobDetails {
     /**
      * Get the export property: A property containing information about the blobs to be exported for an export job. This
      * property is included for export jobs only.
-     *
+     * 
      * @return the export value.
      */
     public Export export() {
@@ -465,7 +455,7 @@ public final class JobDetails {
     /**
      * Set the export property: A property containing information about the blobs to be exported for an export job. This
      * property is included for export jobs only.
-     *
+     * 
      * @param export the export value to set.
      * @return the JobDetails object itself.
      */
@@ -476,7 +466,7 @@ public final class JobDetails {
 
     /**
      * Get the provisioningState property: Specifies the provisioning state of the job.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -485,7 +475,7 @@ public final class JobDetails {
 
     /**
      * Set the provisioningState property: Specifies the provisioning state of the job.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the JobDetails object itself.
      */
@@ -496,7 +486,7 @@ public final class JobDetails {
 
     /**
      * Get the encryptionKey property: Contains information about the encryption key.
-     *
+     * 
      * @return the encryptionKey value.
      */
     public EncryptionKeyDetails encryptionKey() {
@@ -505,7 +495,7 @@ public final class JobDetails {
 
     /**
      * Set the encryptionKey property: Contains information about the encryption key.
-     *
+     * 
      * @param encryptionKey the encryptionKey value to set.
      * @return the JobDetails object itself.
      */
@@ -516,7 +506,7 @@ public final class JobDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -544,5 +534,93 @@ public final class JobDetails {
         if (encryptionKey() != null) {
             encryptionKey().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageAccountId", this.storageAccountId);
+        jsonWriter.writeStringField("jobType", this.jobType);
+        jsonWriter.writeJsonField("returnAddress", this.returnAddress);
+        jsonWriter.writeJsonField("returnShipping", this.returnShipping);
+        jsonWriter.writeJsonField("shippingInformation", this.shippingInformation);
+        jsonWriter.writeJsonField("deliveryPackage", this.deliveryPackage);
+        jsonWriter.writeJsonField("returnPackage", this.returnPackage);
+        jsonWriter.writeStringField("diagnosticsPath", this.diagnosticsPath);
+        jsonWriter.writeStringField("logLevel", this.logLevel);
+        jsonWriter.writeBooleanField("backupDriveManifest", this.backupDriveManifest);
+        jsonWriter.writeStringField("state", this.state);
+        jsonWriter.writeBooleanField("cancelRequested", this.cancelRequested);
+        jsonWriter.writeNumberField("percentComplete", this.percentComplete);
+        jsonWriter.writeStringField("incompleteBlobListUri", this.incompleteBlobListUri);
+        jsonWriter.writeArrayField("driveList", this.driveList, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("export", this.export);
+        jsonWriter.writeStringField("provisioningState", this.provisioningState);
+        jsonWriter.writeJsonField("encryptionKey", this.encryptionKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobDetails if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the JobDetails.
+     */
+    public static JobDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobDetails deserializedJobDetails = new JobDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageAccountId".equals(fieldName)) {
+                    deserializedJobDetails.storageAccountId = reader.getString();
+                } else if ("jobType".equals(fieldName)) {
+                    deserializedJobDetails.jobType = reader.getString();
+                } else if ("returnAddress".equals(fieldName)) {
+                    deserializedJobDetails.returnAddress = ReturnAddress.fromJson(reader);
+                } else if ("returnShipping".equals(fieldName)) {
+                    deserializedJobDetails.returnShipping = ReturnShipping.fromJson(reader);
+                } else if ("shippingInformation".equals(fieldName)) {
+                    deserializedJobDetails.shippingInformation = ShippingInformation.fromJson(reader);
+                } else if ("deliveryPackage".equals(fieldName)) {
+                    deserializedJobDetails.deliveryPackage = DeliveryPackageInformation.fromJson(reader);
+                } else if ("returnPackage".equals(fieldName)) {
+                    deserializedJobDetails.returnPackage = PackageInformation.fromJson(reader);
+                } else if ("diagnosticsPath".equals(fieldName)) {
+                    deserializedJobDetails.diagnosticsPath = reader.getString();
+                } else if ("logLevel".equals(fieldName)) {
+                    deserializedJobDetails.logLevel = reader.getString();
+                } else if ("backupDriveManifest".equals(fieldName)) {
+                    deserializedJobDetails.backupDriveManifest = reader.getNullable(JsonReader::getBoolean);
+                } else if ("state".equals(fieldName)) {
+                    deserializedJobDetails.state = reader.getString();
+                } else if ("cancelRequested".equals(fieldName)) {
+                    deserializedJobDetails.cancelRequested = reader.getNullable(JsonReader::getBoolean);
+                } else if ("percentComplete".equals(fieldName)) {
+                    deserializedJobDetails.percentComplete = reader.getNullable(JsonReader::getLong);
+                } else if ("incompleteBlobListUri".equals(fieldName)) {
+                    deserializedJobDetails.incompleteBlobListUri = reader.getString();
+                } else if ("driveList".equals(fieldName)) {
+                    List<DriveStatus> driveList = reader.readArray(reader1 -> DriveStatus.fromJson(reader1));
+                    deserializedJobDetails.driveList = driveList;
+                } else if ("export".equals(fieldName)) {
+                    deserializedJobDetails.export = Export.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedJobDetails.provisioningState = reader.getString();
+                } else if ("encryptionKey".equals(fieldName)) {
+                    deserializedJobDetails.encryptionKey = EncryptionKeyDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobDetails;
+        });
     }
 }
