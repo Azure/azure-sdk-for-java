@@ -15,68 +15,39 @@ import org.junit.jupiter.api.Assertions;
 public final class RegistrationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RegistrationList model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"e\",\"value\":[{\"properties\":{\"objectId\":\"pclhocohslk\",\"cloudId\":\"leggzfbu\",\"billingModel\":\"mvfaxkffeiith\"},\"etag\":\"m\",\"location\":\"zy\",\"tags\":{\"grxwbu\":\"xmzsbbzogg\",\"dptkoenkouk\":\"vjxxjnsp\",\"pocipazyxoegu\":\"vudwtiukbldng\",\"npiucgygevqznty\":\"g\"},\"id\":\"mrbpizcdrqj\",\"name\":\"dpydn\",\"type\":\"yhxdeoejzicwi\"},{\"properties\":{\"objectId\":\"ttgzfbis\",\"cloudId\":\"bkh\",\"billingModel\":\"deyeamdphagalpbu\"},\"etag\":\"gipwhonowkg\",\"location\":\"hwankixzbinjepu\",\"tags\":{\"zoqftiyqzrnkcqvy\":\"rywn\"},\"id\":\"lwh\",\"name\":\"lsicohoqqnwv\",\"type\":\"ryavwhheunmmqh\"},{\"properties\":{\"objectId\":\"zko\",\"cloudId\":\"cukoklyaxuconu\",\"billingModel\":\"zf\"},\"etag\":\"eyp\",\"location\":\"wrmjmwvvjektc\",\"tags\":{\"dqgbiqylihkaetc\":\"nhwlrsffrzpwvl\",\"ymuctqhjfbebrj\":\"tvfcivfsn\"},\"id\":\"xerf\",\"name\":\"wutttxfvjrbi\",\"type\":\"phxepcyvahf\"}]}")
-                .toObject(RegistrationList.class);
-        Assertions.assertEquals("e", model.nextLink());
-        Assertions.assertEquals("zy", model.value().get(0).location());
-        Assertions.assertEquals("xmzsbbzogg", model.value().get(0).tags().get("grxwbu"));
-        Assertions.assertEquals("m", model.value().get(0).etag());
-        Assertions.assertEquals("pclhocohslk", model.value().get(0).objectId());
-        Assertions.assertEquals("leggzfbu", model.value().get(0).cloudId());
-        Assertions.assertEquals("mvfaxkffeiith", model.value().get(0).billingModel());
+        RegistrationList model = BinaryData.fromString(
+            "{\"nextLink\":\"pikad\",\"value\":[{\"properties\":{\"objectId\":\"agnb\",\"cloudId\":\"nhijggmebfsi\",\"billingModel\":\"butr\"},\"etag\":\"pnazzm\",\"location\":\"jrunmpxtt\",\"tags\":{\"henbtkcxywnytn\":\"rbnlankxmyskp\",\"haaxdbabphl\":\"synlqidybyxczfc\",\"yazttbtwwrqpue\":\"rqlfktsthsucocmn\",\"xibxujwbhqwalm\":\"ckzywbiexzfeyue\"},\"id\":\"zyoxaepdkzjan\",\"name\":\"ux\",\"type\":\"hdwbavxbniwdjs\"}]}")
+            .toObject(RegistrationList.class);
+        Assertions.assertEquals("pikad", model.nextLink());
+        Assertions.assertEquals("jrunmpxtt", model.value().get(0).location());
+        Assertions.assertEquals("rbnlankxmyskp", model.value().get(0).tags().get("henbtkcxywnytn"));
+        Assertions.assertEquals("pnazzm", model.value().get(0).etag());
+        Assertions.assertEquals("agnb", model.value().get(0).objectId());
+        Assertions.assertEquals("nhijggmebfsi", model.value().get(0).cloudId());
+        Assertions.assertEquals("butr", model.value().get(0).billingModel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RegistrationList model =
-            new RegistrationList()
-                .withNextLink("e")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new RegistrationInner()
-                                .withLocation("zy")
-                                .withTags(
-                                    mapOf(
-                                        "grxwbu",
-                                        "xmzsbbzogg",
-                                        "dptkoenkouk",
-                                        "vjxxjnsp",
-                                        "pocipazyxoegu",
-                                        "vudwtiukbldng",
-                                        "npiucgygevqznty",
-                                        "g"))
-                                .withEtag("m")
-                                .withObjectId("pclhocohslk")
-                                .withCloudId("leggzfbu")
-                                .withBillingModel("mvfaxkffeiith"),
-                            new RegistrationInner()
-                                .withLocation("hwankixzbinjepu")
-                                .withTags(mapOf("zoqftiyqzrnkcqvy", "rywn"))
-                                .withEtag("gipwhonowkg")
-                                .withObjectId("ttgzfbis")
-                                .withCloudId("bkh")
-                                .withBillingModel("deyeamdphagalpbu"),
-                            new RegistrationInner()
-                                .withLocation("wrmjmwvvjektc")
-                                .withTags(mapOf("dqgbiqylihkaetc", "nhwlrsffrzpwvl", "ymuctqhjfbebrj", "tvfcivfsn"))
-                                .withEtag("eyp")
-                                .withObjectId("zko")
-                                .withCloudId("cukoklyaxuconu")
-                                .withBillingModel("zf")));
+        RegistrationList model = new RegistrationList().withNextLink("pikad")
+            .withValue(Arrays.asList(new RegistrationInner().withLocation("jrunmpxtt")
+                .withTags(mapOf("henbtkcxywnytn", "rbnlankxmyskp", "haaxdbabphl", "synlqidybyxczfc", "yazttbtwwrqpue",
+                    "rqlfktsthsucocmn", "xibxujwbhqwalm", "ckzywbiexzfeyue"))
+                .withEtag("pnazzm")
+                .withObjectId("agnb")
+                .withCloudId("nhijggmebfsi")
+                .withBillingModel("butr")));
         model = BinaryData.fromObject(model).toObject(RegistrationList.class);
-        Assertions.assertEquals("e", model.nextLink());
-        Assertions.assertEquals("zy", model.value().get(0).location());
-        Assertions.assertEquals("xmzsbbzogg", model.value().get(0).tags().get("grxwbu"));
-        Assertions.assertEquals("m", model.value().get(0).etag());
-        Assertions.assertEquals("pclhocohslk", model.value().get(0).objectId());
-        Assertions.assertEquals("leggzfbu", model.value().get(0).cloudId());
-        Assertions.assertEquals("mvfaxkffeiith", model.value().get(0).billingModel());
+        Assertions.assertEquals("pikad", model.nextLink());
+        Assertions.assertEquals("jrunmpxtt", model.value().get(0).location());
+        Assertions.assertEquals("rbnlankxmyskp", model.value().get(0).tags().get("henbtkcxywnytn"));
+        Assertions.assertEquals("pnazzm", model.value().get(0).etag());
+        Assertions.assertEquals("agnb", model.value().get(0).objectId());
+        Assertions.assertEquals("nhijggmebfsi", model.value().get(0).cloudId());
+        Assertions.assertEquals("butr", model.value().get(0).billingModel());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

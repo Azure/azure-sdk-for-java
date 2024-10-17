@@ -10,11 +10,9 @@ import com.azure.resourcemanager.azurestack.fluent.models.ExtendedProductInner;
 public final class ExtendedProductInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExtendedProductInner model =
-            BinaryData
-                .fromString(
-                    "{\"galleryPackageBlobSasUri\":\"zzvdudgwds\",\"productKind\":\"hotwmcynpwlbjnp\",\"properties\":{\"version\":\"wey\",\"osDiskImage\":{\"operatingSystem\":\"Linux\",\"sourceBlobSasUri\":\"uesnzwdejbavo\"},\"dataDiskImages\":[{\"lun\":1432436623,\"sourceBlobSasUri\":\"hctbqvudwxdn\"},{\"lun\":378897714,\"sourceBlobSasUri\":\"w\"},{\"lun\":1798708201,\"sourceBlobSasUri\":\"ugw\"}],\"computeRole\":\"None\",\"isSystemExtension\":true,\"sourceBlob\":{\"uri\":\"lazjdyggdtjixhbk\"},\"supportMultipleExtensions\":true,\"vmOsType\":\"Windows\",\"vmScaleSetEnabled\":false}}")
-                .toObject(ExtendedProductInner.class);
+        ExtendedProductInner model = BinaryData.fromString(
+            "{\"galleryPackageBlobSasUri\":\"eggzfb\",\"productKind\":\"fmvfaxkffeiit\",\"properties\":{\"version\":\"qzntypm\",\"osDiskImage\":{\"operatingSystem\":\"Windows\",\"sourceBlobSasUri\":\"hxmzsbbzoggig\"},\"dataDiskImages\":[{\"lun\":285101547,\"sourceBlobSasUri\":\"vjxxjnsp\"},{\"lun\":782343623,\"sourceBlobSasUri\":\"koen\"},{\"lun\":232907016,\"sourceBlobSasUri\":\"nvudwtiukb\"},{\"lun\":592708150,\"sourceBlobSasUri\":\"kpoc\"}],\"computeRole\":\"IaaS\",\"isSystemExtension\":true,\"sourceBlob\":{\"uri\":\"egukgjnpiucg\"},\"supportMultipleExtensions\":true,\"vmOsType\":\"Linux\",\"vmScaleSetEnabled\":true}}")
+            .toObject(ExtendedProductInner.class);
     }
 
     @org.junit.jupiter.api.Test
