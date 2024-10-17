@@ -52,6 +52,9 @@ Licensed under the MIT License.
     <jacoco.skip>true</jacoco.skip> <!-- project has no tests -->
 
     <doclintMissingInclusion>-</doclintMissingInclusion>
+
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>

@@ -43,11 +43,11 @@ def generate_suppression_files(project_folder: str):
     generate_spotbugs_suppression_file(project_folder)
 
 def generate_linting_violations(project_folder: str):
-    # Run mvn checkstyle:check spotbugs:check spotbugs:spotbugs -f <project_folder> "-Dcheckstyle.failOnViolation=false" "-Dcheckstyle.failsOnError=false" "-Dspotbugs.failOnError=false" "-Dcheckstyle.suppressionsLocation=" "-Dspotbugs.excludeFilterFile="
+    # Run mvn clean verify -f <project_folder> "-Dcheckstyle.failOnViolation=false" "-Dcheckstyle.failsOnError=false" "-Dspotbugs.failOnError=false" "-Dcheckstyle.suppressionsLocation=" "-Dspotbugs.excludeFilterFile="
     # This will generate the following files:
     #   target/checkstyle-result.xml
     #   target/spotbugs.xml
-    subprocess.run(f'mvn checkstyle:check spotbugs:check spotbugs:spotbugs -f {project_folder} "-Dcheckstyle.failOnViolation=false" "-Dcheckstyle.failsOnError=false" "-Dspotbugs.failOnError=false" "-Dcheckstyle.suppressionsLocation=" "-Dspotbugs.excludeFilterFile="', shell = True)
+    subprocess.run(f'mvn clean verify "-Dcodesnippet.skip=true" "-Dspotless.skip=true" -DskipTests "-Dmaven.javadoc.skip=true" "-Drevapi.skip=true" -f {project_folder} "-Dcheckstyle.failOnViolation=false" "-Dcheckstyle.failsOnError=false" "-Dspotbugs.failOnError=false" "-Dcheckstyle.suppressionsLocation=" "-Dspotbugs.excludeFilterFile="', shell = True)
 
 def generate_checkstyle_suppression_file(project_folder: str):
     # Get the path to the checkstyle violations file.
