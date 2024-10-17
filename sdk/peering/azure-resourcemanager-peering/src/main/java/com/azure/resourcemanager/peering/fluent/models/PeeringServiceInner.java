@@ -7,47 +7,63 @@ package com.azure.resourcemanager.peering.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.peering.models.PeeringServiceSku;
 import com.azure.resourcemanager.peering.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Peering Service. */
+/**
+ * Peering Service.
+ */
 @Fluent
 public final class PeeringServiceInner extends ProxyResource {
     /*
      * The SKU that defines the type of the peering service.
      */
-    @JsonProperty(value = "sku")
     private PeeringServiceSku sku;
 
     /*
      * The properties that define a peering service.
      */
-    @JsonProperty(value = "properties")
     private PeeringServiceProperties innerProperties;
 
     /*
      * The location of the resource.
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
      * The resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of PeeringServiceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of PeeringServiceInner class.
+     */
     public PeeringServiceInner() {
     }
 
     /**
      * Get the sku property: The SKU that defines the type of the peering service.
-     *
+     * 
      * @return the sku value.
      */
     public PeeringServiceSku sku() {
@@ -56,7 +72,7 @@ public final class PeeringServiceInner extends ProxyResource {
 
     /**
      * Set the sku property: The SKU that defines the type of the peering service.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the PeeringServiceInner object itself.
      */
@@ -67,7 +83,7 @@ public final class PeeringServiceInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: The properties that define a peering service.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PeeringServiceProperties innerProperties() {
@@ -76,7 +92,7 @@ public final class PeeringServiceInner extends ProxyResource {
 
     /**
      * Get the location property: The location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -85,7 +101,7 @@ public final class PeeringServiceInner extends ProxyResource {
 
     /**
      * Set the location property: The location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the PeeringServiceInner object itself.
      */
@@ -96,7 +112,7 @@ public final class PeeringServiceInner extends ProxyResource {
 
     /**
      * Get the tags property: The resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -105,7 +121,7 @@ public final class PeeringServiceInner extends ProxyResource {
 
     /**
      * Set the tags property: The resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the PeeringServiceInner object itself.
      */
@@ -115,8 +131,38 @@ public final class PeeringServiceInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the peeringServiceLocation property: The location (state/province) of the customer.
-     *
+     * 
      * @return the peeringServiceLocation value.
      */
     public String peeringServiceLocation() {
@@ -125,7 +171,7 @@ public final class PeeringServiceInner extends ProxyResource {
 
     /**
      * Set the peeringServiceLocation property: The location (state/province) of the customer.
-     *
+     * 
      * @param peeringServiceLocation the peeringServiceLocation value to set.
      * @return the PeeringServiceInner object itself.
      */
@@ -139,7 +185,7 @@ public final class PeeringServiceInner extends ProxyResource {
 
     /**
      * Get the peeringServiceProvider property: The name of the service provider.
-     *
+     * 
      * @return the peeringServiceProvider value.
      */
     public String peeringServiceProvider() {
@@ -148,7 +194,7 @@ public final class PeeringServiceInner extends ProxyResource {
 
     /**
      * Set the peeringServiceProvider property: The name of the service provider.
-     *
+     * 
      * @param peeringServiceProvider the peeringServiceProvider value to set.
      * @return the PeeringServiceInner object itself.
      */
@@ -162,7 +208,7 @@ public final class PeeringServiceInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -172,7 +218,7 @@ public final class PeeringServiceInner extends ProxyResource {
     /**
      * Get the providerPrimaryPeeringLocation property: The primary peering (Microsoft/service provider) location to be
      * used for customer traffic.
-     *
+     * 
      * @return the providerPrimaryPeeringLocation value.
      */
     public String providerPrimaryPeeringLocation() {
@@ -182,7 +228,7 @@ public final class PeeringServiceInner extends ProxyResource {
     /**
      * Set the providerPrimaryPeeringLocation property: The primary peering (Microsoft/service provider) location to be
      * used for customer traffic.
-     *
+     * 
      * @param providerPrimaryPeeringLocation the providerPrimaryPeeringLocation value to set.
      * @return the PeeringServiceInner object itself.
      */
@@ -197,7 +243,7 @@ public final class PeeringServiceInner extends ProxyResource {
     /**
      * Get the providerBackupPeeringLocation property: The backup peering (Microsoft/service provider) location to be
      * used for customer traffic.
-     *
+     * 
      * @return the providerBackupPeeringLocation value.
      */
     public String providerBackupPeeringLocation() {
@@ -207,7 +253,7 @@ public final class PeeringServiceInner extends ProxyResource {
     /**
      * Set the providerBackupPeeringLocation property: The backup peering (Microsoft/service provider) location to be
      * used for customer traffic.
-     *
+     * 
      * @param providerBackupPeeringLocation the providerBackupPeeringLocation value to set.
      * @return the PeeringServiceInner object itself.
      */
@@ -221,7 +267,7 @@ public final class PeeringServiceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -232,11 +278,63 @@ public final class PeeringServiceInner extends ProxyResource {
             innerProperties().validate();
         }
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property location in model PeeringServiceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model PeeringServiceInner"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PeeringServiceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeeringServiceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeeringServiceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PeeringServiceInner.
+     */
+    public static PeeringServiceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeeringServiceInner deserializedPeeringServiceInner = new PeeringServiceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPeeringServiceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPeeringServiceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPeeringServiceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedPeeringServiceInner.location = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedPeeringServiceInner.sku = PeeringServiceSku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPeeringServiceInner.innerProperties = PeeringServiceProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPeeringServiceInner.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeeringServiceInner;
+        });
+    }
 }

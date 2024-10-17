@@ -6,25 +6,46 @@ package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** PeeringService provider. */
+/**
+ * PeeringService provider.
+ */
 @Fluent
 public final class PeeringServiceProviderInner extends ProxyResource {
     /*
      * The properties that define a peering service provider.
      */
-    @JsonProperty(value = "properties")
     private PeeringServiceProviderProperties innerProperties;
 
-    /** Creates an instance of PeeringServiceProviderInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of PeeringServiceProviderInner class.
+     */
     public PeeringServiceProviderInner() {
     }
 
     /**
      * Get the innerProperties property: The properties that define a peering service provider.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PeeringServiceProviderProperties innerProperties() {
@@ -32,8 +53,38 @@ public final class PeeringServiceProviderInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the serviceProviderName property: The name of the service provider.
-     *
+     * 
      * @return the serviceProviderName value.
      */
     public String serviceProviderName() {
@@ -42,7 +93,7 @@ public final class PeeringServiceProviderInner extends ProxyResource {
 
     /**
      * Set the serviceProviderName property: The name of the service provider.
-     *
+     * 
      * @param serviceProviderName the serviceProviderName value to set.
      * @return the PeeringServiceProviderInner object itself.
      */
@@ -56,7 +107,7 @@ public final class PeeringServiceProviderInner extends ProxyResource {
 
     /**
      * Get the peeringLocations property: The list of locations at which the service provider peers with Microsoft.
-     *
+     * 
      * @return the peeringLocations value.
      */
     public List<String> peeringLocations() {
@@ -65,7 +116,7 @@ public final class PeeringServiceProviderInner extends ProxyResource {
 
     /**
      * Set the peeringLocations property: The list of locations at which the service provider peers with Microsoft.
-     *
+     * 
      * @param peeringLocations the peeringLocations value to set.
      * @return the PeeringServiceProviderInner object itself.
      */
@@ -79,12 +130,56 @@ public final class PeeringServiceProviderInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeeringServiceProviderInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeeringServiceProviderInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PeeringServiceProviderInner.
+     */
+    public static PeeringServiceProviderInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeeringServiceProviderInner deserializedPeeringServiceProviderInner = new PeeringServiceProviderInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPeeringServiceProviderInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPeeringServiceProviderInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPeeringServiceProviderInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPeeringServiceProviderInner.innerProperties
+                        = PeeringServiceProviderProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeeringServiceProviderInner;
+        });
     }
 }

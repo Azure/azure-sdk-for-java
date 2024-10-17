@@ -6,31 +6,37 @@ package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The properties that define an exchange peering. */
+/**
+ * The properties that define an exchange peering.
+ */
 @Fluent
-public final class PeeringPropertiesExchange {
+public final class PeeringPropertiesExchange implements JsonSerializable<PeeringPropertiesExchange> {
     /*
      * The set of connections that constitute an exchange peering.
      */
-    @JsonProperty(value = "connections")
     private List<ExchangeConnection> connections;
 
     /*
      * The reference of the peer ASN.
      */
-    @JsonProperty(value = "peerAsn")
     private SubResource peerAsn;
 
-    /** Creates an instance of PeeringPropertiesExchange class. */
+    /**
+     * Creates an instance of PeeringPropertiesExchange class.
+     */
     public PeeringPropertiesExchange() {
     }
 
     /**
      * Get the connections property: The set of connections that constitute an exchange peering.
-     *
+     * 
      * @return the connections value.
      */
     public List<ExchangeConnection> connections() {
@@ -39,7 +45,7 @@ public final class PeeringPropertiesExchange {
 
     /**
      * Set the connections property: The set of connections that constitute an exchange peering.
-     *
+     * 
      * @param connections the connections value to set.
      * @return the PeeringPropertiesExchange object itself.
      */
@@ -50,7 +56,7 @@ public final class PeeringPropertiesExchange {
 
     /**
      * Get the peerAsn property: The reference of the peer ASN.
-     *
+     * 
      * @return the peerAsn value.
      */
     public SubResource peerAsn() {
@@ -59,7 +65,7 @@ public final class PeeringPropertiesExchange {
 
     /**
      * Set the peerAsn property: The reference of the peer ASN.
-     *
+     * 
      * @param peerAsn the peerAsn value to set.
      * @return the PeeringPropertiesExchange object itself.
      */
@@ -70,12 +76,53 @@ public final class PeeringPropertiesExchange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (connections() != null) {
             connections().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("connections", this.connections, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("peerAsn", this.peerAsn);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeeringPropertiesExchange from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeeringPropertiesExchange if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PeeringPropertiesExchange.
+     */
+    public static PeeringPropertiesExchange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeeringPropertiesExchange deserializedPeeringPropertiesExchange = new PeeringPropertiesExchange();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connections".equals(fieldName)) {
+                    List<ExchangeConnection> connections
+                        = reader.readArray(reader1 -> ExchangeConnection.fromJson(reader1));
+                    deserializedPeeringPropertiesExchange.connections = connections;
+                } else if ("peerAsn".equals(fieldName)) {
+                    deserializedPeeringPropertiesExchange.peerAsn = SubResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeeringPropertiesExchange;
+        });
     }
 }

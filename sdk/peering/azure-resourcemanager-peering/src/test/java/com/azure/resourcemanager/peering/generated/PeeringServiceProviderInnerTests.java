@@ -12,23 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class PeeringServiceProviderInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeeringServiceProviderInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"serviceProviderName\":\"bunrmfqjhhk\",\"peeringLocations\":[\"vjymjhxxjyngud\",\"vkr\",\"swbxqz\",\"szjfauvjfdxxivet\"]},\"id\":\"t\",\"name\":\"qaqtdoqmcbxvwvxy\",\"type\":\"lqbhsf\"}")
-                .toObject(PeeringServiceProviderInner.class);
-        Assertions.assertEquals("bunrmfqjhhk", model.serviceProviderName());
-        Assertions.assertEquals("vjymjhxxjyngud", model.peeringLocations().get(0));
+        PeeringServiceProviderInner model = BinaryData.fromString(
+            "{\"properties\":{\"serviceProviderName\":\"aakc\",\"peeringLocations\":[\"yzvqt\",\"nubexk\",\"zksmondj\"]},\"id\":\"quxvypomgkop\",\"name\":\"whojvp\",\"type\":\"jqg\"}")
+            .toObject(PeeringServiceProviderInner.class);
+        Assertions.assertEquals("aakc", model.serviceProviderName());
+        Assertions.assertEquals("yzvqt", model.peeringLocations().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeeringServiceProviderInner model =
-            new PeeringServiceProviderInner()
-                .withServiceProviderName("bunrmfqjhhk")
-                .withPeeringLocations(Arrays.asList("vjymjhxxjyngud", "vkr", "swbxqz", "szjfauvjfdxxivet"));
+        PeeringServiceProviderInner model = new PeeringServiceProviderInner().withServiceProviderName("aakc")
+            .withPeeringLocations(Arrays.asList("yzvqt", "nubexk", "zksmondj"));
         model = BinaryData.fromObject(model).toObject(PeeringServiceProviderInner.class);
-        Assertions.assertEquals("bunrmfqjhhk", model.serviceProviderName());
-        Assertions.assertEquals("vjymjhxxjyngud", model.peeringLocations().get(0));
+        Assertions.assertEquals("aakc", model.serviceProviderName());
+        Assertions.assertEquals("yzvqt", model.peeringLocations().get(0));
     }
 }
