@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.CustomizationPolicyInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of customization polices response model. */
+/**
+ * List of customization polices response model.
+ */
 @Fluent
-public final class CustomizationPoliciesListResponse {
+public final class CustomizationPoliciesListResponse implements JsonSerializable<CustomizationPoliciesListResponse> {
     /*
      * Link for next list of the Customization policy
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * List of the customization policies
      */
-    @JsonProperty(value = "value")
     private List<CustomizationPolicyInner> value;
 
-    /** Creates an instance of CustomizationPoliciesListResponse class. */
+    /**
+     * Creates an instance of CustomizationPoliciesListResponse class.
+     */
     public CustomizationPoliciesListResponse() {
     }
 
     /**
      * Get the nextLink property: Link for next list of the Customization policy.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +45,7 @@ public final class CustomizationPoliciesListResponse {
 
     /**
      * Set the nextLink property: Link for next list of the Customization policy.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CustomizationPoliciesListResponse object itself.
      */
@@ -50,7 +56,7 @@ public final class CustomizationPoliciesListResponse {
 
     /**
      * Get the value property: List of the customization policies.
-     *
+     * 
      * @return the value value.
      */
     public List<CustomizationPolicyInner> value() {
@@ -59,7 +65,7 @@ public final class CustomizationPoliciesListResponse {
 
     /**
      * Set the value property: List of the customization policies.
-     *
+     * 
      * @param value the value value to set.
      * @return the CustomizationPoliciesListResponse object itself.
      */
@@ -70,12 +76,54 @@ public final class CustomizationPoliciesListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomizationPoliciesListResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomizationPoliciesListResponse if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomizationPoliciesListResponse.
+     */
+    public static CustomizationPoliciesListResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomizationPoliciesListResponse deserializedCustomizationPoliciesListResponse
+                = new CustomizationPoliciesListResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedCustomizationPoliciesListResponse.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<CustomizationPolicyInner> value
+                        = reader.readArray(reader1 -> CustomizationPolicyInner.fromJson(reader1));
+                    deserializedCustomizationPoliciesListResponse.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomizationPoliciesListResponse;
+        });
     }
 }

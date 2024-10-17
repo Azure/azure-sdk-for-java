@@ -7,20 +7,23 @@ package com.azure.resourcemanager.vmwarecloudsimple.generated;
 import com.azure.resourcemanager.vmwarecloudsimple.models.Sku;
 import java.util.UUID;
 
-/** Samples for DedicatedCloudNodes CreateOrUpdate. */
+/**
+ * Samples for DedicatedCloudNodes CreateOrUpdate.
+ */
 public final class DedicatedCloudNodesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmwarecloudsimple/resource-manager/Microsoft.VMwareCloudSimple/stable/2019-04-01/examples/CreateDedicatedCloudNode.json
+     * x-ms-original-file:
+     * specification/vmwarecloudsimple/resource-manager/Microsoft.VMwareCloudSimple/stable/2019-04-01/examples/
+     * CreateDedicatedCloudNode.json
      */
     /**
      * Sample code: CreateDedicatedCloudNode.
-     *
+     * 
      * @param manager Entry point to VMwareCloudSimpleManager.
      */
-    public static void createDedicatedCloudNode(
-        com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager manager) {
-        manager
-            .dedicatedCloudNodes()
+    public static void
+        createDedicatedCloudNode(com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager manager) {
+        manager.dedicatedCloudNodes()
             .define("myNode")
             .withRegion("westus")
             .withExistingResourceGroup("myResourceGroup")

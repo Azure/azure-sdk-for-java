@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of DedicatedCloudServices. */
+/**
+ * Resource collection API of DedicatedCloudServices.
+ */
 public interface DedicatedCloudServices {
     /**
      * Implements list of dedicatedCloudService objects within subscription method
-     *
-     * <p>Returns list of dedicated cloud services within a subscription.
-     *
+     * 
+     * Returns list of dedicated cloud services within a subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of dedicated cloud services as paginated response with {@link PagedIterable}.
@@ -23,9 +25,9 @@ public interface DedicatedCloudServices {
 
     /**
      * Implements list of dedicatedCloudService objects within subscription method
-     *
-     * <p>Returns list of dedicated cloud services within a subscription.
-     *
+     * 
+     * Returns list of dedicated cloud services within a subscription.
+     * 
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
      * @param skipToken to be used by nextLink implementation.
@@ -39,9 +41,9 @@ public interface DedicatedCloudServices {
 
     /**
      * Implements list of dedicatedCloudService objects within RG method
-     *
-     * <p>Returns list of dedicated cloud services within a resource group.
-     *
+     * 
+     * Returns list of dedicated cloud services within a resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -52,9 +54,9 @@ public interface DedicatedCloudServices {
 
     /**
      * Implements list of dedicatedCloudService objects within RG method
-     *
-     * <p>Returns list of dedicated cloud services within a resource group.
-     *
+     * 
+     * Returns list of dedicated cloud services within a resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
@@ -65,14 +67,14 @@ public interface DedicatedCloudServices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of dedicated cloud services as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DedicatedCloudService> listByResourceGroup(
-        String resourceGroupName, String filter, Integer top, String skipToken, Context context);
+    PagedIterable<DedicatedCloudService> listByResourceGroup(String resourceGroupName, String filter, Integer top,
+        String skipToken, Context context);
 
     /**
      * Implements dedicatedCloudService GET method
-     *
-     * <p>Returns Dedicate Cloud Service.
-     *
+     * 
+     * Returns Dedicate Cloud Service.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param dedicatedCloudServiceName dedicated cloud Service name.
      * @param context The context to associate with this operation.
@@ -81,14 +83,14 @@ public interface DedicatedCloudServices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dedicated cloud service model along with {@link Response}.
      */
-    Response<DedicatedCloudService> getByResourceGroupWithResponse(
-        String resourceGroupName, String dedicatedCloudServiceName, Context context);
+    Response<DedicatedCloudService> getByResourceGroupWithResponse(String resourceGroupName,
+        String dedicatedCloudServiceName, Context context);
 
     /**
      * Implements dedicatedCloudService GET method
-     *
-     * <p>Returns Dedicate Cloud Service.
-     *
+     * 
+     * Returns Dedicate Cloud Service.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param dedicatedCloudServiceName dedicated cloud Service name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -100,9 +102,9 @@ public interface DedicatedCloudServices {
 
     /**
      * Implements dedicatedCloudService DELETE method
-     *
-     * <p>Delete dedicate cloud service.
-     *
+     * 
+     * Delete dedicate cloud service.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param dedicatedCloudServiceName dedicated cloud service name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -113,9 +115,9 @@ public interface DedicatedCloudServices {
 
     /**
      * Implements dedicatedCloudService DELETE method
-     *
-     * <p>Delete dedicate cloud service.
-     *
+     * 
+     * Delete dedicate cloud service.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param dedicatedCloudServiceName dedicated cloud service name.
      * @param context The context to associate with this operation.
@@ -127,9 +129,9 @@ public interface DedicatedCloudServices {
 
     /**
      * Implements dedicatedCloudService GET method
-     *
-     * <p>Returns Dedicate Cloud Service.
-     *
+     * 
+     * Returns Dedicate Cloud Service.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -140,9 +142,9 @@ public interface DedicatedCloudServices {
 
     /**
      * Implements dedicatedCloudService GET method
-     *
-     * <p>Returns Dedicate Cloud Service.
-     *
+     * 
+     * Returns Dedicate Cloud Service.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -154,9 +156,9 @@ public interface DedicatedCloudServices {
 
     /**
      * Implements dedicatedCloudService DELETE method
-     *
-     * <p>Delete dedicate cloud service.
-     *
+     * 
+     * Delete dedicate cloud service.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -166,9 +168,9 @@ public interface DedicatedCloudServices {
 
     /**
      * Implements dedicatedCloudService DELETE method
-     *
-     * <p>Delete dedicate cloud service.
-     *
+     * 
+     * Delete dedicate cloud service.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -179,7 +181,7 @@ public interface DedicatedCloudServices {
 
     /**
      * Begins definition for a new DedicatedCloudService resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new DedicatedCloudService definition.
      */

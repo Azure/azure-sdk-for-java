@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of VirtualNetworks. */
+/**
+ * Resource collection API of VirtualNetworks.
+ */
 public interface VirtualNetworks {
     /**
      * Implements list available virtual networks within a subscription method
-     *
-     * <p>Return list of virtual networks in location for private cloud.
-     *
+     * 
+     * Return list of virtual networks in location for private cloud.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param resourcePoolName Resource pool used to derive vSphere cluster which contains virtual networks.
@@ -27,9 +29,9 @@ public interface VirtualNetworks {
 
     /**
      * Implements list available virtual networks within a subscription method
-     *
-     * <p>Return list of virtual networks in location for private cloud.
-     *
+     * 
+     * Return list of virtual networks in location for private cloud.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param resourcePoolName Resource pool used to derive vSphere cluster which contains virtual networks.
@@ -43,9 +45,9 @@ public interface VirtualNetworks {
 
     /**
      * Implements virtual network GET method
-     *
-     * <p>Return virtual network by its name.
-     *
+     * 
+     * Return virtual network by its name.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param virtualNetworkName virtual network id (vsphereId).
@@ -55,14 +57,14 @@ public interface VirtualNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual network model along with {@link Response}.
      */
-    Response<VirtualNetwork> getWithResponse(
-        String regionId, String pcName, String virtualNetworkName, Context context);
+    Response<VirtualNetwork> getWithResponse(String regionId, String pcName, String virtualNetworkName,
+        Context context);
 
     /**
      * Implements virtual network GET method
-     *
-     * <p>Return virtual network by its name.
-     *
+     * 
+     * Return virtual network by its name.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param virtualNetworkName virtual network id (vsphereId).
