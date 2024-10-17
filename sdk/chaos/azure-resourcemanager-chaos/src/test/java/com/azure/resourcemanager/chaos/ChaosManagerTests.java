@@ -9,7 +9,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -26,7 +26,7 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.Random;
 
-public class ChaosManagerTests extends TestBase {
+public class ChaosManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
     private static final Region REGION = Region.US_EAST;
     private String resourceGroupName = "rg" + randomPadding();
@@ -82,7 +82,7 @@ public class ChaosManagerTests extends TestBase {
         Target target = null;
         String kvName = "kv" + randomPadding();
         try {
-            // @embedStart
+            // @embedmeStart
             keyVaultManager.vaults()
                 .define(kvName)
                 .withRegion(REGION)
@@ -102,7 +102,7 @@ public class ChaosManagerTests extends TestBase {
                         .withLocation(REGION.name())
                         .withProperties(Collections.emptyMap())
                 );
-            // @embedEnd
+            // @embedmeEnd
             Assertions.assertEquals(target.name(), "microsoft-keyvault");
             Assertions.assertTrue(Objects.nonNull(chaosManager.targets().get(
                 resourceGroupName, "microsoft.keyvault",

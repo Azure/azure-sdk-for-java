@@ -4,9 +4,13 @@
 
 ### Features Added
 
+- Supported creating `GalleryImageVersion` from source virtual machine by specifying `withSourceVirtualMachine`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Fixed a bug that VM state not refreshed after calling `VirtualMachine.deallocate`.
 
 ### Other Changes
 

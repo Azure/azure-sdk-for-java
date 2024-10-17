@@ -13,33 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagementConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagementConfigurationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"applicationId\":\"czdzev\",\"parentResourceType\":\"dhkrwpdappdsbdk\",\"parameters\":[{\"name\":\"wjfeusnhutjel\",\"value\":\"rl\"},{\"name\":\"ugjzzdatqxhocdge\",\"value\":\"lgphu\"}],\"provisioningState\":\"cndvkaozwyiftyhx\",\"template\":\"dataurokft\"}")
-                .toObject(ManagementConfigurationProperties.class);
-        Assertions.assertEquals("czdzev", model.applicationId());
-        Assertions.assertEquals("dhkrwpdappdsbdk", model.parentResourceType());
-        Assertions.assertEquals("wjfeusnhutjel", model.parameters().get(0).name());
-        Assertions.assertEquals("rl", model.parameters().get(0).value());
+        ManagementConfigurationProperties model = BinaryData.fromString(
+            "{\"applicationId\":\"mdgbbjfdd\",\"parentResourceType\":\"mbmbexppbh\",\"parameters\":[{\"name\":\"rolfpfp\",\"value\":\"lgbquxig\"}],\"provisioningState\":\"jgzjaoyfhrtx\",\"template\":\"datalnerkujysvleju\"}")
+            .toObject(ManagementConfigurationProperties.class);
+        Assertions.assertEquals("mdgbbjfdd", model.applicationId());
+        Assertions.assertEquals("mbmbexppbh", model.parentResourceType());
+        Assertions.assertEquals("rolfpfp", model.parameters().get(0).name());
+        Assertions.assertEquals("lgbquxig", model.parameters().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagementConfigurationProperties model =
-            new ManagementConfigurationProperties()
-                .withApplicationId("czdzev")
-                .withParentResourceType("dhkrwpdappdsbdk")
-                .withParameters(
-                    Arrays
-                        .asList(
-                            new ArmTemplateParameter().withName("wjfeusnhutjel").withValue("rl"),
-                            new ArmTemplateParameter().withName("ugjzzdatqxhocdge").withValue("lgphu")))
-                .withTemplate("dataurokft");
+        ManagementConfigurationProperties model = new ManagementConfigurationProperties().withApplicationId("mdgbbjfdd")
+            .withParentResourceType("mbmbexppbh")
+            .withParameters(Arrays.asList(new ArmTemplateParameter().withName("rolfpfp").withValue("lgbquxig")))
+            .withTemplate("datalnerkujysvleju");
         model = BinaryData.fromObject(model).toObject(ManagementConfigurationProperties.class);
-        Assertions.assertEquals("czdzev", model.applicationId());
-        Assertions.assertEquals("dhkrwpdappdsbdk", model.parentResourceType());
-        Assertions.assertEquals("wjfeusnhutjel", model.parameters().get(0).name());
-        Assertions.assertEquals("rl", model.parameters().get(0).value());
+        Assertions.assertEquals("mdgbbjfdd", model.applicationId());
+        Assertions.assertEquals("mbmbexppbh", model.parentResourceType());
+        Assertions.assertEquals("rolfpfp", model.parameters().get(0).name());
+        Assertions.assertEquals("lgbquxig", model.parameters().get(0).value());
     }
 }

@@ -5,34 +5,43 @@
 package com.azure.resourcemanager.extendedlocation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.extendedlocation.models.EnabledResourceTypePropertiesTypesMetadataItem;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties for EnabledResourceType of a custom location. */
+/**
+ * Properties for EnabledResourceType of a custom location.
+ */
 @Fluent
-public final class EnabledResourceTypeProperties {
+public final class EnabledResourceTypeProperties implements JsonSerializable<EnabledResourceTypeProperties> {
     /*
      * Cluster Extension ID
      */
-    @JsonProperty(value = "clusterExtensionId")
     private String clusterExtensionId;
 
     /*
      * Cluster Extension Type
      */
-    @JsonProperty(value = "extensionType")
     private String extensionType;
 
     /*
      * Metadata of the Resource Type
      */
-    @JsonProperty(value = "typesMetadata")
     private List<EnabledResourceTypePropertiesTypesMetadataItem> typesMetadata;
 
     /**
+     * Creates an instance of EnabledResourceTypeProperties class.
+     */
+    public EnabledResourceTypeProperties() {
+    }
+
+    /**
      * Get the clusterExtensionId property: Cluster Extension ID.
-     *
+     * 
      * @return the clusterExtensionId value.
      */
     public String clusterExtensionId() {
@@ -41,7 +50,7 @@ public final class EnabledResourceTypeProperties {
 
     /**
      * Set the clusterExtensionId property: Cluster Extension ID.
-     *
+     * 
      * @param clusterExtensionId the clusterExtensionId value to set.
      * @return the EnabledResourceTypeProperties object itself.
      */
@@ -52,7 +61,7 @@ public final class EnabledResourceTypeProperties {
 
     /**
      * Get the extensionType property: Cluster Extension Type.
-     *
+     * 
      * @return the extensionType value.
      */
     public String extensionType() {
@@ -61,7 +70,7 @@ public final class EnabledResourceTypeProperties {
 
     /**
      * Set the extensionType property: Cluster Extension Type.
-     *
+     * 
      * @param extensionType the extensionType value to set.
      * @return the EnabledResourceTypeProperties object itself.
      */
@@ -72,7 +81,7 @@ public final class EnabledResourceTypeProperties {
 
     /**
      * Get the typesMetadata property: Metadata of the Resource Type.
-     *
+     * 
      * @return the typesMetadata value.
      */
     public List<EnabledResourceTypePropertiesTypesMetadataItem> typesMetadata() {
@@ -81,24 +90,69 @@ public final class EnabledResourceTypeProperties {
 
     /**
      * Set the typesMetadata property: Metadata of the Resource Type.
-     *
+     * 
      * @param typesMetadata the typesMetadata value to set.
      * @return the EnabledResourceTypeProperties object itself.
      */
-    public EnabledResourceTypeProperties withTypesMetadata(
-        List<EnabledResourceTypePropertiesTypesMetadataItem> typesMetadata) {
+    public EnabledResourceTypeProperties
+        withTypesMetadata(List<EnabledResourceTypePropertiesTypesMetadataItem> typesMetadata) {
         this.typesMetadata = typesMetadata;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (typesMetadata() != null) {
             typesMetadata().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("clusterExtensionId", this.clusterExtensionId);
+        jsonWriter.writeStringField("extensionType", this.extensionType);
+        jsonWriter.writeArrayField("typesMetadata", this.typesMetadata, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnabledResourceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnabledResourceTypeProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnabledResourceTypeProperties.
+     */
+    public static EnabledResourceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnabledResourceTypeProperties deserializedEnabledResourceTypeProperties
+                = new EnabledResourceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clusterExtensionId".equals(fieldName)) {
+                    deserializedEnabledResourceTypeProperties.clusterExtensionId = reader.getString();
+                } else if ("extensionType".equals(fieldName)) {
+                    deserializedEnabledResourceTypeProperties.extensionType = reader.getString();
+                } else if ("typesMetadata".equals(fieldName)) {
+                    List<EnabledResourceTypePropertiesTypesMetadataItem> typesMetadata
+                        = reader.readArray(reader1 -> EnabledResourceTypePropertiesTypesMetadataItem.fromJson(reader1));
+                    deserializedEnabledResourceTypeProperties.typesMetadata = typesMetadata;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnabledResourceTypeProperties;
+        });
     }
 }

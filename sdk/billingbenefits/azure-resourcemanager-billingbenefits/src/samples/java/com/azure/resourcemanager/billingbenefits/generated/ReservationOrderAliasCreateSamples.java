@@ -14,40 +14,38 @@ import com.azure.resourcemanager.billingbenefits.models.ReservedResourceType;
 import com.azure.resourcemanager.billingbenefits.models.Sku;
 import com.azure.resourcemanager.billingbenefits.models.Term;
 
-/** Samples for ReservationOrderAlias Create. */
+/**
+ * Samples for ReservationOrderAlias Create.
+ */
 public final class ReservationOrderAliasCreateSamples {
     /*
-     * x-ms-original-file: specification/billingbenefits/resource-manager/Microsoft.BillingBenefits/stable/2022-11-01/examples/ReservationOrderAliasCreate.json
+     * x-ms-original-file:
+     * specification/billingbenefits/resource-manager/Microsoft.BillingBenefits/stable/2022-11-01/examples/
+     * ReservationOrderAliasCreate.json
      */
     /**
      * Sample code: ReservationOrderAliasCreate.
-     *
+     * 
      * @param manager Entry point to BillingBenefitsManager.
      */
-    public static void reservationOrderAliasCreate(
-        com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
-        manager
-            .reservationOrderAlias()
-            .create(
-                "reservationOrderAlias123",
-                new ReservationOrderAliasRequest()
-                    .withSku(new Sku().withName("Standard_M64s_v2"))
-                    .withLocation("eastus")
-                    .withDisplayName("ReservationOrder_2022-06-02")
-                    .withBillingScopeId("/subscriptions/10000000-0000-0000-0000-000000000000")
-                    .withTerm(Term.P1Y)
-                    .withBillingPlan(BillingPlan.P1M)
-                    .withAppliedScopeType(AppliedScopeType.SINGLE)
-                    .withAppliedScopeProperties(
-                        new AppliedScopeProperties()
-                            .withResourceGroupId(
-                                "/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/testrg"))
-                    .withQuantity(5)
-                    .withRenew(true)
-                    .withReservedResourceType(ReservedResourceType.VIRTUAL_MACHINES)
-                    .withReservedResourceProperties(
-                        new ReservationOrderAliasRequestPropertiesReservedResourceProperties()
-                            .withInstanceFlexibility(InstanceFlexibility.ON)),
+    public static void
+        reservationOrderAliasCreate(com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
+        manager.reservationOrderAlias()
+            .create("reservationOrderAlias123", new ReservationOrderAliasRequest()
+                .withSku(new Sku().withName("Standard_M64s_v2"))
+                .withLocation("eastus")
+                .withDisplayName("ReservationOrder_2022-06-02")
+                .withBillingScopeId("/subscriptions/10000000-0000-0000-0000-000000000000")
+                .withTerm(Term.P1Y)
+                .withBillingPlan(BillingPlan.P1M)
+                .withAppliedScopeType(AppliedScopeType.SINGLE)
+                .withAppliedScopeProperties(new AppliedScopeProperties()
+                    .withResourceGroupId("/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/testrg"))
+                .withQuantity(5)
+                .withRenew(true)
+                .withReservedResourceType(ReservedResourceType.VIRTUAL_MACHINES)
+                .withReservedResourceProperties(new ReservationOrderAliasRequestPropertiesReservedResourceProperties()
+                    .withInstanceFlexibility(InstanceFlexibility.ON)),
                 com.azure.core.util.Context.NONE);
     }
 }

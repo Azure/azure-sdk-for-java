@@ -6,32 +6,41 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The original source of the content item, where it comes from. */
+/**
+ * The original source of the content item, where it comes from.
+ */
 @Fluent
-public final class MetadataSource {
+public final class MetadataSource implements JsonSerializable<MetadataSource> {
     /*
      * Source type of the content
      */
-    @JsonProperty(value = "kind", required = true)
     private SourceKind kind;
 
     /*
-     * Name of the content source.  The repo name, solution name, LA workspace name etc.
+     * Name of the content source. The repo name, solution name, LA workspace name etc.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
-     * ID of the content source.  The solution ID, workspace ID, etc
+     * ID of the content source. The solution ID, workspace ID, etc
      */
-    @JsonProperty(value = "sourceId")
     private String sourceId;
 
     /**
+     * Creates an instance of MetadataSource class.
+     */
+    public MetadataSource() {
+    }
+
+    /**
      * Get the kind property: Source type of the content.
-     *
+     * 
      * @return the kind value.
      */
     public SourceKind kind() {
@@ -40,7 +49,7 @@ public final class MetadataSource {
 
     /**
      * Set the kind property: Source type of the content.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the MetadataSource object itself.
      */
@@ -51,7 +60,7 @@ public final class MetadataSource {
 
     /**
      * Get the name property: Name of the content source. The repo name, solution name, LA workspace name etc.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -60,7 +69,7 @@ public final class MetadataSource {
 
     /**
      * Set the name property: Name of the content source. The repo name, solution name, LA workspace name etc.
-     *
+     * 
      * @param name the name value to set.
      * @return the MetadataSource object itself.
      */
@@ -71,7 +80,7 @@ public final class MetadataSource {
 
     /**
      * Get the sourceId property: ID of the content source. The solution ID, workspace ID, etc.
-     *
+     * 
      * @return the sourceId value.
      */
     public String sourceId() {
@@ -80,7 +89,7 @@ public final class MetadataSource {
 
     /**
      * Set the sourceId property: ID of the content source. The solution ID, workspace ID, etc.
-     *
+     * 
      * @param sourceId the sourceId value to set.
      * @return the MetadataSource object itself.
      */
@@ -91,16 +100,58 @@ public final class MetadataSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (kind() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property kind in model MetadataSource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property kind in model MetadataSource"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MetadataSource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("sourceId", this.sourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetadataSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetadataSource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetadataSource.
+     */
+    public static MetadataSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetadataSource deserializedMetadataSource = new MetadataSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedMetadataSource.kind = SourceKind.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedMetadataSource.name = reader.getString();
+                } else if ("sourceId".equals(fieldName)) {
+                    deserializedMetadataSource.sourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetadataSource;
+        });
+    }
 }

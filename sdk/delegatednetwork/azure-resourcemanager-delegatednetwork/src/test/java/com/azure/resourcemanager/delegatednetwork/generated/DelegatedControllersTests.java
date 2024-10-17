@@ -15,28 +15,23 @@ import org.junit.jupiter.api.Assertions;
 public final class DelegatedControllersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DelegatedControllers model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"resourceGuid\":\"nryrtihf\",\"provisioningState\":\"Provisioning\",\"dncAppId\":\"bpzvgn\",\"dncTenantId\":\"symglzufcyz\",\"dncEndpoint\":\"hdbihan\"},\"location\":\"fhfcb\",\"tags\":{\"ithxqhabifpi\":\"a\"},\"id\":\"xwczbyscnp\",\"name\":\"x\",\"type\":\"hiv\"}],\"nextLink\":\"n\"}")
-                .toObject(DelegatedControllers.class);
+        DelegatedControllers model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"resourceGuid\":\"nryrtihf\",\"provisioningState\":\"Provisioning\",\"dncAppId\":\"bpzvgn\",\"dncTenantId\":\"symglzufcyz\",\"dncEndpoint\":\"hdbihan\"},\"location\":\"fhfcb\",\"tags\":{\"ithxqhabifpi\":\"a\"},\"id\":\"xwczbyscnp\",\"name\":\"x\",\"type\":\"hiv\"}],\"nextLink\":\"n\"}")
+            .toObject(DelegatedControllers.class);
         Assertions.assertEquals("fhfcb", model.value().get(0).location());
         Assertions.assertEquals("a", model.value().get(0).tags().get("ithxqhabifpi"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DelegatedControllers model =
-            new DelegatedControllers()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DelegatedControllerInner().withLocation("fhfcb").withTags(mapOf("ithxqhabifpi", "a"))));
+        DelegatedControllers model = new DelegatedControllers().withValue(
+            Arrays.asList(new DelegatedControllerInner().withLocation("fhfcb").withTags(mapOf("ithxqhabifpi", "a"))));
         model = BinaryData.fromObject(model).toObject(DelegatedControllers.class);
         Assertions.assertEquals("fhfcb", model.value().get(0).location());
         Assertions.assertEquals("a", model.value().get(0).tags().get("ithxqhabifpi"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

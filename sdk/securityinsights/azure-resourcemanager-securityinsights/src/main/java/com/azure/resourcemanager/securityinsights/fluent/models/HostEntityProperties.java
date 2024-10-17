@@ -5,71 +5,85 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
 import com.azure.resourcemanager.securityinsights.models.OSFamily;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.util.Map;
 
-/** Host entity property bag. */
+/**
+ * Host entity property bag.
+ */
 @Fluent
 public final class HostEntityProperties extends EntityCommonProperties {
     /*
      * The azure resource id of the VM.
      */
-    @JsonProperty(value = "azureID", access = JsonProperty.Access.WRITE_ONLY)
     private String azureId;
 
     /*
      * The DNS domain that this host belongs to. Should contain the compete DNS suffix for the domain
      */
-    @JsonProperty(value = "dnsDomain", access = JsonProperty.Access.WRITE_ONLY)
     private String dnsDomain;
 
     /*
      * The hostname without the domain suffix.
      */
-    @JsonProperty(value = "hostName", access = JsonProperty.Access.WRITE_ONLY)
     private String hostname;
 
     /*
      * Determines whether this host belongs to a domain.
      */
-    @JsonProperty(value = "isDomainJoined", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDomainJoined;
 
     /*
      * The host name (pre-windows2000).
      */
-    @JsonProperty(value = "netBiosName", access = JsonProperty.Access.WRITE_ONLY)
     private String netBiosName;
 
     /*
      * The NT domain that this host belongs to.
      */
-    @JsonProperty(value = "ntDomain", access = JsonProperty.Access.WRITE_ONLY)
     private String ntDomain;
 
     /*
      * The OMS agent id, if the host has OMS agent installed.
      */
-    @JsonProperty(value = "omsAgentID", access = JsonProperty.Access.WRITE_ONLY)
     private String omsAgentId;
 
     /*
      * The operating system type.
      */
-    @JsonProperty(value = "osFamily")
     private OSFamily osFamily;
 
     /*
      * A free text representation of the operating system. This field is meant to hold specific versions the are more
      * fine grained than OSFamily or future values not supported by OSFamily enumeration
      */
-    @JsonProperty(value = "osVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String osVersion;
+
+    /*
+     * The graph item display name which is a short humanly readable description of the graph item instance. This
+     * property is optional and might be system generated.
+     */
+    private String friendlyName;
+
+    /*
+     * A bag of custom fields that should be part of the entity and will be presented to the user.
+     */
+    private Map<String, Object> additionalData;
+
+    /**
+     * Creates an instance of HostEntityProperties class.
+     */
+    public HostEntityProperties() {
+    }
 
     /**
      * Get the azureId property: The azure resource id of the VM.
-     *
+     * 
      * @return the azureId value.
      */
     public String azureId() {
@@ -79,7 +93,7 @@ public final class HostEntityProperties extends EntityCommonProperties {
     /**
      * Get the dnsDomain property: The DNS domain that this host belongs to. Should contain the compete DNS suffix for
      * the domain.
-     *
+     * 
      * @return the dnsDomain value.
      */
     public String dnsDomain() {
@@ -88,7 +102,7 @@ public final class HostEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the hostname property: The hostname without the domain suffix.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -97,7 +111,7 @@ public final class HostEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the isDomainJoined property: Determines whether this host belongs to a domain.
-     *
+     * 
      * @return the isDomainJoined value.
      */
     public Boolean isDomainJoined() {
@@ -106,7 +120,7 @@ public final class HostEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the netBiosName property: The host name (pre-windows2000).
-     *
+     * 
      * @return the netBiosName value.
      */
     public String netBiosName() {
@@ -115,7 +129,7 @@ public final class HostEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the ntDomain property: The NT domain that this host belongs to.
-     *
+     * 
      * @return the ntDomain value.
      */
     public String ntDomain() {
@@ -124,7 +138,7 @@ public final class HostEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the omsAgentId property: The OMS agent id, if the host has OMS agent installed.
-     *
+     * 
      * @return the omsAgentId value.
      */
     public String omsAgentId() {
@@ -133,7 +147,7 @@ public final class HostEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the osFamily property: The operating system type.
-     *
+     * 
      * @return the osFamily value.
      */
     public OSFamily osFamily() {
@@ -142,7 +156,7 @@ public final class HostEntityProperties extends EntityCommonProperties {
 
     /**
      * Set the osFamily property: The operating system type.
-     *
+     * 
      * @param osFamily the osFamily value to set.
      * @return the HostEntityProperties object itself.
      */
@@ -154,7 +168,7 @@ public final class HostEntityProperties extends EntityCommonProperties {
     /**
      * Get the osVersion property: A free text representation of the operating system. This field is meant to hold
      * specific versions the are more fine grained than OSFamily or future values not supported by OSFamily enumeration.
-     *
+     * 
      * @return the osVersion value.
      */
     public String osVersion() {
@@ -162,12 +176,90 @@ public final class HostEntityProperties extends EntityCommonProperties {
     }
 
     /**
+     * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
+     * graph item instance. This property is optional and might be system generated.
+     * 
+     * @return the friendlyName value.
+     */
+    @Override
+    public String friendlyName() {
+        return this.friendlyName;
+    }
+
+    /**
+     * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
+     * to the user.
+     * 
+     * @return the additionalData value.
+     */
+    @Override
+    public Map<String, Object> additionalData() {
+        return this.additionalData;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("osFamily", this.osFamily == null ? null : this.osFamily.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HostEntityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HostEntityProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HostEntityProperties.
+     */
+    public static HostEntityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HostEntityProperties deserializedHostEntityProperties = new HostEntityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("additionalData".equals(fieldName)) {
+                    Map<String, Object> additionalData = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedHostEntityProperties.additionalData = additionalData;
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedHostEntityProperties.friendlyName = reader.getString();
+                } else if ("azureID".equals(fieldName)) {
+                    deserializedHostEntityProperties.azureId = reader.getString();
+                } else if ("dnsDomain".equals(fieldName)) {
+                    deserializedHostEntityProperties.dnsDomain = reader.getString();
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedHostEntityProperties.hostname = reader.getString();
+                } else if ("isDomainJoined".equals(fieldName)) {
+                    deserializedHostEntityProperties.isDomainJoined = reader.getNullable(JsonReader::getBoolean);
+                } else if ("netBiosName".equals(fieldName)) {
+                    deserializedHostEntityProperties.netBiosName = reader.getString();
+                } else if ("ntDomain".equals(fieldName)) {
+                    deserializedHostEntityProperties.ntDomain = reader.getString();
+                } else if ("omsAgentID".equals(fieldName)) {
+                    deserializedHostEntityProperties.omsAgentId = reader.getString();
+                } else if ("osFamily".equals(fieldName)) {
+                    deserializedHostEntityProperties.osFamily = OSFamily.fromString(reader.getString());
+                } else if ("osVersion".equals(fieldName)) {
+                    deserializedHostEntityProperties.osVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHostEntityProperties;
+        });
     }
 }

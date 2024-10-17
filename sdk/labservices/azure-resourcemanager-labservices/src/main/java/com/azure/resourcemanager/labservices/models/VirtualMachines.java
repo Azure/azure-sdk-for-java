@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of VirtualMachines. */
+/**
+ * Resource collection API of VirtualMachines.
+ */
 public interface VirtualMachines {
     /**
      * Get all virtual machines for a lab.
-     *
-     * <p>Returns a list of all virtual machines for a lab.
-     *
+     * 
+     * Returns a list of all virtual machines for a lab.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,9 +28,9 @@ public interface VirtualMachines {
 
     /**
      * Get all virtual machines for a lab.
-     *
-     * <p>Returns a list of all virtual machines for a lab.
-     *
+     * 
+     * Returns a list of all virtual machines for a lab.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param filter The filter to apply to the operation.
@@ -42,13 +44,31 @@ public interface VirtualMachines {
 
     /**
      * Get a lab virtual machine.
-     *
-     * <p>Returns the properties for a lab virtual machine.
-     *
+     * 
+     * Returns the properties for a lab virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param virtualMachineName The ID of the virtual machine that uniquely identifies it within the containing lab.
-     *     Used in resource URIs.
+     * Used in resource URIs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a lab virtual machine resource along with {@link Response}.
+     */
+    Response<VirtualMachine> getWithResponse(String resourceGroupName, String labName, String virtualMachineName,
+        Context context);
+
+    /**
+     * Get a lab virtual machine.
+     * 
+     * Returns the properties for a lab virtual machine.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
+     * @param virtualMachineName The ID of the virtual machine that uniquely identifies it within the containing lab.
+     * Used in resource URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -57,32 +77,14 @@ public interface VirtualMachines {
     VirtualMachine get(String resourceGroupName, String labName, String virtualMachineName);
 
     /**
-     * Get a lab virtual machine.
-     *
-     * <p>Returns the properties for a lab virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
-     * @param virtualMachineName The ID of the virtual machine that uniquely identifies it within the containing lab.
-     *     Used in resource URIs.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a lab virtual machine resource along with {@link Response}.
-     */
-    Response<VirtualMachine> getWithResponse(
-        String resourceGroupName, String labName, String virtualMachineName, Context context);
-
-    /**
      * Start a lab virtual machine.
-     *
-     * <p>Action to start a lab virtual machine.
-     *
+     * 
+     * Action to start a lab virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param virtualMachineName The ID of the virtual machine that uniquely identifies it within the containing lab.
-     *     Used in resource URIs.
+     * Used in resource URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -91,13 +93,13 @@ public interface VirtualMachines {
 
     /**
      * Start a lab virtual machine.
-     *
-     * <p>Action to start a lab virtual machine.
-     *
+     * 
+     * Action to start a lab virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param virtualMachineName The ID of the virtual machine that uniquely identifies it within the containing lab.
-     *     Used in resource URIs.
+     * Used in resource URIs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,13 +109,13 @@ public interface VirtualMachines {
 
     /**
      * Stop a lab virtual machine.
-     *
-     * <p>Action to stop a lab virtual machine.
-     *
+     * 
+     * Action to stop a lab virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param virtualMachineName The ID of the virtual machine that uniquely identifies it within the containing lab.
-     *     Used in resource URIs.
+     * Used in resource URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -122,13 +124,13 @@ public interface VirtualMachines {
 
     /**
      * Stop a lab virtual machine.
-     *
-     * <p>Action to stop a lab virtual machine.
-     *
+     * 
+     * Action to stop a lab virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param virtualMachineName The ID of the virtual machine that uniquely identifies it within the containing lab.
-     *     Used in resource URIs.
+     * Used in resource URIs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -138,14 +140,14 @@ public interface VirtualMachines {
 
     /**
      * Re-image a lab virtual machine.
-     *
-     * <p>Re-image a lab virtual machine. The virtual machine will be deleted and recreated using the latest published
+     * 
+     * Re-image a lab virtual machine. The virtual machine will be deleted and recreated using the latest published
      * snapshot of the reference environment of the lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param virtualMachineName The ID of the virtual machine that uniquely identifies it within the containing lab.
-     *     Used in resource URIs.
+     * Used in resource URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -154,14 +156,14 @@ public interface VirtualMachines {
 
     /**
      * Re-image a lab virtual machine.
-     *
-     * <p>Re-image a lab virtual machine. The virtual machine will be deleted and recreated using the latest published
+     * 
+     * Re-image a lab virtual machine. The virtual machine will be deleted and recreated using the latest published
      * snapshot of the reference environment of the lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param virtualMachineName The ID of the virtual machine that uniquely identifies it within the containing lab.
-     *     Used in resource URIs.
+     * Used in resource URIs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -171,13 +173,13 @@ public interface VirtualMachines {
 
     /**
      * Redeploy a lab virtual machine to a different compute node. For troubleshooting connectivity.
-     *
-     * <p>Action to redeploy a lab virtual machine to a different compute node. For troubleshooting connectivity.
-     *
+     * 
+     * Action to redeploy a lab virtual machine to a different compute node. For troubleshooting connectivity.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param virtualMachineName The ID of the virtual machine that uniquely identifies it within the containing lab.
-     *     Used in resource URIs.
+     * Used in resource URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -186,13 +188,13 @@ public interface VirtualMachines {
 
     /**
      * Redeploy a lab virtual machine to a different compute node. For troubleshooting connectivity.
-     *
-     * <p>Action to redeploy a lab virtual machine to a different compute node. For troubleshooting connectivity.
-     *
+     * 
+     * Action to redeploy a lab virtual machine to a different compute node. For troubleshooting connectivity.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param virtualMachineName The ID of the virtual machine that uniquely identifies it within the containing lab.
-     *     Used in resource URIs.
+     * Used in resource URIs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -202,13 +204,13 @@ public interface VirtualMachines {
 
     /**
      * Reset a lab virtual machine password.
-     *
-     * <p>Resets a lab virtual machine password.
-     *
+     * 
+     * Resets a lab virtual machine password.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param virtualMachineName The ID of the virtual machine that uniquely identifies it within the containing lab.
-     *     Used in resource URIs.
+     * Used in resource URIs.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -218,19 +220,19 @@ public interface VirtualMachines {
 
     /**
      * Reset a lab virtual machine password.
-     *
-     * <p>Resets a lab virtual machine password.
-     *
+     * 
+     * Resets a lab virtual machine password.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param virtualMachineName The ID of the virtual machine that uniquely identifies it within the containing lab.
-     *     Used in resource URIs.
+     * Used in resource URIs.
      * @param body The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void resetPassword(
-        String resourceGroupName, String labName, String virtualMachineName, ResetPasswordBody body, Context context);
+    void resetPassword(String resourceGroupName, String labName, String virtualMachineName, ResetPasswordBody body,
+        Context context);
 }

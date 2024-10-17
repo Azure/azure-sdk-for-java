@@ -10,10 +10,6 @@ module com.azure.resourcemanager.marketplaceordering {
     exports com.azure.resourcemanager.marketplaceordering.fluent.models;
     exports com.azure.resourcemanager.marketplaceordering.models;
 
-    opens com.azure.resourcemanager.marketplaceordering.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.marketplaceordering.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.marketplaceordering.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.marketplaceordering.models to com.azure.core;
 }

@@ -31,24 +31,24 @@ import reactor.core.publisher.Mono;
  */
 public final class LocationBasedRecommendedActionSessionsOperationStatusClientImpl
     implements LocationBasedRecommendedActionSessionsOperationStatusClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LocationBasedRecommendedActionSessionsOperationStatusService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MariaDBManagementClientImpl client;
 
     /**
      * Initializes an instance of LocationBasedRecommendedActionSessionsOperationStatusClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LocationBasedRecommendedActionSessionsOperationStatusClientImpl(MariaDBManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    LocationBasedRecommendedActionSessionsOperationStatusService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(LocationBasedRecommendedActionSessionsOperationStatusService.class,
+            client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,47 +60,37 @@ public final class LocationBasedRecommendedActionSessionsOperationStatusClientIm
     @Host("{$host}")
     @ServiceInterface(name = "MariaDBManagementCli")
     public interface LocationBasedRecommendedActionSessionsOperationStatusService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/locations/{locationName}"
-                + "/recommendedActionSessionsAzureAsyncOperation/{operationId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/locations/{locationName}/recommendedActionSessionsAzureAsyncOperation/{operationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RecommendedActionSessionsOperationStatusInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("locationName") String locationName,
-            @PathParam("operationId") String operationId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RecommendedActionSessionsOperationStatusInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("locationName") String locationName, @PathParam("operationId") String operationId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Recommendation action session operation status.
-     *
+     * 
      * @param locationName The name of the location.
      * @param operationId The operation identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return recommendation action session operation status along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RecommendedActionSessionsOperationStatusInner>> getWithResponseAsync(
-        String locationName, String operationId) {
+    private Mono<Response<RecommendedActionSessionsOperationStatusInner>> getWithResponseAsync(String locationName,
+        String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
@@ -111,23 +101,14 @@ public final class LocationBasedRecommendedActionSessionsOperationStatusClientIm
         final String apiVersion = "2018-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            locationName,
-                            operationId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                locationName, operationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Recommendation action session operation status.
-     *
+     * 
      * @param locationName The name of the location.
      * @param operationId The operation identifier.
      * @param context The context to associate with this operation.
@@ -135,22 +116,18 @@ public final class LocationBasedRecommendedActionSessionsOperationStatusClientIm
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return recommendation action session operation status along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RecommendedActionSessionsOperationStatusInner>> getWithResponseAsync(
-        String locationName, String operationId, Context context) {
+    private Mono<Response<RecommendedActionSessionsOperationStatusInner>> getWithResponseAsync(String locationName,
+        String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
@@ -161,20 +138,13 @@ public final class LocationBasedRecommendedActionSessionsOperationStatusClientIm
         final String apiVersion = "2018-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                locationName,
-                operationId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), locationName,
+            operationId, accept, context);
     }
 
     /**
      * Recommendation action session operation status.
-     *
+     * 
      * @param locationName The name of the location.
      * @param operationId The operation identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -189,7 +159,7 @@ public final class LocationBasedRecommendedActionSessionsOperationStatusClientIm
 
     /**
      * Recommendation action session operation status.
-     *
+     * 
      * @param locationName The name of the location.
      * @param operationId The operation identifier.
      * @param context The context to associate with this operation.
@@ -199,14 +169,14 @@ public final class LocationBasedRecommendedActionSessionsOperationStatusClientIm
      * @return recommendation action session operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecommendedActionSessionsOperationStatusInner> getWithResponse(
-        String locationName, String operationId, Context context) {
+    public Response<RecommendedActionSessionsOperationStatusInner> getWithResponse(String locationName,
+        String operationId, Context context) {
         return getWithResponseAsync(locationName, operationId, context).block();
     }
 
     /**
      * Recommendation action session operation status.
-     *
+     * 
      * @param locationName The name of the location.
      * @param operationId The operation identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

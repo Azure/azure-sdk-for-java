@@ -7,11 +7,35 @@ package com.azure.resourcemanager.hybridcompute.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseInner;
 
 /**
  * Resource collection API of Licenses.
  */
 public interface Licenses {
+    /**
+     * The operation to validate a license.
+     * 
+     * @param parameters Parameters supplied to the license validation operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a license in a hybrid machine.
+     */
+    License validateLicense(LicenseInner parameters);
+
+    /**
+     * The operation to validate a license.
+     * 
+     * @param parameters Parameters supplied to the license validation operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a license in a hybrid machine.
+     */
+    License validateLicense(LicenseInner parameters, Context context);
+
     /**
      * Retrieves information about the view of a license.
      * 

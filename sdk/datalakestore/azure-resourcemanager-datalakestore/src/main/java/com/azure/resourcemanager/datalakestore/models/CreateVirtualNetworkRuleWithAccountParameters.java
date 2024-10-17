@@ -6,32 +6,39 @@ package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datalakestore.fluent.models.CreateOrUpdateVirtualNetworkRuleProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The parameters used to create a new virtual network rule while creating a new Data Lake Store account. */
+/**
+ * The parameters used to create a new virtual network rule while creating a new Data Lake Store account.
+ */
 @Fluent
-public final class CreateVirtualNetworkRuleWithAccountParameters {
+public final class CreateVirtualNetworkRuleWithAccountParameters
+    implements JsonSerializable<CreateVirtualNetworkRuleWithAccountParameters> {
     /*
      * The unique name of the virtual network rule to create.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The virtual network rule properties to use when creating a new virtual network rule.
      */
-    @JsonProperty(value = "properties", required = true)
-    private CreateOrUpdateVirtualNetworkRuleProperties innerProperties =
-        new CreateOrUpdateVirtualNetworkRuleProperties();
+    private CreateOrUpdateVirtualNetworkRuleProperties innerProperties
+        = new CreateOrUpdateVirtualNetworkRuleProperties();
 
-    /** Creates an instance of CreateVirtualNetworkRuleWithAccountParameters class. */
+    /**
+     * Creates an instance of CreateVirtualNetworkRuleWithAccountParameters class.
+     */
     public CreateVirtualNetworkRuleWithAccountParameters() {
     }
 
     /**
      * Get the name property: The unique name of the virtual network rule to create.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -40,7 +47,7 @@ public final class CreateVirtualNetworkRuleWithAccountParameters {
 
     /**
      * Set the name property: The unique name of the virtual network rule to create.
-     *
+     * 
      * @param name the name value to set.
      * @return the CreateVirtualNetworkRuleWithAccountParameters object itself.
      */
@@ -52,7 +59,7 @@ public final class CreateVirtualNetworkRuleWithAccountParameters {
     /**
      * Get the innerProperties property: The virtual network rule properties to use when creating a new virtual network
      * rule.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CreateOrUpdateVirtualNetworkRuleProperties innerProperties() {
@@ -61,7 +68,7 @@ public final class CreateVirtualNetworkRuleWithAccountParameters {
 
     /**
      * Get the subnetId property: The resource identifier for the subnet.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -70,7 +77,7 @@ public final class CreateVirtualNetworkRuleWithAccountParameters {
 
     /**
      * Set the subnetId property: The resource identifier for the subnet.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the CreateVirtualNetworkRuleWithAccountParameters object itself.
      */
@@ -84,26 +91,65 @@ public final class CreateVirtualNetworkRuleWithAccountParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model CreateVirtualNetworkRuleWithAccountParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model CreateVirtualNetworkRuleWithAccountParameters"));
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model"
-                            + " CreateVirtualNetworkRuleWithAccountParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model CreateVirtualNetworkRuleWithAccountParameters"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CreateVirtualNetworkRuleWithAccountParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateVirtualNetworkRuleWithAccountParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateVirtualNetworkRuleWithAccountParameters if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CreateVirtualNetworkRuleWithAccountParameters.
+     */
+    public static CreateVirtualNetworkRuleWithAccountParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateVirtualNetworkRuleWithAccountParameters deserializedCreateVirtualNetworkRuleWithAccountParameters
+                = new CreateVirtualNetworkRuleWithAccountParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCreateVirtualNetworkRuleWithAccountParameters.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCreateVirtualNetworkRuleWithAccountParameters.innerProperties
+                        = CreateOrUpdateVirtualNetworkRuleProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateVirtualNetworkRuleWithAccountParameters;
+        });
+    }
 }

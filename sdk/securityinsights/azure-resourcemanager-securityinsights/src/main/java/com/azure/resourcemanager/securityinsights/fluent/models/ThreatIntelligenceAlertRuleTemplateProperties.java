@@ -5,27 +5,49 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.AlertRuleTemplateDataSource;
 import com.azure.resourcemanager.securityinsights.models.AlertRuleTemplateWithMitreProperties;
 import com.azure.resourcemanager.securityinsights.models.AlertSeverity;
 import com.azure.resourcemanager.securityinsights.models.AttackTactic;
 import com.azure.resourcemanager.securityinsights.models.TemplateStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Threat Intelligence alert rule template properties. */
+/**
+ * Threat Intelligence alert rule template properties.
+ */
 @Fluent
 public final class ThreatIntelligenceAlertRuleTemplateProperties extends AlertRuleTemplateWithMitreProperties {
     /*
      * The severity for alerts created by this alert rule.
      */
-    @JsonProperty(value = "severity", required = true)
     private AlertSeverity severity;
+
+    /*
+     * The time that this alert rule template has been added.
+     */
+    private OffsetDateTime createdDateUtc;
+
+    /*
+     * The last time that this alert rule template has been updated.
+     */
+    private OffsetDateTime lastUpdatedDateUtc;
+
+    /**
+     * Creates an instance of ThreatIntelligenceAlertRuleTemplateProperties class.
+     */
+    public ThreatIntelligenceAlertRuleTemplateProperties() {
+    }
 
     /**
      * Get the severity property: The severity for alerts created by this alert rule.
-     *
+     * 
      * @return the severity value.
      */
     public AlertSeverity severity() {
@@ -34,7 +56,7 @@ public final class ThreatIntelligenceAlertRuleTemplateProperties extends AlertRu
 
     /**
      * Set the severity property: The severity for alerts created by this alert rule.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the ThreatIntelligenceAlertRuleTemplateProperties object itself.
      */
@@ -43,51 +65,85 @@ public final class ThreatIntelligenceAlertRuleTemplateProperties extends AlertRu
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the createdDateUtc property: The time that this alert rule template has been added.
+     * 
+     * @return the createdDateUtc value.
+     */
+    @Override
+    public OffsetDateTime createdDateUtc() {
+        return this.createdDateUtc;
+    }
+
+    /**
+     * Get the lastUpdatedDateUtc property: The last time that this alert rule template has been updated.
+     * 
+     * @return the lastUpdatedDateUtc value.
+     */
+    @Override
+    public OffsetDateTime lastUpdatedDateUtc() {
+        return this.lastUpdatedDateUtc;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ThreatIntelligenceAlertRuleTemplateProperties withTactics(List<AttackTactic> tactics) {
         super.withTactics(tactics);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ThreatIntelligenceAlertRuleTemplateProperties withTechniques(List<String> techniques) {
         super.withTechniques(techniques);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ThreatIntelligenceAlertRuleTemplateProperties withAlertRulesCreatedByTemplateCount(
-        Integer alertRulesCreatedByTemplateCount) {
+    public ThreatIntelligenceAlertRuleTemplateProperties
+        withAlertRulesCreatedByTemplateCount(Integer alertRulesCreatedByTemplateCount) {
         super.withAlertRulesCreatedByTemplateCount(alertRulesCreatedByTemplateCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ThreatIntelligenceAlertRuleTemplateProperties withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ThreatIntelligenceAlertRuleTemplateProperties withDisplayName(String displayName) {
         super.withDisplayName(displayName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ThreatIntelligenceAlertRuleTemplateProperties withRequiredDataConnectors(
-        List<AlertRuleTemplateDataSource> requiredDataConnectors) {
+    public ThreatIntelligenceAlertRuleTemplateProperties
+        withRequiredDataConnectors(List<AlertRuleTemplateDataSource> requiredDataConnectors) {
         super.withRequiredDataConnectors(requiredDataConnectors);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ThreatIntelligenceAlertRuleTemplateProperties withStatus(TemplateStatus status) {
         super.withStatus(status);
@@ -96,19 +152,96 @@ public final class ThreatIntelligenceAlertRuleTemplateProperties extends AlertRu
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (severity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property severity in model ThreatIntelligenceAlertRuleTemplateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property severity in model ThreatIntelligenceAlertRuleTemplateProperties"));
+        }
+        if (requiredDataConnectors() != null) {
+            requiredDataConnectors().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ThreatIntelligenceAlertRuleTemplateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("alertRulesCreatedByTemplateCount", alertRulesCreatedByTemplateCount());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("displayName", displayName());
+        jsonWriter.writeArrayField("requiredDataConnectors", requiredDataConnectors(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("status", status() == null ? null : status().toString());
+        jsonWriter.writeArrayField("tactics", tactics(),
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("techniques", techniques(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("severity", this.severity == null ? null : this.severity.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThreatIntelligenceAlertRuleTemplateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThreatIntelligenceAlertRuleTemplateProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ThreatIntelligenceAlertRuleTemplateProperties.
+     */
+    public static ThreatIntelligenceAlertRuleTemplateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ThreatIntelligenceAlertRuleTemplateProperties deserializedThreatIntelligenceAlertRuleTemplateProperties
+                = new ThreatIntelligenceAlertRuleTemplateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("alertRulesCreatedByTemplateCount".equals(fieldName)) {
+                    deserializedThreatIntelligenceAlertRuleTemplateProperties
+                        .withAlertRulesCreatedByTemplateCount(reader.getNullable(JsonReader::getInt));
+                } else if ("lastUpdatedDateUTC".equals(fieldName)) {
+                    deserializedThreatIntelligenceAlertRuleTemplateProperties.lastUpdatedDateUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("createdDateUTC".equals(fieldName)) {
+                    deserializedThreatIntelligenceAlertRuleTemplateProperties.createdDateUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedThreatIntelligenceAlertRuleTemplateProperties.withDescription(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedThreatIntelligenceAlertRuleTemplateProperties.withDisplayName(reader.getString());
+                } else if ("requiredDataConnectors".equals(fieldName)) {
+                    List<AlertRuleTemplateDataSource> requiredDataConnectors
+                        = reader.readArray(reader1 -> AlertRuleTemplateDataSource.fromJson(reader1));
+                    deserializedThreatIntelligenceAlertRuleTemplateProperties
+                        .withRequiredDataConnectors(requiredDataConnectors);
+                } else if ("status".equals(fieldName)) {
+                    deserializedThreatIntelligenceAlertRuleTemplateProperties
+                        .withStatus(TemplateStatus.fromString(reader.getString()));
+                } else if ("tactics".equals(fieldName)) {
+                    List<AttackTactic> tactics
+                        = reader.readArray(reader1 -> AttackTactic.fromString(reader1.getString()));
+                    deserializedThreatIntelligenceAlertRuleTemplateProperties.withTactics(tactics);
+                } else if ("techniques".equals(fieldName)) {
+                    List<String> techniques = reader.readArray(reader1 -> reader1.getString());
+                    deserializedThreatIntelligenceAlertRuleTemplateProperties.withTechniques(techniques);
+                } else if ("severity".equals(fieldName)) {
+                    deserializedThreatIntelligenceAlertRuleTemplateProperties.severity
+                        = AlertSeverity.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedThreatIntelligenceAlertRuleTemplateProperties;
+        });
+    }
 }

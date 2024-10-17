@@ -5,32 +5,41 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Profile for how to handle networking for Labs. */
+/**
+ * Profile for how to handle networking for Labs.
+ */
 @Fluent
-public final class LabNetworkProfile {
+public final class LabNetworkProfile implements JsonSerializable<LabNetworkProfile> {
     /*
      * The external subnet resource id
      */
-    @JsonProperty(value = "subnetId")
     private String subnetId;
 
     /*
      * The external load balancer resource id
      */
-    @JsonProperty(value = "loadBalancerId")
     private String loadBalancerId;
 
     /*
      * The external public IP resource id
      */
-    @JsonProperty(value = "publicIpId")
     private String publicIpId;
 
     /**
+     * Creates an instance of LabNetworkProfile class.
+     */
+    public LabNetworkProfile() {
+    }
+
+    /**
      * Get the subnetId property: The external subnet resource id.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -39,7 +48,7 @@ public final class LabNetworkProfile {
 
     /**
      * Set the subnetId property: The external subnet resource id.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the LabNetworkProfile object itself.
      */
@@ -50,7 +59,7 @@ public final class LabNetworkProfile {
 
     /**
      * Get the loadBalancerId property: The external load balancer resource id.
-     *
+     * 
      * @return the loadBalancerId value.
      */
     public String loadBalancerId() {
@@ -59,7 +68,7 @@ public final class LabNetworkProfile {
 
     /**
      * Set the loadBalancerId property: The external load balancer resource id.
-     *
+     * 
      * @param loadBalancerId the loadBalancerId value to set.
      * @return the LabNetworkProfile object itself.
      */
@@ -70,7 +79,7 @@ public final class LabNetworkProfile {
 
     /**
      * Get the publicIpId property: The external public IP resource id.
-     *
+     * 
      * @return the publicIpId value.
      */
     public String publicIpId() {
@@ -79,7 +88,7 @@ public final class LabNetworkProfile {
 
     /**
      * Set the publicIpId property: The external public IP resource id.
-     *
+     * 
      * @param publicIpId the publicIpId value to set.
      * @return the LabNetworkProfile object itself.
      */
@@ -90,9 +99,51 @@ public final class LabNetworkProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        jsonWriter.writeStringField("loadBalancerId", this.loadBalancerId);
+        jsonWriter.writeStringField("publicIpId", this.publicIpId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabNetworkProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabNetworkProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LabNetworkProfile.
+     */
+    public static LabNetworkProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabNetworkProfile deserializedLabNetworkProfile = new LabNetworkProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnetId".equals(fieldName)) {
+                    deserializedLabNetworkProfile.subnetId = reader.getString();
+                } else if ("loadBalancerId".equals(fieldName)) {
+                    deserializedLabNetworkProfile.loadBalancerId = reader.getString();
+                } else if ("publicIpId".equals(fieldName)) {
+                    deserializedLabNetworkProfile.publicIpId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabNetworkProfile;
+        });
     }
 }

@@ -7,69 +7,85 @@ package com.azure.resourcemanager.billingbenefits.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.billingbenefits.models.AppliedScopeProperties;
 import com.azure.resourcemanager.billingbenefits.models.AppliedScopeType;
+import com.azure.resourcemanager.billingbenefits.models.BillingPlan;
+import com.azure.resourcemanager.billingbenefits.models.Commitment;
+import com.azure.resourcemanager.billingbenefits.models.PurchaseRequest;
 import com.azure.resourcemanager.billingbenefits.models.RenewProperties;
 import com.azure.resourcemanager.billingbenefits.models.SavingsPlanUpdateRequestProperties;
 import com.azure.resourcemanager.billingbenefits.models.SavingsPlanUpdateValidateRequest;
+import com.azure.resourcemanager.billingbenefits.models.Sku;
+import com.azure.resourcemanager.billingbenefits.models.Term;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class SavingsPlanUpdateValidateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SavingsPlanUpdateValidateRequest model =
-            BinaryData
-                .fromString(
-                    "{\"benefits\":[{\"displayName\":\"mmqhgyxzkonocuk\",\"appliedScopeType\":\"Shared\",\"appliedScopeProperties\":{\"tenantId\":\"xuconu\",\"managementGroupId\":\"zf\",\"subscriptionId\":\"eyp\",\"resourceGroupId\":\"rmjmwvvjektc\",\"displayName\":\"enhwlrs\"},\"renew\":true,\"renewProperties\":{}},{\"displayName\":\"v\",\"appliedScopeType\":\"Shared\",\"appliedScopeProperties\":{\"tenantId\":\"biqylihkaet\",\"managementGroupId\":\"tvfcivfsn\",\"subscriptionId\":\"m\",\"resourceGroupId\":\"tqhjfbebrjcx\",\"displayName\":\"fuwutttxf\"},\"renew\":false,\"renewProperties\":{}}]}")
-                .toObject(SavingsPlanUpdateValidateRequest.class);
-        Assertions.assertEquals("mmqhgyxzkonocuk", model.benefits().get(0).displayName());
-        Assertions.assertEquals(AppliedScopeType.SHARED, model.benefits().get(0).appliedScopeType());
-        Assertions.assertEquals("xuconu", model.benefits().get(0).appliedScopeProperties().tenantId());
-        Assertions.assertEquals("zf", model.benefits().get(0).appliedScopeProperties().managementGroupId());
-        Assertions.assertEquals("eyp", model.benefits().get(0).appliedScopeProperties().subscriptionId());
-        Assertions.assertEquals("rmjmwvvjektc", model.benefits().get(0).appliedScopeProperties().resourceGroupId());
-        Assertions.assertEquals("enhwlrs", model.benefits().get(0).appliedScopeProperties().displayName());
+        SavingsPlanUpdateValidateRequest model = BinaryData.fromString(
+            "{\"benefits\":[{\"displayName\":\"eypvhezrkg\",\"appliedScopeType\":\"ManagementGroup\",\"appliedScopeProperties\":{\"tenantId\":\"efovgmk\",\"managementGroupId\":\"leyyvx\",\"subscriptionId\":\"jpkcattpng\",\"resourceGroupId\":\"rcczsqpjhvmd\",\"displayName\":\"v\"},\"renew\":true,\"renewProperties\":{\"purchaseProperties\":{\"sku\":{\"name\":\"e\"},\"properties\":{\"displayName\":\"oaeupfhyhltrpmo\",\"billingScopeId\":\"mcmatuokthfuiu\",\"term\":\"P1Y\",\"billingPlan\":\"P1M\",\"appliedScopeType\":\"Single\",\"commitment\":{},\"effectiveDateTime\":\"2021-02-05T18:37:29Z\",\"renew\":false,\"appliedScopeProperties\":{}}}}}]}")
+            .toObject(SavingsPlanUpdateValidateRequest.class);
+        Assertions.assertEquals("eypvhezrkg", model.benefits().get(0).displayName());
+        Assertions.assertEquals(AppliedScopeType.MANAGEMENT_GROUP, model.benefits().get(0).appliedScopeType());
+        Assertions.assertEquals("efovgmk", model.benefits().get(0).appliedScopeProperties().tenantId());
+        Assertions.assertEquals("leyyvx", model.benefits().get(0).appliedScopeProperties().managementGroupId());
+        Assertions.assertEquals("jpkcattpng", model.benefits().get(0).appliedScopeProperties().subscriptionId());
+        Assertions.assertEquals("rcczsqpjhvmd", model.benefits().get(0).appliedScopeProperties().resourceGroupId());
+        Assertions.assertEquals("v", model.benefits().get(0).appliedScopeProperties().displayName());
         Assertions.assertEquals(true, model.benefits().get(0).renew());
+        Assertions.assertEquals("e", model.benefits().get(0).renewProperties().purchaseProperties().sku().name());
+        Assertions.assertEquals("oaeupfhyhltrpmo",
+            model.benefits().get(0).renewProperties().purchaseProperties().displayName());
+        Assertions.assertEquals("mcmatuokthfuiu",
+            model.benefits().get(0).renewProperties().purchaseProperties().billingScopeId());
+        Assertions.assertEquals(Term.P1Y, model.benefits().get(0).renewProperties().purchaseProperties().term());
+        Assertions.assertEquals(BillingPlan.P1M,
+            model.benefits().get(0).renewProperties().purchaseProperties().billingPlan());
+        Assertions.assertEquals(AppliedScopeType.SINGLE,
+            model.benefits().get(0).renewProperties().purchaseProperties().appliedScopeType());
+        Assertions.assertEquals(false, model.benefits().get(0).renewProperties().purchaseProperties().renew());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SavingsPlanUpdateValidateRequest model =
-            new SavingsPlanUpdateValidateRequest()
-                .withBenefits(
-                    Arrays
-                        .asList(
-                            new SavingsPlanUpdateRequestProperties()
-                                .withDisplayName("mmqhgyxzkonocuk")
-                                .withAppliedScopeType(AppliedScopeType.SHARED)
-                                .withAppliedScopeProperties(
-                                    new AppliedScopeProperties()
-                                        .withTenantId("xuconu")
-                                        .withManagementGroupId("zf")
-                                        .withSubscriptionId("eyp")
-                                        .withResourceGroupId("rmjmwvvjektc")
-                                        .withDisplayName("enhwlrs"))
-                                .withRenew(true)
-                                .withRenewProperties(new RenewProperties()),
-                            new SavingsPlanUpdateRequestProperties()
-                                .withDisplayName("v")
-                                .withAppliedScopeType(AppliedScopeType.SHARED)
-                                .withAppliedScopeProperties(
-                                    new AppliedScopeProperties()
-                                        .withTenantId("biqylihkaet")
-                                        .withManagementGroupId("tvfcivfsn")
-                                        .withSubscriptionId("m")
-                                        .withResourceGroupId("tqhjfbebrjcx")
-                                        .withDisplayName("fuwutttxf"))
-                                .withRenew(false)
-                                .withRenewProperties(new RenewProperties())));
+        SavingsPlanUpdateValidateRequest model
+            = new SavingsPlanUpdateValidateRequest()
+                .withBenefits(Arrays.asList(new SavingsPlanUpdateRequestProperties().withDisplayName("eypvhezrkg")
+                    .withAppliedScopeType(AppliedScopeType.MANAGEMENT_GROUP)
+                    .withAppliedScopeProperties(new AppliedScopeProperties().withTenantId("efovgmk")
+                        .withManagementGroupId("leyyvx")
+                        .withSubscriptionId("jpkcattpng")
+                        .withResourceGroupId("rcczsqpjhvmd")
+                        .withDisplayName("v"))
+                    .withRenew(true)
+                    .withRenewProperties(new RenewProperties()
+                        .withPurchaseProperties(new PurchaseRequest().withSku(new Sku().withName("e"))
+                            .withDisplayName("oaeupfhyhltrpmo")
+                            .withBillingScopeId("mcmatuokthfuiu")
+                            .withTerm(Term.P1Y)
+                            .withBillingPlan(BillingPlan.P1M)
+                            .withAppliedScopeType(AppliedScopeType.SINGLE)
+                            .withCommitment(new Commitment())
+                            .withRenew(false)
+                            .withAppliedScopeProperties(new AppliedScopeProperties())))));
         model = BinaryData.fromObject(model).toObject(SavingsPlanUpdateValidateRequest.class);
-        Assertions.assertEquals("mmqhgyxzkonocuk", model.benefits().get(0).displayName());
-        Assertions.assertEquals(AppliedScopeType.SHARED, model.benefits().get(0).appliedScopeType());
-        Assertions.assertEquals("xuconu", model.benefits().get(0).appliedScopeProperties().tenantId());
-        Assertions.assertEquals("zf", model.benefits().get(0).appliedScopeProperties().managementGroupId());
-        Assertions.assertEquals("eyp", model.benefits().get(0).appliedScopeProperties().subscriptionId());
-        Assertions.assertEquals("rmjmwvvjektc", model.benefits().get(0).appliedScopeProperties().resourceGroupId());
-        Assertions.assertEquals("enhwlrs", model.benefits().get(0).appliedScopeProperties().displayName());
+        Assertions.assertEquals("eypvhezrkg", model.benefits().get(0).displayName());
+        Assertions.assertEquals(AppliedScopeType.MANAGEMENT_GROUP, model.benefits().get(0).appliedScopeType());
+        Assertions.assertEquals("efovgmk", model.benefits().get(0).appliedScopeProperties().tenantId());
+        Assertions.assertEquals("leyyvx", model.benefits().get(0).appliedScopeProperties().managementGroupId());
+        Assertions.assertEquals("jpkcattpng", model.benefits().get(0).appliedScopeProperties().subscriptionId());
+        Assertions.assertEquals("rcczsqpjhvmd", model.benefits().get(0).appliedScopeProperties().resourceGroupId());
+        Assertions.assertEquals("v", model.benefits().get(0).appliedScopeProperties().displayName());
         Assertions.assertEquals(true, model.benefits().get(0).renew());
+        Assertions.assertEquals("e", model.benefits().get(0).renewProperties().purchaseProperties().sku().name());
+        Assertions.assertEquals("oaeupfhyhltrpmo",
+            model.benefits().get(0).renewProperties().purchaseProperties().displayName());
+        Assertions.assertEquals("mcmatuokthfuiu",
+            model.benefits().get(0).renewProperties().purchaseProperties().billingScopeId());
+        Assertions.assertEquals(Term.P1Y, model.benefits().get(0).renewProperties().purchaseProperties().term());
+        Assertions.assertEquals(BillingPlan.P1M,
+            model.benefits().get(0).renewProperties().purchaseProperties().billingPlan());
+        Assertions.assertEquals(AppliedScopeType.SINGLE,
+            model.benefits().get(0).renewProperties().purchaseProperties().appliedScopeType());
+        Assertions.assertEquals(false, model.benefits().get(0).renewProperties().purchaseProperties().renew());
     }
 }

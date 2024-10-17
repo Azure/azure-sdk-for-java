@@ -627,7 +627,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
             azureResourceManager
                 .virtualMachines()
                 .define(linuxVM2Name)
-                .withRegion(Region.US_EAST)
+                .withRegion(Region.US_WEST2)
                 .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()

@@ -9,7 +9,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-public class IoTFirmwareDefenseManagerTests extends TestBase {
+public class IoTFirmwareDefenseManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
     private static final Region REGION = Region.US_EAST;
     private String resourceGroupName = "rg" + randomPadding();
@@ -71,13 +71,13 @@ public class IoTFirmwareDefenseManagerTests extends TestBase {
         Workspace workspace = null;
         try {
             String spaceName = "space" + randomPadding();
-            // @embedStart
+            // @embedmeStart
             workspace = ioTFirmwareDefenseManager.workspaces()
                 .define(spaceName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             workspace.refresh();
             Assertions.assertEquals(spaceName, workspace.name());
             Assertions.assertEquals(spaceName, ioTFirmwareDefenseManager.workspaces().getById(workspace.id()).name());

@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PolicyEventsResourceType. */
+/**
+ * Defines values for PolicyEventsResourceType.
+ */
 public final class PolicyEventsResourceType extends ExpandableStringEnum<PolicyEventsResourceType> {
-    /** Static value default for PolicyEventsResourceType. */
+    /**
+     * Static value default for PolicyEventsResourceType.
+     */
     public static final PolicyEventsResourceType DEFAULT = fromString("default");
 
     /**
+     * Creates a new instance of PolicyEventsResourceType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PolicyEventsResourceType() {
+    }
+
+    /**
      * Creates or finds a PolicyEventsResourceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PolicyEventsResourceType.
      */
-    @JsonCreator
     public static PolicyEventsResourceType fromString(String name) {
         return fromString(name, PolicyEventsResourceType.class);
     }
 
     /**
      * Gets known PolicyEventsResourceType values.
-     *
+     * 
      * @return known PolicyEventsResourceType values.
      */
     public static Collection<PolicyEventsResourceType> values() {

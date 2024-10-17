@@ -5,95 +5,96 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.SoftwareUpdateConfigurationRunTasks;
 import com.azure.resourcemanager.automation.models.UpdateConfigurationNavigation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Software update configuration properties. */
+/**
+ * Software update configuration properties.
+ */
 @Fluent
-public final class SoftwareUpdateConfigurationRunProperties {
+public final class SoftwareUpdateConfigurationRunProperties
+    implements JsonSerializable<SoftwareUpdateConfigurationRunProperties> {
     /*
      * software update configuration triggered this run
      */
-    @JsonProperty(value = "softwareUpdateConfiguration")
     private UpdateConfigurationNavigation softwareUpdateConfiguration;
 
     /*
      * Status of the software update configuration run.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * Configured duration for the software update configuration run.
      */
-    @JsonProperty(value = "configuredDuration", access = JsonProperty.Access.WRITE_ONLY)
     private String configuredDuration;
 
     /*
      * Operating system target of the software update configuration triggered this run
      */
-    @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
     private String osType;
 
     /*
      * Start time of the software update configuration run.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * End time of the software update configuration run.
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * Number of computers in the software update configuration run.
      */
-    @JsonProperty(value = "computerCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer computerCount;
 
     /*
      * Number of computers with failed status.
      */
-    @JsonProperty(value = "failedCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer failedCount;
 
     /*
      * Creation time of the resource, which only appears in the response.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * CreatedBy property, which only appears in the response.
      */
-    @JsonProperty(value = "createdBy", access = JsonProperty.Access.WRITE_ONLY)
     private String createdBy;
 
     /*
      * Last time resource was modified, which only appears in the response.
      */
-    @JsonProperty(value = "lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTime;
 
     /*
      * LastModifiedBy property, which only appears in the response.
      */
-    @JsonProperty(value = "lastModifiedBy", access = JsonProperty.Access.WRITE_ONLY)
     private String lastModifiedBy;
 
     /*
      * Software update configuration tasks triggered in this run
      */
-    @JsonProperty(value = "tasks")
     private SoftwareUpdateConfigurationRunTasks tasks;
 
     /**
+     * Creates an instance of SoftwareUpdateConfigurationRunProperties class.
+     */
+    public SoftwareUpdateConfigurationRunProperties() {
+    }
+
+    /**
      * Get the softwareUpdateConfiguration property: software update configuration triggered this run.
-     *
+     * 
      * @return the softwareUpdateConfiguration value.
      */
     public UpdateConfigurationNavigation softwareUpdateConfiguration() {
@@ -102,19 +103,19 @@ public final class SoftwareUpdateConfigurationRunProperties {
 
     /**
      * Set the softwareUpdateConfiguration property: software update configuration triggered this run.
-     *
+     * 
      * @param softwareUpdateConfiguration the softwareUpdateConfiguration value to set.
      * @return the SoftwareUpdateConfigurationRunProperties object itself.
      */
-    public SoftwareUpdateConfigurationRunProperties withSoftwareUpdateConfiguration(
-        UpdateConfigurationNavigation softwareUpdateConfiguration) {
+    public SoftwareUpdateConfigurationRunProperties
+        withSoftwareUpdateConfiguration(UpdateConfigurationNavigation softwareUpdateConfiguration) {
         this.softwareUpdateConfiguration = softwareUpdateConfiguration;
         return this;
     }
 
     /**
      * Get the status property: Status of the software update configuration run.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -123,7 +124,7 @@ public final class SoftwareUpdateConfigurationRunProperties {
 
     /**
      * Get the configuredDuration property: Configured duration for the software update configuration run.
-     *
+     * 
      * @return the configuredDuration value.
      */
     public String configuredDuration() {
@@ -132,7 +133,7 @@ public final class SoftwareUpdateConfigurationRunProperties {
 
     /**
      * Get the osType property: Operating system target of the software update configuration triggered this run.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -141,7 +142,7 @@ public final class SoftwareUpdateConfigurationRunProperties {
 
     /**
      * Get the startTime property: Start time of the software update configuration run.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -150,7 +151,7 @@ public final class SoftwareUpdateConfigurationRunProperties {
 
     /**
      * Get the endTime property: End time of the software update configuration run.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -159,7 +160,7 @@ public final class SoftwareUpdateConfigurationRunProperties {
 
     /**
      * Get the computerCount property: Number of computers in the software update configuration run.
-     *
+     * 
      * @return the computerCount value.
      */
     public Integer computerCount() {
@@ -168,7 +169,7 @@ public final class SoftwareUpdateConfigurationRunProperties {
 
     /**
      * Get the failedCount property: Number of computers with failed status.
-     *
+     * 
      * @return the failedCount value.
      */
     public Integer failedCount() {
@@ -177,7 +178,7 @@ public final class SoftwareUpdateConfigurationRunProperties {
 
     /**
      * Get the creationTime property: Creation time of the resource, which only appears in the response.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -186,7 +187,7 @@ public final class SoftwareUpdateConfigurationRunProperties {
 
     /**
      * Get the createdBy property: CreatedBy property, which only appears in the response.
-     *
+     * 
      * @return the createdBy value.
      */
     public String createdBy() {
@@ -195,7 +196,7 @@ public final class SoftwareUpdateConfigurationRunProperties {
 
     /**
      * Get the lastModifiedTime property: Last time resource was modified, which only appears in the response.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -204,7 +205,7 @@ public final class SoftwareUpdateConfigurationRunProperties {
 
     /**
      * Get the lastModifiedBy property: LastModifiedBy property, which only appears in the response.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
@@ -213,7 +214,7 @@ public final class SoftwareUpdateConfigurationRunProperties {
 
     /**
      * Get the tasks property: Software update configuration tasks triggered in this run.
-     *
+     * 
      * @return the tasks value.
      */
     public SoftwareUpdateConfigurationRunTasks tasks() {
@@ -222,7 +223,7 @@ public final class SoftwareUpdateConfigurationRunProperties {
 
     /**
      * Set the tasks property: Software update configuration tasks triggered in this run.
-     *
+     * 
      * @param tasks the tasks value to set.
      * @return the SoftwareUpdateConfigurationRunProperties object itself.
      */
@@ -233,7 +234,7 @@ public final class SoftwareUpdateConfigurationRunProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -243,5 +244,75 @@ public final class SoftwareUpdateConfigurationRunProperties {
         if (tasks() != null) {
             tasks().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("softwareUpdateConfiguration", this.softwareUpdateConfiguration);
+        jsonWriter.writeJsonField("tasks", this.tasks);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SoftwareUpdateConfigurationRunProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SoftwareUpdateConfigurationRunProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SoftwareUpdateConfigurationRunProperties.
+     */
+    public static SoftwareUpdateConfigurationRunProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SoftwareUpdateConfigurationRunProperties deserializedSoftwareUpdateConfigurationRunProperties
+                = new SoftwareUpdateConfigurationRunProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("softwareUpdateConfiguration".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationRunProperties.softwareUpdateConfiguration
+                        = UpdateConfigurationNavigation.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationRunProperties.status = reader.getString();
+                } else if ("configuredDuration".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationRunProperties.configuredDuration = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationRunProperties.osType = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationRunProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationRunProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("computerCount".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationRunProperties.computerCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("failedCount".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationRunProperties.failedCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationRunProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationRunProperties.createdBy = reader.getString();
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationRunProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationRunProperties.lastModifiedBy = reader.getString();
+                } else if ("tasks".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationRunProperties.tasks
+                        = SoftwareUpdateConfigurationRunTasks.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSoftwareUpdateConfigurationRunProperties;
+        });
     }
 }

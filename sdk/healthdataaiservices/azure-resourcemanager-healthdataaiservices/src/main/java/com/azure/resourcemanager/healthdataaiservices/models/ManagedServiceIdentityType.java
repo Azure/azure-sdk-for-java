@@ -29,7 +29,8 @@ public final class ManagedServiceIdentityType extends ExpandableStringEnum<Manag
     /**
      * System and user assigned managed identity.
      */
-    public static final ManagedServiceIdentityType SYSTEM_AND_USER_ASSIGNED = fromString("SystemAssigned,UserAssigned");
+    public static final ManagedServiceIdentityType SYSTEM_ASSIGNED_USER_ASSIGNED
+        = fromString("SystemAssigned,UserAssigned");
 
     /**
      * Creates a new instance of ManagedServiceIdentityType value.

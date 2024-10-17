@@ -23,46 +23,41 @@ public final class IntegrationAccountAssembliesImpl implements IntegrationAccoun
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
 
-    public IntegrationAccountAssembliesImpl(
-        IntegrationAccountAssembliesClient innerClient, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    public IntegrationAccountAssembliesImpl(IntegrationAccountAssembliesClient innerClient,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<AssemblyDefinition> list(String resourceGroupName, String integrationAccountName) {
-        PagedIterable<AssemblyDefinitionInner> inner =
-            this.serviceClient().list(resourceGroupName, integrationAccountName);
-        return Utils.mapPage(inner, inner1 -> new AssemblyDefinitionImpl(inner1, this.manager()));
+        PagedIterable<AssemblyDefinitionInner> inner
+            = this.serviceClient().list(resourceGroupName, integrationAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AssemblyDefinitionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<AssemblyDefinition> list(
-        String resourceGroupName, String integrationAccountName, Context context) {
-        PagedIterable<AssemblyDefinitionInner> inner =
-            this.serviceClient().list(resourceGroupName, integrationAccountName, context);
-        return Utils.mapPage(inner, inner1 -> new AssemblyDefinitionImpl(inner1, this.manager()));
+    public PagedIterable<AssemblyDefinition> list(String resourceGroupName, String integrationAccountName,
+        Context context) {
+        PagedIterable<AssemblyDefinitionInner> inner
+            = this.serviceClient().list(resourceGroupName, integrationAccountName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AssemblyDefinitionImpl(inner1, this.manager()));
     }
 
-    public Response<AssemblyDefinition> getWithResponse(
-        String resourceGroupName, String integrationAccountName, String assemblyArtifactName, Context context) {
-        Response<AssemblyDefinitionInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, integrationAccountName, assemblyArtifactName, context);
+    public Response<AssemblyDefinition> getWithResponse(String resourceGroupName, String integrationAccountName,
+        String assemblyArtifactName, Context context) {
+        Response<AssemblyDefinitionInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, integrationAccountName, assemblyArtifactName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AssemblyDefinitionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public AssemblyDefinition get(
-        String resourceGroupName, String integrationAccountName, String assemblyArtifactName) {
-        AssemblyDefinitionInner inner =
-            this.serviceClient().get(resourceGroupName, integrationAccountName, assemblyArtifactName);
+    public AssemblyDefinition get(String resourceGroupName, String integrationAccountName,
+        String assemblyArtifactName) {
+        AssemblyDefinitionInner inner
+            = this.serviceClient().get(resourceGroupName, integrationAccountName, assemblyArtifactName);
         if (inner != null) {
             return new AssemblyDefinitionImpl(inner, this.manager());
         } else {
@@ -70,10 +65,9 @@ public final class IntegrationAccountAssembliesImpl implements IntegrationAccoun
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String integrationAccountName, String assemblyArtifactName, Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> deleteWithResponse(String resourceGroupName, String integrationAccountName,
+        String assemblyArtifactName, Context context) {
+        return this.serviceClient()
             .deleteWithResponse(resourceGroupName, integrationAccountName, assemblyArtifactName, context);
     }
 
@@ -81,30 +75,23 @@ public final class IntegrationAccountAssembliesImpl implements IntegrationAccoun
         this.serviceClient().delete(resourceGroupName, integrationAccountName, assemblyArtifactName);
     }
 
-    public Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(
-        String resourceGroupName, String integrationAccountName, String assemblyArtifactName, Context context) {
-        Response<WorkflowTriggerCallbackUrlInner> inner =
-            this
-                .serviceClient()
-                .listContentCallbackUrlWithResponse(
-                    resourceGroupName, integrationAccountName, assemblyArtifactName, context);
+    public Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(String resourceGroupName,
+        String integrationAccountName, String assemblyArtifactName, Context context) {
+        Response<WorkflowTriggerCallbackUrlInner> inner = this.serviceClient()
+            .listContentCallbackUrlWithResponse(resourceGroupName, integrationAccountName, assemblyArtifactName,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new WorkflowTriggerCallbackUrlImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public WorkflowTriggerCallbackUrl listContentCallbackUrl(
-        String resourceGroupName, String integrationAccountName, String assemblyArtifactName) {
-        WorkflowTriggerCallbackUrlInner inner =
-            this
-                .serviceClient()
-                .listContentCallbackUrl(resourceGroupName, integrationAccountName, assemblyArtifactName);
+    public WorkflowTriggerCallbackUrl listContentCallbackUrl(String resourceGroupName, String integrationAccountName,
+        String assemblyArtifactName) {
+        WorkflowTriggerCallbackUrlInner inner = this.serviceClient()
+            .listContentCallbackUrl(resourceGroupName, integrationAccountName, assemblyArtifactName);
         if (inner != null) {
             return new WorkflowTriggerCallbackUrlImpl(inner, this.manager());
         } else {
@@ -113,115 +100,78 @@ public final class IntegrationAccountAssembliesImpl implements IntegrationAccoun
     }
 
     public AssemblyDefinition getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
+        String integrationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
         }
-        String assemblyArtifactName = Utils.getValueFromIdByName(id, "assemblies");
+        String assemblyArtifactName = ResourceManagerUtils.getValueFromIdByName(id, "assemblies");
         if (assemblyArtifactName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'assemblies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'assemblies'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, integrationAccountName, assemblyArtifactName, Context.NONE)
+        return this.getWithResponse(resourceGroupName, integrationAccountName, assemblyArtifactName, Context.NONE)
             .getValue();
     }
 
     public Response<AssemblyDefinition> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
+        String integrationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
         }
-        String assemblyArtifactName = Utils.getValueFromIdByName(id, "assemblies");
+        String assemblyArtifactName = ResourceManagerUtils.getValueFromIdByName(id, "assemblies");
         if (assemblyArtifactName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'assemblies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'assemblies'.", id)));
         }
         return this.getWithResponse(resourceGroupName, integrationAccountName, assemblyArtifactName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
+        String integrationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
         }
-        String assemblyArtifactName = Utils.getValueFromIdByName(id, "assemblies");
+        String assemblyArtifactName = ResourceManagerUtils.getValueFromIdByName(id, "assemblies");
         if (assemblyArtifactName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'assemblies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'assemblies'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, integrationAccountName, assemblyArtifactName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
+        String integrationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
         }
-        String assemblyArtifactName = Utils.getValueFromIdByName(id, "assemblies");
+        String assemblyArtifactName = ResourceManagerUtils.getValueFromIdByName(id, "assemblies");
         if (assemblyArtifactName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'assemblies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'assemblies'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, integrationAccountName, assemblyArtifactName, context);
     }

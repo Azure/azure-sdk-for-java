@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.dnsresolver.generated;
 
+import com.azure.core.management.SubResource;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dnsresolver.fluent.models.InboundEndpointInner;
 import com.azure.resourcemanager.dnsresolver.models.IpAllocationMethod;
@@ -12,47 +13,42 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class InboundEndpointInnerTests {
-    @Test
-    public void testDeserialize() {
-        InboundEndpointInner model =
-            BinaryData
-                .fromString(
-                    "{\"etag\":\"zdxtayrlhmwhf\",\"properties\":{\"ipConfigurations\":[{\"privateIpAddress\":\"qobmtukk\",\"privateIpAllocationMethod\":\"Static\"},{\"privateIpAddress\":\"tihfx\",\"privateIpAllocationMethod\":\"Dynamic\"},{\"privateIpAddress\":\"pzvgnwzsymglzufc\",\"privateIpAllocationMethod\":\"Static\"}],\"provisioningState\":\"Failed\",\"resourceGuid\":\"bihanuf\"},\"location\":\"cbjy\",\"tags\":{\"xwczbyscnp\":\"ithxqhabifpi\"},\"id\":\"x\",\"name\":\"hiv\",\"type\":\"qniwbybrkxvdumj\"}")
-                .toObject(InboundEndpointInner.class);
-        Assertions.assertEquals("cbjy", model.location());
-        Assertions.assertEquals("ithxqhabifpi", model.tags().get("xwczbyscnp"));
-        Assertions.assertEquals("qobmtukk", model.ipConfigurations().get(0).privateIpAddress());
-        Assertions.assertEquals(IpAllocationMethod.STATIC, model.ipConfigurations().get(0).privateIpAllocationMethod());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        InboundEndpointInner model = BinaryData.fromString(
+            "{\"etag\":\"fp\",\"properties\":{\"ipConfigurations\":[{\"subnet\":{\"id\":\"obmtukk\"},\"privateIpAddress\":\"yrtih\",\"privateIpAllocationMethod\":\"Dynamic\"},{\"subnet\":{\"id\":\"jbpzvgnwzsymg\"},\"privateIpAddress\":\"uf\",\"privateIpAllocationMethod\":\"Static\"}],\"provisioningState\":\"Deleting\",\"resourceGuid\":\"dbihanufhfcbj\"},\"location\":\"a\",\"tags\":{\"bifpikxwczb\":\"hxqh\"},\"id\":\"scnpqxuhivy\",\"name\":\"n\",\"type\":\"wby\"}")
+            .toObject(InboundEndpointInner.class);
+        Assertions.assertEquals("a", model.location());
+        Assertions.assertEquals("hxqh", model.tags().get("bifpikxwczb"));
+        Assertions.assertEquals("obmtukk", model.ipConfigurations().get(0).subnet().id());
+        Assertions.assertEquals("yrtih", model.ipConfigurations().get(0).privateIpAddress());
+        Assertions.assertEquals(IpAllocationMethod.DYNAMIC,
+            model.ipConfigurations().get(0).privateIpAllocationMethod());
     }
 
-    @Test
-    public void testSerialize() {
-        InboundEndpointInner model =
-            new InboundEndpointInner()
-                .withLocation("cbjy")
-                .withTags(mapOf("xwczbyscnp", "ithxqhabifpi"))
-                .withIpConfigurations(
-                    Arrays
-                        .asList(
-                            new IpConfiguration()
-                                .withPrivateIpAddress("qobmtukk")
-                                .withPrivateIpAllocationMethod(IpAllocationMethod.STATIC),
-                            new IpConfiguration()
-                                .withPrivateIpAddress("tihfx")
-                                .withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC),
-                            new IpConfiguration()
-                                .withPrivateIpAddress("pzvgnwzsymglzufc")
-                                .withPrivateIpAllocationMethod(IpAllocationMethod.STATIC)));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        InboundEndpointInner model = new InboundEndpointInner().withLocation("a")
+            .withTags(mapOf("bifpikxwczb", "hxqh"))
+            .withIpConfigurations(Arrays.asList(
+                new IpConfiguration().withSubnet(new SubResource().withId("obmtukk"))
+                    .withPrivateIpAddress("yrtih")
+                    .withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC),
+                new IpConfiguration().withSubnet(new SubResource().withId("jbpzvgnwzsymg"))
+                    .withPrivateIpAddress("uf")
+                    .withPrivateIpAllocationMethod(IpAllocationMethod.STATIC)));
         model = BinaryData.fromObject(model).toObject(InboundEndpointInner.class);
-        Assertions.assertEquals("cbjy", model.location());
-        Assertions.assertEquals("ithxqhabifpi", model.tags().get("xwczbyscnp"));
-        Assertions.assertEquals("qobmtukk", model.ipConfigurations().get(0).privateIpAddress());
-        Assertions.assertEquals(IpAllocationMethod.STATIC, model.ipConfigurations().get(0).privateIpAllocationMethod());
+        Assertions.assertEquals("a", model.location());
+        Assertions.assertEquals("hxqh", model.tags().get("bifpikxwczb"));
+        Assertions.assertEquals("obmtukk", model.ipConfigurations().get(0).subnet().id());
+        Assertions.assertEquals("yrtih", model.ipConfigurations().get(0).privateIpAddress());
+        Assertions.assertEquals(IpAllocationMethod.DYNAMIC,
+            model.ipConfigurations().get(0).privateIpAllocationMethod());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -5,40 +5,59 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
-/** File entity property bag. */
+/**
+ * File entity property bag.
+ */
 @Immutable
 public final class FileEntityProperties extends EntityCommonProperties {
     /*
      * The full path to the file.
      */
-    @JsonProperty(value = "directory", access = JsonProperty.Access.WRITE_ONLY)
     private String directory;
 
     /*
      * The file hash entity identifiers associated with this file
      */
-    @JsonProperty(value = "fileHashEntityIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> fileHashEntityIds;
 
     /*
      * The file name without path (some alerts might not include path).
      */
-    @JsonProperty(value = "fileName", access = JsonProperty.Access.WRITE_ONLY)
     private String fileName;
 
     /*
      * The Host entity id which the file belongs to
      */
-    @JsonProperty(value = "hostEntityId", access = JsonProperty.Access.WRITE_ONLY)
     private String hostEntityId;
+
+    /*
+     * The graph item display name which is a short humanly readable description of the graph item instance. This
+     * property is optional and might be system generated.
+     */
+    private String friendlyName;
+
+    /*
+     * A bag of custom fields that should be part of the entity and will be presented to the user.
+     */
+    private Map<String, Object> additionalData;
+
+    /**
+     * Creates an instance of FileEntityProperties class.
+     */
+    public FileEntityProperties() {
+    }
 
     /**
      * Get the directory property: The full path to the file.
-     *
+     * 
      * @return the directory value.
      */
     public String directory() {
@@ -47,7 +66,7 @@ public final class FileEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the fileHashEntityIds property: The file hash entity identifiers associated with this file.
-     *
+     * 
      * @return the fileHashEntityIds value.
      */
     public List<String> fileHashEntityIds() {
@@ -56,7 +75,7 @@ public final class FileEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the fileName property: The file name without path (some alerts might not include path).
-     *
+     * 
      * @return the fileName value.
      */
     public String fileName() {
@@ -65,7 +84,7 @@ public final class FileEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the hostEntityId property: The Host entity id which the file belongs to.
-     *
+     * 
      * @return the hostEntityId value.
      */
     public String hostEntityId() {
@@ -73,12 +92,80 @@ public final class FileEntityProperties extends EntityCommonProperties {
     }
 
     /**
+     * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
+     * graph item instance. This property is optional and might be system generated.
+     * 
+     * @return the friendlyName value.
+     */
+    @Override
+    public String friendlyName() {
+        return this.friendlyName;
+    }
+
+    /**
+     * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
+     * to the user.
+     * 
+     * @return the additionalData value.
+     */
+    @Override
+    public Map<String, Object> additionalData() {
+        return this.additionalData;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileEntityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileEntityProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FileEntityProperties.
+     */
+    public static FileEntityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileEntityProperties deserializedFileEntityProperties = new FileEntityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("additionalData".equals(fieldName)) {
+                    Map<String, Object> additionalData = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedFileEntityProperties.additionalData = additionalData;
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedFileEntityProperties.friendlyName = reader.getString();
+                } else if ("directory".equals(fieldName)) {
+                    deserializedFileEntityProperties.directory = reader.getString();
+                } else if ("fileHashEntityIds".equals(fieldName)) {
+                    List<String> fileHashEntityIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedFileEntityProperties.fileHashEntityIds = fileHashEntityIds;
+                } else if ("fileName".equals(fieldName)) {
+                    deserializedFileEntityProperties.fileName = reader.getString();
+                } else if ("hostEntityId".equals(fieldName)) {
+                    deserializedFileEntityProperties.hostEntityId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileEntityProperties;
+        });
     }
 }

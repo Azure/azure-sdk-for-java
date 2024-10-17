@@ -6,6 +6,9 @@ package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.DataSourcePrecedence;
 import com.azure.resourcemanager.customerinsights.models.DataSourceType;
 import com.azure.resourcemanager.customerinsights.models.EntityTypes;
@@ -13,27 +16,45 @@ import com.azure.resourcemanager.customerinsights.models.Participant;
 import com.azure.resourcemanager.customerinsights.models.PropertyDefinition;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
 import com.azure.resourcemanager.customerinsights.models.Status;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The interaction resource format. */
+/**
+ * The interaction resource format.
+ */
 @Fluent
 public final class InteractionResourceFormatInner extends ProxyResource {
     /*
      * The Interaction Type Definition
      */
-    @JsonProperty(value = "properties")
     private InteractionTypeDefinition innerProperties;
 
-    /** Creates an instance of InteractionResourceFormatInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of InteractionResourceFormatInner class.
+     */
     public InteractionResourceFormatInner() {
     }
 
     /**
      * Get the innerProperties property: The Interaction Type Definition.
-     *
+     * 
      * @return the innerProperties value.
      */
     private InteractionTypeDefinition innerProperties() {
@@ -41,9 +62,39 @@ public final class InteractionResourceFormatInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the idPropertyNames property: The id property names. Properties which uniquely identify an interaction
      * instance.
-     *
+     * 
      * @return the idPropertyNames value.
      */
     public List<String> idPropertyNames() {
@@ -53,7 +104,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
     /**
      * Set the idPropertyNames property: The id property names. Properties which uniquely identify an interaction
      * instance.
-     *
+     * 
      * @param idPropertyNames the idPropertyNames value to set.
      * @return the InteractionResourceFormatInner object itself.
      */
@@ -67,7 +118,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the participantProfiles property: Profiles that participated in the interaction.
-     *
+     * 
      * @return the participantProfiles value.
      */
     public List<Participant> participantProfiles() {
@@ -76,7 +127,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the participantProfiles property: Profiles that participated in the interaction.
-     *
+     * 
      * @param participantProfiles the participantProfiles value to set.
      * @return the InteractionResourceFormatInner object itself.
      */
@@ -92,7 +143,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
      * Get the primaryParticipantProfilePropertyName property: The primary participant property name for an interaction
      * ,This is used to logically represent the agent of the interaction, Specify the participant name here from
      * ParticipantName.
-     *
+     * 
      * @return the primaryParticipantProfilePropertyName value.
      */
     public String primaryParticipantProfilePropertyName() {
@@ -103,12 +154,12 @@ public final class InteractionResourceFormatInner extends ProxyResource {
      * Set the primaryParticipantProfilePropertyName property: The primary participant property name for an interaction
      * ,This is used to logically represent the agent of the interaction, Specify the participant name here from
      * ParticipantName.
-     *
+     * 
      * @param primaryParticipantProfilePropertyName the primaryParticipantProfilePropertyName value to set.
      * @return the InteractionResourceFormatInner object itself.
      */
-    public InteractionResourceFormatInner withPrimaryParticipantProfilePropertyName(
-        String primaryParticipantProfilePropertyName) {
+    public InteractionResourceFormatInner
+        withPrimaryParticipantProfilePropertyName(String primaryParticipantProfilePropertyName) {
         if (this.innerProperties() == null) {
             this.innerProperties = new InteractionTypeDefinition();
         }
@@ -119,7 +170,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
     /**
      * Get the dataSourcePrecedenceRules property: This is specific to interactions modeled as activities. Data sources
      * are used to determine where data is stored and also in precedence rules.
-     *
+     * 
      * @return the dataSourcePrecedenceRules value.
      */
     public List<DataSourcePrecedence> dataSourcePrecedenceRules() {
@@ -130,7 +181,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
      * Get the isActivity property: An interaction can be tagged as an activity only during create. This enables the
      * interaction to be editable and can enable merging of properties from multiple data sources based on precedence,
      * which is defined at a link level.
-     *
+     * 
      * @return the isActivity value.
      */
     public Boolean isActivity() {
@@ -141,7 +192,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
      * Set the isActivity property: An interaction can be tagged as an activity only during create. This enables the
      * interaction to be editable and can enable merging of properties from multiple data sources based on precedence,
      * which is defined at a link level.
-     *
+     * 
      * @param isActivity the isActivity value to set.
      * @return the InteractionResourceFormatInner object itself.
      */
@@ -155,7 +206,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the name property: The data source name.
-     *
+     * 
      * @return the name value.
      */
     public String namePropertiesName() {
@@ -164,7 +215,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the dataSourceType property: The data source type.
-     *
+     * 
      * @return the dataSourceType value.
      */
     public DataSourceType dataSourceType() {
@@ -173,7 +224,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the status property: The data source status.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -182,7 +233,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the id property: The data source ID.
-     *
+     * 
      * @return the id value.
      */
     public Integer idPropertiesId() {
@@ -191,7 +242,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the dataSourceReferenceId property: The data source reference id.
-     *
+     * 
      * @return the dataSourceReferenceId value.
      */
     public String dataSourceReferenceId() {
@@ -201,7 +252,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
     /**
      * Get the apiEntitySetName property: The api entity set name. This becomes the odata entity set name for the entity
      * Type being referred in this object.
-     *
+     * 
      * @return the apiEntitySetName value.
      */
     public String apiEntitySetName() {
@@ -211,7 +262,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
     /**
      * Set the apiEntitySetName property: The api entity set name. This becomes the odata entity set name for the entity
      * Type being referred in this object.
-     *
+     * 
      * @param apiEntitySetName the apiEntitySetName value to set.
      * @return the InteractionResourceFormatInner object itself.
      */
@@ -225,7 +276,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the entityType property: Type of entity.
-     *
+     * 
      * @return the entityType value.
      */
     public EntityTypes entityType() {
@@ -234,7 +285,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the entityType property: Type of entity.
-     *
+     * 
      * @param entityType the entityType value to set.
      * @return the InteractionResourceFormatInner object itself.
      */
@@ -248,7 +299,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the fields property: The properties of the Profile.
-     *
+     * 
      * @return the fields value.
      */
     public List<PropertyDefinition> fields() {
@@ -257,7 +308,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the fields property: The properties of the Profile.
-     *
+     * 
      * @param fields the fields value to set.
      * @return the InteractionResourceFormatInner object itself.
      */
@@ -271,7 +322,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the instancesCount property: The instance count.
-     *
+     * 
      * @return the instancesCount value.
      */
     public Integer instancesCount() {
@@ -280,7 +331,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the instancesCount property: The instance count.
-     *
+     * 
      * @param instancesCount the instancesCount value to set.
      * @return the InteractionResourceFormatInner object itself.
      */
@@ -294,7 +345,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the lastChangedUtc property: The last changed time for the type definition.
-     *
+     * 
      * @return the lastChangedUtc value.
      */
     public OffsetDateTime lastChangedUtc() {
@@ -303,7 +354,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -312,7 +363,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the schemaItemTypeLink property: The schema org link. This helps ACI identify and suggest semantic models.
-     *
+     * 
      * @return the schemaItemTypeLink value.
      */
     public String schemaItemTypeLink() {
@@ -321,7 +372,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the schemaItemTypeLink property: The schema org link. This helps ACI identify and suggest semantic models.
-     *
+     * 
      * @param schemaItemTypeLink the schemaItemTypeLink value to set.
      * @return the InteractionResourceFormatInner object itself.
      */
@@ -335,7 +386,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -345,7 +396,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
     /**
      * Get the timestampFieldName property: The timestamp property name. Represents the time when the interaction or
      * profile update happened.
-     *
+     * 
      * @return the timestampFieldName value.
      */
     public String timestampFieldName() {
@@ -355,7 +406,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
     /**
      * Set the timestampFieldName property: The timestamp property name. Represents the time when the interaction or
      * profile update happened.
-     *
+     * 
      * @param timestampFieldName the timestampFieldName value to set.
      * @return the InteractionResourceFormatInner object itself.
      */
@@ -369,7 +420,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the typeName property: The name of the entity.
-     *
+     * 
      * @return the typeName value.
      */
     public String typeName() {
@@ -378,7 +429,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the typeName property: The name of the entity.
-     *
+     * 
      * @param typeName the typeName value to set.
      * @return the InteractionResourceFormatInner object itself.
      */
@@ -392,7 +443,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the attributes property: The attributes for the Type.
-     *
+     * 
      * @return the attributes value.
      */
     public Map<String, List<String>> attributes() {
@@ -401,7 +452,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the attributes property: The attributes for the Type.
-     *
+     * 
      * @param attributes the attributes value to set.
      * @return the InteractionResourceFormatInner object itself.
      */
@@ -415,7 +466,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the description property: Localized descriptions for the property.
-     *
+     * 
      * @return the description value.
      */
     public Map<String, String> description() {
@@ -424,7 +475,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the description property: Localized descriptions for the property.
-     *
+     * 
      * @param description the description value to set.
      * @return the InteractionResourceFormatInner object itself.
      */
@@ -438,7 +489,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the displayName property: Localized display names for the property.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
@@ -447,7 +498,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the displayName property: Localized display names for the property.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the InteractionResourceFormatInner object itself.
      */
@@ -461,7 +512,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the localizedAttributes property: Any custom localized attributes for the Type.
-     *
+     * 
      * @return the localizedAttributes value.
      */
     public Map<String, Map<String, String>> localizedAttributes() {
@@ -470,12 +521,12 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the localizedAttributes property: Any custom localized attributes for the Type.
-     *
+     * 
      * @param localizedAttributes the localizedAttributes value to set.
      * @return the InteractionResourceFormatInner object itself.
      */
-    public InteractionResourceFormatInner withLocalizedAttributes(
-        Map<String, Map<String, String>> localizedAttributes) {
+    public InteractionResourceFormatInner
+        withLocalizedAttributes(Map<String, Map<String, String>> localizedAttributes) {
         if (this.innerProperties() == null) {
             this.innerProperties = new InteractionTypeDefinition();
         }
@@ -485,7 +536,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the smallImage property: Small Image associated with the Property or EntityType.
-     *
+     * 
      * @return the smallImage value.
      */
     public String smallImage() {
@@ -494,7 +545,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the smallImage property: Small Image associated with the Property or EntityType.
-     *
+     * 
      * @param smallImage the smallImage value to set.
      * @return the InteractionResourceFormatInner object itself.
      */
@@ -508,7 +559,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the mediumImage property: Medium Image associated with the Property or EntityType.
-     *
+     * 
      * @return the mediumImage value.
      */
     public String mediumImage() {
@@ -517,7 +568,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the mediumImage property: Medium Image associated with the Property or EntityType.
-     *
+     * 
      * @param mediumImage the mediumImage value to set.
      * @return the InteractionResourceFormatInner object itself.
      */
@@ -531,7 +582,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the largeImage property: Large Image associated with the Property or EntityType.
-     *
+     * 
      * @return the largeImage value.
      */
     public String largeImage() {
@@ -540,7 +591,7 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the largeImage property: Large Image associated with the Property or EntityType.
-     *
+     * 
      * @param largeImage the largeImage value to set.
      * @return the InteractionResourceFormatInner object itself.
      */
@@ -554,12 +605,57 @@ public final class InteractionResourceFormatInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InteractionResourceFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InteractionResourceFormatInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InteractionResourceFormatInner.
+     */
+    public static InteractionResourceFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InteractionResourceFormatInner deserializedInteractionResourceFormatInner
+                = new InteractionResourceFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedInteractionResourceFormatInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedInteractionResourceFormatInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedInteractionResourceFormatInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedInteractionResourceFormatInner.innerProperties
+                        = InteractionTypeDefinition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInteractionResourceFormatInner;
+        });
     }
 }

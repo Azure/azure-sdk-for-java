@@ -8,27 +8,24 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dnsresolver.fluent.models.VirtualNetworkDnsForwardingRulesetInner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VirtualNetworkDnsForwardingRulesetInnerTests {
-    @Test
-    public void testDeserialize() {
-        VirtualNetworkDnsForwardingRulesetInner model =
-            BinaryData
-                .fromString("{\"id\":\"fsnkymuctq\",\"properties\":{\"virtualNetworkLink\":{\"id\":\"ebrjcxe\"}}}")
-                .toObject(VirtualNetworkDnsForwardingRulesetInner.class);
-        Assertions.assertEquals("fsnkymuctq", model.id());
-        Assertions.assertEquals("ebrjcxe", model.virtualNetworkLink().id());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        VirtualNetworkDnsForwardingRulesetInner model = BinaryData
+            .fromString("{\"id\":\"wrupqsxvnmicykvc\",\"properties\":{\"virtualNetworkLink\":{\"id\":\"ilovnot\"}}}")
+            .toObject(VirtualNetworkDnsForwardingRulesetInner.class);
+        Assertions.assertEquals("wrupqsxvnmicykvc", model.id());
+        Assertions.assertEquals("ilovnot", model.virtualNetworkLink().id());
     }
 
-    @Test
-    public void testSerialize() {
-        VirtualNetworkDnsForwardingRulesetInner model =
-            new VirtualNetworkDnsForwardingRulesetInner()
-                .withId("fsnkymuctq")
-                .withVirtualNetworkLink(new SubResource().withId("ebrjcxe"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        VirtualNetworkDnsForwardingRulesetInner model
+            = new VirtualNetworkDnsForwardingRulesetInner().withId("wrupqsxvnmicykvc")
+                .withVirtualNetworkLink(new SubResource().withId("ilovnot"));
         model = BinaryData.fromObject(model).toObject(VirtualNetworkDnsForwardingRulesetInner.class);
-        Assertions.assertEquals("fsnkymuctq", model.id());
-        Assertions.assertEquals("ebrjcxe", model.virtualNetworkLink().id());
+        Assertions.assertEquals("wrupqsxvnmicykvc", model.id());
+        Assertions.assertEquals("ilovnot", model.virtualNetworkLink().id());
     }
 }

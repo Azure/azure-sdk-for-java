@@ -9,7 +9,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-public class KustoManagerTests extends TestBase {
+public class KustoManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
     private static final Region REGION = Region.US_EAST;
     private String resourceGroupName = "rg" + randomPadding();
@@ -74,7 +74,7 @@ public class KustoManagerTests extends TestBase {
         Cluster cluster = null;
         try {
             String clusterName = "cluster" + randomPadding();
-            // @embedStart
+            // @embedmeStart
             cluster = kustoManager.clusters()
                 .define(clusterName)
                 .withRegion(REGION)
@@ -84,7 +84,7 @@ public class KustoManagerTests extends TestBase {
                     .withCapacity(1)
                     .withTier(AzureSkuTier.BASIC))
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             cluster.refresh();
             Assertions.assertEquals(cluster.name(), clusterName);
             Assertions.assertEquals(cluster.name(), kustoManager.clusters().getById(cluster.id()).name());

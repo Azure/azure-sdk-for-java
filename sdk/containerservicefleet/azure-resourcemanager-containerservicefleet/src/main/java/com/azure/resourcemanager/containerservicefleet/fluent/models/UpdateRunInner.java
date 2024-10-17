@@ -7,11 +7,14 @@ package com.azure.resourcemanager.containerservicefleet.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservicefleet.models.ManagedClusterUpdate;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRunProvisioningState;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRunStatus;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRunStrategy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * A multi-stage process to perform update operations across members of a Fleet.
@@ -21,20 +24,35 @@ public final class UpdateRunInner extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
      */
-    @JsonProperty(value = "properties")
     private UpdateRunProperties innerProperties;
 
     /*
-     * If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
+     * If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
+     * Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity
+     * tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section
+     * 14.27) header fields.
      */
-    @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of UpdateRunInner class.
@@ -70,6 +88,36 @@ public final class UpdateRunInner extends ProxyResource {
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -202,5 +250,52 @@ public final class UpdateRunInner extends ProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateRunInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateRunInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UpdateRunInner.
+     */
+    public static UpdateRunInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateRunInner deserializedUpdateRunInner = new UpdateRunInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedUpdateRunInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedUpdateRunInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedUpdateRunInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedUpdateRunInner.innerProperties = UpdateRunProperties.fromJson(reader);
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedUpdateRunInner.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedUpdateRunInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateRunInner;
+        });
     }
 }

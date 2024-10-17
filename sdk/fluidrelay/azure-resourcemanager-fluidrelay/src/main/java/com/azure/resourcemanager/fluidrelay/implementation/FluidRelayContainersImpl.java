@@ -21,15 +21,27 @@ public final class FluidRelayContainersImpl implements FluidRelayContainers {
 
     private final com.azure.resourcemanager.fluidrelay.FluidRelayManager serviceManager;
 
-    public FluidRelayContainersImpl(
-        FluidRelayContainersClient innerClient, com.azure.resourcemanager.fluidrelay.FluidRelayManager serviceManager) {
+    public FluidRelayContainersImpl(FluidRelayContainersClient innerClient,
+        com.azure.resourcemanager.fluidrelay.FluidRelayManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
+    public Response<FluidRelayContainer> getWithResponse(String resourceGroup, String fluidRelayServerName,
+        String fluidRelayContainerName, Context context) {
+        Response<FluidRelayContainerInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroup, fluidRelayServerName, fluidRelayContainerName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new FluidRelayContainerImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public FluidRelayContainer get(String resourceGroup, String fluidRelayServerName, String fluidRelayContainerName) {
-        FluidRelayContainerInner inner =
-            this.serviceClient().get(resourceGroup, fluidRelayServerName, fluidRelayContainerName);
+        FluidRelayContainerInner inner
+            = this.serviceClient().get(resourceGroup, fluidRelayServerName, fluidRelayContainerName);
         if (inner != null) {
             return new FluidRelayContainerImpl(inner, this.manager());
         } else {
@@ -37,44 +49,28 @@ public final class FluidRelayContainersImpl implements FluidRelayContainers {
         }
     }
 
-    public Response<FluidRelayContainer> getWithResponse(
-        String resourceGroup, String fluidRelayServerName, String fluidRelayContainerName, Context context) {
-        Response<FluidRelayContainerInner> inner =
-            this.serviceClient().getWithResponse(resourceGroup, fluidRelayServerName, fluidRelayContainerName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new FluidRelayContainerImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteWithResponse(String resourceGroup, String fluidRelayServerName,
+        String fluidRelayContainerName, Context context) {
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroup, fluidRelayServerName, fluidRelayContainerName, context);
     }
 
     public void delete(String resourceGroup, String fluidRelayServerName, String fluidRelayContainerName) {
         this.serviceClient().delete(resourceGroup, fluidRelayServerName, fluidRelayContainerName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroup, String fluidRelayServerName, String fluidRelayContainerName, Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(resourceGroup, fluidRelayServerName, fluidRelayContainerName, context);
+    public PagedIterable<FluidRelayContainer> listByFluidRelayServers(String resourceGroup,
+        String fluidRelayServerName) {
+        PagedIterable<FluidRelayContainerInner> inner
+            = this.serviceClient().listByFluidRelayServers(resourceGroup, fluidRelayServerName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FluidRelayContainerImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<FluidRelayContainer> listByFluidRelayServers(
-        String resourceGroup, String fluidRelayServerName) {
-        PagedIterable<FluidRelayContainerInner> inner =
-            this.serviceClient().listByFluidRelayServers(resourceGroup, fluidRelayServerName);
-        return Utils.mapPage(inner, inner1 -> new FluidRelayContainerImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<FluidRelayContainer> listByFluidRelayServers(
-        String resourceGroup, String fluidRelayServerName, Context context) {
-        PagedIterable<FluidRelayContainerInner> inner =
-            this.serviceClient().listByFluidRelayServers(resourceGroup, fluidRelayServerName, context);
-        return Utils.mapPage(inner, inner1 -> new FluidRelayContainerImpl(inner1, this.manager()));
+    public PagedIterable<FluidRelayContainer> listByFluidRelayServers(String resourceGroup, String fluidRelayServerName,
+        Context context) {
+        PagedIterable<FluidRelayContainerInner> inner
+            = this.serviceClient().listByFluidRelayServers(resourceGroup, fluidRelayServerName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FluidRelayContainerImpl(inner1, this.manager()));
     }
 
     private FluidRelayContainersClient serviceClient() {

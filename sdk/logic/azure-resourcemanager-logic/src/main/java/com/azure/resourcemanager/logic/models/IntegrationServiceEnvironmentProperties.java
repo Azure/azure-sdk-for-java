@@ -5,54 +5,57 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The integration service environment properties. */
+/**
+ * The integration service environment properties.
+ */
 @Fluent
-public final class IntegrationServiceEnvironmentProperties {
+public final class IntegrationServiceEnvironmentProperties
+    implements JsonSerializable<IntegrationServiceEnvironmentProperties> {
     /*
      * The provisioning state.
      */
-    @JsonProperty(value = "provisioningState")
     private WorkflowProvisioningState provisioningState;
 
     /*
      * The integration service environment state.
      */
-    @JsonProperty(value = "state")
     private WorkflowState state;
 
     /*
      * Gets the tracking id.
      */
-    @JsonProperty(value = "integrationServiceEnvironmentId")
     private String integrationServiceEnvironmentId;
 
     /*
      * The endpoints configuration.
      */
-    @JsonProperty(value = "endpointsConfiguration")
     private FlowEndpointsConfiguration endpointsConfiguration;
 
     /*
      * The network configuration.
      */
-    @JsonProperty(value = "networkConfiguration")
     private NetworkConfiguration networkConfiguration;
 
     /*
      * The encryption configuration.
      */
-    @JsonProperty(value = "encryptionConfiguration")
     private IntegrationServiceEnvironmenEncryptionConfiguration encryptionConfiguration;
 
-    /** Creates an instance of IntegrationServiceEnvironmentProperties class. */
+    /**
+     * Creates an instance of IntegrationServiceEnvironmentProperties class.
+     */
     public IntegrationServiceEnvironmentProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public WorkflowProvisioningState provisioningState() {
@@ -61,7 +64,7 @@ public final class IntegrationServiceEnvironmentProperties {
 
     /**
      * Set the provisioningState property: The provisioning state.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the IntegrationServiceEnvironmentProperties object itself.
      */
@@ -72,7 +75,7 @@ public final class IntegrationServiceEnvironmentProperties {
 
     /**
      * Get the state property: The integration service environment state.
-     *
+     * 
      * @return the state value.
      */
     public WorkflowState state() {
@@ -81,7 +84,7 @@ public final class IntegrationServiceEnvironmentProperties {
 
     /**
      * Set the state property: The integration service environment state.
-     *
+     * 
      * @param state the state value to set.
      * @return the IntegrationServiceEnvironmentProperties object itself.
      */
@@ -92,7 +95,7 @@ public final class IntegrationServiceEnvironmentProperties {
 
     /**
      * Get the integrationServiceEnvironmentId property: Gets the tracking id.
-     *
+     * 
      * @return the integrationServiceEnvironmentId value.
      */
     public String integrationServiceEnvironmentId() {
@@ -101,19 +104,19 @@ public final class IntegrationServiceEnvironmentProperties {
 
     /**
      * Set the integrationServiceEnvironmentId property: Gets the tracking id.
-     *
+     * 
      * @param integrationServiceEnvironmentId the integrationServiceEnvironmentId value to set.
      * @return the IntegrationServiceEnvironmentProperties object itself.
      */
-    public IntegrationServiceEnvironmentProperties withIntegrationServiceEnvironmentId(
-        String integrationServiceEnvironmentId) {
+    public IntegrationServiceEnvironmentProperties
+        withIntegrationServiceEnvironmentId(String integrationServiceEnvironmentId) {
         this.integrationServiceEnvironmentId = integrationServiceEnvironmentId;
         return this;
     }
 
     /**
      * Get the endpointsConfiguration property: The endpoints configuration.
-     *
+     * 
      * @return the endpointsConfiguration value.
      */
     public FlowEndpointsConfiguration endpointsConfiguration() {
@@ -122,19 +125,19 @@ public final class IntegrationServiceEnvironmentProperties {
 
     /**
      * Set the endpointsConfiguration property: The endpoints configuration.
-     *
+     * 
      * @param endpointsConfiguration the endpointsConfiguration value to set.
      * @return the IntegrationServiceEnvironmentProperties object itself.
      */
-    public IntegrationServiceEnvironmentProperties withEndpointsConfiguration(
-        FlowEndpointsConfiguration endpointsConfiguration) {
+    public IntegrationServiceEnvironmentProperties
+        withEndpointsConfiguration(FlowEndpointsConfiguration endpointsConfiguration) {
         this.endpointsConfiguration = endpointsConfiguration;
         return this;
     }
 
     /**
      * Get the networkConfiguration property: The network configuration.
-     *
+     * 
      * @return the networkConfiguration value.
      */
     public NetworkConfiguration networkConfiguration() {
@@ -143,7 +146,7 @@ public final class IntegrationServiceEnvironmentProperties {
 
     /**
      * Set the networkConfiguration property: The network configuration.
-     *
+     * 
      * @param networkConfiguration the networkConfiguration value to set.
      * @return the IntegrationServiceEnvironmentProperties object itself.
      */
@@ -154,7 +157,7 @@ public final class IntegrationServiceEnvironmentProperties {
 
     /**
      * Get the encryptionConfiguration property: The encryption configuration.
-     *
+     * 
      * @return the encryptionConfiguration value.
      */
     public IntegrationServiceEnvironmenEncryptionConfiguration encryptionConfiguration() {
@@ -163,19 +166,19 @@ public final class IntegrationServiceEnvironmentProperties {
 
     /**
      * Set the encryptionConfiguration property: The encryption configuration.
-     *
+     * 
      * @param encryptionConfiguration the encryptionConfiguration value to set.
      * @return the IntegrationServiceEnvironmentProperties object itself.
      */
-    public IntegrationServiceEnvironmentProperties withEncryptionConfiguration(
-        IntegrationServiceEnvironmenEncryptionConfiguration encryptionConfiguration) {
+    public IntegrationServiceEnvironmentProperties
+        withEncryptionConfiguration(IntegrationServiceEnvironmenEncryptionConfiguration encryptionConfiguration) {
         this.encryptionConfiguration = encryptionConfiguration;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -188,5 +191,64 @@ public final class IntegrationServiceEnvironmentProperties {
         if (encryptionConfiguration() != null) {
             encryptionConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("integrationServiceEnvironmentId", this.integrationServiceEnvironmentId);
+        jsonWriter.writeJsonField("endpointsConfiguration", this.endpointsConfiguration);
+        jsonWriter.writeJsonField("networkConfiguration", this.networkConfiguration);
+        jsonWriter.writeJsonField("encryptionConfiguration", this.encryptionConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationServiceEnvironmentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationServiceEnvironmentProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IntegrationServiceEnvironmentProperties.
+     */
+    public static IntegrationServiceEnvironmentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationServiceEnvironmentProperties deserializedIntegrationServiceEnvironmentProperties
+                = new IntegrationServiceEnvironmentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentProperties.provisioningState
+                        = WorkflowProvisioningState.fromString(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentProperties.state
+                        = WorkflowState.fromString(reader.getString());
+                } else if ("integrationServiceEnvironmentId".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentProperties.integrationServiceEnvironmentId
+                        = reader.getString();
+                } else if ("endpointsConfiguration".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentProperties.endpointsConfiguration
+                        = FlowEndpointsConfiguration.fromJson(reader);
+                } else if ("networkConfiguration".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentProperties.networkConfiguration
+                        = NetworkConfiguration.fromJson(reader);
+                } else if ("encryptionConfiguration".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentProperties.encryptionConfiguration
+                        = IntegrationServiceEnvironmenEncryptionConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationServiceEnvironmentProperties;
+        });
     }
 }

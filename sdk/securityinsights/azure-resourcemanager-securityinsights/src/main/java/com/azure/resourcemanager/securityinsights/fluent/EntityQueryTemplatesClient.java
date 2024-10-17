@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.securityinsights.fluent.models.EntityQueryTemplateInner;
 import com.azure.resourcemanager.securityinsights.models.Constant88;
 
-/** An instance of this class provides access to all the operations defined in EntityQueryTemplatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EntityQueryTemplatesClient.
+ */
 public interface EntityQueryTemplatesClient {
     /**
      * Gets all entity query templates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -29,7 +31,7 @@ public interface EntityQueryTemplatesClient {
 
     /**
      * Gets all entity query templates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kind The entity template query kind we want to fetch.
@@ -40,26 +42,12 @@ public interface EntityQueryTemplatesClient {
      * @return all entity query templates as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EntityQueryTemplateInner> list(
-        String resourceGroupName, String workspaceName, Constant88 kind, Context context);
+    PagedIterable<EntityQueryTemplateInner> list(String resourceGroupName, String workspaceName, Constant88 kind,
+        Context context);
 
     /**
      * Gets an entity query.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param entityQueryTemplateId entity query template ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity query.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    EntityQueryTemplateInner get(String resourceGroupName, String workspaceName, String entityQueryTemplateId);
-
-    /**
-     * Gets an entity query.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param entityQueryTemplateId entity query template ID.
@@ -70,6 +58,20 @@ public interface EntityQueryTemplatesClient {
      * @return an entity query along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EntityQueryTemplateInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String entityQueryTemplateId, Context context);
+    Response<EntityQueryTemplateInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String entityQueryTemplateId, Context context);
+
+    /**
+     * Gets an entity query.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param entityQueryTemplateId entity query template ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an entity query.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EntityQueryTemplateInner get(String resourceGroupName, String workspaceName, String entityQueryTemplateId);
 }

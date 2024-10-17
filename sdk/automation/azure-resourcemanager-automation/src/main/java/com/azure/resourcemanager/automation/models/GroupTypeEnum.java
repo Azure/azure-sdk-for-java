@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of the HybridWorkerGroup. */
+/**
+ * Type of the HybridWorkerGroup.
+ */
 public final class GroupTypeEnum extends ExpandableStringEnum<GroupTypeEnum> {
-    /** Static value User for GroupTypeEnum. */
+    /**
+     * Static value User for GroupTypeEnum.
+     */
     public static final GroupTypeEnum USER = fromString("User");
 
-    /** Static value System for GroupTypeEnum. */
+    /**
+     * Static value System for GroupTypeEnum.
+     */
     public static final GroupTypeEnum SYSTEM = fromString("System");
 
     /**
+     * Creates a new instance of GroupTypeEnum value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GroupTypeEnum() {
+    }
+
+    /**
      * Creates or finds a GroupTypeEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GroupTypeEnum.
      */
-    @JsonCreator
     public static GroupTypeEnum fromString(String name) {
         return fromString(name, GroupTypeEnum.class);
     }
 
     /**
      * Gets known GroupTypeEnum values.
-     *
+     * 
      * @return known GroupTypeEnum values.
      */
     public static Collection<GroupTypeEnum> values() {

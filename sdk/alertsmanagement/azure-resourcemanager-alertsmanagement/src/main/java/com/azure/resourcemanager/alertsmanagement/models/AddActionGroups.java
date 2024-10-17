@@ -6,25 +6,46 @@ package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Add action groups to alert processing rule. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "actionType")
-@JsonTypeName("AddActionGroups")
+/**
+ * Add action groups to alert processing rule.
+ */
 @Fluent
 public final class AddActionGroups extends Action {
     /*
+     * Action that should be applied.
+     */
+    private ActionType actionType = ActionType.ADD_ACTION_GROUPS;
+
+    /*
      * List of action group Ids to add to alert processing rule.
      */
-    @JsonProperty(value = "actionGroupIds", required = true)
     private List<String> actionGroupIds;
 
     /**
+     * Creates an instance of AddActionGroups class.
+     */
+    public AddActionGroups() {
+    }
+
+    /**
+     * Get the actionType property: Action that should be applied.
+     * 
+     * @return the actionType value.
+     */
+    @Override
+    public ActionType actionType() {
+        return this.actionType;
+    }
+
+    /**
      * Get the actionGroupIds property: List of action group Ids to add to alert processing rule.
-     *
+     * 
      * @return the actionGroupIds value.
      */
     public List<String> actionGroupIds() {
@@ -33,7 +54,7 @@ public final class AddActionGroups extends Action {
 
     /**
      * Set the actionGroupIds property: List of action group Ids to add to alert processing rule.
-     *
+     * 
      * @param actionGroupIds the actionGroupIds value to set.
      * @return the AddActionGroups object itself.
      */
@@ -44,18 +65,58 @@ public final class AddActionGroups extends Action {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (actionGroupIds() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property actionGroupIds in model AddActionGroups"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property actionGroupIds in model AddActionGroups"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AddActionGroups.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("actionGroupIds", this.actionGroupIds,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("actionType", this.actionType == null ? null : this.actionType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddActionGroups from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddActionGroups if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AddActionGroups.
+     */
+    public static AddActionGroups fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddActionGroups deserializedAddActionGroups = new AddActionGroups();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("actionGroupIds".equals(fieldName)) {
+                    List<String> actionGroupIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAddActionGroups.actionGroupIds = actionGroupIds;
+                } else if ("actionType".equals(fieldName)) {
+                    deserializedAddActionGroups.actionType = ActionType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddActionGroups;
+        });
+    }
 }

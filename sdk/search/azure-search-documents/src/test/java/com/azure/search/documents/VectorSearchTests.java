@@ -4,8 +4,8 @@
 package com.azure.search.documents;
 
 import com.azure.core.models.GeoPoint;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Context;
 import com.azure.search.documents.implementation.util.SearchPagedResponseAccessHelper;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
@@ -82,7 +82,7 @@ public class VectorSearchTests extends SearchTestBase {
 
     @BeforeAll
     public static void setupClass() {
-        TestBase.setupClass();
+        TestProxyTestBase.setupClass();
 
         if (TEST_MODE == TestMode.PLAYBACK) {
             return;

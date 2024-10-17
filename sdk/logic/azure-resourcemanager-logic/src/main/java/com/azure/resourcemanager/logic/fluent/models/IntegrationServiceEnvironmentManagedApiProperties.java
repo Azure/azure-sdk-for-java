@@ -5,27 +5,102 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.logic.models.ApiResourceBackendService;
+import com.azure.resourcemanager.logic.models.ApiResourceDefinitions;
+import com.azure.resourcemanager.logic.models.ApiResourceGeneralInformation;
+import com.azure.resourcemanager.logic.models.ApiResourceMetadata;
+import com.azure.resourcemanager.logic.models.ApiResourcePolicies;
 import com.azure.resourcemanager.logic.models.ApiResourceProperties;
+import com.azure.resourcemanager.logic.models.ApiTier;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentManagedApiDeploymentParameters;
 import com.azure.resourcemanager.logic.models.ResourceReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.logic.models.WorkflowProvisioningState;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
-/** The integration service environment managed api properties. */
+/**
+ * The integration service environment managed api properties.
+ */
 @Fluent
 public final class IntegrationServiceEnvironmentManagedApiProperties extends ApiResourceProperties {
     /*
      * The integration service environment managed api deployment parameters.
      */
-    @JsonProperty(value = "deploymentParameters")
     private IntegrationServiceEnvironmentManagedApiDeploymentParameters deploymentParameters;
 
-    /** Creates an instance of IntegrationServiceEnvironmentManagedApiProperties class. */
+    /*
+     * The category.
+     */
+    private ApiTier category;
+
+    /*
+     * The provisioning state.
+     */
+    private WorkflowProvisioningState provisioningState;
+
+    /*
+     * The api definitions.
+     */
+    private ApiResourceDefinitions apiDefinitions;
+
+    /*
+     * The API definition.
+     */
+    private String apiDefinitionUrl;
+
+    /*
+     * The policies for the API.
+     */
+    private ApiResourcePolicies policies;
+
+    /*
+     * The backend service.
+     */
+    private ApiResourceBackendService backendService;
+
+    /*
+     * The capabilities.
+     */
+    private List<String> capabilities;
+
+    /*
+     * The api general information.
+     */
+    private ApiResourceGeneralInformation generalInformation;
+
+    /*
+     * The runtime urls.
+     */
+    private List<String> runtimeUrls;
+
+    /*
+     * The metadata.
+     */
+    private ApiResourceMetadata metadata;
+
+    /*
+     * The connection parameters.
+     */
+    private Map<String, Object> connectionParameters;
+
+    /*
+     * The name
+     */
+    private String name;
+
+    /**
+     * Creates an instance of IntegrationServiceEnvironmentManagedApiProperties class.
+     */
     public IntegrationServiceEnvironmentManagedApiProperties() {
     }
 
     /**
      * Get the deploymentParameters property: The integration service environment managed api deployment parameters.
-     *
+     * 
      * @return the deploymentParameters value.
      */
     public IntegrationServiceEnvironmentManagedApiDeploymentParameters deploymentParameters() {
@@ -34,34 +109,250 @@ public final class IntegrationServiceEnvironmentManagedApiProperties extends Api
 
     /**
      * Set the deploymentParameters property: The integration service environment managed api deployment parameters.
-     *
+     * 
      * @param deploymentParameters the deploymentParameters value to set.
      * @return the IntegrationServiceEnvironmentManagedApiProperties object itself.
      */
-    public IntegrationServiceEnvironmentManagedApiProperties withDeploymentParameters(
-        IntegrationServiceEnvironmentManagedApiDeploymentParameters deploymentParameters) {
+    public IntegrationServiceEnvironmentManagedApiProperties
+        withDeploymentParameters(IntegrationServiceEnvironmentManagedApiDeploymentParameters deploymentParameters) {
         this.deploymentParameters = deploymentParameters;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the category property: The category.
+     * 
+     * @return the category value.
+     */
     @Override
-    public IntegrationServiceEnvironmentManagedApiProperties withIntegrationServiceEnvironment(
-        ResourceReference integrationServiceEnvironment) {
+    public ApiTier category() {
+        return this.category;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public WorkflowProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the apiDefinitions property: The api definitions.
+     * 
+     * @return the apiDefinitions value.
+     */
+    @Override
+    public ApiResourceDefinitions apiDefinitions() {
+        return this.apiDefinitions;
+    }
+
+    /**
+     * Get the apiDefinitionUrl property: The API definition.
+     * 
+     * @return the apiDefinitionUrl value.
+     */
+    @Override
+    public String apiDefinitionUrl() {
+        return this.apiDefinitionUrl;
+    }
+
+    /**
+     * Get the policies property: The policies for the API.
+     * 
+     * @return the policies value.
+     */
+    @Override
+    public ApiResourcePolicies policies() {
+        return this.policies;
+    }
+
+    /**
+     * Get the backendService property: The backend service.
+     * 
+     * @return the backendService value.
+     */
+    @Override
+    public ApiResourceBackendService backendService() {
+        return this.backendService;
+    }
+
+    /**
+     * Get the capabilities property: The capabilities.
+     * 
+     * @return the capabilities value.
+     */
+    @Override
+    public List<String> capabilities() {
+        return this.capabilities;
+    }
+
+    /**
+     * Get the generalInformation property: The api general information.
+     * 
+     * @return the generalInformation value.
+     */
+    @Override
+    public ApiResourceGeneralInformation generalInformation() {
+        return this.generalInformation;
+    }
+
+    /**
+     * Get the runtimeUrls property: The runtime urls.
+     * 
+     * @return the runtimeUrls value.
+     */
+    @Override
+    public List<String> runtimeUrls() {
+        return this.runtimeUrls;
+    }
+
+    /**
+     * Get the metadata property: The metadata.
+     * 
+     * @return the metadata value.
+     */
+    @Override
+    public ApiResourceMetadata metadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Get the connectionParameters property: The connection parameters.
+     * 
+     * @return the connectionParameters value.
+     */
+    @Override
+    public Map<String, Object> connectionParameters() {
+        return this.connectionParameters;
+    }
+
+    /**
+     * Get the name property: The name.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IntegrationServiceEnvironmentManagedApiProperties
+        withIntegrationServiceEnvironment(ResourceReference integrationServiceEnvironment) {
         super.withIntegrationServiceEnvironment(integrationServiceEnvironment);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (deploymentParameters() != null) {
             deploymentParameters().validate();
         }
+        if (metadata() != null) {
+            metadata().validate();
+        }
+        if (generalInformation() != null) {
+            generalInformation().validate();
+        }
+        if (backendService() != null) {
+            backendService().validate();
+        }
+        if (policies() != null) {
+            policies().validate();
+        }
+        if (apiDefinitions() != null) {
+            apiDefinitions().validate();
+        }
+        if (integrationServiceEnvironment() != null) {
+            integrationServiceEnvironment().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("integrationServiceEnvironment", integrationServiceEnvironment());
+        jsonWriter.writeJsonField("deploymentParameters", this.deploymentParameters);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationServiceEnvironmentManagedApiProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationServiceEnvironmentManagedApiProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IntegrationServiceEnvironmentManagedApiProperties.
+     */
+    public static IntegrationServiceEnvironmentManagedApiProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationServiceEnvironmentManagedApiProperties deserializedIntegrationServiceEnvironmentManagedApiProperties
+                = new IntegrationServiceEnvironmentManagedApiProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentManagedApiProperties.name = reader.getString();
+                } else if ("connectionParameters".equals(fieldName)) {
+                    Map<String, Object> connectionParameters = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedIntegrationServiceEnvironmentManagedApiProperties.connectionParameters
+                        = connectionParameters;
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentManagedApiProperties.metadata
+                        = ApiResourceMetadata.fromJson(reader);
+                } else if ("runtimeUrls".equals(fieldName)) {
+                    List<String> runtimeUrls = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIntegrationServiceEnvironmentManagedApiProperties.runtimeUrls = runtimeUrls;
+                } else if ("generalInformation".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentManagedApiProperties.generalInformation
+                        = ApiResourceGeneralInformation.fromJson(reader);
+                } else if ("capabilities".equals(fieldName)) {
+                    List<String> capabilities = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIntegrationServiceEnvironmentManagedApiProperties.capabilities = capabilities;
+                } else if ("backendService".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentManagedApiProperties.backendService
+                        = ApiResourceBackendService.fromJson(reader);
+                } else if ("policies".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentManagedApiProperties.policies
+                        = ApiResourcePolicies.fromJson(reader);
+                } else if ("apiDefinitionUrl".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentManagedApiProperties.apiDefinitionUrl = reader.getString();
+                } else if ("apiDefinitions".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentManagedApiProperties.apiDefinitions
+                        = ApiResourceDefinitions.fromJson(reader);
+                } else if ("integrationServiceEnvironment".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentManagedApiProperties
+                        .withIntegrationServiceEnvironment(ResourceReference.fromJson(reader));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentManagedApiProperties.provisioningState
+                        = WorkflowProvisioningState.fromString(reader.getString());
+                } else if ("category".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentManagedApiProperties.category
+                        = ApiTier.fromString(reader.getString());
+                } else if ("deploymentParameters".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentManagedApiProperties.deploymentParameters
+                        = IntegrationServiceEnvironmentManagedApiDeploymentParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationServiceEnvironmentManagedApiProperties;
+        });
     }
 }

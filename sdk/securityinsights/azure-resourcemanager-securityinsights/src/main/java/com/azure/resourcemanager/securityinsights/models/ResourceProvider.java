@@ -5,44 +5,51 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Resource provider permissions required for the connector. */
+/**
+ * Resource provider permissions required for the connector.
+ */
 @Fluent
-public class ResourceProvider {
+public class ResourceProvider implements JsonSerializable<ResourceProvider> {
     /*
      * Provider name
      */
-    @JsonProperty(value = "provider")
     private ProviderName provider;
 
     /*
      * Permission description text
      */
-    @JsonProperty(value = "permissionsDisplayText")
     private String permissionsDisplayText;
 
     /*
      * Permission provider display name
      */
-    @JsonProperty(value = "providerDisplayName")
     private String providerDisplayName;
 
     /*
      * Permission provider scope
      */
-    @JsonProperty(value = "scope")
     private PermissionProviderScope scope;
 
     /*
      * Required permissions for the connector
      */
-    @JsonProperty(value = "requiredPermissions")
     private RequiredPermissions requiredPermissions;
 
     /**
+     * Creates an instance of ResourceProvider class.
+     */
+    public ResourceProvider() {
+    }
+
+    /**
      * Get the provider property: Provider name.
-     *
+     * 
      * @return the provider value.
      */
     public ProviderName provider() {
@@ -51,7 +58,7 @@ public class ResourceProvider {
 
     /**
      * Set the provider property: Provider name.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the ResourceProvider object itself.
      */
@@ -62,7 +69,7 @@ public class ResourceProvider {
 
     /**
      * Get the permissionsDisplayText property: Permission description text.
-     *
+     * 
      * @return the permissionsDisplayText value.
      */
     public String permissionsDisplayText() {
@@ -71,7 +78,7 @@ public class ResourceProvider {
 
     /**
      * Set the permissionsDisplayText property: Permission description text.
-     *
+     * 
      * @param permissionsDisplayText the permissionsDisplayText value to set.
      * @return the ResourceProvider object itself.
      */
@@ -82,7 +89,7 @@ public class ResourceProvider {
 
     /**
      * Get the providerDisplayName property: Permission provider display name.
-     *
+     * 
      * @return the providerDisplayName value.
      */
     public String providerDisplayName() {
@@ -91,7 +98,7 @@ public class ResourceProvider {
 
     /**
      * Set the providerDisplayName property: Permission provider display name.
-     *
+     * 
      * @param providerDisplayName the providerDisplayName value to set.
      * @return the ResourceProvider object itself.
      */
@@ -102,7 +109,7 @@ public class ResourceProvider {
 
     /**
      * Get the scope property: Permission provider scope.
-     *
+     * 
      * @return the scope value.
      */
     public PermissionProviderScope scope() {
@@ -111,7 +118,7 @@ public class ResourceProvider {
 
     /**
      * Set the scope property: Permission provider scope.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the ResourceProvider object itself.
      */
@@ -122,7 +129,7 @@ public class ResourceProvider {
 
     /**
      * Get the requiredPermissions property: Required permissions for the connector.
-     *
+     * 
      * @return the requiredPermissions value.
      */
     public RequiredPermissions requiredPermissions() {
@@ -131,7 +138,7 @@ public class ResourceProvider {
 
     /**
      * Set the requiredPermissions property: Required permissions for the connector.
-     *
+     * 
      * @param requiredPermissions the requiredPermissions value to set.
      * @return the ResourceProvider object itself.
      */
@@ -142,12 +149,60 @@ public class ResourceProvider {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (requiredPermissions() != null) {
             requiredPermissions().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provider", this.provider == null ? null : this.provider.toString());
+        jsonWriter.writeStringField("permissionsDisplayText", this.permissionsDisplayText);
+        jsonWriter.writeStringField("providerDisplayName", this.providerDisplayName);
+        jsonWriter.writeStringField("scope", this.scope == null ? null : this.scope.toString());
+        jsonWriter.writeJsonField("requiredPermissions", this.requiredPermissions);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceProvider from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceProvider if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceProvider.
+     */
+    public static ResourceProvider fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceProvider deserializedResourceProvider = new ResourceProvider();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provider".equals(fieldName)) {
+                    deserializedResourceProvider.provider = ProviderName.fromString(reader.getString());
+                } else if ("permissionsDisplayText".equals(fieldName)) {
+                    deserializedResourceProvider.permissionsDisplayText = reader.getString();
+                } else if ("providerDisplayName".equals(fieldName)) {
+                    deserializedResourceProvider.providerDisplayName = reader.getString();
+                } else if ("scope".equals(fieldName)) {
+                    deserializedResourceProvider.scope = PermissionProviderScope.fromString(reader.getString());
+                } else if ("requiredPermissions".equals(fieldName)) {
+                    deserializedResourceProvider.requiredPermissions = RequiredPermissions.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceProvider;
+        });
     }
 }

@@ -152,7 +152,7 @@ public class ManagedIdentityCredentialTest {
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential, instanceOf(ArcIdentityCredential.class));
+            cred.managedIdentityServiceCredential, instanceOf(ManagedIdentityMsalCredential.class));
     }
 
     @Test
@@ -165,7 +165,7 @@ public class ManagedIdentityCredentialTest {
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential, instanceOf(ServiceFabricMsiCredential.class));
+            cred.managedIdentityServiceCredential, instanceOf(ManagedIdentityMsalCredential.class));
     }
 
     @Test
@@ -177,7 +177,7 @@ public class ManagedIdentityCredentialTest {
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential, instanceOf(AppServiceMsiCredential.class));
+            cred.managedIdentityServiceCredential, instanceOf(ManagedIdentityMsalCredential.class));
     }
 
     @Test
@@ -189,7 +189,7 @@ public class ManagedIdentityCredentialTest {
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential, instanceOf(AppServiceMsiCredential.class));
+            cred.managedIdentityServiceCredential, instanceOf(ManagedIdentityMsalCredential.class));
     }
 
     @Test
@@ -200,7 +200,7 @@ public class ManagedIdentityCredentialTest {
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential, instanceOf(AppServiceMsiCredential.class));
+            cred.managedIdentityServiceCredential, instanceOf(ManagedIdentityMsalCredential.class));
     }
 
     @Test
@@ -222,7 +222,7 @@ public class ManagedIdentityCredentialTest {
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential, instanceOf(VirtualMachineMsiCredential.class));
+            cred.managedIdentityServiceCredential, instanceOf(ManagedIdentityMsalCredential.class));
     }
 }
 

@@ -12,8 +12,8 @@ public final class ContainerHostMappingImpl implements ContainerHostMapping {
 
     private final com.azure.resourcemanager.devspaces.DevSpacesManager serviceManager;
 
-    ContainerHostMappingImpl(
-        ContainerHostMappingInner innerObject, com.azure.resourcemanager.devspaces.DevSpacesManager serviceManager) {
+    ContainerHostMappingImpl(ContainerHostMappingInner innerObject,
+        com.azure.resourcemanager.devspaces.DevSpacesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.storagepool.fluent.models.DiskPoolZoneInfoInner
 public final class DiskPoolZoneInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskPoolZoneInfoInner model =
-            BinaryData
-                .fromString(
-                    "{\"availabilityZones\":[\"nvowgujju\",\"wdkcglhsl\"],\"additionalCapabilities\":[\"dyggdtjixhbku\",\"fqweykhmene\",\"fyexfwhy\"],\"sku\":{\"name\":\"i\",\"tier\":\"yvdcsitynnaa\"}}")
-                .toObject(DiskPoolZoneInfoInner.class);
+        DiskPoolZoneInfoInner model = BinaryData.fromString(
+            "{\"availabilityZones\":[\"twhrdxwzywqsm\"],\"additionalCapabilities\":[\"reximoryocfs\",\"ksymd\",\"ys\",\"kiiuxhqyudxor\"],\"sku\":{\"name\":\"nbpoczvyifqrvkdv\",\"tier\":\"llr\"}}")
+            .toObject(DiskPoolZoneInfoInner.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -5,48 +5,52 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The definition of a prediction distribution. */
+/**
+ * The definition of a prediction distribution.
+ */
 @Fluent
-public final class PredictionDistributionDefinitionDistributionsItem {
+public final class PredictionDistributionDefinitionDistributionsItem
+    implements JsonSerializable<PredictionDistributionDefinitionDistributionsItem> {
     /*
      * Score threshold.
      */
-    @JsonProperty(value = "scoreThreshold")
     private Integer scoreThreshold;
 
     /*
      * Number of positives.
      */
-    @JsonProperty(value = "positives")
     private Long positives;
 
     /*
      * Number of negatives.
      */
-    @JsonProperty(value = "negatives")
     private Long negatives;
 
     /*
      * Number of positives above threshold.
      */
-    @JsonProperty(value = "positivesAboveThreshold")
     private Long positivesAboveThreshold;
 
     /*
      * Number of negatives above threshold.
      */
-    @JsonProperty(value = "negativesAboveThreshold")
     private Long negativesAboveThreshold;
 
-    /** Creates an instance of PredictionDistributionDefinitionDistributionsItem class. */
+    /**
+     * Creates an instance of PredictionDistributionDefinitionDistributionsItem class.
+     */
     public PredictionDistributionDefinitionDistributionsItem() {
     }
 
     /**
      * Get the scoreThreshold property: Score threshold.
-     *
+     * 
      * @return the scoreThreshold value.
      */
     public Integer scoreThreshold() {
@@ -55,7 +59,7 @@ public final class PredictionDistributionDefinitionDistributionsItem {
 
     /**
      * Set the scoreThreshold property: Score threshold.
-     *
+     * 
      * @param scoreThreshold the scoreThreshold value to set.
      * @return the PredictionDistributionDefinitionDistributionsItem object itself.
      */
@@ -66,7 +70,7 @@ public final class PredictionDistributionDefinitionDistributionsItem {
 
     /**
      * Get the positives property: Number of positives.
-     *
+     * 
      * @return the positives value.
      */
     public Long positives() {
@@ -75,7 +79,7 @@ public final class PredictionDistributionDefinitionDistributionsItem {
 
     /**
      * Set the positives property: Number of positives.
-     *
+     * 
      * @param positives the positives value to set.
      * @return the PredictionDistributionDefinitionDistributionsItem object itself.
      */
@@ -86,7 +90,7 @@ public final class PredictionDistributionDefinitionDistributionsItem {
 
     /**
      * Get the negatives property: Number of negatives.
-     *
+     * 
      * @return the negatives value.
      */
     public Long negatives() {
@@ -95,7 +99,7 @@ public final class PredictionDistributionDefinitionDistributionsItem {
 
     /**
      * Set the negatives property: Number of negatives.
-     *
+     * 
      * @param negatives the negatives value to set.
      * @return the PredictionDistributionDefinitionDistributionsItem object itself.
      */
@@ -106,7 +110,7 @@ public final class PredictionDistributionDefinitionDistributionsItem {
 
     /**
      * Get the positivesAboveThreshold property: Number of positives above threshold.
-     *
+     * 
      * @return the positivesAboveThreshold value.
      */
     public Long positivesAboveThreshold() {
@@ -115,7 +119,7 @@ public final class PredictionDistributionDefinitionDistributionsItem {
 
     /**
      * Set the positivesAboveThreshold property: Number of positives above threshold.
-     *
+     * 
      * @param positivesAboveThreshold the positivesAboveThreshold value to set.
      * @return the PredictionDistributionDefinitionDistributionsItem object itself.
      */
@@ -126,7 +130,7 @@ public final class PredictionDistributionDefinitionDistributionsItem {
 
     /**
      * Get the negativesAboveThreshold property: Number of negatives above threshold.
-     *
+     * 
      * @return the negativesAboveThreshold value.
      */
     public Long negativesAboveThreshold() {
@@ -135,7 +139,7 @@ public final class PredictionDistributionDefinitionDistributionsItem {
 
     /**
      * Set the negativesAboveThreshold property: Number of negatives above threshold.
-     *
+     * 
      * @param negativesAboveThreshold the negativesAboveThreshold value to set.
      * @return the PredictionDistributionDefinitionDistributionsItem object itself.
      */
@@ -146,9 +150,63 @@ public final class PredictionDistributionDefinitionDistributionsItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("scoreThreshold", this.scoreThreshold);
+        jsonWriter.writeNumberField("positives", this.positives);
+        jsonWriter.writeNumberField("negatives", this.negatives);
+        jsonWriter.writeNumberField("positivesAboveThreshold", this.positivesAboveThreshold);
+        jsonWriter.writeNumberField("negativesAboveThreshold", this.negativesAboveThreshold);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PredictionDistributionDefinitionDistributionsItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PredictionDistributionDefinitionDistributionsItem if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PredictionDistributionDefinitionDistributionsItem.
+     */
+    public static PredictionDistributionDefinitionDistributionsItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PredictionDistributionDefinitionDistributionsItem deserializedPredictionDistributionDefinitionDistributionsItem
+                = new PredictionDistributionDefinitionDistributionsItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scoreThreshold".equals(fieldName)) {
+                    deserializedPredictionDistributionDefinitionDistributionsItem.scoreThreshold
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("positives".equals(fieldName)) {
+                    deserializedPredictionDistributionDefinitionDistributionsItem.positives
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("negatives".equals(fieldName)) {
+                    deserializedPredictionDistributionDefinitionDistributionsItem.negatives
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("positivesAboveThreshold".equals(fieldName)) {
+                    deserializedPredictionDistributionDefinitionDistributionsItem.positivesAboveThreshold
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("negativesAboveThreshold".equals(fieldName)) {
+                    deserializedPredictionDistributionDefinitionDistributionsItem.negativesAboveThreshold
+                        = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPredictionDistributionDefinitionDistributionsItem;
+        });
     }
 }

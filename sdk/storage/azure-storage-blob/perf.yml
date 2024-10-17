@@ -10,7 +10,7 @@ parameters:
 - name: Tests
   displayName: Tests (regex of tests to run)
   type: string
-  default: '^(download|download-file|upload|upload-file|list-blobs)$'
+  default: '^(download|download-file|upload|upload-file|list-blobs|get-properties)$'
 - name: Arguments
   displayName: Arguments (regex of arguments to run)
   type: string

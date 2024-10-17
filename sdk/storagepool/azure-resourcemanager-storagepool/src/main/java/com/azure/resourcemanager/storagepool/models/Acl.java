@@ -6,32 +6,38 @@ package com.azure.resourcemanager.storagepool.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Access Control List (ACL) for an iSCSI Target; defines LUN masking policy. */
+/**
+ * Access Control List (ACL) for an iSCSI Target; defines LUN masking policy.
+ */
 @Fluent
-public final class Acl {
+public final class Acl implements JsonSerializable<Acl> {
     /*
      * iSCSI initiator IQN (iSCSI Qualified Name); example: "iqn.2005-03.org.iscsi:client".
      */
-    @JsonProperty(value = "initiatorIqn", required = true)
     private String initiatorIqn;
 
     /*
      * List of LUN names mapped to the ACL.
      */
-    @JsonProperty(value = "mappedLuns", required = true)
     private List<String> mappedLuns;
 
-    /** Creates an instance of Acl class. */
+    /**
+     * Creates an instance of Acl class.
+     */
     public Acl() {
     }
 
     /**
      * Get the initiatorIqn property: iSCSI initiator IQN (iSCSI Qualified Name); example:
      * "iqn.2005-03.org.iscsi:client".
-     *
+     * 
      * @return the initiatorIqn value.
      */
     public String initiatorIqn() {
@@ -41,7 +47,7 @@ public final class Acl {
     /**
      * Set the initiatorIqn property: iSCSI initiator IQN (iSCSI Qualified Name); example:
      * "iqn.2005-03.org.iscsi:client".
-     *
+     * 
      * @param initiatorIqn the initiatorIqn value to set.
      * @return the Acl object itself.
      */
@@ -52,7 +58,7 @@ public final class Acl {
 
     /**
      * Get the mappedLuns property: List of LUN names mapped to the ACL.
-     *
+     * 
      * @return the mappedLuns value.
      */
     public List<String> mappedLuns() {
@@ -61,7 +67,7 @@ public final class Acl {
 
     /**
      * Set the mappedLuns property: List of LUN names mapped to the ACL.
-     *
+     * 
      * @param mappedLuns the mappedLuns value to set.
      * @return the Acl object itself.
      */
@@ -72,20 +78,60 @@ public final class Acl {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (initiatorIqn() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property initiatorIqn in model Acl"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property initiatorIqn in model Acl"));
         }
         if (mappedLuns() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property mappedLuns in model Acl"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property mappedLuns in model Acl"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Acl.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("initiatorIqn", this.initiatorIqn);
+        jsonWriter.writeArrayField("mappedLuns", this.mappedLuns, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Acl from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Acl if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Acl.
+     */
+    public static Acl fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Acl deserializedAcl = new Acl();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("initiatorIqn".equals(fieldName)) {
+                    deserializedAcl.initiatorIqn = reader.getString();
+                } else if ("mappedLuns".equals(fieldName)) {
+                    List<String> mappedLuns = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAcl.mappedLuns = mappedLuns;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcl;
+        });
+    }
 }

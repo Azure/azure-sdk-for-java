@@ -30,23 +30,28 @@ import com.azure.resourcemanager.automation.fluent.models.StatisticsInner;
 import com.azure.resourcemanager.automation.models.StatisticsListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in StatisticsOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in StatisticsOperationsClient.
+ */
 public final class StatisticsOperationsClientImpl implements StatisticsOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final StatisticsOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AutomationClientImpl client;
 
     /**
      * Initializes an instance of StatisticsOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     StatisticsOperationsClientImpl(AutomationClientImpl client) {
-        this.service =
-            RestProxy
-                .create(StatisticsOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(StatisticsOperationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,27 +61,21 @@ public final class StatisticsOperationsClientImpl implements StatisticsOperation
      */
     @Host("{$host}")
     @ServiceInterface(name = "AutomationClientStat")
-    private interface StatisticsOperationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/statistics")
-        @ExpectedResponses({200})
+    public interface StatisticsOperationsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/statistics")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StatisticsListResult>> listByAutomationAccount(
-            @HostParam("$host") String endpoint,
+        Mono<Response<StatisticsListResult>> listByAutomationAccount(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("automationAccountName") String automationAccountName,
-            @QueryParam("$filter") String filter,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("automationAccountName") String automationAccountName, @QueryParam("$filter") String filter,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Retrieve the statistics for the account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -84,16 +83,14 @@ public final class StatisticsOperationsClientImpl implements StatisticsOperation
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list statistics operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StatisticsInner>> listByAutomationAccountSinglePageAsync(
-        String resourceGroupName, String automationAccountName, String filter) {
+    private Mono<PagedResponse<StatisticsInner>> listByAutomationAccountSinglePageAsync(String resourceGroupName,
+        String automationAccountName, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -104,36 +101,22 @@ public final class StatisticsOperationsClientImpl implements StatisticsOperation
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2021-06-22";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByAutomationAccount(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            filter,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<StatisticsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByAutomationAccount(this.client.getEndpoint(), resourceGroupName,
+                automationAccountName, filter, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .<PagedResponse<StatisticsInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve the statistics for the account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -142,16 +125,14 @@ public final class StatisticsOperationsClientImpl implements StatisticsOperation
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list statistics operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StatisticsInner>> listByAutomationAccountSinglePageAsync(
-        String resourceGroupName, String automationAccountName, String filter, Context context) {
+    private Mono<PagedResponse<StatisticsInner>> listByAutomationAccountSinglePageAsync(String resourceGroupName,
+        String automationAccountName, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -162,33 +143,22 @@ public final class StatisticsOperationsClientImpl implements StatisticsOperation
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2021-06-22";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByAutomationAccount(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                filter,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByAutomationAccount(this.client.getEndpoint(), resourceGroupName, automationAccountName, filter,
+                this.client.getSubscriptionId(), apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Retrieve the statistics for the account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -198,15 +168,15 @@ public final class StatisticsOperationsClientImpl implements StatisticsOperation
      * @return the response model for the list statistics operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StatisticsInner> listByAutomationAccountAsync(
-        String resourceGroupName, String automationAccountName, String filter) {
+    private PagedFlux<StatisticsInner> listByAutomationAccountAsync(String resourceGroupName,
+        String automationAccountName, String filter) {
         return new PagedFlux<>(
             () -> listByAutomationAccountSinglePageAsync(resourceGroupName, automationAccountName, filter));
     }
 
     /**
      * Retrieve the statistics for the account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -215,8 +185,8 @@ public final class StatisticsOperationsClientImpl implements StatisticsOperation
      * @return the response model for the list statistics operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StatisticsInner> listByAutomationAccountAsync(
-        String resourceGroupName, String automationAccountName) {
+    private PagedFlux<StatisticsInner> listByAutomationAccountAsync(String resourceGroupName,
+        String automationAccountName) {
         final String filter = null;
         return new PagedFlux<>(
             () -> listByAutomationAccountSinglePageAsync(resourceGroupName, automationAccountName, filter));
@@ -224,7 +194,7 @@ public final class StatisticsOperationsClientImpl implements StatisticsOperation
 
     /**
      * Retrieve the statistics for the account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -235,15 +205,15 @@ public final class StatisticsOperationsClientImpl implements StatisticsOperation
      * @return the response model for the list statistics operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StatisticsInner> listByAutomationAccountAsync(
-        String resourceGroupName, String automationAccountName, String filter, Context context) {
+    private PagedFlux<StatisticsInner> listByAutomationAccountAsync(String resourceGroupName,
+        String automationAccountName, String filter, Context context) {
         return new PagedFlux<>(
             () -> listByAutomationAccountSinglePageAsync(resourceGroupName, automationAccountName, filter, context));
     }
 
     /**
      * Retrieve the statistics for the account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -252,15 +222,15 @@ public final class StatisticsOperationsClientImpl implements StatisticsOperation
      * @return the response model for the list statistics operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StatisticsInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName) {
+    public PagedIterable<StatisticsInner> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName) {
         final String filter = null;
         return new PagedIterable<>(listByAutomationAccountAsync(resourceGroupName, automationAccountName, filter));
     }
 
     /**
      * Retrieve the statistics for the account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -271,8 +241,8 @@ public final class StatisticsOperationsClientImpl implements StatisticsOperation
      * @return the response model for the list statistics operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StatisticsInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, String filter, Context context) {
+    public PagedIterable<StatisticsInner> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName, String filter, Context context) {
         return new PagedIterable<>(
             listByAutomationAccountAsync(resourceGroupName, automationAccountName, filter, context));
     }

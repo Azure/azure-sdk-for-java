@@ -5,61 +5,76 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Task level output for the task that validates connection to SQL Server and also validates source server requirements.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
-@JsonTypeName("TaskLevelOutput")
 @Immutable
 public final class ConnectToSourceSqlServerTaskOutputTaskLevel extends ConnectToSourceSqlServerTaskOutput {
     /*
+     * Type of result - database level or task level
+     */
+    private String resultType = "TaskLevelOutput";
+
+    /*
      * Source databases as a map from database name to database id
      */
-    @JsonProperty(value = "databases", access = JsonProperty.Access.WRITE_ONLY)
     private String databases;
 
     /*
      * Source logins as a map from login name to login id.
      */
-    @JsonProperty(value = "logins", access = JsonProperty.Access.WRITE_ONLY)
     private String logins;
 
     /*
      * Source agent jobs as a map from agent job name to id.
      */
-    @JsonProperty(value = "agentJobs", access = JsonProperty.Access.WRITE_ONLY)
     private String agentJobs;
 
     /*
      * Source server version
      */
-    @JsonProperty(value = "sourceServerVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceServerVersion;
 
     /*
      * Source server brand version
      */
-    @JsonProperty(value = "sourceServerBrandVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceServerBrandVersion;
 
     /*
      * Validation errors
      */
-    @JsonProperty(value = "validationErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReportableException> validationErrors;
 
-    /** Creates an instance of ConnectToSourceSqlServerTaskOutputTaskLevel class. */
+    /*
+     * Result identifier
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ConnectToSourceSqlServerTaskOutputTaskLevel class.
+     */
     public ConnectToSourceSqlServerTaskOutputTaskLevel() {
     }
 
     /**
+     * Get the resultType property: Type of result - database level or task level.
+     * 
+     * @return the resultType value.
+     */
+    @Override
+    public String resultType() {
+        return this.resultType;
+    }
+
+    /**
      * Get the databases property: Source databases as a map from database name to database id.
-     *
+     * 
      * @return the databases value.
      */
     public String databases() {
@@ -68,7 +83,7 @@ public final class ConnectToSourceSqlServerTaskOutputTaskLevel extends ConnectTo
 
     /**
      * Get the logins property: Source logins as a map from login name to login id.
-     *
+     * 
      * @return the logins value.
      */
     public String logins() {
@@ -77,7 +92,7 @@ public final class ConnectToSourceSqlServerTaskOutputTaskLevel extends ConnectTo
 
     /**
      * Get the agentJobs property: Source agent jobs as a map from agent job name to id.
-     *
+     * 
      * @return the agentJobs value.
      */
     public String agentJobs() {
@@ -86,7 +101,7 @@ public final class ConnectToSourceSqlServerTaskOutputTaskLevel extends ConnectTo
 
     /**
      * Get the sourceServerVersion property: Source server version.
-     *
+     * 
      * @return the sourceServerVersion value.
      */
     public String sourceServerVersion() {
@@ -95,7 +110,7 @@ public final class ConnectToSourceSqlServerTaskOutputTaskLevel extends ConnectTo
 
     /**
      * Get the sourceServerBrandVersion property: Source server brand version.
-     *
+     * 
      * @return the sourceServerBrandVersion value.
      */
     public String sourceServerBrandVersion() {
@@ -104,7 +119,7 @@ public final class ConnectToSourceSqlServerTaskOutputTaskLevel extends ConnectTo
 
     /**
      * Get the validationErrors property: Validation errors.
-     *
+     * 
      * @return the validationErrors value.
      */
     public List<ReportableException> validationErrors() {
@@ -112,15 +127,78 @@ public final class ConnectToSourceSqlServerTaskOutputTaskLevel extends ConnectTo
     }
 
     /**
+     * Get the id property: Result identifier.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (validationErrors() != null) {
             validationErrors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resultType", this.resultType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectToSourceSqlServerTaskOutputTaskLevel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectToSourceSqlServerTaskOutputTaskLevel if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectToSourceSqlServerTaskOutputTaskLevel.
+     */
+    public static ConnectToSourceSqlServerTaskOutputTaskLevel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectToSourceSqlServerTaskOutputTaskLevel deserializedConnectToSourceSqlServerTaskOutputTaskLevel
+                = new ConnectToSourceSqlServerTaskOutputTaskLevel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputTaskLevel.id = reader.getString();
+                } else if ("resultType".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputTaskLevel.resultType = reader.getString();
+                } else if ("databases".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputTaskLevel.databases = reader.getString();
+                } else if ("logins".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputTaskLevel.logins = reader.getString();
+                } else if ("agentJobs".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputTaskLevel.agentJobs = reader.getString();
+                } else if ("sourceServerVersion".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputTaskLevel.sourceServerVersion = reader.getString();
+                } else if ("sourceServerBrandVersion".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputTaskLevel.sourceServerBrandVersion
+                        = reader.getString();
+                } else if ("validationErrors".equals(fieldName)) {
+                    List<ReportableException> validationErrors
+                        = reader.readArray(reader1 -> ReportableException.fromJson(reader1));
+                    deserializedConnectToSourceSqlServerTaskOutputTaskLevel.validationErrors = validationErrors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectToSourceSqlServerTaskOutputTaskLevel;
+        });
     }
 }

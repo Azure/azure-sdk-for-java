@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ArmTemplateParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArmTemplateParameter model =
-            BinaryData
-                .fromString("{\"name\":\"olniwpwcukjf\",\"value\":\"iawxklry\"}")
-                .toObject(ArmTemplateParameter.class);
-        Assertions.assertEquals("olniwpwcukjf", model.name());
-        Assertions.assertEquals("iawxklry", model.value());
+        ArmTemplateParameter model = BinaryData.fromString("{\"name\":\"qawrlyxwj\",\"value\":\"prbnwbxgjvtbv\"}")
+            .toObject(ArmTemplateParameter.class);
+        Assertions.assertEquals("qawrlyxwj", model.name());
+        Assertions.assertEquals("prbnwbxgjvtbv", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArmTemplateParameter model = new ArmTemplateParameter().withName("olniwpwcukjf").withValue("iawxklry");
+        ArmTemplateParameter model = new ArmTemplateParameter().withName("qawrlyxwj").withValue("prbnwbxgjvtbv");
         model = BinaryData.fromObject(model).toObject(ArmTemplateParameter.class);
-        Assertions.assertEquals("olniwpwcukjf", model.name());
-        Assertions.assertEquals("iawxklry", model.value());
+        Assertions.assertEquals("qawrlyxwj", model.name());
+        Assertions.assertEquals("prbnwbxgjvtbv", model.value());
     }
 }

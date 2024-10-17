@@ -5,29 +5,49 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
 import com.azure.resourcemanager.databoxedge.models.NodeStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
- * Represents a single node in a Data box Edge/Gateway device Gateway devices, standalone Edge devices and a single node
- * cluster Edge device will all have 1 node Multi-node Edge devices will have more than 1 nodes.
+ * Represents a single node in a Data box Edge/Gateway device
+ * Gateway devices, standalone Edge devices and a single node cluster Edge device will all have 1 node
+ * Multi-node Edge devices will have more than 1 nodes.
  */
 @Immutable
 public final class NodeInner extends ArmBaseModel {
     /*
      * The properties of the node
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private NodeProperties innerProperties;
 
-    /** Creates an instance of NodeInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of NodeInner class.
+     */
     public NodeInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the node.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NodeProperties innerProperties() {
@@ -35,8 +55,38 @@ public final class NodeInner extends ArmBaseModel {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the nodeStatus property: The current status of the individual node.
-     *
+     * 
      * @return the nodeStatus value.
      */
     public NodeStatus nodeStatus() {
@@ -45,7 +95,7 @@ public final class NodeInner extends ArmBaseModel {
 
     /**
      * Get the nodeChassisSerialNumber property: Serial number of the Chassis.
-     *
+     * 
      * @return the nodeChassisSerialNumber value.
      */
     public String nodeChassisSerialNumber() {
@@ -54,7 +104,7 @@ public final class NodeInner extends ArmBaseModel {
 
     /**
      * Get the nodeSerialNumber property: Serial number of the individual node.
-     *
+     * 
      * @return the nodeSerialNumber value.
      */
     public String nodeSerialNumber() {
@@ -63,7 +113,7 @@ public final class NodeInner extends ArmBaseModel {
 
     /**
      * Get the nodeDisplayName property: Display Name of the individual node.
-     *
+     * 
      * @return the nodeDisplayName value.
      */
     public String nodeDisplayName() {
@@ -73,7 +123,7 @@ public final class NodeInner extends ArmBaseModel {
     /**
      * Get the nodeFriendlySoftwareVersion property: Friendly software version name that is currently installed on the
      * node.
-     *
+     * 
      * @return the nodeFriendlySoftwareVersion value.
      */
     public String nodeFriendlySoftwareVersion() {
@@ -82,7 +132,7 @@ public final class NodeInner extends ArmBaseModel {
 
     /**
      * Get the nodeHcsVersion property: HCS version that is currently installed on the node.
-     *
+     * 
      * @return the nodeHcsVersion value.
      */
     public String nodeHcsVersion() {
@@ -91,7 +141,7 @@ public final class NodeInner extends ArmBaseModel {
 
     /**
      * Get the nodeInstanceId property: Guid instance id of the node.
-     *
+     * 
      * @return the nodeInstanceId value.
      */
     public String nodeInstanceId() {
@@ -100,14 +150,55 @@ public final class NodeInner extends ArmBaseModel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NodeInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NodeInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NodeInner.
+     */
+    public static NodeInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NodeInner deserializedNodeInner = new NodeInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedNodeInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedNodeInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNodeInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNodeInner.innerProperties = NodeProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNodeInner;
+        });
     }
 }

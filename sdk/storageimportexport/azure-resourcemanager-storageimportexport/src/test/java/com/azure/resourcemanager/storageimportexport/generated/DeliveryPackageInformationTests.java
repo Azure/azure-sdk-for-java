@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class DeliveryPackageInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeliveryPackageInformation model =
-            BinaryData
-                .fromString(
-                    "{\"carrierName\":\"oosflnr\",\"trackingNumber\":\"sfqpteehz\",\"driveCount\":3146188146427506829,\"shipDate\":\"qrimzinpv\"}")
-                .toObject(DeliveryPackageInformation.class);
-        Assertions.assertEquals("oosflnr", model.carrierName());
-        Assertions.assertEquals("sfqpteehz", model.trackingNumber());
-        Assertions.assertEquals(3146188146427506829L, model.driveCount());
-        Assertions.assertEquals("qrimzinpv", model.shipDate());
+        DeliveryPackageInformation model = BinaryData.fromString(
+            "{\"carrierName\":\"tfell\",\"trackingNumber\":\"wfzitonpeqfpjk\",\"driveCount\":5941084634075289763,\"shipDate\":\"pdvhpfxxypin\"}")
+            .toObject(DeliveryPackageInformation.class);
+        Assertions.assertEquals("tfell", model.carrierName());
+        Assertions.assertEquals("wfzitonpeqfpjk", model.trackingNumber());
+        Assertions.assertEquals(5941084634075289763L, model.driveCount());
+        Assertions.assertEquals("pdvhpfxxypin", model.shipDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeliveryPackageInformation model =
-            new DeliveryPackageInformation()
-                .withCarrierName("oosflnr")
-                .withTrackingNumber("sfqpteehz")
-                .withDriveCount(3146188146427506829L)
-                .withShipDate("qrimzinpv");
+        DeliveryPackageInformation model = new DeliveryPackageInformation().withCarrierName("tfell")
+            .withTrackingNumber("wfzitonpeqfpjk")
+            .withDriveCount(5941084634075289763L)
+            .withShipDate("pdvhpfxxypin");
         model = BinaryData.fromObject(model).toObject(DeliveryPackageInformation.class);
-        Assertions.assertEquals("oosflnr", model.carrierName());
-        Assertions.assertEquals("sfqpteehz", model.trackingNumber());
-        Assertions.assertEquals(3146188146427506829L, model.driveCount());
-        Assertions.assertEquals("qrimzinpv", model.shipDate());
+        Assertions.assertEquals("tfell", model.carrierName());
+        Assertions.assertEquals("wfzitonpeqfpjk", model.trackingNumber());
+        Assertions.assertEquals(5941084634075289763L, model.driveCount());
+        Assertions.assertEquals("pdvhpfxxypin", model.shipDate());
     }
 }

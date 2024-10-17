@@ -52,7 +52,7 @@ public final class DeidServicesCreateMockTests {
         Assertions.assertEquals("olpsslqlf", response.location());
         Assertions.assertEquals("n", response.tags().get("bglzpswi"));
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.properties().publicNetworkAccess());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_AND_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
     }
 
     // Use "Map.of" if available

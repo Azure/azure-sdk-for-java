@@ -6,39 +6,41 @@ package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.resourcemanager.alertsmanagement.fluent.models.AlertModificationInner;
 
-/** An immutable client-side representation of AlertModification. */
+/**
+ * An immutable client-side representation of AlertModification.
+ */
 public interface AlertModification {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the properties property: Properties of the alert modification item.
-     *
+     * 
      * @return the properties value.
      */
     AlertModificationProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.alertsmanagement.fluent.models.AlertModificationInner object.
-     *
+     * 
      * @return the inner object.
      */
     AlertModificationInner innerModel();

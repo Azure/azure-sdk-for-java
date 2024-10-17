@@ -191,7 +191,6 @@ public final class LicenseUpdate extends ResourceUpdate {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

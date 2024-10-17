@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.mariadb.generated;
 
-/** Samples for Databases ListByServer. */
+/**
+ * Samples for Databases ListByServer.
+ */
 public final class DatabasesListByServerSamples {
     /*
-     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/DatabaseListByServer.json
+     * x-ms-original-file:
+     * specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/DatabaseListByServer.
+     * json
      */
     /**
      * Sample code: DatabaseList.
-     *
+     * 
      * @param manager Entry point to MariaDBManager.
      */
     public static void databaseList(com.azure.resourcemanager.mariadb.MariaDBManager manager) {

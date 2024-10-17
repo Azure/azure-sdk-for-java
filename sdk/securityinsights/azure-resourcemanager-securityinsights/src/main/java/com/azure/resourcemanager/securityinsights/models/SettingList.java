@@ -7,18 +7,20 @@ package com.azure.resourcemanager.securityinsights.models;
 import com.azure.resourcemanager.securityinsights.fluent.models.SettingListInner;
 import java.util.List;
 
-/** An immutable client-side representation of SettingList. */
+/**
+ * An immutable client-side representation of SettingList.
+ */
 public interface SettingList {
     /**
      * Gets the value property: Array of settings.
-     *
+     * 
      * @return the value value.
      */
     List<Settings> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.securityinsights.fluent.models.SettingListInner object.
-     *
+     * 
      * @return the inner object.
      */
     SettingListInner innerModel();

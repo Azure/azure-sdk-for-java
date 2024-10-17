@@ -6,23 +6,80 @@ package com.azure.resourcemanager.delegatednetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Represents an instance of a resource. */
+/**
+ * Represents an instance of a resource.
+ */
 @Fluent
 public class DelegatedSubnetResource extends Resource {
-    /** Creates an instance of DelegatedSubnetResource class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DelegatedSubnetResource class.
+     */
     public DelegatedSubnetResource() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DelegatedSubnetResource withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DelegatedSubnetResource withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -31,9 +88,56 @@ public class DelegatedSubnetResource extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DelegatedSubnetResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DelegatedSubnetResource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DelegatedSubnetResource.
+     */
+    public static DelegatedSubnetResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DelegatedSubnetResource deserializedDelegatedSubnetResource = new DelegatedSubnetResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDelegatedSubnetResource.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDelegatedSubnetResource.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDelegatedSubnetResource.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDelegatedSubnetResource.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDelegatedSubnetResource.withTags(tags);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDelegatedSubnetResource;
+        });
     }
 }

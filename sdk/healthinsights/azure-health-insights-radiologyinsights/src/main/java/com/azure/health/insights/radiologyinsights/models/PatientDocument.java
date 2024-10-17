@@ -25,7 +25,7 @@ public final class PatientDocument implements JsonSerializable<PatientDocument> 
      * The type of the patient document, such as 'note' (text document) or 'fhirBundle' (FHIR JSON document).
      */
     @Generated
-    private final DocumentType type;
+    private final ClinicalDocumentContentType type;
 
     /*
      * The type of the clinical document.
@@ -55,7 +55,7 @@ public final class PatientDocument implements JsonSerializable<PatientDocument> 
      * Document author(s)
      */
     @Generated
-    private List<DocumentAuthor> authors;
+    private List<ClinicalDocumentAuthor> authors;
 
     /*
      * specialty type the document
@@ -73,21 +73,7 @@ public final class PatientDocument implements JsonSerializable<PatientDocument> 
      * The content of the patient document.
      */
     @Generated
-    private final DocumentContent content;
-
-    /**
-     * Creates an instance of PatientDocument class.
-     *
-     * @param type the type value to set.
-     * @param id the id value to set.
-     * @param content the content value to set.
-     */
-    @Generated
-    public PatientDocument(DocumentType type, String id, DocumentContent content) {
-        this.type = type;
-        this.id = id;
-        this.content = content;
-    }
+    private final ClinicalDocumentContent content;
 
     /**
      * Get the type property: The type of the patient document, such as 'note' (text document) or 'fhirBundle' (FHIR
@@ -96,7 +82,7 @@ public final class PatientDocument implements JsonSerializable<PatientDocument> 
      * @return the type value.
      */
     @Generated
-    public DocumentType getType() {
+    public ClinicalDocumentContentType getType() {
         return this.type;
     }
 
@@ -183,7 +169,7 @@ public final class PatientDocument implements JsonSerializable<PatientDocument> 
      * @return the authors value.
      */
     @Generated
-    public List<DocumentAuthor> getAuthors() {
+    public List<ClinicalDocumentAuthor> getAuthors() {
         return this.authors;
     }
 
@@ -194,7 +180,7 @@ public final class PatientDocument implements JsonSerializable<PatientDocument> 
      * @return the PatientDocument object itself.
      */
     @Generated
-    public PatientDocument setAuthors(List<DocumentAuthor> authors) {
+    public PatientDocument setAuthors(List<ClinicalDocumentAuthor> authors) {
         this.authors = authors;
         return this;
     }
@@ -249,7 +235,7 @@ public final class PatientDocument implements JsonSerializable<PatientDocument> 
      * @return the content value.
      */
     @Generated
-    public DocumentContent getContent() {
+    public ClinicalDocumentContent getContent() {
         return this.content;
     }
 
@@ -285,24 +271,24 @@ public final class PatientDocument implements JsonSerializable<PatientDocument> 
     @Generated
     public static PatientDocument fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            DocumentType type = null;
+            ClinicalDocumentContentType type = null;
             String id = null;
-            DocumentContent content = null;
+            ClinicalDocumentContent content = null;
             ClinicalDocumentType clinicalType = null;
             String language = null;
             OffsetDateTime createdAt = null;
-            List<DocumentAuthor> authors = null;
+            List<ClinicalDocumentAuthor> authors = null;
             SpecialtyType specialtyType = null;
             DocumentAdministrativeMetadata administrativeMetadata = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    type = DocumentType.fromString(reader.getString());
+                    type = ClinicalDocumentContentType.fromString(reader.getString());
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("content".equals(fieldName)) {
-                    content = DocumentContent.fromJson(reader);
+                    content = ClinicalDocumentContent.fromJson(reader);
                 } else if ("clinicalType".equals(fieldName)) {
                     clinicalType = ClinicalDocumentType.fromString(reader.getString());
                 } else if ("language".equals(fieldName)) {
@@ -311,7 +297,7 @@ public final class PatientDocument implements JsonSerializable<PatientDocument> 
                     createdAt = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("authors".equals(fieldName)) {
-                    authors = reader.readArray(reader1 -> DocumentAuthor.fromJson(reader1));
+                    authors = reader.readArray(reader1 -> ClinicalDocumentAuthor.fromJson(reader1));
                 } else if ("specialtyType".equals(fieldName)) {
                     specialtyType = SpecialtyType.fromString(reader.getString());
                 } else if ("administrativeMetadata".equals(fieldName)) {
@@ -329,5 +315,19 @@ public final class PatientDocument implements JsonSerializable<PatientDocument> 
             deserializedPatientDocument.administrativeMetadata = administrativeMetadata;
             return deserializedPatientDocument;
         });
+    }
+
+    /**
+     * Creates an instance of PatientDocument class.
+     *
+     * @param type the type value to set.
+     * @param id the id value to set.
+     * @param content the content value to set.
+     */
+    @Generated
+    public PatientDocument(ClinicalDocumentContentType type, String id, ClinicalDocumentContent content) {
+        this.type = type;
+        this.id = id;
+        this.content = content;
     }
 }

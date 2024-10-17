@@ -12,40 +12,36 @@ import com.azure.resourcemanager.consumption.fluent.ChargesClient;
 import com.azure.resourcemanager.consumption.fluent.models.ChargesListResultInner;
 import com.azure.resourcemanager.consumption.models.Charges;
 import com.azure.resourcemanager.consumption.models.ChargesListResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ChargesImpl implements Charges {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ChargesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ChargesImpl.class);
 
     private final ChargesClient innerClient;
 
     private final com.azure.resourcemanager.consumption.ConsumptionManager serviceManager;
 
-    public ChargesImpl(
-        ChargesClient innerClient, com.azure.resourcemanager.consumption.ConsumptionManager serviceManager) {
+    public ChargesImpl(ChargesClient innerClient,
+        com.azure.resourcemanager.consumption.ConsumptionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<ChargesListResult> listWithResponse(String scope, String startDate, String endDate, String filter,
+        String apply, Context context) {
+        Response<ChargesListResultInner> inner
+            = this.serviceClient().listWithResponse(scope, startDate, endDate, filter, apply, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ChargesListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ChargesListResult list(String scope) {
         ChargesListResultInner inner = this.serviceClient().list(scope);
         if (inner != null) {
             return new ChargesListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<ChargesListResult> listWithResponse(
-        String scope, String startDate, String endDate, String filter, String apply, Context context) {
-        Response<ChargesListResultInner> inner =
-            this.serviceClient().listWithResponse(scope, startDate, endDate, filter, apply, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ChargesListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

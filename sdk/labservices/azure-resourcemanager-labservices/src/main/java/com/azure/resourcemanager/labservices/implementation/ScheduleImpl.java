@@ -85,22 +85,18 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
     }
 
     public Schedule create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSchedules()
-                .createOrUpdateWithResponse(resourceGroupName, labName, scheduleName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSchedules()
+            .createOrUpdateWithResponse(resourceGroupName, labName, scheduleName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Schedule create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSchedules()
-                .createOrUpdateWithResponse(resourceGroupName, labName, scheduleName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSchedules()
+            .createOrUpdateWithResponse(resourceGroupName, labName, scheduleName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -116,50 +112,42 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
     }
 
     public Schedule apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSchedules()
-                .updateWithResponse(resourceGroupName, labName, scheduleName, updateBody, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSchedules()
+            .updateWithResponse(resourceGroupName, labName, scheduleName, updateBody, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Schedule apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSchedules()
-                .updateWithResponse(resourceGroupName, labName, scheduleName, updateBody, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSchedules()
+            .updateWithResponse(resourceGroupName, labName, scheduleName, updateBody, context)
+            .getValue();
         return this;
     }
 
     ScheduleImpl(ScheduleInner innerObject, com.azure.resourcemanager.labservices.LabServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.labName = Utils.getValueFromIdByName(innerObject.id(), "labs");
-        this.scheduleName = Utils.getValueFromIdByName(innerObject.id(), "schedules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.labName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labs");
+        this.scheduleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "schedules");
     }
 
     public Schedule refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSchedules()
-                .getWithResponse(resourceGroupName, labName, scheduleName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSchedules()
+            .getWithResponse(resourceGroupName, labName, scheduleName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Schedule refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSchedules()
-                .getWithResponse(resourceGroupName, labName, scheduleName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSchedules()
+            .getWithResponse(resourceGroupName, labName, scheduleName, context)
+            .getValue();
         return this;
     }
 

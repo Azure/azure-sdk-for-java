@@ -44,7 +44,7 @@ public final class LivenessResponseBody implements JsonSerializable<LivenessResp
     private LivenessWithVerifyOutputs verifyResult;
 
     /*
-     * Additional properties
+     * The response body of detect liveness API call.
      */
     @Generated
     private Map<String, Object> additionalProperties;
@@ -98,7 +98,7 @@ public final class LivenessResponseBody implements JsonSerializable<LivenessResp
     }
 
     /**
-     * Get the additionalProperties property: Additional properties.
+     * Get the additionalProperties property: The response body of detect liveness API call.
      *
      * @return the additionalProperties value.
      */

@@ -40,22 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VirtualNetworkLinksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualNetworkLinksClient.
+ */
 public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VirtualNetworkLinksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DnsResolverManagementClientImpl client;
 
     /**
      * Initializes an instance of VirtualNetworkLinksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VirtualNetworkLinksClientImpl(DnsResolverManagementClientImpl client) {
-        this.service =
-            RestProxy.create(VirtualNetworkLinksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(VirtualNetworkLinksService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,153 +71,116 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      */
     @Host("{$host}")
     @ServiceInterface(name = "DnsResolverManagemen")
-    private interface VirtualNetworkLinksService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/dnsForwardingRulesets/{dnsForwardingRulesetName}/virtualNetworkLinks/{virtualNetworkLinkName}")
-        @ExpectedResponses({200, 201, 202})
+    public interface VirtualNetworkLinksService {
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsForwardingRulesets/{dnsForwardingRulesetName}/virtualNetworkLinks/{virtualNetworkLinkName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dnsForwardingRulesetName") String dnsForwardingRulesetName,
             @PathParam("virtualNetworkLinkName") String virtualNetworkLinkName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("If-Match") String ifMatch,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("If-None-Match") String ifNoneMatch,
-            @BodyParam("application/json") VirtualNetworkLinkInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") VirtualNetworkLinkInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/dnsForwardingRulesets/{dnsForwardingRulesetName}/virtualNetworkLinks/{virtualNetworkLinkName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsForwardingRulesets/{dnsForwardingRulesetName}/virtualNetworkLinks/{virtualNetworkLinkName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dnsForwardingRulesetName") String dnsForwardingRulesetName,
             @PathParam("virtualNetworkLinkName") String virtualNetworkLinkName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("If-Match") String ifMatch,
-            @BodyParam("application/json") VirtualNetworkLinkPatch parameters,
-            @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("If-Match") String ifMatch,
+            @BodyParam("application/json") VirtualNetworkLinkPatch parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/dnsForwardingRulesets/{dnsForwardingRulesetName}/virtualNetworkLinks/{virtualNetworkLinkName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsForwardingRulesets/{dnsForwardingRulesetName}/virtualNetworkLinks/{virtualNetworkLinkName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dnsForwardingRulesetName") String dnsForwardingRulesetName,
             @PathParam("virtualNetworkLinkName") String virtualNetworkLinkName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("If-Match") String ifMatch,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/dnsForwardingRulesets/{dnsForwardingRulesetName}/virtualNetworkLinks/{virtualNetworkLinkName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsForwardingRulesets/{dnsForwardingRulesetName}/virtualNetworkLinks/{virtualNetworkLinkName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualNetworkLinkInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VirtualNetworkLinkInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dnsForwardingRulesetName") String dnsForwardingRulesetName,
             @PathParam("virtualNetworkLinkName") String virtualNetworkLinkName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/dnsForwardingRulesets/{dnsForwardingRulesetName}/virtualNetworkLinks")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsForwardingRulesets/{dnsForwardingRulesetName}/virtualNetworkLinks")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualNetworkLinkListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VirtualNetworkLinkListResult>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dnsForwardingRulesetName") String dnsForwardingRulesetName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @QueryParam("$top") Integer top,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualNetworkLinkListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates or updates a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
+     * resource. Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a virtual network link along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters,
-        String ifMatch,
-        String ifNoneMatch) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String dnsForwardingRulesetName, String virtualNetworkLinkName, VirtualNetworkLinkInner parameters,
+        String ifMatch, String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dnsForwardingRulesetName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
         }
         if (virtualNetworkLinkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter virtualNetworkLinkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkLinkName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -220,35 +189,23 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            dnsForwardingRulesetName,
-                            virtualNetworkLinkName,
-                            this.client.getApiVersion(),
-                            ifMatch,
-                            ifNoneMatch,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, this.client.getApiVersion(),
+                ifMatch, ifNoneMatch, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
+     * resource. Other values will be ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -256,39 +213,28 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @return describes a virtual network link along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String dnsForwardingRulesetName, String virtualNetworkLinkName, VirtualNetworkLinkInner parameters,
+        String ifMatch, String ifNoneMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dnsForwardingRulesetName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
         }
         if (virtualNetworkLinkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter virtualNetworkLinkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkLinkName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -297,32 +243,22 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                dnsForwardingRulesetName,
-                virtualNetworkLinkName,
-                this.client.getApiVersion(),
-                ifMatch,
-                ifNoneMatch,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            dnsForwardingRulesetName, virtualNetworkLinkName, this.client.getApiVersion(), ifMatch, ifNoneMatch,
+            parameters, accept, context);
     }
 
     /**
      * Creates or updates a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
+     * resource. Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -330,36 +266,51 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters,
-        String ifMatch,
-        String ifNoneMatch) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch, ifNoneMatch);
-        return this
-            .client
-            .<VirtualNetworkLinkInner, VirtualNetworkLinkInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualNetworkLinkInner.class,
-                VirtualNetworkLinkInner.class,
-                this.client.getContext());
+        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName,
+        VirtualNetworkLinkInner parameters, String ifMatch, String ifNoneMatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch, ifNoneMatch);
+        return this.client.<VirtualNetworkLinkInner, VirtualNetworkLinkInner>getLroResult(mono,
+            this.client.getHttpPipeline(), VirtualNetworkLinkInner.class, VirtualNetworkLinkInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates or updates a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
+     * @param virtualNetworkLinkName The name of the virtual network link.
+     * @param parameters Parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of describes a virtual network link.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName,
+        VirtualNetworkLinkInner parameters) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch, ifNoneMatch);
+        return this.client.<VirtualNetworkLinkInner, VirtualNetworkLinkInner>getLroResult(mono,
+            this.client.getHttpPipeline(), VirtualNetworkLinkInner.class, VirtualNetworkLinkInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Creates or updates a virtual network link to a DNS forwarding ruleset.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
+     * resource. Other values will be ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -368,44 +319,22 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context) {
+        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName,
+        VirtualNetworkLinkInner parameters, String ifMatch, String ifNoneMatch, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName,
-                dnsForwardingRulesetName,
-                virtualNetworkLinkName,
-                parameters,
-                ifMatch,
-                ifNoneMatch,
-                context);
-        return this
-            .client
-            .<VirtualNetworkLinkInner, VirtualNetworkLinkInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualNetworkLinkInner.class,
-                VirtualNetworkLinkInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch, ifNoneMatch, context);
+        return this.client.<VirtualNetworkLinkInner, VirtualNetworkLinkInner>getLroResult(mono,
+            this.client.getHttpPipeline(), VirtualNetworkLinkInner.class, VirtualNetworkLinkInner.class, context);
     }
 
     /**
      * Creates or updates a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -413,28 +342,27 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters,
-        String ifMatch,
-        String ifNoneMatch) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch, ifNoneMatch)
+        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName,
+        VirtualNetworkLinkInner parameters) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters,
+                ifMatch, ifNoneMatch)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
+     * resource. Other values will be ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -443,57 +371,40 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName,
-                dnsForwardingRulesetName,
-                virtualNetworkLinkName,
-                parameters,
-                ifMatch,
-                ifNoneMatch,
-                context)
+        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName,
+        VirtualNetworkLinkInner parameters, String ifMatch, String ifNoneMatch, Context context) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters,
+                ifMatch, ifNoneMatch, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
+     * resource. Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a virtual network link on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualNetworkLinkInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters,
-        String ifMatch,
-        String ifNoneMatch) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch, ifNoneMatch)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<VirtualNetworkLinkInner> createOrUpdateAsync(String resourceGroupName, String dnsForwardingRulesetName,
+        String virtualNetworkLinkName, VirtualNetworkLinkInner parameters, String ifMatch, String ifNoneMatch) {
+        return beginCreateOrUpdateAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters,
+            ifMatch, ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -504,30 +415,25 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @return describes a virtual network link on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualNetworkLinkInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters) {
+    private Mono<VirtualNetworkLinkInner> createOrUpdateAsync(String resourceGroupName, String dnsForwardingRulesetName,
+        String virtualNetworkLinkName, VirtualNetworkLinkInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch, ifNoneMatch)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters,
+            ifMatch, ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
+     * resource. Other values will be ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -535,58 +441,16 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @return describes a virtual network link on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualNetworkLinkInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
+    private Mono<VirtualNetworkLinkInner> createOrUpdateAsync(String resourceGroupName, String dnsForwardingRulesetName,
+        String virtualNetworkLinkName, VirtualNetworkLinkInner parameters, String ifMatch, String ifNoneMatch,
         Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName,
-                dnsForwardingRulesetName,
-                virtualNetworkLinkName,
-                parameters,
-                ifMatch,
-                ifNoneMatch,
-                context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters,
+            ifMatch, ifNoneMatch, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a virtual network link to a DNS forwarding ruleset.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a virtual network link.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkLinkInner createOrUpdate(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters,
-        String ifMatch,
-        String ifNoneMatch) {
-        return createOrUpdateAsync(
-                resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch, ifNoneMatch)
-            .block();
-    }
-
-    /**
-     * Creates or updates a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -597,29 +461,25 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @return describes a virtual network link.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkLinkInner createOrUpdate(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters) {
+    public VirtualNetworkLinkInner createOrUpdate(String resourceGroupName, String dnsForwardingRulesetName,
+        String virtualNetworkLinkName, VirtualNetworkLinkInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return createOrUpdateAsync(
-                resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch, ifNoneMatch)
-            .block();
+        return createOrUpdateAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters,
+            ifMatch, ifNoneMatch).block();
     }
 
     /**
      * Creates or updates a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
+     * resource. Other values will be ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -627,71 +487,50 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @return describes a virtual network link.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkLinkInner createOrUpdate(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
+    public VirtualNetworkLinkInner createOrUpdate(String resourceGroupName, String dnsForwardingRulesetName,
+        String virtualNetworkLinkName, VirtualNetworkLinkInner parameters, String ifMatch, String ifNoneMatch,
         Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName,
-                dnsForwardingRulesetName,
-                virtualNetworkLinkName,
-                parameters,
-                ifMatch,
-                ifNoneMatch,
-                context)
-            .block();
+        return createOrUpdateAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters,
+            ifMatch, ifNoneMatch, context).block();
     }
 
     /**
      * Updates a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a virtual network link along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkPatch parameters,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String dnsForwardingRulesetName, String virtualNetworkLinkName, VirtualNetworkLinkPatch parameters,
         String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dnsForwardingRulesetName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
         }
         if (virtualNetworkLinkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter virtualNetworkLinkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkLinkName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -700,32 +539,21 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            dnsForwardingRulesetName,
-                            virtualNetworkLinkName,
-                            this.client.getApiVersion(),
-                            ifMatch,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, this.client.getApiVersion(),
+                ifMatch, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -733,38 +561,28 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @return describes a virtual network link along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkPatch parameters,
-        String ifMatch,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String dnsForwardingRulesetName, String virtualNetworkLinkName, VirtualNetworkLinkPatch parameters,
+        String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dnsForwardingRulesetName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
         }
         if (virtualNetworkLinkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter virtualNetworkLinkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkLinkName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -773,29 +591,20 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                dnsForwardingRulesetName,
-                virtualNetworkLinkName,
-                this.client.getApiVersion(),
-                ifMatch,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            dnsForwardingRulesetName, virtualNetworkLinkName, this.client.getApiVersion(), ifMatch, parameters, accept,
+            context);
     }
 
     /**
      * Updates a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -803,33 +612,48 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdateAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkPatch parameters,
-        String ifMatch) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch);
-        return this
-            .client
-            .<VirtualNetworkLinkInner, VirtualNetworkLinkInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualNetworkLinkInner.class,
-                VirtualNetworkLinkInner.class,
-                this.client.getContext());
+        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName,
+        VirtualNetworkLinkPatch parameters, String ifMatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, dnsForwardingRulesetName,
+            virtualNetworkLinkName, parameters, ifMatch);
+        return this.client.<VirtualNetworkLinkInner, VirtualNetworkLinkInner>getLroResult(mono,
+            this.client.getHttpPipeline(), VirtualNetworkLinkInner.class, VirtualNetworkLinkInner.class,
+            this.client.getContext());
     }
 
     /**
      * Updates a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
+     * @param virtualNetworkLinkName The name of the virtual network link.
+     * @param parameters Parameters supplied to the Update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of describes a virtual network link.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdateAsync(
+        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName,
+        VirtualNetworkLinkPatch parameters) {
+        final String ifMatch = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, dnsForwardingRulesetName,
+            virtualNetworkLinkName, parameters, ifMatch);
+        return this.client.<VirtualNetworkLinkInner, VirtualNetworkLinkInner>getLroResult(mono,
+            this.client.getHttpPipeline(), VirtualNetworkLinkInner.class, VirtualNetworkLinkInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Updates a virtual network link to a DNS forwarding ruleset.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -838,61 +662,46 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdateAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkPatch parameters,
-        String ifMatch,
-        Context context) {
+        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName,
+        VirtualNetworkLinkPatch parameters, String ifMatch, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, dnsForwardingRulesetName,
+            virtualNetworkLinkName, parameters, ifMatch, context);
+        return this.client.<VirtualNetworkLinkInner, VirtualNetworkLinkInner>getLroResult(mono,
+            this.client.getHttpPipeline(), VirtualNetworkLinkInner.class, VirtualNetworkLinkInner.class, context);
+    }
+
+    /**
+     * Updates a virtual network link to a DNS forwarding ruleset.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
+     * @param virtualNetworkLinkName The name of the virtual network link.
+     * @param parameters Parameters supplied to the Update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of describes a virtual network link.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdate(
+        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName,
+        VirtualNetworkLinkPatch parameters) {
+        final String ifMatch = null;
         return this
-            .client
-            .<VirtualNetworkLinkInner, VirtualNetworkLinkInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualNetworkLinkInner.class,
-                VirtualNetworkLinkInner.class,
-                context);
-    }
-
-    /**
-     * Updates a virtual network link to a DNS forwarding ruleset.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a virtual network link.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdate(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkPatch parameters,
-        String ifMatch) {
-        return beginUpdateAsync(
-                resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch)
+            .beginUpdateAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch)
             .getSyncPoller();
     }
 
     /**
      * Updates a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -901,47 +710,38 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdate(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkPatch parameters,
-        String ifMatch,
-        Context context) {
-        return beginUpdateAsync(
-                resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch, context)
+        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName,
+        VirtualNetworkLinkPatch parameters, String ifMatch, Context context) {
+        return this
+            .beginUpdateAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch,
+                context)
             .getSyncPoller();
     }
 
     /**
      * Updates a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a virtual network link on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualNetworkLinkInner> updateAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkPatch parameters,
-        String ifMatch) {
-        return beginUpdateAsync(
-                resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<VirtualNetworkLinkInner> updateAsync(String resourceGroupName, String dnsForwardingRulesetName,
+        String virtualNetworkLinkName, VirtualNetworkLinkPatch parameters, String ifMatch) {
+        return beginUpdateAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters,
+            ifMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -952,27 +752,22 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @return describes a virtual network link on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualNetworkLinkInner> updateAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkPatch parameters) {
+    private Mono<VirtualNetworkLinkInner> updateAsync(String resourceGroupName, String dnsForwardingRulesetName,
+        String virtualNetworkLinkName, VirtualNetworkLinkPatch parameters) {
         final String ifMatch = null;
-        return beginUpdateAsync(
-                resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginUpdateAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters,
+            ifMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -980,47 +775,15 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @return describes a virtual network link on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualNetworkLinkInner> updateAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkPatch parameters,
-        String ifMatch,
-        Context context) {
-        return beginUpdateAsync(
-                resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<VirtualNetworkLinkInner> updateAsync(String resourceGroupName, String dnsForwardingRulesetName,
+        String virtualNetworkLinkName, VirtualNetworkLinkPatch parameters, String ifMatch, Context context) {
+        return beginUpdateAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters,
+            ifMatch, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a virtual network link to a DNS forwarding ruleset.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a virtual network link.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkLinkInner update(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkPatch parameters,
-        String ifMatch) {
-        return updateAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch)
-            .block();
-    }
-
-    /**
-     * Updates a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -1031,11 +794,8 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @return describes a virtual network link.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkLinkInner update(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkPatch parameters) {
+    public VirtualNetworkLinkInner update(String resourceGroupName, String dnsForwardingRulesetName,
+        String virtualNetworkLinkName, VirtualNetworkLinkPatch parameters) {
         final String ifMatch = null;
         return updateAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch)
             .block();
@@ -1043,13 +803,13 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
 
     /**
      * Updates a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1057,86 +817,64 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @return describes a virtual network link.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkLinkInner update(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkPatch parameters,
-        String ifMatch,
-        Context context) {
-        return updateAsync(
-                resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch, context)
-            .block();
+    public VirtualNetworkLinkInner update(String resourceGroupName, String dnsForwardingRulesetName,
+        String virtualNetworkLinkName, VirtualNetworkLinkPatch parameters, String ifMatch, Context context) {
+        return updateAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, parameters, ifMatch,
+            context).block();
     }
 
     /**
      * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName, String ifMatch) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String dnsForwardingRulesetName, String virtualNetworkLinkName, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dnsForwardingRulesetName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
         }
         if (virtualNetworkLinkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter virtualNetworkLinkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkLinkName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            dnsForwardingRulesetName,
-                            virtualNetworkLinkName,
-                            this.client.getApiVersion(),
-                            ifMatch,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, this.client.getApiVersion(),
+                ifMatch, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1144,201 +882,189 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        String ifMatch,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String dnsForwardingRulesetName, String virtualNetworkLinkName, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dnsForwardingRulesetName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
         }
         if (virtualNetworkLinkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter virtualNetworkLinkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkLinkName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                dnsForwardingRulesetName,
-                virtualNetworkLinkName,
-                this.client.getApiVersion(),
-                ifMatch,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            dnsForwardingRulesetName, virtualNetworkLinkName, this.client.getApiVersion(), ifMatch, accept, context);
     }
 
     /**
      * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName, String ifMatch) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String dnsForwardingRulesetName, String virtualNetworkLinkName, String ifMatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        String ifMatch,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName, String ifMatch) {
-        return beginDeleteAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch)
-            .getSyncPoller();
-    }
-
-    /**
-     * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        String ifMatch,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName, String ifMatch) {
-        return beginDeleteAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String dnsForwardingRulesetName, String virtualNetworkLinkName) {
         final String ifMatch = null;
-        return beginDeleteAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch)
-            .last()
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
+     * @param virtualNetworkLinkName The name of the virtual network link.
+     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String dnsForwardingRulesetName, String virtualNetworkLinkName, String ifMatch, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, dnsForwardingRulesetName,
+            virtualNetworkLinkName, ifMatch, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
+     * @param virtualNetworkLinkName The name of the virtual network link.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsForwardingRulesetName,
+        String virtualNetworkLinkName) {
+        final String ifMatch = null;
+        return this.beginDeleteAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
+     * @param virtualNetworkLinkName The name of the virtual network link.
+     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsForwardingRulesetName,
+        String virtualNetworkLinkName, String ifMatch, Context context) {
+        return this
+            .beginDeleteAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
+     * @param virtualNetworkLinkName The name of the virtual network link.
+     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String dnsForwardingRulesetName,
+        String virtualNetworkLinkName, String ifMatch) {
+        return beginDeleteAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
+     * @param virtualNetworkLinkName The name of the virtual network link.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String dnsForwardingRulesetName,
+        String virtualNetworkLinkName) {
+        final String ifMatch = null;
+        return beginDeleteAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1346,12 +1072,8 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        String ifMatch,
-        Context context) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String dnsForwardingRulesetName,
+        String virtualNetworkLinkName, String ifMatch, Context context) {
         return beginDeleteAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1359,25 +1081,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
 
     /**
      * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName, String ifMatch) {
-        deleteAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch).block();
-    }
-
-    /**
-     * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -1393,30 +1097,26 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
 
     /**
      * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        String ifMatch,
-        Context context) {
+    public void delete(String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName,
+        String ifMatch, Context context) {
         deleteAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch, context).block();
     }
 
     /**
      * Gets properties of a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -1424,57 +1124,42 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of a virtual network link to a DNS forwarding ruleset along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualNetworkLinkInner>> getWithResponseAsync(
-        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName) {
+    private Mono<Response<VirtualNetworkLinkInner>> getWithResponseAsync(String resourceGroupName,
+        String dnsForwardingRulesetName, String virtualNetworkLinkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dnsForwardingRulesetName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
         }
         if (virtualNetworkLinkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter virtualNetworkLinkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkLinkName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            dnsForwardingRulesetName,
-                            virtualNetworkLinkName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    dnsForwardingRulesetName, virtualNetworkLinkName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets properties of a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -1483,90 +1168,59 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of a virtual network link to a DNS forwarding ruleset along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualNetworkLinkInner>> getWithResponseAsync(
-        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName, Context context) {
+    private Mono<Response<VirtualNetworkLinkInner>> getWithResponseAsync(String resourceGroupName,
+        String dnsForwardingRulesetName, String virtualNetworkLinkName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dnsForwardingRulesetName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
         }
         if (virtualNetworkLinkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter virtualNetworkLinkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkLinkName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                dnsForwardingRulesetName,
-                virtualNetworkLinkName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            dnsForwardingRulesetName, virtualNetworkLinkName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets properties of a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a virtual network link to a DNS forwarding ruleset on successful completion of {@link
-     *     Mono}.
+     * @return properties of a virtual network link to a DNS forwarding ruleset on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualNetworkLinkInner> getAsync(
-        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName) {
+    private Mono<VirtualNetworkLinkInner> getAsync(String resourceGroupName, String dnsForwardingRulesetName,
+        String virtualNetworkLinkName) {
         return getWithResponseAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets properties of a virtual network link to a DNS forwarding ruleset.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a virtual network link to a DNS forwarding ruleset.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkLinkInner get(
-        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName) {
-        return getAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName).block();
-    }
-
-    /**
-     * Gets properties of a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -1577,15 +1231,33 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @return properties of a virtual network link to a DNS forwarding ruleset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VirtualNetworkLinkInner> getWithResponse(
-        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName, Context context) {
+    public Response<VirtualNetworkLinkInner> getWithResponse(String resourceGroupName, String dnsForwardingRulesetName,
+        String virtualNetworkLinkName, Context context) {
         return getWithResponseAsync(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, context)
             .block();
     }
 
     /**
+     * Gets properties of a virtual network link to a DNS forwarding ruleset.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
+     * @param virtualNetworkLinkName The name of the virtual network link.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a virtual network link to a DNS forwarding ruleset.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualNetworkLinkInner get(String resourceGroupName, String dnsForwardingRulesetName,
+        String virtualNetworkLinkName) {
+        return getWithResponse(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Lists virtual network links to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
@@ -1593,61 +1265,39 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an enumeration operation on virtual network links along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualNetworkLinkInner>> listSinglePageAsync(
-        String resourceGroupName, String dnsForwardingRulesetName, Integer top) {
+    private Mono<PagedResponse<VirtualNetworkLinkInner>> listSinglePageAsync(String resourceGroupName,
+        String dnsForwardingRulesetName, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dnsForwardingRulesetName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            dnsForwardingRulesetName,
-                            this.client.getApiVersion(),
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<VirtualNetworkLinkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, dnsForwardingRulesetName, this.client.getApiVersion(), top, accept, context))
+            .<PagedResponse<VirtualNetworkLinkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists virtual network links to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
@@ -1656,97 +1306,76 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an enumeration operation on virtual network links along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualNetworkLinkInner>> listSinglePageAsync(
-        String resourceGroupName, String dnsForwardingRulesetName, Integer top, Context context) {
+    private Mono<PagedResponse<VirtualNetworkLinkInner>> listSinglePageAsync(String resourceGroupName,
+        String dnsForwardingRulesetName, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dnsForwardingRulesetName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                dnsForwardingRulesetName,
-                this.client.getApiVersion(),
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                dnsForwardingRulesetName, this.client.getApiVersion(), top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists virtual network links to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on virtual network links as paginated response with {@link
-     *     PagedFlux}.
+     * @return the response to an enumeration operation on virtual network links as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VirtualNetworkLinkInner> listAsync(
-        String resourceGroupName, String dnsForwardingRulesetName, Integer top) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, dnsForwardingRulesetName, top),
+    private PagedFlux<VirtualNetworkLinkInner> listAsync(String resourceGroupName, String dnsForwardingRulesetName,
+        Integer top) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, dnsForwardingRulesetName, top),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists virtual network links to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on virtual network links as paginated response with {@link
-     *     PagedFlux}.
+     * @return the response to an enumeration operation on virtual network links as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VirtualNetworkLinkInner> listAsync(String resourceGroupName, String dnsForwardingRulesetName) {
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, dnsForwardingRulesetName, top),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, dnsForwardingRulesetName, top),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists virtual network links to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
@@ -1754,27 +1383,26 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on virtual network links as paginated response with {@link
-     *     PagedFlux}.
+     * @return the response to an enumeration operation on virtual network links as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VirtualNetworkLinkInner> listAsync(
-        String resourceGroupName, String dnsForwardingRulesetName, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, dnsForwardingRulesetName, top, context),
+    private PagedFlux<VirtualNetworkLinkInner> listAsync(String resourceGroupName, String dnsForwardingRulesetName,
+        Integer top, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, dnsForwardingRulesetName, top, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists virtual network links to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on virtual network links as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response to an enumeration operation on virtual network links as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkLinkInner> list(String resourceGroupName, String dnsForwardingRulesetName) {
@@ -1784,7 +1412,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
 
     /**
      * Lists virtual network links to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
@@ -1792,25 +1420,24 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on virtual network links as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response to an enumeration operation on virtual network links as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VirtualNetworkLinkInner> list(
-        String resourceGroupName, String dnsForwardingRulesetName, Integer top, Context context) {
+    public PagedIterable<VirtualNetworkLinkInner> list(String resourceGroupName, String dnsForwardingRulesetName,
+        Integer top, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, dnsForwardingRulesetName, top, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an enumeration operation on virtual network links along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkLinkInner>> listNextSinglePageAsync(String nextLink) {
@@ -1818,37 +1445,26 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<VirtualNetworkLinkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<VirtualNetworkLinkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an enumeration operation on virtual network links along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkLinkInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1856,23 +1472,13 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }
