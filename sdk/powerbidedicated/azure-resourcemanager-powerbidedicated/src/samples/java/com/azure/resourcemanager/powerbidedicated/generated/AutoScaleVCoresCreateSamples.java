@@ -9,30 +9,34 @@ import com.azure.resourcemanager.powerbidedicated.models.VCoreSkuTier;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for AutoScaleVCores Create. */
+/**
+ * Samples for AutoScaleVCores Create.
+ */
 public final class AutoScaleVCoresCreateSamples {
     /*
-     * x-ms-original-file: specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/createAutoScaleVCore.json
+     * x-ms-original-file:
+     * specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/
+     * createAutoScaleVCore.json
      */
     /**
      * Sample code: Create auto scale v-core.
-     *
+     * 
      * @param manager Entry point to PowerBIDedicatedManager.
      */
-    public static void createAutoScaleVCore(
-        com.azure.resourcemanager.powerbidedicated.PowerBIDedicatedManager manager) {
-        manager
-            .autoScaleVCores()
+    public static void
+        createAutoScaleVCore(com.azure.resourcemanager.powerbidedicated.PowerBIDedicatedManager manager) {
+        manager.autoScaleVCores()
             .define("testvcore")
             .withRegion("West US")
             .withExistingResourceGroup("TestRG")
             .withSku(new AutoScaleVCoreSku().withName("AutoScale").withTier(VCoreSkuTier.AUTO_SCALE).withCapacity(0))
-            .withTags(mapOf("testKey", "testValue"))
+            .withTags(mapOf("testKey", "fakeTokenPlaceholder"))
             .withCapacityObjectId("a28f00bd-5330-4572-88f1-fa883e074785")
             .withCapacityLimit(10)
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
