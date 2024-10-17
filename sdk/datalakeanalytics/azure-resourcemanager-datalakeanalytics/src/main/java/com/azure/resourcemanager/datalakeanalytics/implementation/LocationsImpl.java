@@ -20,8 +20,7 @@ public final class LocationsImpl implements Locations {
 
     private final com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager;
 
-    public LocationsImpl(
-        LocationsClient innerClient,
+    public LocationsImpl(LocationsClient innerClient,
         com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,10 +29,7 @@ public final class LocationsImpl implements Locations {
     public Response<CapabilityInformation> getCapabilityWithResponse(String location, Context context) {
         Response<CapabilityInformationInner> inner = this.serviceClient().getCapabilityWithResponse(location, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CapabilityInformationImpl(inner.getValue(), this.manager()));
         } else {
             return null;

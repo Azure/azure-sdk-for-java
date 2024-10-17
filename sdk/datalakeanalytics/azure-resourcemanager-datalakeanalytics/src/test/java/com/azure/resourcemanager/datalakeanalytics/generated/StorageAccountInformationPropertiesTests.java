@@ -10,8 +10,8 @@ import com.azure.resourcemanager.datalakeanalytics.fluent.models.StorageAccountI
 public final class StorageAccountInformationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageAccountInformationProperties model =
-            BinaryData.fromString("{\"suffix\":\"jrefovgmkqsle\"}").toObject(StorageAccountInformationProperties.class);
+        StorageAccountInformationProperties model
+            = BinaryData.fromString("{\"suffix\":\"hzrvqd\"}").toObject(StorageAccountInformationProperties.class);
     }
 
     @org.junit.jupiter.api.Test
