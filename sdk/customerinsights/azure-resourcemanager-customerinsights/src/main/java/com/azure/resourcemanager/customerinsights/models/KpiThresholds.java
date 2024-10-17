@@ -6,37 +6,42 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.math.BigDecimal;
 
-/** Defines the KPI Threshold limits. */
+/**
+ * Defines the KPI Threshold limits.
+ */
 @Fluent
-public final class KpiThresholds {
+public final class KpiThresholds implements JsonSerializable<KpiThresholds> {
     /*
      * The lower threshold limit.
      */
-    @JsonProperty(value = "lowerLimit", required = true)
     private BigDecimal lowerLimit;
 
     /*
      * The upper threshold limit.
      */
-    @JsonProperty(value = "upperLimit", required = true)
     private BigDecimal upperLimit;
 
     /*
      * Whether or not the KPI is an increasing KPI.
      */
-    @JsonProperty(value = "increasingKpi", required = true)
     private boolean increasingKpi;
 
-    /** Creates an instance of KpiThresholds class. */
+    /**
+     * Creates an instance of KpiThresholds class.
+     */
     public KpiThresholds() {
     }
 
     /**
      * Get the lowerLimit property: The lower threshold limit.
-     *
+     * 
      * @return the lowerLimit value.
      */
     public BigDecimal lowerLimit() {
@@ -45,7 +50,7 @@ public final class KpiThresholds {
 
     /**
      * Set the lowerLimit property: The lower threshold limit.
-     *
+     * 
      * @param lowerLimit the lowerLimit value to set.
      * @return the KpiThresholds object itself.
      */
@@ -56,7 +61,7 @@ public final class KpiThresholds {
 
     /**
      * Get the upperLimit property: The upper threshold limit.
-     *
+     * 
      * @return the upperLimit value.
      */
     public BigDecimal upperLimit() {
@@ -65,7 +70,7 @@ public final class KpiThresholds {
 
     /**
      * Set the upperLimit property: The upper threshold limit.
-     *
+     * 
      * @param upperLimit the upperLimit value to set.
      * @return the KpiThresholds object itself.
      */
@@ -76,7 +81,7 @@ public final class KpiThresholds {
 
     /**
      * Get the increasingKpi property: Whether or not the KPI is an increasing KPI.
-     *
+     * 
      * @return the increasingKpi value.
      */
     public boolean increasingKpi() {
@@ -85,7 +90,7 @@ public final class KpiThresholds {
 
     /**
      * Set the increasingKpi property: Whether or not the KPI is an increasing KPI.
-     *
+     * 
      * @param increasingKpi the increasingKpi value to set.
      * @return the KpiThresholds object itself.
      */
@@ -96,21 +101,64 @@ public final class KpiThresholds {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (lowerLimit() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property lowerLimit in model KpiThresholds"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property lowerLimit in model KpiThresholds"));
         }
         if (upperLimit() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property upperLimit in model KpiThresholds"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property upperLimit in model KpiThresholds"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(KpiThresholds.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("lowerLimit", this.lowerLimit);
+        jsonWriter.writeNumberField("upperLimit", this.upperLimit);
+        jsonWriter.writeBooleanField("increasingKpi", this.increasingKpi);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KpiThresholds from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KpiThresholds if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KpiThresholds.
+     */
+    public static KpiThresholds fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KpiThresholds deserializedKpiThresholds = new KpiThresholds();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lowerLimit".equals(fieldName)) {
+                    deserializedKpiThresholds.lowerLimit
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("upperLimit".equals(fieldName)) {
+                    deserializedKpiThresholds.upperLimit
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("increasingKpi".equals(fieldName)) {
+                    deserializedKpiThresholds.increasingKpi = reader.getBoolean();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKpiThresholds;
+        });
+    }
 }
