@@ -5,6 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
+- `@Deprecated` methods `DefaultAzureCredential.setIntelliJKeePassDatabasePath` and `IntelliJCredentialBuilder.keePassDatabasePath`.
 
 ### Bugs Fixed
 
