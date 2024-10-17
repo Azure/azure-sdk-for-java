@@ -5,48 +5,52 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The definition of a canonical profile property. */
+/**
+ * The definition of a canonical profile property.
+ */
 @Fluent
-public final class CanonicalProfileDefinitionPropertiesItem {
+public final class CanonicalProfileDefinitionPropertiesItem
+    implements JsonSerializable<CanonicalProfileDefinitionPropertiesItem> {
     /*
      * Profile name.
      */
-    @JsonProperty(value = "profileName")
     private String profileName;
 
     /*
      * Property name of profile.
      */
-    @JsonProperty(value = "profilePropertyName")
     private String profilePropertyName;
 
     /*
      * The rank.
      */
-    @JsonProperty(value = "rank")
     private Integer rank;
 
     /*
      * Type of canonical property value.
      */
-    @JsonProperty(value = "type")
     private CanonicalPropertyValueType type;
 
     /*
      * Value of the canonical property.
      */
-    @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of CanonicalProfileDefinitionPropertiesItem class. */
+    /**
+     * Creates an instance of CanonicalProfileDefinitionPropertiesItem class.
+     */
     public CanonicalProfileDefinitionPropertiesItem() {
     }
 
     /**
      * Get the profileName property: Profile name.
-     *
+     * 
      * @return the profileName value.
      */
     public String profileName() {
@@ -55,7 +59,7 @@ public final class CanonicalProfileDefinitionPropertiesItem {
 
     /**
      * Set the profileName property: Profile name.
-     *
+     * 
      * @param profileName the profileName value to set.
      * @return the CanonicalProfileDefinitionPropertiesItem object itself.
      */
@@ -66,7 +70,7 @@ public final class CanonicalProfileDefinitionPropertiesItem {
 
     /**
      * Get the profilePropertyName property: Property name of profile.
-     *
+     * 
      * @return the profilePropertyName value.
      */
     public String profilePropertyName() {
@@ -75,7 +79,7 @@ public final class CanonicalProfileDefinitionPropertiesItem {
 
     /**
      * Set the profilePropertyName property: Property name of profile.
-     *
+     * 
      * @param profilePropertyName the profilePropertyName value to set.
      * @return the CanonicalProfileDefinitionPropertiesItem object itself.
      */
@@ -86,7 +90,7 @@ public final class CanonicalProfileDefinitionPropertiesItem {
 
     /**
      * Get the rank property: The rank.
-     *
+     * 
      * @return the rank value.
      */
     public Integer rank() {
@@ -95,7 +99,7 @@ public final class CanonicalProfileDefinitionPropertiesItem {
 
     /**
      * Set the rank property: The rank.
-     *
+     * 
      * @param rank the rank value to set.
      * @return the CanonicalProfileDefinitionPropertiesItem object itself.
      */
@@ -106,7 +110,7 @@ public final class CanonicalProfileDefinitionPropertiesItem {
 
     /**
      * Get the type property: Type of canonical property value.
-     *
+     * 
      * @return the type value.
      */
     public CanonicalPropertyValueType type() {
@@ -115,7 +119,7 @@ public final class CanonicalProfileDefinitionPropertiesItem {
 
     /**
      * Set the type property: Type of canonical property value.
-     *
+     * 
      * @param type the type value to set.
      * @return the CanonicalProfileDefinitionPropertiesItem object itself.
      */
@@ -126,7 +130,7 @@ public final class CanonicalProfileDefinitionPropertiesItem {
 
     /**
      * Get the value property: Value of the canonical property.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -135,7 +139,7 @@ public final class CanonicalProfileDefinitionPropertiesItem {
 
     /**
      * Set the value property: Value of the canonical property.
-     *
+     * 
      * @param value the value value to set.
      * @return the CanonicalProfileDefinitionPropertiesItem object itself.
      */
@@ -146,9 +150,59 @@ public final class CanonicalProfileDefinitionPropertiesItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("profileName", this.profileName);
+        jsonWriter.writeStringField("profilePropertyName", this.profilePropertyName);
+        jsonWriter.writeNumberField("rank", this.rank);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CanonicalProfileDefinitionPropertiesItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CanonicalProfileDefinitionPropertiesItem if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CanonicalProfileDefinitionPropertiesItem.
+     */
+    public static CanonicalProfileDefinitionPropertiesItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CanonicalProfileDefinitionPropertiesItem deserializedCanonicalProfileDefinitionPropertiesItem
+                = new CanonicalProfileDefinitionPropertiesItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("profileName".equals(fieldName)) {
+                    deserializedCanonicalProfileDefinitionPropertiesItem.profileName = reader.getString();
+                } else if ("profilePropertyName".equals(fieldName)) {
+                    deserializedCanonicalProfileDefinitionPropertiesItem.profilePropertyName = reader.getString();
+                } else if ("rank".equals(fieldName)) {
+                    deserializedCanonicalProfileDefinitionPropertiesItem.rank = reader.getNullable(JsonReader::getInt);
+                } else if ("type".equals(fieldName)) {
+                    deserializedCanonicalProfileDefinitionPropertiesItem.type
+                        = CanonicalPropertyValueType.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedCanonicalProfileDefinitionPropertiesItem.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCanonicalProfileDefinitionPropertiesItem;
+        });
     }
 }
