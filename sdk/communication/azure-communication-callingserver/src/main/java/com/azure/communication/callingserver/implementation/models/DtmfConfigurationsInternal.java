@@ -5,28 +5,31 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 /** Options for DTMF recognition. */
 @Fluent
-public final class DtmfConfigurationsInternal {
+public final class DtmfConfigurationsInternal implements JsonSerializable<DtmfConfigurationsInternal> {
     /*
      * Time to wait between DTMF inputs to stop recognizing.
      */
-    @JsonProperty(value = "interToneTimeoutInSeconds")
     private Integer interToneTimeoutInSeconds;
 
     /*
      * Maximum number of DTMFs to be collected.
      */
-    @JsonProperty(value = "maxTonesToCollect")
     private Integer maxTonesToCollect;
 
     /*
      * List of tones that will stop recognizing.
      */
-    @JsonProperty(value = "stopTones")
     private List<StopTonesInternal> stopTones;
 
     /**
@@ -87,5 +90,45 @@ public final class DtmfConfigurationsInternal {
     public DtmfConfigurationsInternal setStopTones(List<StopTonesInternal> stopTones) {
         this.stopTones = stopTones;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeNumberField("interToneTimeoutInSeconds", interToneTimeoutInSeconds)
+            .writeNumberField("maxTonesToCollect", maxTonesToCollect)
+            .writeArrayField("stopTones", stopTones, (writer, tone) -> writer.writeString(Objects.toString(tone, null)))
+            .writeEndObject();
+    }
+
+    /**
+     * Reads an instance of {@link DtmfConfigurationsInternal} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link DtmfConfigurationsInternal}, or null if the {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static DtmfConfigurationsInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DtmfConfigurationsInternal configurations = new DtmfConfigurationsInternal();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("interToneTimeoutInSeconds".equals(fieldName)) {
+                    configurations.interToneTimeoutInSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("maxTonesToCollect".equals(fieldName)) {
+                    configurations.maxTonesToCollect = reader.getNullable(JsonReader::getInt);
+                } else if ("stopTones".equals(fieldName)) {
+                    configurations.stopTones = reader.readArray(elem -> StopTonesInternal.fromString(elem.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return configurations;
+        });
     }
 }

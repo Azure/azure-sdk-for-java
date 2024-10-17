@@ -5,27 +5,30 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
+import java.util.Objects;
 
 /** The PlaySourceInternal model. */
 @Fluent
-public final class PlaySourceInternal {
+public final class PlaySourceInternal implements JsonSerializable<PlaySourceInternal> {
     /*
      * Defines the type of the play source
      */
-    @JsonProperty(value = "sourceType", required = true)
     private PlaySourceTypeInternal sourceType;
 
     /*
      * Defines the identifier to be used for caching related media
      */
-    @JsonProperty(value = "playSourceId")
     private String playSourceId;
 
     /*
      * Defines the file source info to be used for play
      */
-    @JsonProperty(value = "fileSource")
     private FileSourceInternal fileSource;
 
     /**
@@ -86,5 +89,45 @@ public final class PlaySourceInternal {
     public PlaySourceInternal setFileSource(FileSourceInternal fileSource) {
         this.fileSource = fileSource;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("sourceType", Objects.toString(sourceType, null))
+            .writeStringField("playSourceId", playSourceId)
+            .writeJsonField("fileSource", fileSource)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads an instance of {@link PlaySourceInternal} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link PlaySourceInternal}, or null if the {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static PlaySourceInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PlaySourceInternal playSource = new PlaySourceInternal();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceType".equals(fieldName)) {
+                    playSource.sourceType = PlaySourceTypeInternal.fromString(reader.getString());
+                } else if ("playSourceId".equals(fieldName)) {
+                    playSource.playSourceId = reader.getString();
+                } else if ("fileSource".equals(fieldName)) {
+                    playSource.fileSource = FileSourceInternal.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return playSource;
+        });
     }
 }

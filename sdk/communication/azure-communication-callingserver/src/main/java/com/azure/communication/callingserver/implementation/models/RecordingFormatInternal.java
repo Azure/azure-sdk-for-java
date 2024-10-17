@@ -5,7 +5,7 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for RecordingFormatInternal. */
@@ -20,12 +20,21 @@ public final class RecordingFormatInternal extends ExpandableStringEnum<Recordin
     public static final RecordingFormatInternal MP4 = fromString("mp4");
 
     /**
+     * Creates an instance of {@link RecordingFormatInternal} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to create or get an instance of {@link RecordingFormatInternal}
+     * instead.
+     */
+    @Deprecated
+    public RecordingFormatInternal() {
+    }
+
+    /**
      * Creates or finds a RecordingFormatInternal from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding RecordingFormatInternal.
      */
-    @JsonCreator
     public static RecordingFormatInternal fromString(String name) {
         return fromString(name, RecordingFormatInternal.class);
     }

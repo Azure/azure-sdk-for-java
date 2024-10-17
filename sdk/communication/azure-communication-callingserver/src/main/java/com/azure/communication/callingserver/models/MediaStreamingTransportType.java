@@ -5,7 +5,7 @@
 package com.azure.communication.callingserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for MediaStreamingTransportType. */
@@ -14,12 +14,21 @@ public final class MediaStreamingTransportType extends ExpandableStringEnum<Medi
     public static final MediaStreamingTransportType WEBSOCKET = fromString("websocket");
 
     /**
+     * Creates an instance of {@link MediaStreamingTransportType} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to create or get an instance of {@link MediaStreamingTransportType}
+     * instead.
+     */
+    @Deprecated
+    public MediaStreamingTransportType() {
+    }
+
+    /**
      * Creates or finds a MediaStreamingTransportType from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding MediaStreamingTransportType.
      */
-    @JsonCreator
     public static MediaStreamingTransportType fromString(String name) {
         return fromString(name, MediaStreamingTransportType.class);
     }

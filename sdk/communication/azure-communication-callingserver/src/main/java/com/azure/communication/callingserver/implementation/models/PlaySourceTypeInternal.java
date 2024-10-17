@@ -5,7 +5,7 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for PlaySourceTypeInternal. */
@@ -14,12 +14,21 @@ public final class PlaySourceTypeInternal extends ExpandableStringEnum<PlaySourc
     public static final PlaySourceTypeInternal FILE = fromString("file");
 
     /**
+     * Creates an instance of {@link PlaySourceTypeInternal} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to create or get an instance of {@link PlaySourceTypeInternal}
+     * instead.
+     */
+    @Deprecated
+    public PlaySourceTypeInternal() {
+    }
+
+    /**
      * Creates or finds a PlaySourceTypeInternal from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding PlaySourceTypeInternal.
      */
-    @JsonCreator
     public static PlaySourceTypeInternal fromString(String name) {
         return fromString(name, PlaySourceTypeInternal.class);
     }

@@ -5,7 +5,7 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for CallConnectionStateModelInternal. */
@@ -32,12 +32,21 @@ public final class CallConnectionStateModelInternal extends ExpandableStringEnum
     public static final CallConnectionStateModelInternal DISCONNECTED = fromString("disconnected");
 
     /**
+     * Creates an instance of {@link CallConnectionStateModelInternal} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to create or get an instance of
+     * {@link CallConnectionStateModelInternal} instead.
+     */
+    @Deprecated
+    public CallConnectionStateModelInternal() {
+    }
+
+    /**
      * Creates or finds a CallConnectionStateModelInternal from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding CallConnectionStateModelInternal.
      */
-    @JsonCreator
     public static CallConnectionStateModelInternal fromString(String name) {
         return fromString(name, CallConnectionStateModelInternal.class);
     }

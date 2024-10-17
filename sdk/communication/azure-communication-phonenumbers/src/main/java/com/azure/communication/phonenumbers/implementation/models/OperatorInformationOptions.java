@@ -5,17 +5,21 @@
 package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** Represents options to modify a search request for operator information. */
 @Fluent
-public final class OperatorInformationOptions {
+public final class OperatorInformationOptions implements JsonSerializable<OperatorInformationOptions> {
     /*
      * Includes the fields operatorDetails, numberType, and isoCountryCode in
      * the response.  Please note: use of this option will result in additional
      * costs
      */
-    @JsonProperty(value = "includeAdditionalOperatorDetails")
     private Boolean includeAdditionalOperatorDetails;
 
     /**
@@ -38,5 +42,38 @@ public final class OperatorInformationOptions {
     public OperatorInformationOptions setIncludeAdditionalOperatorDetails(Boolean includeAdditionalOperatorDetails) {
         this.includeAdditionalOperatorDetails = includeAdditionalOperatorDetails;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeBooleanField("includeAdditionalOperatorDetails", includeAdditionalOperatorDetails)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads an instance of {@link OperatorInformationOptions} from the {@code jsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read from.
+     * @return An instance of {@link OperatorInformationOptions}, or null if pointing to {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static OperatorInformationOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperatorInformationOptions options = new OperatorInformationOptions();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("includeAdditionalOperatorDetails".equals(fieldName)) {
+                    options.includeAdditionalOperatorDetails = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return options;
+        });
     }
 }

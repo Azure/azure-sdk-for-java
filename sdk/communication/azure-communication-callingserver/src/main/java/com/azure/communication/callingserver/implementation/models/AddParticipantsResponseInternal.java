@@ -5,22 +5,25 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.util.List;
 
 /** The AddParticipantsResponseInternal model. */
 @Fluent
-public final class AddParticipantsResponseInternal {
+public final class AddParticipantsResponseInternal implements JsonSerializable<AddParticipantsResponseInternal> {
     /*
      * The participants property.
      */
-    @JsonProperty(value = "participants")
     private List<AcsCallParticipantInternal> participants;
 
     /*
      * The operation context provided by client.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /**
@@ -61,5 +64,42 @@ public final class AddParticipantsResponseInternal {
     public AddParticipantsResponseInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeArrayField("participants", participants, JsonWriter::writeJson)
+            .writeStringField("operationContext", operationContext)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads an instance of {@link AddParticipantsResponseInternal} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link AddParticipantsResponseInternal}, or null if the {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static AddParticipantsResponseInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddParticipantsResponseInternal response = new AddParticipantsResponseInternal();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("participants".equals(fieldName)) {
+                    response.participants = reader.readArray(AcsCallParticipantInternal::fromJson);
+                } else if ("operationContext".equals(fieldName)) {
+                    response.operationContext = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return response;
+        });
     }
 }

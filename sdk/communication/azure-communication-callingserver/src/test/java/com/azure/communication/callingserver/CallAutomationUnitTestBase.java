@@ -2,14 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.communication.callingserver;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
-import java.util.Collections;
-
 import com.azure.communication.callingserver.implementation.models.AcsCallParticipantInternal;
 import com.azure.communication.callingserver.implementation.models.AddParticipantsResponseInternal;
 import com.azure.communication.callingserver.implementation.models.CallConnectionPropertiesInternal;
@@ -24,11 +16,18 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonSerializable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class CallAutomationUnitTestBase {
     static final String MOCK_ENDPOINT = "https://REDACTED.communication.azure.com/";
@@ -161,14 +160,12 @@ public class CallAutomationUnitTestBase {
         };
     }
 
-    static String serializeObject(Object o) {
-        ObjectMapper mapper = new ObjectMapper();
-        String body = null;
+    static String serializeObject(JsonSerializable<?> o) {
         try {
-            body = mapper.writeValueAsString(o);
-        } catch (JsonProcessingException e) {
+            return o.toJsonString();
+        } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-        return body;
     }
 }

@@ -5,7 +5,7 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for MediaStreamingContentTypeInternal. */
@@ -14,12 +14,21 @@ public final class MediaStreamingContentTypeInternal extends ExpandableStringEnu
     public static final MediaStreamingContentTypeInternal AUDIO = fromString("audio");
 
     /**
+     * Creates an instance of {@link MediaStreamingContentTypeInternal} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to create or get an instance of
+     * {@link MediaStreamingContentTypeInternal} instead.
+     */
+    @Deprecated
+    public MediaStreamingContentTypeInternal() {
+    }
+
+    /**
      * Creates or finds a MediaStreamingContentTypeInternal from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding MediaStreamingContentTypeInternal.
      */
-    @JsonCreator
     public static MediaStreamingContentTypeInternal fromString(String name) {
         return fromString(name, MediaStreamingContentTypeInternal.class);
     }
