@@ -6,90 +6,86 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Edifact delimiter override settings. */
+/**
+ * The Edifact delimiter override settings.
+ */
 @Fluent
-public final class EdifactDelimiterOverride {
+public final class EdifactDelimiterOverride implements JsonSerializable<EdifactDelimiterOverride> {
     /*
      * The message id.
      */
-    @JsonProperty(value = "messageId")
     private String messageId;
 
     /*
      * The message version.
      */
-    @JsonProperty(value = "messageVersion")
     private String messageVersion;
 
     /*
      * The message release.
      */
-    @JsonProperty(value = "messageRelease")
     private String messageRelease;
 
     /*
      * The data element separator.
      */
-    @JsonProperty(value = "dataElementSeparator", required = true)
     private int dataElementSeparator;
 
     /*
      * The component separator.
      */
-    @JsonProperty(value = "componentSeparator", required = true)
     private int componentSeparator;
 
     /*
      * The segment terminator.
      */
-    @JsonProperty(value = "segmentTerminator", required = true)
     private int segmentTerminator;
 
     /*
      * The repetition separator.
      */
-    @JsonProperty(value = "repetitionSeparator", required = true)
     private int repetitionSeparator;
 
     /*
      * The segment terminator suffix.
      */
-    @JsonProperty(value = "segmentTerminatorSuffix", required = true)
     private SegmentTerminatorSuffix segmentTerminatorSuffix;
 
     /*
      * The decimal point indicator.
      */
-    @JsonProperty(value = "decimalPointIndicator", required = true)
     private EdifactDecimalIndicator decimalPointIndicator;
 
     /*
      * The release indicator.
      */
-    @JsonProperty(value = "releaseIndicator", required = true)
     private int releaseIndicator;
 
     /*
      * The message association assigned code.
      */
-    @JsonProperty(value = "messageAssociationAssignedCode")
     private String messageAssociationAssignedCode;
 
     /*
      * The target namespace on which this delimiter settings has to be applied.
      */
-    @JsonProperty(value = "targetNamespace")
     private String targetNamespace;
 
-    /** Creates an instance of EdifactDelimiterOverride class. */
+    /**
+     * Creates an instance of EdifactDelimiterOverride class.
+     */
     public EdifactDelimiterOverride() {
     }
 
     /**
      * Get the messageId property: The message id.
-     *
+     * 
      * @return the messageId value.
      */
     public String messageId() {
@@ -98,7 +94,7 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Set the messageId property: The message id.
-     *
+     * 
      * @param messageId the messageId value to set.
      * @return the EdifactDelimiterOverride object itself.
      */
@@ -109,7 +105,7 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Get the messageVersion property: The message version.
-     *
+     * 
      * @return the messageVersion value.
      */
     public String messageVersion() {
@@ -118,7 +114,7 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Set the messageVersion property: The message version.
-     *
+     * 
      * @param messageVersion the messageVersion value to set.
      * @return the EdifactDelimiterOverride object itself.
      */
@@ -129,7 +125,7 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Get the messageRelease property: The message release.
-     *
+     * 
      * @return the messageRelease value.
      */
     public String messageRelease() {
@@ -138,7 +134,7 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Set the messageRelease property: The message release.
-     *
+     * 
      * @param messageRelease the messageRelease value to set.
      * @return the EdifactDelimiterOverride object itself.
      */
@@ -149,7 +145,7 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Get the dataElementSeparator property: The data element separator.
-     *
+     * 
      * @return the dataElementSeparator value.
      */
     public int dataElementSeparator() {
@@ -158,7 +154,7 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Set the dataElementSeparator property: The data element separator.
-     *
+     * 
      * @param dataElementSeparator the dataElementSeparator value to set.
      * @return the EdifactDelimiterOverride object itself.
      */
@@ -169,7 +165,7 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Get the componentSeparator property: The component separator.
-     *
+     * 
      * @return the componentSeparator value.
      */
     public int componentSeparator() {
@@ -178,7 +174,7 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Set the componentSeparator property: The component separator.
-     *
+     * 
      * @param componentSeparator the componentSeparator value to set.
      * @return the EdifactDelimiterOverride object itself.
      */
@@ -189,7 +185,7 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Get the segmentTerminator property: The segment terminator.
-     *
+     * 
      * @return the segmentTerminator value.
      */
     public int segmentTerminator() {
@@ -198,7 +194,7 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Set the segmentTerminator property: The segment terminator.
-     *
+     * 
      * @param segmentTerminator the segmentTerminator value to set.
      * @return the EdifactDelimiterOverride object itself.
      */
@@ -209,7 +205,7 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Get the repetitionSeparator property: The repetition separator.
-     *
+     * 
      * @return the repetitionSeparator value.
      */
     public int repetitionSeparator() {
@@ -218,7 +214,7 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Set the repetitionSeparator property: The repetition separator.
-     *
+     * 
      * @param repetitionSeparator the repetitionSeparator value to set.
      * @return the EdifactDelimiterOverride object itself.
      */
@@ -229,7 +225,7 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Get the segmentTerminatorSuffix property: The segment terminator suffix.
-     *
+     * 
      * @return the segmentTerminatorSuffix value.
      */
     public SegmentTerminatorSuffix segmentTerminatorSuffix() {
@@ -238,7 +234,7 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Set the segmentTerminatorSuffix property: The segment terminator suffix.
-     *
+     * 
      * @param segmentTerminatorSuffix the segmentTerminatorSuffix value to set.
      * @return the EdifactDelimiterOverride object itself.
      */
@@ -249,7 +245,7 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Get the decimalPointIndicator property: The decimal point indicator.
-     *
+     * 
      * @return the decimalPointIndicator value.
      */
     public EdifactDecimalIndicator decimalPointIndicator() {
@@ -258,7 +254,7 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Set the decimalPointIndicator property: The decimal point indicator.
-     *
+     * 
      * @param decimalPointIndicator the decimalPointIndicator value to set.
      * @return the EdifactDelimiterOverride object itself.
      */
@@ -269,7 +265,7 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Get the releaseIndicator property: The release indicator.
-     *
+     * 
      * @return the releaseIndicator value.
      */
     public int releaseIndicator() {
@@ -278,7 +274,7 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Set the releaseIndicator property: The release indicator.
-     *
+     * 
      * @param releaseIndicator the releaseIndicator value to set.
      * @return the EdifactDelimiterOverride object itself.
      */
@@ -289,7 +285,7 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Get the messageAssociationAssignedCode property: The message association assigned code.
-     *
+     * 
      * @return the messageAssociationAssignedCode value.
      */
     public String messageAssociationAssignedCode() {
@@ -298,7 +294,7 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Set the messageAssociationAssignedCode property: The message association assigned code.
-     *
+     * 
      * @param messageAssociationAssignedCode the messageAssociationAssignedCode value to set.
      * @return the EdifactDelimiterOverride object itself.
      */
@@ -309,7 +305,7 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Get the targetNamespace property: The target namespace on which this delimiter settings has to be applied.
-     *
+     * 
      * @return the targetNamespace value.
      */
     public String targetNamespace() {
@@ -318,7 +314,7 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Set the targetNamespace property: The target namespace on which this delimiter settings has to be applied.
-     *
+     * 
      * @param targetNamespace the targetNamespace value to set.
      * @return the EdifactDelimiterOverride object itself.
      */
@@ -329,23 +325,95 @@ public final class EdifactDelimiterOverride {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (segmentTerminatorSuffix() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property segmentTerminatorSuffix in model EdifactDelimiterOverride"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property segmentTerminatorSuffix in model EdifactDelimiterOverride"));
         }
         if (decimalPointIndicator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property decimalPointIndicator in model EdifactDelimiterOverride"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property decimalPointIndicator in model EdifactDelimiterOverride"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EdifactDelimiterOverride.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("dataElementSeparator", this.dataElementSeparator);
+        jsonWriter.writeIntField("componentSeparator", this.componentSeparator);
+        jsonWriter.writeIntField("segmentTerminator", this.segmentTerminator);
+        jsonWriter.writeIntField("repetitionSeparator", this.repetitionSeparator);
+        jsonWriter.writeStringField("segmentTerminatorSuffix",
+            this.segmentTerminatorSuffix == null ? null : this.segmentTerminatorSuffix.toString());
+        jsonWriter.writeStringField("decimalPointIndicator",
+            this.decimalPointIndicator == null ? null : this.decimalPointIndicator.toString());
+        jsonWriter.writeIntField("releaseIndicator", this.releaseIndicator);
+        jsonWriter.writeStringField("messageId", this.messageId);
+        jsonWriter.writeStringField("messageVersion", this.messageVersion);
+        jsonWriter.writeStringField("messageRelease", this.messageRelease);
+        jsonWriter.writeStringField("messageAssociationAssignedCode", this.messageAssociationAssignedCode);
+        jsonWriter.writeStringField("targetNamespace", this.targetNamespace);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EdifactDelimiterOverride from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EdifactDelimiterOverride if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EdifactDelimiterOverride.
+     */
+    public static EdifactDelimiterOverride fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EdifactDelimiterOverride deserializedEdifactDelimiterOverride = new EdifactDelimiterOverride();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataElementSeparator".equals(fieldName)) {
+                    deserializedEdifactDelimiterOverride.dataElementSeparator = reader.getInt();
+                } else if ("componentSeparator".equals(fieldName)) {
+                    deserializedEdifactDelimiterOverride.componentSeparator = reader.getInt();
+                } else if ("segmentTerminator".equals(fieldName)) {
+                    deserializedEdifactDelimiterOverride.segmentTerminator = reader.getInt();
+                } else if ("repetitionSeparator".equals(fieldName)) {
+                    deserializedEdifactDelimiterOverride.repetitionSeparator = reader.getInt();
+                } else if ("segmentTerminatorSuffix".equals(fieldName)) {
+                    deserializedEdifactDelimiterOverride.segmentTerminatorSuffix
+                        = SegmentTerminatorSuffix.fromString(reader.getString());
+                } else if ("decimalPointIndicator".equals(fieldName)) {
+                    deserializedEdifactDelimiterOverride.decimalPointIndicator
+                        = EdifactDecimalIndicator.fromString(reader.getString());
+                } else if ("releaseIndicator".equals(fieldName)) {
+                    deserializedEdifactDelimiterOverride.releaseIndicator = reader.getInt();
+                } else if ("messageId".equals(fieldName)) {
+                    deserializedEdifactDelimiterOverride.messageId = reader.getString();
+                } else if ("messageVersion".equals(fieldName)) {
+                    deserializedEdifactDelimiterOverride.messageVersion = reader.getString();
+                } else if ("messageRelease".equals(fieldName)) {
+                    deserializedEdifactDelimiterOverride.messageRelease = reader.getString();
+                } else if ("messageAssociationAssignedCode".equals(fieldName)) {
+                    deserializedEdifactDelimiterOverride.messageAssociationAssignedCode = reader.getString();
+                } else if ("targetNamespace".equals(fieldName)) {
+                    deserializedEdifactDelimiterOverride.targetNamespace = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEdifactDelimiterOverride;
+        });
+    }
 }

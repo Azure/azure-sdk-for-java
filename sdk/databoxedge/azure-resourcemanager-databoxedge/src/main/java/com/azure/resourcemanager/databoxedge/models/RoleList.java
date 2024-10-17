@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.fluent.models.RoleInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Collection of all the roles on the Data Box Edge device. */
+/**
+ * Collection of all the roles on the Data Box Edge device.
+ */
 @Immutable
-public final class RoleList {
+public final class RoleList implements JsonSerializable<RoleList> {
     /*
      * The Value.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RoleInner> value;
 
     /*
      * Link to the next set of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of RoleList class. */
+    /**
+     * Creates an instance of RoleList class.
+     */
     public RoleList() {
     }
 
     /**
      * Get the value property: The Value.
-     *
+     * 
      * @return the value value.
      */
     public List<RoleInner> value() {
@@ -39,7 +45,7 @@ public final class RoleList {
 
     /**
      * Get the nextLink property: Link to the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,50 @@ public final class RoleList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleList if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the RoleList.
+     */
+    public static RoleList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleList deserializedRoleList = new RoleList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<RoleInner> value = reader.readArray(reader1 -> RoleInner.fromJson(reader1));
+                    deserializedRoleList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedRoleList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleList;
+        });
     }
 }

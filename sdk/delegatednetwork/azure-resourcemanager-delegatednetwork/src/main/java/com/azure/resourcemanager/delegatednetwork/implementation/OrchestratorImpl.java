@@ -89,20 +89,16 @@ public final class OrchestratorImpl implements Orchestrator, Orchestrator.Defini
     }
 
     public Orchestrator create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOrchestratorInstanceServices()
-                .create(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getOrchestratorInstanceServices()
+            .create(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Orchestrator create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOrchestratorInstanceServices()
-                .create(resourceGroupName, resourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getOrchestratorInstanceServices()
+            .create(resourceGroupName, resourceName, this.innerModel(), context);
         return this;
     }
 
@@ -118,51 +114,42 @@ public final class OrchestratorImpl implements Orchestrator, Orchestrator.Defini
     }
 
     public Orchestrator apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOrchestratorInstanceServices()
-                .patchWithResponse(resourceGroupName, resourceName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOrchestratorInstanceServices()
+            .patchWithResponse(resourceGroupName, resourceName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Orchestrator apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOrchestratorInstanceServices()
-                .patchWithResponse(resourceGroupName, resourceName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOrchestratorInstanceServices()
+            .patchWithResponse(resourceGroupName, resourceName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    OrchestratorImpl(
-        OrchestratorInner innerObject,
+    OrchestratorImpl(OrchestratorInner innerObject,
         com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "orchestrators");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "orchestrators");
     }
 
     public Orchestrator refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOrchestratorInstanceServices()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOrchestratorInstanceServices()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Orchestrator refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOrchestratorInstanceServices()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOrchestratorInstanceServices()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
+            .getValue();
         return this;
     }
 

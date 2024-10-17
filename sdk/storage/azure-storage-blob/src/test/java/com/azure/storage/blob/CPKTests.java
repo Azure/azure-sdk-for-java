@@ -53,6 +53,7 @@ public class CPKTests extends BlobTestBase {
             .credential(ENVIRONMENT.getPrimaryAccount().getCredential()));
 
         cpkContainer = builder.buildClient();
+
         cpkBlockBlob = cpkContainer.getBlobClient(generateBlobName()).getBlockBlobClient();
         cpkPageBlob = cpkContainer.getBlobClient(generateBlobName()).getPageBlobClient();
         cpkAppendBlob = cpkContainer.getBlobClient(generateBlobName()).getAppendBlobClient();
@@ -61,6 +62,11 @@ public class CPKTests extends BlobTestBase {
         existingBlobSetup.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         cpkExistingBlob = existingBlobSetup;
 
+    }
+
+    @Test
+    public void getCPK() {
+        assertEquals(key.getKey(), cpkContainer.getCustomerProvidedKey().getEncryptionKey());
     }
 
     @Test

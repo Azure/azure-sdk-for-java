@@ -18,6 +18,11 @@ import java.util.List;
 @Fluent
 public final class QueueScaleRule implements JsonSerializable<QueueScaleRule> {
     /*
+     * Storage account name. required if using managed identity to authenticate
+     */
+    private String accountName;
+
+    /*
      * Queue name.
      */
     private String queueName;
@@ -32,10 +37,36 @@ public final class QueueScaleRule implements JsonSerializable<QueueScaleRule> {
      */
     private List<ScaleRuleAuth> auth;
 
+    /*
+     * The resource ID of a user-assigned managed identity that is assigned to the Container App, or 'system' for
+     * system-assigned identity.
+     */
+    private String identity;
+
     /**
      * Creates an instance of QueueScaleRule class.
      */
     public QueueScaleRule() {
+    }
+
+    /**
+     * Get the accountName property: Storage account name. required if using managed identity to authenticate.
+     * 
+     * @return the accountName value.
+     */
+    public String accountName() {
+        return this.accountName;
+    }
+
+    /**
+     * Set the accountName property: Storage account name. required if using managed identity to authenticate.
+     * 
+     * @param accountName the accountName value to set.
+     * @return the QueueScaleRule object itself.
+     */
+    public QueueScaleRule withAccountName(String accountName) {
+        this.accountName = accountName;
+        return this;
     }
 
     /**
@@ -99,6 +130,28 @@ public final class QueueScaleRule implements JsonSerializable<QueueScaleRule> {
     }
 
     /**
+     * Get the identity property: The resource ID of a user-assigned managed identity that is assigned to the Container
+     * App, or 'system' for system-assigned identity.
+     * 
+     * @return the identity value.
+     */
+    public String identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The resource ID of a user-assigned managed identity that is assigned to the Container
+     * App, or 'system' for system-assigned identity.
+     * 
+     * @param identity the identity value to set.
+     * @return the QueueScaleRule object itself.
+     */
+    public QueueScaleRule withIdentity(String identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -115,9 +168,11 @@ public final class QueueScaleRule implements JsonSerializable<QueueScaleRule> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accountName", this.accountName);
         jsonWriter.writeStringField("queueName", this.queueName);
         jsonWriter.writeNumberField("queueLength", this.queueLength);
         jsonWriter.writeArrayField("auth", this.auth, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -136,13 +191,17 @@ public final class QueueScaleRule implements JsonSerializable<QueueScaleRule> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("queueName".equals(fieldName)) {
+                if ("accountName".equals(fieldName)) {
+                    deserializedQueueScaleRule.accountName = reader.getString();
+                } else if ("queueName".equals(fieldName)) {
                     deserializedQueueScaleRule.queueName = reader.getString();
                 } else if ("queueLength".equals(fieldName)) {
                     deserializedQueueScaleRule.queueLength = reader.getNullable(JsonReader::getInt);
                 } else if ("auth".equals(fieldName)) {
                     List<ScaleRuleAuth> auth = reader.readArray(reader1 -> ScaleRuleAuth.fromJson(reader1));
                     deserializedQueueScaleRule.auth = auth;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedQueueScaleRule.identity = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

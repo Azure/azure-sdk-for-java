@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagementAssociationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagementAssociationProperties model =
-            BinaryData.fromString("{\"applicationId\":\"h\"}").toObject(ManagementAssociationProperties.class);
+        ManagementAssociationProperties model
+            = BinaryData.fromString("{\"applicationId\":\"h\"}").toObject(ManagementAssociationProperties.class);
         Assertions.assertEquals("h", model.applicationId());
     }
 

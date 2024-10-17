@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.mariadb.generated;
 
-/** Samples for WaitStatistics Get. */
+/**
+ * Samples for WaitStatistics Get.
+ */
 public final class WaitStatisticsGetSamples {
     /*
-     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/WaitStatisticsGet.json
+     * x-ms-original-file:
+     * specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/WaitStatisticsGet.json
      */
     /**
      * Sample code: WaitStatisticsGet.
-     *
+     * 
      * @param manager Entry point to MariaDBManager.
      */
     public static void waitStatisticsGet(com.azure.resourcemanager.mariadb.MariaDBManager manager) {
-        manager
-            .waitStatistics()
-            .getWithResponse(
-                "testResourceGroupName",
-                "testServerName",
+        manager.waitStatistics()
+            .getWithResponse("testResourceGroupName", "testServerName",
                 "636927606000000000-636927615000000000-send-wait/io/socket/sql/client_connection-2--0",
                 com.azure.core.util.Context.NONE);
     }

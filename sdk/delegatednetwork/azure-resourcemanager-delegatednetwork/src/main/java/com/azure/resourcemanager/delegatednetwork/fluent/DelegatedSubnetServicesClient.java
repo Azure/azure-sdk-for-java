@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.delegatednetwork.fluent.models.DelegatedSubnetInner;
 import com.azure.resourcemanager.delegatednetwork.models.ResourceUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in DelegatedSubnetServicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DelegatedSubnetServicesClient.
+ */
 public interface DelegatedSubnetServicesClient {
     /**
      * Gets details about the specified dnc DelegatedSubnet Link.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param context The context to associate with this operation.
@@ -28,12 +30,12 @@ public interface DelegatedSubnetServicesClient {
      * @return details about the specified dnc DelegatedSubnet Link along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DelegatedSubnetInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<DelegatedSubnetInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Gets details about the specified dnc DelegatedSubnet Link.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,7 +48,7 @@ public interface DelegatedSubnetServicesClient {
 
     /**
      * Put delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -56,12 +58,12 @@ public interface DelegatedSubnetServicesClient {
      * @return the {@link SyncPoller} for polling of represents an instance of a orchestrator.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner> beginPutDetails(
-        String resourceGroupName, String resourceName, DelegatedSubnetInner parameters);
+    SyncPoller<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner> beginPutDetails(String resourceGroupName,
+        String resourceName, DelegatedSubnetInner parameters);
 
     /**
      * Put delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -72,12 +74,12 @@ public interface DelegatedSubnetServicesClient {
      * @return the {@link SyncPoller} for polling of represents an instance of a orchestrator.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner> beginPutDetails(
-        String resourceGroupName, String resourceName, DelegatedSubnetInner parameters, Context context);
+    SyncPoller<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner> beginPutDetails(String resourceGroupName,
+        String resourceName, DelegatedSubnetInner parameters, Context context);
 
     /**
      * Put delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -91,7 +93,7 @@ public interface DelegatedSubnetServicesClient {
 
     /**
      * Put delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -102,12 +104,12 @@ public interface DelegatedSubnetServicesClient {
      * @return represents an instance of a orchestrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DelegatedSubnetInner putDetails(
-        String resourceGroupName, String resourceName, DelegatedSubnetInner parameters, Context context);
+    DelegatedSubnetInner putDetails(String resourceGroupName, String resourceName, DelegatedSubnetInner parameters,
+        Context context);
 
     /**
      * Patch delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -117,12 +119,12 @@ public interface DelegatedSubnetServicesClient {
      * @return the {@link SyncPoller} for polling of represents an instance of a orchestrator.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner> beginPatchDetails(
-        String resourceGroupName, String resourceName, ResourceUpdateParameters parameters);
+    SyncPoller<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner> beginPatchDetails(String resourceGroupName,
+        String resourceName, ResourceUpdateParameters parameters);
 
     /**
      * Patch delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -133,12 +135,12 @@ public interface DelegatedSubnetServicesClient {
      * @return the {@link SyncPoller} for polling of represents an instance of a orchestrator.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner> beginPatchDetails(
-        String resourceGroupName, String resourceName, ResourceUpdateParameters parameters, Context context);
+    SyncPoller<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner> beginPatchDetails(String resourceGroupName,
+        String resourceName, ResourceUpdateParameters parameters, Context context);
 
     /**
      * Patch delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -148,12 +150,12 @@ public interface DelegatedSubnetServicesClient {
      * @return represents an instance of a orchestrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DelegatedSubnetInner patchDetails(
-        String resourceGroupName, String resourceName, ResourceUpdateParameters parameters);
+    DelegatedSubnetInner patchDetails(String resourceGroupName, String resourceName,
+        ResourceUpdateParameters parameters);
 
     /**
      * Patch delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -164,12 +166,12 @@ public interface DelegatedSubnetServicesClient {
      * @return represents an instance of a orchestrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DelegatedSubnetInner patchDetails(
-        String resourceGroupName, String resourceName, ResourceUpdateParameters parameters, Context context);
+    DelegatedSubnetInner patchDetails(String resourceGroupName, String resourceName,
+        ResourceUpdateParameters parameters, Context context);
 
     /**
      * Delete dnc DelegatedSubnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -182,7 +184,7 @@ public interface DelegatedSubnetServicesClient {
 
     /**
      * Delete dnc DelegatedSubnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param forceDelete Force delete resource.
@@ -193,12 +195,12 @@ public interface DelegatedSubnetServicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String resourceName, Boolean forceDelete, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, Boolean forceDelete,
+        Context context);
 
     /**
      * Delete dnc DelegatedSubnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -210,7 +212,7 @@ public interface DelegatedSubnetServicesClient {
 
     /**
      * Delete dnc DelegatedSubnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param forceDelete Force delete resource.
@@ -224,7 +226,7 @@ public interface DelegatedSubnetServicesClient {
 
     /**
      * Get all the DelegatedSubnets resources in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the DelegatedSubnets resources in a subscription as paginated response with {@link PagedIterable}.
@@ -234,7 +236,7 @@ public interface DelegatedSubnetServicesClient {
 
     /**
      * Get all the DelegatedSubnets resources in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -246,7 +248,7 @@ public interface DelegatedSubnetServicesClient {
 
     /**
      * Get all the DelegatedSubnets resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -258,7 +260,7 @@ public interface DelegatedSubnetServicesClient {
 
     /**
      * Get all the DelegatedSubnets resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

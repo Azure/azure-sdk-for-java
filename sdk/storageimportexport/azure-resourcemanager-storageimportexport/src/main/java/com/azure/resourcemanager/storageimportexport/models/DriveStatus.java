@@ -5,91 +5,87 @@
 package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Provides information about the drive's status. */
+/**
+ * Provides information about the drive's status.
+ */
 @Fluent
-public final class DriveStatus {
+public final class DriveStatus implements JsonSerializable<DriveStatus> {
     /*
      * The drive's hardware serial number, without spaces.
      */
-    @JsonProperty(value = "driveId")
     private String driveId;
 
     /*
      * The BitLocker key used to encrypt the drive.
      */
-    @JsonProperty(value = "bitLockerKey")
     private String bitLockerKey;
 
     /*
      * The relative path of the manifest file on the drive.
      */
-    @JsonProperty(value = "manifestFile")
     private String manifestFile;
 
     /*
      * The Base16-encoded MD5 hash of the manifest file on the drive.
      */
-    @JsonProperty(value = "manifestHash")
     private String manifestHash;
 
     /*
      * The drive header hash value.
      */
-    @JsonProperty(value = "driveHeaderHash")
     private String driveHeaderHash;
 
     /*
      * The drive's current state.
      */
-    @JsonProperty(value = "state")
     private DriveState state;
 
     /*
-     * Detailed status about the data transfer process. This field is not returned in the response until the drive is
-     * in the Transferring state.
+     * Detailed status about the data transfer process. This field is not returned in the response until the drive is in
+     * the Transferring state.
      */
-    @JsonProperty(value = "copyStatus")
     private String copyStatus;
 
     /*
      * Percentage completed for the drive.
      */
-    @JsonProperty(value = "percentComplete")
     private Long percentComplete;
 
     /*
      * A URI that points to the blob containing the verbose log for the data transfer operation.
      */
-    @JsonProperty(value = "verboseLogUri")
     private String verboseLogUri;
 
     /*
      * A URI that points to the blob containing the error log for the data transfer operation.
      */
-    @JsonProperty(value = "errorLogUri")
     private String errorLogUri;
 
     /*
      * A URI that points to the blob containing the drive manifest file.
      */
-    @JsonProperty(value = "manifestUri")
     private String manifestUri;
 
     /*
      * Bytes successfully transferred for the drive.
      */
-    @JsonProperty(value = "bytesSucceeded")
     private Long bytesSucceeded;
 
-    /** Creates an instance of DriveStatus class. */
+    /**
+     * Creates an instance of DriveStatus class.
+     */
     public DriveStatus() {
     }
 
     /**
      * Get the driveId property: The drive's hardware serial number, without spaces.
-     *
+     * 
      * @return the driveId value.
      */
     public String driveId() {
@@ -98,7 +94,7 @@ public final class DriveStatus {
 
     /**
      * Set the driveId property: The drive's hardware serial number, without spaces.
-     *
+     * 
      * @param driveId the driveId value to set.
      * @return the DriveStatus object itself.
      */
@@ -109,7 +105,7 @@ public final class DriveStatus {
 
     /**
      * Get the bitLockerKey property: The BitLocker key used to encrypt the drive.
-     *
+     * 
      * @return the bitLockerKey value.
      */
     public String bitLockerKey() {
@@ -118,7 +114,7 @@ public final class DriveStatus {
 
     /**
      * Set the bitLockerKey property: The BitLocker key used to encrypt the drive.
-     *
+     * 
      * @param bitLockerKey the bitLockerKey value to set.
      * @return the DriveStatus object itself.
      */
@@ -129,7 +125,7 @@ public final class DriveStatus {
 
     /**
      * Get the manifestFile property: The relative path of the manifest file on the drive.
-     *
+     * 
      * @return the manifestFile value.
      */
     public String manifestFile() {
@@ -138,7 +134,7 @@ public final class DriveStatus {
 
     /**
      * Set the manifestFile property: The relative path of the manifest file on the drive.
-     *
+     * 
      * @param manifestFile the manifestFile value to set.
      * @return the DriveStatus object itself.
      */
@@ -149,7 +145,7 @@ public final class DriveStatus {
 
     /**
      * Get the manifestHash property: The Base16-encoded MD5 hash of the manifest file on the drive.
-     *
+     * 
      * @return the manifestHash value.
      */
     public String manifestHash() {
@@ -158,7 +154,7 @@ public final class DriveStatus {
 
     /**
      * Set the manifestHash property: The Base16-encoded MD5 hash of the manifest file on the drive.
-     *
+     * 
      * @param manifestHash the manifestHash value to set.
      * @return the DriveStatus object itself.
      */
@@ -169,7 +165,7 @@ public final class DriveStatus {
 
     /**
      * Get the driveHeaderHash property: The drive header hash value.
-     *
+     * 
      * @return the driveHeaderHash value.
      */
     public String driveHeaderHash() {
@@ -178,7 +174,7 @@ public final class DriveStatus {
 
     /**
      * Set the driveHeaderHash property: The drive header hash value.
-     *
+     * 
      * @param driveHeaderHash the driveHeaderHash value to set.
      * @return the DriveStatus object itself.
      */
@@ -189,7 +185,7 @@ public final class DriveStatus {
 
     /**
      * Get the state property: The drive's current state.
-     *
+     * 
      * @return the state value.
      */
     public DriveState state() {
@@ -198,7 +194,7 @@ public final class DriveStatus {
 
     /**
      * Set the state property: The drive's current state.
-     *
+     * 
      * @param state the state value to set.
      * @return the DriveStatus object itself.
      */
@@ -210,7 +206,7 @@ public final class DriveStatus {
     /**
      * Get the copyStatus property: Detailed status about the data transfer process. This field is not returned in the
      * response until the drive is in the Transferring state.
-     *
+     * 
      * @return the copyStatus value.
      */
     public String copyStatus() {
@@ -220,7 +216,7 @@ public final class DriveStatus {
     /**
      * Set the copyStatus property: Detailed status about the data transfer process. This field is not returned in the
      * response until the drive is in the Transferring state.
-     *
+     * 
      * @param copyStatus the copyStatus value to set.
      * @return the DriveStatus object itself.
      */
@@ -231,7 +227,7 @@ public final class DriveStatus {
 
     /**
      * Get the percentComplete property: Percentage completed for the drive.
-     *
+     * 
      * @return the percentComplete value.
      */
     public Long percentComplete() {
@@ -240,7 +236,7 @@ public final class DriveStatus {
 
     /**
      * Set the percentComplete property: Percentage completed for the drive.
-     *
+     * 
      * @param percentComplete the percentComplete value to set.
      * @return the DriveStatus object itself.
      */
@@ -252,7 +248,7 @@ public final class DriveStatus {
     /**
      * Get the verboseLogUri property: A URI that points to the blob containing the verbose log for the data transfer
      * operation.
-     *
+     * 
      * @return the verboseLogUri value.
      */
     public String verboseLogUri() {
@@ -262,7 +258,7 @@ public final class DriveStatus {
     /**
      * Set the verboseLogUri property: A URI that points to the blob containing the verbose log for the data transfer
      * operation.
-     *
+     * 
      * @param verboseLogUri the verboseLogUri value to set.
      * @return the DriveStatus object itself.
      */
@@ -274,7 +270,7 @@ public final class DriveStatus {
     /**
      * Get the errorLogUri property: A URI that points to the blob containing the error log for the data transfer
      * operation.
-     *
+     * 
      * @return the errorLogUri value.
      */
     public String errorLogUri() {
@@ -284,7 +280,7 @@ public final class DriveStatus {
     /**
      * Set the errorLogUri property: A URI that points to the blob containing the error log for the data transfer
      * operation.
-     *
+     * 
      * @param errorLogUri the errorLogUri value to set.
      * @return the DriveStatus object itself.
      */
@@ -295,7 +291,7 @@ public final class DriveStatus {
 
     /**
      * Get the manifestUri property: A URI that points to the blob containing the drive manifest file.
-     *
+     * 
      * @return the manifestUri value.
      */
     public String manifestUri() {
@@ -304,7 +300,7 @@ public final class DriveStatus {
 
     /**
      * Set the manifestUri property: A URI that points to the blob containing the drive manifest file.
-     *
+     * 
      * @param manifestUri the manifestUri value to set.
      * @return the DriveStatus object itself.
      */
@@ -315,7 +311,7 @@ public final class DriveStatus {
 
     /**
      * Get the bytesSucceeded property: Bytes successfully transferred for the drive.
-     *
+     * 
      * @return the bytesSucceeded value.
      */
     public Long bytesSucceeded() {
@@ -324,7 +320,7 @@ public final class DriveStatus {
 
     /**
      * Set the bytesSucceeded property: Bytes successfully transferred for the drive.
-     *
+     * 
      * @param bytesSucceeded the bytesSucceeded value to set.
      * @return the DriveStatus object itself.
      */
@@ -335,9 +331,78 @@ public final class DriveStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("driveId", this.driveId);
+        jsonWriter.writeStringField("bitLockerKey", this.bitLockerKey);
+        jsonWriter.writeStringField("manifestFile", this.manifestFile);
+        jsonWriter.writeStringField("manifestHash", this.manifestHash);
+        jsonWriter.writeStringField("driveHeaderHash", this.driveHeaderHash);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("copyStatus", this.copyStatus);
+        jsonWriter.writeNumberField("percentComplete", this.percentComplete);
+        jsonWriter.writeStringField("verboseLogUri", this.verboseLogUri);
+        jsonWriter.writeStringField("errorLogUri", this.errorLogUri);
+        jsonWriter.writeStringField("manifestUri", this.manifestUri);
+        jsonWriter.writeNumberField("bytesSucceeded", this.bytesSucceeded);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DriveStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DriveStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DriveStatus.
+     */
+    public static DriveStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DriveStatus deserializedDriveStatus = new DriveStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("driveId".equals(fieldName)) {
+                    deserializedDriveStatus.driveId = reader.getString();
+                } else if ("bitLockerKey".equals(fieldName)) {
+                    deserializedDriveStatus.bitLockerKey = reader.getString();
+                } else if ("manifestFile".equals(fieldName)) {
+                    deserializedDriveStatus.manifestFile = reader.getString();
+                } else if ("manifestHash".equals(fieldName)) {
+                    deserializedDriveStatus.manifestHash = reader.getString();
+                } else if ("driveHeaderHash".equals(fieldName)) {
+                    deserializedDriveStatus.driveHeaderHash = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedDriveStatus.state = DriveState.fromString(reader.getString());
+                } else if ("copyStatus".equals(fieldName)) {
+                    deserializedDriveStatus.copyStatus = reader.getString();
+                } else if ("percentComplete".equals(fieldName)) {
+                    deserializedDriveStatus.percentComplete = reader.getNullable(JsonReader::getLong);
+                } else if ("verboseLogUri".equals(fieldName)) {
+                    deserializedDriveStatus.verboseLogUri = reader.getString();
+                } else if ("errorLogUri".equals(fieldName)) {
+                    deserializedDriveStatus.errorLogUri = reader.getString();
+                } else if ("manifestUri".equals(fieldName)) {
+                    deserializedDriveStatus.manifestUri = reader.getString();
+                } else if ("bytesSucceeded".equals(fieldName)) {
+                    deserializedDriveStatus.bytesSucceeded = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDriveStatus;
+        });
     }
 }

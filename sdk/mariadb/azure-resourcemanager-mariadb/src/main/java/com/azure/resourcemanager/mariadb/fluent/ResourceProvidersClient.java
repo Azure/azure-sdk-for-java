@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mariadb.fluent.models.QueryPerformanceInsightResetDataResultInner;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public interface ResourceProvidersClient {
     /**
      * Reset data for Query Performance Insight.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -26,12 +28,12 @@ public interface ResourceProvidersClient {
      * @return result of Query Performance Insight data reset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<QueryPerformanceInsightResetDataResultInner> resetQueryPerformanceInsightDataWithResponse(
-        String resourceGroupName, String serverName, Context context);
+    Response<QueryPerformanceInsightResetDataResultInner>
+        resetQueryPerformanceInsightDataWithResponse(String resourceGroupName, String serverName, Context context);
 
     /**
      * Reset data for Query Performance Insight.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -40,12 +42,12 @@ public interface ResourceProvidersClient {
      * @return result of Query Performance Insight data reset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    QueryPerformanceInsightResetDataResultInner resetQueryPerformanceInsightData(
-        String resourceGroupName, String serverName);
+    QueryPerformanceInsightResetDataResultInner resetQueryPerformanceInsightData(String resourceGroupName,
+        String serverName);
 
     /**
      * Create recommendation action session for the advisor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param advisorName The advisor name for recommendation action.
@@ -56,12 +58,12 @@ public interface ResourceProvidersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateRecommendedActionSession(
-        String resourceGroupName, String serverName, String advisorName, String databaseName);
+    SyncPoller<PollResult<Void>, Void> beginCreateRecommendedActionSession(String resourceGroupName, String serverName,
+        String advisorName, String databaseName);
 
     /**
      * Create recommendation action session for the advisor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param advisorName The advisor name for recommendation action.
@@ -73,12 +75,12 @@ public interface ResourceProvidersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateRecommendedActionSession(
-        String resourceGroupName, String serverName, String advisorName, String databaseName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginCreateRecommendedActionSession(String resourceGroupName, String serverName,
+        String advisorName, String databaseName, Context context);
 
     /**
      * Create recommendation action session for the advisor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param advisorName The advisor name for recommendation action.
@@ -88,12 +90,12 @@ public interface ResourceProvidersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createRecommendedActionSession(
-        String resourceGroupName, String serverName, String advisorName, String databaseName);
+    void createRecommendedActionSession(String resourceGroupName, String serverName, String advisorName,
+        String databaseName);
 
     /**
      * Create recommendation action session for the advisor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param advisorName The advisor name for recommendation action.
@@ -104,6 +106,6 @@ public interface ResourceProvidersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createRecommendedActionSession(
-        String resourceGroupName, String serverName, String advisorName, String databaseName, Context context);
+    void createRecommendedActionSession(String resourceGroupName, String serverName, String advisorName,
+        String databaseName, Context context);
 }

@@ -12,29 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualDiskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualDisk model =
-            BinaryData
-                .fromString(
-                    "{\"controllerId\":\"fbtkuwhhmhyk\",\"independenceMode\":\"persistent\",\"totalSize\":1183832331,\"virtualDiskId\":\"afnn\",\"virtualDiskName\":\"pichkoymkcdy\"}")
-                .toObject(VirtualDisk.class);
-        Assertions.assertEquals("fbtkuwhhmhyk", model.controllerId());
-        Assertions.assertEquals(DiskIndependenceMode.PERSISTENT, model.independenceMode());
-        Assertions.assertEquals(1183832331, model.totalSize());
-        Assertions.assertEquals("afnn", model.virtualDiskId());
+        VirtualDisk model = BinaryData.fromString(
+            "{\"controllerId\":\"rtkfawnopq\",\"independenceMode\":\"independent_nonpersistent\",\"totalSize\":610729333,\"virtualDiskId\":\"zirtxdyuxzejntps\",\"virtualDiskName\":\"gioilqu\"}")
+            .toObject(VirtualDisk.class);
+        Assertions.assertEquals("rtkfawnopq", model.controllerId());
+        Assertions.assertEquals(DiskIndependenceMode.INDEPENDENT_NONPERSISTENT, model.independenceMode());
+        Assertions.assertEquals(610729333, model.totalSize());
+        Assertions.assertEquals("zirtxdyuxzejntps", model.virtualDiskId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualDisk model =
-            new VirtualDisk()
-                .withControllerId("fbtkuwhhmhyk")
-                .withIndependenceMode(DiskIndependenceMode.PERSISTENT)
-                .withTotalSize(1183832331)
-                .withVirtualDiskId("afnn");
+        VirtualDisk model = new VirtualDisk().withControllerId("rtkfawnopq")
+            .withIndependenceMode(DiskIndependenceMode.INDEPENDENT_NONPERSISTENT)
+            .withTotalSize(610729333)
+            .withVirtualDiskId("zirtxdyuxzejntps");
         model = BinaryData.fromObject(model).toObject(VirtualDisk.class);
-        Assertions.assertEquals("fbtkuwhhmhyk", model.controllerId());
-        Assertions.assertEquals(DiskIndependenceMode.PERSISTENT, model.independenceMode());
-        Assertions.assertEquals(1183832331, model.totalSize());
-        Assertions.assertEquals("afnn", model.virtualDiskId());
+        Assertions.assertEquals("rtkfawnopq", model.controllerId());
+        Assertions.assertEquals(DiskIndependenceMode.INDEPENDENT_NONPERSISTENT, model.independenceMode());
+        Assertions.assertEquals(610729333, model.totalSize());
+        Assertions.assertEquals("zirtxdyuxzejntps", model.virtualDiskId());
     }
 }

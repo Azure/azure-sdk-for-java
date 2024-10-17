@@ -45,22 +45,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CapacitiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CapacitiesClient.
+ */
 public final class CapacitiesClientImpl implements CapacitiesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CapacitiesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PowerBIDedicatedImpl client;
 
     /**
      * Initializes an instance of CapacitiesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CapacitiesClientImpl(PowerBIDedicatedImpl client) {
-        this.service =
-            RestProxy.create(CapacitiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(CapacitiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -71,186 +77,132 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
     @Host("{$host}")
     @ServiceInterface(name = "PowerBIDedicatedCapa")
     public interface CapacitiesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated"
-                + "/capacities/{dedicatedCapacityName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DedicatedCapacityInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DedicatedCapacityInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dedicatedCapacityName") String dedicatedCapacityName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated"
-                + "/capacities/{dedicatedCapacityName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dedicatedCapacityName") String dedicatedCapacityName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") DedicatedCapacityInner capacityParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated"
-                + "/capacities/{dedicatedCapacityName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dedicatedCapacityName") String dedicatedCapacityName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated"
-                + "/capacities/{dedicatedCapacityName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dedicatedCapacityName") String dedicatedCapacityName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") DedicatedCapacityUpdateParameters capacityUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated"
-                + "/capacities/{dedicatedCapacityName}/suspend")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}/suspend")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> suspend(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> suspend(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dedicatedCapacityName") String dedicatedCapacityName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated"
-                + "/capacities/{dedicatedCapacityName}/resume")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}/resume")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> resume(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> resume(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dedicatedCapacityName") String dedicatedCapacityName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated"
-                + "/capacities")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DedicatedCapacities>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DedicatedCapacities>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.PowerBIDedicated/capacities")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DedicatedCapacities>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DedicatedCapacities>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.PowerBIDedicated/skus")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SkuEnumerationForNewResourceResultInner>> listSkus(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SkuEnumerationForNewResourceResultInner>> listSkus(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated"
-                + "/capacities/{dedicatedCapacityName}/skus")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}/skus")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuEnumerationForExistingResourceResultInner>> listSkusForCapacity(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dedicatedCapacityName") String dedicatedCapacityName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.PowerBIDedicated/locations/{location}"
-                + "/checkNameAvailability")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.PowerBIDedicated/locations/{location}/checkNameAvailability")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckCapacityNameAvailabilityResultInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @HostParam("$host") String endpoint, @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") CheckCapacityNameAvailabilityParameters capacityParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets details about the specified dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
+     * maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about the specified dedicated capacity along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DedicatedCapacityInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String dedicatedCapacityName) {
+    private Mono<Response<DedicatedCapacityInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String dedicatedCapacityName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -261,49 +213,36 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
                 .error(new IllegalArgumentException("Parameter dedicatedCapacityName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            dedicatedCapacityName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                dedicatedCapacityName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets details about the specified dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
+     * maximum of 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about the specified dedicated capacity along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DedicatedCapacityInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String dedicatedCapacityName, Context context) {
+    private Mono<Response<DedicatedCapacityInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String dedicatedCapacityName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -314,50 +253,41 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
                 .error(new IllegalArgumentException("Parameter dedicatedCapacityName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                dedicatedCapacityName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, dedicatedCapacityName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets details about the specified dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
+     * maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about the specified dedicated capacity on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DedicatedCapacityInner> getByResourceGroupAsync(
-        String resourceGroupName, String dedicatedCapacityName) {
+    private Mono<DedicatedCapacityInner> getByResourceGroupAsync(String resourceGroupName,
+        String dedicatedCapacityName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, dedicatedCapacityName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets details about the specified dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
+     * maximum of 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -365,18 +295,18 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return details about the specified dedicated capacity along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DedicatedCapacityInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String dedicatedCapacityName, Context context) {
+    public Response<DedicatedCapacityInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String dedicatedCapacityName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, dedicatedCapacityName, context).block();
     }
 
     /**
      * Gets details about the specified dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
+     * maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -389,26 +319,24 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
 
     /**
      * Provisions the specified Dedicated capacity based on the configuration specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
+     * maximum of 63.
      * @param capacityParameters Contains the information used to provision the Dedicated capacity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an instance of a Dedicated Capacity resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String dedicatedCapacityName, DedicatedCapacityInner capacityParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
+        String dedicatedCapacityName, DedicatedCapacityInner capacityParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -419,10 +347,8 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
                 .error(new IllegalArgumentException("Parameter dedicatedCapacityName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (capacityParameters == null) {
             return Mono
@@ -432,47 +358,32 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            dedicatedCapacityName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            capacityParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), resourceGroupName, dedicatedCapacityName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), capacityParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Provisions the specified Dedicated capacity based on the configuration specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
+     * maximum of 63.
      * @param capacityParameters Contains the information used to provision the Dedicated capacity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an instance of a Dedicated Capacity resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String dedicatedCapacityName,
-        DedicatedCapacityInner capacityParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
+        String dedicatedCapacityName, DedicatedCapacityInner capacityParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -483,10 +394,8 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
                 .error(new IllegalArgumentException("Parameter dedicatedCapacityName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (capacityParameters == null) {
             return Mono
@@ -496,25 +405,17 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                dedicatedCapacityName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                capacityParameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), resourceGroupName, dedicatedCapacityName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), capacityParameters, accept, context);
     }
 
     /**
      * Provisions the specified Dedicated capacity based on the configuration specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
+     * maximum of 63.
      * @param capacityParameters Contains the information used to provision the Dedicated capacity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -524,25 +425,20 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginCreateAsync(
         String resourceGroupName, String dedicatedCapacityName, DedicatedCapacityInner capacityParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, dedicatedCapacityName, capacityParameters);
-        return this
-            .client
-            .<DedicatedCapacityInner, DedicatedCapacityInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DedicatedCapacityInner.class,
-                DedicatedCapacityInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, dedicatedCapacityName, capacityParameters);
+        return this.client.<DedicatedCapacityInner, DedicatedCapacityInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DedicatedCapacityInner.class, DedicatedCapacityInner.class,
+            this.client.getContext());
     }
 
     /**
      * Provisions the specified Dedicated capacity based on the configuration specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
+     * maximum of 63.
      * @param capacityParameters Contains the information used to provision the Dedicated capacity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -552,30 +448,22 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginCreateAsync(
-        String resourceGroupName,
-        String dedicatedCapacityName,
-        DedicatedCapacityInner capacityParameters,
+        String resourceGroupName, String dedicatedCapacityName, DedicatedCapacityInner capacityParameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, dedicatedCapacityName, capacityParameters, context);
-        return this
-            .client
-            .<DedicatedCapacityInner, DedicatedCapacityInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DedicatedCapacityInner.class,
-                DedicatedCapacityInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, dedicatedCapacityName, capacityParameters, context);
+        return this.client.<DedicatedCapacityInner, DedicatedCapacityInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DedicatedCapacityInner.class, DedicatedCapacityInner.class, context);
     }
 
     /**
      * Provisions the specified Dedicated capacity based on the configuration specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
+     * maximum of 63.
      * @param capacityParameters Contains the information used to provision the Dedicated capacity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -583,18 +471,18 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link SyncPoller} for polling of represents an instance of a Dedicated Capacity resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginCreate(
-        String resourceGroupName, String dedicatedCapacityName, DedicatedCapacityInner capacityParameters) {
+    public SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginCreate(String resourceGroupName,
+        String dedicatedCapacityName, DedicatedCapacityInner capacityParameters) {
         return this.beginCreateAsync(resourceGroupName, dedicatedCapacityName, capacityParameters).getSyncPoller();
     }
 
     /**
      * Provisions the specified Dedicated capacity based on the configuration specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
+     * maximum of 63.
      * @param capacityParameters Contains the information used to provision the Dedicated capacity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -603,23 +491,19 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link SyncPoller} for polling of represents an instance of a Dedicated Capacity resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginCreate(
-        String resourceGroupName,
-        String dedicatedCapacityName,
-        DedicatedCapacityInner capacityParameters,
-        Context context) {
-        return this
-            .beginCreateAsync(resourceGroupName, dedicatedCapacityName, capacityParameters, context)
+    public SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginCreate(String resourceGroupName,
+        String dedicatedCapacityName, DedicatedCapacityInner capacityParameters, Context context) {
+        return this.beginCreateAsync(resourceGroupName, dedicatedCapacityName, capacityParameters, context)
             .getSyncPoller();
     }
 
     /**
      * Provisions the specified Dedicated capacity based on the configuration specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
+     * maximum of 63.
      * @param capacityParameters Contains the information used to provision the Dedicated capacity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -627,20 +511,19 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return represents an instance of a Dedicated Capacity resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DedicatedCapacityInner> createAsync(
-        String resourceGroupName, String dedicatedCapacityName, DedicatedCapacityInner capacityParameters) {
-        return beginCreateAsync(resourceGroupName, dedicatedCapacityName, capacityParameters)
-            .last()
+    private Mono<DedicatedCapacityInner> createAsync(String resourceGroupName, String dedicatedCapacityName,
+        DedicatedCapacityInner capacityParameters) {
+        return beginCreateAsync(resourceGroupName, dedicatedCapacityName, capacityParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Provisions the specified Dedicated capacity based on the configuration specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
+     * maximum of 63.
      * @param capacityParameters Contains the information used to provision the Dedicated capacity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -649,23 +532,19 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return represents an instance of a Dedicated Capacity resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DedicatedCapacityInner> createAsync(
-        String resourceGroupName,
-        String dedicatedCapacityName,
-        DedicatedCapacityInner capacityParameters,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, dedicatedCapacityName, capacityParameters, context)
-            .last()
+    private Mono<DedicatedCapacityInner> createAsync(String resourceGroupName, String dedicatedCapacityName,
+        DedicatedCapacityInner capacityParameters, Context context) {
+        return beginCreateAsync(resourceGroupName, dedicatedCapacityName, capacityParameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Provisions the specified Dedicated capacity based on the configuration specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
+     * maximum of 63.
      * @param capacityParameters Contains the information used to provision the Dedicated capacity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -673,18 +552,18 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return represents an instance of a Dedicated Capacity resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DedicatedCapacityInner create(
-        String resourceGroupName, String dedicatedCapacityName, DedicatedCapacityInner capacityParameters) {
+    public DedicatedCapacityInner create(String resourceGroupName, String dedicatedCapacityName,
+        DedicatedCapacityInner capacityParameters) {
         return createAsync(resourceGroupName, dedicatedCapacityName, capacityParameters).block();
     }
 
     /**
      * Provisions the specified Dedicated capacity based on the configuration specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
+     * maximum of 63.
      * @param capacityParameters Contains the information used to provision the Dedicated capacity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -693,34 +572,29 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return represents an instance of a Dedicated Capacity resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DedicatedCapacityInner create(
-        String resourceGroupName,
-        String dedicatedCapacityName,
-        DedicatedCapacityInner capacityParameters,
-        Context context) {
+    public DedicatedCapacityInner create(String resourceGroupName, String dedicatedCapacityName,
+        DedicatedCapacityInner capacityParameters, Context context) {
         return createAsync(resourceGroupName, dedicatedCapacityName, capacityParameters, context).block();
     }
 
     /**
      * Deletes the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String dedicatedCapacityName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String dedicatedCapacityName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -731,34 +605,23 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
                 .error(new IllegalArgumentException("Parameter dedicatedCapacityName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            dedicatedCapacityName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, dedicatedCapacityName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -766,13 +629,11 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String dedicatedCapacityName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String dedicatedCapacityName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -783,53 +644,42 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
                 .error(new IllegalArgumentException("Parameter dedicatedCapacityName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                dedicatedCapacityName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, dedicatedCapacityName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Deletes the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String dedicatedCapacityName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String dedicatedCapacityName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, dedicatedCapacityName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -837,23 +687,22 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String dedicatedCapacityName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String dedicatedCapacityName,
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, dedicatedCapacityName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, dedicatedCapacityName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -866,11 +715,11 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
 
     /**
      * Deletes the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -878,18 +727,18 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String dedicatedCapacityName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dedicatedCapacityName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, dedicatedCapacityName, context).getSyncPoller();
     }
 
     /**
      * Deletes the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -897,18 +746,17 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String dedicatedCapacityName) {
-        return beginDeleteAsync(resourceGroupName, dedicatedCapacityName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, dedicatedCapacityName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -917,18 +765,17 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String dedicatedCapacityName, Context context) {
-        return beginDeleteAsync(resourceGroupName, dedicatedCapacityName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, dedicatedCapacityName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -940,11 +787,11 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
 
     /**
      * Deletes the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -957,28 +804,24 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
 
     /**
      * Updates the current state of the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param capacityUpdateParameters Request object that contains the updated information for the capacity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an instance of a Dedicated Capacity resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String dedicatedCapacityName,
-        DedicatedCapacityUpdateParameters capacityUpdateParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String dedicatedCapacityName, DedicatedCapacityUpdateParameters capacityUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -989,61 +832,44 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
                 .error(new IllegalArgumentException("Parameter dedicatedCapacityName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (capacityUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter capacityUpdateParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter capacityUpdateParameters is required and cannot be null."));
         } else {
             capacityUpdateParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            dedicatedCapacityName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            capacityUpdateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, dedicatedCapacityName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), capacityUpdateParameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates the current state of the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param capacityUpdateParameters Request object that contains the updated information for the capacity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an instance of a Dedicated Capacity resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String dedicatedCapacityName,
-        DedicatedCapacityUpdateParameters capacityUpdateParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String dedicatedCapacityName, DedicatedCapacityUpdateParameters capacityUpdateParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1054,39 +880,28 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
                 .error(new IllegalArgumentException("Parameter dedicatedCapacityName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (capacityUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter capacityUpdateParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter capacityUpdateParameters is required and cannot be null."));
         } else {
             capacityUpdateParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                dedicatedCapacityName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                capacityUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, dedicatedCapacityName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), capacityUpdateParameters, accept, context);
     }
 
     /**
      * Updates the current state of the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param capacityUpdateParameters Request object that contains the updated information for the capacity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1095,28 +910,22 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginUpdateAsync(
-        String resourceGroupName,
-        String dedicatedCapacityName,
+        String resourceGroupName, String dedicatedCapacityName,
         DedicatedCapacityUpdateParameters capacityUpdateParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters);
-        return this
-            .client
-            .<DedicatedCapacityInner, DedicatedCapacityInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DedicatedCapacityInner.class,
-                DedicatedCapacityInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters);
+        return this.client.<DedicatedCapacityInner, DedicatedCapacityInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DedicatedCapacityInner.class, DedicatedCapacityInner.class,
+            this.client.getContext());
     }
 
     /**
      * Updates the current state of the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param capacityUpdateParameters Request object that contains the updated information for the capacity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1126,30 +935,22 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginUpdateAsync(
-        String resourceGroupName,
-        String dedicatedCapacityName,
-        DedicatedCapacityUpdateParameters capacityUpdateParameters,
-        Context context) {
+        String resourceGroupName, String dedicatedCapacityName,
+        DedicatedCapacityUpdateParameters capacityUpdateParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters, context);
-        return this
-            .client
-            .<DedicatedCapacityInner, DedicatedCapacityInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DedicatedCapacityInner.class,
-                DedicatedCapacityInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters, context);
+        return this.client.<DedicatedCapacityInner, DedicatedCapacityInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DedicatedCapacityInner.class, DedicatedCapacityInner.class, context);
     }
 
     /**
      * Updates the current state of the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param capacityUpdateParameters Request object that contains the updated information for the capacity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1157,22 +958,19 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link SyncPoller} for polling of represents an instance of a Dedicated Capacity resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginUpdate(
-        String resourceGroupName,
-        String dedicatedCapacityName,
-        DedicatedCapacityUpdateParameters capacityUpdateParameters) {
-        return this
-            .beginUpdateAsync(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters)
+    public SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginUpdate(String resourceGroupName,
+        String dedicatedCapacityName, DedicatedCapacityUpdateParameters capacityUpdateParameters) {
+        return this.beginUpdateAsync(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters)
             .getSyncPoller();
     }
 
     /**
      * Updates the current state of the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param capacityUpdateParameters Request object that contains the updated information for the capacity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1181,23 +979,19 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link SyncPoller} for polling of represents an instance of a Dedicated Capacity resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginUpdate(
-        String resourceGroupName,
-        String dedicatedCapacityName,
-        DedicatedCapacityUpdateParameters capacityUpdateParameters,
-        Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters, context)
+    public SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginUpdate(String resourceGroupName,
+        String dedicatedCapacityName, DedicatedCapacityUpdateParameters capacityUpdateParameters, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters, context)
             .getSyncPoller();
     }
 
     /**
      * Updates the current state of the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param capacityUpdateParameters Request object that contains the updated information for the capacity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1205,22 +999,19 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return represents an instance of a Dedicated Capacity resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DedicatedCapacityInner> updateAsync(
-        String resourceGroupName,
-        String dedicatedCapacityName,
+    private Mono<DedicatedCapacityInner> updateAsync(String resourceGroupName, String dedicatedCapacityName,
         DedicatedCapacityUpdateParameters capacityUpdateParameters) {
-        return beginUpdateAsync(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters)
-            .last()
+        return beginUpdateAsync(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates the current state of the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param capacityUpdateParameters Request object that contains the updated information for the capacity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1229,23 +1020,19 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return represents an instance of a Dedicated Capacity resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DedicatedCapacityInner> updateAsync(
-        String resourceGroupName,
-        String dedicatedCapacityName,
-        DedicatedCapacityUpdateParameters capacityUpdateParameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters, context)
-            .last()
+    private Mono<DedicatedCapacityInner> updateAsync(String resourceGroupName, String dedicatedCapacityName,
+        DedicatedCapacityUpdateParameters capacityUpdateParameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates the current state of the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param capacityUpdateParameters Request object that contains the updated information for the capacity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1253,20 +1040,18 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return represents an instance of a Dedicated Capacity resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DedicatedCapacityInner update(
-        String resourceGroupName,
-        String dedicatedCapacityName,
+    public DedicatedCapacityInner update(String resourceGroupName, String dedicatedCapacityName,
         DedicatedCapacityUpdateParameters capacityUpdateParameters) {
         return updateAsync(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters).block();
     }
 
     /**
      * Updates the current state of the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param capacityUpdateParameters Request object that contains the updated information for the capacity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1275,34 +1060,29 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return represents an instance of a Dedicated Capacity resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DedicatedCapacityInner update(
-        String resourceGroupName,
-        String dedicatedCapacityName,
-        DedicatedCapacityUpdateParameters capacityUpdateParameters,
-        Context context) {
+    public DedicatedCapacityInner update(String resourceGroupName, String dedicatedCapacityName,
+        DedicatedCapacityUpdateParameters capacityUpdateParameters, Context context) {
         return updateAsync(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters, context).block();
     }
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> suspendWithResponseAsync(
-        String resourceGroupName, String dedicatedCapacityName) {
+    private Mono<Response<Flux<ByteBuffer>>> suspendWithResponseAsync(String resourceGroupName,
+        String dedicatedCapacityName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1313,34 +1093,23 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
                 .error(new IllegalArgumentException("Parameter dedicatedCapacityName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .suspend(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            dedicatedCapacityName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.suspend(this.client.getEndpoint(), resourceGroupName, dedicatedCapacityName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1348,13 +1117,11 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> suspendWithResponseAsync(
-        String resourceGroupName, String dedicatedCapacityName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> suspendWithResponseAsync(String resourceGroupName,
+        String dedicatedCapacityName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1365,53 +1132,42 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
                 .error(new IllegalArgumentException("Parameter dedicatedCapacityName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .suspend(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                dedicatedCapacityName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.suspend(this.client.getEndpoint(), resourceGroupName, dedicatedCapacityName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginSuspendAsync(
-        String resourceGroupName, String dedicatedCapacityName) {
+    private PollerFlux<PollResult<Void>, Void> beginSuspendAsync(String resourceGroupName,
+        String dedicatedCapacityName) {
         Mono<Response<Flux<ByteBuffer>>> mono = suspendWithResponseAsync(resourceGroupName, dedicatedCapacityName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1419,23 +1175,22 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginSuspendAsync(
-        String resourceGroupName, String dedicatedCapacityName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginSuspendAsync(String resourceGroupName, String dedicatedCapacityName,
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            suspendWithResponseAsync(resourceGroupName, dedicatedCapacityName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = suspendWithResponseAsync(resourceGroupName, dedicatedCapacityName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1448,11 +1203,11 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1460,18 +1215,18 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginSuspend(
-        String resourceGroupName, String dedicatedCapacityName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginSuspend(String resourceGroupName, String dedicatedCapacityName,
+        Context context) {
         return this.beginSuspendAsync(resourceGroupName, dedicatedCapacityName, context).getSyncPoller();
     }
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1479,18 +1234,17 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> suspendAsync(String resourceGroupName, String dedicatedCapacityName) {
-        return beginSuspendAsync(resourceGroupName, dedicatedCapacityName)
-            .last()
+        return beginSuspendAsync(resourceGroupName, dedicatedCapacityName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1499,18 +1253,17 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> suspendAsync(String resourceGroupName, String dedicatedCapacityName, Context context) {
-        return beginSuspendAsync(resourceGroupName, dedicatedCapacityName, context)
-            .last()
+        return beginSuspendAsync(resourceGroupName, dedicatedCapacityName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1522,11 +1275,11 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1539,24 +1292,22 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resumeWithResponseAsync(
-        String resourceGroupName, String dedicatedCapacityName) {
+    private Mono<Response<Flux<ByteBuffer>>> resumeWithResponseAsync(String resourceGroupName,
+        String dedicatedCapacityName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1567,34 +1318,23 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
                 .error(new IllegalArgumentException("Parameter dedicatedCapacityName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .resume(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            dedicatedCapacityName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.resume(this.client.getEndpoint(), resourceGroupName, dedicatedCapacityName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1602,13 +1342,11 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resumeWithResponseAsync(
-        String resourceGroupName, String dedicatedCapacityName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> resumeWithResponseAsync(String resourceGroupName,
+        String dedicatedCapacityName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1619,53 +1357,42 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
                 .error(new IllegalArgumentException("Parameter dedicatedCapacityName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .resume(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                dedicatedCapacityName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.resume(this.client.getEndpoint(), resourceGroupName, dedicatedCapacityName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginResumeAsync(
-        String resourceGroupName, String dedicatedCapacityName) {
+    private PollerFlux<PollResult<Void>, Void> beginResumeAsync(String resourceGroupName,
+        String dedicatedCapacityName) {
         Mono<Response<Flux<ByteBuffer>>> mono = resumeWithResponseAsync(resourceGroupName, dedicatedCapacityName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1673,23 +1400,22 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginResumeAsync(
-        String resourceGroupName, String dedicatedCapacityName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginResumeAsync(String resourceGroupName, String dedicatedCapacityName,
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            resumeWithResponseAsync(resourceGroupName, dedicatedCapacityName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = resumeWithResponseAsync(resourceGroupName, dedicatedCapacityName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1702,11 +1428,11 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1714,18 +1440,18 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginResume(
-        String resourceGroupName, String dedicatedCapacityName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginResume(String resourceGroupName, String dedicatedCapacityName,
+        Context context) {
         return this.beginResumeAsync(resourceGroupName, dedicatedCapacityName, context).getSyncPoller();
     }
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1733,18 +1459,17 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> resumeAsync(String resourceGroupName, String dedicatedCapacityName) {
-        return beginResumeAsync(resourceGroupName, dedicatedCapacityName)
-            .last()
+        return beginResumeAsync(resourceGroupName, dedicatedCapacityName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1753,18 +1478,17 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> resumeAsync(String resourceGroupName, String dedicatedCapacityName, Context context) {
-        return beginResumeAsync(resourceGroupName, dedicatedCapacityName, context)
-            .last()
+        return beginResumeAsync(resourceGroupName, dedicatedCapacityName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1776,11 +1500,11 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1793,104 +1517,79 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
 
     /**
      * Gets all the Dedicated capacities for the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Dedicated capacities for the given resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DedicatedCapacityInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<DedicatedCapacityInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<DedicatedCapacityInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all the Dedicated capacities for the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Dedicated capacities for the given resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DedicatedCapacityInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<DedicatedCapacityInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Gets all the Dedicated capacities for the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1903,9 +1602,9 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
 
     /**
      * Gets all the Dedicated capacities for the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1919,14 +1618,14 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
 
     /**
      * Gets all the Dedicated capacities for the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Dedicated capacities for the given resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the Dedicated capacities for the given resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedCapacityInner> listByResourceGroup(String resourceGroupName) {
@@ -1935,15 +1634,15 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
 
     /**
      * Gets all the Dedicated capacities for the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Dedicated capacities for the given resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the Dedicated capacities for the given resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedCapacityInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1952,86 +1651,63 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
 
     /**
      * Lists all the Dedicated capacities for the given subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an array of Dedicated capacities resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DedicatedCapacityInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<DedicatedCapacityInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<DedicatedCapacityInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all the Dedicated capacities for the given subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an array of Dedicated capacities resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DedicatedCapacityInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Lists all the Dedicated capacities for the given subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an array of Dedicated capacities resources as paginated response with {@link PagedFlux}.
@@ -2043,7 +1719,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
 
     /**
      * Lists all the Dedicated capacities for the given subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2057,7 +1733,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
 
     /**
      * Lists all the Dedicated capacities for the given subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an array of Dedicated capacities resources as paginated response with {@link PagedIterable}.
@@ -2069,7 +1745,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
 
     /**
      * Lists all the Dedicated capacities for the given subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2083,78 +1759,58 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
 
     /**
      * Lists eligible SKUs for PowerBI Dedicated resource provider.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents enumerating SKUs for new resources along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SkuEnumerationForNewResourceResultInner>> listSkusWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listSkus(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.listSkus(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists eligible SKUs for PowerBI Dedicated resource provider.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents enumerating SKUs for new resources along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SkuEnumerationForNewResourceResultInner>> listSkusWithResponseAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listSkus(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.listSkus(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            accept, context);
     }
 
     /**
      * Lists eligible SKUs for PowerBI Dedicated resource provider.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents enumerating SKUs for new resources on successful completion of {@link Mono}.
@@ -2166,7 +1822,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
 
     /**
      * Lists eligible SKUs for PowerBI Dedicated resource provider.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2180,7 +1836,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
 
     /**
      * Lists eligible SKUs for PowerBI Dedicated resource provider.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents enumerating SKUs for new resources.
@@ -2192,25 +1848,23 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
 
     /**
      * Lists eligible SKUs for a PowerBI Dedicated resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents enumerating SKUs for existing resources along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SkuEnumerationForExistingResourceResultInner>> listSkusForCapacityWithResponseAsync(
-        String resourceGroupName, String dedicatedCapacityName) {
+    private Mono<Response<SkuEnumerationForExistingResourceResultInner>>
+        listSkusForCapacityWithResponseAsync(String resourceGroupName, String dedicatedCapacityName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2221,49 +1875,36 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
                 .error(new IllegalArgumentException("Parameter dedicatedCapacityName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listSkusForCapacity(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            dedicatedCapacityName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.listSkusForCapacity(this.client.getEndpoint(), resourceGroupName,
+                dedicatedCapacityName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists eligible SKUs for a PowerBI Dedicated resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents enumerating SKUs for existing resources along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SkuEnumerationForExistingResourceResultInner>> listSkusForCapacityWithResponseAsync(
-        String resourceGroupName, String dedicatedCapacityName, Context context) {
+    private Mono<Response<SkuEnumerationForExistingResourceResultInner>>
+        listSkusForCapacityWithResponseAsync(String resourceGroupName, String dedicatedCapacityName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2274,51 +1915,42 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
                 .error(new IllegalArgumentException("Parameter dedicatedCapacityName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listSkusForCapacity(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                dedicatedCapacityName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.listSkusForCapacity(this.client.getEndpoint(), resourceGroupName, dedicatedCapacityName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Lists eligible SKUs for a PowerBI Dedicated resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents enumerating SKUs for existing resources on successful completion of {@link
-     *     Mono}.
+     * @return an object that represents enumerating SKUs for existing resources on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SkuEnumerationForExistingResourceResultInner> listSkusForCapacityAsync(
-        String resourceGroupName, String dedicatedCapacityName) {
+    private Mono<SkuEnumerationForExistingResourceResultInner> listSkusForCapacityAsync(String resourceGroupName,
+        String dedicatedCapacityName) {
         return listSkusForCapacityWithResponseAsync(resourceGroupName, dedicatedCapacityName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Lists eligible SKUs for a PowerBI Dedicated resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2326,57 +1958,53 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return an object that represents enumerating SKUs for existing resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SkuEnumerationForExistingResourceResultInner> listSkusForCapacityWithResponse(
-        String resourceGroupName, String dedicatedCapacityName, Context context) {
+    public Response<SkuEnumerationForExistingResourceResultInner>
+        listSkusForCapacityWithResponse(String resourceGroupName, String dedicatedCapacityName, Context context) {
         return listSkusForCapacityWithResponseAsync(resourceGroupName, dedicatedCapacityName, context).block();
     }
 
     /**
      * Lists eligible SKUs for a PowerBI Dedicated resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents enumerating SKUs for existing resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SkuEnumerationForExistingResourceResultInner listSkusForCapacity(
-        String resourceGroupName, String dedicatedCapacityName) {
+    public SkuEnumerationForExistingResourceResultInner listSkusForCapacity(String resourceGroupName,
+        String dedicatedCapacityName) {
         return listSkusForCapacityWithResponse(resourceGroupName, dedicatedCapacityName, Context.NONE).getValue();
     }
 
     /**
      * Check the name availability in the target location.
-     *
+     * 
      * @param location The region name which the operation will lookup into.
      * @param capacityParameters The name of the capacity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the checking result of capacity name availability along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckCapacityNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
         String location, CheckCapacityNameAvailabilityParameters capacityParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (capacityParameters == null) {
             return Mono
@@ -2386,23 +2014,14 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            location,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            capacityParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.checkNameAvailability(this.client.getEndpoint(), location,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), capacityParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Check the name availability in the target location.
-     *
+     * 
      * @param location The region name which the operation will lookup into.
      * @param capacityParameters The name of the capacity.
      * @param context The context to associate with this operation.
@@ -2410,25 +2029,21 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the checking result of capacity name availability along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckCapacityNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
         String location, CheckCapacityNameAvailabilityParameters capacityParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (capacityParameters == null) {
             return Mono
@@ -2438,20 +2053,13 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                location,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                capacityParameters,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), location, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), capacityParameters, accept, context);
     }
 
     /**
      * Check the name availability in the target location.
-     *
+     * 
      * @param location The region name which the operation will lookup into.
      * @param capacityParameters The name of the capacity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2460,15 +2068,15 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the checking result of capacity name availability on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckCapacityNameAvailabilityResultInner> checkNameAvailabilityAsync(
-        String location, CheckCapacityNameAvailabilityParameters capacityParameters) {
+    private Mono<CheckCapacityNameAvailabilityResultInner> checkNameAvailabilityAsync(String location,
+        CheckCapacityNameAvailabilityParameters capacityParameters) {
         return checkNameAvailabilityWithResponseAsync(location, capacityParameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Check the name availability in the target location.
-     *
+     * 
      * @param location The region name which the operation will lookup into.
      * @param capacityParameters The name of the capacity.
      * @param context The context to associate with this operation.
@@ -2478,14 +2086,14 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the checking result of capacity name availability along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckCapacityNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
-        String location, CheckCapacityNameAvailabilityParameters capacityParameters, Context context) {
+    public Response<CheckCapacityNameAvailabilityResultInner> checkNameAvailabilityWithResponse(String location,
+        CheckCapacityNameAvailabilityParameters capacityParameters, Context context) {
         return checkNameAvailabilityWithResponseAsync(location, capacityParameters, context).block();
     }
 
     /**
      * Check the name availability in the target location.
-     *
+     * 
      * @param location The region name which the operation will lookup into.
      * @param capacityParameters The name of the capacity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2494,8 +2102,8 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @return the checking result of capacity name availability.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckCapacityNameAvailabilityResultInner checkNameAvailability(
-        String location, CheckCapacityNameAvailabilityParameters capacityParameters) {
+    public CheckCapacityNameAvailabilityResultInner checkNameAvailability(String location,
+        CheckCapacityNameAvailabilityParameters capacityParameters) {
         return checkNameAvailabilityWithResponse(location, capacityParameters, Context.NONE).getValue();
     }
 }

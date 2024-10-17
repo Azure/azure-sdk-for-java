@@ -10,7 +10,7 @@ import com.azure.resourcemanager.purview.models.CloudConnectors;
 public final class CloudConnectorsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CloudConnectors model = BinaryData.fromString("{\"awsExternalId\":\"jysvl\"}").toObject(CloudConnectors.class);
+        CloudConnectors model = BinaryData.fromString("{\"awsExternalId\":\"jnpg\"}").toObject(CloudConnectors.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -15,30 +15,22 @@ public final class UpdateRunStrategyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateRunStrategy model = BinaryData.fromString(
-            "{\"stages\":[{\"name\":\"gwdslfhotwm\",\"groups\":[{\"name\":\"pwlbjnpg\"},{\"name\":\"cftadeh\"},{\"name\":\"nltyfsoppusuesnz\"}],\"afterStageWaitInSeconds\":332314223},{\"name\":\"jbavorxzdm\",\"groups\":[{\"name\":\"tbqvudw\"},{\"name\":\"dndnvow\"},{\"name\":\"ujjugwdkcglh\"}],\"afterStageWaitInSeconds\":1950035591},{\"name\":\"zj\",\"groups\":[{\"name\":\"gdtjixhbkuofqwey\"}],\"afterStageWaitInSeconds\":1047075786}]}")
+            "{\"stages\":[{\"name\":\"suesnzw\",\"groups\":[{\"name\":\"bavo\"},{\"name\":\"xzdmohctb\"},{\"name\":\"vudwx\"}],\"afterStageWaitInSeconds\":1492638603}]}")
             .toObject(UpdateRunStrategy.class);
-        Assertions.assertEquals("gwdslfhotwm", model.stages().get(0).name());
-        Assertions.assertEquals("pwlbjnpg", model.stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(332314223, model.stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("suesnzw", model.stages().get(0).name());
+        Assertions.assertEquals("bavo", model.stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(1492638603, model.stages().get(0).afterStageWaitInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateRunStrategy model = new UpdateRunStrategy().withStages(Arrays.asList(
-            new UpdateStage().withName("gwdslfhotwm")
-                .withGroups(Arrays.asList(new UpdateGroup().withName("pwlbjnpg"), new UpdateGroup().withName("cftadeh"),
-                    new UpdateGroup().withName("nltyfsoppusuesnz")))
-                .withAfterStageWaitInSeconds(332314223),
-            new UpdateStage().withName("jbavorxzdm")
-                .withGroups(Arrays.asList(new UpdateGroup().withName("tbqvudw"), new UpdateGroup().withName("dndnvow"),
-                    new UpdateGroup().withName("ujjugwdkcglh")))
-                .withAfterStageWaitInSeconds(1950035591),
-            new UpdateStage().withName("zj")
-                .withGroups(Arrays.asList(new UpdateGroup().withName("gdtjixhbkuofqwey")))
-                .withAfterStageWaitInSeconds(1047075786)));
+        UpdateRunStrategy model = new UpdateRunStrategy().withStages(Arrays.asList(new UpdateStage().withName("suesnzw")
+            .withGroups(Arrays.asList(new UpdateGroup().withName("bavo"), new UpdateGroup().withName("xzdmohctb"),
+                new UpdateGroup().withName("vudwx")))
+            .withAfterStageWaitInSeconds(1492638603)));
         model = BinaryData.fromObject(model).toObject(UpdateRunStrategy.class);
-        Assertions.assertEquals("gwdslfhotwm", model.stages().get(0).name());
-        Assertions.assertEquals("pwlbjnpg", model.stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(332314223, model.stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("suesnzw", model.stages().get(0).name());
+        Assertions.assertEquals("bavo", model.stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(1492638603, model.stages().get(0).afterStageWaitInSeconds());
     }
 }

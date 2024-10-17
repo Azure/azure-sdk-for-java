@@ -7,46 +7,101 @@ package com.azure.resourcemanager.logic.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.models.ContentLink;
 import com.azure.resourcemanager.logic.models.RepetitionIndex;
 import com.azure.resourcemanager.logic.models.RetryHistory;
 import com.azure.resourcemanager.logic.models.RunActionCorrelation;
 import com.azure.resourcemanager.logic.models.WorkflowStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The workflow run action repetition definition. */
+/**
+ * The workflow run action repetition definition.
+ */
 @Fluent
 public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
     /*
      * The workflow run action repetition properties definition.
      */
-    @JsonProperty(value = "properties", required = true)
     private WorkflowRunActionRepetitionProperties innerProperties = new WorkflowRunActionRepetitionProperties();
 
-    /** Creates an instance of WorkflowRunActionRepetitionDefinitionInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of WorkflowRunActionRepetitionDefinitionInner class.
+     */
     public WorkflowRunActionRepetitionDefinitionInner() {
     }
 
     /**
      * Get the innerProperties property: The workflow run action repetition properties definition.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WorkflowRunActionRepetitionProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowRunActionRepetitionDefinitionInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowRunActionRepetitionDefinitionInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -55,7 +110,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Get the repetitionIndexes property: The repetition indexes.
-     *
+     * 
      * @return the repetitionIndexes value.
      */
     public List<RepetitionIndex> repetitionIndexes() {
@@ -64,7 +119,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Set the repetitionIndexes property: The repetition indexes.
-     *
+     * 
      * @param repetitionIndexes the repetitionIndexes value to set.
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
      */
@@ -78,7 +133,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Get the trackingId property: Gets the tracking id.
-     *
+     * 
      * @return the trackingId value.
      */
     public String trackingId() {
@@ -87,7 +142,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Get the inputs property: Gets the inputs.
-     *
+     * 
      * @return the inputs value.
      */
     public Object inputs() {
@@ -96,7 +151,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Get the inputsLink property: Gets the link to inputs.
-     *
+     * 
      * @return the inputsLink value.
      */
     public ContentLink inputsLink() {
@@ -105,7 +160,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Get the outputs property: Gets the outputs.
-     *
+     * 
      * @return the outputs value.
      */
     public Object outputs() {
@@ -114,7 +169,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Get the outputsLink property: Gets the link to outputs.
-     *
+     * 
      * @return the outputsLink value.
      */
     public ContentLink outputsLink() {
@@ -123,7 +178,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Get the trackedProperties property: Gets the tracked properties.
-     *
+     * 
      * @return the trackedProperties value.
      */
     public Object trackedProperties() {
@@ -132,7 +187,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Get the retryHistory property: Gets the retry histories.
-     *
+     * 
      * @return the retryHistory value.
      */
     public List<RetryHistory> retryHistory() {
@@ -141,7 +196,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Set the retryHistory property: Gets the retry histories.
-     *
+     * 
      * @param retryHistory the retryHistory value to set.
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
      */
@@ -155,7 +210,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Get the iterationCount property: The iterationCount property.
-     *
+     * 
      * @return the iterationCount value.
      */
     public Integer iterationCount() {
@@ -164,7 +219,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Set the iterationCount property: The iterationCount property.
-     *
+     * 
      * @param iterationCount the iterationCount value to set.
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
      */
@@ -178,7 +233,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Get the startTime property: The start time of the workflow scope repetition.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -187,7 +242,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Set the startTime property: The start time of the workflow scope repetition.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
      */
@@ -201,7 +256,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Get the endTime property: The end time of the workflow scope repetition.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -210,7 +265,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Set the endTime property: The end time of the workflow scope repetition.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
      */
@@ -224,7 +279,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Get the correlation property: The correlation properties.
-     *
+     * 
      * @return the correlation value.
      */
     public RunActionCorrelation correlation() {
@@ -233,7 +288,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Set the correlation property: The correlation properties.
-     *
+     * 
      * @param correlation the correlation value to set.
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
      */
@@ -247,7 +302,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Get the status property: The status of the workflow scope repetition.
-     *
+     * 
      * @return the status value.
      */
     public WorkflowStatus status() {
@@ -256,7 +311,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Set the status property: The status of the workflow scope repetition.
-     *
+     * 
      * @param status the status value to set.
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
      */
@@ -270,7 +325,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Get the code property: The workflow scope repetition code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -279,7 +334,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Set the code property: The workflow scope repetition code.
-     *
+     * 
      * @param code the code value to set.
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
      */
@@ -293,7 +348,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Get the error property: Anything.
-     *
+     * 
      * @return the error value.
      */
     public Object error() {
@@ -302,7 +357,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Set the error property: Anything.
-     *
+     * 
      * @param error the error value to set.
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
      */
@@ -316,20 +371,70 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model"
-                            + " WorkflowRunActionRepetitionDefinitionInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model WorkflowRunActionRepetitionDefinitionInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WorkflowRunActionRepetitionDefinitionInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowRunActionRepetitionDefinitionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowRunActionRepetitionDefinitionInner if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkflowRunActionRepetitionDefinitionInner.
+     */
+    public static WorkflowRunActionRepetitionDefinitionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowRunActionRepetitionDefinitionInner deserializedWorkflowRunActionRepetitionDefinitionInner
+                = new WorkflowRunActionRepetitionDefinitionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWorkflowRunActionRepetitionDefinitionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWorkflowRunActionRepetitionDefinitionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWorkflowRunActionRepetitionDefinitionInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedWorkflowRunActionRepetitionDefinitionInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWorkflowRunActionRepetitionDefinitionInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWorkflowRunActionRepetitionDefinitionInner.innerProperties
+                        = WorkflowRunActionRepetitionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowRunActionRepetitionDefinitionInner;
+        });
+    }
 }

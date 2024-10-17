@@ -169,6 +169,16 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    public void createBlobVersionClient() {
+        String name = generateBlobName();
+        BlockBlobClient bc = cc.getBlobClient(name).getBlockBlobClient();
+        bc.upload(DATA.getDefaultInputStream(), 7);
+        BlobClient vc = cc.getBlobVersionClient(name, null);
+
+        assertTrue(vc.exists());
+    }
+
+    @Test
     public void createIfNotExistsAllNull() {
         // Overwrite the existing cc, which has already been created
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());

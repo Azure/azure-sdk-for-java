@@ -4,21 +4,23 @@
 
 package com.azure.resourcemanager.peering.generated;
 
-/** Samples for Prefixes Get. */
+/**
+ * Samples for Prefixes Get.
+ */
 public final class PrefixesGetSamples {
     /*
-     * x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-01-01/examples/GetPeeringServicePrefix.json
+     * x-ms-original-file:
+     * specification/peering/resource-manager/Microsoft.Peering/stable/2021-01-01/examples/GetPeeringServicePrefix.json
      */
     /**
      * Sample code: Get a prefix associated with the peering service.
-     *
+     * 
      * @param manager Entry point to PeeringManager.
      */
-    public static void getAPrefixAssociatedWithThePeeringService(
-        com.azure.resourcemanager.peering.PeeringManager manager) {
-        manager
-            .prefixes()
-            .getWithResponse(
-                "rgName", "peeringServiceName", "peeringServicePrefixName", null, com.azure.core.util.Context.NONE);
+    public static void
+        getAPrefixAssociatedWithThePeeringService(com.azure.resourcemanager.peering.PeeringManager manager) {
+        manager.prefixes()
+            .getWithResponse("rgName", "peeringServiceName", "peeringServicePrefixName", null,
+                com.azure.core.util.Context.NONE);
     }
 }

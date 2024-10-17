@@ -5,50 +5,55 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.models.KeyVaultKeyReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The integration account certificate properties. */
+/**
+ * The integration account certificate properties.
+ */
 @Fluent
-public final class IntegrationAccountCertificateProperties {
+public final class IntegrationAccountCertificateProperties
+    implements JsonSerializable<IntegrationAccountCertificateProperties> {
     /*
      * The created time.
      */
-    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTime;
 
     /*
      * The changed time.
      */
-    @JsonProperty(value = "changedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime changedTime;
 
     /*
      * The metadata.
      */
-    @JsonProperty(value = "metadata")
     private Object metadata;
 
     /*
      * The key details in the key vault.
      */
-    @JsonProperty(value = "key")
     private KeyVaultKeyReference key;
 
     /*
      * The public certificate.
      */
-    @JsonProperty(value = "publicCertificate")
     private String publicCertificate;
 
-    /** Creates an instance of IntegrationAccountCertificateProperties class. */
+    /**
+     * Creates an instance of IntegrationAccountCertificateProperties class.
+     */
     public IntegrationAccountCertificateProperties() {
     }
 
     /**
      * Get the createdTime property: The created time.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -57,7 +62,7 @@ public final class IntegrationAccountCertificateProperties {
 
     /**
      * Get the changedTime property: The changed time.
-     *
+     * 
      * @return the changedTime value.
      */
     public OffsetDateTime changedTime() {
@@ -66,7 +71,7 @@ public final class IntegrationAccountCertificateProperties {
 
     /**
      * Get the metadata property: The metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -75,7 +80,7 @@ public final class IntegrationAccountCertificateProperties {
 
     /**
      * Set the metadata property: The metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the IntegrationAccountCertificateProperties object itself.
      */
@@ -86,7 +91,7 @@ public final class IntegrationAccountCertificateProperties {
 
     /**
      * Get the key property: The key details in the key vault.
-     *
+     * 
      * @return the key value.
      */
     public KeyVaultKeyReference key() {
@@ -95,7 +100,7 @@ public final class IntegrationAccountCertificateProperties {
 
     /**
      * Set the key property: The key details in the key vault.
-     *
+     * 
      * @param key the key value to set.
      * @return the IntegrationAccountCertificateProperties object itself.
      */
@@ -106,7 +111,7 @@ public final class IntegrationAccountCertificateProperties {
 
     /**
      * Get the publicCertificate property: The public certificate.
-     *
+     * 
      * @return the publicCertificate value.
      */
     public String publicCertificate() {
@@ -115,7 +120,7 @@ public final class IntegrationAccountCertificateProperties {
 
     /**
      * Set the publicCertificate property: The public certificate.
-     *
+     * 
      * @param publicCertificate the publicCertificate value to set.
      * @return the IntegrationAccountCertificateProperties object itself.
      */
@@ -126,12 +131,61 @@ public final class IntegrationAccountCertificateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (key() != null) {
             key().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("metadata", this.metadata);
+        jsonWriter.writeJsonField("key", this.key);
+        jsonWriter.writeStringField("publicCertificate", this.publicCertificate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationAccountCertificateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationAccountCertificateProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IntegrationAccountCertificateProperties.
+     */
+    public static IntegrationAccountCertificateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationAccountCertificateProperties deserializedIntegrationAccountCertificateProperties
+                = new IntegrationAccountCertificateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdTime".equals(fieldName)) {
+                    deserializedIntegrationAccountCertificateProperties.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("changedTime".equals(fieldName)) {
+                    deserializedIntegrationAccountCertificateProperties.changedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedIntegrationAccountCertificateProperties.metadata = reader.readUntyped();
+                } else if ("key".equals(fieldName)) {
+                    deserializedIntegrationAccountCertificateProperties.key = KeyVaultKeyReference.fromJson(reader);
+                } else if ("publicCertificate".equals(fieldName)) {
+                    deserializedIntegrationAccountCertificateProperties.publicCertificate = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationAccountCertificateProperties;
+        });
     }
 }

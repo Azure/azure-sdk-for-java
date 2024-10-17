@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomerSubscriptionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomerSubscriptionInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"tenantId\":\"k\"},\"etag\":\"f\",\"id\":\"dio\",\"name\":\"jpslwejd\",\"type\":\"vwryoqpso\"}")
-                .toObject(CustomerSubscriptionInner.class);
+        CustomerSubscriptionInner model = BinaryData.fromString(
+            "{\"properties\":{\"tenantId\":\"k\"},\"etag\":\"f\",\"id\":\"dio\",\"name\":\"jpslwejd\",\"type\":\"vwryoqpso\"}")
+            .toObject(CustomerSubscriptionInner.class);
         Assertions.assertEquals("f", model.etag());
         Assertions.assertEquals("k", model.tenantId());
     }

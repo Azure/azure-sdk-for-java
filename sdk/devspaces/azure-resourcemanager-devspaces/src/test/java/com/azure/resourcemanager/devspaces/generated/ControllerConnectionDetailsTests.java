@@ -11,18 +11,15 @@ import com.azure.resourcemanager.devspaces.models.OrchestratorSpecificConnection
 public final class ControllerConnectionDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ControllerConnectionDetails model =
-            BinaryData
-                .fromString(
-                    "{\"orchestratorSpecificConnectionDetails\":{\"instanceType\":\"OrchestratorSpecificConnectionDetails\"}}")
-                .toObject(ControllerConnectionDetails.class);
+        ControllerConnectionDetails model = BinaryData.fromString(
+            "{\"orchestratorSpecificConnectionDetails\":{\"instanceType\":\"OrchestratorSpecificConnectionDetails\"}}")
+            .toObject(ControllerConnectionDetails.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ControllerConnectionDetails model =
-            new ControllerConnectionDetails()
-                .withOrchestratorSpecificConnectionDetails(new OrchestratorSpecificConnectionDetails());
+        ControllerConnectionDetails model = new ControllerConnectionDetails()
+            .withOrchestratorSpecificConnectionDetails(new OrchestratorSpecificConnectionDetails());
         model = BinaryData.fromObject(model).toObject(ControllerConnectionDetails.class);
     }
 }

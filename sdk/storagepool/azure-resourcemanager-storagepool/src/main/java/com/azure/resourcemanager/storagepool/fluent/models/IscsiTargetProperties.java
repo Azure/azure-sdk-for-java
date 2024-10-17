@@ -6,78 +6,77 @@ package com.azure.resourcemanager.storagepool.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagepool.models.Acl;
 import com.azure.resourcemanager.storagepool.models.IscsiLun;
 import com.azure.resourcemanager.storagepool.models.IscsiTargetAclMode;
 import com.azure.resourcemanager.storagepool.models.OperationalStatus;
 import com.azure.resourcemanager.storagepool.models.ProvisioningStates;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Response properties for iSCSI Target operations. */
+/**
+ * Response properties for iSCSI Target operations.
+ */
 @Fluent
-public final class IscsiTargetProperties {
+public final class IscsiTargetProperties implements JsonSerializable<IscsiTargetProperties> {
     /*
      * Mode for Target connectivity.
      */
-    @JsonProperty(value = "aclMode", required = true)
     private IscsiTargetAclMode aclMode;
 
     /*
      * Access Control List (ACL) for an iSCSI Target; defines LUN masking policy
      */
-    @JsonProperty(value = "staticAcls")
     private List<Acl> staticAcls;
 
     /*
      * List of LUNs to be exposed through iSCSI Target.
      */
-    @JsonProperty(value = "luns")
     private List<IscsiLun> luns;
 
     /*
      * iSCSI Target IQN (iSCSI Qualified Name); example: "iqn.2005-03.org.iscsi:server".
      */
-    @JsonProperty(value = "targetIqn", required = true)
     private String targetIqn;
 
     /*
      * State of the operation on the resource.
      */
-    @JsonProperty(value = "provisioningState", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningStates provisioningState;
 
     /*
      * Operational status of the iSCSI Target.
      */
-    @JsonProperty(value = "status", required = true)
     private OperationalStatus status;
 
     /*
      * List of private IPv4 addresses to connect to the iSCSI Target.
      */
-    @JsonProperty(value = "endpoints")
     private List<String> endpoints;
 
     /*
      * The port used by iSCSI Target portal group.
      */
-    @JsonProperty(value = "port")
     private Integer port;
 
     /*
      * List of identifiers for active sessions on the iSCSI target
      */
-    @JsonProperty(value = "sessions", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> sessions;
 
-    /** Creates an instance of IscsiTargetProperties class. */
+    /**
+     * Creates an instance of IscsiTargetProperties class.
+     */
     public IscsiTargetProperties() {
     }
 
     /**
      * Get the aclMode property: Mode for Target connectivity.
-     *
+     * 
      * @return the aclMode value.
      */
     public IscsiTargetAclMode aclMode() {
@@ -86,7 +85,7 @@ public final class IscsiTargetProperties {
 
     /**
      * Set the aclMode property: Mode for Target connectivity.
-     *
+     * 
      * @param aclMode the aclMode value to set.
      * @return the IscsiTargetProperties object itself.
      */
@@ -97,7 +96,7 @@ public final class IscsiTargetProperties {
 
     /**
      * Get the staticAcls property: Access Control List (ACL) for an iSCSI Target; defines LUN masking policy.
-     *
+     * 
      * @return the staticAcls value.
      */
     public List<Acl> staticAcls() {
@@ -106,7 +105,7 @@ public final class IscsiTargetProperties {
 
     /**
      * Set the staticAcls property: Access Control List (ACL) for an iSCSI Target; defines LUN masking policy.
-     *
+     * 
      * @param staticAcls the staticAcls value to set.
      * @return the IscsiTargetProperties object itself.
      */
@@ -117,7 +116,7 @@ public final class IscsiTargetProperties {
 
     /**
      * Get the luns property: List of LUNs to be exposed through iSCSI Target.
-     *
+     * 
      * @return the luns value.
      */
     public List<IscsiLun> luns() {
@@ -126,7 +125,7 @@ public final class IscsiTargetProperties {
 
     /**
      * Set the luns property: List of LUNs to be exposed through iSCSI Target.
-     *
+     * 
      * @param luns the luns value to set.
      * @return the IscsiTargetProperties object itself.
      */
@@ -137,7 +136,7 @@ public final class IscsiTargetProperties {
 
     /**
      * Get the targetIqn property: iSCSI Target IQN (iSCSI Qualified Name); example: "iqn.2005-03.org.iscsi:server".
-     *
+     * 
      * @return the targetIqn value.
      */
     public String targetIqn() {
@@ -146,7 +145,7 @@ public final class IscsiTargetProperties {
 
     /**
      * Set the targetIqn property: iSCSI Target IQN (iSCSI Qualified Name); example: "iqn.2005-03.org.iscsi:server".
-     *
+     * 
      * @param targetIqn the targetIqn value to set.
      * @return the IscsiTargetProperties object itself.
      */
@@ -157,7 +156,7 @@ public final class IscsiTargetProperties {
 
     /**
      * Get the provisioningState property: State of the operation on the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -166,7 +165,7 @@ public final class IscsiTargetProperties {
 
     /**
      * Get the status property: Operational status of the iSCSI Target.
-     *
+     * 
      * @return the status value.
      */
     public OperationalStatus status() {
@@ -175,7 +174,7 @@ public final class IscsiTargetProperties {
 
     /**
      * Set the status property: Operational status of the iSCSI Target.
-     *
+     * 
      * @param status the status value to set.
      * @return the IscsiTargetProperties object itself.
      */
@@ -186,7 +185,7 @@ public final class IscsiTargetProperties {
 
     /**
      * Get the endpoints property: List of private IPv4 addresses to connect to the iSCSI Target.
-     *
+     * 
      * @return the endpoints value.
      */
     public List<String> endpoints() {
@@ -195,7 +194,7 @@ public final class IscsiTargetProperties {
 
     /**
      * Set the endpoints property: List of private IPv4 addresses to connect to the iSCSI Target.
-     *
+     * 
      * @param endpoints the endpoints value to set.
      * @return the IscsiTargetProperties object itself.
      */
@@ -206,7 +205,7 @@ public final class IscsiTargetProperties {
 
     /**
      * Get the port property: The port used by iSCSI Target portal group.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -215,7 +214,7 @@ public final class IscsiTargetProperties {
 
     /**
      * Set the port property: The port used by iSCSI Target portal group.
-     *
+     * 
      * @param port the port value to set.
      * @return the IscsiTargetProperties object itself.
      */
@@ -226,7 +225,7 @@ public final class IscsiTargetProperties {
 
     /**
      * Get the sessions property: List of identifiers for active sessions on the iSCSI target.
-     *
+     * 
      * @return the sessions value.
      */
     public List<String> sessions() {
@@ -235,14 +234,13 @@ public final class IscsiTargetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (aclMode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property aclMode in model IscsiTargetProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property aclMode in model IscsiTargetProperties"));
         }
         if (staticAcls() != null) {
             staticAcls().forEach(e -> e.validate());
@@ -251,16 +249,79 @@ public final class IscsiTargetProperties {
             luns().forEach(e -> e.validate());
         }
         if (targetIqn() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property targetIqn in model IscsiTargetProperties"));
         }
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property status in model IscsiTargetProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property status in model IscsiTargetProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IscsiTargetProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("aclMode", this.aclMode == null ? null : this.aclMode.toString());
+        jsonWriter.writeStringField("targetIqn", this.targetIqn);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeArrayField("staticAcls", this.staticAcls, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("luns", this.luns, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("endpoints", this.endpoints, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("port", this.port);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IscsiTargetProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IscsiTargetProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IscsiTargetProperties.
+     */
+    public static IscsiTargetProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IscsiTargetProperties deserializedIscsiTargetProperties = new IscsiTargetProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("aclMode".equals(fieldName)) {
+                    deserializedIscsiTargetProperties.aclMode = IscsiTargetAclMode.fromString(reader.getString());
+                } else if ("targetIqn".equals(fieldName)) {
+                    deserializedIscsiTargetProperties.targetIqn = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedIscsiTargetProperties.provisioningState
+                        = ProvisioningStates.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedIscsiTargetProperties.status = OperationalStatus.fromString(reader.getString());
+                } else if ("staticAcls".equals(fieldName)) {
+                    List<Acl> staticAcls = reader.readArray(reader1 -> Acl.fromJson(reader1));
+                    deserializedIscsiTargetProperties.staticAcls = staticAcls;
+                } else if ("luns".equals(fieldName)) {
+                    List<IscsiLun> luns = reader.readArray(reader1 -> IscsiLun.fromJson(reader1));
+                    deserializedIscsiTargetProperties.luns = luns;
+                } else if ("endpoints".equals(fieldName)) {
+                    List<String> endpoints = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIscsiTargetProperties.endpoints = endpoints;
+                } else if ("port".equals(fieldName)) {
+                    deserializedIscsiTargetProperties.port = reader.getNullable(JsonReader::getInt);
+                } else if ("sessions".equals(fieldName)) {
+                    List<String> sessions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIscsiTargetProperties.sessions = sessions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIscsiTargetProperties;
+        });
+    }
 }

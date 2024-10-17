@@ -19,20 +19,20 @@ public final class TenantsImpl implements Tenants {
 
     private final com.azure.resourcemanager.subscription.SubscriptionManager serviceManager;
 
-    public TenantsImpl(
-        TenantsClient innerClient, com.azure.resourcemanager.subscription.SubscriptionManager serviceManager) {
+    public TenantsImpl(TenantsClient innerClient,
+        com.azure.resourcemanager.subscription.SubscriptionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<TenantIdDescription> list() {
         PagedIterable<TenantIdDescriptionInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new TenantIdDescriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TenantIdDescriptionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<TenantIdDescription> list(Context context) {
         PagedIterable<TenantIdDescriptionInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new TenantIdDescriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TenantIdDescriptionImpl(inner1, this.manager()));
     }
 
     private TenantsClient serviceClient() {

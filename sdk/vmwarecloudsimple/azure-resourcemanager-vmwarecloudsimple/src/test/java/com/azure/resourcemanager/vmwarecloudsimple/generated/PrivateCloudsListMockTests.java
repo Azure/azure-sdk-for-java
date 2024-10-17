@@ -6,93 +6,88 @@ package com.azure.resourcemanager.vmwarecloudsimple.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager;
+import com.azure.resourcemanager.vmwarecloudsimple.models.DiskIndependenceMode;
+import com.azure.resourcemanager.vmwarecloudsimple.models.NicType;
 import com.azure.resourcemanager.vmwarecloudsimple.models.PrivateCloud;
 import com.azure.resourcemanager.vmwarecloudsimple.models.PrivateCloudResourceType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PrivateCloudsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"id\":\"fvxcnqmxqpswo\",\"location\":\"vkhlggdhbemz\",\"name\":\"zszuwiwtglxx\",\"properties\":{\"availabilityZoneId\":\"fpgpicrmnzhrgm\",\"availabilityZoneName\":\"j\",\"clustersNumber\":1338567355,\"createdBy\":\"qcbfrmbodths\",\"createdOn\":\"2021-08-02T20:27:24Z\",\"dnsServers\":[\"iibakcl\",\"c\",\"fr\"],\"expires\":\"ousxauzlwvsgmw\",\"nsxType\":\"qf\",\"placementGroupId\":\"zvuxm\",\"placementGroupName\":\"jsvthnwpzteko\",\"privateCloudId\":\"fadd1141-744a-4ae0-b3d7-2eb6c6ed1001\",\"resourcePools\":[{\"id\":\"biattgplucfotan\",\"location\":\"fhnykzcugs\",\"name\":\"x\",\"privateCloudId\":\"mzqwmvtxnjmxmcu\",\"properties\":{\"fullName\":\"tcvcl\"},\"type\":\"npdkv\"},{\"id\":\"fabuiyjibu\",\"location\":\"hdugneiknpg\",\"name\":\"gjiuqhibto\",\"privateCloudId\":\"pqwjedm\",\"properties\":{\"fullName\":\"xxgewpk\"},\"type\":\"qylkmqpzoyhlf\"}],\"state\":\"gwgcl\",\"totalCpuCores\":325536454,\"totalNodes\":809854276,\"totalRam\":189021776,\"totalStorage\":36.49822,\"type\":\"pnwjfujq\",\"vSphereVersion\":\"fcbahhp\",\"vcenterFqdn\":\"ofoiy\",\"vcenterRefid\":\"p\",\"virtualMachineTemplates\":[{\"id\":\"mkkho\",\"location\":\"dndviauogp\",\"name\":\"artvti\",\"properties\":{\"amountOfRam\":1323258140,\"controllers\":[{},{}],\"description\":\"nmnahmnx\",\"disks\":[{\"controllerId\":\"jqirwrw\",\"independenceMode\":\"independent_persistent\",\"totalSize\":1449522388},{\"controllerId\":\"xffi\",\"independenceMode\":\"independent_nonpersistent\",\"totalSize\":1625380187},{\"controllerId\":\"wrsnewmozqvbu\",\"independenceMode\":\"independent_persistent\",\"totalSize\":352304296}],\"exposeToGuestVM\":false,\"guestOS\":\"sycxhxzgaz\",\"guestOSType\":\"abo\",\"nics\":[{\"network\":{\"id\":\"mfqhppubowse\"},\"nicType\":\"VMXNET\"},{\"network\":{\"id\":\"fgkmtdhern\"},\"nicType\":\"PCNET32\"},{\"network\":{\"id\":\"tcjuahokqto\"},\"nicType\":\"VMXNET\"}],\"numberOfCores\":1988457044,\"path\":\"ofshfphwpnulaiyw\",\"privateCloudId\":\"e\",\"vSphereNetworks\":[\"hs\",\"wkojpllndnpd\"],\"vSphereTags\":[\"qafgfugsnnfhyet\",\"fypococtfjgti\",\"rjvzuyt\",\"rmlmuowo\"],\"vmwaretools\":\"au\"},\"type\":\"opionszon\"},{\"id\":\"ngajinnixjawrtmj\",\"location\":\"myccx\",\"name\":\"hcoxov\",\"properties\":{\"amountOfRam\":208996628,\"controllers\":[{},{}],\"description\":\"usfnr\",\"disks\":[{\"controllerId\":\"xtxrdcqtjvidt\",\"independenceMode\":\"independent_nonpersistent\",\"totalSize\":695049640},{\"controllerId\":\"puslvyj\",\"independenceMode\":\"independent_nonpersistent\",\"totalSize\":1896192461}],\"exposeToGuestVM\":true,\"guestOS\":\"asiz\",\"guestOSType\":\"sfuughtuqfecjx\",\"nics\":[{\"network\":{\"id\":\"tuhxuicb\"},\"nicType\":\"PCNET32\"},{\"network\":{\"id\":\"wmrswnjlxuzrh\"},\"nicType\":\"E1000\"},{\"network\":{\"id\":\"usxjbaqehg\"},\"nicType\":\"VMXNET3\"}],\"numberOfCores\":1004006437,\"path\":\"jqatucoigebxn\",\"privateCloudId\":\"nwfepbnwg\",\"vSphereNetworks\":[\"jgcgbjbgdlfgtdys\"],\"vSphereTags\":[\"uflqbctq\",\"amz\",\"rwd\"],\"vmwaretools\":\"zeqyjleziun\"},\"type\":\"dfzantkwcegy\"},{\"id\":\"lbnseqac\",\"location\":\"vpilg\",\"name\":\"oq\",\"properties\":{\"amountOfRam\":255263020,\"controllers\":[{},{},{}],\"description\":\"gueiookjbsahrtdt\",\"disks\":[{\"controllerId\":\"lq\",\"independenceMode\":\"independent_persistent\",\"totalSize\":1292218152},{\"controllerId\":\"lmotoebnfxofvcj\",\"independenceMode\":\"independent_nonpersistent\",\"totalSize\":1463731684},{\"controllerId\":\"irazftxejwabmd\",\"independenceMode\":\"persistent\",\"totalSize\":1416773611}],\"exposeToGuestVM\":false,\"guestOS\":\"op\",\"guestOSType\":\"c\",\"nics\":[{\"network\":{\"id\":\"rbuhhlky\"},\"nicType\":\"E1000\"},{\"network\":{\"id\":\"tqsrogtuwkff\"},\"nicType\":\"VMXNET\"},{\"network\":{\"id\":\"ktsysidfvclglxn\"},\"nicType\":\"VMXNET3\"},{\"network\":{\"id\":\"ijtk\"},\"nicType\":\"VMXNET\"}],\"numberOfCores\":1043687593,\"path\":\"gsfikayiansha\",\"privateCloudId\":\"ujtjiqxfz\",\"vSphereNetworks\":[\"ttvwkpqh\"],\"vSphereTags\":[\"nuygbqeqqekewvnq\",\"cdlguauc\"],\"vmwaretools\":\"djwnlaxpunjqi\"},\"type\":\"zvvitacgxmfcs\"},{\"id\":\"rxhtvso\",\"location\":\"lwntsjgqrs\",\"name\":\"p\",\"properties\":{\"amountOfRam\":164318585,\"controllers\":[{},{},{}],\"description\":\"chrszi\",\"disks\":[{\"controllerId\":\"uelyetndn\",\"independenceMode\":\"independent_persistent\",\"totalSize\":1979503095}],\"exposeToGuestVM\":false,\"guestOS\":\"agfl\",\"guestOSType\":\"gm\",\"nics\":[{\"network\":{\"id\":\"ahzjmucftb\"},\"nicType\":\"VMXNET2\"},{\"network\":{\"id\":\"plrohkpigq\"},\"nicType\":\"E1000E\"},{\"network\":{\"id\":\"suckzm\"},\"nicType\":\"VMXNET2\"},{\"network\":{\"id\":\"klsnoxaxmqeqa\"},\"nicType\":\"VMXNET\"}],\"numberOfCores\":377958143,\"path\":\"hgwydyynfsv\",\"privateCloudId\":\"hgbvqtan\",\"vSphereNetworks\":[\"dlpukhpyrne\",\"zjcpeogk\",\"nmg\"],\"vSphereTags\":[\"uxddbhfh\",\"fpazjzoywjxhpd\",\"lontacnpq\",\"tehtuevrhrljyoog\"],\"vmwaretools\":\"hnsduugwbsreur\"},\"type\":\"kfuarenlv\"}],\"virtualNetworks\":[{\"assignable\":true,\"id\":\"nvnaf\",\"location\":\"kyfede\",\"name\":\"bo\",\"properties\":{\"privateCloudId\":\"qxypokkhminq\"},\"type\":\"mczngn\"},{\"assignable\":false,\"id\":\"x\",\"location\":\"unin\",\"name\":\"db\",\"properties\":{\"privateCloudId\":\"qdtvqecrqctmxx\"},\"type\":\"ddm\"},{\"assignable\":true,\"id\":\"uytxzvtznapxban\",\"location\":\"vvoxczytprwnw\",\"name\":\"oevytlyokr\",\"properties\":{\"privateCloudId\":\"uuxvnsasbcry\"},\"type\":\"dizr\"},{\"assignable\":false,\"id\":\"obdxnazpmkmlm\",\"location\":\"vfxzopjh\",\"name\":\"xliohrdddt\",\"properties\":{\"privateCloudId\":\"qbawpcbbnzqcykn\"},\"type\":\"qofyuicdhzbdy\"}],\"vrOpsEnabled\":true},\"type\":\"Microsoft.VMwareCloudSimple/privateClouds\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"id\":\"n\",\"location\":\"xcpjuisavokqdzf\",\"name\":\"zivj\",\"properties\":{\"availabilityZoneId\":\"qttbaj\",\"availabilityZoneName\":\"atnwxyiopi\",\"clustersNumber\":1442492241,\"createdBy\":\"fku\",\"createdOn\":\"2021-02-24T16:53:48Z\",\"dnsServers\":[\"dmligovibrxk\",\"mloazuru\",\"cbgoor\"],\"expires\":\"eoybfhjxakvvjgs\",\"nsxType\":\"r\",\"placementGroupId\":\"lmywwtkgkxnyed\",\"placementGroupName\":\"gyvudtjuewbc\",\"privateCloudId\":\"23f531d0-c01a-437b-b46f-c61b5b733be9\",\"resourcePools\":[],\"state\":\"whcjyxcc\",\"totalCpuCores\":970870399,\"totalNodes\":436827826,\"totalRam\":1093154656,\"totalStorage\":54.286934,\"type\":\"dzpxgwjpl\",\"vSphereVersion\":\"gstcyohpf\",\"vcenterFqdn\":\"rkdbdgiogsjkmnwq\",\"vcenterRefid\":\"obaiyhddviaceg\",\"virtualMachineTemplates\":[],\"virtualNetworks\":[],\"vrOpsEnabled\":true},\"type\":\"Microsoft.VMwareCloudSimple/privateClouds\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        VMwareCloudSimpleManager manager = VMwareCloudSimpleManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<PrivateCloud> response
+            = manager.privateClouds().list("zvuporqzdfuydz", com.azure.core.util.Context.NONE);
 
-        VMwareCloudSimpleManager manager =
-            VMwareCloudSimpleManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<PrivateCloud> response = manager.privateClouds().list("x", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("n", response.iterator().next().id());
-        Assertions.assertEquals("xcpjuisavokqdzf", response.iterator().next().location());
-        Assertions.assertEquals("zivj", response.iterator().next().name());
-        Assertions
-            .assertEquals(
-                PrivateCloudResourceType.MICROSOFT_VMWARE_CLOUD_SIMPLE_PRIVATE_CLOUDS,
-                response.iterator().next().type());
-        Assertions.assertEquals("qttbaj", response.iterator().next().availabilityZoneId());
-        Assertions.assertEquals("atnwxyiopi", response.iterator().next().availabilityZoneName());
-        Assertions.assertEquals(1442492241, response.iterator().next().clustersNumber());
-        Assertions.assertEquals("fku", response.iterator().next().createdBy());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-24T16:53:48Z"), response.iterator().next().createdOn());
-        Assertions.assertEquals("dmligovibrxk", response.iterator().next().dnsServers().get(0));
-        Assertions.assertEquals("eoybfhjxakvvjgs", response.iterator().next().expires());
-        Assertions.assertEquals("r", response.iterator().next().nsxType());
-        Assertions.assertEquals("lmywwtkgkxnyed", response.iterator().next().placementGroupId());
-        Assertions.assertEquals("gyvudtjuewbc", response.iterator().next().placementGroupName());
-        Assertions
-            .assertEquals(
-                UUID.fromString("23f531d0-c01a-437b-b46f-c61b5b733be9"), response.iterator().next().privateCloudId());
-        Assertions.assertEquals("whcjyxcc", response.iterator().next().state());
-        Assertions.assertEquals(970870399, response.iterator().next().totalCpuCores());
-        Assertions.assertEquals(436827826, response.iterator().next().totalNodes());
-        Assertions.assertEquals(1093154656, response.iterator().next().totalRam());
-        Assertions.assertEquals(54.286934F, response.iterator().next().totalStorage());
-        Assertions.assertEquals("dzpxgwjpl", response.iterator().next().typePropertiesType());
-        Assertions.assertEquals("gstcyohpf", response.iterator().next().vSphereVersion());
-        Assertions.assertEquals("rkdbdgiogsjkmnwq", response.iterator().next().vcenterFqdn());
-        Assertions.assertEquals("obaiyhddviaceg", response.iterator().next().vcenterRefid());
+        Assertions.assertEquals("fvxcnqmxqpswo", response.iterator().next().id());
+        Assertions.assertEquals("vkhlggdhbemz", response.iterator().next().location());
+        Assertions.assertEquals("zszuwiwtglxx", response.iterator().next().name());
+        Assertions.assertEquals(PrivateCloudResourceType.MICROSOFT_VMWARE_CLOUD_SIMPLE_PRIVATE_CLOUDS,
+            response.iterator().next().type());
+        Assertions.assertEquals("fpgpicrmnzhrgm", response.iterator().next().availabilityZoneId());
+        Assertions.assertEquals("j", response.iterator().next().availabilityZoneName());
+        Assertions.assertEquals(1338567355, response.iterator().next().clustersNumber());
+        Assertions.assertEquals("qcbfrmbodths", response.iterator().next().createdBy());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-02T20:27:24Z"), response.iterator().next().createdOn());
+        Assertions.assertEquals("iibakcl", response.iterator().next().dnsServers().get(0));
+        Assertions.assertEquals("ousxauzlwvsgmw", response.iterator().next().expires());
+        Assertions.assertEquals("qf", response.iterator().next().nsxType());
+        Assertions.assertEquals("zvuxm", response.iterator().next().placementGroupId());
+        Assertions.assertEquals("jsvthnwpzteko", response.iterator().next().placementGroupName());
+        Assertions.assertEquals(UUID.fromString("fadd1141-744a-4ae0-b3d7-2eb6c6ed1001"),
+            response.iterator().next().privateCloudId());
+        Assertions.assertEquals("biattgplucfotan", response.iterator().next().resourcePools().get(0).id());
+        Assertions.assertEquals("gwgcl", response.iterator().next().state());
+        Assertions.assertEquals(325536454, response.iterator().next().totalCpuCores());
+        Assertions.assertEquals(809854276, response.iterator().next().totalNodes());
+        Assertions.assertEquals(189021776, response.iterator().next().totalRam());
+        Assertions.assertEquals(36.49822F, response.iterator().next().totalStorage());
+        Assertions.assertEquals("pnwjfujq", response.iterator().next().typePropertiesType());
+        Assertions.assertEquals("fcbahhp", response.iterator().next().vSphereVersion());
+        Assertions.assertEquals("ofoiy", response.iterator().next().vcenterFqdn());
+        Assertions.assertEquals("p", response.iterator().next().vcenterRefid());
+        Assertions.assertEquals("dndviauogp", response.iterator().next().virtualMachineTemplates().get(0).location());
+        Assertions.assertEquals(1323258140, response.iterator().next().virtualMachineTemplates().get(0).amountOfRam());
+        Assertions.assertEquals("nmnahmnx", response.iterator().next().virtualMachineTemplates().get(0).description());
+        Assertions.assertEquals("jqirwrw",
+            response.iterator().next().virtualMachineTemplates().get(0).disks().get(0).controllerId());
+        Assertions.assertEquals(DiskIndependenceMode.INDEPENDENT_PERSISTENT,
+            response.iterator().next().virtualMachineTemplates().get(0).disks().get(0).independenceMode());
+        Assertions.assertEquals(1449522388,
+            response.iterator().next().virtualMachineTemplates().get(0).disks().get(0).totalSize());
+        Assertions.assertEquals(false, response.iterator().next().virtualMachineTemplates().get(0).exposeToGuestVM());
+        Assertions.assertEquals("mfqhppubowse",
+            response.iterator().next().virtualMachineTemplates().get(0).nics().get(0).network().id());
+        Assertions.assertEquals(NicType.VMXNET,
+            response.iterator().next().virtualMachineTemplates().get(0).nics().get(0).nicType());
+        Assertions.assertEquals(1988457044,
+            response.iterator().next().virtualMachineTemplates().get(0).numberOfCores());
+        Assertions.assertEquals("ofshfphwpnulaiyw", response.iterator().next().virtualMachineTemplates().get(0).path());
+        Assertions.assertEquals("e", response.iterator().next().virtualMachineTemplates().get(0).privateCloudId());
+        Assertions.assertEquals("hs",
+            response.iterator().next().virtualMachineTemplates().get(0).vSphereNetworks().get(0));
+        Assertions.assertEquals("qafgfugsnnfhyet",
+            response.iterator().next().virtualMachineTemplates().get(0).vSphereTags().get(0));
+        Assertions.assertEquals("nvnaf", response.iterator().next().virtualNetworks().get(0).id());
         Assertions.assertEquals(true, response.iterator().next().vrOpsEnabled());
     }
 }

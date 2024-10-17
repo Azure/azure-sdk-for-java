@@ -5,25 +5,31 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The workflow run action correlation properties. */
+/**
+ * The workflow run action correlation properties.
+ */
 @Fluent
 public final class RunActionCorrelation extends RunCorrelation {
     /*
      * The action tracking identifier.
      */
-    @JsonProperty(value = "actionTrackingId")
     private String actionTrackingId;
 
-    /** Creates an instance of RunActionCorrelation class. */
+    /**
+     * Creates an instance of RunActionCorrelation class.
+     */
     public RunActionCorrelation() {
     }
 
     /**
      * Get the actionTrackingId property: The action tracking identifier.
-     *
+     * 
      * @return the actionTrackingId value.
      */
     public String actionTrackingId() {
@@ -32,7 +38,7 @@ public final class RunActionCorrelation extends RunCorrelation {
 
     /**
      * Set the actionTrackingId property: The action tracking identifier.
-     *
+     * 
      * @param actionTrackingId the actionTrackingId value to set.
      * @return the RunActionCorrelation object itself.
      */
@@ -41,14 +47,18 @@ public final class RunActionCorrelation extends RunCorrelation {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RunActionCorrelation withClientTrackingId(String clientTrackingId) {
         super.withClientTrackingId(clientTrackingId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RunActionCorrelation withClientKeywords(List<String> clientKeywords) {
         super.withClientKeywords(clientKeywords);
@@ -57,11 +67,54 @@ public final class RunActionCorrelation extends RunCorrelation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("clientTrackingId", clientTrackingId());
+        jsonWriter.writeArrayField("clientKeywords", clientKeywords(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("actionTrackingId", this.actionTrackingId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunActionCorrelation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunActionCorrelation if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RunActionCorrelation.
+     */
+    public static RunActionCorrelation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunActionCorrelation deserializedRunActionCorrelation = new RunActionCorrelation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clientTrackingId".equals(fieldName)) {
+                    deserializedRunActionCorrelation.withClientTrackingId(reader.getString());
+                } else if ("clientKeywords".equals(fieldName)) {
+                    List<String> clientKeywords = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRunActionCorrelation.withClientKeywords(clientKeywords);
+                } else if ("actionTrackingId".equals(fieldName)) {
+                    deserializedRunActionCorrelation.actionTrackingId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunActionCorrelation;
+        });
     }
 }

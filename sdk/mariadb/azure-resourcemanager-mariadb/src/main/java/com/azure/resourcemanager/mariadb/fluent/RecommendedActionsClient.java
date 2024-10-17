@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mariadb.fluent.models.RecommendationActionInner;
 
-/** An instance of this class provides access to all the operations defined in RecommendedActionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RecommendedActionsClient.
+ */
 public interface RecommendedActionsClient {
     /**
      * Retrieve recommended actions from the advisor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param advisorName The advisor name for recommendation action.
@@ -27,12 +29,12 @@ public interface RecommendedActionsClient {
      * @return represents a Recommendation Action along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RecommendationActionInner> getWithResponse(
-        String resourceGroupName, String serverName, String advisorName, String recommendedActionName, Context context);
+    Response<RecommendationActionInner> getWithResponse(String resourceGroupName, String serverName, String advisorName,
+        String recommendedActionName, Context context);
 
     /**
      * Retrieve recommended actions from the advisor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param advisorName The advisor name for recommendation action.
@@ -43,12 +45,12 @@ public interface RecommendedActionsClient {
      * @return represents a Recommendation Action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RecommendationActionInner get(
-        String resourceGroupName, String serverName, String advisorName, String recommendedActionName);
+    RecommendationActionInner get(String resourceGroupName, String serverName, String advisorName,
+        String recommendedActionName);
 
     /**
      * Retrieve recommended actions from the advisor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param advisorName The advisor name for recommendation action.
@@ -58,12 +60,12 @@ public interface RecommendedActionsClient {
      * @return a list of recommendation actions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RecommendationActionInner> listByServer(
-        String resourceGroupName, String serverName, String advisorName);
+    PagedIterable<RecommendationActionInner> listByServer(String resourceGroupName, String serverName,
+        String advisorName);
 
     /**
      * Retrieve recommended actions from the advisor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param advisorName The advisor name for recommendation action.
@@ -75,6 +77,6 @@ public interface RecommendedActionsClient {
      * @return a list of recommendation actions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RecommendationActionInner> listByServer(
-        String resourceGroupName, String serverName, String advisorName, String sessionId, Context context);
+    PagedIterable<RecommendationActionInner> listByServer(String resourceGroupName, String serverName,
+        String advisorName, String sessionId, Context context);
 }

@@ -13,8 +13,8 @@ public final class MonitoredResourceImpl implements MonitoredResource {
 
     private final com.azure.resourcemanager.logz.LogzManager serviceManager;
 
-    MonitoredResourceImpl(
-        MonitoredResourceInner innerObject, com.azure.resourcemanager.logz.LogzManager serviceManager) {
+    MonitoredResourceImpl(MonitoredResourceInner innerObject,
+        com.azure.resourcemanager.logz.LogzManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

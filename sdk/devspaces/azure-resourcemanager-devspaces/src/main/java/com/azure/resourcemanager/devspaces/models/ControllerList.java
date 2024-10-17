@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.devspaces.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devspaces.fluent.models.ControllerInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The ControllerList model. */
+/**
+ * The ControllerList model.
+ */
 @Fluent
-public final class ControllerList {
+public final class ControllerList implements JsonSerializable<ControllerList> {
     /*
      * List of Azure Dev Spaces Controllers.
      */
-    @JsonProperty(value = "value")
     private List<ControllerInner> value;
 
     /*
      * The URI that can be used to request the next page for list of Azure Dev Spaces Controllers.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ControllerList class. */
+    /**
+     * Creates an instance of ControllerList class.
+     */
     public ControllerList() {
     }
 
     /**
      * Get the value property: List of Azure Dev Spaces Controllers.
-     *
+     * 
      * @return the value value.
      */
     public List<ControllerInner> value() {
@@ -39,7 +45,7 @@ public final class ControllerList {
 
     /**
      * Set the value property: List of Azure Dev Spaces Controllers.
-     *
+     * 
      * @param value the value value to set.
      * @return the ControllerList object itself.
      */
@@ -51,7 +57,7 @@ public final class ControllerList {
     /**
      * Get the nextLink property: The URI that can be used to request the next page for list of Azure Dev Spaces
      * Controllers.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,12 +66,51 @@ public final class ControllerList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ControllerList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ControllerList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ControllerList.
+     */
+    public static ControllerList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ControllerList deserializedControllerList = new ControllerList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ControllerInner> value = reader.readArray(reader1 -> ControllerInner.fromJson(reader1));
+                    deserializedControllerList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedControllerList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedControllerList;
+        });
     }
 }

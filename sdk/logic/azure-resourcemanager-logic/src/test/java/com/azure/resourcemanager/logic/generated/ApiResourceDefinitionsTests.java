@@ -11,20 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiResourceDefinitionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiResourceDefinitions model =
-            BinaryData
-                .fromString("{\"originalSwaggerUrl\":\"tzh\",\"modifiedSwaggerUrl\":\"glka\"}")
+        ApiResourceDefinitions model
+            = BinaryData.fromString("{\"originalSwaggerUrl\":\"wf\",\"modifiedSwaggerUrl\":\"kwpzdqtvh\"}")
                 .toObject(ApiResourceDefinitions.class);
-        Assertions.assertEquals("tzh", model.originalSwaggerUrl());
-        Assertions.assertEquals("glka", model.modifiedSwaggerUrl());
+        Assertions.assertEquals("wf", model.originalSwaggerUrl());
+        Assertions.assertEquals("kwpzdqtvh", model.modifiedSwaggerUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiResourceDefinitions model =
-            new ApiResourceDefinitions().withOriginalSwaggerUrl("tzh").withModifiedSwaggerUrl("glka");
+        ApiResourceDefinitions model
+            = new ApiResourceDefinitions().withOriginalSwaggerUrl("wf").withModifiedSwaggerUrl("kwpzdqtvh");
         model = BinaryData.fromObject(model).toObject(ApiResourceDefinitions.class);
-        Assertions.assertEquals("tzh", model.originalSwaggerUrl());
-        Assertions.assertEquals("glka", model.modifiedSwaggerUrl());
+        Assertions.assertEquals("wf", model.originalSwaggerUrl());
+        Assertions.assertEquals("kwpzdqtvh", model.modifiedSwaggerUrl());
     }
 }

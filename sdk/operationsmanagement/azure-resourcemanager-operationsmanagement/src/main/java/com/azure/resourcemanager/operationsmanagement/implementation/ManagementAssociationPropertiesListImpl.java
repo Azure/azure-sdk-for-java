@@ -17,8 +17,7 @@ public final class ManagementAssociationPropertiesListImpl implements Management
 
     private final com.azure.resourcemanager.operationsmanagement.OperationsManagementManager serviceManager;
 
-    ManagementAssociationPropertiesListImpl(
-        ManagementAssociationPropertiesListInner innerObject,
+    ManagementAssociationPropertiesListImpl(ManagementAssociationPropertiesListInner innerObject,
         com.azure.resourcemanager.operationsmanagement.OperationsManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class ManagementAssociationPropertiesListImpl implements Management
     public List<ManagementAssociation> value() {
         List<ManagementAssociationInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ManagementAssociationImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ManagementAssociationImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

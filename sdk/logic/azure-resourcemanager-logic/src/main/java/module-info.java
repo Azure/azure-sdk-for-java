@@ -10,10 +10,6 @@ module com.azure.resourcemanager.logic {
     exports com.azure.resourcemanager.logic.fluent.models;
     exports com.azure.resourcemanager.logic.models;
 
-    opens com.azure.resourcemanager.logic.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.logic.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.logic.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.logic.models to com.azure.core;
 }
