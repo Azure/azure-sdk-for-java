@@ -12,7 +12,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.Objects;
 
 /**
- * FaceAdministrationAsyncClient class.
+ * Initializes a new instance of the asynchronous FaceAdministrationAsyncClient type.
  */
 @ServiceClient(builder = FaceAdministrationClientBuilder.class, isAsync = true)
 public final class FaceAdministrationAsyncClient {
