@@ -6,6 +6,13 @@ package com.azure.resourcemanager.vmwarecloudsimple.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.VirtualMachineTemplateInner;
+import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.VirtualNetworkInner;
+import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.VirtualNicInner;
+import com.azure.resourcemanager.vmwarecloudsimple.models.DiskIndependenceMode;
+import com.azure.resourcemanager.vmwarecloudsimple.models.GuestOsnicCustomization;
+import com.azure.resourcemanager.vmwarecloudsimple.models.NicType;
+import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualDisk;
+import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualDiskController;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualMachineTemplateListResponse;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -13,89 +20,229 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualMachineTemplateListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualMachineTemplateListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"sbzkf\",\"value\":[{\"id\":\"v\",\"location\":\"qi\",\"name\":\"invkjjxdxrbuu\",\"properties\":{\"amountOfRam\":733421396,\"controllers\":[],\"description\":\"yhmlwpaztzp\",\"disks\":[],\"exposeToGuestVM\":true,\"guestOS\":\"kwyfzqwhxxbuyqax\",\"guestOSType\":\"eqz\",\"nics\":[],\"numberOfCores\":802122315,\"path\":\"o\",\"privateCloudId\":\"xorjaltolmncwsob\",\"vSphereNetworks\":[],\"vSphereTags\":[],\"vmwaretools\":\"dbnw\"},\"type\":\"fhucqdpfuv\"},{\"id\":\"sbjjc\",\"location\":\"vxb\",\"name\":\"vudutncor\",\"properties\":{\"amountOfRam\":1945766703,\"controllers\":[],\"description\":\"vcofudfl\",\"disks\":[],\"exposeToGuestVM\":false,\"guestOS\":\"bgdknnqv\",\"guestOSType\":\"znqntoru\",\"nics\":[],\"numberOfCores\":1449495124,\"path\":\"hmk\",\"privateCloudId\":\"c\",\"vSphereNetworks\":[],\"vSphereTags\":[],\"vmwaretools\":\"wjue\"},\"type\":\"eburu\"},{\"id\":\"movsmzlxwabmqoe\",\"location\":\"ifrvtpu\",\"name\":\"jmqlgkfb\",\"properties\":{\"amountOfRam\":2059272755,\"controllers\":[],\"description\":\"n\",\"disks\":[],\"exposeToGuestVM\":false,\"guestOS\":\"tujitcjedft\",\"guestOSType\":\"ae\",\"nics\":[],\"numberOfCores\":1301478988,\"path\":\"dcpzfoqo\",\"privateCloudId\":\"i\",\"vSphereNetworks\":[],\"vSphereTags\":[],\"vmwaretools\":\"arz\"},\"type\":\"zuf\"},{\"id\":\"ciqopidoa\",\"location\":\"iodhkhazxkhnz\",\"name\":\"nlwntoe\",\"properties\":{\"amountOfRam\":2078888236,\"controllers\":[],\"description\":\"whkszzcmrvexztvb\",\"disks\":[],\"exposeToGuestVM\":true,\"guestOS\":\"ra\",\"guestOSType\":\"zkoowtlmnguxawqa\",\"nics\":[],\"numberOfCores\":2048944312,\"path\":\"uximerqfobw\",\"privateCloudId\":\"znkbykutwpfhpagm\",\"vSphereNetworks\":[],\"vSphereTags\":[],\"vmwaretools\":\"dsnfdsdoakgtdl\"},\"type\":\"kzevdlhewpusds\"}]}")
-                .toObject(VirtualMachineTemplateListResponse.class);
-        Assertions.assertEquals("sbzkf", model.nextLink());
-        Assertions.assertEquals("qi", model.value().get(0).location());
-        Assertions.assertEquals(733421396, model.value().get(0).amountOfRam());
-        Assertions.assertEquals("yhmlwpaztzp", model.value().get(0).description());
-        Assertions.assertEquals(true, model.value().get(0).exposeToGuestVM());
-        Assertions.assertEquals(802122315, model.value().get(0).numberOfCores());
-        Assertions.assertEquals("o", model.value().get(0).path());
-        Assertions.assertEquals("xorjaltolmncwsob", model.value().get(0).privateCloudId());
+        VirtualMachineTemplateListResponse model = BinaryData.fromString(
+            "{\"nextLink\":\"chvcyyysfgdo\",\"value\":[{\"id\":\"iipuipwoqonm\",\"location\":\"jeknizshq\",\"name\":\"impevf\",\"properties\":{\"amountOfRam\":910650574,\"controllers\":[{\"id\":\"lbywdxsm\",\"name\":\"cwrwfs\",\"subType\":\"fnynszqujizdvoqy\",\"type\":\"byowbblgyavutp\"},{\"id\":\"joxoism\",\"name\":\"sbpimlq\",\"subType\":\"jxkcgxxlxsff\",\"type\":\"vizqzdwl\"}],\"description\":\"lyoupfgfbkju\",\"disks\":[{\"controllerId\":\"hgkfmin\",\"independenceMode\":\"independent_persistent\",\"totalSize\":610597873,\"virtualDiskId\":\"zfttsttktlahb\",\"virtualDiskName\":\"ctxtgzukxi\"}],\"exposeToGuestVM\":false,\"guestOS\":\"tg\",\"guestOSType\":\"q\",\"nics\":[{\"customization\":{},\"ipAddresses\":[\"xcpjuisavokqdzf\",\"azivjlfrqttbajl\",\"atnwxyiopi\"],\"macAddress\":\"qqfkuv\",\"network\":{\"id\":\"cxkdmligovi\"},\"nicType\":\"E1000E\",\"powerOnBoot\":false,\"virtualNicId\":\"mloazuru\",\"virtualNicName\":\"bgo\"},{\"customization\":{},\"ipAddresses\":[\"eoybfhjxakvvjgs\"],\"macAddress\":\"r\",\"network\":{\"id\":\"il\"},\"nicType\":\"E1000\",\"powerOnBoot\":false,\"virtualNicId\":\"kgkxn\",\"virtualNicName\":\"dabg\"}],\"numberOfCores\":110774994,\"path\":\"tjuewbcihx\",\"privateCloudId\":\"uwhcjyxccybv\",\"vSphereNetworks\":[\"akkud\"],\"vSphereTags\":[\"gwjplmag\",\"tcyohpfkyrk\",\"bdgiogsjk\",\"nwqjnoba\"],\"vmwaretools\":\"hdd\"},\"type\":\"acegfnmntf\"},{\"id\":\"vm\",\"location\":\"fnczdwvvbalx\",\"name\":\"lchpodbzevwrdn\",\"properties\":{\"amountOfRam\":420547781,\"controllers\":[{\"id\":\"jcswsmys\",\"name\":\"luqypfcvlerch\",\"subType\":\"bm\",\"type\":\"jbabwidf\"},{\"id\":\"sspuunnoxyhkx\",\"name\":\"ddrihpf\",\"subType\":\"qcaaewdaomdjvl\",\"type\":\"x\"},{\"id\":\"zb\",\"name\":\"sgeivsiy\",\"subType\":\"kdncj\",\"type\":\"onbzoggculapzwy\"},{\"id\":\"gogtqxepnylbf\",\"name\":\"jlyjtlvofq\",\"subType\":\"vfcibyfmowux\",\"type\":\"jpvd\"}],\"description\":\"fzwiivwzjbhyz\",\"disks\":[{\"controllerId\":\"rkambt\",\"independenceMode\":\"independent_persistent\",\"totalSize\":752275030,\"virtualDiskId\":\"vmnvu\",\"virtualDiskName\":\"qvldspastjbkkd\"},{\"controllerId\":\"flvestmjlxrrilo\",\"independenceMode\":\"independent_persistent\",\"totalSize\":646254417,\"virtualDiskId\":\"ewchpxlktwku\",\"virtualDiskName\":\"ycslevufuztcktyh\"},{\"controllerId\":\"tqedcgzulwm\",\"independenceMode\":\"independent_nonpersistent\",\"totalSize\":652058818,\"virtualDiskId\":\"zrrjvpgly\",\"virtualDiskName\":\"gkrvqeevto\"},{\"controllerId\":\"pryu\",\"independenceMode\":\"independent_persistent\",\"totalSize\":479918870,\"virtualDiskId\":\"tpzdmovzvfvaawzq\",\"virtualDiskName\":\"f\"}],\"exposeToGuestVM\":false,\"guestOS\":\"riglaec\",\"guestOSType\":\"dticokpvzml\",\"nics\":[{\"customization\":{},\"ipAddresses\":[\"x\",\"bf\",\"rclnpkc\"],\"macAddress\":\"yzriykhy\",\"network\":{\"id\":\"wf\"},\"nicType\":\"VMXNET3\",\"powerOnBoot\":false,\"virtualNicId\":\"xqvkjlmxhomdyn\",\"virtualNicName\":\"wdigumbnraauz\"},{\"customization\":{},\"ipAddresses\":[\"a\",\"ysdzhez\",\"wva\",\"qyuvvfonkp\"],\"macAddress\":\"qyikvy\",\"network\":{\"id\":\"auy\"},\"nicType\":\"VMXNET2\",\"powerOnBoot\":false,\"virtualNicId\":\"mncsttijfybvp\",\"virtualNicName\":\"krsgsgb\"},{\"customization\":{},\"ipAddresses\":[\"qgnjdgkynscli\"],\"macAddress\":\"zvhxnk\",\"network\":{\"id\":\"mtk\"},\"nicType\":\"PCNET32\",\"powerOnBoot\":false,\"virtualNicId\":\"pnvdxz\",\"virtualNicName\":\"ihfrbbcevqa\"}],\"numberOfCores\":559974778,\"path\":\"dhlfkqojpykvgt\",\"privateCloudId\":\"dcnifmz\",\"vSphereNetworks\":[\"ymbrnysuxmpraf\",\"g\"],\"vSphereTags\":[\"ocxvdfffwafqr\",\"udaspavehh\",\"vkbunzozudh\",\"xg\"],\"vmwaretools\":\"oyxcdyuib\"},\"type\":\"fdn\"},{\"id\":\"ydvfvfcjnae\",\"location\":\"srvhmgorffuki\",\"name\":\"vwmzhwplefaxvxil\",\"properties\":{\"amountOfRam\":2095551263,\"controllers\":[{\"id\":\"zeyqxtjjfzqlqhyc\",\"name\":\"odggx\",\"subType\":\"ee\",\"type\":\"ieknl\"}],\"description\":\"riaa\",\"disks\":[{\"controllerId\":\"agy\",\"independenceMode\":\"persistent\",\"totalSize\":846289749,\"virtualDiskId\":\"bylyrfgia\",\"virtualDiskName\":\"cojocqwogfnzjvus\"},{\"controllerId\":\"zldmozuxy\",\"independenceMode\":\"persistent\",\"totalSize\":2095359903,\"virtualDiskId\":\"tkad\",\"virtualDiskName\":\"s\"},{\"controllerId\":\"wn\",\"independenceMode\":\"independent_persistent\",\"totalSize\":268742670,\"virtualDiskId\":\"bugrj\",\"virtualDiskName\":\"to\"},{\"controllerId\":\"cmisofie\",\"independenceMode\":\"independent_nonpersistent\",\"totalSize\":860547851,\"virtualDiskId\":\"ojyqdhcuplcplcw\",\"virtualDiskName\":\"ihih\"}],\"exposeToGuestVM\":true,\"guestOS\":\"sqtzbsrg\",\"guestOSType\":\"wcjhfgmv\",\"nics\":[{\"customization\":{},\"ipAddresses\":[\"mwotey\",\"wcluqovekqvgq\",\"uwifzmpjwyiv\",\"ikf\"],\"macAddress\":\"vhrfsphuagrt\",\"network\":{\"id\":\"ikteusqczkvyk\"},\"nicType\":\"VMXNET\",\"powerOnBoot\":true,\"virtualNicId\":\"jaffmmfblcqcuu\",\"virtualNicName\":\"qibrtalme\"},{\"customization\":{},\"ipAddresses\":[\"gdslqxihhrmoo\",\"z\"],\"macAddress\":\"eypxiutcxapzhyr\",\"network\":{\"id\":\"etoge\"},\"nicType\":\"E1000E\",\"powerOnBoot\":true,\"virtualNicId\":\"lhvnhlab\",\"virtualNicName\":\"nk\"},{\"customization\":{},\"ipAddresses\":[\"jb\",\"rgaehvvibrxjj\",\"toqbeitpkxztmoob\",\"lftidgfcwqmpim\"],\"macAddress\":\"xzhemjyh\",\"network\":{\"id\":\"hujswtwkozzwcul\"},\"nicType\":\"PCNET32\",\"powerOnBoot\":false,\"virtualNicId\":\"fajnjwltlwtjjguk\",\"virtualNicName\":\"lhsnvkcdmx\"},{\"customization\":{},\"ipAddresses\":[\"aimlnwiaaom\",\"l\"],\"macAddress\":\"azul\",\"network\":{\"id\":\"sethwwn\"},\"nicType\":\"E1000E\",\"powerOnBoot\":false,\"virtualNicId\":\"zswpchwa\",\"virtualNicName\":\"bousn\"}],\"numberOfCores\":793996513,\"path\":\"fewetwlyxgncx\",\"privateCloudId\":\"kxhdjhlimmbcx\",\"vSphereNetworks\":[\"cporxvxcjz\",\"qizxfpxtgqscjavf\",\"juhdqazkmtgguwpi\",\"r\"],\"vSphereTags\":[\"ivmmghfcfiwrxgk\",\"euvyinzqodfvpgs\"],\"vmwaretools\":\"xgsg\"},\"type\":\"fgzdjtxvz\"},{\"id\":\"bqvgaqv\",\"location\":\"a\",\"name\":\"qusrdvetnws\",\"properties\":{\"amountOfRam\":161082288,\"controllers\":[{\"id\":\"duy\",\"name\":\"uzhyrmewipmvekdx\",\"subType\":\"uqgsj\",\"type\":\"undxgketw\"},{\"id\":\"hzjhf\",\"name\":\"hvvmuvgpmun\",\"subType\":\"sx\",\"type\":\"hfbuzjyihsasbhud\"}],\"description\":\"ohyuemslynsq\",\"disks\":[{\"controllerId\":\"foobrlttyms\",\"independenceMode\":\"independent_nonpersistent\",\"totalSize\":657212299,\"virtualDiskId\":\"qdnfwqzdz\",\"virtualDiskName\":\"ilaxhn\"},{\"controllerId\":\"hqlyvijo\",\"independenceMode\":\"independent_nonpersistent\",\"totalSize\":316735321,\"virtualDiskId\":\"kxoyzunbixxr\",\"virtualDiskName\":\"kvcpwpgclr\"}],\"exposeToGuestVM\":false,\"guestOS\":\"soxfrken\",\"guestOSType\":\"m\",\"nics\":[{\"customization\":{},\"ipAddresses\":[\"mpdnqqskawa\",\"qvmmbn\"],\"macAddress\":\"fr\",\"network\":{\"id\":\"qlkzme\"},\"nicType\":\"VMXNET2\",\"powerOnBoot\":true,\"virtualNicId\":\"vkxlz\",\"virtualNicName\":\"drf\"}],\"numberOfCores\":1936130104,\"path\":\"alzxwhcan\",\"privateCloudId\":\"ymo\",\"vSphereNetworks\":[\"lwigdivbkbx\",\"omfaj\",\"wasqvdaeyyg\",\"xakjsqzhzb\"],\"vSphereTags\":[\"gims\",\"dxasicddyvv\",\"skgfmocwahpq\"],\"vmwaretools\":\"tjeaahhvjhh\"},\"type\":\"kzyb\"}]}")
+            .toObject(VirtualMachineTemplateListResponse.class);
+        Assertions.assertEquals("chvcyyysfgdo", model.nextLink());
+        Assertions.assertEquals("jeknizshq", model.value().get(0).location());
+        Assertions.assertEquals(910650574, model.value().get(0).amountOfRam());
+        Assertions.assertEquals("lyoupfgfbkju", model.value().get(0).description());
+        Assertions.assertEquals("hgkfmin", model.value().get(0).disks().get(0).controllerId());
+        Assertions.assertEquals(DiskIndependenceMode.INDEPENDENT_PERSISTENT,
+            model.value().get(0).disks().get(0).independenceMode());
+        Assertions.assertEquals(610597873, model.value().get(0).disks().get(0).totalSize());
+        Assertions.assertEquals("zfttsttktlahb", model.value().get(0).disks().get(0).virtualDiskId());
+        Assertions.assertEquals(false, model.value().get(0).exposeToGuestVM());
+        Assertions.assertEquals("xcpjuisavokqdzf", model.value().get(0).nics().get(0).ipAddresses().get(0));
+        Assertions.assertEquals("qqfkuv", model.value().get(0).nics().get(0).macAddress());
+        Assertions.assertEquals("cxkdmligovi", model.value().get(0).nics().get(0).network().id());
+        Assertions.assertEquals(NicType.E1000E, model.value().get(0).nics().get(0).nicType());
+        Assertions.assertEquals(false, model.value().get(0).nics().get(0).powerOnBoot());
+        Assertions.assertEquals("mloazuru", model.value().get(0).nics().get(0).virtualNicId());
+        Assertions.assertEquals(110774994, model.value().get(0).numberOfCores());
+        Assertions.assertEquals("tjuewbcihx", model.value().get(0).path());
+        Assertions.assertEquals("uwhcjyxccybv", model.value().get(0).privateCloudId());
+        Assertions.assertEquals("akkud", model.value().get(0).vSphereNetworks().get(0));
+        Assertions.assertEquals("gwjplmag", model.value().get(0).vSphereTags().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualMachineTemplateListResponse model =
-            new VirtualMachineTemplateListResponse()
-                .withNextLink("sbzkf")
+        VirtualMachineTemplateListResponse model
+            = new VirtualMachineTemplateListResponse().withNextLink("chvcyyysfgdo")
                 .withValue(
-                    Arrays
-                        .asList(
-                            new VirtualMachineTemplateInner()
-                                .withLocation("qi")
-                                .withAmountOfRam(733421396)
-                                .withControllers(Arrays.asList())
-                                .withDescription("yhmlwpaztzp")
-                                .withDisks(Arrays.asList())
-                                .withExposeToGuestVM(true)
-                                .withNics(Arrays.asList())
-                                .withNumberOfCores(802122315)
-                                .withPath("o")
-                                .withPrivateCloudId("xorjaltolmncwsob")
-                                .withVSphereNetworks(Arrays.asList())
-                                .withVSphereTags(Arrays.asList()),
-                            new VirtualMachineTemplateInner()
-                                .withLocation("vxb")
-                                .withAmountOfRam(1945766703)
-                                .withControllers(Arrays.asList())
-                                .withDescription("vcofudfl")
-                                .withDisks(Arrays.asList())
-                                .withExposeToGuestVM(false)
-                                .withNics(Arrays.asList())
-                                .withNumberOfCores(1449495124)
-                                .withPath("hmk")
-                                .withPrivateCloudId("c")
-                                .withVSphereNetworks(Arrays.asList())
-                                .withVSphereTags(Arrays.asList()),
-                            new VirtualMachineTemplateInner()
-                                .withLocation("ifrvtpu")
-                                .withAmountOfRam(2059272755)
-                                .withControllers(Arrays.asList())
-                                .withDescription("n")
-                                .withDisks(Arrays.asList())
-                                .withExposeToGuestVM(false)
-                                .withNics(Arrays.asList())
-                                .withNumberOfCores(1301478988)
-                                .withPath("dcpzfoqo")
-                                .withPrivateCloudId("i")
-                                .withVSphereNetworks(Arrays.asList())
-                                .withVSphereTags(Arrays.asList()),
-                            new VirtualMachineTemplateInner()
-                                .withLocation("iodhkhazxkhnz")
-                                .withAmountOfRam(2078888236)
-                                .withControllers(Arrays.asList())
-                                .withDescription("whkszzcmrvexztvb")
-                                .withDisks(Arrays.asList())
-                                .withExposeToGuestVM(true)
-                                .withNics(Arrays.asList())
-                                .withNumberOfCores(2048944312)
-                                .withPath("uximerqfobw")
-                                .withPrivateCloudId("znkbykutwpfhpagm")
-                                .withVSphereNetworks(Arrays.asList())
-                                .withVSphereTags(Arrays.asList())));
+                    Arrays.asList(
+                        new VirtualMachineTemplateInner().withLocation("jeknizshq")
+                            .withAmountOfRam(910650574)
+                            .withControllers(Arrays.asList(new VirtualDiskController(), new VirtualDiskController()))
+                            .withDescription("lyoupfgfbkju")
+                            .withDisks(Arrays.asList(new VirtualDisk().withControllerId("hgkfmin")
+                                .withIndependenceMode(DiskIndependenceMode.INDEPENDENT_PERSISTENT)
+                                .withTotalSize(610597873)
+                                .withVirtualDiskId("zfttsttktlahb")))
+                            .withExposeToGuestVM(false)
+                            .withNics(
+                                Arrays.asList(
+                                    new VirtualNicInner().withCustomization(new GuestOsnicCustomization())
+                                        .withIpAddresses(
+                                            Arrays.asList("xcpjuisavokqdzf", "azivjlfrqttbajl", "atnwxyiopi"))
+                                        .withMacAddress("qqfkuv")
+                                        .withNetwork(new VirtualNetworkInner().withId("cxkdmligovi"))
+                                        .withNicType(NicType.E1000E)
+                                        .withPowerOnBoot(false)
+                                        .withVirtualNicId("mloazuru"),
+                                    new VirtualNicInner().withCustomization(new GuestOsnicCustomization())
+                                        .withIpAddresses(Arrays.asList("eoybfhjxakvvjgs"))
+                                        .withMacAddress("r")
+                                        .withNetwork(new VirtualNetworkInner().withId("il"))
+                                        .withNicType(NicType.E1000)
+                                        .withPowerOnBoot(false)
+                                        .withVirtualNicId("kgkxn")))
+                            .withNumberOfCores(110774994)
+                            .withPath("tjuewbcihx")
+                            .withPrivateCloudId("uwhcjyxccybv")
+                            .withVSphereNetworks(Arrays.asList("akkud"))
+                            .withVSphereTags(Arrays.asList("gwjplmag", "tcyohpfkyrk", "bdgiogsjk", "nwqjnoba")),
+                        new VirtualMachineTemplateInner().withLocation("fnczdwvvbalx")
+                            .withAmountOfRam(420547781)
+                            .withControllers(Arrays.asList(new VirtualDiskController(), new VirtualDiskController(),
+                                new VirtualDiskController(), new VirtualDiskController()))
+                            .withDescription("fzwiivwzjbhyz")
+                            .withDisks(Arrays.asList(
+                                new VirtualDisk().withControllerId("rkambt")
+                                    .withIndependenceMode(DiskIndependenceMode.INDEPENDENT_PERSISTENT)
+                                    .withTotalSize(752275030)
+                                    .withVirtualDiskId("vmnvu"),
+                                new VirtualDisk().withControllerId("flvestmjlxrrilo")
+                                    .withIndependenceMode(DiskIndependenceMode.INDEPENDENT_PERSISTENT)
+                                    .withTotalSize(646254417)
+                                    .withVirtualDiskId("ewchpxlktwku"),
+                                new VirtualDisk().withControllerId("tqedcgzulwm")
+                                    .withIndependenceMode(DiskIndependenceMode.INDEPENDENT_NONPERSISTENT)
+                                    .withTotalSize(652058818)
+                                    .withVirtualDiskId("zrrjvpgly"),
+                                new VirtualDisk().withControllerId("pryu")
+                                    .withIndependenceMode(DiskIndependenceMode.INDEPENDENT_PERSISTENT)
+                                    .withTotalSize(479918870)
+                                    .withVirtualDiskId("tpzdmovzvfvaawzq")))
+                            .withExposeToGuestVM(false)
+                            .withNics(Arrays
+                                .asList(
+                                    new VirtualNicInner().withCustomization(new GuestOsnicCustomization())
+                                        .withIpAddresses(Arrays.asList("x", "bf", "rclnpkc"))
+                                        .withMacAddress("yzriykhy")
+                                        .withNetwork(new VirtualNetworkInner().withId("wf"))
+                                        .withNicType(NicType.VMXNET3)
+                                        .withPowerOnBoot(false)
+                                        .withVirtualNicId("xqvkjlmxhomdyn"),
+                                    new VirtualNicInner().withCustomization(new GuestOsnicCustomization())
+                                        .withIpAddresses(Arrays.asList("a", "ysdzhez", "wva", "qyuvvfonkp"))
+                                        .withMacAddress("qyikvy")
+                                        .withNetwork(new VirtualNetworkInner().withId("auy"))
+                                        .withNicType(NicType.VMXNET2)
+                                        .withPowerOnBoot(false)
+                                        .withVirtualNicId("mncsttijfybvp"),
+                                    new VirtualNicInner().withCustomization(new GuestOsnicCustomization())
+                                        .withIpAddresses(Arrays.asList("qgnjdgkynscli"))
+                                        .withMacAddress("zvhxnk")
+                                        .withNetwork(new VirtualNetworkInner().withId("mtk"))
+                                        .withNicType(NicType.PCNET32)
+                                        .withPowerOnBoot(false)
+                                        .withVirtualNicId("pnvdxz")))
+                            .withNumberOfCores(559974778)
+                            .withPath("dhlfkqojpykvgt")
+                            .withPrivateCloudId("dcnifmz")
+                            .withVSphereNetworks(Arrays.asList("ymbrnysuxmpraf", "g"))
+                            .withVSphereTags(Arrays.asList("ocxvdfffwafqr", "udaspavehh", "vkbunzozudh", "xg")),
+                        new VirtualMachineTemplateInner().withLocation("srvhmgorffuki")
+                            .withAmountOfRam(2095551263)
+                            .withControllers(Arrays.asList(new VirtualDiskController()))
+                            .withDescription("riaa")
+                            .withDisks(Arrays.asList(
+                                new VirtualDisk().withControllerId("agy")
+                                    .withIndependenceMode(DiskIndependenceMode.PERSISTENT)
+                                    .withTotalSize(846289749)
+                                    .withVirtualDiskId("bylyrfgia"),
+                                new VirtualDisk().withControllerId("zldmozuxy")
+                                    .withIndependenceMode(DiskIndependenceMode.PERSISTENT)
+                                    .withTotalSize(2095359903)
+                                    .withVirtualDiskId("tkad"),
+                                new VirtualDisk().withControllerId("wn")
+                                    .withIndependenceMode(DiskIndependenceMode.INDEPENDENT_PERSISTENT)
+                                    .withTotalSize(268742670)
+                                    .withVirtualDiskId("bugrj"),
+                                new VirtualDisk().withControllerId("cmisofie")
+                                    .withIndependenceMode(DiskIndependenceMode.INDEPENDENT_NONPERSISTENT)
+                                    .withTotalSize(860547851)
+                                    .withVirtualDiskId("ojyqdhcuplcplcw")))
+                            .withExposeToGuestVM(true)
+                            .withNics(
+                                Arrays.asList(
+                                    new VirtualNicInner().withCustomization(new GuestOsnicCustomization())
+                                        .withIpAddresses(
+                                            Arrays.asList("mwotey", "wcluqovekqvgq", "uwifzmpjwyiv", "ikf"))
+                                        .withMacAddress("vhrfsphuagrt")
+                                        .withNetwork(new VirtualNetworkInner().withId("ikteusqczkvyk"))
+                                        .withNicType(NicType.VMXNET)
+                                        .withPowerOnBoot(true)
+                                        .withVirtualNicId("jaffmmfblcqcuu"),
+                                    new VirtualNicInner().withCustomization(new GuestOsnicCustomization())
+                                        .withIpAddresses(Arrays.asList("gdslqxihhrmoo", "z"))
+                                        .withMacAddress("eypxiutcxapzhyr")
+                                        .withNetwork(new VirtualNetworkInner().withId("etoge"))
+                                        .withNicType(NicType.E1000E)
+                                        .withPowerOnBoot(true)
+                                        .withVirtualNicId("lhvnhlab"),
+                                    new VirtualNicInner().withCustomization(new GuestOsnicCustomization())
+                                        .withIpAddresses(
+                                            Arrays.asList("jb", "rgaehvvibrxjj", "toqbeitpkxztmoob", "lftidgfcwqmpim"))
+                                        .withMacAddress("xzhemjyh")
+                                        .withNetwork(new VirtualNetworkInner().withId("hujswtwkozzwcul"))
+                                        .withNicType(NicType.PCNET32)
+                                        .withPowerOnBoot(false)
+                                        .withVirtualNicId("fajnjwltlwtjjguk"),
+                                    new VirtualNicInner()
+                                        .withCustomization(new GuestOsnicCustomization())
+                                        .withIpAddresses(Arrays.asList("aimlnwiaaom", "l"))
+                                        .withMacAddress("azul")
+                                        .withNetwork(new VirtualNetworkInner().withId("sethwwn"))
+                                        .withNicType(NicType.E1000E)
+                                        .withPowerOnBoot(false)
+                                        .withVirtualNicId("zswpchwa")))
+                            .withNumberOfCores(793996513)
+                            .withPath("fewetwlyxgncx")
+                            .withPrivateCloudId("kxhdjhlimmbcx")
+                            .withVSphereNetworks(
+                                Arrays.asList("cporxvxcjz", "qizxfpxtgqscjavf", "juhdqazkmtgguwpi", "r"))
+                            .withVSphereTags(Arrays.asList("ivmmghfcfiwrxgk", "euvyinzqodfvpgs")),
+                        new VirtualMachineTemplateInner().withLocation("a")
+                            .withAmountOfRam(161082288)
+                            .withControllers(Arrays.asList(new VirtualDiskController(), new VirtualDiskController()))
+                            .withDescription("ohyuemslynsq")
+                            .withDisks(Arrays.asList(
+                                new VirtualDisk().withControllerId("foobrlttyms")
+                                    .withIndependenceMode(DiskIndependenceMode.INDEPENDENT_NONPERSISTENT)
+                                    .withTotalSize(657212299)
+                                    .withVirtualDiskId("qdnfwqzdz"),
+                                new VirtualDisk().withControllerId("hqlyvijo")
+                                    .withIndependenceMode(DiskIndependenceMode.INDEPENDENT_NONPERSISTENT)
+                                    .withTotalSize(316735321)
+                                    .withVirtualDiskId("kxoyzunbixxr")))
+                            .withExposeToGuestVM(false)
+                            .withNics(
+                                Arrays.asList(new VirtualNicInner().withCustomization(new GuestOsnicCustomization())
+                                    .withIpAddresses(Arrays.asList("mpdnqqskawa", "qvmmbn"))
+                                    .withMacAddress("fr")
+                                    .withNetwork(new VirtualNetworkInner().withId("qlkzme"))
+                                    .withNicType(NicType.VMXNET2)
+                                    .withPowerOnBoot(true)
+                                    .withVirtualNicId("vkxlz")))
+                            .withNumberOfCores(1936130104)
+                            .withPath("alzxwhcan")
+                            .withPrivateCloudId("ymo")
+                            .withVSphereNetworks(Arrays.asList("lwigdivbkbx", "omfaj", "wasqvdaeyyg", "xakjsqzhzb"))
+                            .withVSphereTags(Arrays.asList("gims", "dxasicddyvv", "skgfmocwahpq"))));
         model = BinaryData.fromObject(model).toObject(VirtualMachineTemplateListResponse.class);
-        Assertions.assertEquals("sbzkf", model.nextLink());
-        Assertions.assertEquals("qi", model.value().get(0).location());
-        Assertions.assertEquals(733421396, model.value().get(0).amountOfRam());
-        Assertions.assertEquals("yhmlwpaztzp", model.value().get(0).description());
-        Assertions.assertEquals(true, model.value().get(0).exposeToGuestVM());
-        Assertions.assertEquals(802122315, model.value().get(0).numberOfCores());
-        Assertions.assertEquals("o", model.value().get(0).path());
-        Assertions.assertEquals("xorjaltolmncwsob", model.value().get(0).privateCloudId());
+        Assertions.assertEquals("chvcyyysfgdo", model.nextLink());
+        Assertions.assertEquals("jeknizshq", model.value().get(0).location());
+        Assertions.assertEquals(910650574, model.value().get(0).amountOfRam());
+        Assertions.assertEquals("lyoupfgfbkju", model.value().get(0).description());
+        Assertions.assertEquals("hgkfmin", model.value().get(0).disks().get(0).controllerId());
+        Assertions.assertEquals(DiskIndependenceMode.INDEPENDENT_PERSISTENT,
+            model.value().get(0).disks().get(0).independenceMode());
+        Assertions.assertEquals(610597873, model.value().get(0).disks().get(0).totalSize());
+        Assertions.assertEquals("zfttsttktlahb", model.value().get(0).disks().get(0).virtualDiskId());
+        Assertions.assertEquals(false, model.value().get(0).exposeToGuestVM());
+        Assertions.assertEquals("xcpjuisavokqdzf", model.value().get(0).nics().get(0).ipAddresses().get(0));
+        Assertions.assertEquals("qqfkuv", model.value().get(0).nics().get(0).macAddress());
+        Assertions.assertEquals("cxkdmligovi", model.value().get(0).nics().get(0).network().id());
+        Assertions.assertEquals(NicType.E1000E, model.value().get(0).nics().get(0).nicType());
+        Assertions.assertEquals(false, model.value().get(0).nics().get(0).powerOnBoot());
+        Assertions.assertEquals("mloazuru", model.value().get(0).nics().get(0).virtualNicId());
+        Assertions.assertEquals(110774994, model.value().get(0).numberOfCores());
+        Assertions.assertEquals("tjuewbcihx", model.value().get(0).path());
+        Assertions.assertEquals("uwhcjyxccybv", model.value().get(0).privateCloudId());
+        Assertions.assertEquals("akkud", model.value().get(0).vSphereNetworks().get(0));
+        Assertions.assertEquals("gwjplmag", model.value().get(0).vSphereTags().get(0));
     }
 }

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** IP address allocation method. */
+/**
+ * IP address allocation method.
+ */
 public final class GuestOsnicCustomizationAllocation extends ExpandableStringEnum<GuestOsnicCustomizationAllocation> {
-    /** Static value static for GuestOsnicCustomizationAllocation. */
+    /**
+     * Static value static for GuestOsnicCustomizationAllocation.
+     */
     public static final GuestOsnicCustomizationAllocation STATIC = fromString("static");
 
-    /** Static value dynamic for GuestOsnicCustomizationAllocation. */
+    /**
+     * Static value dynamic for GuestOsnicCustomizationAllocation.
+     */
     public static final GuestOsnicCustomizationAllocation DYNAMIC = fromString("dynamic");
 
     /**
      * Creates a new instance of GuestOsnicCustomizationAllocation value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class GuestOsnicCustomizationAllocation extends ExpandableStringEnu
 
     /**
      * Creates or finds a GuestOsnicCustomizationAllocation from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GuestOsnicCustomizationAllocation.
      */
-    @JsonCreator
     public static GuestOsnicCustomizationAllocation fromString(String name) {
         return fromString(name, GuestOsnicCustomizationAllocation.class);
     }
 
     /**
      * Gets known GuestOsnicCustomizationAllocation values.
-     *
+     * 
      * @return known GuestOsnicCustomizationAllocation values.
      */
     public static Collection<GuestOsnicCustomizationAllocation> values() {
