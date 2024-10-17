@@ -22,12 +22,4 @@ public class GetPropertiesTest extends AbstractDownloadTest<BlobPerfStressOption
     public Mono<Void> runAsync() {
         return blobAsyncClient.getProperties().then();
     }
-
-    @Override
-    public Mono<Void> globalSetupAsync() {
-        // Setup small data since size is not dependent on the getProperties
-        byte[] smallBlobBytes = "default".getBytes(StandardCharsets.UTF_8);
-        return super.globalSetupAsync()
-            .then(blobAsyncClient.upload(Flux.just(ByteBuffer.wrap(smallBlobBytes)), null, true).then());
-    }
 }
