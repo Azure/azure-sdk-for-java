@@ -13,11 +13,13 @@ import com.azure.resourcemanager.mixedreality.fluent.models.AccountKeysInner;
 import com.azure.resourcemanager.mixedreality.fluent.models.SpatialAnchorsAccountInner;
 import com.azure.resourcemanager.mixedreality.models.AccountKeyRegenerateRequest;
 
-/** An instance of this class provides access to all the operations defined in SpatialAnchorsAccountsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SpatialAnchorsAccountsClient.
+ */
 public interface SpatialAnchorsAccountsClient {
     /**
      * List Spatial Anchors Accounts by Subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
@@ -27,7 +29,7 @@ public interface SpatialAnchorsAccountsClient {
 
     /**
      * List Spatial Anchors Accounts by Subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -39,7 +41,7 @@ public interface SpatialAnchorsAccountsClient {
 
     /**
      * List Resources by Resource Group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -51,7 +53,7 @@ public interface SpatialAnchorsAccountsClient {
 
     /**
      * List Resources by Resource Group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -64,7 +66,7 @@ public interface SpatialAnchorsAccountsClient {
 
     /**
      * Delete a Spatial Anchors Account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
      * @param context The context to associate with this operation.
@@ -78,7 +80,7 @@ public interface SpatialAnchorsAccountsClient {
 
     /**
      * Delete a Spatial Anchors Account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -90,7 +92,7 @@ public interface SpatialAnchorsAccountsClient {
 
     /**
      * Retrieve a Spatial Anchors Account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
      * @param context The context to associate with this operation.
@@ -100,12 +102,12 @@ public interface SpatialAnchorsAccountsClient {
      * @return spatialAnchorsAccount Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SpatialAnchorsAccountInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<SpatialAnchorsAccountInner> getByResourceGroupWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Retrieve a Spatial Anchors Account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -118,7 +120,7 @@ public interface SpatialAnchorsAccountsClient {
 
     /**
      * Updating a Spatial Anchors Account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
      * @param spatialAnchorsAccount Spatial Anchors Account parameter.
@@ -129,15 +131,12 @@ public interface SpatialAnchorsAccountsClient {
      * @return spatialAnchorsAccount Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SpatialAnchorsAccountInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        SpatialAnchorsAccountInner spatialAnchorsAccount,
-        Context context);
+    Response<SpatialAnchorsAccountInner> updateWithResponse(String resourceGroupName, String accountName,
+        SpatialAnchorsAccountInner spatialAnchorsAccount, Context context);
 
     /**
      * Updating a Spatial Anchors Account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
      * @param spatialAnchorsAccount Spatial Anchors Account parameter.
@@ -147,12 +146,12 @@ public interface SpatialAnchorsAccountsClient {
      * @return spatialAnchorsAccount Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SpatialAnchorsAccountInner update(
-        String resourceGroupName, String accountName, SpatialAnchorsAccountInner spatialAnchorsAccount);
+    SpatialAnchorsAccountInner update(String resourceGroupName, String accountName,
+        SpatialAnchorsAccountInner spatialAnchorsAccount);
 
     /**
      * Creating or Updating a Spatial Anchors Account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
      * @param spatialAnchorsAccount Spatial Anchors Account parameter.
@@ -163,15 +162,12 @@ public interface SpatialAnchorsAccountsClient {
      * @return spatialAnchorsAccount Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SpatialAnchorsAccountInner> createWithResponse(
-        String resourceGroupName,
-        String accountName,
-        SpatialAnchorsAccountInner spatialAnchorsAccount,
-        Context context);
+    Response<SpatialAnchorsAccountInner> createWithResponse(String resourceGroupName, String accountName,
+        SpatialAnchorsAccountInner spatialAnchorsAccount, Context context);
 
     /**
      * Creating or Updating a Spatial Anchors Account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
      * @param spatialAnchorsAccount Spatial Anchors Account parameter.
@@ -181,12 +177,12 @@ public interface SpatialAnchorsAccountsClient {
      * @return spatialAnchorsAccount Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SpatialAnchorsAccountInner create(
-        String resourceGroupName, String accountName, SpatialAnchorsAccountInner spatialAnchorsAccount);
+    SpatialAnchorsAccountInner create(String resourceGroupName, String accountName,
+        SpatialAnchorsAccountInner spatialAnchorsAccount);
 
     /**
      * List Both of the 2 Keys of a Spatial Anchors Account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
      * @param context The context to associate with this operation.
@@ -200,7 +196,7 @@ public interface SpatialAnchorsAccountsClient {
 
     /**
      * List Both of the 2 Keys of a Spatial Anchors Account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -213,7 +209,7 @@ public interface SpatialAnchorsAccountsClient {
 
     /**
      * Regenerate specified Key of a Spatial Anchors Account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
      * @param regenerate Required information for key regeneration.
@@ -224,12 +220,12 @@ public interface SpatialAnchorsAccountsClient {
      * @return developer Keys of account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccountKeysInner> regenerateKeysWithResponse(
-        String resourceGroupName, String accountName, AccountKeyRegenerateRequest regenerate, Context context);
+    Response<AccountKeysInner> regenerateKeysWithResponse(String resourceGroupName, String accountName,
+        AccountKeyRegenerateRequest regenerate, Context context);
 
     /**
      * Regenerate specified Key of a Spatial Anchors Account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
      * @param regenerate Required information for key regeneration.
@@ -239,6 +235,6 @@ public interface SpatialAnchorsAccountsClient {
      * @return developer Keys of account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccountKeysInner regenerateKeys(
-        String resourceGroupName, String accountName, AccountKeyRegenerateRequest regenerate);
+    AccountKeysInner regenerateKeys(String resourceGroupName, String accountName,
+        AccountKeyRegenerateRequest regenerate);
 }

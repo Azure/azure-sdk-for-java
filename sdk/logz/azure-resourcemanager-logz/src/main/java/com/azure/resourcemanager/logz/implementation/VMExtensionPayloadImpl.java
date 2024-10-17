@@ -12,8 +12,8 @@ public final class VMExtensionPayloadImpl implements VMExtensionPayload {
 
     private final com.azure.resourcemanager.logz.LogzManager serviceManager;
 
-    VMExtensionPayloadImpl(
-        VMExtensionPayloadInner innerObject, com.azure.resourcemanager.logz.LogzManager serviceManager) {
+    VMExtensionPayloadImpl(VMExtensionPayloadInner innerObject,
+        com.azure.resourcemanager.logz.LogzManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

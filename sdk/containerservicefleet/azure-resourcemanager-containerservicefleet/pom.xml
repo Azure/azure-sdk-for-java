@@ -14,11 +14,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-containerservicefleet</artifactId>
-  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerservicefleet;current} -->
+  <version>1.2.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerservicefleet;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for ContainerServiceFleet Management</name>
-  <description>This package contains Microsoft Azure SDK for ContainerServiceFleet Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Azure Kubernetes Fleet Manager Client. Package tag package-2024-04.</description>
+  <description>This package contains Microsoft Azure SDK for ContainerServiceFleet Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Azure Kubernetes Fleet Manager Client. Package tag package-2024-05-preview.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -45,6 +45,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
+    <revapi.skip>true</revapi.skip>
+    <spotless.skip>false</spotless.skip>
   </properties>
   <dependencies>
     <dependency>
@@ -62,12 +64,6 @@
       <artifactId>azure-core-test</artifactId>
       <version>1.27.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-http-jdk-httpclient</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

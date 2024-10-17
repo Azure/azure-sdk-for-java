@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.mixedreality.generated;
 
-/** Samples for RemoteRenderingAccounts Delete. */
+/**
+ * Samples for RemoteRenderingAccounts Delete.
+ */
 public final class RemoteRenderingAccountsDeleteSamples {
     /*
-     * x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/remote-rendering/Delete.json
+     * x-ms-original-file:
+     * specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/remote-rendering/
+     * Delete.json
      */
     /**
      * Sample code: Delete remote rendering account.
-     *
+     * 
      * @param manager Entry point to MixedRealityManager.
      */
-    public static void deleteRemoteRenderingAccount(
-        com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
-        manager
-            .remoteRenderingAccounts()
+    public static void
+        deleteRemoteRenderingAccount(com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
+        manager.remoteRenderingAccounts()
             .deleteByResourceGroupWithResponse("MyResourceGroup", "MyAccount", com.azure.core.util.Context.NONE);
     }
 }

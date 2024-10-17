@@ -5,39 +5,42 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The swagger external documentation. */
+/**
+ * The swagger external documentation.
+ */
 @Fluent
-public final class SwaggerExternalDocumentation {
+public final class SwaggerExternalDocumentation implements JsonSerializable<SwaggerExternalDocumentation> {
     /*
      * The document description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The documentation Uri.
      */
-    @JsonProperty(value = "uri")
     private String uri;
 
     /*
      * The vendor extensions.
      */
-    @JsonProperty(value = "extensions")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> extensions;
 
-    /** Creates an instance of SwaggerExternalDocumentation class. */
+    /**
+     * Creates an instance of SwaggerExternalDocumentation class.
+     */
     public SwaggerExternalDocumentation() {
     }
 
     /**
      * Get the description property: The document description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -46,7 +49,7 @@ public final class SwaggerExternalDocumentation {
 
     /**
      * Set the description property: The document description.
-     *
+     * 
      * @param description the description value to set.
      * @return the SwaggerExternalDocumentation object itself.
      */
@@ -57,7 +60,7 @@ public final class SwaggerExternalDocumentation {
 
     /**
      * Get the uri property: The documentation Uri.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -66,7 +69,7 @@ public final class SwaggerExternalDocumentation {
 
     /**
      * Set the uri property: The documentation Uri.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the SwaggerExternalDocumentation object itself.
      */
@@ -77,7 +80,7 @@ public final class SwaggerExternalDocumentation {
 
     /**
      * Get the extensions property: The vendor extensions.
-     *
+     * 
      * @return the extensions value.
      */
     public Map<String, Object> extensions() {
@@ -86,7 +89,7 @@ public final class SwaggerExternalDocumentation {
 
     /**
      * Set the extensions property: The vendor extensions.
-     *
+     * 
      * @param extensions the extensions value to set.
      * @return the SwaggerExternalDocumentation object itself.
      */
@@ -97,9 +100,52 @@ public final class SwaggerExternalDocumentation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeMapField("extensions", this.extensions, (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SwaggerExternalDocumentation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SwaggerExternalDocumentation if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SwaggerExternalDocumentation.
+     */
+    public static SwaggerExternalDocumentation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SwaggerExternalDocumentation deserializedSwaggerExternalDocumentation = new SwaggerExternalDocumentation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedSwaggerExternalDocumentation.description = reader.getString();
+                } else if ("uri".equals(fieldName)) {
+                    deserializedSwaggerExternalDocumentation.uri = reader.getString();
+                } else if ("extensions".equals(fieldName)) {
+                    Map<String, Object> extensions = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedSwaggerExternalDocumentation.extensions = extensions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSwaggerExternalDocumentation;
+        });
     }
 }

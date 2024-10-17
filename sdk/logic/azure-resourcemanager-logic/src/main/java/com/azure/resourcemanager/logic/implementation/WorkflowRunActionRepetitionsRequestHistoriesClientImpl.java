@@ -36,24 +36,24 @@ import reactor.core.publisher.Mono;
  */
 public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
     implements WorkflowRunActionRepetitionsRequestHistoriesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkflowRunActionRepetitionsRequestHistoriesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final LogicManagementClientImpl client;
 
     /**
      * Initializes an instance of WorkflowRunActionRepetitionsRequestHistoriesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkflowRunActionRepetitionsRequestHistoriesClientImpl(LogicManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    WorkflowRunActionRepetitionsRequestHistoriesService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(WorkflowRunActionRepetitionsRequestHistoriesService.class,
+            client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -64,58 +64,41 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "LogicManagementClien")
     public interface WorkflowRunActionRepetitionsRequestHistoriesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows"
-                + "/{workflowName}/runs/{runName}/actions/{actionName}/repetitions/{repetitionName}/requestHistories")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions/{repetitionName}/requestHistories")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RequestHistoryListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RequestHistoryListResult>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workflowName") String workflowName,
-            @PathParam("runName") String runName,
-            @PathParam("actionName") String actionName,
-            @PathParam("repetitionName") String repetitionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workflowName") String workflowName,
+            @PathParam("runName") String runName, @PathParam("actionName") String actionName,
+            @PathParam("repetitionName") String repetitionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows"
-                + "/{workflowName}/runs/{runName}/actions/{actionName}/repetitions/{repetitionName}/requestHistories"
-                + "/{requestHistoryName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions/{repetitionName}/requestHistories/{requestHistoryName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RequestHistoryInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RequestHistoryInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workflowName") String workflowName,
-            @PathParam("runName") String runName,
-            @PathParam("actionName") String actionName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workflowName") String workflowName,
+            @PathParam("runName") String runName, @PathParam("actionName") String actionName,
             @PathParam("repetitionName") String repetitionName,
-            @PathParam("requestHistoryName") String requestHistoryName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("requestHistoryName") String requestHistoryName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RequestHistoryListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List a workflow run repetition request history.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -125,22 +108,18 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of workflow request histories along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RequestHistoryInner>> listSinglePageAsync(
-        String resourceGroupName, String workflowName, String runName, String actionName, String repetitionName) {
+    private Mono<PagedResponse<RequestHistoryInner>> listSinglePageAsync(String resourceGroupName, String workflowName,
+        String runName, String actionName, String repetitionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -161,34 +140,16 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workflowName,
-                            runName,
-                            actionName,
-                            repetitionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<RequestHistoryInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    workflowName, runName, actionName, repetitionName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<RequestHistoryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List a workflow run repetition request history.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -199,27 +160,18 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of workflow request histories along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RequestHistoryInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        Context context) {
+    private Mono<PagedResponse<RequestHistoryInner>> listSinglePageAsync(String resourceGroupName, String workflowName,
+        String runName, String actionName, String repetitionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -240,31 +192,15 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workflowName,
-                runName,
-                actionName,
-                repetitionName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workflowName, runName,
+                actionName, repetitionName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List a workflow run repetition request history.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -276,8 +212,8 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
      * @return the list of workflow request histories as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RequestHistoryInner> listAsync(
-        String resourceGroupName, String workflowName, String runName, String actionName, String repetitionName) {
+    private PagedFlux<RequestHistoryInner> listAsync(String resourceGroupName, String workflowName, String runName,
+        String actionName, String repetitionName) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workflowName, runName, actionName, repetitionName),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -285,7 +221,7 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
 
     /**
      * List a workflow run repetition request history.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -298,13 +234,8 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
      * @return the list of workflow request histories as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RequestHistoryInner> listAsync(
-        String resourceGroupName,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        Context context) {
+    private PagedFlux<RequestHistoryInner> listAsync(String resourceGroupName, String workflowName, String runName,
+        String actionName, String repetitionName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workflowName, runName, actionName, repetitionName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -312,7 +243,7 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
 
     /**
      * List a workflow run repetition request history.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -324,14 +255,14 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
      * @return the list of workflow request histories as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RequestHistoryInner> list(
-        String resourceGroupName, String workflowName, String runName, String actionName, String repetitionName) {
+    public PagedIterable<RequestHistoryInner> list(String resourceGroupName, String workflowName, String runName,
+        String actionName, String repetitionName) {
         return new PagedIterable<>(listAsync(resourceGroupName, workflowName, runName, actionName, repetitionName));
     }
 
     /**
      * List a workflow run repetition request history.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -344,20 +275,15 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
      * @return the list of workflow request histories as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RequestHistoryInner> list(
-        String resourceGroupName,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        Context context) {
+    public PagedIterable<RequestHistoryInner> list(String resourceGroupName, String workflowName, String runName,
+        String actionName, String repetitionName, Context context) {
         return new PagedIterable<>(
             listAsync(resourceGroupName, workflowName, runName, actionName, repetitionName, context));
     }
 
     /**
      * Gets a workflow run repetition request history.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -367,28 +293,19 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run repetition request history along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a workflow run repetition request history along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RequestHistoryInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        String requestHistoryName) {
+    private Mono<Response<RequestHistoryInner>> getWithResponseAsync(String resourceGroupName, String workflowName,
+        String runName, String actionName, String repetitionName, String requestHistoryName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -412,27 +329,15 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workflowName,
-                            runName,
-                            actionName,
-                            repetitionName,
-                            requestHistoryName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workflowName, runName, actionName, repetitionName, requestHistoryName,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a workflow run repetition request history.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -443,29 +348,19 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run repetition request history along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a workflow run repetition request history along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RequestHistoryInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        String requestHistoryName,
-        Context context) {
+    private Mono<Response<RequestHistoryInner>> getWithResponseAsync(String resourceGroupName, String workflowName,
+        String runName, String actionName, String repetitionName, String requestHistoryName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -489,24 +384,13 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workflowName,
-                runName,
-                actionName,
-                repetitionName,
-                requestHistoryName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workflowName,
+            runName, actionName, repetitionName, requestHistoryName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a workflow run repetition request history.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -519,21 +403,15 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
      * @return a workflow run repetition request history on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RequestHistoryInner> getAsync(
-        String resourceGroupName,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        String requestHistoryName) {
-        return getWithResponseAsync(
-                resourceGroupName, workflowName, runName, actionName, repetitionName, requestHistoryName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<RequestHistoryInner> getAsync(String resourceGroupName, String workflowName, String runName,
+        String actionName, String repetitionName, String requestHistoryName) {
+        return getWithResponseAsync(resourceGroupName, workflowName, runName, actionName, repetitionName,
+            requestHistoryName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a workflow run repetition request history.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -547,22 +425,15 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
      * @return a workflow run repetition request history along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RequestHistoryInner> getWithResponse(
-        String resourceGroupName,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        String requestHistoryName,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName, workflowName, runName, actionName, repetitionName, requestHistoryName, context)
-            .block();
+    public Response<RequestHistoryInner> getWithResponse(String resourceGroupName, String workflowName, String runName,
+        String actionName, String repetitionName, String requestHistoryName, Context context) {
+        return getWithResponseAsync(resourceGroupName, workflowName, runName, actionName, repetitionName,
+            requestHistoryName, context).block();
     }
 
     /**
      * Gets a workflow run repetition request history.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -575,28 +446,21 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
      * @return a workflow run repetition request history.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RequestHistoryInner get(
-        String resourceGroupName,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        String requestHistoryName) {
-        return getWithResponse(
-                resourceGroupName, workflowName, runName, actionName, repetitionName, requestHistoryName, Context.NONE)
-            .getValue();
+    public RequestHistoryInner get(String resourceGroupName, String workflowName, String runName, String actionName,
+        String repetitionName, String requestHistoryName) {
+        return getWithResponse(resourceGroupName, workflowName, runName, actionName, repetitionName, requestHistoryName,
+            Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of workflow request histories along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RequestHistoryInner>> listNextSinglePageAsync(String nextLink) {
@@ -604,37 +468,26 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RequestHistoryInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<RequestHistoryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of workflow request histories along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RequestHistoryInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -642,23 +495,13 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

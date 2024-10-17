@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.hybridkubernetes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Represents the connectivity status of the connected cluster. */
+/**
+ * Represents the connectivity status of the connected cluster.
+ */
 public final class ConnectivityStatus extends ExpandableStringEnum<ConnectivityStatus> {
-    /** Static value Connecting for ConnectivityStatus. */
+    /**
+     * Static value Connecting for ConnectivityStatus.
+     */
     public static final ConnectivityStatus CONNECTING = fromString("Connecting");
 
-    /** Static value Connected for ConnectivityStatus. */
+    /**
+     * Static value Connected for ConnectivityStatus.
+     */
     public static final ConnectivityStatus CONNECTED = fromString("Connected");
 
-    /** Static value Offline for ConnectivityStatus. */
+    /**
+     * Static value Offline for ConnectivityStatus.
+     */
     public static final ConnectivityStatus OFFLINE = fromString("Offline");
 
-    /** Static value Expired for ConnectivityStatus. */
+    /**
+     * Static value Expired for ConnectivityStatus.
+     */
     public static final ConnectivityStatus EXPIRED = fromString("Expired");
 
     /**
      * Creates a new instance of ConnectivityStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class ConnectivityStatus extends ExpandableStringEnum<ConnectivityS
 
     /**
      * Creates or finds a ConnectivityStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ConnectivityStatus.
      */
-    @JsonCreator
     public static ConnectivityStatus fromString(String name) {
         return fromString(name, ConnectivityStatus.class);
     }
 
     /**
      * Gets known ConnectivityStatus values.
-     *
+     * 
      * @return known ConnectivityStatus values.
      */
     public static Collection<ConnectivityStatus> values() {

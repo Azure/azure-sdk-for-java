@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.mixedreality.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** serial of key to be regenerated. */
+/**
+ * serial of key to be regenerated.
+ */
 public enum Serial {
-    /** Enum value 1. */
+    /**
+     * Enum value 1.
+     */
     ONE(1),
 
-    /** Enum value 2. */
+    /**
+     * Enum value 2.
+     */
     TWO(2);
 
-    /** The actual serialized value for a Serial instance. */
+    /**
+     * The actual serialized value for a Serial instance.
+     */
     private final int value;
 
     Serial(int value) {
@@ -24,11 +29,10 @@ public enum Serial {
 
     /**
      * Parses a serialized value to a Serial instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed Serial object, or null if unable to parse.
      */
-    @JsonCreator
     public static Serial fromInt(int value) {
         Serial[] items = Serial.values();
         for (Serial item : items) {
@@ -41,10 +45,9 @@ public enum Serial {
 
     /**
      * De-serializes the instance to int value.
-     *
+     * 
      * @return the int value.
      */
-    @JsonValue
     public int toInt() {
         return this.value;
     }

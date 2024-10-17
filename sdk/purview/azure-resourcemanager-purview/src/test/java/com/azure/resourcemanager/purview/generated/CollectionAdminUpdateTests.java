@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class CollectionAdminUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CollectionAdminUpdate model =
-            BinaryData.fromString("{\"objectId\":\"xxhejjzzvd\"}").toObject(CollectionAdminUpdate.class);
-        Assertions.assertEquals("xxhejjzzvd", model.objectId());
+        CollectionAdminUpdate model
+            = BinaryData.fromString("{\"objectId\":\"wutttxfvjrbi\"}").toObject(CollectionAdminUpdate.class);
+        Assertions.assertEquals("wutttxfvjrbi", model.objectId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CollectionAdminUpdate model = new CollectionAdminUpdate().withObjectId("xxhejjzzvd");
+        CollectionAdminUpdate model = new CollectionAdminUpdate().withObjectId("wutttxfvjrbi");
         model = BinaryData.fromObject(model).toObject(CollectionAdminUpdate.class);
-        Assertions.assertEquals("xxhejjzzvd", model.objectId());
+        Assertions.assertEquals("wutttxfvjrbi", model.objectId());
     }
 }

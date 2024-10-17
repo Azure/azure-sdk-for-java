@@ -7,32 +7,34 @@ package com.azure.resourcemanager.storageimportexport.models;
 import com.azure.resourcemanager.storageimportexport.fluent.models.LocationInner;
 import java.util.List;
 
-/** An immutable client-side representation of Location. */
+/**
+ * An immutable client-side representation of Location.
+ */
 public interface Location {
     /**
      * Gets the id property: Specifies the resource identifier of the location.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: Specifies the name of the location. Use List Locations to get all supported locations.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: Specifies the type of the location.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the recipientName property: The recipient name to use when shipping the drives to the Azure data center.
-     *
+     * 
      * @return the recipientName value.
      */
     String recipientName();
@@ -40,7 +42,7 @@ public interface Location {
     /**
      * Gets the streetAddress1 property: The first line of the street address to use when shipping the drives to the
      * Azure data center.
-     *
+     * 
      * @return the streetAddress1 value.
      */
     String streetAddress1();
@@ -48,14 +50,14 @@ public interface Location {
     /**
      * Gets the streetAddress2 property: The second line of the street address to use when shipping the drives to the
      * Azure data center.
-     *
+     * 
      * @return the streetAddress2 value.
      */
     String streetAddress2();
 
     /**
      * Gets the city property: The city name to use when shipping the drives to the Azure data center.
-     *
+     * 
      * @return the city value.
      */
     String city();
@@ -63,14 +65,14 @@ public interface Location {
     /**
      * Gets the stateOrProvince property: The state or province to use when shipping the drives to the Azure data
      * center.
-     *
+     * 
      * @return the stateOrProvince value.
      */
     String stateOrProvince();
 
     /**
      * Gets the postalCode property: The postal code to use when shipping the drives to the Azure data center.
-     *
+     * 
      * @return the postalCode value.
      */
     String postalCode();
@@ -78,14 +80,14 @@ public interface Location {
     /**
      * Gets the countryOrRegion property: The country or region to use when shipping the drives to the Azure data
      * center.
-     *
+     * 
      * @return the countryOrRegion value.
      */
     String countryOrRegion();
 
     /**
      * Gets the phone property: The phone number for the Azure data center.
-     *
+     * 
      * @return the phone value.
      */
     String phone();
@@ -93,14 +95,14 @@ public interface Location {
     /**
      * Gets the additionalShippingInformation property: Additional shipping information for customer, specific to
      * datacenter to which customer should send their disks.
-     *
+     * 
      * @return the additionalShippingInformation value.
      */
     String additionalShippingInformation();
 
     /**
      * Gets the supportedCarriers property: A list of carriers that are supported at this location.
-     *
+     * 
      * @return the supportedCarriers value.
      */
     List<String> supportedCarriers();
@@ -109,14 +111,14 @@ public interface Location {
      * Gets the alternateLocations property: A list of location IDs that should be used to ship shipping drives to for
      * jobs created against the current location. If the current location is active, it will be part of the list. If it
      * is temporarily closed due to maintenance, this list may contain other locations.
-     *
+     * 
      * @return the alternateLocations value.
      */
     List<String> alternateLocations();
 
     /**
      * Gets the inner com.azure.resourcemanager.storageimportexport.fluent.models.LocationInner object.
-     *
+     * 
      * @return the inner object.
      */
     LocationInner innerModel();

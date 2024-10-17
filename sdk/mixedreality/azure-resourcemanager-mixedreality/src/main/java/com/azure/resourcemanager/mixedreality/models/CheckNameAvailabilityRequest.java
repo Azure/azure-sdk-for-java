@@ -6,30 +6,36 @@ package com.azure.resourcemanager.mixedreality.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Check Name Availability Request. */
+/**
+ * Check Name Availability Request.
+ */
 @Fluent
-public final class CheckNameAvailabilityRequest {
+public final class CheckNameAvailabilityRequest implements JsonSerializable<CheckNameAvailabilityRequest> {
     /*
      * Resource Name To Verify
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Fully qualified resource type which includes provider namespace
      */
-    @JsonProperty(value = "type", required = true)
     private String type;
 
-    /** Creates an instance of CheckNameAvailabilityRequest class. */
+    /**
+     * Creates an instance of CheckNameAvailabilityRequest class.
+     */
     public CheckNameAvailabilityRequest() {
     }
 
     /**
      * Get the name property: Resource Name To Verify.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +44,7 @@ public final class CheckNameAvailabilityRequest {
 
     /**
      * Set the name property: Resource Name To Verify.
-     *
+     * 
      * @param name the name value to set.
      * @return the CheckNameAvailabilityRequest object itself.
      */
@@ -49,7 +55,7 @@ public final class CheckNameAvailabilityRequest {
 
     /**
      * Get the type property: Fully qualified resource type which includes provider namespace.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -58,7 +64,7 @@ public final class CheckNameAvailabilityRequest {
 
     /**
      * Set the type property: Fully qualified resource type which includes provider namespace.
-     *
+     * 
      * @param type the type value to set.
      * @return the CheckNameAvailabilityRequest object itself.
      */
@@ -69,23 +75,61 @@ public final class CheckNameAvailabilityRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model CheckNameAvailabilityRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model CheckNameAvailabilityRequest"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property type in model CheckNameAvailabilityRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property type in model CheckNameAvailabilityRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CheckNameAvailabilityRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckNameAvailabilityRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckNameAvailabilityRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CheckNameAvailabilityRequest.
+     */
+    public static CheckNameAvailabilityRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckNameAvailabilityRequest deserializedCheckNameAvailabilityRequest = new CheckNameAvailabilityRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityRequest.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityRequest.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckNameAvailabilityRequest;
+        });
+    }
 }

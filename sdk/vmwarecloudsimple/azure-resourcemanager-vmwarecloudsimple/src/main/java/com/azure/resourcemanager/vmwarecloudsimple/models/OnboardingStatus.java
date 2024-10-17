@@ -4,24 +4,33 @@
 
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** indicates whether account onboarded or not in a given region. */
+/**
+ * indicates whether account onboarded or not in a given region.
+ */
 public enum OnboardingStatus {
-    /** Enum value notOnBoarded. */
+    /**
+     * Enum value notOnBoarded.
+     */
     NOT_ON_BOARDED("notOnBoarded"),
 
-    /** Enum value onBoarded. */
+    /**
+     * Enum value onBoarded.
+     */
     ON_BOARDED("onBoarded"),
 
-    /** Enum value onBoardingFailed. */
+    /**
+     * Enum value onBoardingFailed.
+     */
     ON_BOARDING_FAILED("onBoardingFailed"),
 
-    /** Enum value onBoarding. */
+    /**
+     * Enum value onBoarding.
+     */
     ON_BOARDING("onBoarding");
 
-    /** The actual serialized value for a OnboardingStatus instance. */
+    /**
+     * The actual serialized value for a OnboardingStatus instance.
+     */
     private final String value;
 
     OnboardingStatus(String value) {
@@ -30,11 +39,10 @@ public enum OnboardingStatus {
 
     /**
      * Parses a serialized value to a OnboardingStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed OnboardingStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static OnboardingStatus fromString(String value) {
         if (value == null) {
             return null;
@@ -48,8 +56,9 @@ public enum OnboardingStatus {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The status annotation. */
+/**
+ * The status annotation.
+ */
 public final class StatusAnnotation extends ExpandableStringEnum<StatusAnnotation> {
-    /** Static value NotSpecified for StatusAnnotation. */
+    /**
+     * Static value NotSpecified for StatusAnnotation.
+     */
     public static final StatusAnnotation NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value Preview for StatusAnnotation. */
+    /**
+     * Static value Preview for StatusAnnotation.
+     */
     public static final StatusAnnotation PREVIEW = fromString("Preview");
 
-    /** Static value Production for StatusAnnotation. */
+    /**
+     * Static value Production for StatusAnnotation.
+     */
     public static final StatusAnnotation PRODUCTION = fromString("Production");
 
     /**
      * Creates a new instance of StatusAnnotation value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class StatusAnnotation extends ExpandableStringEnum<StatusAnnotatio
 
     /**
      * Creates or finds a StatusAnnotation from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StatusAnnotation.
      */
-    @JsonCreator
     public static StatusAnnotation fromString(String name) {
         return fromString(name, StatusAnnotation.class);
     }
 
     /**
      * Gets known StatusAnnotation values.
-     *
+     * 
      * @return known StatusAnnotation values.
      */
     public static Collection<StatusAnnotation> values() {

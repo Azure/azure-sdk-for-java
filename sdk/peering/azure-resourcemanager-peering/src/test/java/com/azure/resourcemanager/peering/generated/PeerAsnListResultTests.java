@@ -6,7 +6,9 @@ package com.azure.resourcemanager.peering.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.peering.fluent.models.PeerAsnInner;
+import com.azure.resourcemanager.peering.models.ContactDetail;
 import com.azure.resourcemanager.peering.models.PeerAsnListResult;
+import com.azure.resourcemanager.peering.models.Role;
 import com.azure.resourcemanager.peering.models.ValidationState;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -14,49 +16,63 @@ import org.junit.jupiter.api.Assertions;
 public final class PeerAsnListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeerAsnListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"peerAsn\":1408526617,\"peerContactDetail\":[],\"peerName\":\"krxd\",\"validationState\":\"None\",\"errorMessage\":\"tthzrvqd\"},\"id\":\"abhjybi\",\"name\":\"ehoqfbowskan\",\"type\":\"ktzlcuiywg\"},{\"properties\":{\"peerAsn\":1920401593,\"peerContactDetail\":[],\"peerName\":\"rvynhzgpph\",\"validationState\":\"Failed\",\"errorMessage\":\"nc\"},\"id\":\"cpecfvmmcoofs\",\"name\":\"lzevgbmqjqab\",\"type\":\"y\"},{\"properties\":{\"peerAsn\":1104674837,\"peerContactDetail\":[],\"peerName\":\"lzu\",\"validationState\":\"None\",\"errorMessage\":\"wnfnbacf\"},\"id\":\"onlebxetqgtzxdpn\",\"name\":\"bqqwxrj\",\"type\":\"eallnwsubisnj\"},{\"properties\":{\"peerAsn\":572259851,\"peerContactDetail\":[],\"peerName\":\"nzscxa\",\"validationState\":\"None\",\"errorMessage\":\"chcbonqvpkvlrxnj\"},\"id\":\"ase\",\"name\":\"pheoflokeyy\",\"type\":\"enjbdlwtgrhp\"}],\"nextLink\":\"pj\"}")
-                .toObject(PeerAsnListResult.class);
+        PeerAsnListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"peerAsn\":1408526617,\"peerContactDetail\":[{\"role\":\"Noc\",\"email\":\"dqmidtt\",\"phone\":\"rvqdra\"},{\"role\":\"Policy\",\"email\":\"big\",\"phone\":\"oqfbowskanyk\"}],\"peerName\":\"lcuiywgqywgndr\",\"validationState\":\"Approved\",\"errorMessage\":\"zgpphrcgyncocpe\"},\"id\":\"fvm\",\"name\":\"coofsxlzev\",\"type\":\"bmqj\"},{\"properties\":{\"peerAsn\":93990886,\"peerContactDetail\":[{\"role\":\"Escalation\",\"email\":\"kwlzuvccfwnfn\",\"phone\":\"cfionl\"},{\"role\":\"Policy\",\"email\":\"tqgtzxdpnqbqq\",\"phone\":\"rjfeallnwsubisnj\"},{\"role\":\"Escalation\",\"email\":\"ngnzscxaqwoochc\",\"phone\":\"nqvpkvlrxnje\"}],\"peerName\":\"eipheoflokeyy\",\"validationState\":\"None\",\"errorMessage\":\"bdlwtgrhpdjpj\"},\"id\":\"masxazjpqyegu\",\"name\":\"lhbxxhejjzzvdud\",\"type\":\"wdslfhotwmcy\"},{\"properties\":{\"peerAsn\":1733107709,\"peerContactDetail\":[{\"role\":\"Service\",\"email\":\"acfta\",\"phone\":\"h\"}],\"peerName\":\"ltyfsop\",\"validationState\":\"Pending\",\"errorMessage\":\"esnzwde\"},\"id\":\"bavo\",\"name\":\"xzdmohctb\",\"type\":\"vudwx\"},{\"properties\":{\"peerAsn\":243484054,\"peerContactDetail\":[{\"role\":\"Escalation\",\"email\":\"jjugwdkcglhslaz\",\"phone\":\"yggdtjixh\"},{\"role\":\"Technical\",\"email\":\"fqweykhmene\",\"phone\":\"yexfwh\"},{\"role\":\"Policy\",\"email\":\"bvyvdcsity\",\"phone\":\"aamdect\"},{\"role\":\"Policy\",\"email\":\"qsc\",\"phone\":\"ypvhezrkg\"}],\"peerName\":\"c\",\"validationState\":\"Pending\",\"errorMessage\":\"o\"},\"id\":\"gm\",\"name\":\"qsl\",\"type\":\"yyvxyqjpkcattpn\"}],\"nextLink\":\"cr\"}")
+            .toObject(PeerAsnListResult.class);
         Assertions.assertEquals(1408526617, model.value().get(0).peerAsn());
-        Assertions.assertEquals("krxd", model.value().get(0).peerName());
-        Assertions.assertEquals(ValidationState.NONE, model.value().get(0).validationState());
-        Assertions.assertEquals("pj", model.nextLink());
+        Assertions.assertEquals(Role.NOC, model.value().get(0).peerContactDetail().get(0).role());
+        Assertions.assertEquals("dqmidtt", model.value().get(0).peerContactDetail().get(0).email());
+        Assertions.assertEquals("rvqdra", model.value().get(0).peerContactDetail().get(0).phone());
+        Assertions.assertEquals("lcuiywgqywgndr", model.value().get(0).peerName());
+        Assertions.assertEquals(ValidationState.APPROVED, model.value().get(0).validationState());
+        Assertions.assertEquals("cr", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeerAsnListResult model =
-            new PeerAsnListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new PeerAsnInner()
-                                .withPeerAsn(1408526617)
-                                .withPeerContactDetail(Arrays.asList())
-                                .withPeerName("krxd")
-                                .withValidationState(ValidationState.NONE),
-                            new PeerAsnInner()
-                                .withPeerAsn(1920401593)
-                                .withPeerContactDetail(Arrays.asList())
-                                .withPeerName("rvynhzgpph")
-                                .withValidationState(ValidationState.FAILED),
-                            new PeerAsnInner()
-                                .withPeerAsn(1104674837)
-                                .withPeerContactDetail(Arrays.asList())
-                                .withPeerName("lzu")
-                                .withValidationState(ValidationState.NONE),
-                            new PeerAsnInner()
-                                .withPeerAsn(572259851)
-                                .withPeerContactDetail(Arrays.asList())
-                                .withPeerName("nzscxa")
-                                .withValidationState(ValidationState.NONE)))
-                .withNextLink("pj");
+        PeerAsnListResult model
+            = new PeerAsnListResult().withValue(Arrays.asList(
+                new PeerAsnInner().withPeerAsn(1408526617)
+                    .withPeerContactDetail(Arrays.asList(
+                        new ContactDetail().withRole(Role.NOC).withEmail("dqmidtt").withPhone("rvqdra"),
+                        new ContactDetail().withRole(Role.POLICY).withEmail("big").withPhone("oqfbowskanyk")))
+                    .withPeerName("lcuiywgqywgndr")
+                    .withValidationState(ValidationState.APPROVED),
+                new PeerAsnInner().withPeerAsn(93990886)
+                    .withPeerContactDetail(Arrays.asList(
+                        new ContactDetail().withRole(Role.ESCALATION).withEmail("kwlzuvccfwnfn").withPhone("cfionl"),
+                        new ContactDetail().withRole(Role.POLICY)
+                            .withEmail("tqgtzxdpnqbqq")
+                            .withPhone("rjfeallnwsubisnj"),
+                        new ContactDetail()
+                            .withRole(Role.ESCALATION)
+                            .withEmail("ngnzscxaqwoochc")
+                            .withPhone("nqvpkvlrxnje")))
+                    .withPeerName("eipheoflokeyy")
+                    .withValidationState(ValidationState.NONE),
+                new PeerAsnInner().withPeerAsn(1733107709)
+                    .withPeerContactDetail(
+                        Arrays.asList(new ContactDetail().withRole(Role.SERVICE).withEmail("acfta").withPhone("h")))
+                    .withPeerName("ltyfsop")
+                    .withValidationState(ValidationState.PENDING),
+                new PeerAsnInner().withPeerAsn(243484054)
+                    .withPeerContactDetail(Arrays.asList(
+                        new ContactDetail().withRole(Role.ESCALATION)
+                            .withEmail("jjugwdkcglhslaz")
+                            .withPhone("yggdtjixh"),
+                        new ContactDetail().withRole(Role.TECHNICAL).withEmail("fqweykhmene").withPhone("yexfwh"),
+                        new ContactDetail().withRole(Role.POLICY).withEmail("bvyvdcsity").withPhone("aamdect"),
+                        new ContactDetail().withRole(Role.POLICY).withEmail("qsc").withPhone("ypvhezrkg")))
+                    .withPeerName("c")
+                    .withValidationState(ValidationState.PENDING)))
+                .withNextLink("cr");
         model = BinaryData.fromObject(model).toObject(PeerAsnListResult.class);
         Assertions.assertEquals(1408526617, model.value().get(0).peerAsn());
-        Assertions.assertEquals("krxd", model.value().get(0).peerName());
-        Assertions.assertEquals(ValidationState.NONE, model.value().get(0).validationState());
-        Assertions.assertEquals("pj", model.nextLink());
+        Assertions.assertEquals(Role.NOC, model.value().get(0).peerContactDetail().get(0).role());
+        Assertions.assertEquals("dqmidtt", model.value().get(0).peerContactDetail().get(0).email());
+        Assertions.assertEquals("rvqdra", model.value().get(0).peerContactDetail().get(0).phone());
+        Assertions.assertEquals("lcuiywgqywgndr", model.value().get(0).peerName());
+        Assertions.assertEquals(ValidationState.APPROVED, model.value().get(0).validationState());
+        Assertions.assertEquals("cr", model.nextLink());
     }
 }

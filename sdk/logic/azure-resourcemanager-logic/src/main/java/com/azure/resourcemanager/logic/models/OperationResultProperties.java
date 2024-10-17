@@ -5,55 +5,59 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The run operation result properties. */
+/**
+ * The run operation result properties.
+ */
 @Fluent
-public class OperationResultProperties {
+public class OperationResultProperties implements JsonSerializable<OperationResultProperties> {
     /*
      * The start time of the workflow scope repetition.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * The end time of the workflow scope repetition.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * The correlation properties.
      */
-    @JsonProperty(value = "correlation")
     private RunActionCorrelation correlation;
 
     /*
      * The status of the workflow scope repetition.
      */
-    @JsonProperty(value = "status")
     private WorkflowStatus status;
 
     /*
      * The workflow scope repetition code.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * Anything
      */
-    @JsonProperty(value = "error")
     private Object error;
 
-    /** Creates an instance of OperationResultProperties class. */
+    /**
+     * Creates an instance of OperationResultProperties class.
+     */
     public OperationResultProperties() {
     }
 
     /**
      * Get the startTime property: The start time of the workflow scope repetition.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -62,7 +66,7 @@ public class OperationResultProperties {
 
     /**
      * Set the startTime property: The start time of the workflow scope repetition.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the OperationResultProperties object itself.
      */
@@ -73,7 +77,7 @@ public class OperationResultProperties {
 
     /**
      * Get the endTime property: The end time of the workflow scope repetition.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -82,7 +86,7 @@ public class OperationResultProperties {
 
     /**
      * Set the endTime property: The end time of the workflow scope repetition.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the OperationResultProperties object itself.
      */
@@ -93,7 +97,7 @@ public class OperationResultProperties {
 
     /**
      * Get the correlation property: The correlation properties.
-     *
+     * 
      * @return the correlation value.
      */
     public RunActionCorrelation correlation() {
@@ -102,7 +106,7 @@ public class OperationResultProperties {
 
     /**
      * Set the correlation property: The correlation properties.
-     *
+     * 
      * @param correlation the correlation value to set.
      * @return the OperationResultProperties object itself.
      */
@@ -113,7 +117,7 @@ public class OperationResultProperties {
 
     /**
      * Get the status property: The status of the workflow scope repetition.
-     *
+     * 
      * @return the status value.
      */
     public WorkflowStatus status() {
@@ -122,7 +126,7 @@ public class OperationResultProperties {
 
     /**
      * Set the status property: The status of the workflow scope repetition.
-     *
+     * 
      * @param status the status value to set.
      * @return the OperationResultProperties object itself.
      */
@@ -133,7 +137,7 @@ public class OperationResultProperties {
 
     /**
      * Get the code property: The workflow scope repetition code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -142,7 +146,7 @@ public class OperationResultProperties {
 
     /**
      * Set the code property: The workflow scope repetition code.
-     *
+     * 
      * @param code the code value to set.
      * @return the OperationResultProperties object itself.
      */
@@ -153,7 +157,7 @@ public class OperationResultProperties {
 
     /**
      * Get the error property: Anything.
-     *
+     * 
      * @return the error value.
      */
     public Object error() {
@@ -162,7 +166,7 @@ public class OperationResultProperties {
 
     /**
      * Set the error property: Anything.
-     *
+     * 
      * @param error the error value to set.
      * @return the OperationResultProperties object itself.
      */
@@ -173,12 +177,67 @@ public class OperationResultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (correlation() != null) {
             correlation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeJsonField("correlation", this.correlation);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeUntypedField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationResultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationResultProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationResultProperties.
+     */
+    public static OperationResultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationResultProperties deserializedOperationResultProperties = new OperationResultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedOperationResultProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedOperationResultProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("correlation".equals(fieldName)) {
+                    deserializedOperationResultProperties.correlation = RunActionCorrelation.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedOperationResultProperties.status = WorkflowStatus.fromString(reader.getString());
+                } else if ("code".equals(fieldName)) {
+                    deserializedOperationResultProperties.code = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedOperationResultProperties.error = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationResultProperties;
+        });
     }
 }

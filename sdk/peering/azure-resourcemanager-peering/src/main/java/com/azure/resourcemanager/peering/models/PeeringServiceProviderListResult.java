@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.peering.fluent.models.PeeringServiceProviderInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The paginated list of peering service providers. */
+/**
+ * The paginated list of peering service providers.
+ */
 @Fluent
-public final class PeeringServiceProviderListResult {
+public final class PeeringServiceProviderListResult implements JsonSerializable<PeeringServiceProviderListResult> {
     /*
      * The list of peering service providers.
      */
-    @JsonProperty(value = "value")
     private List<PeeringServiceProviderInner> value;
 
     /*
      * The link to fetch the next page of peering service providers.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of PeeringServiceProviderListResult class. */
+    /**
+     * Creates an instance of PeeringServiceProviderListResult class.
+     */
     public PeeringServiceProviderListResult() {
     }
 
     /**
      * Get the value property: The list of peering service providers.
-     *
+     * 
      * @return the value value.
      */
     public List<PeeringServiceProviderInner> value() {
@@ -39,7 +45,7 @@ public final class PeeringServiceProviderListResult {
 
     /**
      * Set the value property: The list of peering service providers.
-     *
+     * 
      * @param value the value value to set.
      * @return the PeeringServiceProviderListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class PeeringServiceProviderListResult {
 
     /**
      * Get the nextLink property: The link to fetch the next page of peering service providers.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class PeeringServiceProviderListResult {
 
     /**
      * Set the nextLink property: The link to fetch the next page of peering service providers.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PeeringServiceProviderListResult object itself.
      */
@@ -70,12 +76,54 @@ public final class PeeringServiceProviderListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeeringServiceProviderListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeeringServiceProviderListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PeeringServiceProviderListResult.
+     */
+    public static PeeringServiceProviderListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeeringServiceProviderListResult deserializedPeeringServiceProviderListResult
+                = new PeeringServiceProviderListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PeeringServiceProviderInner> value
+                        = reader.readArray(reader1 -> PeeringServiceProviderInner.fromJson(reader1));
+                    deserializedPeeringServiceProviderListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPeeringServiceProviderListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeeringServiceProviderListResult;
+        });
     }
 }

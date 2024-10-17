@@ -15,25 +15,24 @@ import org.junit.jupiter.api.Assertions;
 public final class LogzMonitorResourceUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogzMonitorResourceUpdateParameters model =
-            BinaryData
-                .fromString("{\"properties\":{\"monitoringStatus\":\"Enabled\"},\"tags\":{\"z\":\"i\"}}")
-                .toObject(LogzMonitorResourceUpdateParameters.class);
+        LogzMonitorResourceUpdateParameters model = BinaryData
+            .fromString("{\"properties\":{\"monitoringStatus\":\"Enabled\"},\"tags\":{\"uhrzayvvt\":\"m\"}}")
+            .toObject(LogzMonitorResourceUpdateParameters.class);
         Assertions.assertEquals(MonitoringStatus.ENABLED, model.properties().monitoringStatus());
-        Assertions.assertEquals("i", model.tags().get("z"));
+        Assertions.assertEquals("m", model.tags().get("uhrzayvvt"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogzMonitorResourceUpdateParameters model =
-            new LogzMonitorResourceUpdateParameters()
-                .withProperties(new MonitorUpdateProperties().withMonitoringStatus(MonitoringStatus.ENABLED))
-                .withTags(mapOf("z", "i"));
+        LogzMonitorResourceUpdateParameters model = new LogzMonitorResourceUpdateParameters()
+            .withProperties(new MonitorUpdateProperties().withMonitoringStatus(MonitoringStatus.ENABLED))
+            .withTags(mapOf("uhrzayvvt", "m"));
         model = BinaryData.fromObject(model).toObject(LogzMonitorResourceUpdateParameters.class);
         Assertions.assertEquals(MonitoringStatus.ENABLED, model.properties().monitoringStatus());
-        Assertions.assertEquals("i", model.tags().get("z"));
+        Assertions.assertEquals("m", model.tags().get("uhrzayvvt"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

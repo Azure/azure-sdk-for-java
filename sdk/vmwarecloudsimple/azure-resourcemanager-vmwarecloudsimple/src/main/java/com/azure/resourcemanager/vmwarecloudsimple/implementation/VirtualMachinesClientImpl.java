@@ -43,22 +43,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VirtualMachinesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualMachinesClient.
+ */
 public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VirtualMachinesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final VMwareCloudSimpleImpl client;
 
     /**
      * Initializes an instance of VirtualMachinesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VirtualMachinesClientImpl(VMwareCloudSimpleImpl client) {
-        this.service =
-            RestProxy.create(VirtualMachinesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(VirtualMachinesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -69,161 +75,110 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     @Host("{$host}")
     @ServiceInterface(name = "VMwareCloudSimpleVir")
     public interface VirtualMachinesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/virtualMachines")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineListResponse>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skipToken") String skipToken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<VirtualMachineListResponse>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VMwareCloudSimple"
-                + "/virtualMachines")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VMwareCloudSimple/virtualMachines")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineListResponse>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VirtualMachineListResponse>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VMwareCloudSimple/virtualMachines/{virtualMachineName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<VirtualMachineInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skipToken") String skipToken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("virtualMachineName") String virtualMachineName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VMwareCloudSimple"
-                + "/virtualMachines/{virtualMachineName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VMwareCloudSimple/virtualMachines/{virtualMachineName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualMachineInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualMachineName") String virtualMachineName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VMwareCloudSimple"
-                + "/virtualMachines/{virtualMachineName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("Referer") String referer,
-            @PathParam("virtualMachineName") String virtualMachineName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Referer") String referer,
+            @PathParam("virtualMachineName") String virtualMachineName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") VirtualMachineInner virtualMachineRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VMwareCloudSimple"
-                + "/virtualMachines/{virtualMachineName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VMwareCloudSimple/virtualMachines/{virtualMachineName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Referer") String referer,
+            @PathParam("virtualMachineName") String virtualMachineName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VMwareCloudSimple/virtualMachines/{virtualMachineName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("Referer") String referer,
-            @PathParam("virtualMachineName") String virtualMachineName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("virtualMachineName") String virtualMachineName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") PatchPayload virtualMachineRequest, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VMwareCloudSimple"
-                + "/virtualMachines/{virtualMachineName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VMwareCloudSimple/virtualMachines/{virtualMachineName}/start")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> start(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualMachineName") String virtualMachineName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") PatchPayload virtualMachineRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Referer") String referer,
+            @PathParam("virtualMachineName") String virtualMachineName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VMwareCloudSimple"
-                + "/virtualMachines/{virtualMachineName}/start")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VMwareCloudSimple/virtualMachines/{virtualMachineName}/stop")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> start(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> stop(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("Referer") String referer,
-            @PathParam("virtualMachineName") String virtualMachineName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Referer") String referer,
+            @PathParam("virtualMachineName") String virtualMachineName, @QueryParam("mode") StopMode mode,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") VirtualMachineStopMode m,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VMwareCloudSimple"
-                + "/virtualMachines/{virtualMachineName}/stop")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> stop(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("Referer") String referer,
-            @PathParam("virtualMachineName") String virtualMachineName,
-            @QueryParam("mode") StopMode mode,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") VirtualMachineStopMode m,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualMachineListResponse>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualMachineListResponse>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Implements list virtual machine within subscription method
-     *
-     * <p>Returns list virtual machine within subscription.
-     *
+     * 
+     * Returns list virtual machine within subscription.
+     * 
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
      * @param skipToken to be used by nextLink implementation.
@@ -235,48 +190,27 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineInner>> listSinglePageAsync(String filter, Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            skipToken,
-                            accept,
-                            context))
-            .<PagedResponse<VirtualMachineInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), filter, top, skipToken, accept, context))
+            .<PagedResponse<VirtualMachineInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements list virtual machine within subscription method
-     *
-     * <p>Returns list virtual machine within subscription.
-     *
+     * 
+     * Returns list virtual machine within subscription.
+     * 
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
      * @param skipToken to be used by nextLink implementation.
@@ -287,48 +221,30 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return list of virtual machines along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualMachineInner>> listSinglePageAsync(
-        String filter, Integer top, String skipToken, Context context) {
+    private Mono<PagedResponse<VirtualMachineInner>> listSinglePageAsync(String filter, Integer top, String skipToken,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                filter,
-                top,
-                skipToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), filter, top,
+                skipToken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Implements list virtual machine within subscription method
-     *
-     * <p>Returns list virtual machine within subscription.
-     *
+     * 
+     * Returns list virtual machine within subscription.
+     * 
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
      * @param skipToken to be used by nextLink implementation.
@@ -339,16 +255,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VirtualMachineInner> listAsync(String filter, Integer top, String skipToken) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, top, skipToken),
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, top, skipToken),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Implements list virtual machine within subscription method
-     *
-     * <p>Returns list virtual machine within subscription.
-     *
+     * 
+     * Returns list virtual machine within subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of virtual machines as paginated response with {@link PagedFlux}.
@@ -358,16 +273,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         final String filter = null;
         final Integer top = null;
         final String skipToken = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, top, skipToken),
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, top, skipToken),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Implements list virtual machine within subscription method
-     *
-     * <p>Returns list virtual machine within subscription.
-     *
+     * 
+     * Returns list virtual machine within subscription.
+     * 
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
      * @param skipToken to be used by nextLink implementation.
@@ -379,16 +293,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VirtualMachineInner> listAsync(String filter, Integer top, String skipToken, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, top, skipToken, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, top, skipToken, context),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Implements list virtual machine within subscription method
-     *
-     * <p>Returns list virtual machine within subscription.
-     *
+     * 
+     * Returns list virtual machine within subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of virtual machines as paginated response with {@link PagedIterable}.
@@ -403,9 +316,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Implements list virtual machine within subscription method
-     *
-     * <p>Returns list virtual machine within subscription.
-     *
+     * 
+     * Returns list virtual machine within subscription.
+     * 
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
      * @param skipToken to be used by nextLink implementation.
@@ -422,9 +335,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Implements list virtual machine within RG method
-     *
-     * <p>Returns list of virtual machine within resource group.
-     *
+     * 
+     * Returns list of virtual machine within resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
@@ -435,19 +348,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return list of virtual machines along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualMachineInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String filter, Integer top, String skipToken) {
+    private Mono<PagedResponse<VirtualMachineInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String filter, Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -456,35 +365,18 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            skipToken,
-                            accept,
-                            context))
-            .<PagedResponse<VirtualMachineInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), filter, top, skipToken, accept, context))
+            .<PagedResponse<VirtualMachineInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements list virtual machine within RG method
-     *
-     * <p>Returns list of virtual machine within resource group.
-     *
+     * 
+     * Returns list of virtual machine within resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
@@ -496,19 +388,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return list of virtual machines along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualMachineInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String filter, Integer top, String skipToken, Context context) {
+    private Mono<PagedResponse<VirtualMachineInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String filter, Integer top, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -517,32 +405,17 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                filter,
-                top,
-                skipToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), filter, top, skipToken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Implements list virtual machine within RG method
-     *
-     * <p>Returns list of virtual machine within resource group.
-     *
+     * 
+     * Returns list of virtual machine within resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
@@ -553,18 +426,17 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return list of virtual machines as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VirtualMachineInner> listByResourceGroupAsync(
-        String resourceGroupName, String filter, Integer top, String skipToken) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, skipToken),
+    private PagedFlux<VirtualMachineInner> listByResourceGroupAsync(String resourceGroupName, String filter,
+        Integer top, String skipToken) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, skipToken),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Implements list virtual machine within RG method
-     *
-     * <p>Returns list of virtual machine within resource group.
-     *
+     * 
+     * Returns list of virtual machine within resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -576,16 +448,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         final String filter = null;
         final Integer top = null;
         final String skipToken = null;
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, skipToken),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, skipToken),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Implements list virtual machine within RG method
-     *
-     * <p>Returns list of virtual machine within resource group.
-     *
+     * 
+     * Returns list of virtual machine within resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
@@ -597,8 +468,8 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return list of virtual machines as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VirtualMachineInner> listByResourceGroupAsync(
-        String resourceGroupName, String filter, Integer top, String skipToken, Context context) {
+    private PagedFlux<VirtualMachineInner> listByResourceGroupAsync(String resourceGroupName, String filter,
+        Integer top, String skipToken, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, skipToken, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
@@ -606,9 +477,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Implements list virtual machine within RG method
-     *
-     * <p>Returns list of virtual machine within resource group.
-     *
+     * 
+     * Returns list of virtual machine within resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -625,9 +496,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Implements list virtual machine within RG method
-     *
-     * <p>Returns list of virtual machine within resource group.
-     *
+     * 
+     * Returns list of virtual machine within resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
@@ -639,16 +510,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return list of virtual machines as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VirtualMachineInner> listByResourceGroup(
-        String resourceGroupName, String filter, Integer top, String skipToken, Context context) {
+    public PagedIterable<VirtualMachineInner> listByResourceGroup(String resourceGroupName, String filter, Integer top,
+        String skipToken, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, top, skipToken, context));
     }
 
     /**
      * Implements virtual machine GET method
-     *
-     * <p>Get virtual machine.
-     *
+     * 
+     * Get virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -657,19 +528,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return virtual machine along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualMachineInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String virtualMachineName) {
+    private Mono<Response<VirtualMachineInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String virtualMachineName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -682,24 +549,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            virtualMachineName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, virtualMachineName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements virtual machine GET method
-     *
-     * <p>Get virtual machine.
-     *
+     * 
+     * Get virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
      * @param context The context to associate with this operation.
@@ -709,19 +568,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return virtual machine along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualMachineInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String virtualMachineName, Context context) {
+    private Mono<Response<VirtualMachineInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String virtualMachineName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -733,22 +588,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                virtualMachineName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            virtualMachineName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Implements virtual machine GET method
-     *
-     * <p>Get virtual machine.
-     *
+     * 
+     * Get virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -764,9 +612,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Implements virtual machine GET method
-     *
-     * <p>Get virtual machine.
-     *
+     * 
+     * Get virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
      * @param context The context to associate with this operation.
@@ -776,16 +624,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return virtual machine along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VirtualMachineInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String virtualMachineName, Context context) {
+    public Response<VirtualMachineInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String virtualMachineName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, virtualMachineName, context).block();
     }
 
     /**
      * Implements virtual machine GET method
-     *
-     * <p>Get virtual machine.
-     *
+     * 
+     * Get virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -800,9 +648,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Implements virtual machine PUT method
-     *
-     * <p>Create Or Update Virtual Machine.
-     *
+     * 
+     * Create Or Update Virtual Machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -813,22 +661,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return virtual machine model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String referer,
-        String virtualMachineName,
-        VirtualMachineInner virtualMachineRequest) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String referer,
+        String virtualMachineName, VirtualMachineInner virtualMachineRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -849,27 +690,17 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            referer,
-                            virtualMachineName,
-                            this.client.getApiVersion(),
-                            virtualMachineRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, referer, virtualMachineName, this.client.getApiVersion(), virtualMachineRequest,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements virtual machine PUT method
-     *
-     * <p>Create Or Update Virtual Machine.
-     *
+     * 
+     * Create Or Update Virtual Machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -881,23 +712,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return virtual machine model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String referer,
-        String virtualMachineName,
-        VirtualMachineInner virtualMachineRequest,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String referer,
+        String virtualMachineName, VirtualMachineInner virtualMachineRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -918,24 +741,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                referer,
-                virtualMachineName,
-                this.client.getApiVersion(),
-                virtualMachineRequest,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            referer, virtualMachineName, this.client.getApiVersion(), virtualMachineRequest, accept, context);
     }
 
     /**
      * Implements virtual machine PUT method
-     *
-     * <p>Create Or Update Virtual Machine.
-     *
+     * 
+     * Create Or Update Virtual Machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -947,27 +761,19 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String referer,
-        String virtualMachineName,
+        String resourceGroupName, String referer, String virtualMachineName,
         VirtualMachineInner virtualMachineRequest) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, referer, virtualMachineName, virtualMachineRequest);
-        return this
-            .client
-            .<VirtualMachineInner, VirtualMachineInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualMachineInner.class,
-                VirtualMachineInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, referer, virtualMachineName, virtualMachineRequest);
+        return this.client.<VirtualMachineInner, VirtualMachineInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VirtualMachineInner.class, VirtualMachineInner.class, this.client.getContext());
     }
 
     /**
      * Implements virtual machine PUT method
-     *
-     * <p>Create Or Update Virtual Machine.
-     *
+     * 
+     * Create Or Update Virtual Machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -980,26 +786,20 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String referer,
-        String virtualMachineName,
-        VirtualMachineInner virtualMachineRequest,
+        String resourceGroupName, String referer, String virtualMachineName, VirtualMachineInner virtualMachineRequest,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, referer, virtualMachineName, virtualMachineRequest, context);
-        return this
-            .client
-            .<VirtualMachineInner, VirtualMachineInner>getLroResult(
-                mono, this.client.getHttpPipeline(), VirtualMachineInner.class, VirtualMachineInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, referer,
+            virtualMachineName, virtualMachineRequest, context);
+        return this.client.<VirtualMachineInner, VirtualMachineInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VirtualMachineInner.class, VirtualMachineInner.class, context);
     }
 
     /**
      * Implements virtual machine PUT method
-     *
-     * <p>Create Or Update Virtual Machine.
-     *
+     * 
+     * Create Or Update Virtual Machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1011,20 +811,17 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String referer,
-        String virtualMachineName,
+        String resourceGroupName, String referer, String virtualMachineName,
         VirtualMachineInner virtualMachineRequest) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, referer, virtualMachineName, virtualMachineRequest)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, referer, virtualMachineName, virtualMachineRequest)
             .getSyncPoller();
     }
 
     /**
      * Implements virtual machine PUT method
-     *
-     * <p>Create Or Update Virtual Machine.
-     *
+     * 
+     * Create Or Update Virtual Machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1037,10 +834,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String referer,
-        String virtualMachineName,
-        VirtualMachineInner virtualMachineRequest,
+        String resourceGroupName, String referer, String virtualMachineName, VirtualMachineInner virtualMachineRequest,
         Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, referer, virtualMachineName, virtualMachineRequest, context)
@@ -1049,9 +843,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Implements virtual machine PUT method
-     *
-     * <p>Create Or Update Virtual Machine.
-     *
+     * 
+     * Create Or Update Virtual Machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1062,21 +856,17 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return virtual machine model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualMachineInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String referer,
-        String virtualMachineName,
-        VirtualMachineInner virtualMachineRequest) {
-        return beginCreateOrUpdateAsync(resourceGroupName, referer, virtualMachineName, virtualMachineRequest)
-            .last()
+    private Mono<VirtualMachineInner> createOrUpdateAsync(String resourceGroupName, String referer,
+        String virtualMachineName, VirtualMachineInner virtualMachineRequest) {
+        return beginCreateOrUpdateAsync(resourceGroupName, referer, virtualMachineName, virtualMachineRequest).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements virtual machine PUT method
-     *
-     * <p>Create Or Update Virtual Machine.
-     *
+     * 
+     * Create Or Update Virtual Machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1088,12 +878,8 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return virtual machine model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualMachineInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String referer,
-        String virtualMachineName,
-        VirtualMachineInner virtualMachineRequest,
-        Context context) {
+    private Mono<VirtualMachineInner> createOrUpdateAsync(String resourceGroupName, String referer,
+        String virtualMachineName, VirtualMachineInner virtualMachineRequest, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, referer, virtualMachineName, virtualMachineRequest, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1101,9 +887,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Implements virtual machine PUT method
-     *
-     * <p>Create Or Update Virtual Machine.
-     *
+     * 
+     * Create Or Update Virtual Machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1114,19 +900,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return virtual machine model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineInner createOrUpdate(
-        String resourceGroupName,
-        String referer,
-        String virtualMachineName,
+    public VirtualMachineInner createOrUpdate(String resourceGroupName, String referer, String virtualMachineName,
         VirtualMachineInner virtualMachineRequest) {
         return createOrUpdateAsync(resourceGroupName, referer, virtualMachineName, virtualMachineRequest).block();
     }
 
     /**
      * Implements virtual machine PUT method
-     *
-     * <p>Create Or Update Virtual Machine.
-     *
+     * 
+     * Create Or Update Virtual Machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1138,21 +921,17 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return virtual machine model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineInner createOrUpdate(
-        String resourceGroupName,
-        String referer,
-        String virtualMachineName,
-        VirtualMachineInner virtualMachineRequest,
-        Context context) {
+    public VirtualMachineInner createOrUpdate(String resourceGroupName, String referer, String virtualMachineName,
+        VirtualMachineInner virtualMachineRequest, Context context) {
         return createOrUpdateAsync(resourceGroupName, referer, virtualMachineName, virtualMachineRequest, context)
             .block();
     }
 
     /**
      * Implements virtual machine DELETE method
-     *
-     * <p>Delete virtual machine.
-     *
+     * 
+     * Delete virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1162,19 +941,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String referer, String virtualMachineName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String referer,
+        String virtualMachineName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1189,26 +964,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            referer,
-                            virtualMachineName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, referer, virtualMachineName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements virtual machine DELETE method
-     *
-     * <p>Delete virtual machine.
-     *
+     * 
+     * Delete virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1219,19 +984,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String referer, String virtualMachineName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String referer,
+        String virtualMachineName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1246,23 +1007,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                referer,
-                virtualMachineName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, referer,
+            virtualMachineName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Implements virtual machine DELETE method
-     *
-     * <p>Delete virtual machine.
-     *
+     * 
+     * Delete virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1272,20 +1025,18 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String referer, String virtualMachineName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String referer,
+        String virtualMachineName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, referer, virtualMachineName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Implements virtual machine DELETE method
-     *
-     * <p>Delete virtual machine.
-     *
+     * 
+     * Delete virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1296,21 +1047,20 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String referer, String virtualMachineName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String referer,
+        String virtualMachineName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, referer, virtualMachineName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, referer, virtualMachineName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Implements virtual machine DELETE method
-     *
-     * <p>Delete virtual machine.
-     *
+     * 
+     * Delete virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1320,16 +1070,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String referer, String virtualMachineName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String referer,
+        String virtualMachineName) {
         return this.beginDeleteAsync(resourceGroupName, referer, virtualMachineName).getSyncPoller();
     }
 
     /**
      * Implements virtual machine DELETE method
-     *
-     * <p>Delete virtual machine.
-     *
+     * 
+     * Delete virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1340,16 +1090,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String referer, String virtualMachineName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String referer,
+        String virtualMachineName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, referer, virtualMachineName, context).getSyncPoller();
     }
 
     /**
      * Implements virtual machine DELETE method
-     *
-     * <p>Delete virtual machine.
-     *
+     * 
+     * Delete virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1360,16 +1110,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String referer, String virtualMachineName) {
-        return beginDeleteAsync(resourceGroupName, referer, virtualMachineName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, referer, virtualMachineName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements virtual machine DELETE method
-     *
-     * <p>Delete virtual machine.
-     *
+     * 
+     * Delete virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1380,18 +1129,17 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String referer, String virtualMachineName, Context context) {
-        return beginDeleteAsync(resourceGroupName, referer, virtualMachineName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String referer, String virtualMachineName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, referer, virtualMachineName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements virtual machine DELETE method
-     *
-     * <p>Delete virtual machine.
-     *
+     * 
+     * Delete virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1406,9 +1154,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Implements virtual machine DELETE method
-     *
-     * <p>Delete virtual machine.
-     *
+     * 
+     * Delete virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1424,9 +1172,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Implements virtual machine PATCH method
-     *
-     * <p>Patch virtual machine properties.
-     *
+     * 
+     * Patch virtual machine properties.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
      * @param virtualMachineRequest Patch virtual machine request.
@@ -1436,19 +1184,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return virtual machine model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String virtualMachineName, PatchPayload virtualMachineRequest) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String virtualMachineName, PatchPayload virtualMachineRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1467,25 +1211,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            virtualMachineName,
-                            this.client.getApiVersion(),
-                            virtualMachineRequest,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    virtualMachineName, this.client.getApiVersion(), virtualMachineRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements virtual machine PATCH method
-     *
-     * <p>Patch virtual machine properties.
-     *
+     * 
+     * Patch virtual machine properties.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
      * @param virtualMachineRequest Patch virtual machine request.
@@ -1496,19 +1231,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return virtual machine model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String virtualMachineName, PatchPayload virtualMachineRequest, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String virtualMachineName, PatchPayload virtualMachineRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1526,23 +1257,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                virtualMachineName,
-                this.client.getApiVersion(),
-                virtualMachineRequest,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            virtualMachineName, this.client.getApiVersion(), virtualMachineRequest, accept, context);
     }
 
     /**
      * Implements virtual machine PATCH method
-     *
-     * <p>Patch virtual machine properties.
-     *
+     * 
+     * Patch virtual machine properties.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
      * @param virtualMachineRequest Patch virtual machine request.
@@ -1552,25 +1275,19 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link PollerFlux} for polling of virtual machine model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdateAsync(
-        String resourceGroupName, String virtualMachineName, PatchPayload virtualMachineRequest) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, virtualMachineName, virtualMachineRequest);
-        return this
-            .client
-            .<VirtualMachineInner, VirtualMachineInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualMachineInner.class,
-                VirtualMachineInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdateAsync(String resourceGroupName,
+        String virtualMachineName, PatchPayload virtualMachineRequest) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, virtualMachineName, virtualMachineRequest);
+        return this.client.<VirtualMachineInner, VirtualMachineInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VirtualMachineInner.class, VirtualMachineInner.class, this.client.getContext());
     }
 
     /**
      * Implements virtual machine PATCH method
-     *
-     * <p>Patch virtual machine properties.
-     *
+     * 
+     * Patch virtual machine properties.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
      * @param virtualMachineRequest Patch virtual machine request.
@@ -1581,22 +1298,20 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link PollerFlux} for polling of virtual machine model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdateAsync(
-        String resourceGroupName, String virtualMachineName, PatchPayload virtualMachineRequest, Context context) {
+    private PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdateAsync(String resourceGroupName,
+        String virtualMachineName, PatchPayload virtualMachineRequest, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, virtualMachineName, virtualMachineRequest, context);
-        return this
-            .client
-            .<VirtualMachineInner, VirtualMachineInner>getLroResult(
-                mono, this.client.getHttpPipeline(), VirtualMachineInner.class, VirtualMachineInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, virtualMachineName, virtualMachineRequest, context);
+        return this.client.<VirtualMachineInner, VirtualMachineInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VirtualMachineInner.class, VirtualMachineInner.class, context);
     }
 
     /**
      * Implements virtual machine PATCH method
-     *
-     * <p>Patch virtual machine properties.
-     *
+     * 
+     * Patch virtual machine properties.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
      * @param virtualMachineRequest Patch virtual machine request.
@@ -1606,16 +1321,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of virtual machine model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(
-        String resourceGroupName, String virtualMachineName, PatchPayload virtualMachineRequest) {
+    public SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(String resourceGroupName,
+        String virtualMachineName, PatchPayload virtualMachineRequest) {
         return this.beginUpdateAsync(resourceGroupName, virtualMachineName, virtualMachineRequest).getSyncPoller();
     }
 
     /**
      * Implements virtual machine PATCH method
-     *
-     * <p>Patch virtual machine properties.
-     *
+     * 
+     * Patch virtual machine properties.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
      * @param virtualMachineRequest Patch virtual machine request.
@@ -1626,18 +1341,17 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of virtual machine model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(
-        String resourceGroupName, String virtualMachineName, PatchPayload virtualMachineRequest, Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, virtualMachineName, virtualMachineRequest, context)
+    public SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(String resourceGroupName,
+        String virtualMachineName, PatchPayload virtualMachineRequest, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, virtualMachineName, virtualMachineRequest, context)
             .getSyncPoller();
     }
 
     /**
      * Implements virtual machine PATCH method
-     *
-     * <p>Patch virtual machine properties.
-     *
+     * 
+     * Patch virtual machine properties.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
      * @param virtualMachineRequest Patch virtual machine request.
@@ -1647,18 +1361,17 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return virtual machine model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualMachineInner> updateAsync(
-        String resourceGroupName, String virtualMachineName, PatchPayload virtualMachineRequest) {
-        return beginUpdateAsync(resourceGroupName, virtualMachineName, virtualMachineRequest)
-            .last()
+    private Mono<VirtualMachineInner> updateAsync(String resourceGroupName, String virtualMachineName,
+        PatchPayload virtualMachineRequest) {
+        return beginUpdateAsync(resourceGroupName, virtualMachineName, virtualMachineRequest).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements virtual machine PATCH method
-     *
-     * <p>Patch virtual machine properties.
-     *
+     * 
+     * Patch virtual machine properties.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
      * @param virtualMachineRequest Patch virtual machine request.
@@ -1669,18 +1382,17 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return virtual machine model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualMachineInner> updateAsync(
-        String resourceGroupName, String virtualMachineName, PatchPayload virtualMachineRequest, Context context) {
-        return beginUpdateAsync(resourceGroupName, virtualMachineName, virtualMachineRequest, context)
-            .last()
+    private Mono<VirtualMachineInner> updateAsync(String resourceGroupName, String virtualMachineName,
+        PatchPayload virtualMachineRequest, Context context) {
+        return beginUpdateAsync(resourceGroupName, virtualMachineName, virtualMachineRequest, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements virtual machine PATCH method
-     *
-     * <p>Patch virtual machine properties.
-     *
+     * 
+     * Patch virtual machine properties.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
      * @param virtualMachineRequest Patch virtual machine request.
@@ -1690,16 +1402,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return virtual machine model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineInner update(
-        String resourceGroupName, String virtualMachineName, PatchPayload virtualMachineRequest) {
+    public VirtualMachineInner update(String resourceGroupName, String virtualMachineName,
+        PatchPayload virtualMachineRequest) {
         return updateAsync(resourceGroupName, virtualMachineName, virtualMachineRequest).block();
     }
 
     /**
      * Implements virtual machine PATCH method
-     *
-     * <p>Patch virtual machine properties.
-     *
+     * 
+     * Patch virtual machine properties.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
      * @param virtualMachineRequest Patch virtual machine request.
@@ -1710,16 +1422,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return virtual machine model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineInner update(
-        String resourceGroupName, String virtualMachineName, PatchPayload virtualMachineRequest, Context context) {
+    public VirtualMachineInner update(String resourceGroupName, String virtualMachineName,
+        PatchPayload virtualMachineRequest, Context context) {
         return updateAsync(resourceGroupName, virtualMachineName, virtualMachineRequest, context).block();
     }
 
     /**
      * Implements a start method for a virtual machine
-     *
-     * <p>Power on virtual machine.
-     *
+     * 
+     * Power on virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1729,19 +1441,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
-        String resourceGroupName, String referer, String virtualMachineName) {
+    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String referer,
+        String virtualMachineName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1756,26 +1464,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .start(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            referer,
-                            virtualMachineName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.start(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, referer, virtualMachineName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements a start method for a virtual machine
-     *
-     * <p>Power on virtual machine.
-     *
+     * 
+     * Power on virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1786,19 +1484,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
-        String resourceGroupName, String referer, String virtualMachineName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String referer,
+        String virtualMachineName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1813,23 +1507,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .start(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                referer,
-                virtualMachineName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.start(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, referer,
+            virtualMachineName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Implements a start method for a virtual machine
-     *
-     * <p>Power on virtual machine.
-     *
+     * 
+     * Power on virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1839,20 +1525,18 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartAsync(
-        String resourceGroupName, String referer, String virtualMachineName) {
+    private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String referer,
+        String virtualMachineName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, referer, virtualMachineName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Implements a start method for a virtual machine
-     *
-     * <p>Power on virtual machine.
-     *
+     * 
+     * Power on virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1863,21 +1547,20 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartAsync(
-        String resourceGroupName, String referer, String virtualMachineName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String referer,
+        String virtualMachineName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            startWithResponseAsync(resourceGroupName, referer, virtualMachineName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = startWithResponseAsync(resourceGroupName, referer, virtualMachineName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Implements a start method for a virtual machine
-     *
-     * <p>Power on virtual machine.
-     *
+     * 
+     * Power on virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1887,16 +1570,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String referer, String virtualMachineName) {
+    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String referer,
+        String virtualMachineName) {
         return this.beginStartAsync(resourceGroupName, referer, virtualMachineName).getSyncPoller();
     }
 
     /**
      * Implements a start method for a virtual machine
-     *
-     * <p>Power on virtual machine.
-     *
+     * 
+     * Power on virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1907,16 +1590,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String referer, String virtualMachineName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String referer,
+        String virtualMachineName, Context context) {
         return this.beginStartAsync(resourceGroupName, referer, virtualMachineName, context).getSyncPoller();
     }
 
     /**
      * Implements a start method for a virtual machine
-     *
-     * <p>Power on virtual machine.
-     *
+     * 
+     * Power on virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1927,16 +1610,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> startAsync(String resourceGroupName, String referer, String virtualMachineName) {
-        return beginStartAsync(resourceGroupName, referer, virtualMachineName)
-            .last()
+        return beginStartAsync(resourceGroupName, referer, virtualMachineName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements a start method for a virtual machine
-     *
-     * <p>Power on virtual machine.
-     *
+     * 
+     * Power on virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1947,18 +1629,17 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> startAsync(
-        String resourceGroupName, String referer, String virtualMachineName, Context context) {
-        return beginStartAsync(resourceGroupName, referer, virtualMachineName, context)
-            .last()
+    private Mono<Void> startAsync(String resourceGroupName, String referer, String virtualMachineName,
+        Context context) {
+        return beginStartAsync(resourceGroupName, referer, virtualMachineName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements a start method for a virtual machine
-     *
-     * <p>Power on virtual machine.
-     *
+     * 
+     * Power on virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1973,9 +1654,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Implements a start method for a virtual machine
-     *
-     * <p>Power on virtual machine.
-     *
+     * 
+     * Power on virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -1991,9 +1672,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Implements shutdown, poweroff, and suspend method for a virtual machine
-     *
-     * <p>Power off virtual machine, options: shutdown, poweroff, and suspend.
-     *
+     * 
+     * Power off virtual machine, options: shutdown, poweroff, and suspend.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -2005,19 +1686,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
-        String resourceGroupName, String referer, String virtualMachineName, StopMode mode, VirtualMachineStopMode m) {
+    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String referer,
+        String virtualMachineName, StopMode mode, VirtualMachineStopMode m) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2035,28 +1712,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .stop(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            referer,
-                            virtualMachineName,
-                            mode,
-                            this.client.getApiVersion(),
-                            m,
-                            accept,
-                            context))
+            .withContext(context -> service.stop(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, referer, virtualMachineName, mode, this.client.getApiVersion(), m, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements shutdown, poweroff, and suspend method for a virtual machine
-     *
-     * <p>Power off virtual machine, options: shutdown, poweroff, and suspend.
-     *
+     * 
+     * Power off virtual machine, options: shutdown, poweroff, and suspend.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -2069,24 +1734,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
-        String resourceGroupName,
-        String referer,
-        String virtualMachineName,
-        StopMode mode,
-        VirtualMachineStopMode m,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String referer,
+        String virtualMachineName, StopMode mode, VirtualMachineStopMode m, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2104,25 +1760,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .stop(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                referer,
-                virtualMachineName,
-                mode,
-                this.client.getApiVersion(),
-                m,
-                accept,
-                context);
+        return service.stop(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, referer,
+            virtualMachineName, mode, this.client.getApiVersion(), m, accept, context);
     }
 
     /**
      * Implements shutdown, poweroff, and suspend method for a virtual machine
-     *
-     * <p>Power off virtual machine, options: shutdown, poweroff, and suspend.
-     *
+     * 
+     * Power off virtual machine, options: shutdown, poweroff, and suspend.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -2134,21 +1780,19 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStopAsync(
-        String resourceGroupName, String referer, String virtualMachineName, StopMode mode, VirtualMachineStopMode m) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            stopWithResponseAsync(resourceGroupName, referer, virtualMachineName, mode, m);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String referer,
+        String virtualMachineName, StopMode mode, VirtualMachineStopMode m) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = stopWithResponseAsync(resourceGroupName, referer, virtualMachineName, mode, m);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Implements shutdown, poweroff, and suspend method for a virtual machine
-     *
-     * <p>Power off virtual machine, options: shutdown, poweroff, and suspend.
-     *
+     * 
+     * Power off virtual machine, options: shutdown, poweroff, and suspend.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -2158,23 +1802,21 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStopAsync(
-        String resourceGroupName, String referer, String virtualMachineName) {
+    private PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String referer,
+        String virtualMachineName) {
         final StopMode mode = null;
         final VirtualMachineStopMode m = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            stopWithResponseAsync(resourceGroupName, referer, virtualMachineName, mode, m);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = stopWithResponseAsync(resourceGroupName, referer, virtualMachineName, mode, m);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Implements shutdown, poweroff, and suspend method for a virtual machine
-     *
-     * <p>Power off virtual machine, options: shutdown, poweroff, and suspend.
-     *
+     * 
+     * Power off virtual machine, options: shutdown, poweroff, and suspend.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -2187,26 +1829,20 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStopAsync(
-        String resourceGroupName,
-        String referer,
-        String virtualMachineName,
-        StopMode mode,
-        VirtualMachineStopMode m,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String referer,
+        String virtualMachineName, StopMode mode, VirtualMachineStopMode m, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            stopWithResponseAsync(resourceGroupName, referer, virtualMachineName, mode, m, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = stopWithResponseAsync(resourceGroupName, referer, virtualMachineName, mode, m, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Implements shutdown, poweroff, and suspend method for a virtual machine
-     *
-     * <p>Power off virtual machine, options: shutdown, poweroff, and suspend.
-     *
+     * 
+     * Power off virtual machine, options: shutdown, poweroff, and suspend.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -2216,8 +1852,8 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStop(
-        String resourceGroupName, String referer, String virtualMachineName) {
+    public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String referer,
+        String virtualMachineName) {
         final StopMode mode = null;
         final VirtualMachineStopMode m = null;
         return this.beginStopAsync(resourceGroupName, referer, virtualMachineName, mode, m).getSyncPoller();
@@ -2225,9 +1861,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Implements shutdown, poweroff, and suspend method for a virtual machine
-     *
-     * <p>Power off virtual machine, options: shutdown, poweroff, and suspend.
-     *
+     * 
+     * Power off virtual machine, options: shutdown, poweroff, and suspend.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -2240,21 +1876,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStop(
-        String resourceGroupName,
-        String referer,
-        String virtualMachineName,
-        StopMode mode,
-        VirtualMachineStopMode m,
-        Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String referer,
+        String virtualMachineName, StopMode mode, VirtualMachineStopMode m, Context context) {
         return this.beginStopAsync(resourceGroupName, referer, virtualMachineName, mode, m, context).getSyncPoller();
     }
 
     /**
      * Implements shutdown, poweroff, and suspend method for a virtual machine
-     *
-     * <p>Power off virtual machine, options: shutdown, poweroff, and suspend.
-     *
+     * 
+     * Power off virtual machine, options: shutdown, poweroff, and suspend.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -2266,18 +1897,17 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> stopAsync(
-        String resourceGroupName, String referer, String virtualMachineName, StopMode mode, VirtualMachineStopMode m) {
-        return beginStopAsync(resourceGroupName, referer, virtualMachineName, mode, m)
-            .last()
+    private Mono<Void> stopAsync(String resourceGroupName, String referer, String virtualMachineName, StopMode mode,
+        VirtualMachineStopMode m) {
+        return beginStopAsync(resourceGroupName, referer, virtualMachineName, mode, m).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements shutdown, poweroff, and suspend method for a virtual machine
-     *
-     * <p>Power off virtual machine, options: shutdown, poweroff, and suspend.
-     *
+     * 
+     * Power off virtual machine, options: shutdown, poweroff, and suspend.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -2290,16 +1920,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     private Mono<Void> stopAsync(String resourceGroupName, String referer, String virtualMachineName) {
         final StopMode mode = null;
         final VirtualMachineStopMode m = null;
-        return beginStopAsync(resourceGroupName, referer, virtualMachineName, mode, m)
-            .last()
+        return beginStopAsync(resourceGroupName, referer, virtualMachineName, mode, m).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements shutdown, poweroff, and suspend method for a virtual machine
-     *
-     * <p>Power off virtual machine, options: shutdown, poweroff, and suspend.
-     *
+     * 
+     * Power off virtual machine, options: shutdown, poweroff, and suspend.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -2312,23 +1941,17 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> stopAsync(
-        String resourceGroupName,
-        String referer,
-        String virtualMachineName,
-        StopMode mode,
-        VirtualMachineStopMode m,
-        Context context) {
-        return beginStopAsync(resourceGroupName, referer, virtualMachineName, mode, m, context)
-            .last()
+    private Mono<Void> stopAsync(String resourceGroupName, String referer, String virtualMachineName, StopMode mode,
+        VirtualMachineStopMode m, Context context) {
+        return beginStopAsync(resourceGroupName, referer, virtualMachineName, mode, m, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements shutdown, poweroff, and suspend method for a virtual machine
-     *
-     * <p>Power off virtual machine, options: shutdown, poweroff, and suspend.
-     *
+     * 
+     * Power off virtual machine, options: shutdown, poweroff, and suspend.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -2345,9 +1968,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Implements shutdown, poweroff, and suspend method for a virtual machine
-     *
-     * <p>Power off virtual machine, options: shutdown, poweroff, and suspend.
-     *
+     * 
+     * Power off virtual machine, options: shutdown, poweroff, and suspend.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -2359,21 +1982,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stop(
-        String resourceGroupName,
-        String referer,
-        String virtualMachineName,
-        StopMode mode,
-        VirtualMachineStopMode m,
-        Context context) {
+    public void stop(String resourceGroupName, String referer, String virtualMachineName, StopMode mode,
+        VirtualMachineStopMode m, Context context) {
         stopAsync(resourceGroupName, referer, virtualMachineName, mode, m, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2385,32 +2002,22 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<VirtualMachineInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<VirtualMachineInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2418,37 +2025,26 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return list of virtual machines along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualMachineInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<VirtualMachineInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2460,32 +2056,22 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<VirtualMachineInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<VirtualMachineInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2493,29 +2079,19 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return list of virtual machines along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualMachineInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<VirtualMachineInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

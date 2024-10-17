@@ -11,8 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -24,15 +24,17 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservicefleet.fluent.ContainerServiceFleetManagementClient;
+import com.azure.resourcemanager.containerservicefleet.implementation.AutoUpgradeProfilesImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.ContainerServiceFleetManagementClientBuilder;
 import com.azure.resourcemanager.containerservicefleet.implementation.FleetMembersImpl;
-import com.azure.resourcemanager.containerservicefleet.implementation.FleetsImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.FleetUpdateStrategiesImpl;
+import com.azure.resourcemanager.containerservicefleet.implementation.FleetsImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.OperationsImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.UpdateRunsImpl;
+import com.azure.resourcemanager.containerservicefleet.models.AutoUpgradeProfiles;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMembers;
-import com.azure.resourcemanager.containerservicefleet.models.Fleets;
 import com.azure.resourcemanager.containerservicefleet.models.FleetUpdateStrategies;
+import com.azure.resourcemanager.containerservicefleet.models.Fleets;
 import com.azure.resourcemanager.containerservicefleet.models.Operations;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRuns;
 import java.time.Duration;
@@ -50,6 +52,8 @@ public final class ContainerServiceFleetManager {
     private Operations operations;
 
     private Fleets fleets;
+
+    private AutoUpgradeProfiles autoUpgradeProfiles;
 
     private FleetMembers fleetMembers;
 
@@ -222,7 +226,7 @@ public final class ContainerServiceFleetManager {
                 .append("-")
                 .append("com.azure.resourcemanager.containerservicefleet")
                 .append("/")
-                .append("1.1.0");
+                .append("1.2.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -290,6 +294,18 @@ public final class ContainerServiceFleetManager {
             this.fleets = new FleetsImpl(clientObject.getFleets(), this);
         }
         return fleets;
+    }
+
+    /**
+     * Gets the resource collection API of AutoUpgradeProfiles. It manages AutoUpgradeProfile.
+     * 
+     * @return Resource collection API of AutoUpgradeProfiles.
+     */
+    public AutoUpgradeProfiles autoUpgradeProfiles() {
+        if (this.autoUpgradeProfiles == null) {
+            this.autoUpgradeProfiles = new AutoUpgradeProfilesImpl(clientObject.getAutoUpgradeProfiles(), this);
+        }
+        return autoUpgradeProfiles;
     }
 
     /**

@@ -12,8 +12,7 @@ public final class RoleResourceFormatImpl implements RoleResourceFormat {
 
     private final com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager;
 
-    RoleResourceFormatImpl(
-        RoleResourceFormatInner innerObject,
+    RoleResourceFormatImpl(RoleResourceFormatInner innerObject,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
