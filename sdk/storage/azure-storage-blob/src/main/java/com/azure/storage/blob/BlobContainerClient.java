@@ -1336,7 +1336,8 @@ public final class BlobContainerClient {
         Context finalContext = context == null ? Context.NONE : context;
         Callable<ResponseBase<ContainersGetAccountInfoHeaders, Void>> operation =
             () ->
-            this.azureBlobStorage.getContainers().getAccountInfoWithResponse(containerName, finalContext);
+            this.azureBlobStorage.getContainers().getAccountInfoWithResponse(containerName, null, null,
+                finalContext);
         ResponseBase<ContainersGetAccountInfoHeaders, Void> response = sendRequest(operation, timeout,
             BlobStorageException.class);
         ContainersGetAccountInfoHeaders hd = response.getDeserializedHeaders();
