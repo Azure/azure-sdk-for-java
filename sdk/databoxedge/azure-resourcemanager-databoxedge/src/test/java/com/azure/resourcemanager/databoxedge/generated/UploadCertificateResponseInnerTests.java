@@ -12,18 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class UploadCertificateResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UploadCertificateResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"authType\":\"Invalid\",\"resourceId\":\"asipqiio\",\"aadAuthority\":\"uqerpqlpqwc\",\"aadTenantId\":\"uqgbdbutauvfbt\",\"servicePrincipalClientId\":\"whhmhykojo\",\"servicePrincipalObjectId\":\"fnndl\",\"azureManagementEndpointAudience\":\"chkoymkcdyh\",\"aadAudience\":\"kkpwdreqnovvq\"}")
-                .toObject(UploadCertificateResponseInner.class);
+        UploadCertificateResponseInner model = BinaryData.fromString(
+            "{\"authType\":\"Invalid\",\"resourceId\":\"pxllrx\",\"aadAuthority\":\"jmoadsuv\",\"aadTenantId\":\"m\",\"servicePrincipalClientId\":\"dmjsjqb\",\"servicePrincipalObjectId\":\"hyxxrwlycoduhpk\",\"azureManagementEndpointAudience\":\"gymare\",\"aadAudience\":\"ajxq\"}")
+            .toObject(UploadCertificateResponseInner.class);
         Assertions.assertEquals(AuthenticationType.INVALID, model.authType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UploadCertificateResponseInner model =
-            new UploadCertificateResponseInner().withAuthType(AuthenticationType.INVALID);
+        UploadCertificateResponseInner model
+            = new UploadCertificateResponseInner().withAuthType(AuthenticationType.INVALID);
         model = BinaryData.fromObject(model).toObject(UploadCertificateResponseInner.class);
         Assertions.assertEquals(AuthenticationType.INVALID, model.authType());
     }
