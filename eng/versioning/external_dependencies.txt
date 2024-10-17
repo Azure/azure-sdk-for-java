@@ -87,8 +87,8 @@ javax.servlet:javax.servlet-api;4.0.1
 javax.websocket:javax.websocket-api;1.1
 org.apache.commons:commons-compress;1.26.0
 org.apache.ant:ant;1.10.14
-org.apache.avro:avro;1.11.3
-org.apache.avro:avro-maven-plugin;1.11.3
+org.apache.avro:avro;1.11.4
+org.apache.avro:avro-maven-plugin;1.11.4
 org.apache.commons:commons-lang3;3.12.0
 org.apache.groovy:groovy;4.0.15
 org.apache.httpcomponents:httpclient;4.5.14
@@ -278,7 +278,7 @@ com.microsoft.azure:azure-webapp-maven-plugin;1.14.0
 com.nimbusds:nimbus-jose-jwt;9.37.3
 com.puppycrawl.tools:checkstyle;9.3
 com.toasttab.android:gummy-bears-api-26;0.10.0
-commons-io:commons-io;2.11.0
+commons-io:commons-io;2.17.0
 commons-validator:commons-validator;1.6
 io.dropwizard.metrics:metrics-core;4.2.22
 io.dropwizard.metrics:metrics-graphite;4.2.22
