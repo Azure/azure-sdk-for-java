@@ -400,4 +400,8 @@ public final class TableUtils {
             }
         }
     }
+
+    public static String isCosmosEndpoint(String endpoint) {
+        return endpoint;
+    }
 }
