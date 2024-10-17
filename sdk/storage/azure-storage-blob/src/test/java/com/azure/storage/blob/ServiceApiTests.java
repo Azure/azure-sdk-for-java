@@ -658,6 +658,25 @@ public class ServiceApiTests extends BlobTestBase {
         }
     }
 
+    private static Stream<Arguments> setAndGetServiceVersionSupplier() {
+        return Stream.of(
+            Arguments.of(BlobServiceVersion.V2020_02_10, BlobServiceVersion.V2020_02_10),
+            Arguments.of(null, BlobServiceVersion.getLatest())
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("setAndGetServiceVersionSupplier")
+    public void setAndGetServiceVersion(BlobServiceVersion input, BlobServiceVersion expected) {
+        BlobServiceClient serviceClient = new BlobServiceClientBuilder()
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+            .serviceVersion(input)
+            .buildClient();
+
+        assertEquals(expected, serviceClient.getServiceVersion());
+    }
+
     @Test
     @ResourceLock("ServiceProperties")
     public void setPropsCorsCheck() {
@@ -823,6 +842,14 @@ public class ServiceApiTests extends BlobTestBase {
     }
 
     @Test
+    public void getStatsMinSimple() {
+        BlobServiceClient serviceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            ENVIRONMENT.getPrimaryAccount().getBlobEndpointSecondary());
+
+        assertNotNull(serviceClient.getStatistics());
+    }
+
+    @Test
     public void getStatsError() {
         assertThrows(BlobStorageException.class, () -> primaryBlobServiceClient.getStatistics());
     }
@@ -846,6 +873,11 @@ public class ServiceApiTests extends BlobTestBase {
     @Test
     public void getAccountInfoMin() {
         assertResponseStatusCode(primaryBlobServiceClient.getAccountInfoWithResponse(null, null), 200);
+    }
+
+    @Test
+    public void getAccountInfoSimple() {
+        assertNotNull(primaryBlobServiceClient.getAccountInfo());
     }
 
     // This test validates a fix for a bug that caused NPE to be thrown when the account did not exist.
@@ -1073,6 +1105,15 @@ public class ServiceApiTests extends BlobTestBase {
 
         assertTrue(response.getValue());
         assertResponseStatusCode(response, 202);
+    }
+
+    @Test
+    public void deleteContainerMin() {
+        String containerName = generateContainerName();
+        primaryBlobServiceClient.createBlobContainer(containerName);
+
+        primaryBlobServiceClient.deleteBlobContainer(containerName);
+        assertFalse(primaryBlobServiceClient.getBlobContainerClient(containerName).exists());
     }
 
     @Test

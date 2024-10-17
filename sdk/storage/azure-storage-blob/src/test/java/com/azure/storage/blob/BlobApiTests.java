@@ -2094,6 +2094,14 @@ public class BlobApiTests extends BlobTestBase {
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
     }
 
+    @Test
+    public void syncCopyBaseSimple() {
+        BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        assertNotNull(bu2.copyFromUrl(bc.getBlobUrl() + "?" + sas));
+    }
+
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void copyDestACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -2112,6 +2120,36 @@ public class BlobApiTests extends BlobTestBase {
 
         assertThrows(BlobStorageException.class, () -> bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null,
             bac, null, null));
+    }
+
+    @Test
+    public void abortCopyBaseSimple() {
+        // Data has to be large enough and copied between accounts to give us enough time to abort
+        new SpecializedBlobClientBuilder()
+            .blobClient(bc)
+            .buildBlockBlobClient()
+            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024,
+                true);
+
+        BlobContainerClient cu2 = alternateBlobServiceClient.getBlobContainerClient(generateBlobName());
+        cu2.create();
+        BlobClient bu2 = cu2.getBlobClient(generateBlobName());
+
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        SyncPoller<BlobCopyInfo, Void> poller = setPlaybackSyncPollerPollInterval(
+            bu2.beginCopy(bc.getBlobUrl() + "?" + sas, null, null, null, null, null, null));
+        PollResponse<BlobCopyInfo> lastResponse = poller.poll();
+        assertNotNull(lastResponse);
+        assertNotNull(lastResponse.getValue());
+        bu2.abortCopyFromUrl(lastResponse.getValue().getCopyId());
+        BlobStorageException e = assertThrows(BlobStorageException.class, () -> bu2.abortCopyFromUrl(lastResponse.getValue().getCopyId()));
+        assertEquals(409, e.getStatusCode()); //no pending copy operation
+
+        // cleanup:
+        // Normal test cleanup will not clean up containers in the alternate account.
+        assertResponseStatusCode(cu2.deleteWithResponse(null, null, null),
+            202);
     }
 
     @Test
