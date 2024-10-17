@@ -24,22 +24,18 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
 
     private final com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager serviceManager;
 
-    public ConnectedClustersImpl(
-        ConnectedClustersClient innerClient,
+    public ConnectedClustersImpl(ConnectedClustersClient innerClient,
         com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ConnectedCluster> getByResourceGroupWithResponse(
-        String resourceGroupName, String clusterName, Context context) {
-        Response<ConnectedClusterInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, clusterName, context);
+    public Response<ConnectedCluster> getByResourceGroupWithResponse(String resourceGroupName, String clusterName,
+        Context context) {
+        Response<ConnectedClusterInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, clusterName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ConnectedClusterImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -63,27 +59,22 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
         this.serviceClient().delete(resourceGroupName, clusterName, context);
     }
 
-    public Response<CredentialResults> listClusterUserCredentialWithResponse(
-        String resourceGroupName, String clusterName, ListClusterUserCredentialProperties properties, Context context) {
-        Response<CredentialResultsInner> inner =
-            this
-                .serviceClient()
-                .listClusterUserCredentialWithResponse(resourceGroupName, clusterName, properties, context);
+    public Response<CredentialResults> listClusterUserCredentialWithResponse(String resourceGroupName,
+        String clusterName, ListClusterUserCredentialProperties properties, Context context) {
+        Response<CredentialResultsInner> inner = this.serviceClient()
+            .listClusterUserCredentialWithResponse(resourceGroupName, clusterName, properties, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CredentialResultsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CredentialResults listClusterUserCredential(
-        String resourceGroupName, String clusterName, ListClusterUserCredentialProperties properties) {
-        CredentialResultsInner inner =
-            this.serviceClient().listClusterUserCredential(resourceGroupName, clusterName, properties);
+    public CredentialResults listClusterUserCredential(String resourceGroupName, String clusterName,
+        ListClusterUserCredentialProperties properties) {
+        CredentialResultsInner inner
+            = this.serviceClient().listClusterUserCredential(resourceGroupName, clusterName, properties);
         if (inner != null) {
             return new CredentialResultsImpl(inner, this.manager());
         } else {
@@ -93,105 +84,77 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
 
     public PagedIterable<ConnectedCluster> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ConnectedClusterInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ConnectedClusterImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConnectedClusterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ConnectedCluster> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<ConnectedClusterInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new ConnectedClusterImpl(inner1, this.manager()));
+        PagedIterable<ConnectedClusterInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConnectedClusterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ConnectedCluster> list() {
         PagedIterable<ConnectedClusterInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ConnectedClusterImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConnectedClusterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ConnectedCluster> list(Context context) {
         PagedIterable<ConnectedClusterInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ConnectedClusterImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConnectedClusterImpl(inner1, this.manager()));
     }
 
     public ConnectedCluster getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "connectedClusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "connectedClusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'connectedClusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedClusters'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
     }
 
     public Response<ConnectedCluster> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "connectedClusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "connectedClusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'connectedClusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedClusters'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, clusterName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "connectedClusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "connectedClusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'connectedClusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedClusters'.", id)));
         }
         this.delete(resourceGroupName, clusterName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "connectedClusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "connectedClusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'connectedClusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedClusters'.", id)));
         }
         this.delete(resourceGroupName, clusterName, context);
     }
