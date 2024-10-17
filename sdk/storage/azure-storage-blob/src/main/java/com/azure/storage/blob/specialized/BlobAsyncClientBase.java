@@ -29,12 +29,11 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadAsyncResponseConstructorProxy;
-import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
-import com.azure.storage.blob.implementation.models.BlobPropertiesInternalGetProperties;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetAccountInfoHeaders;
+import com.azure.storage.blob.implementation.models.BlobsGetMetadataHeaders;
 import com.azure.storage.blob.implementation.models.BlobsSetImmutabilityPolicyHeaders;
 import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
@@ -1823,13 +1822,18 @@ public class BlobAsyncClientBase {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.getBlobs().getPropertiesWithResponseAsync(containerName, blobName, snapshot,
-                versionId, null, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
-                requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, customerProvidedKey,
-                context)
-            .map(rb -> new SimpleResponse<>(rb, BlobPropertiesConstructorProxy
-                .create(new BlobPropertiesInternalGetProperties(rb.getDeserializedHeaders()))));
+         return this.azureBlobStorage.getBlobs().getMetadataWithResponseAsync(containerName,
+                blobName, snapshot, versionId, null, requestConditions.getLeaseId(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
+                requestConditions.getTagsConditions(), null, customerProvidedKey, context)
+            .map(rb -> {
+                BlobsGetMetadataHeaders headers = rb.getDeserializedHeaders();
+                return new SimpleResponse<>(rb, new BlobProperties(null, headers.getLastModified(), headers.getETag(),
+                    -1, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+                    null, null, null, null, null, null, null, null, null, null, headers.getXMsMeta(), null, null, null,
+                    null, null, null, null, null, null, null, null, null, headers.getXMsClientRequestId()));
+            });
     }
 
     Mono<Response<Void>> getPropertiesWithResponseNoHeaders(Context context) {
