@@ -6,36 +6,41 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The reference to the key vault key. */
+/**
+ * The reference to the key vault key.
+ */
 @Fluent
-public final class KeyVaultKeyReference {
+public final class KeyVaultKeyReference implements JsonSerializable<KeyVaultKeyReference> {
     /*
      * The key vault reference.
      */
-    @JsonProperty(value = "keyVault", required = true)
     private KeyVaultKeyReferenceKeyVault keyVault;
 
     /*
      * The private key name in key vault.
      */
-    @JsonProperty(value = "keyName", required = true)
     private String keyName;
 
     /*
      * The private key version in key vault.
      */
-    @JsonProperty(value = "keyVersion")
     private String keyVersion;
 
-    /** Creates an instance of KeyVaultKeyReference class. */
+    /**
+     * Creates an instance of KeyVaultKeyReference class.
+     */
     public KeyVaultKeyReference() {
     }
 
     /**
      * Get the keyVault property: The key vault reference.
-     *
+     * 
      * @return the keyVault value.
      */
     public KeyVaultKeyReferenceKeyVault keyVault() {
@@ -44,7 +49,7 @@ public final class KeyVaultKeyReference {
 
     /**
      * Set the keyVault property: The key vault reference.
-     *
+     * 
      * @param keyVault the keyVault value to set.
      * @return the KeyVaultKeyReference object itself.
      */
@@ -55,7 +60,7 @@ public final class KeyVaultKeyReference {
 
     /**
      * Get the keyName property: The private key name in key vault.
-     *
+     * 
      * @return the keyName value.
      */
     public String keyName() {
@@ -64,7 +69,7 @@ public final class KeyVaultKeyReference {
 
     /**
      * Set the keyName property: The private key name in key vault.
-     *
+     * 
      * @param keyName the keyName value to set.
      * @return the KeyVaultKeyReference object itself.
      */
@@ -75,7 +80,7 @@ public final class KeyVaultKeyReference {
 
     /**
      * Get the keyVersion property: The private key version in key vault.
-     *
+     * 
      * @return the keyVersion value.
      */
     public String keyVersion() {
@@ -84,7 +89,7 @@ public final class KeyVaultKeyReference {
 
     /**
      * Set the keyVersion property: The private key version in key vault.
-     *
+     * 
      * @param keyVersion the keyVersion value to set.
      * @return the KeyVaultKeyReference object itself.
      */
@@ -95,23 +100,64 @@ public final class KeyVaultKeyReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyVault() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keyVault in model KeyVaultKeyReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property keyVault in model KeyVaultKeyReference"));
         } else {
             keyVault().validate();
         }
         if (keyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keyName in model KeyVaultKeyReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property keyName in model KeyVaultKeyReference"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultKeyReference.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("keyVault", this.keyVault);
+        jsonWriter.writeStringField("keyName", this.keyName);
+        jsonWriter.writeStringField("keyVersion", this.keyVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultKeyReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultKeyReference if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KeyVaultKeyReference.
+     */
+    public static KeyVaultKeyReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultKeyReference deserializedKeyVaultKeyReference = new KeyVaultKeyReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyVault".equals(fieldName)) {
+                    deserializedKeyVaultKeyReference.keyVault = KeyVaultKeyReferenceKeyVault.fromJson(reader);
+                } else if ("keyName".equals(fieldName)) {
+                    deserializedKeyVaultKeyReference.keyName = reader.getString();
+                } else if ("keyVersion".equals(fieldName)) {
+                    deserializedKeyVaultKeyReference.keyVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultKeyReference;
+        });
+    }
 }

@@ -12,25 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiOperationAnnotationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiOperationAnnotation model =
-            BinaryData
-                .fromString("{\"status\":\"NotSpecified\",\"family\":\"mqeq\",\"revision\":114942799}")
+        ApiOperationAnnotation model
+            = BinaryData.fromString("{\"status\":\"Preview\",\"family\":\"lmd\",\"revision\":1547300624}")
                 .toObject(ApiOperationAnnotation.class);
-        Assertions.assertEquals(StatusAnnotation.NOT_SPECIFIED, model.status());
-        Assertions.assertEquals("mqeq", model.family());
-        Assertions.assertEquals(114942799, model.revision());
+        Assertions.assertEquals(StatusAnnotation.PREVIEW, model.status());
+        Assertions.assertEquals("lmd", model.family());
+        Assertions.assertEquals(1547300624, model.revision());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiOperationAnnotation model =
-            new ApiOperationAnnotation()
-                .withStatus(StatusAnnotation.NOT_SPECIFIED)
-                .withFamily("mqeq")
-                .withRevision(114942799);
+        ApiOperationAnnotation model = new ApiOperationAnnotation().withStatus(StatusAnnotation.PREVIEW)
+            .withFamily("lmd")
+            .withRevision(1547300624);
         model = BinaryData.fromObject(model).toObject(ApiOperationAnnotation.class);
-        Assertions.assertEquals(StatusAnnotation.NOT_SPECIFIED, model.status());
-        Assertions.assertEquals("mqeq", model.family());
-        Assertions.assertEquals(114942799, model.revision());
+        Assertions.assertEquals(StatusAnnotation.PREVIEW, model.status());
+        Assertions.assertEquals("lmd", model.family());
+        Assertions.assertEquals(1547300624, model.revision());
     }
 }

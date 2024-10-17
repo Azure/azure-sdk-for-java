@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AS2ErrorSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AS2ErrorSettings model =
-            BinaryData
-                .fromString("{\"suspendDuplicateMessage\":true,\"resendIfMDNNotReceived\":true}")
+        AS2ErrorSettings model
+            = BinaryData.fromString("{\"suspendDuplicateMessage\":true,\"resendIfMDNNotReceived\":true}")
                 .toObject(AS2ErrorSettings.class);
         Assertions.assertEquals(true, model.suspendDuplicateMessage());
         Assertions.assertEquals(true, model.resendIfMdnNotReceived());
@@ -21,8 +20,8 @@ public final class AS2ErrorSettingsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AS2ErrorSettings model =
-            new AS2ErrorSettings().withSuspendDuplicateMessage(true).withResendIfMdnNotReceived(true);
+        AS2ErrorSettings model
+            = new AS2ErrorSettings().withSuspendDuplicateMessage(true).withResendIfMdnNotReceived(true);
         model = BinaryData.fromObject(model).toObject(AS2ErrorSettings.class);
         Assertions.assertEquals(true, model.suspendDuplicateMessage());
         Assertions.assertEquals(true, model.resendIfMdnNotReceived());

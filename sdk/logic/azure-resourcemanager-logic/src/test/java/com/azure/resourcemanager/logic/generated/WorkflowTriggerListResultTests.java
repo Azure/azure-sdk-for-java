@@ -13,28 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkflowTriggerListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkflowTriggerListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"createdTime\":\"2021-03-25T08:46:02Z\",\"changedTime\":\"2021-05-30T04:32:56Z\",\"state\":\"Deleted\",\"status\":\"NotSpecified\",\"lastExecutionTime\":\"2021-05-05T10:08:59Z\",\"nextExecutionTime\":\"2020-12-31T23:44:32Z\"},\"name\":\"p\",\"type\":\"g\",\"id\":\"pbuxwgipwhon\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"createdTime\":\"2021-09-21T08:55:02Z\",\"changedTime\":\"2021-05-17T00:15:40Z\",\"state\":\"Disabled\",\"status\":\"Failed\",\"lastExecutionTime\":\"2021-07-23T09:11:59Z\",\"nextExecutionTime\":\"2021-05-01T14:47:46Z\"},\"name\":\"uttmrywnuzoqft\",\"type\":\"qzrnkcqvyxlwhz\",\"id\":\"icohoqqnwvl\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"createdTime\":\"2021-12-07T06:57Z\",\"changedTime\":\"2021-11-18T07:56:25Z\",\"state\":\"NotSpecified\",\"status\":\"Ignored\",\"lastExecutionTime\":\"2020-12-26T14:51:32Z\",\"nextExecutionTime\":\"2021-11-09T07:05:36Z\"},\"name\":\"onocukok\",\"type\":\"axuconuq\",\"id\":\"fkbey\"}],\"nextLink\":\"wrmjmwvvjektc\"}")
-                .toObject(WorkflowTriggerListResult.class);
-        Assertions.assertEquals("pbuxwgipwhon", model.value().get(0).id());
-        Assertions.assertEquals("wrmjmwvvjektc", model.nextLink());
+        WorkflowTriggerListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Moving\",\"createdTime\":\"2021-04-11T22:38:47Z\",\"changedTime\":\"2021-11-05T22:15:28Z\",\"state\":\"Deleted\",\"status\":\"Suspended\",\"lastExecutionTime\":\"2021-06-02T18:20:22Z\",\"nextExecutionTime\":\"2021-01-20T19:53:11Z\",\"recurrence\":{\"frequency\":\"Second\",\"interval\":2089477703,\"startTime\":\"wit\",\"endTime\":\"ypyynpcdpumnzg\",\"timeZone\":\"z\",\"schedule\":{\"minutes\":[130212191,859745448,1046581273,1095888431],\"hours\":[284256630,1498450316],\"weekDays\":[\"Friday\",\"Tuesday\",\"Friday\",\"Monday\"],\"monthDays\":[1971592368,1505312764,1968385963],\"monthlyOccurrences\":[{},{}]}},\"workflow\":{\"id\":\"ncvokotllxdyhg\",\"name\":\"ocogj\",\"type\":\"dtbnnha\"}},\"name\":\"ocrkvcikh\",\"type\":\"p\",\"id\":\"qgxqquezikyw\"},{\"properties\":{\"provisioningState\":\"Registering\",\"createdTime\":\"2021-12-02T14:36:30Z\",\"changedTime\":\"2021-04-14T21:07:21Z\",\"state\":\"Completed\",\"status\":\"Succeeded\",\"lastExecutionTime\":\"2021-03-11T11:23:32Z\",\"nextExecutionTime\":\"2021-08-15T11:45:06Z\",\"recurrence\":{\"frequency\":\"Month\",\"interval\":834190026,\"startTime\":\"z\",\"endTime\":\"gvvcnayrhyr\",\"timeZone\":\"xmueed\",\"schedule\":{\"minutes\":[46488215,233559890],\"hours\":[467483193,1199547484,768624981],\"weekDays\":[\"Thursday\"],\"monthDays\":[96926313],\"monthlyOccurrences\":[{},{},{},{}]}},\"workflow\":{\"id\":\"d\",\"name\":\"ygdvwv\",\"type\":\"iohgwxrtfud\"}},\"name\":\"pxgy\",\"type\":\"gvr\",\"id\":\"npkukghimdblx\"},{\"properties\":{\"provisioningState\":\"Unregistered\",\"createdTime\":\"2020-12-24T20:58:33Z\",\"changedTime\":\"2021-12-10T08:58:19Z\",\"state\":\"Suspended\",\"status\":\"TimedOut\",\"lastExecutionTime\":\"2021-03-16T13:03:34Z\",\"nextExecutionTime\":\"2021-10-16T12:46:55Z\",\"recurrence\":{\"frequency\":\"Year\",\"interval\":739435613,\"startTime\":\"yfkzik\",\"endTime\":\"aw\",\"timeZone\":\"a\",\"schedule\":{\"minutes\":[322973840,552523145],\"hours\":[1038031643,26283223,1240770029],\"weekDays\":[\"Wednesday\",\"Sunday\"],\"monthDays\":[1789990861],\"monthlyOccurrences\":[{},{},{}]}},\"workflow\":{\"id\":\"bfatklddxbjhwu\",\"name\":\"nozj\",\"type\":\"ph\"}},\"name\":\"ulpjr\",\"type\":\"ag\",\"id\":\"vimjwos\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"createdTime\":\"2021-10-30T03:22:39Z\",\"changedTime\":\"2021-10-12T22:05:56Z\",\"state\":\"Suspended\",\"status\":\"TimedOut\",\"lastExecutionTime\":\"2021-05-30T00:33:28Z\",\"nextExecutionTime\":\"2021-05-16T01:14:52Z\",\"recurrence\":{\"frequency\":\"NotSpecified\",\"interval\":1035067368,\"startTime\":\"ikh\",\"endTime\":\"fjhdg\",\"timeZone\":\"gebdunygaeq\",\"schedule\":{\"minutes\":[1644880180,1233334035,65677300,1541394178],\"hours\":[517658566,48002498,1652546958],\"weekDays\":[\"Monday\",\"Thursday\"],\"monthDays\":[2040504053],\"monthlyOccurrences\":[{},{},{},{}]}},\"workflow\":{\"id\":\"r\",\"name\":\"wdmjsjqbjhhyx\",\"type\":\"wlycoduhpkxkg\"}},\"name\":\"areqna\",\"type\":\"qugjhkycube\",\"id\":\"gssofwq\"}],\"nextLink\":\"qal\"}")
+            .toObject(WorkflowTriggerListResult.class);
+        Assertions.assertEquals("qgxqquezikyw", model.value().get(0).id());
+        Assertions.assertEquals("qal", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkflowTriggerListResult model =
-            new WorkflowTriggerListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new WorkflowTriggerInner().withId("pbuxwgipwhon"),
-                            new WorkflowTriggerInner().withId("icohoqqnwvl"),
-                            new WorkflowTriggerInner().withId("fkbey")))
-                .withNextLink("wrmjmwvvjektc");
+        WorkflowTriggerListResult model
+            = new WorkflowTriggerListResult().withValue(Arrays.asList(new WorkflowTriggerInner().withId("qgxqquezikyw"),
+                new WorkflowTriggerInner().withId("npkukghimdblx"), new WorkflowTriggerInner().withId("vimjwos"),
+                new WorkflowTriggerInner().withId("gssofwq"))).withNextLink("qal");
         model = BinaryData.fromObject(model).toObject(WorkflowTriggerListResult.class);
-        Assertions.assertEquals("pbuxwgipwhon", model.value().get(0).id());
-        Assertions.assertEquals("wrmjmwvvjektc", model.nextLink());
+        Assertions.assertEquals("qgxqquezikyw", model.value().get(0).id());
+        Assertions.assertEquals("qal", model.nextLink());
     }
 }

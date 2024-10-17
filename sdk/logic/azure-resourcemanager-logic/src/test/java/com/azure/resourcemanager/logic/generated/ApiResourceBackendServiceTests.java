@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiResourceBackendServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiResourceBackendService model =
-            BinaryData.fromString("{\"serviceUrl\":\"elxieixynllxecw\"}").toObject(ApiResourceBackendService.class);
-        Assertions.assertEquals("elxieixynllxecw", model.serviceUrl());
+        ApiResourceBackendService model
+            = BinaryData.fromString("{\"serviceUrl\":\"rfih\"}").toObject(ApiResourceBackendService.class);
+        Assertions.assertEquals("rfih", model.serviceUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiResourceBackendService model = new ApiResourceBackendService().withServiceUrl("elxieixynllxecw");
+        ApiResourceBackendService model = new ApiResourceBackendService().withServiceUrl("rfih");
         model = BinaryData.fromObject(model).toObject(ApiResourceBackendService.class);
-        Assertions.assertEquals("elxieixynllxecw", model.serviceUrl());
+        Assertions.assertEquals("rfih", model.serviceUrl());
     }
 }
