@@ -16,11 +16,13 @@ import com.azure.resourcemanager.storagepool.fluent.models.OutboundEnvironmentEn
 import com.azure.resourcemanager.storagepool.models.DiskPoolCreate;
 import com.azure.resourcemanager.storagepool.models.DiskPoolUpdate;
 
-/** An instance of this class provides access to all the operations defined in DiskPoolsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DiskPoolsClient.
+ */
 public interface DiskPoolsClient {
     /**
      * Gets a list of Disk Pools in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Disk Pools in a subscription as paginated response with {@link PagedIterable}.
@@ -30,7 +32,7 @@ public interface DiskPoolsClient {
 
     /**
      * Gets a list of Disk Pools in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -42,7 +44,7 @@ public interface DiskPoolsClient {
 
     /**
      * Gets a list of DiskPools in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,7 +56,7 @@ public interface DiskPoolsClient {
 
     /**
      * Gets a list of DiskPools in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -68,7 +70,7 @@ public interface DiskPoolsClient {
     /**
      * Create or Update Disk pool. This create or update operation can take 15 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolCreatePayload Request payload for Disk Pool create operation.
@@ -78,13 +80,13 @@ public interface DiskPoolsClient {
      * @return the {@link SyncPoller} for polling of response for Disk Pool request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DiskPoolInner>, DiskPoolInner> beginCreateOrUpdate(
-        String resourceGroupName, String diskPoolName, DiskPoolCreate diskPoolCreatePayload);
+    SyncPoller<PollResult<DiskPoolInner>, DiskPoolInner> beginCreateOrUpdate(String resourceGroupName,
+        String diskPoolName, DiskPoolCreate diskPoolCreatePayload);
 
     /**
      * Create or Update Disk pool. This create or update operation can take 15 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolCreatePayload Request payload for Disk Pool create operation.
@@ -95,13 +97,13 @@ public interface DiskPoolsClient {
      * @return the {@link SyncPoller} for polling of response for Disk Pool request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DiskPoolInner>, DiskPoolInner> beginCreateOrUpdate(
-        String resourceGroupName, String diskPoolName, DiskPoolCreate diskPoolCreatePayload, Context context);
+    SyncPoller<PollResult<DiskPoolInner>, DiskPoolInner> beginCreateOrUpdate(String resourceGroupName,
+        String diskPoolName, DiskPoolCreate diskPoolCreatePayload, Context context);
 
     /**
      * Create or Update Disk pool. This create or update operation can take 15 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolCreatePayload Request payload for Disk Pool create operation.
@@ -116,7 +118,7 @@ public interface DiskPoolsClient {
     /**
      * Create or Update Disk pool. This create or update operation can take 15 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolCreatePayload Request payload for Disk Pool create operation.
@@ -127,12 +129,12 @@ public interface DiskPoolsClient {
      * @return response for Disk Pool request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiskPoolInner createOrUpdate(
-        String resourceGroupName, String diskPoolName, DiskPoolCreate diskPoolCreatePayload, Context context);
+    DiskPoolInner createOrUpdate(String resourceGroupName, String diskPoolName, DiskPoolCreate diskPoolCreatePayload,
+        Context context);
 
     /**
      * Update a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolUpdatePayload Request payload for Disk Pool update operation.
@@ -142,12 +144,12 @@ public interface DiskPoolsClient {
      * @return the {@link SyncPoller} for polling of response for Disk Pool request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DiskPoolInner>, DiskPoolInner> beginUpdate(
-        String resourceGroupName, String diskPoolName, DiskPoolUpdate diskPoolUpdatePayload);
+    SyncPoller<PollResult<DiskPoolInner>, DiskPoolInner> beginUpdate(String resourceGroupName, String diskPoolName,
+        DiskPoolUpdate diskPoolUpdatePayload);
 
     /**
      * Update a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolUpdatePayload Request payload for Disk Pool update operation.
@@ -158,12 +160,12 @@ public interface DiskPoolsClient {
      * @return the {@link SyncPoller} for polling of response for Disk Pool request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DiskPoolInner>, DiskPoolInner> beginUpdate(
-        String resourceGroupName, String diskPoolName, DiskPoolUpdate diskPoolUpdatePayload, Context context);
+    SyncPoller<PollResult<DiskPoolInner>, DiskPoolInner> beginUpdate(String resourceGroupName, String diskPoolName,
+        DiskPoolUpdate diskPoolUpdatePayload, Context context);
 
     /**
      * Update a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolUpdatePayload Request payload for Disk Pool update operation.
@@ -177,7 +179,7 @@ public interface DiskPoolsClient {
 
     /**
      * Update a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param diskPoolUpdatePayload Request payload for Disk Pool update operation.
@@ -188,13 +190,13 @@ public interface DiskPoolsClient {
      * @return response for Disk Pool request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiskPoolInner update(
-        String resourceGroupName, String diskPoolName, DiskPoolUpdate diskPoolUpdatePayload, Context context);
+    DiskPoolInner update(String resourceGroupName, String diskPoolName, DiskPoolUpdate diskPoolUpdatePayload,
+        Context context);
 
     /**
      * Delete a Disk pool; attached disks are not affected. This delete operation can take 10 minutes to complete. This
      * is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -208,7 +210,7 @@ public interface DiskPoolsClient {
     /**
      * Delete a Disk pool; attached disks are not affected. This delete operation can take 10 minutes to complete. This
      * is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -223,7 +225,7 @@ public interface DiskPoolsClient {
     /**
      * Delete a Disk pool; attached disks are not affected. This delete operation can take 10 minutes to complete. This
      * is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,7 +238,7 @@ public interface DiskPoolsClient {
     /**
      * Delete a Disk pool; attached disks are not affected. This delete operation can take 10 minutes to complete. This
      * is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -249,7 +251,7 @@ public interface DiskPoolsClient {
 
     /**
      * Get a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -259,12 +261,12 @@ public interface DiskPoolsClient {
      * @return a Disk pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DiskPoolInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String diskPoolName, Context context);
+    Response<DiskPoolInner> getByResourceGroupWithResponse(String resourceGroupName, String diskPoolName,
+        Context context);
 
     /**
      * Get a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -277,39 +279,39 @@ public interface DiskPoolsClient {
 
     /**
      * Gets the network endpoints of all outbound dependencies of a Disk Pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network endpoints of all outbound dependencies of a Disk Pool as paginated response with {@link
-     *     PagedIterable}.
+     * @return the network endpoints of all outbound dependencies of a Disk Pool as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String diskPoolName);
+    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
+        String diskPoolName);
 
     /**
      * Gets the network endpoints of all outbound dependencies of a Disk Pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network endpoints of all outbound dependencies of a Disk Pool as paginated response with {@link
-     *     PagedIterable}.
+     * @return the network endpoints of all outbound dependencies of a Disk Pool as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String diskPoolName, Context context);
+    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
+        String diskPoolName, Context context);
 
     /**
      * The operation to start a Disk Pool. This start operation can take 10 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -323,7 +325,7 @@ public interface DiskPoolsClient {
     /**
      * The operation to start a Disk Pool. This start operation can take 10 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -338,7 +340,7 @@ public interface DiskPoolsClient {
     /**
      * The operation to start a Disk Pool. This start operation can take 10 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -351,7 +353,7 @@ public interface DiskPoolsClient {
     /**
      * The operation to start a Disk Pool. This start operation can take 10 minutes to complete. This is expected
      * service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -365,7 +367,7 @@ public interface DiskPoolsClient {
     /**
      * Shuts down the Disk Pool and releases the compute resources. You are not billed for the compute resources that
      * this Disk Pool uses. This operation can take 10 minutes to complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -379,7 +381,7 @@ public interface DiskPoolsClient {
     /**
      * Shuts down the Disk Pool and releases the compute resources. You are not billed for the compute resources that
      * this Disk Pool uses. This operation can take 10 minutes to complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -394,7 +396,7 @@ public interface DiskPoolsClient {
     /**
      * Shuts down the Disk Pool and releases the compute resources. You are not billed for the compute resources that
      * this Disk Pool uses. This operation can take 10 minutes to complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -407,7 +409,7 @@ public interface DiskPoolsClient {
     /**
      * Shuts down the Disk Pool and releases the compute resources. You are not billed for the compute resources that
      * this Disk Pool uses. This operation can take 10 minutes to complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -421,7 +423,7 @@ public interface DiskPoolsClient {
     /**
      * Upgrade replaces the underlying virtual machine hosts one at a time. This operation can take 10-15 minutes to
      * complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -435,7 +437,7 @@ public interface DiskPoolsClient {
     /**
      * Upgrade replaces the underlying virtual machine hosts one at a time. This operation can take 10-15 minutes to
      * complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -450,7 +452,7 @@ public interface DiskPoolsClient {
     /**
      * Upgrade replaces the underlying virtual machine hosts one at a time. This operation can take 10-15 minutes to
      * complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -463,7 +465,7 @@ public interface DiskPoolsClient {
     /**
      * Upgrade replaces the underlying virtual machine hosts one at a time. This operation can take 10-15 minutes to
      * complete. This is expected service behavior.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
