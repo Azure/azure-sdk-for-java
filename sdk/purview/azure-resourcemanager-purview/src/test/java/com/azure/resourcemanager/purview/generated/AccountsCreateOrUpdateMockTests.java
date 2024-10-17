@@ -6,87 +6,58 @@ package com.azure.resourcemanager.purview.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.purview.PurviewManager;
 import com.azure.resourcemanager.purview.models.Account;
 import com.azure.resourcemanager.purview.models.CloudConnectors;
 import com.azure.resourcemanager.purview.models.Identity;
 import com.azure.resourcemanager.purview.models.PublicNetworkAccess;
 import com.azure.resourcemanager.purview.models.Type;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.purview.models.UserAssignedIdentity;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AccountsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"cloudConnectors\":{\"awsExternalId\":\"dw\"},\"createdAt\":\"2021-05-05T12:21:29Z\",\"createdBy\":\"wib\",\"createdByObjectId\":\"cdl\",\"endpoints\":{\"catalog\":\"hfwpracstwit\",\"guardian\":\"hevxcced\",\"scan\":\"nmdyodnwzxl\"},\"friendlyName\":\"cvnhltiugc\",\"managedResourceGroupName\":\"avvwxqi\",\"managedResources\":{\"eventHubNamespace\":\"unyowxwl\",\"resourceGroup\":\"jrkvfgbvfvpdbo\",\"storageAccount\":\"cizsjqlhkrribdei\"},\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"hvxndzwmkrefajpj\"},\"id\":\"rwkq\",\"name\":\"yhgbijtjivfx\",\"type\":\"sjabibs\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"fsdjpvkvp\"},\"id\":\"jxbkzbzkdvn\",\"name\":\"jabudurgkakmo\",\"type\":\"zhjjklffhmouwq\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"zeeyebi\"},\"id\":\"ikayuhqlbjbsybb\",\"name\":\"wrv\",\"type\":\"ldgmfpgvmpip\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"aqfxss\"},\"id\":\"wutwbdsre\",\"name\":\"pdrhne\",\"type\":\"yowqkdwytisibir\"}],\"provisioningState\":\"Succeeded\",\"publicNetworkAccess\":\"Disabled\"},\"sku\":{\"capacity\":2086081346,\"name\":\"Standard\"},\"identity\":{\"principalId\":\"anlfzxiavrmbz\",\"tenantId\":\"okixrjqcir\",\"type\":\"None\",\"userAssignedIdentities\":{\"jvfbgofelja\":{\"clientId\":\"azszrnwoiindfpw\",\"principalId\":\"ylwbtlhflsjcdhsz\"},\"ueluqhhahhxvrhmz\":{\"clientId\":\"qmqhldvriii\",\"principalId\":\"nalghfkvtvsexso\"},\"hqxujxukndxdi\":{\"clientId\":\"pjgwwspug\",\"principalId\":\"tqs\"}}},\"location\":\"jguufzdm\",\"tags\":{\"hbotzingamvppho\":\"tfih\",\"amvdkfwynwcvtbv\":\"zqzudph\",\"pcnp\":\"ayhmtnvyqiatkz\",\"jguq\":\"zcjaesgvvsccy\"},\"id\":\"hwyg\",\"name\":\"lvdnkfx\",\"type\":\"semdwzrmu\"}";
 
-        String responseStr =
-            "{\"properties\":{\"cloudConnectors\":{\"awsExternalId\":\"fuzmuvpbtt\"},\"createdAt\":\"2021-09-09T07:20:50Z\",\"createdBy\":\"rp\",\"createdByObjectId\":\"ebmnzbtbhjpglk\",\"endpoints\":{\"catalog\":\"hdneuelfph\",\"guardian\":\"yhtozfikdowwqu\",\"scan\":\"xzxcl\"},\"friendlyName\":\"thhqzonosggbh\",\"managedResourceGroupName\":\"hfwdsjnkaljutiis\",\"managedResources\":{\"eventHubNamespace\":\"ffgdkz\",\"resourceGroup\":\"wkfvhqcrailvp\",\"storageAccount\":\"pfuflrw\"},\"privateEndpointConnections\":[],\"provisioningState\":\"Succeeded\",\"publicNetworkAccess\":\"Enabled\"},\"sku\":{\"capacity\":1095036678,\"name\":\"Standard\"},\"identity\":{\"principalId\":\"fcnihgwq\",\"tenantId\":\"nedgfbc\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"location\":\"pkeqdcvdrhvoo\",\"tags\":{\"opcjwvnhd\":\"tbobz\",\"mgxcxrslpm\":\"d\",\"qsluicp\":\"twuoegrpkhjwni\"},\"id\":\"ggkzzlvmbmpa\",\"name\":\"modfvuefywsbpfvm\",\"type\":\"yhrfouyftaakcpw\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        PurviewManager manager = PurviewManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Account response = manager.accounts()
+            .define("doaon")
+            .withRegion("csdtclusiypbs")
+            .withExistingResourceGroup("lgkfbt")
+            .withTags(mapOf("sl", "tg", "sx", "eadcygqukyhejhz"))
+            .withIdentity(new Identity().withType(Type.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("ai", new UserAssignedIdentity(), "n", new UserAssignedIdentity(),
+                    "hz", new UserAssignedIdentity())))
+            .withCloudConnectors(new CloudConnectors())
+            .withManagedResourceGroupName("azxkhnzbonlwnto")
+            .withPublicNetworkAccess(PublicNetworkAccess.NOT_SPECIFIED)
+            .create();
 
-        PurviewManager manager =
-            PurviewManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Account response =
-            manager
-                .accounts()
-                .define("lqlfm")
-                .withRegion("hvhgureod")
-                .withExistingResourceGroup("mvaolps")
-                .withTags(
-                    mapOf(
-                        "bqdxbx", "bdagxt", "ripl", "akbogqxndlkzgxh", "bxmubyynt", "podxunkb", "tkoievseotgq", "lrb"))
-                .withIdentity(new Identity().withType(Type.NONE).withUserAssignedIdentities(mapOf()))
-                .withCloudConnectors(new CloudConnectors())
-                .withManagedResourceGroupName("mweriofzpy")
-                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
-                .create();
-
-        Assertions.assertEquals("pkeqdcvdrhvoo", response.location());
-        Assertions.assertEquals("tbobz", response.tags().get("opcjwvnhd"));
+        Assertions.assertEquals("jguufzdm", response.location());
+        Assertions.assertEquals("tfih", response.tags().get("hbotzingamvppho"));
         Assertions.assertEquals(Type.NONE, response.identity().type());
-        Assertions.assertEquals("hfwdsjnkaljutiis", response.managedResourceGroupName());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.publicNetworkAccess());
+        Assertions.assertEquals("avvwxqi", response.managedResourceGroupName());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.publicNetworkAccess());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
