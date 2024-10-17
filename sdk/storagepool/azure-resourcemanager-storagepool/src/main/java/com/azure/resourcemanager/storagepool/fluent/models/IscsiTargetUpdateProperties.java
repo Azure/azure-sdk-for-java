@@ -5,33 +5,39 @@
 package com.azure.resourcemanager.storagepool.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagepool.models.Acl;
 import com.azure.resourcemanager.storagepool.models.IscsiLun;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties for iSCSI Target update request. */
+/**
+ * Properties for iSCSI Target update request.
+ */
 @Fluent
-public final class IscsiTargetUpdateProperties {
+public final class IscsiTargetUpdateProperties implements JsonSerializable<IscsiTargetUpdateProperties> {
     /*
      * Access Control List (ACL) for an iSCSI Target; defines LUN masking policy
      */
-    @JsonProperty(value = "staticAcls")
     private List<Acl> staticAcls;
 
     /*
      * List of LUNs to be exposed through iSCSI Target.
      */
-    @JsonProperty(value = "luns")
     private List<IscsiLun> luns;
 
-    /** Creates an instance of IscsiTargetUpdateProperties class. */
+    /**
+     * Creates an instance of IscsiTargetUpdateProperties class.
+     */
     public IscsiTargetUpdateProperties() {
     }
 
     /**
      * Get the staticAcls property: Access Control List (ACL) for an iSCSI Target; defines LUN masking policy.
-     *
+     * 
      * @return the staticAcls value.
      */
     public List<Acl> staticAcls() {
@@ -40,7 +46,7 @@ public final class IscsiTargetUpdateProperties {
 
     /**
      * Set the staticAcls property: Access Control List (ACL) for an iSCSI Target; defines LUN masking policy.
-     *
+     * 
      * @param staticAcls the staticAcls value to set.
      * @return the IscsiTargetUpdateProperties object itself.
      */
@@ -51,7 +57,7 @@ public final class IscsiTargetUpdateProperties {
 
     /**
      * Get the luns property: List of LUNs to be exposed through iSCSI Target.
-     *
+     * 
      * @return the luns value.
      */
     public List<IscsiLun> luns() {
@@ -60,7 +66,7 @@ public final class IscsiTargetUpdateProperties {
 
     /**
      * Set the luns property: List of LUNs to be exposed through iSCSI Target.
-     *
+     * 
      * @param luns the luns value to set.
      * @return the IscsiTargetUpdateProperties object itself.
      */
@@ -71,7 +77,7 @@ public final class IscsiTargetUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -81,5 +87,46 @@ public final class IscsiTargetUpdateProperties {
         if (luns() != null) {
             luns().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("staticAcls", this.staticAcls, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("luns", this.luns, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IscsiTargetUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IscsiTargetUpdateProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IscsiTargetUpdateProperties.
+     */
+    public static IscsiTargetUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IscsiTargetUpdateProperties deserializedIscsiTargetUpdateProperties = new IscsiTargetUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("staticAcls".equals(fieldName)) {
+                    List<Acl> staticAcls = reader.readArray(reader1 -> Acl.fromJson(reader1));
+                    deserializedIscsiTargetUpdateProperties.staticAcls = staticAcls;
+                } else if ("luns".equals(fieldName)) {
+                    List<IscsiLun> luns = reader.readArray(reader1 -> IscsiLun.fromJson(reader1));
+                    deserializedIscsiTargetUpdateProperties.luns = luns;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIscsiTargetUpdateProperties;
+        });
     }
 }
