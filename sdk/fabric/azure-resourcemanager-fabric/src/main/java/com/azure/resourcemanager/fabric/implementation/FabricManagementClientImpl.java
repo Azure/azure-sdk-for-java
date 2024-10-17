@@ -24,7 +24,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.fabric.fluent.FabricCapacitiesClient;
-import com.azure.resourcemanager.fabric.fluent.FabricClient;
+import com.azure.resourcemanager.fabric.fluent.FabricManagementClient;
 import com.azure.resourcemanager.fabric.fluent.OperationsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -36,10 +36,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the FabricClientImpl type.
+ * Initializes a new instance of the FabricManagementClientImpl type.
  */
-@ServiceClient(builder = FabricClientBuilder.class)
-public final class FabricClientImpl implements FabricClient {
+@ServiceClient(builder = FabricManagementClientBuilder.class)
+public final class FabricManagementClientImpl implements FabricManagementClient {
     /**
      * Service host.
      */
@@ -153,7 +153,7 @@ public final class FabricClientImpl implements FabricClient {
     }
 
     /**
-     * Initializes an instance of FabricClient client.
+     * Initializes an instance of FabricManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -162,8 +162,8 @@ public final class FabricClientImpl implements FabricClient {
      * @param endpoint Service host.
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      */
-    FabricClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
-        AzureEnvironment environment, String endpoint, String subscriptionId) {
+    FabricManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String endpoint, String subscriptionId) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
@@ -300,5 +300,5 @@ public final class FabricClientImpl implements FabricClient {
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(FabricClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FabricManagementClientImpl.class);
 }

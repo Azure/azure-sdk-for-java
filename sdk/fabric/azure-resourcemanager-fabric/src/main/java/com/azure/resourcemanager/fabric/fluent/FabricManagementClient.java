@@ -8,9 +8,9 @@ import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
 /**
- * The interface for FabricClient class.
+ * The interface for FabricManagementClient class.
  */
-public interface FabricClient {
+public interface FabricManagementClient {
     /**
      * Gets Service host.
      * 

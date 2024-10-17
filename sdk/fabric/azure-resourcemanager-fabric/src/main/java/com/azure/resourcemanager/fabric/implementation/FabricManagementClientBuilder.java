@@ -15,10 +15,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /**
- * A builder for creating a new instance of the FabricClientImpl type.
+ * A builder for creating a new instance of the FabricManagementClientImpl type.
  */
-@ServiceClientBuilder(serviceClients = { FabricClientImpl.class })
-public final class FabricClientBuilder {
+@ServiceClientBuilder(serviceClients = { FabricManagementClientImpl.class })
+public final class FabricManagementClientBuilder {
     /*
      * Service host
      */
@@ -28,9 +28,9 @@ public final class FabricClientBuilder {
      * Sets Service host.
      * 
      * @param endpoint the endpoint value.
-     * @return the FabricClientBuilder.
+     * @return the FabricManagementClientBuilder.
      */
-    public FabricClientBuilder endpoint(String endpoint) {
+    public FabricManagementClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -44,9 +44,9 @@ public final class FabricClientBuilder {
      * Sets The ID of the target subscription. The value must be an UUID.
      * 
      * @param subscriptionId the subscriptionId value.
-     * @return the FabricClientBuilder.
+     * @return the FabricManagementClientBuilder.
      */
-    public FabricClientBuilder subscriptionId(String subscriptionId) {
+    public FabricManagementClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -60,9 +60,9 @@ public final class FabricClientBuilder {
      * Sets The environment to connect to.
      * 
      * @param environment the environment value.
-     * @return the FabricClientBuilder.
+     * @return the FabricManagementClientBuilder.
      */
-    public FabricClientBuilder environment(AzureEnvironment environment) {
+    public FabricManagementClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -76,9 +76,9 @@ public final class FabricClientBuilder {
      * Sets The HTTP pipeline to send requests through.
      * 
      * @param pipeline the pipeline value.
-     * @return the FabricClientBuilder.
+     * @return the FabricManagementClientBuilder.
      */
-    public FabricClientBuilder pipeline(HttpPipeline pipeline) {
+    public FabricManagementClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -92,9 +92,9 @@ public final class FabricClientBuilder {
      * Sets The default poll interval for long-running operation.
      * 
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the FabricClientBuilder.
+     * @return the FabricManagementClientBuilder.
      */
-    public FabricClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+    public FabricManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -108,19 +108,19 @@ public final class FabricClientBuilder {
      * Sets The serializer to serialize an object into a string.
      * 
      * @param serializerAdapter the serializerAdapter value.
-     * @return the FabricClientBuilder.
+     * @return the FabricManagementClientBuilder.
      */
-    public FabricClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public FabricManagementClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of FabricClientImpl with the provided parameters.
+     * Builds an instance of FabricManagementClientImpl with the provided parameters.
      * 
-     * @return an instance of FabricClientImpl.
+     * @return an instance of FabricManagementClientImpl.
      */
-    public FabricClientImpl buildClient() {
+    public FabricManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline = (pipeline != null)
@@ -131,8 +131,8 @@ public final class FabricClientBuilder {
         SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
-        FabricClientImpl client = new FabricClientImpl(localPipeline, localSerializerAdapter, localDefaultPollInterval,
-            localEnvironment, localEndpoint, this.subscriptionId);
+        FabricManagementClientImpl client = new FabricManagementClientImpl(localPipeline, localSerializerAdapter,
+            localDefaultPollInterval, localEnvironment, localEndpoint, this.subscriptionId);
         return client;
     }
 }
