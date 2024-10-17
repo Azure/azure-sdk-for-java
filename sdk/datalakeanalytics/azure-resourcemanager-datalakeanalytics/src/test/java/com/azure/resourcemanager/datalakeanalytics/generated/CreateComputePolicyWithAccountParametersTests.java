@@ -13,32 +13,29 @@ import org.junit.jupiter.api.Assertions;
 public final class CreateComputePolicyWithAccountParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateComputePolicyWithAccountParameters model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"v\",\"properties\":{\"objectId\":\"39849be9-6629-4558-9b69-5b6eadb884a8\",\"objectType\":\"User\",\"maxDegreeOfParallelismPerJob\":928331689,\"minPriorityPerJob\":2070892597}}")
-                .toObject(CreateComputePolicyWithAccountParameters.class);
-        Assertions.assertEquals("v", model.name());
-        Assertions.assertEquals(UUID.fromString("39849be9-6629-4558-9b69-5b6eadb884a8"), model.objectId());
-        Assertions.assertEquals(AadObjectType.USER, model.objectType());
-        Assertions.assertEquals(928331689, model.maxDegreeOfParallelismPerJob());
-        Assertions.assertEquals(2070892597, model.minPriorityPerJob());
+        CreateComputePolicyWithAccountParameters model = BinaryData.fromString(
+            "{\"name\":\"usivye\",\"properties\":{\"objectId\":\"2bc146ee-a90e-4197-8b64-eb06e89cf3be\",\"objectType\":\"ServicePrincipal\",\"maxDegreeOfParallelismPerJob\":1323562973,\"minPriorityPerJob\":1522291140}}")
+            .toObject(CreateComputePolicyWithAccountParameters.class);
+        Assertions.assertEquals("usivye", model.name());
+        Assertions.assertEquals(UUID.fromString("2bc146ee-a90e-4197-8b64-eb06e89cf3be"), model.objectId());
+        Assertions.assertEquals(AadObjectType.SERVICE_PRINCIPAL, model.objectType());
+        Assertions.assertEquals(1323562973, model.maxDegreeOfParallelismPerJob());
+        Assertions.assertEquals(1522291140, model.minPriorityPerJob());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateComputePolicyWithAccountParameters model =
-            new CreateComputePolicyWithAccountParameters()
-                .withName("v")
-                .withObjectId(UUID.fromString("39849be9-6629-4558-9b69-5b6eadb884a8"))
-                .withObjectType(AadObjectType.USER)
-                .withMaxDegreeOfParallelismPerJob(928331689)
-                .withMinPriorityPerJob(2070892597);
+        CreateComputePolicyWithAccountParameters model
+            = new CreateComputePolicyWithAccountParameters().withName("usivye")
+                .withObjectId(UUID.fromString("2bc146ee-a90e-4197-8b64-eb06e89cf3be"))
+                .withObjectType(AadObjectType.SERVICE_PRINCIPAL)
+                .withMaxDegreeOfParallelismPerJob(1323562973)
+                .withMinPriorityPerJob(1522291140);
         model = BinaryData.fromObject(model).toObject(CreateComputePolicyWithAccountParameters.class);
-        Assertions.assertEquals("v", model.name());
-        Assertions.assertEquals(UUID.fromString("39849be9-6629-4558-9b69-5b6eadb884a8"), model.objectId());
-        Assertions.assertEquals(AadObjectType.USER, model.objectType());
-        Assertions.assertEquals(928331689, model.maxDegreeOfParallelismPerJob());
-        Assertions.assertEquals(2070892597, model.minPriorityPerJob());
+        Assertions.assertEquals("usivye", model.name());
+        Assertions.assertEquals(UUID.fromString("2bc146ee-a90e-4197-8b64-eb06e89cf3be"), model.objectId());
+        Assertions.assertEquals(AadObjectType.SERVICE_PRINCIPAL, model.objectType());
+        Assertions.assertEquals(1323562973, model.maxDegreeOfParallelismPerJob());
+        Assertions.assertEquals(1522291140, model.minPriorityPerJob());
     }
 }
