@@ -12,8 +12,8 @@ import com.azure.ai.vision.face.models.FaceVerificationResult;
 import com.azure.ai.vision.face.samples.utils.ConfigurationHelper;
 import com.azure.ai.vision.face.samples.utils.Resources;
 import com.azure.ai.vision.face.samples.utils.Utils;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class StatelessVerification {
         //Create client to run detect and identify operations
         FaceClient client = new FaceClientBuilder()
             .endpoint(ConfigurationHelper.getEndpoint())
-            .credential(new AzureKeyCredential(ConfigurationHelper.getAccountKey()))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
         //Detect a face
