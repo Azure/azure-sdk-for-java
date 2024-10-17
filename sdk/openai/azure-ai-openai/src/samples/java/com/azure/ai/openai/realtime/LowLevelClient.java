@@ -23,12 +23,6 @@ public class LowLevelClient {
         client.start().block();
 
         try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
             client.close();
         } catch (Exception e) {
             System.out.println("Error closing client: " + e.getMessage());

@@ -51,7 +51,7 @@ public class AzureClientEndpointConfiguration  extends ClientEndpointConfigurati
 
     @Override
     protected String getURIString() {
-        return baseUrl + PATH + "?deployment=" + deployment + "&version=" + serviceVersion.getVersion();
+        return baseUrl + PATH + "?deployment=" + deployment + "&api-version=" + serviceVersion.getVersion();
     }
 
 }
