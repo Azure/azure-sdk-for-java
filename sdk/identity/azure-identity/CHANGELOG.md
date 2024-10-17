@@ -5,7 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
-- `@Deprecated` methods `DefaultAzureCredential.setIntelliJKeePassDatabasePath` and `IntelliJCredentialBuilder.keePassDatabasePath`.
+- `@Deprecated` methods `DefaultAzureCredential.setIntelliJKeePassDatabasePath` and `IntelliJCredentialBuilder.keePassDatabasePath`. [#42437](https://github.com/Azure/azure-sdk-for-java/pull/42437)
 
 ### Bugs Fixed
 
