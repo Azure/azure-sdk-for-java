@@ -121,7 +121,7 @@ com.azure:azure-data-appconfiguration-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-data-schemaregistry;1.5.0;1.6.0-beta.1
 com.azure:azure-data-schemaregistry-apacheavro;1.1.21;1.2.0-beta.3
 com.azure:azure-data-schemaregistry-jsonschema;1.0.0;1.1.0-beta.1
-com.azure:azure-data-tables;12.4.5;12.4.6
+com.azure:azure-data-tables;12.4.6;12.5.0-beta.1
 com.azure:azure-data-tables-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-developer-devcenter;1.0.4;1.1.0-beta.1
 com.azure:azure-developer-loadtesting;1.0.17;1.1.0-beta.1
