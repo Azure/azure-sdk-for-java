@@ -121,7 +121,7 @@ com.azure:azure-data-appconfiguration-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-data-schemaregistry;1.5.0;1.6.0-beta.1
 com.azure:azure-data-schemaregistry-apacheavro;1.1.21;1.2.0-beta.3
 com.azure:azure-data-schemaregistry-jsonschema;1.0.0;1.1.0-beta.1
-com.azure:azure-data-tables;12.4.5;12.5.0-beta.1
+com.azure:azure-data-tables;12.4.5;12.4.6
 com.azure:azure-data-tables-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-developer-devcenter;1.0.4;1.1.0-beta.1
 com.azure:azure-developer-loadtesting;1.0.17;1.1.0-beta.1
@@ -158,7 +158,7 @@ com.azure:azure-messaging-eventhubs-checkpointstore-jedis;1.0.0-beta.3;1.0.0-bet
 com.azure:azure-messaging-eventhubs-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track2-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-messaging-servicebus;7.17.4;7.17.5
+com.azure:azure-messaging-servicebus;7.17.5;7.18.0-beta.2
 com.azure:azure-messaging-servicebus-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track2-perf;1.0.0-beta.1;1.0.0-beta.1
@@ -177,12 +177,12 @@ com.azure:azure-search-documents;11.7.2;11.8.0-beta.2
 com.azure:azure-search-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-security-attestation;1.1.28;1.2.0-beta.1
 com.azure:azure-security-confidentialledger;1.0.24;1.1.0-beta.1
-com.azure:azure-security-keyvault-administration;4.5.8;4.6.0-beta.1
-com.azure:azure-security-keyvault-certificates;4.6.7;4.7.0-beta.1
-com.azure:azure-security-keyvault-jca;2.8.1;2.9.0-beta.3
+com.azure:azure-security-keyvault-administration;4.6.0;4.7.0-beta.1
+com.azure:azure-security-keyvault-certificates;4.7.0;4.8.0-beta.1
+com.azure:azure-security-keyvault-jca;2.9.0;2.10.0-beta.1
 com.azure:azure-security-test-keyvault-jca;1.0.0;1.0.0
-com.azure:azure-security-keyvault-keys;4.8.8;4.9.0-beta.2
-com.azure:azure-security-keyvault-secrets;4.8.7;4.9.0-beta.1
+com.azure:azure-security-keyvault-keys;4.9.0;4.10.0-beta.1
+com.azure:azure-security-keyvault-secrets;4.9.0;4.10.0-beta.1
 com.azure:azure-security-keyvault-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-sdk-template;1.1.1234;1.2.2-beta.1
 com.azure:azure-sdk-template-two;1.0.0-beta.1;1.0.0-beta.1
