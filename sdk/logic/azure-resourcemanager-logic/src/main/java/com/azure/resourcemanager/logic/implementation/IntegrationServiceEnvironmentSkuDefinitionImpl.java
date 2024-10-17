@@ -15,8 +15,7 @@ public final class IntegrationServiceEnvironmentSkuDefinitionImpl
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
 
-    IntegrationServiceEnvironmentSkuDefinitionImpl(
-        IntegrationServiceEnvironmentSkuDefinitionInner innerObject,
+    IntegrationServiceEnvironmentSkuDefinitionImpl(IntegrationServiceEnvironmentSkuDefinitionInner innerObject,
         com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

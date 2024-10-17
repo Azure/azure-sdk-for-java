@@ -5,71 +5,72 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.models.ContentLink;
 import com.azure.resourcemanager.logic.models.IntegrationAccountMapPropertiesParametersSchema;
 import com.azure.resourcemanager.logic.models.MapType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The integration account map. */
+/**
+ * The integration account map.
+ */
 @Fluent
-public final class IntegrationAccountMapProperties {
+public final class IntegrationAccountMapProperties implements JsonSerializable<IntegrationAccountMapProperties> {
     /*
      * The map type.
      */
-    @JsonProperty(value = "mapType", required = true)
     private MapType mapType;
 
     /*
      * The parameters schema of integration account map.
      */
-    @JsonProperty(value = "parametersSchema")
     private IntegrationAccountMapPropertiesParametersSchema parametersSchema;
 
     /*
      * The created time.
      */
-    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTime;
 
     /*
      * The changed time.
      */
-    @JsonProperty(value = "changedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime changedTime;
 
     /*
      * The content.
      */
-    @JsonProperty(value = "content")
     private String content;
 
     /*
      * The content type.
      */
-    @JsonProperty(value = "contentType")
     private String contentType;
 
     /*
      * The content link.
      */
-    @JsonProperty(value = "contentLink", access = JsonProperty.Access.WRITE_ONLY)
     private ContentLink contentLink;
 
     /*
      * The metadata.
      */
-    @JsonProperty(value = "metadata")
     private Object metadata;
 
-    /** Creates an instance of IntegrationAccountMapProperties class. */
+    /**
+     * Creates an instance of IntegrationAccountMapProperties class.
+     */
     public IntegrationAccountMapProperties() {
     }
 
     /**
      * Get the mapType property: The map type.
-     *
+     * 
      * @return the mapType value.
      */
     public MapType mapType() {
@@ -78,7 +79,7 @@ public final class IntegrationAccountMapProperties {
 
     /**
      * Set the mapType property: The map type.
-     *
+     * 
      * @param mapType the mapType value to set.
      * @return the IntegrationAccountMapProperties object itself.
      */
@@ -89,7 +90,7 @@ public final class IntegrationAccountMapProperties {
 
     /**
      * Get the parametersSchema property: The parameters schema of integration account map.
-     *
+     * 
      * @return the parametersSchema value.
      */
     public IntegrationAccountMapPropertiesParametersSchema parametersSchema() {
@@ -98,19 +99,19 @@ public final class IntegrationAccountMapProperties {
 
     /**
      * Set the parametersSchema property: The parameters schema of integration account map.
-     *
+     * 
      * @param parametersSchema the parametersSchema value to set.
      * @return the IntegrationAccountMapProperties object itself.
      */
-    public IntegrationAccountMapProperties withParametersSchema(
-        IntegrationAccountMapPropertiesParametersSchema parametersSchema) {
+    public IntegrationAccountMapProperties
+        withParametersSchema(IntegrationAccountMapPropertiesParametersSchema parametersSchema) {
         this.parametersSchema = parametersSchema;
         return this;
     }
 
     /**
      * Get the createdTime property: The created time.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -119,7 +120,7 @@ public final class IntegrationAccountMapProperties {
 
     /**
      * Get the changedTime property: The changed time.
-     *
+     * 
      * @return the changedTime value.
      */
     public OffsetDateTime changedTime() {
@@ -128,7 +129,7 @@ public final class IntegrationAccountMapProperties {
 
     /**
      * Get the content property: The content.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -137,7 +138,7 @@ public final class IntegrationAccountMapProperties {
 
     /**
      * Set the content property: The content.
-     *
+     * 
      * @param content the content value to set.
      * @return the IntegrationAccountMapProperties object itself.
      */
@@ -148,7 +149,7 @@ public final class IntegrationAccountMapProperties {
 
     /**
      * Get the contentType property: The content type.
-     *
+     * 
      * @return the contentType value.
      */
     public String contentType() {
@@ -157,7 +158,7 @@ public final class IntegrationAccountMapProperties {
 
     /**
      * Set the contentType property: The content type.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the IntegrationAccountMapProperties object itself.
      */
@@ -168,7 +169,7 @@ public final class IntegrationAccountMapProperties {
 
     /**
      * Get the contentLink property: The content link.
-     *
+     * 
      * @return the contentLink value.
      */
     public ContentLink contentLink() {
@@ -177,7 +178,7 @@ public final class IntegrationAccountMapProperties {
 
     /**
      * Get the metadata property: The metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -186,7 +187,7 @@ public final class IntegrationAccountMapProperties {
 
     /**
      * Set the metadata property: The metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the IntegrationAccountMapProperties object itself.
      */
@@ -197,15 +198,14 @@ public final class IntegrationAccountMapProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (mapType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property mapType in model IntegrationAccountMapProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property mapType in model IntegrationAccountMapProperties"));
         }
         if (parametersSchema() != null) {
             parametersSchema().validate();
@@ -216,4 +216,63 @@ public final class IntegrationAccountMapProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountMapProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mapType", this.mapType == null ? null : this.mapType.toString());
+        jsonWriter.writeJsonField("parametersSchema", this.parametersSchema);
+        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeStringField("contentType", this.contentType);
+        jsonWriter.writeUntypedField("metadata", this.metadata);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationAccountMapProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationAccountMapProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IntegrationAccountMapProperties.
+     */
+    public static IntegrationAccountMapProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationAccountMapProperties deserializedIntegrationAccountMapProperties
+                = new IntegrationAccountMapProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mapType".equals(fieldName)) {
+                    deserializedIntegrationAccountMapProperties.mapType = MapType.fromString(reader.getString());
+                } else if ("parametersSchema".equals(fieldName)) {
+                    deserializedIntegrationAccountMapProperties.parametersSchema
+                        = IntegrationAccountMapPropertiesParametersSchema.fromJson(reader);
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedIntegrationAccountMapProperties.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("changedTime".equals(fieldName)) {
+                    deserializedIntegrationAccountMapProperties.changedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("content".equals(fieldName)) {
+                    deserializedIntegrationAccountMapProperties.content = reader.getString();
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedIntegrationAccountMapProperties.contentType = reader.getString();
+                } else if ("contentLink".equals(fieldName)) {
+                    deserializedIntegrationAccountMapProperties.contentLink = ContentLink.fromJson(reader);
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedIntegrationAccountMapProperties.metadata = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationAccountMapProperties;
+        });
+    }
 }
