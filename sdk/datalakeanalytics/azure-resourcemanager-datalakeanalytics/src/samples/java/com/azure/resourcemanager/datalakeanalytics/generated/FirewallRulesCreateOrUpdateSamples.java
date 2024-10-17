@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.datalakeanalytics.generated;
 
-/** Samples for FirewallRules CreateOrUpdate. */
+/**
+ * Samples for FirewallRules CreateOrUpdate.
+ */
 public final class FirewallRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/stable/2016-11-01/examples/FirewallRules_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/stable/2016-11-01/examples/
+     * FirewallRules_CreateOrUpdate.json
      */
     /**
      * Sample code: Creates or updates the specified firewall rule.
-     *
+     * 
      * @param manager Entry point to DataLakeAnalyticsManager.
      */
     public static void createsOrUpdatesTheSpecifiedFirewallRule(
         com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager manager) {
-        manager
-            .firewallRules()
+        manager.firewallRules()
             .define("test_rule")
             .withExistingAccount("contosorg", "contosoadla")
             .withStartIpAddress("1.1.1.1")
