@@ -6,50 +6,80 @@ package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.LiveMetricsRestAPIsForClientSDKs;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.CollectionConfigurationInfo;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.MonitoringDataPoint;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.PublishHeaders;
+import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
+import reactor.core.publisher.Mono;
 
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.function.Supplier;
 
 class QuickPulseDataSender implements Runnable {
 
     private static final ClientLogger logger = new ClientLogger(QuickPulseCoordinator.class);
 
     private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
-    private final HttpPipeline httpPipeline; // TODO: remove if not needed
-    private volatile QuickPulseHeaderInfo quickPulseHeaderInfo;
+    //private final HttpPipeline httpPipeline; // TODO: remove if not needed
+    private volatile PublishHeaders postResponseHeaders;
     private long lastValidTransmission = 0;
 
-    private final ArrayBlockingQueue<HttpRequest> sendQueue;
+    private final ArrayBlockingQueue<MonitoringDataPoint> sendQueue;
 
     private final LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs;
 
-    QuickPulseDataSender(LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs, HttpPipeline httpPipeline, ArrayBlockingQueue<HttpRequest> sendQueue) {
-        this.httpPipeline = httpPipeline;
+    private Supplier<URL> endpointUrl;
+
+    private String redirectEndpointPrefix;
+
+    private QuickPulseStatus qpStatus;
+
+    private Supplier<String> instrumentationKey;
+
+    QuickPulseDataSender(LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs,  ArrayBlockingQueue<MonitoringDataPoint> sendQueue, Supplier<URL> endpointUrl, Supplier<String> instrumentationKey) {
         this.sendQueue = sendQueue;
         this.liveMetricsRestAPIsForClientSDKs = liveMetricsRestAPIsForClientSDKs;
+        this.endpointUrl = endpointUrl;
+        this.qpStatus = QuickPulseStatus.QP_IS_ON; // does this need to start as off
+        this.instrumentationKey = instrumentationKey;
     }
 
     @Override
     public void run() {
         while (true) {
-            HttpRequest post;
+            //HttpRequest post;
+            MonitoringDataPoint point;
             try {
-                post = sendQueue.take();
+                point = sendQueue.take();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 logger.error("QuickPulseDataSender was interrupted while waiting for a request", e);
                 return;
             }
-            if (quickPulseHeaderInfo.getQuickPulseStatus() != QuickPulseStatus.QP_IS_ON) {
+            if (qpStatus != QuickPulseStatus.QP_IS_ON) {
                 logger.verbose("QuickPulseDataSender is not sending data because QP is "
-                    + quickPulseHeaderInfo.getQuickPulseStatus());
+                    + qpStatus);
                 continue;
             }
 
             long sendTime = System.nanoTime();
-            try (HttpResponse response = httpPipeline.sendSync(post, Context.NONE)) {
+            String endpointPrefix = Strings.isNullOrEmpty(redirectEndpointPrefix) ? getQuickPulseEndpoint() : redirectEndpointPrefix;
+            try {
+                List<MonitoringDataPoint> dataPointList = new ArrayList<>();
+                dataPointList.add(point);
+                // TODO: calculate ticks for transmission time here
+                //TODO: In filtering feature, fix etag here
+                Mono<Response<CollectionConfigurationInfo>> responseMono =
+                    liveMetricsRestAPIsForClientSDKs.publishNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey.get(), "", transmissionTime, dataPointList);
+            }
+            /*try (HttpResponse response = httpPipeline.sendSync(post, Context.NONE)) {
                 if (response == null) {
                     // this shouldn't happen, the mono should complete with a response or a failure
                     throw new AssertionError("http response mono returned empty");
@@ -71,7 +101,7 @@ class QuickPulseDataSender implements Runnable {
                 }
             } catch (Throwable t) {
                 logger.error("QuickPulseDataSender failed to send a request", t);
-            }
+            }*/
         }
     }
 
@@ -88,5 +118,13 @@ class QuickPulseDataSender implements Runnable {
         if (timeFromLastValidTransmission >= 20.0) {
             quickPulseHeaderInfo = new QuickPulseHeaderInfo(QuickPulseStatus.ERROR);
         }
+    }
+
+    public void setRedirectEndpointPrefix(String endpointPrefix) {
+        this.redirectEndpointPrefix = endpointPrefix;
+    }
+
+    private String getQuickPulseEndpoint() {
+        return endpointUrl.get().toString() + "QuickPulseService.svc";
     }
 }

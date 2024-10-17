@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseEnvelope;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseMonitoringDataPoints;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseMetrics;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.MonitoringDataPoint;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import org.slf4j.MDC;
 
@@ -27,11 +28,8 @@ class QuickPulseDataFetcher {
 
     private final QuickPulseDataCollector collector;
 
-    private final ArrayBlockingQueue<HttpRequest> sendQueue;
+    private final ArrayBlockingQueue<MonitoringDataPoint> sendQueue;
     private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
-
-    private final Supplier<URL> endpointUrl;
-    private final Supplier<String> instrumentationKey;
     private final String roleName;
     private final String instanceName;
     private final String machineName;
@@ -39,13 +37,10 @@ class QuickPulseDataFetcher {
 
     private final String sdkVersion;
 
-    public QuickPulseDataFetcher(QuickPulseDataCollector collector, ArrayBlockingQueue<HttpRequest> sendQueue,
-        Supplier<URL> endpointUrl, Supplier<String> instrumentationKey, String roleName, String instanceName,
+    public QuickPulseDataFetcher(QuickPulseDataCollector collector, ArrayBlockingQueue<MonitoringDataPoint> sendQueue, String roleName, String instanceName,
         String machineName, String quickPulseId) {
         this.collector = collector;
         this.sendQueue = sendQueue;
-        this.endpointUrl = endpointUrl;
-        this.instrumentationKey = instrumentationKey;
         this.roleName = roleName;
         this.instanceName = instanceName;
         this.machineName = machineName;
@@ -64,7 +59,7 @@ class QuickPulseDataFetcher {
     }
 
     @SuppressWarnings("try")
-    public void prepareQuickPulseDataForSend(String redirectedEndpoint) {
+    public void prepareQuickPulseDataForSend() {
         try {
             QuickPulseDataCollector.FinalCounters counters = collector.getAndRestart();
 
@@ -73,14 +68,15 @@ class QuickPulseDataFetcher {
             }
 
             Date currentDate = new Date();
-            String endpointPrefix
-                = Strings.isNullOrEmpty(redirectedEndpoint) ? getQuickPulseEndpoint() : redirectedEndpoint;
-            HttpRequest request = networkHelper.buildRequest(currentDate, this.getEndpointUrl(endpointPrefix));
-            request.setBody(buildPostEntity(counters));
+            //String endpointPrefix
+                //= Strings.isNullOrEmpty(redirectedEndpoint) ? getQuickPulseEndpoint() : redirectedEndpoint;
 
-            if (!sendQueue.offer(request)) {
+            //HttpRequest request = networkHelper.buildRequest(currentDate, this.getEndpointUrl(endpointPrefix));
+            //request.setBody(buildPostEntity(counters));
+
+            /*if (!sendQueue.offer(request)) {
                 logger.verbose("Quick Pulse send queue is full");
-            }
+            }*/
         } catch (Throwable e) {
             if (e instanceof Error) {
                 throw (Error) e;
@@ -98,14 +94,14 @@ class QuickPulseDataFetcher {
     }
 
     // visible for testing
-    String getEndpointUrl(String endpointPrefix) {
+    /*String getEndpointUrl(String endpointPrefix) {
         return endpointPrefix + "/post?ikey=" + instrumentationKey.get();
-    }
+    }*/
 
     // visible for testing
-    String getQuickPulseEndpoint() {
+    /*String getQuickPulseEndpoint() {
         return endpointUrl.get().toString() + "QuickPulseService.svc";
-    }
+    }*/
 
     private String buildPostEntity(QuickPulseDataCollector.FinalCounters counters) throws IOException {
         List<QuickPulseEnvelope> envelopes = new ArrayList<>();
@@ -118,7 +114,7 @@ class QuickPulseDataFetcher {
         postEnvelope.setRoleName(roleName);
         // For historical reasons, instrumentation key is provided both in the query string and
         // envelope.
-        postEnvelope.setInstrumentationKey(instrumentationKey.get());
+        //postEnvelope.setInstrumentationKey(instrumentationKey.get());
         postEnvelope.setStreamId(quickPulseId);
         postEnvelope.setVersion(sdkVersion);
         postEnvelope.setTimeStamp("/Date(" + System.currentTimeMillis() + ")/");

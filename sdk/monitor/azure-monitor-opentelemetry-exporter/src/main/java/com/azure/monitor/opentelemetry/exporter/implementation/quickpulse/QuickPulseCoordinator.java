@@ -4,6 +4,8 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.IsSubscribedHeaders;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.PublishHeaders;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import org.slf4j.MDC;
 import reactor.util.annotation.Nullable;
@@ -67,7 +69,8 @@ final class QuickPulseCoordinator implements Runnable {
 
     @SuppressWarnings("try")
     private long sendData() {
-        dataFetcher.prepareQuickPulseDataForSend(qpsServiceRedirectedEndpoint);
+        dataSender.setRedirectEndpointPrefix(qpsServiceRedirectedEndpoint);
+        dataFetcher.prepareQuickPulseDataForSend();
         QuickPulseHeaderInfo currentQuickPulseHeaderInfo = dataSender.getQuickPulseHeaderInfo();
 
         this.handleReceivedHeaders(currentQuickPulseHeaderInfo);
@@ -97,10 +100,10 @@ final class QuickPulseCoordinator implements Runnable {
 
     @SuppressWarnings("try")
     private long ping() {
-        QuickPulseHeaderInfo pingResult = pingSender.ping(qpsServiceRedirectedEndpoint);
-        this.handleReceivedHeaders(pingResult);
-        collector.setQuickPulseStatus(pingResult.getQuickPulseStatus());
-        switch (pingResult.getQuickPulseStatus()) {
+        IsSubscribedHeaders pingResult = pingSender.ping(qpsServiceRedirectedEndpoint);
+        QuickPulseStatus qpStatus = this.handleReceivedPingHeaders(pingResult);
+        collector.setQuickPulseStatus(qpStatus);
+        switch (qpStatus) {
             case ERROR:
                 return waitOnErrorInMillis;
 
@@ -132,6 +135,29 @@ final class QuickPulseCoordinator implements Runnable {
         long newPollingInterval = currentQuickPulseHeaderInfo.getQpsServicePollingInterval();
         if (newPollingInterval > 0) {
             qpsServicePollingIntervalHintMillis = newPollingInterval;
+        }
+    }
+
+    private QuickPulseStatus handleReceivedPingHeaders(IsSubscribedHeaders pingHeaders) {
+        String redirectLink = pingHeaders.getXMsQpsServiceEndpointRedirectV2();
+        if (!Strings.isNullOrEmpty(redirectLink)) {
+            qpsServiceRedirectedEndpoint = redirectLink;
+        }
+
+        long newPollingInterval = Long.getLong(pingHeaders.getXMsQpsServicePollingIntervalHint());
+        if (newPollingInterval > 0) {
+            qpsServicePollingIntervalHintMillis = newPollingInterval;
+        }
+        return getQuickPulseStatusFromHeader(pingHeaders.getXMsQpsSubscribed());
+    }
+
+    private QuickPulseStatus getQuickPulseStatusFromHeader(String headerValue) {
+        if (!Strings.isNullOrEmpty(headerValue)) {
+            return QuickPulseStatus.ERROR;
+        } else if (headerValue.equalsIgnoreCase("true")) {
+            return QuickPulseStatus.QP_IS_ON;
+        } else {
+            return QuickPulseStatus.QP_IS_OFF;
         }
     }
 
