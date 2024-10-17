@@ -8,38 +8,38 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devspaces.fluent.models.ContainerHostMappingInner;
 
-/** Resource collection API of ContainerHostMappings. */
+/**
+ * Resource collection API of ContainerHostMappings.
+ */
 public interface ContainerHostMappings {
     /**
      * Returns container host mapping object for a container host resource ID if an associated controller exists.
-     *
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param location Location of the container host.
-     * @param containerHostMapping Container host mapping object specifying the Container host resource ID and its
-     *     associated Controller resource.
+     * @param containerHostMapping The containerHostMapping parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container host mapping object specifying the Container host resource ID and its associated Controller
-     *     resource along with {@link Response}.
+     * resource along with {@link Response}.
      */
-    Response<ContainerHostMapping> getContainerHostMappingWithResponse(
-        String resourceGroupName, String location, ContainerHostMappingInner containerHostMapping, Context context);
+    Response<ContainerHostMapping> getContainerHostMappingWithResponse(String resourceGroupName, String location,
+        ContainerHostMappingInner containerHostMapping, Context context);
 
     /**
      * Returns container host mapping object for a container host resource ID if an associated controller exists.
-     *
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param location Location of the container host.
-     * @param containerHostMapping Container host mapping object specifying the Container host resource ID and its
-     *     associated Controller resource.
+     * @param containerHostMapping The containerHostMapping parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container host mapping object specifying the Container host resource ID and its associated Controller
-     *     resource.
+     * resource.
      */
-    ContainerHostMapping getContainerHostMapping(
-        String resourceGroupName, String location, ContainerHostMappingInner containerHostMapping);
+    ContainerHostMapping getContainerHostMapping(String resourceGroupName, String location,
+        ContainerHostMappingInner containerHostMapping);
 }
