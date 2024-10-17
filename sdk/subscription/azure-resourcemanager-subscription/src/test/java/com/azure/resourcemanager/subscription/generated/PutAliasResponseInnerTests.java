@@ -13,19 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class PutAliasResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PutAliasResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"subscriptionId\":\"uf\",\"provisioningState\":\"Succeeded\"},\"id\":\"ymzidn\",\"name\":\"ezcxtbzsgfyccsne\",\"type\":\"mdwzjeiachboo\"}")
-                .toObject(PutAliasResponseInner.class);
+        PutAliasResponseInner model = BinaryData.fromString(
+            "{\"properties\":{\"subscriptionId\":\"ugpbkw\",\"provisioningState\":\"Succeeded\"},\"id\":\"tduqktapspwgcuer\",\"name\":\"umkdosvqwhbmd\",\"type\":\"bbjfddgmbmbexp\"}")
+            .toObject(PutAliasResponseInner.class);
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.properties().provisioningState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PutAliasResponseInner model =
-            new PutAliasResponseInner()
-                .withProperties(new PutAliasResponseProperties().withProvisioningState(ProvisioningState.SUCCEEDED));
+        PutAliasResponseInner model = new PutAliasResponseInner()
+            .withProperties(new PutAliasResponseProperties().withProvisioningState(ProvisioningState.SUCCEEDED));
         model = BinaryData.fromObject(model).toObject(PutAliasResponseInner.class);
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.properties().provisioningState());
     }
