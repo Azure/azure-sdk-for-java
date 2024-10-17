@@ -60,7 +60,8 @@ public class CallAutomationUnitTestBase {
         "https://websocket.url.com",
         MediaStreamingTransport.WEBSOCKET,
         MediaStreamingContent.AUDIO,
-        MediaStreamingAudioChannel.MIXED
+        MediaStreamingAudioChannel.MIXED,
+        true
     );
 
     static final TranscriptionOptions TRANSCRIPTION_CONFIGURATION = new TranscriptionOptions(
