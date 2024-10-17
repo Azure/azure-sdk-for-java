@@ -6,9 +6,6 @@ import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import org.slf4j.Logger;
 
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
-
 /**
  * This class contains the customization code to customize the AutoRest generated code for OpenAI.
  */
