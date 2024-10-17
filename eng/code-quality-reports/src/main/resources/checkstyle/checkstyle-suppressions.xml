@@ -217,39 +217,6 @@
   <!-- Suppress the long line in endpoint path -->
   <suppress checks="LineLength" files="com.azure.analytics.synapse.managedprivateendpoints.implementation.ManagedPrivateEndpointsImpl.java"/>
 
-  <!-- Cosmos sdk suppressions -->
-  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-encryption[/\\]src[/\\]test[/\\]"/>
-  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-kafka-connect[/\\]src[/\\]test[/\\]"/>
-  <suppress checks="[a-zA-Z0-9]*"
-            files=".*[/\\]azure-cosmos[/\\]((?!(BridgeInternal|CosmosBridgeInternal|CommonsBridgeInternal)).*)"/>
-  <suppress checks="[a-zA-Z0-9]*"
-            files=".*[/\\]azure-cosmos-encryption[/\\]((?!(EncryptionBridgeInternal)).*)"/>
-
-  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-benchmark[/\\]"/>
-  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-test[/\\]src[/\\]test[/\\]"/>
-  <suppress checks="com.puppycrawl.tools.checkstyle.checks.naming.ConstantNameCheck" files="[/\\]azure-cosmos-test[/\\]"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
-            files="com.azure.cosmos.CosmosResponseDiagnostics"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
-            files=".*[/\\]cosmos[/\\]((?!(CosmosClient|CosmosScripts|CosmosAsyncDatabase|PartitionKeyDefinition
-            |JsonSerializable|CosmosContainer|DatabaseAccount|CosmosContainerProperties|UniqueKeyPolicy|IncludedPath
-            |CosmosConflictProperties|CosmosDatabase|ConnectionPolicy|ThrottlingRetryOptions|ClientSideRequestStatistics)).*)"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.(GoodLoggingCheck|ExternalDependencyExposedCheck)"
-            files="com.azure.cosmos.JsonSerializable"/>  <!-- exposes logger from slf4j-->
-  <suppress checks="javadoc" files="com.azure.cosmos.CompositePathSortOrder"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.cosmos.PartitionKey"/>
-  <suppress
-      checks="com.azure.tools.checkstyle.checks.(EnforceFinalFieldsCheck|ExternalDependencyExposedCheck|NoImplInPublicAPI)"
-      files="com.azure.cosmos.ClientSideRequestStatistics"/>
-  <suppress checks="IllegalImport"
-            files="com.azure.cosmos.ClientSideRequestStatistics"/> <!-- Need OperatingSystemMXBean from sun to obtain cpu info -->
-  <suppress checks="EnforceFinalFields" files="com.azure.spring.cloud.config.AppConfigurationPropertySourceLocator"/>
-  <suppress checks="ConstantName" files="com.azure.spring.cloud.config.AppConfigurationPropertySourceLocator"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
-            files="[/\\]azure-cosmos-kafka-connect[/\\]"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.cosmos.kafka.connect.CosmosSourceConnector"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.cosmos.kafka.connect.CosmosSinkConnector"/>
-
   <!-- Checkstyle suppressions for resource manager package -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.resourcemanager.*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.resourcemanager.test.policy.HttpDebugLoggingPolicy.java"/>
