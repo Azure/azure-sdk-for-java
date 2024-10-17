@@ -185,17 +185,11 @@ public final class HttpUtil {
 
     public static String validateUri(String uri, String propertyName) {
         if (uri == null) {
-            StringBuilder messageBuilder = new StringBuilder();
-
             if (propertyName != null) {
-                messageBuilder.append(propertyName);
+                throw new NullPointerException(propertyName + "cannot be null.");
             } else {
-                messageBuilder.append("Provided URI ");
+                throw new NullPointerException("Provided URI cannot be null.");
             }
-
-            messageBuilder.append("cannot be null.");
-
-            throw new NullPointerException(messageBuilder.toString());
         }
 
         if (!uri.startsWith(HTTPS_PREFIX)) {
