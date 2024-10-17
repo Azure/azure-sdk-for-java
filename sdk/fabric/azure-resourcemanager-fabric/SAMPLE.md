@@ -28,7 +28,8 @@ import com.azure.resourcemanager.fabric.models.CheckNameAvailabilityRequest;
  */
 public final class FabricCapacitiesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_CheckNameAvailability.json
+     * x-ms-original-file: specification/fabric/resource-manager/Microsoft.Fabric/stable/2023-11-01/examples/
+     * FabricCapacities_CheckNameAvailability.json
      */
     /**
      * Sample code: Check name availability of a capacity.
@@ -48,7 +49,6 @@ public final class FabricCapacitiesCheckNameAvailabilitySamples {
 
 ```java
 import com.azure.resourcemanager.fabric.models.CapacityAdministration;
-import com.azure.resourcemanager.fabric.models.FabricCapacityProperties;
 import com.azure.resourcemanager.fabric.models.RpSku;
 import com.azure.resourcemanager.fabric.models.RpSkuTier;
 import java.util.Arrays;
@@ -58,7 +58,9 @@ import java.util.Arrays;
  */
 public final class FabricCapacitiesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/fabric/resource-manager/Microsoft.Fabric/stable/2023-11-01/examples/FabricCapacities_CreateOrUpdate
+     * .json
      */
     /**
      * Sample code: Create or update a capacity.
@@ -70,9 +72,9 @@ public final class FabricCapacitiesCreateOrUpdateSamples {
             .define("azsdktest")
             .withRegion("westcentralus")
             .withExistingResourceGroup("TestRG")
-            .withProperties(new FabricCapacityProperties().withAdministration(new CapacityAdministration()
-                .withMembers(Arrays.asList("azsdktest@microsoft.com", "azsdktest2@microsoft.com"))))
             .withSku(new RpSku().withName("F2").withTier(RpSkuTier.FABRIC))
+            .withAdministration(new CapacityAdministration()
+                .withMembers(Arrays.asList("azsdktest@microsoft.com", "azsdktest2@microsoft.com")))
             .create();
     }
 }
@@ -86,7 +88,8 @@ public final class FabricCapacitiesCreateOrUpdateSamples {
  */
 public final class FabricCapacitiesDeleteSamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_Delete.json
+     * x-ms-original-file:
+     * specification/fabric/resource-manager/Microsoft.Fabric/stable/2023-11-01/examples/FabricCapacities_Delete.json
      */
     /**
      * Sample code: Delete a capacity.
@@ -107,7 +110,8 @@ public final class FabricCapacitiesDeleteSamples {
  */
 public final class FabricCapacitiesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_Get.json
+     * x-ms-original-file:
+     * specification/fabric/resource-manager/Microsoft.Fabric/stable/2023-11-01/examples/FabricCapacities_Get.json
      */
     /**
      * Sample code: Get a capacity.
@@ -129,7 +133,8 @@ public final class FabricCapacitiesGetByResourceGroupSamples {
  */
 public final class FabricCapacitiesListSamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_ListBySubscription.json
+     * x-ms-original-file: specification/fabric/resource-manager/Microsoft.Fabric/stable/2023-11-01/examples/
+     * FabricCapacities_ListBySubscription.json
      */
     /**
      * Sample code: List capacities by subscription.
@@ -150,7 +155,8 @@ public final class FabricCapacitiesListSamples {
  */
 public final class FabricCapacitiesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_ListByResourceGroup.json
+     * x-ms-original-file: specification/fabric/resource-manager/Microsoft.Fabric/stable/2023-11-01/examples/
+     * FabricCapacities_ListByResourceGroup.json
      */
     /**
      * Sample code: List capacities by resource group.
@@ -171,7 +177,8 @@ public final class FabricCapacitiesListByResourceGroupSamples {
  */
 public final class FabricCapacitiesListSkusSamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_ListSkus.json
+     * x-ms-original-file:
+     * specification/fabric/resource-manager/Microsoft.Fabric/stable/2023-11-01/examples/FabricCapacities_ListSkus.json
      */
     /**
      * Sample code: List eligible SKUs for a new capacity.
@@ -192,7 +199,8 @@ public final class FabricCapacitiesListSkusSamples {
  */
 public final class FabricCapacitiesListSkusForCapacitySamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_ListSkusForCapacity.json
+     * x-ms-original-file: specification/fabric/resource-manager/Microsoft.Fabric/stable/2023-11-01/examples/
+     * FabricCapacities_ListSkusForCapacity.json
      */
     /**
      * Sample code: List eligible SKUs for an existing capacity.
@@ -213,7 +221,8 @@ public final class FabricCapacitiesListSkusForCapacitySamples {
  */
 public final class FabricCapacitiesResumeSamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_Resume.json
+     * x-ms-original-file:
+     * specification/fabric/resource-manager/Microsoft.Fabric/stable/2023-11-01/examples/FabricCapacities_Resume.json
      */
     /**
      * Sample code: Resume capacity.
@@ -234,7 +243,8 @@ public final class FabricCapacitiesResumeSamples {
  */
 public final class FabricCapacitiesSuspendSamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_Suspend.json
+     * x-ms-original-file:
+     * specification/fabric/resource-manager/Microsoft.Fabric/stable/2023-11-01/examples/FabricCapacities_Suspend.json
      */
     /**
      * Sample code: Suspend capacity.
@@ -252,7 +262,6 @@ public final class FabricCapacitiesSuspendSamples {
 ```java
 import com.azure.resourcemanager.fabric.models.CapacityAdministration;
 import com.azure.resourcemanager.fabric.models.FabricCapacity;
-import com.azure.resourcemanager.fabric.models.FabricCapacityUpdateProperties;
 import com.azure.resourcemanager.fabric.models.RpSku;
 import com.azure.resourcemanager.fabric.models.RpSkuTier;
 import java.util.Arrays;
@@ -264,7 +273,8 @@ import java.util.Map;
  */
 public final class FabricCapacitiesUpdateSamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_Update.json
+     * x-ms-original-file:
+     * specification/fabric/resource-manager/Microsoft.Fabric/stable/2023-11-01/examples/FabricCapacities_Update.json
      */
     /**
      * Sample code: Update capacity properties.
@@ -278,8 +288,7 @@ public final class FabricCapacitiesUpdateSamples {
         resource.update()
             .withTags(mapOf("testKey", "fakeTokenPlaceholder"))
             .withSku(new RpSku().withName("F8").withTier(RpSkuTier.FABRIC))
-            .withProperties(new FabricCapacityUpdateProperties().withAdministration(
-                new CapacityAdministration().withMembers(Arrays.asList("azsdktest2@microsoft.com"))))
+            .withAdministration(new CapacityAdministration().withMembers(Arrays.asList("azsdktest2@microsoft.com")))
             .apply();
     }
 
@@ -305,7 +314,8 @@ public final class FabricCapacitiesUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2023-11-01/Operations_List.json
+     * x-ms-original-file:
+     * specification/fabric/resource-manager/Microsoft.Fabric/stable/2023-11-01/examples/Operations_List.json
      */
     /**
      * Sample code: List operations.
