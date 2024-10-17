@@ -37,16 +37,16 @@ public final class OperationStatus extends ExpandableStringEnum<OperationStatus>
     public static final OperationStatus SUCCEEDED = fromString("succeeded");
 
     /**
-     * The operation has completed.
-     */
-    @Generated
-    public static final OperationStatus COMPLETED = fromString("completed");
-
-    /**
      * The operation has been canceled.
      */
     @Generated
     public static final OperationStatus CANCELED = fromString("canceled");
+
+    /**
+     * The operation has been skipped.
+     */
+    @Generated
+    public static final OperationStatus SKIPPED = fromString("skipped");
 
     /**
      * Creates a new instance of OperationStatus value.

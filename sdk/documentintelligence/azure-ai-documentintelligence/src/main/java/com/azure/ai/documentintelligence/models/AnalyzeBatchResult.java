@@ -40,7 +40,7 @@ public final class AnalyzeBatchResult implements JsonSerializable<AnalyzeBatchRe
      * Operation detail for each document in the batch.
      */
     @Generated
-    private final List<AnalyzeBatchOperationDetail> details;
+    private List<AnalyzeBatchOperationDetail> details;
 
     /**
      * Creates an instance of AnalyzeBatchResult class.
@@ -48,15 +48,12 @@ public final class AnalyzeBatchResult implements JsonSerializable<AnalyzeBatchRe
      * @param succeededCount the succeededCount value to set.
      * @param failedCount the failedCount value to set.
      * @param skippedCount the skippedCount value to set.
-     * @param details the details value to set.
      */
     @Generated
-    private AnalyzeBatchResult(int succeededCount, int failedCount, int skippedCount,
-        List<AnalyzeBatchOperationDetail> details) {
+    private AnalyzeBatchResult(int succeededCount, int failedCount, int skippedCount) {
         this.succeededCount = succeededCount;
         this.failedCount = failedCount;
         this.skippedCount = skippedCount;
-        this.details = details;
     }
 
     /**
@@ -145,7 +142,11 @@ public final class AnalyzeBatchResult implements JsonSerializable<AnalyzeBatchRe
                     reader.skipChildren();
                 }
             }
-            return new AnalyzeBatchResult(succeededCount, failedCount, skippedCount, details);
+            AnalyzeBatchResult deserializedAnalyzeBatchResult
+                = new AnalyzeBatchResult(succeededCount, failedCount, skippedCount);
+            deserializedAnalyzeBatchResult.details = details;
+
+            return deserializedAnalyzeBatchResult;
         });
     }
 }

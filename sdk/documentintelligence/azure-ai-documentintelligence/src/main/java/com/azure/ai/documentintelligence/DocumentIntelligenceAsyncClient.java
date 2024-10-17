@@ -5,6 +5,9 @@
 package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.implementation.DocumentIntelligenceClientImpl;
+import com.azure.ai.documentintelligence.models.AnalyzeBatchDocumentsRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeBatchResult;
+import com.azure.ai.documentintelligence.models.AnalyzeBatchResultOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
 import com.azure.ai.documentintelligence.models.AnalyzeOutputOption;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
@@ -178,6 +181,72 @@ public final class DocumentIntelligenceAsyncClient {
     public Mono<Response<Void>> deleteAnalyzeResultWithResponse(String modelId, String resultId,
         RequestOptions requestOptions) {
         return this.serviceClient.deleteAnalyzeResultWithResponseAsync(modelId, resultId, requestOptions);
+    }
+
+    /**
+     * Analyzes batch documents with document model.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
+     * "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
+     * <tr><td>output</td><td>List&lt;String&gt;</td><td>No</td><td>Additional outputs to generate during analysis. In
+     * the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     azureBlobSource (Optional): {
+     *         containerUrl: String (Required)
+     *         prefix: String (Optional)
+     *     }
+     *     azureBlobFileListSource (Optional): {
+     *         containerUrl: String (Required)
+     *         fileList: String (Required)
+     *     }
+     *     resultContainerUrl: String (Required)
+     *     resultPrefix: String (Optional)
+     *     overwriteExisting: Boolean (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeBatchDocuments(String modelId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.beginAnalyzeBatchDocumentsAsync(modelId, requestOptions);
     }
 
     /**
@@ -373,6 +442,94 @@ public final class DocumentIntelligenceAsyncClient {
         // Generated convenience method for deleteAnalyzeResultWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteAnalyzeResultWithResponse(modelId, resultId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Analyzes batch documents with document model.
+     * 
+     * @param modelId Unique document model name.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param features List of optional analysis features.
+     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
+     * @param outputContentFormat Format of the analyze result top-level content.
+     * @param output Additional outputs to generate during analysis.
+     * @param analyzeBatchRequest Analyze batch request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<AnalyzeBatchResultOperation, AnalyzeBatchResult> beginAnalyzeBatchDocuments(String modelId,
+        String pages, String locale, StringIndexType stringIndexType, List<DocumentAnalysisFeature> features,
+        List<String> queryFields, ContentFormat outputContentFormat, List<AnalyzeOutputOption> output,
+        AnalyzeBatchDocumentsRequest analyzeBatchRequest) {
+        // Generated convenience method for beginAnalyzeBatchDocumentsWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        if (pages != null) {
+            requestOptions.addQueryParam("pages", pages, false);
+        }
+        if (locale != null) {
+            requestOptions.addQueryParam("locale", locale, false);
+        }
+        if (stringIndexType != null) {
+            requestOptions.addQueryParam("stringIndexType", stringIndexType.toString(), false);
+        }
+        if (features != null) {
+            requestOptions.addQueryParam("features",
+                features.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (queryFields != null) {
+            requestOptions.addQueryParam("queryFields",
+                queryFields.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (outputContentFormat != null) {
+            requestOptions.addQueryParam("outputContentFormat", outputContentFormat.toString(), false);
+        }
+        if (output != null) {
+            requestOptions.addQueryParam("output",
+                output.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (analyzeBatchRequest != null) {
+            requestOptions.setBody(BinaryData.fromObject(analyzeBatchRequest));
+        }
+        return serviceClient.beginAnalyzeBatchDocumentsWithModelAsync(modelId, requestOptions);
+    }
+
+    /**
+     * Analyzes batch documents with document model.
+     * 
+     * @param modelId Unique document model name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<AnalyzeBatchResultOperation, AnalyzeBatchResult> beginAnalyzeBatchDocuments(String modelId) {
+        // Generated convenience method for beginAnalyzeBatchDocumentsWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.beginAnalyzeBatchDocumentsWithModelAsync(modelId, requestOptions);
     }
 
     /**

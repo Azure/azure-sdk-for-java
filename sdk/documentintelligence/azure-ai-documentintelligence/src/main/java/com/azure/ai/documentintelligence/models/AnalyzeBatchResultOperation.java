@@ -21,7 +21,7 @@ import java.time.format.DateTimeFormatter;
 @Immutable
 public final class AnalyzeBatchResultOperation implements JsonSerializable<AnalyzeBatchResultOperation> {
     /*
-     * Operation status. notStarted, running, completed, or failed
+     * Operation status. notStarted, running, succeeded, or failed
      */
     @Generated
     private final OperationStatus status;
@@ -72,7 +72,7 @@ public final class AnalyzeBatchResultOperation implements JsonSerializable<Analy
     }
 
     /**
-     * Get the status property: Operation status. notStarted, running, completed, or failed.
+     * Get the status property: Operation status. notStarted, running, succeeded, or failed.
      * 
      * @return the status value.
      */

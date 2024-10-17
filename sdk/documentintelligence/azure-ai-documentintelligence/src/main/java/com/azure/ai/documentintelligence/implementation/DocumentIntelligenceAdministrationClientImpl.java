@@ -21,7 +21,6 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
-import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -505,88 +504,6 @@ public final class DocumentIntelligenceAdministrationClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("classifierId") String classifierId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Put("/batchAnalysisJobs/{jobId}")
-        @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createBatchAnalysisJob(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData resource, RequestOptions requestOptions, Context context);
-
-        @Put("/batchAnalysisJobs/{jobId}")
-        @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createBatchAnalysisJobSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData resource, RequestOptions requestOptions, Context context);
-
-        @Get("/batchAnalysisJobs/{jobId}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getBatchAnalysisJob(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/batchAnalysisJobs/{jobId}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getBatchAnalysisJobSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/batchAnalysisJobs")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listBatchAnalysisJobs(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/batchAnalysisJobs")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listBatchAnalysisJobsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Delete("/batchAnalysisJobs/{jobId}")
-        @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteBatchAnalysisJob(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Delete("/batchAnalysisJobs/{jobId}")
-        @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteBatchAnalysisJobSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -646,26 +563,6 @@ public final class DocumentIntelligenceAdministrationClientImpl {
         Response<BinaryData> listClassifiersNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listBatchAnalysisJobsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listBatchAnalysisJobsNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -2323,7 +2220,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
+     *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
      *     percentCompleted: Integer (Optional)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -2373,7 +2270,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
+     *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
      *     percentCompleted: Integer (Optional)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -2423,7 +2320,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
+     *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
      *     percentCompleted: Integer (Optional)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -2476,7 +2373,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
+     *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
      *     percentCompleted: Integer (Optional)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -2527,7 +2424,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
+     *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
      *     percentCompleted: Integer (Optional)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -2578,7 +2475,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
+     *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
      *     percentCompleted: Integer (Optional)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -3624,551 +3521,6 @@ public final class DocumentIntelligenceAdministrationClientImpl {
     }
 
     /**
-     * Create a batch analysis job.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     jobId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     lastUpdatedDateTime: OffsetDateTime (Optional)
-     *     totalCount: Integer (Optional)
-     *     succeededCount: Integer (Optional)
-     *     failedCount: Integer (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     modelId: String (Required)
-     *     inputTaskUrl: String (Optional)
-     *     outputTaskUrl: String (Optional)
-     *     inputBlobContainer: String (Optional)
-     *     inputBlobPrefix: String (Optional)
-     *     outputBlobContainer: String (Optional)
-     *     outputBlobPrefix: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     jobId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     lastUpdatedDateTime: OffsetDateTime (Optional)
-     *     totalCount: Integer (Optional)
-     *     succeededCount: Integer (Optional)
-     *     failedCount: Integer (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     modelId: String (Required)
-     *     inputTaskUrl: String (Optional)
-     *     outputTaskUrl: String (Optional)
-     *     inputBlobContainer: String (Optional)
-     *     inputBlobPrefix: String (Optional)
-     *     outputBlobContainer: String (Optional)
-     *     outputBlobPrefix: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param jobId Unique job identifier.
-     * @param resource The resource instance.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return batch analysis job along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createBatchAnalysisJobWithResponseAsync(String jobId, BinaryData resource,
-        RequestOptions requestOptions) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createBatchAnalysisJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, contentType, accept, resource, requestOptions, context));
-    }
-
-    /**
-     * Create a batch analysis job.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     jobId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     lastUpdatedDateTime: OffsetDateTime (Optional)
-     *     totalCount: Integer (Optional)
-     *     succeededCount: Integer (Optional)
-     *     failedCount: Integer (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     modelId: String (Required)
-     *     inputTaskUrl: String (Optional)
-     *     outputTaskUrl: String (Optional)
-     *     inputBlobContainer: String (Optional)
-     *     inputBlobPrefix: String (Optional)
-     *     outputBlobContainer: String (Optional)
-     *     outputBlobPrefix: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     jobId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     lastUpdatedDateTime: OffsetDateTime (Optional)
-     *     totalCount: Integer (Optional)
-     *     succeededCount: Integer (Optional)
-     *     failedCount: Integer (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     modelId: String (Required)
-     *     inputTaskUrl: String (Optional)
-     *     outputTaskUrl: String (Optional)
-     *     inputBlobContainer: String (Optional)
-     *     inputBlobPrefix: String (Optional)
-     *     outputBlobContainer: String (Optional)
-     *     outputBlobPrefix: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param jobId Unique job identifier.
-     * @param resource The resource instance.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return batch analysis job along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createBatchAnalysisJobWithResponse(String jobId, BinaryData resource,
-        RequestOptions requestOptions) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createBatchAnalysisJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId,
-            contentType, accept, resource, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Get batch analysis job.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     jobId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     lastUpdatedDateTime: OffsetDateTime (Optional)
-     *     totalCount: Integer (Optional)
-     *     succeededCount: Integer (Optional)
-     *     failedCount: Integer (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     modelId: String (Required)
-     *     inputTaskUrl: String (Optional)
-     *     outputTaskUrl: String (Optional)
-     *     inputBlobContainer: String (Optional)
-     *     inputBlobPrefix: String (Optional)
-     *     outputBlobContainer: String (Optional)
-     *     outputBlobPrefix: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param jobId Unique job identifier.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return batch analysis job along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getBatchAnalysisJobWithResponseAsync(String jobId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getBatchAnalysisJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, accept, requestOptions, context));
-    }
-
-    /**
-     * Get batch analysis job.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     jobId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     lastUpdatedDateTime: OffsetDateTime (Optional)
-     *     totalCount: Integer (Optional)
-     *     succeededCount: Integer (Optional)
-     *     failedCount: Integer (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     modelId: String (Required)
-     *     inputTaskUrl: String (Optional)
-     *     outputTaskUrl: String (Optional)
-     *     inputBlobContainer: String (Optional)
-     *     inputBlobPrefix: String (Optional)
-     *     outputBlobContainer: String (Optional)
-     *     outputBlobPrefix: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param jobId Unique job identifier.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return batch analysis job along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getBatchAnalysisJobWithResponse(String jobId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getBatchAnalysisJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept,
-            requestOptions, Context.NONE);
-    }
-
-    /**
-     * List all batch analysis jobs.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     jobId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     lastUpdatedDateTime: OffsetDateTime (Optional)
-     *     totalCount: Integer (Optional)
-     *     succeededCount: Integer (Optional)
-     *     failedCount: Integer (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     modelId: String (Required)
-     *     inputTaskUrl: String (Optional)
-     *     outputTaskUrl: String (Optional)
-     *     inputBlobContainer: String (Optional)
-     *     inputBlobPrefix: String (Optional)
-     *     outputBlobContainer: String (Optional)
-     *     outputBlobPrefix: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of BatchAnalysisJob items along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listBatchAnalysisJobsSinglePageAsync(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listBatchAnalysisJobs(this.getEndpoint(),
-                this.getServiceVersion().getVersion(), accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
-    }
-
-    /**
-     * List all batch analysis jobs.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     jobId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     lastUpdatedDateTime: OffsetDateTime (Optional)
-     *     totalCount: Integer (Optional)
-     *     succeededCount: Integer (Optional)
-     *     failedCount: Integer (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     modelId: String (Required)
-     *     inputTaskUrl: String (Optional)
-     *     outputTaskUrl: String (Optional)
-     *     inputBlobContainer: String (Optional)
-     *     inputBlobPrefix: String (Optional)
-     *     outputBlobContainer: String (Optional)
-     *     outputBlobPrefix: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of BatchAnalysisJob items as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listBatchAnalysisJobsAsync(RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> listBatchAnalysisJobsSinglePageAsync(requestOptions),
-            nextLink -> listBatchAnalysisJobsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
-    }
-
-    /**
-     * List all batch analysis jobs.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     jobId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     lastUpdatedDateTime: OffsetDateTime (Optional)
-     *     totalCount: Integer (Optional)
-     *     succeededCount: Integer (Optional)
-     *     failedCount: Integer (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     modelId: String (Required)
-     *     inputTaskUrl: String (Optional)
-     *     outputTaskUrl: String (Optional)
-     *     inputBlobContainer: String (Optional)
-     *     inputBlobPrefix: String (Optional)
-     *     outputBlobContainer: String (Optional)
-     *     outputBlobPrefix: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of BatchAnalysisJob items along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listBatchAnalysisJobsSinglePage(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res = service.listBatchAnalysisJobsSync(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
-    }
-
-    /**
-     * List all batch analysis jobs.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     jobId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     lastUpdatedDateTime: OffsetDateTime (Optional)
-     *     totalCount: Integer (Optional)
-     *     succeededCount: Integer (Optional)
-     *     failedCount: Integer (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     modelId: String (Required)
-     *     inputTaskUrl: String (Optional)
-     *     outputTaskUrl: String (Optional)
-     *     inputBlobContainer: String (Optional)
-     *     inputBlobPrefix: String (Optional)
-     *     outputBlobContainer: String (Optional)
-     *     outputBlobPrefix: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of BatchAnalysisJob items as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listBatchAnalysisJobs(RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> listBatchAnalysisJobsSinglePage(requestOptions),
-            nextLink -> listBatchAnalysisJobsNextSinglePage(nextLink, requestOptionsForNextPage));
-    }
-
-    /**
-     * Delete batch analysis job. Analysis output is not deleted.
-     * 
-     * @param jobId Unique job identifier.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteBatchAnalysisJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteBatchAnalysisJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, accept, requestOptions, context));
-    }
-
-    /**
-     * Delete batch analysis job. Analysis output is not deleted.
-     * 
-     * @param jobId Unique job identifier.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteBatchAnalysisJobWithResponse(String jobId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteBatchAnalysisJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId,
-            accept, requestOptions, Context.NONE);
-    }
-
-    /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -4350,7 +3702,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
+     *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
      *     percentCompleted: Integer (Optional)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -4405,7 +3757,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
+     *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
      *     percentCompleted: Integer (Optional)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -4557,119 +3909,6 @@ public final class DocumentIntelligenceAdministrationClientImpl {
         final String accept = "application/json";
         Response<BinaryData> res
             = service.listClassifiersNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
-    }
-
-    /**
-     * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     jobId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     lastUpdatedDateTime: OffsetDateTime (Optional)
-     *     totalCount: Integer (Optional)
-     *     succeededCount: Integer (Optional)
-     *     failedCount: Integer (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     modelId: String (Required)
-     *     inputTaskUrl: String (Optional)
-     *     outputTaskUrl: String (Optional)
-     *     inputBlobContainer: String (Optional)
-     *     inputBlobPrefix: String (Optional)
-     *     outputBlobContainer: String (Optional)
-     *     outputBlobPrefix: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of BatchAnalysisJob items along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listBatchAnalysisJobsNextSinglePageAsync(String nextLink,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.listBatchAnalysisJobsNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
-    }
-
-    /**
-     * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     jobId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     lastUpdatedDateTime: OffsetDateTime (Optional)
-     *     totalCount: Integer (Optional)
-     *     succeededCount: Integer (Optional)
-     *     failedCount: Integer (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     modelId: String (Required)
-     *     inputTaskUrl: String (Optional)
-     *     outputTaskUrl: String (Optional)
-     *     inputBlobContainer: String (Optional)
-     *     inputBlobPrefix: String (Optional)
-     *     outputBlobContainer: String (Optional)
-     *     outputBlobPrefix: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of BatchAnalysisJob items along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listBatchAnalysisJobsNextSinglePage(String nextLink,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res
-            = service.listBatchAnalysisJobsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }

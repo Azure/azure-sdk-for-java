@@ -74,10 +74,6 @@ class DocumentAdministrationClientTestBase extends TestProxyTestBase {
         interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
     }
 
-    void buildBatchModelRunner(Consumer<String> testRunner) {
-        TestUtils.getBatchTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
-    }
-
     static void validateCopyAuthorizationResult(CopyAuthorization actualResult) {
         assertNotNull(actualResult.getTargetModelId());
         assertNotNull(actualResult.getExpirationDateTime());
