@@ -110,7 +110,7 @@ Licensed under the MIT License.
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <scope>test</scope>
-      <version>2.11.0</version> <!-- {x-version-update;commons-io:commons-io;external_dependency} -->
+      <version>2.17.0</version> <!-- {x-version-update;commons-io:commons-io;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.assertj</groupId>
