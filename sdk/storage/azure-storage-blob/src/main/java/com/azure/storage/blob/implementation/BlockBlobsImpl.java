@@ -111,6 +111,8 @@ public final class BlockBlobsImpl {
             @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
             @HeaderParam("x-ms-legal-hold") Boolean legalHold,
             @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -143,6 +145,8 @@ public final class BlockBlobsImpl {
             @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
             @HeaderParam("x-ms-legal-hold") Boolean legalHold,
             @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -175,6 +179,8 @@ public final class BlockBlobsImpl {
             @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
             @HeaderParam("x-ms-legal-hold") Boolean legalHold,
             @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -207,6 +213,8 @@ public final class BlockBlobsImpl {
             @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
             @HeaderParam("x-ms-legal-hold") Boolean legalHold,
             @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -239,6 +247,8 @@ public final class BlockBlobsImpl {
             @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
             @HeaderParam("x-ms-legal-hold") Boolean legalHold,
             @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -271,6 +281,8 @@ public final class BlockBlobsImpl {
             @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
             @HeaderParam("x-ms-legal-hold") Boolean legalHold,
             @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -436,6 +448,8 @@ public final class BlockBlobsImpl {
             @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
             @HeaderParam("x-ms-encryption-scope") String encryptionScope, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -453,6 +467,8 @@ public final class BlockBlobsImpl {
             @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
             @HeaderParam("x-ms-encryption-scope") String encryptionScope, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -470,6 +486,8 @@ public final class BlockBlobsImpl {
             @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
             @HeaderParam("x-ms-encryption-scope") String encryptionScope, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -487,6 +505,8 @@ public final class BlockBlobsImpl {
             @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
             @HeaderParam("x-ms-encryption-scope") String encryptionScope, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -504,6 +524,8 @@ public final class BlockBlobsImpl {
             @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
             @HeaderParam("x-ms-encryption-scope") String encryptionScope, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -521,6 +543,8 @@ public final class BlockBlobsImpl {
             @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
             @HeaderParam("x-ms-encryption-scope") String encryptionScope, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -813,6 +837,10 @@ public final class BlockBlobsImpl {
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
      * @param legalHold Specified if a legal hold should be set on the blob.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -828,7 +856,8 @@ public final class BlockBlobsImpl {
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, byte[] transactionalContentCrc64,
-        BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        String structuredBodyType, Long structuredContentLength, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam) {
         final String blobType = "BlockBlob";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -897,7 +926,7 @@ public final class BlockBlobsImpl {
                 encryptionKeySha256, encryptionAlgorithm, encryptionScope, tier, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
                 blobTagsString, immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold,
-                transactionalContentCrc64Converted, body, accept, context))
+                transactionalContentCrc64Converted, structuredBodyType, structuredContentLength, body, accept, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -937,6 +966,10 @@ public final class BlockBlobsImpl {
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
      * @param legalHold Specified if a legal hold should be set on the blob.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -953,7 +986,8 @@ public final class BlockBlobsImpl {
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, byte[] transactionalContentCrc64,
-        BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        String structuredBodyType, Long structuredContentLength, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam, Context context) {
         final String blobType = "BlockBlob";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -1021,7 +1055,8 @@ public final class BlockBlobsImpl {
                 metadata, leaseId, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
                 encryptionScope, tier, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch,
                 ifTags, this.client.getVersion(), requestId, blobTagsString, immutabilityPolicyExpiryConverted,
-                immutabilityPolicyMode, legalHold, transactionalContentCrc64Converted, body, accept, context)
+                immutabilityPolicyMode, legalHold, transactionalContentCrc64Converted, structuredBodyType,
+                structuredContentLength, body, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1061,6 +1096,10 @@ public final class BlockBlobsImpl {
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
      * @param legalHold Specified if a legal hold should be set on the blob.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -1075,11 +1114,12 @@ public final class BlockBlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId, String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, byte[] transactionalContentCrc64,
-        BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        String structuredBodyType, Long structuredContentLength, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam) {
         return uploadWithResponseAsync(containerName, blob, contentLength, body, timeout, transactionalContentMD5,
             metadata, leaseId, tier, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId,
             blobTagsString, immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold, transactionalContentCrc64,
-            blobHttpHeaders, cpkInfo, encryptionScopeParam)
+            structuredBodyType, structuredContentLength, blobHttpHeaders, cpkInfo, encryptionScopeParam)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
@@ -1120,6 +1160,10 @@ public final class BlockBlobsImpl {
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
      * @param legalHold Specified if a legal hold should be set on the blob.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -1135,11 +1179,12 @@ public final class BlockBlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId, String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, byte[] transactionalContentCrc64,
-        BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        String structuredBodyType, Long structuredContentLength, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam, Context context) {
         return uploadWithResponseAsync(containerName, blob, contentLength, body, timeout, transactionalContentMD5,
             metadata, leaseId, tier, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId,
             blobTagsString, immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold, transactionalContentCrc64,
-            blobHttpHeaders, cpkInfo, encryptionScopeParam, context)
+            structuredBodyType, structuredContentLength, blobHttpHeaders, cpkInfo, encryptionScopeParam, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
@@ -1180,6 +1225,10 @@ public final class BlockBlobsImpl {
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
      * @param legalHold Specified if a legal hold should be set on the blob.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -1195,7 +1244,8 @@ public final class BlockBlobsImpl {
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, byte[] transactionalContentCrc64,
-        BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        String structuredBodyType, Long structuredContentLength, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam) {
         final String blobType = "BlockBlob";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -1264,7 +1314,7 @@ public final class BlockBlobsImpl {
                 encryptionKeySha256, encryptionAlgorithm, encryptionScope, tier, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
                 blobTagsString, immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold,
-                transactionalContentCrc64Converted, body, accept, context))
+                transactionalContentCrc64Converted, structuredBodyType, structuredContentLength, body, accept, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1304,6 +1354,10 @@ public final class BlockBlobsImpl {
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
      * @param legalHold Specified if a legal hold should be set on the blob.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -1320,7 +1374,8 @@ public final class BlockBlobsImpl {
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, byte[] transactionalContentCrc64,
-        BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        String structuredBodyType, Long structuredContentLength, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam, Context context) {
         final String blobType = "BlockBlob";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -1389,7 +1444,7 @@ public final class BlockBlobsImpl {
                 encryptionKeySha256, encryptionAlgorithm, encryptionScope, tier, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
                 blobTagsString, immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold,
-                transactionalContentCrc64Converted, body, accept, context)
+                transactionalContentCrc64Converted, structuredBodyType, structuredContentLength, body, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1429,6 +1484,10 @@ public final class BlockBlobsImpl {
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
      * @param legalHold Specified if a legal hold should be set on the blob.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -1444,7 +1503,8 @@ public final class BlockBlobsImpl {
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, byte[] transactionalContentCrc64,
-        BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        String structuredBodyType, Long structuredContentLength, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam) {
         final String blobType = "BlockBlob";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -1513,7 +1573,7 @@ public final class BlockBlobsImpl {
                 encryptionKeySha256, encryptionAlgorithm, encryptionScope, tier, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
                 blobTagsString, immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold,
-                transactionalContentCrc64Converted, body, accept, context))
+                transactionalContentCrc64Converted, structuredBodyType, structuredContentLength, body, accept, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1553,6 +1613,10 @@ public final class BlockBlobsImpl {
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
      * @param legalHold Specified if a legal hold should be set on the blob.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -1569,7 +1633,8 @@ public final class BlockBlobsImpl {
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, byte[] transactionalContentCrc64,
-        BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        String structuredBodyType, Long structuredContentLength, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam, Context context) {
         final String blobType = "BlockBlob";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -1637,7 +1702,8 @@ public final class BlockBlobsImpl {
                 metadata, leaseId, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
                 encryptionScope, tier, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch,
                 ifTags, this.client.getVersion(), requestId, blobTagsString, immutabilityPolicyExpiryConverted,
-                immutabilityPolicyMode, legalHold, transactionalContentCrc64Converted, body, accept, context)
+                immutabilityPolicyMode, legalHold, transactionalContentCrc64Converted, structuredBodyType,
+                structuredContentLength, body, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1677,6 +1743,10 @@ public final class BlockBlobsImpl {
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
      * @param legalHold Specified if a legal hold should be set on the blob.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -1691,11 +1761,12 @@ public final class BlockBlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId, String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, byte[] transactionalContentCrc64,
-        BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        String structuredBodyType, Long structuredContentLength, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam) {
         return uploadWithResponseAsync(containerName, blob, contentLength, body, timeout, transactionalContentMD5,
             metadata, leaseId, tier, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId,
             blobTagsString, immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold, transactionalContentCrc64,
-            blobHttpHeaders, cpkInfo, encryptionScopeParam)
+            structuredBodyType, structuredContentLength, blobHttpHeaders, cpkInfo, encryptionScopeParam)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
@@ -1736,6 +1807,10 @@ public final class BlockBlobsImpl {
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
      * @param legalHold Specified if a legal hold should be set on the blob.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -1751,11 +1826,12 @@ public final class BlockBlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId, String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, byte[] transactionalContentCrc64,
-        BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        String structuredBodyType, Long structuredContentLength, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam, Context context) {
         return uploadWithResponseAsync(containerName, blob, contentLength, body, timeout, transactionalContentMD5,
             metadata, leaseId, tier, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId,
             blobTagsString, immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold, transactionalContentCrc64,
-            blobHttpHeaders, cpkInfo, encryptionScopeParam, context)
+            structuredBodyType, structuredContentLength, blobHttpHeaders, cpkInfo, encryptionScopeParam, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
@@ -1796,6 +1872,10 @@ public final class BlockBlobsImpl {
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
      * @param legalHold Specified if a legal hold should be set on the blob.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -1811,7 +1891,8 @@ public final class BlockBlobsImpl {
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, byte[] transactionalContentCrc64,
-        BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        String structuredBodyType, Long structuredContentLength, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam) {
         final String blobType = "BlockBlob";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -1880,7 +1961,7 @@ public final class BlockBlobsImpl {
                 encryptionKeySha256, encryptionAlgorithm, encryptionScope, tier, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
                 blobTagsString, immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold,
-                transactionalContentCrc64Converted, body, accept, context))
+                transactionalContentCrc64Converted, structuredBodyType, structuredContentLength, body, accept, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1920,6 +2001,10 @@ public final class BlockBlobsImpl {
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
      * @param legalHold Specified if a legal hold should be set on the blob.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -1936,7 +2021,8 @@ public final class BlockBlobsImpl {
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, byte[] transactionalContentCrc64,
-        BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        String structuredBodyType, Long structuredContentLength, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam, Context context) {
         final String blobType = "BlockBlob";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -2005,7 +2091,7 @@ public final class BlockBlobsImpl {
                 encryptionKeySha256, encryptionAlgorithm, encryptionScope, tier, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
                 blobTagsString, immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold,
-                transactionalContentCrc64Converted, body, accept, context)
+                transactionalContentCrc64Converted, structuredBodyType, structuredContentLength, body, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2045,6 +2131,10 @@ public final class BlockBlobsImpl {
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
      * @param legalHold Specified if a legal hold should be set on the blob.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -2061,7 +2151,8 @@ public final class BlockBlobsImpl {
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, byte[] transactionalContentCrc64,
-        BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        String structuredBodyType, Long structuredContentLength, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam, Context context) {
         try {
             final String blobType = "BlockBlob";
             final String accept = "application/xml";
@@ -2130,7 +2221,7 @@ public final class BlockBlobsImpl {
                 encryptionKeySha256, encryptionAlgorithm, encryptionScope, tier, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
                 blobTagsString, immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold,
-                transactionalContentCrc64Converted, body, accept, context);
+                transactionalContentCrc64Converted, structuredBodyType, structuredContentLength, body, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -2172,6 +2263,10 @@ public final class BlockBlobsImpl {
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
      * @param legalHold Specified if a legal hold should be set on the blob.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -2185,11 +2280,12 @@ public final class BlockBlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId, String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, byte[] transactionalContentCrc64,
-        BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        String structuredBodyType, Long structuredContentLength, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam) {
         uploadWithResponse(containerName, blob, contentLength, body, timeout, transactionalContentMD5, metadata,
             leaseId, tier, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobTagsString,
-            immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold, transactionalContentCrc64, blobHttpHeaders,
-            cpkInfo, encryptionScopeParam, Context.NONE);
+            immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold, transactionalContentCrc64, structuredBodyType,
+            structuredContentLength, blobHttpHeaders, cpkInfo, encryptionScopeParam, Context.NONE);
     }
 
     /**
@@ -2228,6 +2324,10 @@ public final class BlockBlobsImpl {
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
      * @param legalHold Specified if a legal hold should be set on the blob.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -2243,8 +2343,8 @@ public final class BlockBlobsImpl {
         AccessTier tier, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, String requestId, String blobTagsString,
         OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold,
-        byte[] transactionalContentCrc64, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam, Context context) {
+        byte[] transactionalContentCrc64, String structuredBodyType, Long structuredContentLength,
+        BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
         try {
             final String blobType = "BlockBlob";
             final String accept = "application/xml";
@@ -2313,7 +2413,7 @@ public final class BlockBlobsImpl {
                 encryptionKeySha256, encryptionAlgorithm, encryptionScope, tier, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
                 blobTagsString, immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold,
-                transactionalContentCrc64Converted, body, accept, context);
+                transactionalContentCrc64Converted, structuredBodyType, structuredContentLength, body, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -3416,6 +3516,10 @@ public final class BlockBlobsImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3426,8 +3530,8 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<BlockBlobsStageBlockHeaders, Void>> stageBlockWithResponseAsync(String containerName,
         String blob, String blockId, long contentLength, Flux<ByteBuffer> body, byte[] transactionalContentMD5,
-        byte[] transactionalContentCrc64, Integer timeout, String leaseId, String requestId, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam) {
+        byte[] transactionalContentCrc64, Integer timeout, String leaseId, String requestId, String structuredBodyType,
+        Long structuredContentLength, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
         final String comp = "block";
         final String accept = "application/xml";
         String encryptionKeyInternal = null;
@@ -3456,7 +3560,7 @@ public final class BlockBlobsImpl {
             .withContext(context -> service.stageBlock(this.client.getUrl(), containerName, blob, comp, blockId,
                 contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, leaseId,
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, this.client.getVersion(),
-                requestId, body, accept, context))
+                requestId, structuredBodyType, structuredContentLength, body, accept, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -3478,6 +3582,10 @@ public final class BlockBlobsImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -3489,8 +3597,8 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<BlockBlobsStageBlockHeaders, Void>> stageBlockWithResponseAsync(String containerName,
         String blob, String blockId, long contentLength, Flux<ByteBuffer> body, byte[] transactionalContentMD5,
-        byte[] transactionalContentCrc64, Integer timeout, String leaseId, String requestId, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam, Context context) {
+        byte[] transactionalContentCrc64, Integer timeout, String leaseId, String requestId, String structuredBodyType,
+        Long structuredContentLength, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
         final String comp = "block";
         final String accept = "application/xml";
         String encryptionKeyInternal = null;
@@ -3518,8 +3626,8 @@ public final class BlockBlobsImpl {
         return service
             .stageBlock(this.client.getUrl(), containerName, blob, comp, blockId, contentLength,
                 transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, leaseId, encryptionKey,
-                encryptionKeySha256, encryptionAlgorithm, encryptionScope, this.client.getVersion(), requestId, body,
-                accept, context)
+                encryptionKeySha256, encryptionAlgorithm, encryptionScope, this.client.getVersion(), requestId,
+                structuredBodyType, structuredContentLength, body, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -3541,6 +3649,10 @@ public final class BlockBlobsImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3551,9 +3663,11 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stageBlockAsync(String containerName, String blob, String blockId, long contentLength,
         Flux<ByteBuffer> body, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Integer timeout,
-        String leaseId, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        String leaseId, String requestId, String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam) {
         return stageBlockWithResponseAsync(containerName, blob, blockId, contentLength, body, transactionalContentMD5,
-            transactionalContentCrc64, timeout, leaseId, requestId, cpkInfo, encryptionScopeParam)
+            transactionalContentCrc64, timeout, leaseId, requestId, structuredBodyType, structuredContentLength,
+            cpkInfo, encryptionScopeParam)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
@@ -3576,6 +3690,10 @@ public final class BlockBlobsImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -3587,9 +3705,11 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stageBlockAsync(String containerName, String blob, String blockId, long contentLength,
         Flux<ByteBuffer> body, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Integer timeout,
-        String leaseId, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        String leaseId, String requestId, String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam, Context context) {
         return stageBlockWithResponseAsync(containerName, blob, blockId, contentLength, body, transactionalContentMD5,
-            transactionalContentCrc64, timeout, leaseId, requestId, cpkInfo, encryptionScopeParam, context)
+            transactionalContentCrc64, timeout, leaseId, requestId, structuredBodyType, structuredContentLength,
+            cpkInfo, encryptionScopeParam, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
@@ -3612,6 +3732,10 @@ public final class BlockBlobsImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3622,8 +3746,8 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stageBlockNoCustomHeadersWithResponseAsync(String containerName, String blob,
         String blockId, long contentLength, Flux<ByteBuffer> body, byte[] transactionalContentMD5,
-        byte[] transactionalContentCrc64, Integer timeout, String leaseId, String requestId, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam) {
+        byte[] transactionalContentCrc64, Integer timeout, String leaseId, String requestId, String structuredBodyType,
+        Long structuredContentLength, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
         final String comp = "block";
         final String accept = "application/xml";
         String encryptionKeyInternal = null;
@@ -3648,11 +3772,10 @@ public final class BlockBlobsImpl {
         String encryptionScope = encryptionScopeInternal;
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        return FluxUtil
-            .withContext(context -> service.stageBlockNoCustomHeaders(this.client.getUrl(), containerName, blob, comp,
-                blockId, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout,
-                leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-                this.client.getVersion(), requestId, body, accept, context))
+        return FluxUtil.withContext(context -> service.stageBlockNoCustomHeaders(this.client.getUrl(), containerName,
+            blob, comp, blockId, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted,
+            timeout, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
+            this.client.getVersion(), requestId, structuredBodyType, structuredContentLength, body, accept, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -3674,6 +3797,10 @@ public final class BlockBlobsImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -3685,8 +3812,8 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stageBlockNoCustomHeadersWithResponseAsync(String containerName, String blob,
         String blockId, long contentLength, Flux<ByteBuffer> body, byte[] transactionalContentMD5,
-        byte[] transactionalContentCrc64, Integer timeout, String leaseId, String requestId, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam, Context context) {
+        byte[] transactionalContentCrc64, Integer timeout, String leaseId, String requestId, String structuredBodyType,
+        Long structuredContentLength, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
         final String comp = "block";
         final String accept = "application/xml";
         String encryptionKeyInternal = null;
@@ -3714,8 +3841,8 @@ public final class BlockBlobsImpl {
         return service
             .stageBlockNoCustomHeaders(this.client.getUrl(), containerName, blob, comp, blockId, contentLength,
                 transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, leaseId, encryptionKey,
-                encryptionKeySha256, encryptionAlgorithm, encryptionScope, this.client.getVersion(), requestId, body,
-                accept, context)
+                encryptionKeySha256, encryptionAlgorithm, encryptionScope, this.client.getVersion(), requestId,
+                structuredBodyType, structuredContentLength, body, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -3737,6 +3864,10 @@ public final class BlockBlobsImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3747,8 +3878,8 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<BlockBlobsStageBlockHeaders, Void>> stageBlockWithResponseAsync(String containerName,
         String blob, String blockId, long contentLength, BinaryData body, byte[] transactionalContentMD5,
-        byte[] transactionalContentCrc64, Integer timeout, String leaseId, String requestId, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam) {
+        byte[] transactionalContentCrc64, Integer timeout, String leaseId, String requestId, String structuredBodyType,
+        Long structuredContentLength, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
         final String comp = "block";
         final String accept = "application/xml";
         String encryptionKeyInternal = null;
@@ -3777,7 +3908,7 @@ public final class BlockBlobsImpl {
             .withContext(context -> service.stageBlock(this.client.getUrl(), containerName, blob, comp, blockId,
                 contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, leaseId,
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, this.client.getVersion(),
-                requestId, body, accept, context))
+                requestId, structuredBodyType, structuredContentLength, body, accept, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -3799,6 +3930,10 @@ public final class BlockBlobsImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -3810,8 +3945,8 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<BlockBlobsStageBlockHeaders, Void>> stageBlockWithResponseAsync(String containerName,
         String blob, String blockId, long contentLength, BinaryData body, byte[] transactionalContentMD5,
-        byte[] transactionalContentCrc64, Integer timeout, String leaseId, String requestId, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam, Context context) {
+        byte[] transactionalContentCrc64, Integer timeout, String leaseId, String requestId, String structuredBodyType,
+        Long structuredContentLength, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
         final String comp = "block";
         final String accept = "application/xml";
         String encryptionKeyInternal = null;
@@ -3839,8 +3974,8 @@ public final class BlockBlobsImpl {
         return service
             .stageBlock(this.client.getUrl(), containerName, blob, comp, blockId, contentLength,
                 transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, leaseId, encryptionKey,
-                encryptionKeySha256, encryptionAlgorithm, encryptionScope, this.client.getVersion(), requestId, body,
-                accept, context)
+                encryptionKeySha256, encryptionAlgorithm, encryptionScope, this.client.getVersion(), requestId,
+                structuredBodyType, structuredContentLength, body, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -3862,6 +3997,10 @@ public final class BlockBlobsImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3872,9 +4011,11 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stageBlockAsync(String containerName, String blob, String blockId, long contentLength,
         BinaryData body, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Integer timeout,
-        String leaseId, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        String leaseId, String requestId, String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam) {
         return stageBlockWithResponseAsync(containerName, blob, blockId, contentLength, body, transactionalContentMD5,
-            transactionalContentCrc64, timeout, leaseId, requestId, cpkInfo, encryptionScopeParam)
+            transactionalContentCrc64, timeout, leaseId, requestId, structuredBodyType, structuredContentLength,
+            cpkInfo, encryptionScopeParam)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
@@ -3897,6 +4038,10 @@ public final class BlockBlobsImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -3908,9 +4053,11 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stageBlockAsync(String containerName, String blob, String blockId, long contentLength,
         BinaryData body, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Integer timeout,
-        String leaseId, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        String leaseId, String requestId, String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam, Context context) {
         return stageBlockWithResponseAsync(containerName, blob, blockId, contentLength, body, transactionalContentMD5,
-            transactionalContentCrc64, timeout, leaseId, requestId, cpkInfo, encryptionScopeParam, context)
+            transactionalContentCrc64, timeout, leaseId, requestId, structuredBodyType, structuredContentLength,
+            cpkInfo, encryptionScopeParam, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
@@ -3933,6 +4080,10 @@ public final class BlockBlobsImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3943,8 +4094,8 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stageBlockNoCustomHeadersWithResponseAsync(String containerName, String blob,
         String blockId, long contentLength, BinaryData body, byte[] transactionalContentMD5,
-        byte[] transactionalContentCrc64, Integer timeout, String leaseId, String requestId, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam) {
+        byte[] transactionalContentCrc64, Integer timeout, String leaseId, String requestId, String structuredBodyType,
+        Long structuredContentLength, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
         final String comp = "block";
         final String accept = "application/xml";
         String encryptionKeyInternal = null;
@@ -3969,11 +4120,10 @@ public final class BlockBlobsImpl {
         String encryptionScope = encryptionScopeInternal;
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        return FluxUtil
-            .withContext(context -> service.stageBlockNoCustomHeaders(this.client.getUrl(), containerName, blob, comp,
-                blockId, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout,
-                leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-                this.client.getVersion(), requestId, body, accept, context))
+        return FluxUtil.withContext(context -> service.stageBlockNoCustomHeaders(this.client.getUrl(), containerName,
+            blob, comp, blockId, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted,
+            timeout, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
+            this.client.getVersion(), requestId, structuredBodyType, structuredContentLength, body, accept, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -3995,6 +4145,10 @@ public final class BlockBlobsImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -4006,8 +4160,8 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stageBlockNoCustomHeadersWithResponseAsync(String containerName, String blob,
         String blockId, long contentLength, BinaryData body, byte[] transactionalContentMD5,
-        byte[] transactionalContentCrc64, Integer timeout, String leaseId, String requestId, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam, Context context) {
+        byte[] transactionalContentCrc64, Integer timeout, String leaseId, String requestId, String structuredBodyType,
+        Long structuredContentLength, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
         final String comp = "block";
         final String accept = "application/xml";
         String encryptionKeyInternal = null;
@@ -4035,8 +4189,8 @@ public final class BlockBlobsImpl {
         return service
             .stageBlockNoCustomHeaders(this.client.getUrl(), containerName, blob, comp, blockId, contentLength,
                 transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, leaseId, encryptionKey,
-                encryptionKeySha256, encryptionAlgorithm, encryptionScope, this.client.getVersion(), requestId, body,
-                accept, context)
+                encryptionKeySha256, encryptionAlgorithm, encryptionScope, this.client.getVersion(), requestId,
+                structuredBodyType, structuredContentLength, body, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -4058,6 +4212,10 @@ public final class BlockBlobsImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -4069,8 +4227,8 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<BlockBlobsStageBlockHeaders, Void> stageBlockWithResponse(String containerName, String blob,
         String blockId, long contentLength, BinaryData body, byte[] transactionalContentMD5,
-        byte[] transactionalContentCrc64, Integer timeout, String leaseId, String requestId, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam, Context context) {
+        byte[] transactionalContentCrc64, Integer timeout, String leaseId, String requestId, String structuredBodyType,
+        Long structuredContentLength, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
         try {
             final String comp = "block";
             final String accept = "application/xml";
@@ -4098,8 +4256,8 @@ public final class BlockBlobsImpl {
             String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
             return service.stageBlockSync(this.client.getUrl(), containerName, blob, comp, blockId, contentLength,
                 transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, leaseId, encryptionKey,
-                encryptionKeySha256, encryptionAlgorithm, encryptionScope, this.client.getVersion(), requestId, body,
-                accept, context);
+                encryptionKeySha256, encryptionAlgorithm, encryptionScope, this.client.getVersion(), requestId,
+                structuredBodyType, structuredContentLength, body, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -4123,6 +4281,10 @@ public final class BlockBlobsImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4132,9 +4294,11 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stageBlock(String containerName, String blob, String blockId, long contentLength, BinaryData body,
         byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Integer timeout, String leaseId,
-        String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        String requestId, String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam) {
         stageBlockWithResponse(containerName, blob, blockId, contentLength, body, transactionalContentMD5,
-            transactionalContentCrc64, timeout, leaseId, requestId, cpkInfo, encryptionScopeParam, Context.NONE);
+            transactionalContentCrc64, timeout, leaseId, requestId, structuredBodyType, structuredContentLength,
+            cpkInfo, encryptionScopeParam, Context.NONE);
     }
 
     /**
@@ -4155,6 +4319,10 @@ public final class BlockBlobsImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -4166,8 +4334,8 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stageBlockNoCustomHeadersWithResponse(String containerName, String blob, String blockId,
         long contentLength, BinaryData body, byte[] transactionalContentMD5, byte[] transactionalContentCrc64,
-        Integer timeout, String leaseId, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
-        Context context) {
+        Integer timeout, String leaseId, String requestId, String structuredBodyType, Long structuredContentLength,
+        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
         try {
             final String comp = "block";
             final String accept = "application/xml";
@@ -4196,7 +4364,7 @@ public final class BlockBlobsImpl {
             return service.stageBlockNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, blockId,
                 contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, leaseId,
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, this.client.getVersion(),
-                requestId, body, accept, context);
+                requestId, structuredBodyType, structuredContentLength, body, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }

@@ -2282,7 +2282,8 @@ public class BlobClientBase {
     public Response<StorageAccountInfo> getAccountInfoWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         Callable<ResponseBase<BlobsGetAccountInfoHeaders, Void>> operation = () ->
-            this.azureBlobStorage.getBlobs().getAccountInfoWithResponse(containerName, blobName, finalContext);
+            this.azureBlobStorage.getBlobs().getAccountInfoWithResponse(containerName, blobName, null,
+                null, finalContext);
 
         ResponseBase<BlobsGetAccountInfoHeaders, Void> response = sendRequest(operation, timeout,
             BlobStorageException.class);
@@ -2683,7 +2684,7 @@ public class BlobClientBase {
         Callable<ResponseBase<BlobsSetImmutabilityPolicyHeaders, Void>> operation = () ->
             this.azureBlobStorage.getBlobs().setImmutabilityPolicyWithResponse(containerName, blobName, null, null,
                 finalRequestConditions.getIfUnmodifiedSince(), finalImmutabilityPolicy.getExpiryTime(),
-                finalImmutabilityPolicy.getPolicyMode(), finalContext);
+                finalImmutabilityPolicy.getPolicyMode(), snapshot, versionId, finalContext);
         ResponseBase<BlobsSetImmutabilityPolicyHeaders, Void> response = sendRequest(operation, timeout,
             BlobStorageException.class);
 
@@ -2737,7 +2738,7 @@ public class BlobClientBase {
         Context finalContext = context == null ? Context.NONE : context;
         Callable<Response<Void>> operation = () ->
             this.azureBlobStorage.getBlobs().deleteImmutabilityPolicyNoCustomHeadersWithResponse(
-                containerName, blobName, null, null, finalContext);
+                containerName, blobName, null, null, snapshot, versionId, finalContext);
         return sendRequest(operation, timeout, BlobStorageException.class);
     }
 
@@ -2785,8 +2786,8 @@ public class BlobClientBase {
     public Response<BlobLegalHoldResult> setLegalHoldWithResponse(boolean legalHold, Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         Callable<ResponseBase<BlobsSetLegalHoldHeaders, Void>> operation = () ->
-            this.azureBlobStorage.getBlobs().setLegalHoldWithResponse(containerName, blobName, legalHold, null, null,
-                finalContext);
+            this.azureBlobStorage.getBlobs().setLegalHoldWithResponse(containerName, blobName, legalHold, null,
+                null, snapshot, versionId, finalContext);
         ResponseBase<BlobsSetLegalHoldHeaders, Void> response = sendRequest(operation, timeout,
             BlobStorageException.class);
         return new SimpleResponse<>(response,

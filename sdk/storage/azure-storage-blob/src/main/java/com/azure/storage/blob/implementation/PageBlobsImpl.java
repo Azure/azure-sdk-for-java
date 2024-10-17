@@ -225,6 +225,8 @@ public final class PageBlobsImpl {
             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("x-ms-if-tags") String ifTags, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -250,6 +252,8 @@ public final class PageBlobsImpl {
             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("x-ms-if-tags") String ifTags, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -275,6 +279,8 @@ public final class PageBlobsImpl {
             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("x-ms-if-tags") String ifTags, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -300,6 +306,8 @@ public final class PageBlobsImpl {
             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("x-ms-if-tags") String ifTags, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -325,6 +333,8 @@ public final class PageBlobsImpl {
             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("x-ms-if-tags") String ifTags, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -350,6 +360,8 @@ public final class PageBlobsImpl {
             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("x-ms-if-tags") String ifTags, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData body, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -1784,6 +1796,10 @@ public final class PageBlobsImpl {
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1797,7 +1813,8 @@ public final class PageBlobsImpl {
         byte[] transactionalContentCrc64, Integer timeout, String range, String leaseId,
         Long ifSequenceNumberLessThanOrEqualTo, Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
-        String ifTags, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        String ifTags, String requestId, String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam) {
         final String comp = "page";
         final String pageWrite = "update";
         final String accept = "application/xml";
@@ -1827,13 +1844,12 @@ public final class PageBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return FluxUtil
-            .withContext(context -> service.uploadPages(this.client.getUrl(), containerName, blob, comp, pageWrite,
-                contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, range,
-                leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-                ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
-                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-                this.client.getVersion(), requestId, body, accept, context))
+        return FluxUtil.withContext(context -> service.uploadPages(this.client.getUrl(), containerName, blob, comp,
+            pageWrite, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout,
+            range, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
+            ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
+            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+            this.client.getVersion(), requestId, structuredBodyType, structuredContentLength, body, accept, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1866,6 +1882,10 @@ public final class PageBlobsImpl {
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -1880,7 +1900,8 @@ public final class PageBlobsImpl {
         byte[] transactionalContentCrc64, Integer timeout, String range, String leaseId,
         Long ifSequenceNumberLessThanOrEqualTo, Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
-        String ifTags, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        String ifTags, String requestId, String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam, Context context) {
         final String comp = "page";
         final String pageWrite = "update";
         final String accept = "application/xml";
@@ -1910,11 +1931,13 @@ public final class PageBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.uploadPages(this.client.getUrl(), containerName, blob, comp, pageWrite, contentLength,
-            transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, range, leaseId,
-            encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifSequenceNumberLessThanOrEqualTo,
-            ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
-            ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, body, accept, context)
+        return service
+            .uploadPages(this.client.getUrl(), containerName, blob, comp, pageWrite, contentLength,
+                transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, range, leaseId,
+                encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
+                ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, structuredBodyType, structuredContentLength, body, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1947,6 +1970,10 @@ public final class PageBlobsImpl {
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1959,11 +1986,12 @@ public final class PageBlobsImpl {
         byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Integer timeout, String range, String leaseId,
         Long ifSequenceNumberLessThanOrEqualTo, Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
-        String ifTags, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        String ifTags, String requestId, String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam) {
         return uploadPagesWithResponseAsync(containerName, blob, contentLength, body, transactionalContentMD5,
             transactionalContentCrc64, timeout, range, leaseId, ifSequenceNumberLessThanOrEqualTo,
             ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
-            ifTags, requestId, cpkInfo, encryptionScopeParam)
+            ifTags, requestId, structuredBodyType, structuredContentLength, cpkInfo, encryptionScopeParam)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
@@ -1997,6 +2025,10 @@ public final class PageBlobsImpl {
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -2010,11 +2042,12 @@ public final class PageBlobsImpl {
         byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Integer timeout, String range, String leaseId,
         Long ifSequenceNumberLessThanOrEqualTo, Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
-        String ifTags, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        String ifTags, String requestId, String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam, Context context) {
         return uploadPagesWithResponseAsync(containerName, blob, contentLength, body, transactionalContentMD5,
             transactionalContentCrc64, timeout, range, leaseId, ifSequenceNumberLessThanOrEqualTo,
             ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
-            ifTags, requestId, cpkInfo, encryptionScopeParam, context)
+            ifTags, requestId, structuredBodyType, structuredContentLength, cpkInfo, encryptionScopeParam, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
@@ -2048,6 +2081,10 @@ public final class PageBlobsImpl {
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2061,7 +2098,8 @@ public final class PageBlobsImpl {
         Integer timeout, String range, String leaseId, Long ifSequenceNumberLessThanOrEqualTo,
         Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam) {
         final String comp = "page";
         final String pageWrite = "update";
         final String accept = "application/xml";
@@ -2091,13 +2129,12 @@ public final class PageBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return FluxUtil
-            .withContext(context -> service.uploadPagesNoCustomHeaders(this.client.getUrl(), containerName, blob, comp,
-                pageWrite, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout,
-                range, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-                ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
-                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-                this.client.getVersion(), requestId, body, accept, context))
+        return FluxUtil.withContext(context -> service.uploadPagesNoCustomHeaders(this.client.getUrl(), containerName,
+            blob, comp, pageWrite, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted,
+            timeout, range, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
+            ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
+            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+            this.client.getVersion(), requestId, structuredBodyType, structuredContentLength, body, accept, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2130,6 +2167,10 @@ public final class PageBlobsImpl {
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -2144,7 +2185,8 @@ public final class PageBlobsImpl {
         Integer timeout, String range, String leaseId, Long ifSequenceNumberLessThanOrEqualTo,
         Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
+        Context context) {
         final String comp = "page";
         final String pageWrite = "update";
         final String accept = "application/xml";
@@ -2180,7 +2222,7 @@ public final class PageBlobsImpl {
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
                 ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-                this.client.getVersion(), requestId, body, accept, context)
+                this.client.getVersion(), requestId, structuredBodyType, structuredContentLength, body, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2213,6 +2255,10 @@ public final class PageBlobsImpl {
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2226,7 +2272,8 @@ public final class PageBlobsImpl {
         byte[] transactionalContentCrc64, Integer timeout, String range, String leaseId,
         Long ifSequenceNumberLessThanOrEqualTo, Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
-        String ifTags, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        String ifTags, String requestId, String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam) {
         final String comp = "page";
         final String pageWrite = "update";
         final String accept = "application/xml";
@@ -2256,13 +2303,12 @@ public final class PageBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return FluxUtil
-            .withContext(context -> service.uploadPages(this.client.getUrl(), containerName, blob, comp, pageWrite,
-                contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, range,
-                leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-                ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
-                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-                this.client.getVersion(), requestId, body, accept, context))
+        return FluxUtil.withContext(context -> service.uploadPages(this.client.getUrl(), containerName, blob, comp,
+            pageWrite, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout,
+            range, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
+            ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
+            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+            this.client.getVersion(), requestId, structuredBodyType, structuredContentLength, body, accept, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2295,6 +2341,10 @@ public final class PageBlobsImpl {
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -2309,7 +2359,8 @@ public final class PageBlobsImpl {
         byte[] transactionalContentCrc64, Integer timeout, String range, String leaseId,
         Long ifSequenceNumberLessThanOrEqualTo, Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
-        String ifTags, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        String ifTags, String requestId, String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam, Context context) {
         final String comp = "page";
         final String pageWrite = "update";
         final String accept = "application/xml";
@@ -2339,11 +2390,13 @@ public final class PageBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.uploadPages(this.client.getUrl(), containerName, blob, comp, pageWrite, contentLength,
-            transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, range, leaseId,
-            encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifSequenceNumberLessThanOrEqualTo,
-            ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
-            ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, body, accept, context)
+        return service
+            .uploadPages(this.client.getUrl(), containerName, blob, comp, pageWrite, contentLength,
+                transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, range, leaseId,
+                encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
+                ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, structuredBodyType, structuredContentLength, body, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2376,6 +2429,10 @@ public final class PageBlobsImpl {
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2388,11 +2445,12 @@ public final class PageBlobsImpl {
         byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Integer timeout, String range, String leaseId,
         Long ifSequenceNumberLessThanOrEqualTo, Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
-        String ifTags, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        String ifTags, String requestId, String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam) {
         return uploadPagesWithResponseAsync(containerName, blob, contentLength, body, transactionalContentMD5,
             transactionalContentCrc64, timeout, range, leaseId, ifSequenceNumberLessThanOrEqualTo,
             ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
-            ifTags, requestId, cpkInfo, encryptionScopeParam)
+            ifTags, requestId, structuredBodyType, structuredContentLength, cpkInfo, encryptionScopeParam)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
@@ -2426,6 +2484,10 @@ public final class PageBlobsImpl {
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -2439,11 +2501,12 @@ public final class PageBlobsImpl {
         byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Integer timeout, String range, String leaseId,
         Long ifSequenceNumberLessThanOrEqualTo, Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
-        String ifTags, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        String ifTags, String requestId, String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam, Context context) {
         return uploadPagesWithResponseAsync(containerName, blob, contentLength, body, transactionalContentMD5,
             transactionalContentCrc64, timeout, range, leaseId, ifSequenceNumberLessThanOrEqualTo,
             ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
-            ifTags, requestId, cpkInfo, encryptionScopeParam, context)
+            ifTags, requestId, structuredBodyType, structuredContentLength, cpkInfo, encryptionScopeParam, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
@@ -2477,6 +2540,10 @@ public final class PageBlobsImpl {
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2490,7 +2557,8 @@ public final class PageBlobsImpl {
         Integer timeout, String range, String leaseId, Long ifSequenceNumberLessThanOrEqualTo,
         Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam) {
         final String comp = "page";
         final String pageWrite = "update";
         final String accept = "application/xml";
@@ -2520,13 +2588,12 @@ public final class PageBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return FluxUtil
-            .withContext(context -> service.uploadPagesNoCustomHeaders(this.client.getUrl(), containerName, blob, comp,
-                pageWrite, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout,
-                range, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-                ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
-                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-                this.client.getVersion(), requestId, body, accept, context))
+        return FluxUtil.withContext(context -> service.uploadPagesNoCustomHeaders(this.client.getUrl(), containerName,
+            blob, comp, pageWrite, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted,
+            timeout, range, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
+            ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
+            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+            this.client.getVersion(), requestId, structuredBodyType, structuredContentLength, body, accept, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2559,6 +2626,10 @@ public final class PageBlobsImpl {
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -2573,7 +2644,8 @@ public final class PageBlobsImpl {
         Integer timeout, String range, String leaseId, Long ifSequenceNumberLessThanOrEqualTo,
         Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
+        Context context) {
         final String comp = "page";
         final String pageWrite = "update";
         final String accept = "application/xml";
@@ -2609,7 +2681,7 @@ public final class PageBlobsImpl {
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
                 ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-                this.client.getVersion(), requestId, body, accept, context)
+                this.client.getVersion(), requestId, structuredBodyType, structuredContentLength, body, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2642,6 +2714,10 @@ public final class PageBlobsImpl {
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -2656,7 +2732,8 @@ public final class PageBlobsImpl {
         Integer timeout, String range, String leaseId, Long ifSequenceNumberLessThanOrEqualTo,
         Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
+        Context context) {
         try {
             final String comp = "page";
             final String pageWrite = "update";
@@ -2692,7 +2769,8 @@ public final class PageBlobsImpl {
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
                 ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-                this.client.getVersion(), requestId, body, accept, context);
+                this.client.getVersion(), requestId, structuredBodyType, structuredContentLength, body, accept,
+                context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -2727,6 +2805,10 @@ public final class PageBlobsImpl {
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2738,11 +2820,13 @@ public final class PageBlobsImpl {
         byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Integer timeout, String range, String leaseId,
         Long ifSequenceNumberLessThanOrEqualTo, Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
-        String ifTags, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        String ifTags, String requestId, String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam) {
         uploadPagesWithResponse(containerName, blob, contentLength, body, transactionalContentMD5,
             transactionalContentCrc64, timeout, range, leaseId, ifSequenceNumberLessThanOrEqualTo,
             ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
-            ifTags, requestId, cpkInfo, encryptionScopeParam, Context.NONE);
+            ifTags, requestId, structuredBodyType, structuredContentLength, cpkInfo, encryptionScopeParam,
+            Context.NONE);
     }
 
     /**
@@ -2774,6 +2858,10 @@ public final class PageBlobsImpl {
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -2787,8 +2875,8 @@ public final class PageBlobsImpl {
         BinaryData body, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Integer timeout,
         String range, String leaseId, Long ifSequenceNumberLessThanOrEqualTo, Long ifSequenceNumberLessThan,
         Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
-        String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
-        Context context) {
+        String ifNoneMatch, String ifTags, String requestId, String structuredBodyType, Long structuredContentLength,
+        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
         try {
             final String comp = "page";
             final String pageWrite = "update";
@@ -2824,7 +2912,8 @@ public final class PageBlobsImpl {
                 leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
                 ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-                this.client.getVersion(), requestId, body, accept, context);
+                this.client.getVersion(), requestId, structuredBodyType, structuredContentLength, body, accept,
+                context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
