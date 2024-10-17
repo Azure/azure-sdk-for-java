@@ -13,21 +13,21 @@ public final class RegularPriorityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegularPriorityProfile model = BinaryData
-            .fromString("{\"capacity\":533859005,\"minCapacity\":2053508957,\"allocationStrategy\":\"LowestPrice\"}")
+            .fromString("{\"capacity\":229383056,\"minCapacity\":1191449994,\"allocationStrategy\":\"Prioritized\"}")
             .toObject(RegularPriorityProfile.class);
-        Assertions.assertEquals(533859005, model.capacity());
-        Assertions.assertEquals(2053508957, model.minCapacity());
-        Assertions.assertEquals(RegularPriorityAllocationStrategy.LOWEST_PRICE, model.allocationStrategy());
+        Assertions.assertEquals(229383056, model.capacity());
+        Assertions.assertEquals(1191449994, model.minCapacity());
+        Assertions.assertEquals(RegularPriorityAllocationStrategy.PRIORITIZED, model.allocationStrategy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RegularPriorityProfile model = new RegularPriorityProfile().withCapacity(533859005)
-            .withMinCapacity(2053508957)
-            .withAllocationStrategy(RegularPriorityAllocationStrategy.LOWEST_PRICE);
+        RegularPriorityProfile model = new RegularPriorityProfile().withCapacity(229383056)
+            .withMinCapacity(1191449994)
+            .withAllocationStrategy(RegularPriorityAllocationStrategy.PRIORITIZED);
         model = BinaryData.fromObject(model).toObject(RegularPriorityProfile.class);
-        Assertions.assertEquals(533859005, model.capacity());
-        Assertions.assertEquals(2053508957, model.minCapacity());
-        Assertions.assertEquals(RegularPriorityAllocationStrategy.LOWEST_PRICE, model.allocationStrategy());
+        Assertions.assertEquals(229383056, model.capacity());
+        Assertions.assertEquals(1191449994, model.minCapacity());
+        Assertions.assertEquals(RegularPriorityAllocationStrategy.PRIORITIZED, model.allocationStrategy());
     }
 }

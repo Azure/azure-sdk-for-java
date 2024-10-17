@@ -39,6 +39,15 @@ public final class ComputeProfile implements JsonSerializable<ComputeProfile> {
      */
     private Integer platformFaultDomainCount;
 
+    /*
+     * Specifies VMSS and VM API entity models support two additional capabilities as of today: ultraSSDEnabled and
+     * hibernationEnabled.
+     * ultraSSDEnabled: Enables UltraSSD_LRS storage account type on the VMSS VMs.
+     * hibernationEnabled: Enables the hibernation capability on the VMSS VMs.
+     * Default value is null if not specified. This property cannot be updated once set.
+     */
+    private AdditionalCapabilities additionalVirtualMachineCapabilities;
+
     /**
      * Creates an instance of ComputeProfile class.
      */
@@ -122,6 +131,35 @@ public final class ComputeProfile implements JsonSerializable<ComputeProfile> {
     }
 
     /**
+     * Get the additionalVirtualMachineCapabilities property: Specifies VMSS and VM API entity models support two
+     * additional capabilities as of today: ultraSSDEnabled and hibernationEnabled.
+     * ultraSSDEnabled: Enables UltraSSD_LRS storage account type on the VMSS VMs.
+     * hibernationEnabled: Enables the hibernation capability on the VMSS VMs.
+     * Default value is null if not specified. This property cannot be updated once set.
+     * 
+     * @return the additionalVirtualMachineCapabilities value.
+     */
+    public AdditionalCapabilities additionalVirtualMachineCapabilities() {
+        return this.additionalVirtualMachineCapabilities;
+    }
+
+    /**
+     * Set the additionalVirtualMachineCapabilities property: Specifies VMSS and VM API entity models support two
+     * additional capabilities as of today: ultraSSDEnabled and hibernationEnabled.
+     * ultraSSDEnabled: Enables UltraSSD_LRS storage account type on the VMSS VMs.
+     * hibernationEnabled: Enables the hibernation capability on the VMSS VMs.
+     * Default value is null if not specified. This property cannot be updated once set.
+     * 
+     * @param additionalVirtualMachineCapabilities the additionalVirtualMachineCapabilities value to set.
+     * @return the ComputeProfile object itself.
+     */
+    public ComputeProfile
+        withAdditionalVirtualMachineCapabilities(AdditionalCapabilities additionalVirtualMachineCapabilities) {
+        this.additionalVirtualMachineCapabilities = additionalVirtualMachineCapabilities;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -133,6 +171,9 @@ public final class ComputeProfile implements JsonSerializable<ComputeProfile> {
                     "Missing required property baseVirtualMachineProfile in model ComputeProfile"));
         } else {
             baseVirtualMachineProfile().validate();
+        }
+        if (additionalVirtualMachineCapabilities() != null) {
+            additionalVirtualMachineCapabilities().validate();
         }
     }
 
@@ -147,6 +188,7 @@ public final class ComputeProfile implements JsonSerializable<ComputeProfile> {
         jsonWriter.writeJsonField("baseVirtualMachineProfile", this.baseVirtualMachineProfile);
         jsonWriter.writeStringField("computeApiVersion", this.computeApiVersion);
         jsonWriter.writeNumberField("platformFaultDomainCount", this.platformFaultDomainCount);
+        jsonWriter.writeJsonField("additionalVirtualMachineCapabilities", this.additionalVirtualMachineCapabilities);
         return jsonWriter.writeEndObject();
     }
 
@@ -172,6 +214,9 @@ public final class ComputeProfile implements JsonSerializable<ComputeProfile> {
                     deserializedComputeProfile.computeApiVersion = reader.getString();
                 } else if ("platformFaultDomainCount".equals(fieldName)) {
                     deserializedComputeProfile.platformFaultDomainCount = reader.getNullable(JsonReader::getInt);
+                } else if ("additionalVirtualMachineCapabilities".equals(fieldName)) {
+                    deserializedComputeProfile.additionalVirtualMachineCapabilities
+                        = AdditionalCapabilities.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

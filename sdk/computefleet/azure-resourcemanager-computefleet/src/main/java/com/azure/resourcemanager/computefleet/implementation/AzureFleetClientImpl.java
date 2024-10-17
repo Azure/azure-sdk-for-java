@@ -169,7 +169,7 @@ public final class AzureFleetClientImpl implements AzureFleetClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-05-01-preview";
+        this.apiVersion = "2024-11-01";
         this.operations = new OperationsClientImpl(this);
         this.fleets = new FleetsClientImpl(this);
     }

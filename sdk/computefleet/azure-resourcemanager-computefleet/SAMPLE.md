@@ -41,8 +41,8 @@ import com.azure.resourcemanager.computefleet.models.DomainNameLabelScopeTypes;
 import com.azure.resourcemanager.computefleet.models.EncryptionIdentity;
 import com.azure.resourcemanager.computefleet.models.EvictionPolicy;
 import com.azure.resourcemanager.computefleet.models.FleetProperties;
-import com.azure.resourcemanager.computefleet.models.ImageReference;
 import com.azure.resourcemanager.computefleet.models.IPVersion;
+import com.azure.resourcemanager.computefleet.models.ImageReference;
 import com.azure.resourcemanager.computefleet.models.KeyVaultSecretReference;
 import com.azure.resourcemanager.computefleet.models.LinuxConfiguration;
 import com.azure.resourcemanager.computefleet.models.LinuxPatchAssessmentMode;
@@ -56,8 +56,8 @@ import com.azure.resourcemanager.computefleet.models.Mode;
 import com.azure.resourcemanager.computefleet.models.NetworkApiVersion;
 import com.azure.resourcemanager.computefleet.models.NetworkInterfaceAuxiliaryMode;
 import com.azure.resourcemanager.computefleet.models.NetworkInterfaceAuxiliarySku;
-import com.azure.resourcemanager.computefleet.models.OperatingSystemTypes;
 import com.azure.resourcemanager.computefleet.models.OSImageNotificationProfile;
+import com.azure.resourcemanager.computefleet.models.OperatingSystemTypes;
 import com.azure.resourcemanager.computefleet.models.PatchSettings;
 import com.azure.resourcemanager.computefleet.models.Plan;
 import com.azure.resourcemanager.computefleet.models.ProtocolTypes;
@@ -82,6 +82,9 @@ import com.azure.resourcemanager.computefleet.models.StorageAccountTypes;
 import com.azure.resourcemanager.computefleet.models.TerminateNotificationProfile;
 import com.azure.resourcemanager.computefleet.models.UefiSettings;
 import com.azure.resourcemanager.computefleet.models.UserAssignedIdentity;
+import com.azure.resourcemanager.computefleet.models.VMDiskSecurityProfile;
+import com.azure.resourcemanager.computefleet.models.VMGalleryApplication;
+import com.azure.resourcemanager.computefleet.models.VMSizeProperties;
 import com.azure.resourcemanager.computefleet.models.VaultCertificate;
 import com.azure.resourcemanager.computefleet.models.VaultSecretGroup;
 import com.azure.resourcemanager.computefleet.models.VirtualHardDisk;
@@ -104,17 +107,14 @@ import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetPubli
 import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings;
 import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetPublicIPAddressConfigurationProperties;
 import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetStorageProfile;
-import com.azure.resourcemanager.computefleet.models.VMDiskSecurityProfile;
-import com.azure.resourcemanager.computefleet.models.VMGalleryApplication;
 import com.azure.resourcemanager.computefleet.models.VmSizeProfile;
-import com.azure.resourcemanager.computefleet.models.VMSizeProperties;
+import com.azure.resourcemanager.computefleet.models.WinRMConfiguration;
+import com.azure.resourcemanager.computefleet.models.WinRMListener;
 import com.azure.resourcemanager.computefleet.models.WindowsConfiguration;
 import com.azure.resourcemanager.computefleet.models.WindowsPatchAssessmentMode;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchAutomaticByPlatformRebootSetting;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchAutomaticByPlatformSettings;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchMode;
-import com.azure.resourcemanager.computefleet.models.WinRMConfiguration;
-import com.azure.resourcemanager.computefleet.models.WinRMListener;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -124,8 +124,7 @@ import java.util.Map;
  */
 public final class FleetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Fleets_CreateOrUpdate.json
+     * x-ms-original-file: 2024-11-01/Fleets_CreateOrUpdate.json
      */
     /**
      * Sample code: Fleets_CreateOrUpdate.
@@ -150,241 +149,231 @@ public final class FleetsCreateOrUpdateSamples {
                 .withVmSizesProfile(Arrays.asList(new VmSizeProfile().withName("Standard_d1_v2").withRank(19225)))
                 .withComputeProfile(
                     new ComputeProfile()
-                        .withBaseVirtualMachineProfile(
-                            new BaseVirtualMachineProfile()
-                                .withOsProfile(new VirtualMachineScaleSetOSProfile().withComputerNamePrefix("o")
-                                    .withAdminUsername("nrgzqciiaaxjrqldbmjbqkyhntp")
-                                    .withAdminPassword("fakeTokenPlaceholder")
-                                    .withCustomData("xjjib")
-                                    .withWindowsConfiguration(new WindowsConfiguration().withProvisionVMAgent(true)
-                                        .withEnableAutomaticUpdates(true)
-                                        .withTimeZone("hlyjiqcfksgrpjrct")
-                                        .withAdditionalUnattendContent(Arrays.asList(new AdditionalUnattendContent()
+                        .withBaseVirtualMachineProfile(new BaseVirtualMachineProfile()
+                            .withOsProfile(new VirtualMachineScaleSetOSProfile().withComputerNamePrefix("o")
+                                .withAdminUsername("nrgzqciiaaxjrqldbmjbqkyhntp")
+                                .withAdminPassword("fakeTokenPlaceholder")
+                                .withCustomData("xjjib")
+                                .withWindowsConfiguration(new WindowsConfiguration().withProvisionVMAgent(true)
+                                    .withEnableAutomaticUpdates(true)
+                                    .withTimeZone("hlyjiqcfksgrpjrct")
+                                    .withAdditionalUnattendContent(
+                                        Arrays.asList(new AdditionalUnattendContent()
                                             .withPassName(AdditionalUnattendContentPassName.OOBE_SYSTEM)
                                             .withComponentName(
                                                 AdditionalUnattendContentComponentName.MICROSOFT_WINDOWS_SHELL_SETUP)
                                             .withSettingName(SettingNames.AUTO_LOGON)
                                             .withContent("bubmqbxjkj")))
-                                        .withPatchSettings(
-                                            new PatchSettings().withPatchMode(WindowsVMGuestPatchMode.MANUAL)
-                                                .withEnableHotpatching(true)
-                                                .withAssessmentMode(WindowsPatchAssessmentMode.IMAGE_DEFAULT)
-                                                .withAutomaticByPlatformSettings(
-                                                    new WindowsVMGuestPatchAutomaticByPlatformSettings()
-                                                        .withRebootSetting(
-                                                            WindowsVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN)
-                                                        .withBypassPlatformSafetyChecksOnUserSchedule(true)))
-                                        .withWinRM(new WinRMConfiguration().withListeners(
-                                            Arrays.asList(new WinRMListener().withProtocol(ProtocolTypes.HTTP)
-                                                .withCertificateUrl("phwesineizrl"))))
-                                        .withEnableVMAgentPlatformUpdates(true))
-                                    .withLinuxConfiguration(new LinuxConfiguration()
-                                        .withDisablePasswordAuthentication(true)
-                                        .withSsh(new SshConfiguration().withPublicKeys(
-                                            Arrays.asList(new SshPublicKey().withPath("kmqz")
-                                                .withKeyData("fakeTokenPlaceholder"))))
-                                        .withProvisionVMAgent(true)
-                                        .withPatchSettings(new LinuxPatchSettings()
-                                            .withPatchMode(LinuxVMGuestPatchMode.IMAGE_DEFAULT)
-                                            .withAssessmentMode(LinuxPatchAssessmentMode.IMAGE_DEFAULT)
-                                            .withAutomaticByPlatformSettings(
-                                                new LinuxVMGuestPatchAutomaticByPlatformSettings()
-                                                    .withRebootSetting(
-                                                        LinuxVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN)
-                                                    .withBypassPlatformSafetyChecksOnUserSchedule(true)))
-                                        .withEnableVMAgentPlatformUpdates(true))
-                                    .withSecrets(Arrays.asList(new VaultSecretGroup()
-                                        .withSourceVault(new SubResource().withId(
-                                            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"))
-                                        .withVaultCertificates(
-                                            Arrays.asList(new VaultCertificate().withCertificateUrl("tyldwkzafmnkvpo")
-                                                .withCertificateStore("nlxrwavpzhueffxsshlun")))))
-                                    .withAllowExtensionOperations(true)
-                                    .withRequireGuestProvisionSignal(true))
-                                .withStorageProfile(new VirtualMachineScaleSetStorageProfile()
-                                    .withImageReference(new ImageReference().withId(
-                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}/versions/{versionName}")
-                                        .withPublisher("mqxgwbiyjzmxavhbkd")
-                                        .withOffer("isxgumkarlkomp")
-                                        .withSku("eojmppqcrnpmxirtp")
-                                        .withVersion("wvpcqefgtmqdgltiuz")
-                                        .withSharedGalleryImageId("kmkgihoxwlawuuhcinfirktdwkmx")
-                                        .withCommunityGalleryImageId("vlqe"))
-                                    .withOsDisk(new VirtualMachineScaleSetOSDisk().withName("wfttw")
-                                        .withCaching(CachingTypes.NONE)
-                                        .withWriteAcceleratorEnabled(true)
-                                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
-                                        .withDiffDiskSettings(new DiffDiskSettings()
-                                            .withOption(DiffDiskOptions.LOCAL)
-                                            .withPlacement(DiffDiskPlacement.CACHE_DISK))
-                                        .withDiskSizeGB(14)
-                                        .withOsType(OperatingSystemTypes.WINDOWS)
-                                        .withImage(new VirtualHardDisk().withUri("thqceubivdrjs"))
-                                        .withVhdContainers(Arrays.asList("tkzcwddtinkfpnfklatw"))
-                                        .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters()
-                                            .withStorageAccountType(StorageAccountTypes.STANDARD_LRS)
-                                            .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId(
-                                                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"))
-                                            .withSecurityProfile(new VMDiskSecurityProfile()
-                                                .withSecurityEncryptionType(SecurityEncryptionTypes.VMGUEST_STATE_ONLY)
-                                                .withDiskEncryptionSet(
-                                                    new DiskEncryptionSetParameters().withId(
-                                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"))))
-                                        .withDeleteOption(DiskDeleteOptionTypes.DELETE))
-                                    .withDataDisks(Arrays.asList(new VirtualMachineScaleSetDataDisk()
-                                        .withName("eogiykmdmeikswxmigjws")
-                                        .withLun(14)
-                                        .withCaching(CachingTypes.NONE)
-                                        .withWriteAcceleratorEnabled(true)
-                                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
-                                        .withDiskSizeGB(6)
-                                        .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters()
-                                            .withStorageAccountType(StorageAccountTypes.STANDARD_LRS)
-                                            .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId(
-                                                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"))
-                                            .withSecurityProfile(new VMDiskSecurityProfile()
-                                                .withSecurityEncryptionType(SecurityEncryptionTypes.VMGUEST_STATE_ONLY)
-                                                .withDiskEncryptionSet(
-                                                    new DiskEncryptionSetParameters().withId(
-                                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"))))
-                                        .withDiskIOPSReadWrite(27L)
-                                        .withDiskMBpsReadWrite(2L)
-                                        .withDeleteOption(DiskDeleteOptionTypes.DELETE)))
-                                    .withDiskControllerType(DiskControllerTypes.fromString("uzb")))
-                                .withNetworkProfile(new VirtualMachineScaleSetNetworkProfile().withHealthProbe(
-                                    new ApiEntityReference().withId(
-                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}"))
-                                    .withNetworkInterfaceConfigurations(
-                                        Arrays.asList(new VirtualMachineScaleSetNetworkConfiguration().withName("i")
-                                            .withProperties(new VirtualMachineScaleSetNetworkConfigurationProperties()
-                                                .withPrimary(true)
-                                                .withEnableAcceleratedNetworking(true)
-                                                .withDisableTcpStateTracking(true)
-                                                .withEnableFpga(true)
-                                                .withNetworkSecurityGroup(new SubResource().withId(
-                                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/{networkSecurityGroupName}"))
-                                                .withDnsSettings(
-                                                    new VirtualMachineScaleSetNetworkConfigurationDnsSettings()
-                                                        .withDnsServers(Arrays.asList("nxmmfolhclsesu")))
-                                                .withIpConfigurations(
-                                                    Arrays.asList(new VirtualMachineScaleSetIPConfiguration()
-                                                        .withName("oezqhkidfhyywlfzwuotilrpbqnjg")
-                                                        .withProperties(
-                                                            new VirtualMachineScaleSetIPConfigurationProperties()
-                                                                .withSubnet(new ApiEntityReference().withId(
-                                                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}"))
-                                                                .withPrimary(true)
-                                                                .withPublicIPAddressConfiguration(
-                                                                    new VirtualMachineScaleSetPublicIPAddressConfiguration()
-                                                                        .withName("fvpqf")
-                                                                        .withProperties(
-                                                                            new VirtualMachineScaleSetPublicIPAddressConfigurationProperties()
-                                                                                .withIdleTimeoutInMinutes(9)
-                                                                                .withDnsSettings(
-                                                                                    new VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings()
-                                                                                        .withDomainNameLabel(
-                                                                                            "ukrddzvmorpmfsczjwtbvp")
-                                                                                        .withDomainNameLabelScope(
-                                                                                            DomainNameLabelScopeTypes.TENANT_REUSE))
-                                                                                .withIpTags(Arrays.asList(
-                                                                                    new VirtualMachineScaleSetIpTag()
-                                                                                        .withIpTagType(
-                                                                                            "sddgsoemnzgqizale")
-                                                                                        .withTag(
-                                                                                            "wufmhrjsakbiaetyara")))
-                                                                                .withPublicIPPrefix(
-                                                                                    new SubResource().withId(
-                                                                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}"))
-                                                                                .withPublicIPAddressVersion(
-                                                                                    IPVersion.IPV4)
-                                                                                .withDeleteOption(DeleteOptions.DELETE))
-                                                                        .withSku(new PublicIPAddressSku()
-                                                                            .withName(PublicIPAddressSkuName.BASIC)
-                                                                            .withTier(PublicIPAddressSkuTier.REGIONAL)))
-                                                                .withPrivateIPAddressVersion(IPVersion.IPV4)
-                                                                .withApplicationGatewayBackendAddressPools(
-                                                                    Arrays.asList(
-                                                                        new SubResource().withId(
-                                                                            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/backendAddressPools/{backendAddressPoolName}")))
-                                                                .withApplicationSecurityGroups(Arrays
-                                                                    .asList(new SubResource().withId(
-                                                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationSecurityGroups/{applicationSecurityGroupName}")))
-                                                                .withLoadBalancerBackendAddressPools(Arrays
-                                                                    .asList(new SubResource().withId(
-                                                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/backendAddressPools/{backendAddressPoolName}")))
-                                                                .withLoadBalancerInboundNatPools(
-                                                                    Arrays.asList(new SubResource().withId(
-                                                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/inboundNatPools/{inboundNatPoolName}"))))))
-                                                .withEnableIPForwarding(true)
-                                                .withDeleteOption(DeleteOptions.DELETE)
-                                                .withAuxiliaryMode(NetworkInterfaceAuxiliaryMode.NONE)
-                                                .withAuxiliarySku(NetworkInterfaceAuxiliarySku.NONE))))
-                                    .withNetworkApiVersion(NetworkApiVersion.TWO_ZERO_TWO_ZERO_ONE_ONE_ZERO_ONE))
-                                .withSecurityProfile(new SecurityProfile()
-                                    .withUefiSettings(
-                                        new UefiSettings().withSecureBootEnabled(true).withVTpmEnabled(true))
-                                    .withEncryptionAtHost(true)
-                                    .withSecurityType(SecurityTypes.TRUSTED_LAUNCH)
-                                    .withEncryptionIdentity(new EncryptionIdentity().withUserAssignedIdentityResourceId(
-                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{userAssignedIdentityName}"))
-                                    .withProxyAgentSettings(new ProxyAgentSettings()
-                                        .withEnabled(true)
-                                        .withMode(Mode.AUDIT)
-                                        .withKeyIncarnationId(20)))
-                                .withDiagnosticsProfile(
-                                    new DiagnosticsProfile().withBootDiagnostics(new BootDiagnostics()
-                                        .withEnabled(true)
-                                        .withStorageUri("rzamfwghybpx")))
-                                .withExtensionProfile(new VirtualMachineScaleSetExtensionProfile()
-                                    .withExtensions(Arrays.asList(new VirtualMachineScaleSetExtension()
-                                        .withName("bndxuxx")
-                                        .withProperties(
-                                            new VirtualMachineScaleSetExtensionProperties().withForceUpdateTag("yhgxw")
-                                                .withPublisher("kpxtirxjfprhs")
-                                                .withType("pgjilctjjwaa")
-                                                .withTypeHandlerVersion("zevivcoilxmbwlrihhhibq")
-                                                .withAutoUpgradeMinorVersion(true)
-                                                .withEnableAutomaticUpgrade(true)
-                                                .withSettings(mapOf())
-                                                .withProtectedSettings(mapOf())
-                                                .withProvisionAfterExtensions(Arrays.asList("nftzosroolbcwmpupujzqwqe"))
-                                                .withSuppressFailures(true)
-                                                .withProtectedSettingsFromKeyVault(new KeyVaultSecretReference()
-                                                    .withSecretUrl("fakeTokenPlaceholder")
-                                                    .withSourceVault(
-                                                        new SubResource().withId(
-                                                            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"))))))
-                                    .withExtensionsTimeBudget("mbhjahtdygwgyszdwjtvlvtgchdwil"))
-                                .withLicenseType("v")
-                                .withScheduledEventsProfile(new ScheduledEventsProfile()
-                                    .withTerminateNotificationProfile(
-                                        new TerminateNotificationProfile().withNotBeforeTimeout("iljppmmw")
-                                            .withEnable(true))
-                                    .withOsImageNotificationProfile(new OSImageNotificationProfile()
-                                        .withNotBeforeTimeout("olbpadmevekyczfokodtfprxti")
+                                    .withPatchSettings(new PatchSettings()
+                                        .withPatchMode(WindowsVMGuestPatchMode.MANUAL)
+                                        .withEnableHotpatching(true)
+                                        .withAssessmentMode(WindowsPatchAssessmentMode.IMAGE_DEFAULT)
+                                        .withAutomaticByPlatformSettings(
+                                            new WindowsVMGuestPatchAutomaticByPlatformSettings()
+                                                .withRebootSetting(
+                                                    WindowsVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN)
+                                                .withBypassPlatformSafetyChecksOnUserSchedule(true)))
+                                    .withWinRM(new WinRMConfiguration().withListeners(Arrays.asList(new WinRMListener()
+                                        .withProtocol(ProtocolTypes.HTTPS)
+                                        .withCertificateUrl("https://myVaultName.vault.azure.net/secrets/myCertName"))))
+                                    .withEnableVMAgentPlatformUpdates(true))
+                                .withLinuxConfiguration(new LinuxConfiguration().withDisablePasswordAuthentication(true)
+                                    .withSsh(new SshConfiguration().withPublicKeys(Arrays.asList(
+                                        new SshPublicKey().withPath("kmqz").withKeyData("fakeTokenPlaceholder"))))
+                                    .withProvisionVMAgent(true)
+                                    .withPatchSettings(new LinuxPatchSettings()
+                                        .withPatchMode(LinuxVMGuestPatchMode.IMAGE_DEFAULT)
+                                        .withAssessmentMode(LinuxPatchAssessmentMode.IMAGE_DEFAULT)
+                                        .withAutomaticByPlatformSettings(
+                                            new LinuxVMGuestPatchAutomaticByPlatformSettings()
+                                                .withRebootSetting(
+                                                    LinuxVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN)
+                                                .withBypassPlatformSafetyChecksOnUserSchedule(true)))
+                                    .withEnableVMAgentPlatformUpdates(true))
+                                .withSecrets(Arrays.asList(new VaultSecretGroup()
+                                    .withSourceVault(new SubResource().withId(
+                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"))
+                                    .withVaultCertificates(Arrays.asList(new VaultCertificate()
+                                        .withCertificateUrl("https://myVaultName.vault.azure.net/secrets/myCertName")
+                                        .withCertificateStore("nlxrwavpzhueffxsshlun")))))
+                                .withAllowExtensionOperations(true)
+                                .withRequireGuestProvisionSignal(true))
+                            .withStorageProfile(new VirtualMachineScaleSetStorageProfile()
+                                .withImageReference(new ImageReference().withId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}/versions/{versionName}")
+                                    .withPublisher("mqxgwbiyjzmxavhbkd")
+                                    .withOffer("isxgumkarlkomp")
+                                    .withSku("eojmppqcrnpmxirtp")
+                                    .withVersion("wvpcqefgtmqdgltiuz")
+                                    .withSharedGalleryImageId("kmkgihoxwlawuuhcinfirktdwkmx")
+                                    .withCommunityGalleryImageId("vlqe"))
+                                .withOsDisk(new VirtualMachineScaleSetOSDisk().withName("wfttw")
+                                    .withCaching(CachingTypes.NONE)
+                                    .withWriteAcceleratorEnabled(true)
+                                    .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                                    .withDiffDiskSettings(new DiffDiskSettings()
+                                        .withOption(DiffDiskOptions.LOCAL)
+                                        .withPlacement(DiffDiskPlacement.CACHE_DISK))
+                                    .withDiskSizeGB(14)
+                                    .withOsType(OperatingSystemTypes.WINDOWS)
+                                    .withImage(new VirtualHardDisk().withUri(
+                                        "https://myStorageAccountName.blob.core.windows.net/myContainerName/myVhdName.vhd"))
+                                    .withVhdContainers(Arrays.asList("tkzcwddtinkfpnfklatw"))
+                                    .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters()
+                                        .withStorageAccountType(StorageAccountTypes.STANDARD_LRS)
+                                        .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId(
+                                            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"))
+                                        .withSecurityProfile(new VMDiskSecurityProfile()
+                                            .withSecurityEncryptionType(SecurityEncryptionTypes.VMGUEST_STATE_ONLY)
+                                            .withDiskEncryptionSet(
+                                                new DiskEncryptionSetParameters().withId(
+                                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"))))
+                                    .withDeleteOption(DiskDeleteOptionTypes.DELETE))
+                                .withDataDisks(Arrays.asList(new VirtualMachineScaleSetDataDisk()
+                                    .withName("eogiykmdmeikswxmigjws")
+                                    .withLun(14)
+                                    .withCaching(CachingTypes.NONE)
+                                    .withWriteAcceleratorEnabled(true)
+                                    .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                                    .withDiskSizeGB(6)
+                                    .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters()
+                                        .withStorageAccountType(StorageAccountTypes.STANDARD_LRS)
+                                        .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId(
+                                            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"))
+                                        .withSecurityProfile(new VMDiskSecurityProfile()
+                                            .withSecurityEncryptionType(SecurityEncryptionTypes.VMGUEST_STATE_ONLY)
+                                            .withDiskEncryptionSet(
+                                                new DiskEncryptionSetParameters().withId(
+                                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"))))
+                                    .withDiskIOPSReadWrite(27L)
+                                    .withDiskMBpsReadWrite(2L)
+                                    .withDeleteOption(DiskDeleteOptionTypes.DELETE)))
+                                .withDiskControllerType(DiskControllerTypes.fromString("uzb")))
+                            .withNetworkProfile(new VirtualMachineScaleSetNetworkProfile()
+                                .withHealthProbe(new ApiEntityReference().withId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}"))
+                                .withNetworkInterfaceConfigurations(
+                                    Arrays.asList(new VirtualMachineScaleSetNetworkConfiguration().withName("i")
+                                        .withProperties(new VirtualMachineScaleSetNetworkConfigurationProperties()
+                                            .withPrimary(true)
+                                            .withEnableAcceleratedNetworking(true)
+                                            .withDisableTcpStateTracking(true)
+                                            .withEnableFpga(true)
+                                            .withNetworkSecurityGroup(new SubResource().withId(
+                                                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/{networkSecurityGroupName}"))
+                                            .withDnsSettings(new VirtualMachineScaleSetNetworkConfigurationDnsSettings()
+                                                .withDnsServers(Arrays.asList("nxmmfolhclsesu")))
+                                            .withIpConfigurations(
+                                                Arrays.asList(new VirtualMachineScaleSetIPConfiguration()
+                                                    .withName("oezqhkidfhyywlfzwuotilrpbqnjg")
+                                                    .withProperties(
+                                                        new VirtualMachineScaleSetIPConfigurationProperties()
+                                                            .withSubnet(new ApiEntityReference().withId(
+                                                                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}"))
+                                                            .withPrimary(true)
+                                                            .withPublicIPAddressConfiguration(
+                                                                new VirtualMachineScaleSetPublicIPAddressConfiguration()
+                                                                    .withName("fvpqf")
+                                                                    .withProperties(
+                                                                        new VirtualMachineScaleSetPublicIPAddressConfigurationProperties()
+                                                                            .withIdleTimeoutInMinutes(9)
+                                                                            .withDnsSettings(
+                                                                                new VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings()
+                                                                                    .withDomainNameLabel(
+                                                                                        "ukrddzvmorpmfsczjwtbvp")
+                                                                                    .withDomainNameLabelScope(
+                                                                                        DomainNameLabelScopeTypes.TENANT_REUSE))
+                                                                            .withIpTags(Arrays.asList(
+                                                                                new VirtualMachineScaleSetIpTag()
+                                                                                    .withIpTagType("sddgsoemnzgqizale")
+                                                                                    .withTag("wufmhrjsakbiaetyara")))
+                                                                            .withPublicIPPrefix(
+                                                                                new SubResource().withId(
+                                                                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}"))
+                                                                            .withPublicIPAddressVersion(IPVersion.IPV4)
+                                                                            .withDeleteOption(DeleteOptions.DELETE))
+                                                                    .withSku(new PublicIPAddressSku()
+                                                                        .withName(PublicIPAddressSkuName.BASIC)
+                                                                        .withTier(PublicIPAddressSkuTier.REGIONAL)))
+                                                            .withPrivateIPAddressVersion(IPVersion.IPV4)
+                                                            .withApplicationGatewayBackendAddressPools(Arrays
+                                                                .asList(new SubResource().withId(
+                                                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/backendAddressPools/{backendAddressPoolName}")))
+                                                            .withApplicationSecurityGroups(Arrays
+                                                                .asList(new SubResource().withId(
+                                                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationSecurityGroups/{applicationSecurityGroupName}")))
+                                                            .withLoadBalancerBackendAddressPools(Arrays
+                                                                .asList(new SubResource().withId(
+                                                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/backendAddressPools/{backendAddressPoolName}")))
+                                                            .withLoadBalancerInboundNatPools(
+                                                                Arrays.asList(new SubResource().withId(
+                                                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/inboundNatPools/{inboundNatPoolName}"))))))
+                                            .withEnableIPForwarding(true)
+                                            .withDeleteOption(DeleteOptions.DELETE)
+                                            .withAuxiliaryMode(NetworkInterfaceAuxiliaryMode.NONE)
+                                            .withAuxiliarySku(NetworkInterfaceAuxiliarySku.NONE))))
+                                .withNetworkApiVersion(NetworkApiVersion.V2020_11_01))
+                            .withSecurityProfile(new SecurityProfile()
+                                .withUefiSettings(new UefiSettings().withSecureBootEnabled(true).withVTpmEnabled(true))
+                                .withEncryptionAtHost(true)
+                                .withSecurityType(SecurityTypes.TRUSTED_LAUNCH)
+                                .withEncryptionIdentity(new EncryptionIdentity().withUserAssignedIdentityResourceId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{userAssignedIdentityName}"))
+                                .withProxyAgentSettings(new ProxyAgentSettings().withEnabled(true)
+                                    .withMode(Mode.AUDIT)
+                                    .withKeyIncarnationId(20)))
+                            .withDiagnosticsProfile(
+                                new DiagnosticsProfile().withBootDiagnostics(new BootDiagnostics()
+                                    .withEnabled(true)
+                                    .withStorageUri("http://myStorageAccountName.blob.core.windows.net")))
+                            .withExtensionProfile(new VirtualMachineScaleSetExtensionProfile()
+                                .withExtensions(Arrays.asList(new VirtualMachineScaleSetExtension().withName("bndxuxx")
+                                    .withProperties(new VirtualMachineScaleSetExtensionProperties()
+                                        .withForceUpdateTag("yhgxw")
+                                        .withPublisher("kpxtirxjfprhs")
+                                        .withType("pgjilctjjwaa")
+                                        .withTypeHandlerVersion("zevivcoilxmbwlrihhhibq")
+                                        .withAutoUpgradeMinorVersion(true)
+                                        .withEnableAutomaticUpgrade(true)
+                                        .withSettings(mapOf())
+                                        .withProtectedSettings(mapOf())
+                                        .withProvisionAfterExtensions(Arrays.asList("nftzosroolbcwmpupujzqwqe"))
+                                        .withSuppressFailures(true)
+                                        .withProtectedSettingsFromKeyVault(new KeyVaultSecretReference()
+                                            .withSecretUrl("fakeTokenPlaceholder")
+                                            .withSourceVault(new SubResource().withId(
+                                                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"))))))
+                                .withExtensionsTimeBudget("mbhjahtdygwgyszdwjtvlvtgchdwil"))
+                            .withLicenseType("v")
+                            .withScheduledEventsProfile(new ScheduledEventsProfile()
+                                .withTerminateNotificationProfile(new TerminateNotificationProfile()
+                                    .withNotBeforeTimeout("iljppmmw")
+                                    .withEnable(true))
+                                .withOsImageNotificationProfile(
+                                    new OSImageNotificationProfile().withNotBeforeTimeout("olbpadmevekyczfokodtfprxti")
                                         .withEnable(true)))
-                                .withUserData("s")
-                                .withCapacityReservation(new CapacityReservationProfile()
-                                    .withCapacityReservationGroup(new SubResource().withId(
-                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}")))
-                                .withApplicationProfile(new ApplicationProfile().withGalleryApplications(Arrays
-                                    .asList(new VMGalleryApplication().withTags("eyrqjbib")
-                                        .withOrder(5)
-                                        .withPackageReferenceId(
-                                            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{applicationName}/versions/{versionName}")
-                                        .withConfigurationReference("ulztmiavpojpbpbddgnuuiimxcpau")
-                                        .withTreatFailureAsDeploymentFailure(true)
-                                        .withEnableAutomaticUpgrade(true))))
-                                .withHardwareProfile(new VirtualMachineScaleSetHardwareProfile()
-                                    .withVmSizeProperties(new VMSizeProperties()
-                                        .withVCPUsAvailable(16)
-                                        .withVCPUsPerCore(23)))
-                                .withServiceArtifactReference(new ServiceArtifactReference().withId(
-                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactsName}/vmArtifactsProfiles/{vmArtifactsProfileName}"))
-                                .withSecurityPostureReference(new SecurityPostureReference().withId(
-                                    "/CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{major.*}|latest")
-                                    .withExcludeExtensions(Arrays.asList("{securityPostureVMExtensionName}"))
-                                    .withIsOverridable(true)))
+                            .withUserData("s")
+                            .withCapacityReservation(new CapacityReservationProfile()
+                                .withCapacityReservationGroup(new SubResource().withId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}")))
+                            .withApplicationProfile(new ApplicationProfile().withGalleryApplications(
+                                Arrays.asList(new VMGalleryApplication().withTags("eyrqjbib")
+                                    .withOrder(5)
+                                    .withPackageReferenceId(
+                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{applicationName}/versions/{versionName}")
+                                    .withConfigurationReference("ulztmiavpojpbpbddgnuuiimxcpau")
+                                    .withTreatFailureAsDeploymentFailure(true)
+                                    .withEnableAutomaticUpgrade(true))))
+                            .withHardwareProfile(
+                                new VirtualMachineScaleSetHardwareProfile().withVmSizeProperties(new VMSizeProperties()
+                                    .withVCPUsAvailable(16)
+                                    .withVCPUsPerCore(23)))
+                            .withServiceArtifactReference(new ServiceArtifactReference().withId(
+                                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactsName}/vmArtifactsProfiles/{vmArtifactsProfileName}"))
+                            .withSecurityPostureReference(new SecurityPostureReference().withId(
+                                "/CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{major.*}|latest")
+                                .withExcludeExtensions(Arrays.asList("{securityPostureVMExtensionName}"))
+                                .withIsOverridable(true)))
                         .withComputeApiVersion("2023-07-01")
                         .withPlatformFaultDomainCount(1)))
             .withZones(Arrays.asList("zone1", "zone2"))
@@ -395,6 +384,71 @@ public final class FleetsCreateOrUpdateSamples {
                 .withProduct("cgopbyvdyqikahwyxfpzwaqk")
                 .withPromotionCode("fakeTokenPlaceholder")
                 .withVersion("wa"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2024-11-01/Fleets_CreateOrUpdate_MinimumSet.json
+     */
+    /**
+     * Sample code: Fleets_CreateOrUpdate_MinimumSet.
+     * 
+     * @param manager Entry point to ComputeFleetManager.
+     */
+    public static void
+        fleetsCreateOrUpdateMinimumSet(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
+        manager.fleets()
+            .define("testFleet")
+            .withRegion("eastus2euap")
+            .withExistingResourceGroup("rgazurefleet")
+            .withTags(mapOf("key", "fakeTokenPlaceholder"))
+            .withProperties(new FleetProperties()
+                .withSpotPriorityProfile(new SpotPriorityProfile().withCapacity(2)
+                    .withMinCapacity(1)
+                    .withEvictionPolicy(EvictionPolicy.DELETE)
+                    .withAllocationStrategy(SpotAllocationStrategy.PRICE_CAPACITY_OPTIMIZED)
+                    .withMaintain(true))
+                .withRegularPriorityProfile(new RegularPriorityProfile().withCapacity(2)
+                    .withMinCapacity(1)
+                    .withAllocationStrategy(RegularPriorityAllocationStrategy.LOWEST_PRICE))
+                .withVmSizesProfile(Arrays.asList(new VmSizeProfile().withName("Standard_D2s_v3"),
+                    new VmSizeProfile().withName("Standard_D4s_v3"), new VmSizeProfile().withName("Standard_E2s_v3")))
+                .withComputeProfile(new ComputeProfile()
+                    .withBaseVirtualMachineProfile(new BaseVirtualMachineProfile()
+                        .withOsProfile(new VirtualMachineScaleSetOSProfile().withComputerNamePrefix("prefix")
+                            .withAdminUsername("azureuser")
+                            .withAdminPassword("fakeTokenPlaceholder")
+                            .withLinuxConfiguration(new LinuxConfiguration().withDisablePasswordAuthentication(false)))
+                        .withStorageProfile(new VirtualMachineScaleSetStorageProfile()
+                            .withImageReference(new ImageReference().withPublisher("canonical")
+                                .withOffer("0001-com-ubuntu-server-focal")
+                                .withSku("20_04-lts-gen2")
+                                .withVersion("latest"))
+                            .withOsDisk(new VirtualMachineScaleSetOSDisk()
+                                .withCaching(CachingTypes.READ_WRITE)
+                                .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                                .withOsType(OperatingSystemTypes.LINUX)
+                                .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters()
+                                    .withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                        .withNetworkProfile(new VirtualMachineScaleSetNetworkProfile()
+                            .withNetworkInterfaceConfigurations(
+                                Arrays.asList(new VirtualMachineScaleSetNetworkConfiguration().withName("vmNameTest")
+                                    .withProperties(new VirtualMachineScaleSetNetworkConfigurationProperties()
+                                        .withPrimary(true)
+                                        .withEnableAcceleratedNetworking(false)
+                                        .withIpConfigurations(Arrays.asList(new VirtualMachineScaleSetIPConfiguration()
+                                            .withName("vmNameTest")
+                                            .withProperties(new VirtualMachineScaleSetIPConfigurationProperties()
+                                                .withSubnet(new ApiEntityReference().withId(
+                                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}"))
+                                                .withPrimary(true)
+                                                .withLoadBalancerBackendAddressPools(
+                                                    Arrays.asList(new SubResource().withId(
+                                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/backendAddressPools/{backendAddressPoolName}"))))))
+                                        .withEnableIPForwarding(true))))
+                            .withNetworkApiVersion(NetworkApiVersion.fromString("2022-07-01"))))
+                    .withComputeApiVersion("2023-09-01")
+                    .withPlatformFaultDomainCount(1)))
             .create();
     }
 
@@ -420,7 +474,7 @@ public final class FleetsCreateOrUpdateSamples {
  */
 public final class FleetsDeleteSamples {
     /*
-     * x-ms-original-file: specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Fleets_Delete.json
+     * x-ms-original-file: 2024-11-01/Fleets_Delete.json
      */
     /**
      * Sample code: Fleets_Delete.
@@ -441,7 +495,7 @@ public final class FleetsDeleteSamples {
  */
 public final class FleetsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Fleets_Get.json
+     * x-ms-original-file: 2024-11-01/Fleets_Get.json
      */
     /**
      * Sample code: Fleets_Get.
@@ -462,8 +516,7 @@ public final class FleetsGetByResourceGroupSamples {
  */
 public final class FleetsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Fleets_ListBySubscription.json
+     * x-ms-original-file: 2024-11-01/Fleets_ListBySubscription.json
      */
     /**
      * Sample code: Fleets_ListBySubscription.
@@ -484,8 +537,7 @@ public final class FleetsListSamples {
  */
 public final class FleetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Fleets_ListByResourceGroup.json
+     * x-ms-original-file: 2024-11-01/Fleets_ListByResourceGroup.json
      */
     /**
      * Sample code: Fleets_ListByResourceGroup.
@@ -506,9 +558,7 @@ public final class FleetsListByResourceGroupSamples {
  */
 public final class FleetsListVirtualMachineScaleSetsSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Fleets_ListVirtualMachineScaleSets.
-     * json
+     * x-ms-original-file: 2024-11-01/Fleets_ListVirtualMachineScaleSets.json
      */
     /**
      * Sample code: Fleets_ListVirtualMachineScaleSets.
@@ -550,8 +600,8 @@ import com.azure.resourcemanager.computefleet.models.EncryptionIdentity;
 import com.azure.resourcemanager.computefleet.models.EvictionPolicy;
 import com.azure.resourcemanager.computefleet.models.Fleet;
 import com.azure.resourcemanager.computefleet.models.FleetProperties;
-import com.azure.resourcemanager.computefleet.models.ImageReference;
 import com.azure.resourcemanager.computefleet.models.IPVersion;
+import com.azure.resourcemanager.computefleet.models.ImageReference;
 import com.azure.resourcemanager.computefleet.models.KeyVaultSecretReference;
 import com.azure.resourcemanager.computefleet.models.LinuxConfiguration;
 import com.azure.resourcemanager.computefleet.models.LinuxPatchAssessmentMode;
@@ -565,8 +615,8 @@ import com.azure.resourcemanager.computefleet.models.Mode;
 import com.azure.resourcemanager.computefleet.models.NetworkApiVersion;
 import com.azure.resourcemanager.computefleet.models.NetworkInterfaceAuxiliaryMode;
 import com.azure.resourcemanager.computefleet.models.NetworkInterfaceAuxiliarySku;
-import com.azure.resourcemanager.computefleet.models.OperatingSystemTypes;
 import com.azure.resourcemanager.computefleet.models.OSImageNotificationProfile;
+import com.azure.resourcemanager.computefleet.models.OperatingSystemTypes;
 import com.azure.resourcemanager.computefleet.models.PatchSettings;
 import com.azure.resourcemanager.computefleet.models.ProtocolTypes;
 import com.azure.resourcemanager.computefleet.models.ProxyAgentSettings;
@@ -590,6 +640,9 @@ import com.azure.resourcemanager.computefleet.models.SshPublicKey;
 import com.azure.resourcemanager.computefleet.models.StorageAccountTypes;
 import com.azure.resourcemanager.computefleet.models.TerminateNotificationProfile;
 import com.azure.resourcemanager.computefleet.models.UefiSettings;
+import com.azure.resourcemanager.computefleet.models.VMDiskSecurityProfile;
+import com.azure.resourcemanager.computefleet.models.VMGalleryApplication;
+import com.azure.resourcemanager.computefleet.models.VMSizeProperties;
 import com.azure.resourcemanager.computefleet.models.VaultCertificate;
 import com.azure.resourcemanager.computefleet.models.VaultSecretGroup;
 import com.azure.resourcemanager.computefleet.models.VirtualHardDisk;
@@ -612,17 +665,14 @@ import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetPubli
 import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings;
 import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetPublicIPAddressConfigurationProperties;
 import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetStorageProfile;
-import com.azure.resourcemanager.computefleet.models.VMDiskSecurityProfile;
-import com.azure.resourcemanager.computefleet.models.VMGalleryApplication;
 import com.azure.resourcemanager.computefleet.models.VmSizeProfile;
-import com.azure.resourcemanager.computefleet.models.VMSizeProperties;
+import com.azure.resourcemanager.computefleet.models.WinRMConfiguration;
+import com.azure.resourcemanager.computefleet.models.WinRMListener;
 import com.azure.resourcemanager.computefleet.models.WindowsConfiguration;
 import com.azure.resourcemanager.computefleet.models.WindowsPatchAssessmentMode;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchAutomaticByPlatformRebootSetting;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchAutomaticByPlatformSettings;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchMode;
-import com.azure.resourcemanager.computefleet.models.WinRMConfiguration;
-import com.azure.resourcemanager.computefleet.models.WinRMListener;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -632,7 +682,7 @@ import java.util.Map;
  */
 public final class FleetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Fleets_Update.json
+     * x-ms-original-file: 2024-11-01/Fleets_Update.json
      */
     /**
      * Sample code: Fleets_Update.
@@ -665,241 +715,231 @@ public final class FleetsUpdateSamples {
                 .withVmSizesProfile(Arrays.asList(new VmSizeProfile().withName("Standard_d1_v2").withRank(19225)))
                 .withComputeProfile(
                     new ComputeProfile()
-                        .withBaseVirtualMachineProfile(
-                            new BaseVirtualMachineProfile()
-                                .withOsProfile(new VirtualMachineScaleSetOSProfile().withComputerNamePrefix("o")
-                                    .withAdminUsername("nrgzqciiaaxjrqldbmjbqkyhntp")
-                                    .withAdminPassword("fakeTokenPlaceholder")
-                                    .withCustomData("xjjib")
-                                    .withWindowsConfiguration(new WindowsConfiguration().withProvisionVMAgent(true)
-                                        .withEnableAutomaticUpdates(true)
-                                        .withTimeZone("hlyjiqcfksgrpjrct")
-                                        .withAdditionalUnattendContent(Arrays.asList(new AdditionalUnattendContent()
+                        .withBaseVirtualMachineProfile(new BaseVirtualMachineProfile()
+                            .withOsProfile(new VirtualMachineScaleSetOSProfile().withComputerNamePrefix("o")
+                                .withAdminUsername("nrgzqciiaaxjrqldbmjbqkyhntp")
+                                .withAdminPassword("fakeTokenPlaceholder")
+                                .withCustomData("xjjib")
+                                .withWindowsConfiguration(new WindowsConfiguration().withProvisionVMAgent(true)
+                                    .withEnableAutomaticUpdates(true)
+                                    .withTimeZone("hlyjiqcfksgrpjrct")
+                                    .withAdditionalUnattendContent(
+                                        Arrays.asList(new AdditionalUnattendContent()
                                             .withPassName(AdditionalUnattendContentPassName.OOBE_SYSTEM)
                                             .withComponentName(
                                                 AdditionalUnattendContentComponentName.MICROSOFT_WINDOWS_SHELL_SETUP)
                                             .withSettingName(SettingNames.AUTO_LOGON)
                                             .withContent("bubmqbxjkj")))
-                                        .withPatchSettings(
-                                            new PatchSettings().withPatchMode(WindowsVMGuestPatchMode.MANUAL)
-                                                .withEnableHotpatching(true)
-                                                .withAssessmentMode(WindowsPatchAssessmentMode.IMAGE_DEFAULT)
-                                                .withAutomaticByPlatformSettings(
-                                                    new WindowsVMGuestPatchAutomaticByPlatformSettings()
-                                                        .withRebootSetting(
-                                                            WindowsVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN)
-                                                        .withBypassPlatformSafetyChecksOnUserSchedule(true)))
-                                        .withWinRM(new WinRMConfiguration().withListeners(
-                                            Arrays.asList(new WinRMListener().withProtocol(ProtocolTypes.HTTP)
-                                                .withCertificateUrl("phwesineizrl"))))
-                                        .withEnableVMAgentPlatformUpdates(true))
-                                    .withLinuxConfiguration(new LinuxConfiguration()
-                                        .withDisablePasswordAuthentication(true)
-                                        .withSsh(new SshConfiguration().withPublicKeys(
-                                            Arrays.asList(new SshPublicKey().withPath("kmqz")
-                                                .withKeyData("fakeTokenPlaceholder"))))
-                                        .withProvisionVMAgent(true)
-                                        .withPatchSettings(new LinuxPatchSettings()
-                                            .withPatchMode(LinuxVMGuestPatchMode.IMAGE_DEFAULT)
-                                            .withAssessmentMode(LinuxPatchAssessmentMode.IMAGE_DEFAULT)
-                                            .withAutomaticByPlatformSettings(
-                                                new LinuxVMGuestPatchAutomaticByPlatformSettings()
-                                                    .withRebootSetting(
-                                                        LinuxVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN)
-                                                    .withBypassPlatformSafetyChecksOnUserSchedule(true)))
-                                        .withEnableVMAgentPlatformUpdates(true))
-                                    .withSecrets(Arrays.asList(new VaultSecretGroup()
-                                        .withSourceVault(new SubResource().withId(
-                                            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"))
-                                        .withVaultCertificates(
-                                            Arrays.asList(new VaultCertificate().withCertificateUrl("tyldwkzafmnkvpo")
-                                                .withCertificateStore("nlxrwavpzhueffxsshlun")))))
-                                    .withAllowExtensionOperations(true)
-                                    .withRequireGuestProvisionSignal(true))
-                                .withStorageProfile(new VirtualMachineScaleSetStorageProfile()
-                                    .withImageReference(new ImageReference().withId(
-                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}/versions/{versionName}")
-                                        .withPublisher("mqxgwbiyjzmxavhbkd")
-                                        .withOffer("isxgumkarlkomp")
-                                        .withSku("eojmppqcrnpmxirtp")
-                                        .withVersion("wvpcqefgtmqdgltiuz")
-                                        .withSharedGalleryImageId("kmkgihoxwlawuuhcinfirktdwkmx")
-                                        .withCommunityGalleryImageId("vlqe"))
-                                    .withOsDisk(new VirtualMachineScaleSetOSDisk().withName("wfttw")
-                                        .withCaching(CachingTypes.NONE)
-                                        .withWriteAcceleratorEnabled(true)
-                                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
-                                        .withDiffDiskSettings(new DiffDiskSettings()
-                                            .withOption(DiffDiskOptions.LOCAL)
-                                            .withPlacement(DiffDiskPlacement.CACHE_DISK))
-                                        .withDiskSizeGB(14)
-                                        .withOsType(OperatingSystemTypes.WINDOWS)
-                                        .withImage(new VirtualHardDisk().withUri("thqceubivdrjs"))
-                                        .withVhdContainers(Arrays.asList("tkzcwddtinkfpnfklatw"))
-                                        .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters()
-                                            .withStorageAccountType(StorageAccountTypes.STANDARD_LRS)
-                                            .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId(
-                                                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"))
-                                            .withSecurityProfile(new VMDiskSecurityProfile()
-                                                .withSecurityEncryptionType(SecurityEncryptionTypes.VMGUEST_STATE_ONLY)
-                                                .withDiskEncryptionSet(
-                                                    new DiskEncryptionSetParameters().withId(
-                                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"))))
-                                        .withDeleteOption(DiskDeleteOptionTypes.DELETE))
-                                    .withDataDisks(Arrays.asList(new VirtualMachineScaleSetDataDisk()
-                                        .withName("eogiykmdmeikswxmigjws")
-                                        .withLun(14)
-                                        .withCaching(CachingTypes.NONE)
-                                        .withWriteAcceleratorEnabled(true)
-                                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
-                                        .withDiskSizeGB(6)
-                                        .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters()
-                                            .withStorageAccountType(StorageAccountTypes.STANDARD_LRS)
-                                            .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId(
-                                                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"))
-                                            .withSecurityProfile(new VMDiskSecurityProfile()
-                                                .withSecurityEncryptionType(SecurityEncryptionTypes.VMGUEST_STATE_ONLY)
-                                                .withDiskEncryptionSet(
-                                                    new DiskEncryptionSetParameters().withId(
-                                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"))))
-                                        .withDiskIOPSReadWrite(27L)
-                                        .withDiskMBpsReadWrite(2L)
-                                        .withDeleteOption(DiskDeleteOptionTypes.DELETE)))
-                                    .withDiskControllerType(DiskControllerTypes.fromString("uzb")))
-                                .withNetworkProfile(new VirtualMachineScaleSetNetworkProfile().withHealthProbe(
-                                    new ApiEntityReference().withId(
-                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}"))
-                                    .withNetworkInterfaceConfigurations(
-                                        Arrays.asList(new VirtualMachineScaleSetNetworkConfiguration().withName("i")
-                                            .withProperties(new VirtualMachineScaleSetNetworkConfigurationProperties()
-                                                .withPrimary(true)
-                                                .withEnableAcceleratedNetworking(true)
-                                                .withDisableTcpStateTracking(true)
-                                                .withEnableFpga(true)
-                                                .withNetworkSecurityGroup(new SubResource().withId(
-                                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/{networkSecurityGroupName}"))
-                                                .withDnsSettings(
-                                                    new VirtualMachineScaleSetNetworkConfigurationDnsSettings()
-                                                        .withDnsServers(Arrays.asList("nxmmfolhclsesu")))
-                                                .withIpConfigurations(
-                                                    Arrays.asList(new VirtualMachineScaleSetIPConfiguration()
-                                                        .withName("oezqhkidfhyywlfzwuotilrpbqnjg")
-                                                        .withProperties(
-                                                            new VirtualMachineScaleSetIPConfigurationProperties()
-                                                                .withSubnet(new ApiEntityReference().withId(
-                                                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}"))
-                                                                .withPrimary(true)
-                                                                .withPublicIPAddressConfiguration(
-                                                                    new VirtualMachineScaleSetPublicIPAddressConfiguration()
-                                                                        .withName("fvpqf")
-                                                                        .withProperties(
-                                                                            new VirtualMachineScaleSetPublicIPAddressConfigurationProperties()
-                                                                                .withIdleTimeoutInMinutes(9)
-                                                                                .withDnsSettings(
-                                                                                    new VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings()
-                                                                                        .withDomainNameLabel(
-                                                                                            "ukrddzvmorpmfsczjwtbvp")
-                                                                                        .withDomainNameLabelScope(
-                                                                                            DomainNameLabelScopeTypes.TENANT_REUSE))
-                                                                                .withIpTags(Arrays.asList(
-                                                                                    new VirtualMachineScaleSetIpTag()
-                                                                                        .withIpTagType(
-                                                                                            "sddgsoemnzgqizale")
-                                                                                        .withTag(
-                                                                                            "wufmhrjsakbiaetyara")))
-                                                                                .withPublicIPPrefix(
-                                                                                    new SubResource().withId(
-                                                                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}"))
-                                                                                .withPublicIPAddressVersion(
-                                                                                    IPVersion.IPV4)
-                                                                                .withDeleteOption(DeleteOptions.DELETE))
-                                                                        .withSku(new PublicIPAddressSku()
-                                                                            .withName(PublicIPAddressSkuName.BASIC)
-                                                                            .withTier(PublicIPAddressSkuTier.REGIONAL)))
-                                                                .withPrivateIPAddressVersion(IPVersion.IPV4)
-                                                                .withApplicationGatewayBackendAddressPools(
-                                                                    Arrays.asList(
-                                                                        new SubResource().withId(
-                                                                            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/backendAddressPools/{backendAddressPoolName}")))
-                                                                .withApplicationSecurityGroups(Arrays
-                                                                    .asList(new SubResource().withId(
-                                                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationSecurityGroups/{applicationSecurityGroupName}")))
-                                                                .withLoadBalancerBackendAddressPools(Arrays
-                                                                    .asList(new SubResource().withId(
-                                                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/backendAddressPools/{backendAddressPoolName}")))
-                                                                .withLoadBalancerInboundNatPools(
-                                                                    Arrays.asList(new SubResource().withId(
-                                                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/inboundNatPools/{inboundNatPoolName}"))))))
-                                                .withEnableIPForwarding(true)
-                                                .withDeleteOption(DeleteOptions.DELETE)
-                                                .withAuxiliaryMode(NetworkInterfaceAuxiliaryMode.NONE)
-                                                .withAuxiliarySku(NetworkInterfaceAuxiliarySku.NONE))))
-                                    .withNetworkApiVersion(NetworkApiVersion.TWO_ZERO_TWO_ZERO_ONE_ONE_ZERO_ONE))
-                                .withSecurityProfile(new SecurityProfile()
-                                    .withUefiSettings(
-                                        new UefiSettings().withSecureBootEnabled(true).withVTpmEnabled(true))
-                                    .withEncryptionAtHost(true)
-                                    .withSecurityType(SecurityTypes.TRUSTED_LAUNCH)
-                                    .withEncryptionIdentity(new EncryptionIdentity().withUserAssignedIdentityResourceId(
-                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{userAssignedIdentityName}"))
-                                    .withProxyAgentSettings(new ProxyAgentSettings()
-                                        .withEnabled(true)
-                                        .withMode(Mode.AUDIT)
-                                        .withKeyIncarnationId(20)))
-                                .withDiagnosticsProfile(
-                                    new DiagnosticsProfile().withBootDiagnostics(new BootDiagnostics()
-                                        .withEnabled(true)
-                                        .withStorageUri("rzamfwghybpx")))
-                                .withExtensionProfile(new VirtualMachineScaleSetExtensionProfile()
-                                    .withExtensions(Arrays.asList(new VirtualMachineScaleSetExtension()
-                                        .withName("bndxuxx")
-                                        .withProperties(
-                                            new VirtualMachineScaleSetExtensionProperties().withForceUpdateTag("yhgxw")
-                                                .withPublisher("kpxtirxjfprhs")
-                                                .withType("pgjilctjjwaa")
-                                                .withTypeHandlerVersion("zevivcoilxmbwlrihhhibq")
-                                                .withAutoUpgradeMinorVersion(true)
-                                                .withEnableAutomaticUpgrade(true)
-                                                .withSettings(mapOf())
-                                                .withProtectedSettings(mapOf())
-                                                .withProvisionAfterExtensions(Arrays.asList("nftzosroolbcwmpupujzqwqe"))
-                                                .withSuppressFailures(true)
-                                                .withProtectedSettingsFromKeyVault(new KeyVaultSecretReference()
-                                                    .withSecretUrl("fakeTokenPlaceholder")
-                                                    .withSourceVault(
-                                                        new SubResource().withId(
-                                                            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"))))))
-                                    .withExtensionsTimeBudget("mbhjahtdygwgyszdwjtvlvtgchdwil"))
-                                .withLicenseType("v")
-                                .withScheduledEventsProfile(new ScheduledEventsProfile()
-                                    .withTerminateNotificationProfile(
-                                        new TerminateNotificationProfile().withNotBeforeTimeout("iljppmmw")
-                                            .withEnable(true))
-                                    .withOsImageNotificationProfile(new OSImageNotificationProfile()
-                                        .withNotBeforeTimeout("olbpadmevekyczfokodtfprxti")
+                                    .withPatchSettings(new PatchSettings()
+                                        .withPatchMode(WindowsVMGuestPatchMode.MANUAL)
+                                        .withEnableHotpatching(true)
+                                        .withAssessmentMode(WindowsPatchAssessmentMode.IMAGE_DEFAULT)
+                                        .withAutomaticByPlatformSettings(
+                                            new WindowsVMGuestPatchAutomaticByPlatformSettings()
+                                                .withRebootSetting(
+                                                    WindowsVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN)
+                                                .withBypassPlatformSafetyChecksOnUserSchedule(true)))
+                                    .withWinRM(new WinRMConfiguration().withListeners(Arrays.asList(new WinRMListener()
+                                        .withProtocol(ProtocolTypes.HTTP)
+                                        .withCertificateUrl("https://myVaultName.vault.azure.net/secrets/myCertName"))))
+                                    .withEnableVMAgentPlatformUpdates(true))
+                                .withLinuxConfiguration(new LinuxConfiguration().withDisablePasswordAuthentication(true)
+                                    .withSsh(new SshConfiguration().withPublicKeys(Arrays.asList(
+                                        new SshPublicKey().withPath("kmqz").withKeyData("fakeTokenPlaceholder"))))
+                                    .withProvisionVMAgent(true)
+                                    .withPatchSettings(new LinuxPatchSettings()
+                                        .withPatchMode(LinuxVMGuestPatchMode.IMAGE_DEFAULT)
+                                        .withAssessmentMode(LinuxPatchAssessmentMode.IMAGE_DEFAULT)
+                                        .withAutomaticByPlatformSettings(
+                                            new LinuxVMGuestPatchAutomaticByPlatformSettings()
+                                                .withRebootSetting(
+                                                    LinuxVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN)
+                                                .withBypassPlatformSafetyChecksOnUserSchedule(true)))
+                                    .withEnableVMAgentPlatformUpdates(true))
+                                .withSecrets(Arrays.asList(new VaultSecretGroup()
+                                    .withSourceVault(new SubResource().withId(
+                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"))
+                                    .withVaultCertificates(Arrays.asList(new VaultCertificate()
+                                        .withCertificateUrl("https://myVaultName.vault.azure.net/secrets/myCertName")
+                                        .withCertificateStore("nlxrwavpzhueffxsshlun")))))
+                                .withAllowExtensionOperations(true)
+                                .withRequireGuestProvisionSignal(true))
+                            .withStorageProfile(new VirtualMachineScaleSetStorageProfile()
+                                .withImageReference(new ImageReference().withId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}/versions/{versionName}")
+                                    .withPublisher("mqxgwbiyjzmxavhbkd")
+                                    .withOffer("isxgumkarlkomp")
+                                    .withSku("eojmppqcrnpmxirtp")
+                                    .withVersion("wvpcqefgtmqdgltiuz")
+                                    .withSharedGalleryImageId("kmkgihoxwlawuuhcinfirktdwkmx")
+                                    .withCommunityGalleryImageId("vlqe"))
+                                .withOsDisk(new VirtualMachineScaleSetOSDisk().withName("wfttw")
+                                    .withCaching(CachingTypes.NONE)
+                                    .withWriteAcceleratorEnabled(true)
+                                    .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                                    .withDiffDiskSettings(new DiffDiskSettings()
+                                        .withOption(DiffDiskOptions.LOCAL)
+                                        .withPlacement(DiffDiskPlacement.CACHE_DISK))
+                                    .withDiskSizeGB(14)
+                                    .withOsType(OperatingSystemTypes.WINDOWS)
+                                    .withImage(new VirtualHardDisk().withUri(
+                                        "https://myStorageAccountName.blob.core.windows.net/myContainerName/myVhdName.vhd"))
+                                    .withVhdContainers(Arrays.asList("tkzcwddtinkfpnfklatw"))
+                                    .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters()
+                                        .withStorageAccountType(StorageAccountTypes.STANDARD_LRS)
+                                        .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId(
+                                            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"))
+                                        .withSecurityProfile(new VMDiskSecurityProfile()
+                                            .withSecurityEncryptionType(SecurityEncryptionTypes.VMGUEST_STATE_ONLY)
+                                            .withDiskEncryptionSet(
+                                                new DiskEncryptionSetParameters().withId(
+                                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"))))
+                                    .withDeleteOption(DiskDeleteOptionTypes.DELETE))
+                                .withDataDisks(Arrays.asList(new VirtualMachineScaleSetDataDisk()
+                                    .withName("eogiykmdmeikswxmigjws")
+                                    .withLun(14)
+                                    .withCaching(CachingTypes.NONE)
+                                    .withWriteAcceleratorEnabled(true)
+                                    .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                                    .withDiskSizeGB(6)
+                                    .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters()
+                                        .withStorageAccountType(StorageAccountTypes.STANDARD_LRS)
+                                        .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId(
+                                            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"))
+                                        .withSecurityProfile(new VMDiskSecurityProfile()
+                                            .withSecurityEncryptionType(SecurityEncryptionTypes.VMGUEST_STATE_ONLY)
+                                            .withDiskEncryptionSet(
+                                                new DiskEncryptionSetParameters().withId(
+                                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"))))
+                                    .withDiskIOPSReadWrite(27L)
+                                    .withDiskMBpsReadWrite(2L)
+                                    .withDeleteOption(DiskDeleteOptionTypes.DELETE)))
+                                .withDiskControllerType(DiskControllerTypes.fromString("uzb")))
+                            .withNetworkProfile(new VirtualMachineScaleSetNetworkProfile()
+                                .withHealthProbe(new ApiEntityReference().withId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}"))
+                                .withNetworkInterfaceConfigurations(
+                                    Arrays.asList(new VirtualMachineScaleSetNetworkConfiguration().withName("i")
+                                        .withProperties(new VirtualMachineScaleSetNetworkConfigurationProperties()
+                                            .withPrimary(true)
+                                            .withEnableAcceleratedNetworking(true)
+                                            .withDisableTcpStateTracking(true)
+                                            .withEnableFpga(true)
+                                            .withNetworkSecurityGroup(new SubResource().withId(
+                                                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/{networkSecurityGroupName}"))
+                                            .withDnsSettings(new VirtualMachineScaleSetNetworkConfigurationDnsSettings()
+                                                .withDnsServers(Arrays.asList("nxmmfolhclsesu")))
+                                            .withIpConfigurations(
+                                                Arrays.asList(new VirtualMachineScaleSetIPConfiguration()
+                                                    .withName("oezqhkidfhyywlfzwuotilrpbqnjg")
+                                                    .withProperties(
+                                                        new VirtualMachineScaleSetIPConfigurationProperties()
+                                                            .withSubnet(new ApiEntityReference().withId(
+                                                                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}"))
+                                                            .withPrimary(true)
+                                                            .withPublicIPAddressConfiguration(
+                                                                new VirtualMachineScaleSetPublicIPAddressConfiguration()
+                                                                    .withName("fvpqf")
+                                                                    .withProperties(
+                                                                        new VirtualMachineScaleSetPublicIPAddressConfigurationProperties()
+                                                                            .withIdleTimeoutInMinutes(9)
+                                                                            .withDnsSettings(
+                                                                                new VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings()
+                                                                                    .withDomainNameLabel(
+                                                                                        "ukrddzvmorpmfsczjwtbvp")
+                                                                                    .withDomainNameLabelScope(
+                                                                                        DomainNameLabelScopeTypes.TENANT_REUSE))
+                                                                            .withIpTags(Arrays.asList(
+                                                                                new VirtualMachineScaleSetIpTag()
+                                                                                    .withIpTagType("sddgsoemnzgqizale")
+                                                                                    .withTag("wufmhrjsakbiaetyara")))
+                                                                            .withPublicIPPrefix(
+                                                                                new SubResource().withId(
+                                                                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}"))
+                                                                            .withPublicIPAddressVersion(IPVersion.IPV4)
+                                                                            .withDeleteOption(DeleteOptions.DELETE))
+                                                                    .withSku(new PublicIPAddressSku()
+                                                                        .withName(PublicIPAddressSkuName.BASIC)
+                                                                        .withTier(PublicIPAddressSkuTier.REGIONAL)))
+                                                            .withPrivateIPAddressVersion(IPVersion.IPV4)
+                                                            .withApplicationGatewayBackendAddressPools(Arrays
+                                                                .asList(new SubResource().withId(
+                                                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/backendAddressPools/{backendAddressPoolName}")))
+                                                            .withApplicationSecurityGroups(Arrays
+                                                                .asList(new SubResource().withId(
+                                                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationSecurityGroups/{applicationSecurityGroupName}")))
+                                                            .withLoadBalancerBackendAddressPools(Arrays
+                                                                .asList(new SubResource().withId(
+                                                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/backendAddressPools/{backendAddressPoolName}")))
+                                                            .withLoadBalancerInboundNatPools(
+                                                                Arrays.asList(new SubResource().withId(
+                                                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/inboundNatPools/{inboundNatPoolName}"))))))
+                                            .withEnableIPForwarding(true)
+                                            .withDeleteOption(DeleteOptions.DELETE)
+                                            .withAuxiliaryMode(NetworkInterfaceAuxiliaryMode.NONE)
+                                            .withAuxiliarySku(NetworkInterfaceAuxiliarySku.NONE))))
+                                .withNetworkApiVersion(NetworkApiVersion.V2020_11_01))
+                            .withSecurityProfile(new SecurityProfile()
+                                .withUefiSettings(new UefiSettings().withSecureBootEnabled(true).withVTpmEnabled(true))
+                                .withEncryptionAtHost(true)
+                                .withSecurityType(SecurityTypes.TRUSTED_LAUNCH)
+                                .withEncryptionIdentity(new EncryptionIdentity().withUserAssignedIdentityResourceId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{userAssignedIdentityName}"))
+                                .withProxyAgentSettings(new ProxyAgentSettings().withEnabled(true)
+                                    .withMode(Mode.AUDIT)
+                                    .withKeyIncarnationId(20)))
+                            .withDiagnosticsProfile(
+                                new DiagnosticsProfile().withBootDiagnostics(new BootDiagnostics()
+                                    .withEnabled(true)
+                                    .withStorageUri("http://myStorageAccountName.blob.core.windows.net")))
+                            .withExtensionProfile(new VirtualMachineScaleSetExtensionProfile()
+                                .withExtensions(Arrays.asList(new VirtualMachineScaleSetExtension().withName("bndxuxx")
+                                    .withProperties(new VirtualMachineScaleSetExtensionProperties()
+                                        .withForceUpdateTag("yhgxw")
+                                        .withPublisher("kpxtirxjfprhs")
+                                        .withType("pgjilctjjwaa")
+                                        .withTypeHandlerVersion("zevivcoilxmbwlrihhhibq")
+                                        .withAutoUpgradeMinorVersion(true)
+                                        .withEnableAutomaticUpgrade(true)
+                                        .withSettings(mapOf())
+                                        .withProtectedSettings(mapOf())
+                                        .withProvisionAfterExtensions(Arrays.asList("nftzosroolbcwmpupujzqwqe"))
+                                        .withSuppressFailures(true)
+                                        .withProtectedSettingsFromKeyVault(new KeyVaultSecretReference()
+                                            .withSecretUrl("fakeTokenPlaceholder")
+                                            .withSourceVault(new SubResource().withId(
+                                                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"))))))
+                                .withExtensionsTimeBudget("mbhjahtdygwgyszdwjtvlvtgchdwil"))
+                            .withLicenseType("v")
+                            .withScheduledEventsProfile(new ScheduledEventsProfile()
+                                .withTerminateNotificationProfile(new TerminateNotificationProfile()
+                                    .withNotBeforeTimeout("iljppmmw")
+                                    .withEnable(true))
+                                .withOsImageNotificationProfile(
+                                    new OSImageNotificationProfile().withNotBeforeTimeout("olbpadmevekyczfokodtfprxti")
                                         .withEnable(true)))
-                                .withUserData("s")
-                                .withCapacityReservation(new CapacityReservationProfile()
-                                    .withCapacityReservationGroup(new SubResource().withId(
-                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}")))
-                                .withApplicationProfile(new ApplicationProfile().withGalleryApplications(Arrays
-                                    .asList(new VMGalleryApplication().withTags("eyrqjbib")
-                                        .withOrder(5)
-                                        .withPackageReferenceId(
-                                            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{applicationName}/versions/{versionName}")
-                                        .withConfigurationReference("ulztmiavpojpbpbddgnuuiimxcpau")
-                                        .withTreatFailureAsDeploymentFailure(true)
-                                        .withEnableAutomaticUpgrade(true))))
-                                .withHardwareProfile(new VirtualMachineScaleSetHardwareProfile()
-                                    .withVmSizeProperties(new VMSizeProperties()
-                                        .withVCPUsAvailable(16)
-                                        .withVCPUsPerCore(23)))
-                                .withServiceArtifactReference(new ServiceArtifactReference().withId(
-                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactsName}/vmArtifactsProfiles/{vmArtifactsProfileName}"))
-                                .withSecurityPostureReference(new SecurityPostureReference().withId(
-                                    "/CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{major.*}|latest")
-                                    .withExcludeExtensions(Arrays.asList("{securityPostureVMExtensionName}"))
-                                    .withIsOverridable(true)))
+                            .withUserData("s")
+                            .withCapacityReservation(new CapacityReservationProfile()
+                                .withCapacityReservationGroup(new SubResource().withId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}")))
+                            .withApplicationProfile(new ApplicationProfile().withGalleryApplications(
+                                Arrays.asList(new VMGalleryApplication().withTags("eyrqjbib")
+                                    .withOrder(5)
+                                    .withPackageReferenceId(
+                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{applicationName}/versions/{versionName}")
+                                    .withConfigurationReference("ulztmiavpojpbpbddgnuuiimxcpau")
+                                    .withTreatFailureAsDeploymentFailure(true)
+                                    .withEnableAutomaticUpgrade(true))))
+                            .withHardwareProfile(
+                                new VirtualMachineScaleSetHardwareProfile().withVmSizeProperties(new VMSizeProperties()
+                                    .withVCPUsAvailable(16)
+                                    .withVCPUsPerCore(23)))
+                            .withServiceArtifactReference(new ServiceArtifactReference().withId(
+                                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactsName}/vmArtifactsProfiles/{vmArtifactsProfileName}"))
+                            .withSecurityPostureReference(new SecurityPostureReference().withId(
+                                "/CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{major.*}|latest")
+                                .withExcludeExtensions(Arrays.asList("{securityPostureVMExtensionName}"))
+                                .withIsOverridable(true)))
                         .withComputeApiVersion("2023-07-01")
                         .withPlatformFaultDomainCount(1)))
             .apply();
@@ -927,8 +967,7 @@ public final class FleetsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Operations_List.json
+     * x-ms-original-file: 2024-11-01/Operations_List.json
      */
     /**
      * Sample code: Operations_List.

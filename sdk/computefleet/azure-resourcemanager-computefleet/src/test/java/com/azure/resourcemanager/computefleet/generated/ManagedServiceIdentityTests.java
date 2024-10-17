@@ -16,18 +16,19 @@ public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedServiceIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"cqaqtdoqmcbx\",\"tenantId\":\"vxysl\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"hqjohxcrsbfova\":{\"principalId\":\"xoblytkbl\",\"clientId\":\"ewwwfbkrvrnsv\"},\"ybsrfbjfdtwss\":{\"principalId\":\"ruvw\",\"clientId\":\"sqfsubcgjbirxb\"}}}")
+            "{\"principalId\":\"fbkrvrnsvs\",\"tenantId\":\"johxcrsb\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"ybsrfbjfdtwss\":{\"principalId\":\"rruvwbhsq\",\"clientId\":\"ubcgjbirxb\"},\"qtaruoujmkcjhwq\":{\"principalId\":\"ftpvjzbexil\",\"clientId\":\"nfqqnvwp\"}}}")
             .toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-            .withUserAssignedIdentities(
-                mapOf("hqjohxcrsbfova", new UserAssignedIdentity(), "ybsrfbjfdtwss", new UserAssignedIdentity()));
+        ManagedServiceIdentity model
+            = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withUserAssignedIdentities(
+                    mapOf("ybsrfbjfdtwss", new UserAssignedIdentity(), "qtaruoujmkcjhwq", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
     // Use "Map.of" if available

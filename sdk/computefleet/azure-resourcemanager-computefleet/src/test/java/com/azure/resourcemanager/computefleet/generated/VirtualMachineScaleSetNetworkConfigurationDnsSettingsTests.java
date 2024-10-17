@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualMachineScaleSetNetworkConfigurationDnsSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualMachineScaleSetNetworkConfigurationDnsSettings model = BinaryData
-            .fromString("{\"dnsServers\":[\"qzntypm\",\"bpizcdrqjsdpydn\",\"yhxdeoejzicwi\",\"sjttgzfbish\"]}")
-            .toObject(VirtualMachineScaleSetNetworkConfigurationDnsSettings.class);
-        Assertions.assertEquals("qzntypm", model.dnsServers().get(0));
+        VirtualMachineScaleSetNetworkConfigurationDnsSettings model
+            = BinaryData.fromString("{\"dnsServers\":[\"rnkcqvyxlw\",\"zlsico\",\"oqqnwvlryav\"]}")
+                .toObject(VirtualMachineScaleSetNetworkConfigurationDnsSettings.class);
+        Assertions.assertEquals("rnkcqvyxlw", model.dnsServers().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachineScaleSetNetworkConfigurationDnsSettings model
             = new VirtualMachineScaleSetNetworkConfigurationDnsSettings()
-                .withDnsServers(Arrays.asList("qzntypm", "bpizcdrqjsdpydn", "yhxdeoejzicwi", "sjttgzfbish"));
+                .withDnsServers(Arrays.asList("rnkcqvyxlw", "zlsico", "oqqnwvlryav"));
         model = BinaryData.fromObject(model).toObject(VirtualMachineScaleSetNetworkConfigurationDnsSettings.class);
-        Assertions.assertEquals("qzntypm", model.dnsServers().get(0));
+        Assertions.assertEquals("rnkcqvyxlw", model.dnsServers().get(0));
     }
 }

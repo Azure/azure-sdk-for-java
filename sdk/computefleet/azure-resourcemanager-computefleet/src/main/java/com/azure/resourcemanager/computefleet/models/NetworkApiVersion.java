@@ -16,7 +16,7 @@ public final class NetworkApiVersion extends ExpandableStringEnum<NetworkApiVers
     /**
      * Initial version supported. Later versions are supported as well.
      */
-    public static final NetworkApiVersion TWO_ZERO_TWO_ZERO_ONE_ONE_ZERO_ONE = fromString("2020-11-01");
+    public static final NetworkApiVersion V2020_11_01 = fromString("2020-11-01");
 
     /**
      * Creates a new instance of NetworkApiVersion value.

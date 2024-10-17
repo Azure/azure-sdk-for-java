@@ -1,14 +1,48 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0 (2024-10-17)
+
+- Azure Resource Manager Compute Fleet client library for Java. This package contains Microsoft Azure SDK for Compute Fleet Management SDK. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.AdditionalCapabilities` was added
 
-### Bugs Fixed
+* `models.VMAttributeMinMaxInteger` was added
 
-### Other Changes
+* `models.VMCategory` was added
+
+* `models.VMAttributes` was added
+
+* `models.CpuManufacturer` was added
+
+* `models.ArchitectureType` was added
+
+* `models.AcceleratorManufacturer` was added
+
+* `models.VMAttributeMinMaxDouble` was added
+
+* `models.LocalStorageDiskType` was added
+
+* `models.LocationProfile` was added
+
+* `models.AdditionalLocationsProfile` was added
+
+* `models.VMAttributeSupport` was added
+
+* `models.AcceleratorType` was added
+
+#### `models.ComputeProfile` was modified
+
+* `withAdditionalVirtualMachineCapabilities(models.AdditionalCapabilities)` was added
+* `additionalVirtualMachineCapabilities()` was added
+
+#### `models.FleetProperties` was modified
+
+* `withAdditionalLocationsProfile(models.AdditionalLocationsProfile)` was added
+* `withVmAttributes(models.VMAttributes)` was added
+* `vmAttributes()` was added
+* `additionalLocationsProfile()` was added
 
 ## 1.0.0-beta.2 (2024-07-23)
 

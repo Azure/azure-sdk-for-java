@@ -5,26 +5,26 @@
 package com.azure.resourcemanager.computefleet.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetHardwareProfile;
 import com.azure.resourcemanager.computefleet.models.VMSizeProperties;
+import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetHardwareProfile;
 import org.junit.jupiter.api.Assertions;
 
 public final class VirtualMachineScaleSetHardwareProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineScaleSetHardwareProfile model
-            = BinaryData.fromString("{\"vmSizeProperties\":{\"vCPUsAvailable\":221682106,\"vCPUsPerCore\":1461039431}}")
+            = BinaryData.fromString("{\"vmSizeProperties\":{\"vCPUsAvailable\":72119187,\"vCPUsPerCore\":681425142}}")
                 .toObject(VirtualMachineScaleSetHardwareProfile.class);
-        Assertions.assertEquals(221682106, model.vmSizeProperties().vCPUsAvailable());
-        Assertions.assertEquals(1461039431, model.vmSizeProperties().vCPUsPerCore());
+        Assertions.assertEquals(72119187, model.vmSizeProperties().vCPUsAvailable());
+        Assertions.assertEquals(681425142, model.vmSizeProperties().vCPUsPerCore());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachineScaleSetHardwareProfile model = new VirtualMachineScaleSetHardwareProfile()
-            .withVmSizeProperties(new VMSizeProperties().withVCPUsAvailable(221682106).withVCPUsPerCore(1461039431));
+            .withVmSizeProperties(new VMSizeProperties().withVCPUsAvailable(72119187).withVCPUsPerCore(681425142));
         model = BinaryData.fromObject(model).toObject(VirtualMachineScaleSetHardwareProfile.class);
-        Assertions.assertEquals(221682106, model.vmSizeProperties().vCPUsAvailable());
-        Assertions.assertEquals(1461039431, model.vmSizeProperties().vCPUsPerCore());
+        Assertions.assertEquals(72119187, model.vmSizeProperties().vCPUsAvailable());
+        Assertions.assertEquals(681425142, model.vmSizeProperties().vCPUsPerCore());
     }
 }
