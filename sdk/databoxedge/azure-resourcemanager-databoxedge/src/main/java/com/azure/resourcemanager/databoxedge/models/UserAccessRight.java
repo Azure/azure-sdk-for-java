@@ -6,30 +6,36 @@ package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The mapping between a particular user and the access type on the SMB share. */
+/**
+ * The mapping between a particular user and the access type on the SMB share.
+ */
 @Fluent
-public final class UserAccessRight {
+public final class UserAccessRight implements JsonSerializable<UserAccessRight> {
     /*
      * User ID (already existing in the device).
      */
-    @JsonProperty(value = "userId", required = true)
     private String userId;
 
     /*
      * Type of access to be allowed for the user.
      */
-    @JsonProperty(value = "accessType", required = true)
     private ShareAccessType accessType;
 
-    /** Creates an instance of UserAccessRight class. */
+    /**
+     * Creates an instance of UserAccessRight class.
+     */
     public UserAccessRight() {
     }
 
     /**
      * Get the userId property: User ID (already existing in the device).
-     *
+     * 
      * @return the userId value.
      */
     public String userId() {
@@ -38,7 +44,7 @@ public final class UserAccessRight {
 
     /**
      * Set the userId property: User ID (already existing in the device).
-     *
+     * 
      * @param userId the userId value to set.
      * @return the UserAccessRight object itself.
      */
@@ -49,7 +55,7 @@ public final class UserAccessRight {
 
     /**
      * Get the accessType property: Type of access to be allowed for the user.
-     *
+     * 
      * @return the accessType value.
      */
     public ShareAccessType accessType() {
@@ -58,7 +64,7 @@ public final class UserAccessRight {
 
     /**
      * Set the accessType property: Type of access to be allowed for the user.
-     *
+     * 
      * @param accessType the accessType value to set.
      * @return the UserAccessRight object itself.
      */
@@ -69,21 +75,59 @@ public final class UserAccessRight {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property userId in model UserAccessRight"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property userId in model UserAccessRight"));
         }
         if (accessType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property accessType in model UserAccessRight"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property accessType in model UserAccessRight"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UserAccessRight.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userId", this.userId);
+        jsonWriter.writeStringField("accessType", this.accessType == null ? null : this.accessType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserAccessRight from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserAccessRight if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserAccessRight.
+     */
+    public static UserAccessRight fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserAccessRight deserializedUserAccessRight = new UserAccessRight();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userId".equals(fieldName)) {
+                    deserializedUserAccessRight.userId = reader.getString();
+                } else if ("accessType".equals(fieldName)) {
+                    deserializedUserAccessRight.accessType = ShareAccessType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserAccessRight;
+        });
+    }
 }

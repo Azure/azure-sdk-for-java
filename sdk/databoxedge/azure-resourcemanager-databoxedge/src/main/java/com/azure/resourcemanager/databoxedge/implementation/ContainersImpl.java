@@ -21,37 +21,32 @@ public final class ContainersImpl implements Containers {
 
     private final com.azure.resourcemanager.databoxedge.DataBoxEdgeManager serviceManager;
 
-    public ContainersImpl(
-        ContainersClient innerClient, com.azure.resourcemanager.databoxedge.DataBoxEdgeManager serviceManager) {
+    public ContainersImpl(ContainersClient innerClient,
+        com.azure.resourcemanager.databoxedge.DataBoxEdgeManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<Container> listByStorageAccount(
-        String deviceName, String storageAccountName, String resourceGroupName) {
-        PagedIterable<ContainerInner> inner =
-            this.serviceClient().listByStorageAccount(deviceName, storageAccountName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ContainerImpl(inner1, this.manager()));
+    public PagedIterable<Container> listByStorageAccount(String deviceName, String storageAccountName,
+        String resourceGroupName) {
+        PagedIterable<ContainerInner> inner
+            = this.serviceClient().listByStorageAccount(deviceName, storageAccountName, resourceGroupName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContainerImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Container> listByStorageAccount(
-        String deviceName, String storageAccountName, String resourceGroupName, Context context) {
-        PagedIterable<ContainerInner> inner =
-            this.serviceClient().listByStorageAccount(deviceName, storageAccountName, resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new ContainerImpl(inner1, this.manager()));
+    public PagedIterable<Container> listByStorageAccount(String deviceName, String storageAccountName,
+        String resourceGroupName, Context context) {
+        PagedIterable<ContainerInner> inner
+            = this.serviceClient().listByStorageAccount(deviceName, storageAccountName, resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContainerImpl(inner1, this.manager()));
     }
 
-    public Response<Container> getWithResponse(
-        String deviceName, String storageAccountName, String containerName, String resourceGroupName, Context context) {
-        Response<ContainerInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(deviceName, storageAccountName, containerName, resourceGroupName, context);
+    public Response<Container> getWithResponse(String deviceName, String storageAccountName, String containerName,
+        String resourceGroupName, Context context) {
+        Response<ContainerInner> inner = this.serviceClient()
+            .getWithResponse(deviceName, storageAccountName, containerName, resourceGroupName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ContainerImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -59,8 +54,8 @@ public final class ContainersImpl implements Containers {
     }
 
     public Container get(String deviceName, String storageAccountName, String containerName, String resourceGroupName) {
-        ContainerInner inner =
-            this.serviceClient().get(deviceName, storageAccountName, containerName, resourceGroupName);
+        ContainerInner inner
+            = this.serviceClient().get(deviceName, storageAccountName, containerName, resourceGroupName);
         if (inner != null) {
             return new ContainerImpl(inner, this.manager());
         } else {
@@ -72,8 +67,8 @@ public final class ContainersImpl implements Containers {
         this.serviceClient().delete(deviceName, storageAccountName, containerName, resourceGroupName);
     }
 
-    public void delete(
-        String deviceName, String storageAccountName, String containerName, String resourceGroupName, Context context) {
+    public void delete(String deviceName, String storageAccountName, String containerName, String resourceGroupName,
+        Context context) {
         this.serviceClient().delete(deviceName, storageAccountName, containerName, resourceGroupName, context);
     }
 
@@ -81,153 +76,104 @@ public final class ContainersImpl implements Containers {
         this.serviceClient().refresh(deviceName, storageAccountName, containerName, resourceGroupName);
     }
 
-    public void refresh(
-        String deviceName, String storageAccountName, String containerName, String resourceGroupName, Context context) {
+    public void refresh(String deviceName, String storageAccountName, String containerName, String resourceGroupName,
+        Context context) {
         this.serviceClient().refresh(deviceName, storageAccountName, containerName, resourceGroupName, context);
     }
 
     public Container getById(String id) {
-        String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
+        String deviceName = ResourceManagerUtils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dataBoxEdgeDevices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dataBoxEdgeDevices'.", id)));
         }
-        String storageAccountName = Utils.getValueFromIdByName(id, "storageAccounts");
+        String storageAccountName = ResourceManagerUtils.getValueFromIdByName(id, "storageAccounts");
         if (storageAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'storageAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'storageAccounts'.", id)));
         }
-        String containerName = Utils.getValueFromIdByName(id, "containers");
+        String containerName = ResourceManagerUtils.getValueFromIdByName(id, "containers");
         if (containerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'containers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'containers'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        return this
-            .getWithResponse(deviceName, storageAccountName, containerName, resourceGroupName, Context.NONE)
+        return this.getWithResponse(deviceName, storageAccountName, containerName, resourceGroupName, Context.NONE)
             .getValue();
     }
 
     public Response<Container> getByIdWithResponse(String id, Context context) {
-        String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
+        String deviceName = ResourceManagerUtils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dataBoxEdgeDevices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dataBoxEdgeDevices'.", id)));
         }
-        String storageAccountName = Utils.getValueFromIdByName(id, "storageAccounts");
+        String storageAccountName = ResourceManagerUtils.getValueFromIdByName(id, "storageAccounts");
         if (storageAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'storageAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'storageAccounts'.", id)));
         }
-        String containerName = Utils.getValueFromIdByName(id, "containers");
+        String containerName = ResourceManagerUtils.getValueFromIdByName(id, "containers");
         if (containerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'containers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'containers'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         return this.getWithResponse(deviceName, storageAccountName, containerName, resourceGroupName, context);
     }
 
     public void deleteById(String id) {
-        String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
+        String deviceName = ResourceManagerUtils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dataBoxEdgeDevices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dataBoxEdgeDevices'.", id)));
         }
-        String storageAccountName = Utils.getValueFromIdByName(id, "storageAccounts");
+        String storageAccountName = ResourceManagerUtils.getValueFromIdByName(id, "storageAccounts");
         if (storageAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'storageAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'storageAccounts'.", id)));
         }
-        String containerName = Utils.getValueFromIdByName(id, "containers");
+        String containerName = ResourceManagerUtils.getValueFromIdByName(id, "containers");
         if (containerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'containers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'containers'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         this.delete(deviceName, storageAccountName, containerName, resourceGroupName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
+        String deviceName = ResourceManagerUtils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dataBoxEdgeDevices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dataBoxEdgeDevices'.", id)));
         }
-        String storageAccountName = Utils.getValueFromIdByName(id, "storageAccounts");
+        String storageAccountName = ResourceManagerUtils.getValueFromIdByName(id, "storageAccounts");
         if (storageAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'storageAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'storageAccounts'.", id)));
         }
-        String containerName = Utils.getValueFromIdByName(id, "containers");
+        String containerName = ResourceManagerUtils.getValueFromIdByName(id, "containers");
         if (containerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'containers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'containers'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         this.delete(deviceName, storageAccountName, containerName, resourceGroupName, context);
     }

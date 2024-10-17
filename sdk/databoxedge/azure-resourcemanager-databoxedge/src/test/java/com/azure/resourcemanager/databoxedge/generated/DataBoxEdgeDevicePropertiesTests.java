@@ -12,29 +12,26 @@ import org.junit.jupiter.api.Assertions;
 public final class DataBoxEdgeDevicePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataBoxEdgeDeviceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"dataBoxEdgeDeviceStatus\":\"ReadyToSetup\",\"serialNumber\":\"rcgyn\",\"description\":\"cpecfvmmcoofs\",\"modelDescription\":\"zevgb\",\"deviceType\":\"DataBoxEdgeDevice\",\"friendlyName\":\"abcypmivk\",\"culture\":\"zuvccfwnfnbacfio\",\"deviceModel\":\"ebxetqgtzxdp\",\"deviceSoftwareVersion\":\"bqqwxrj\",\"deviceLocalCapacity\":1458668924048164836,\"timeZone\":\"nwsubisnj\",\"deviceHcsVersion\":\"pmng\",\"configuredRoleTypes\":[\"IOT\",\"Cognitive\"],\"nodeCount\":431293436}")
-                .toObject(DataBoxEdgeDeviceProperties.class);
-        Assertions.assertEquals(DataBoxEdgeDeviceStatus.READY_TO_SETUP, model.dataBoxEdgeDeviceStatus());
-        Assertions.assertEquals("cpecfvmmcoofs", model.description());
-        Assertions.assertEquals("zevgb", model.modelDescription());
-        Assertions.assertEquals("abcypmivk", model.friendlyName());
+        DataBoxEdgeDeviceProperties model = BinaryData.fromString(
+            "{\"dataBoxEdgeDeviceStatus\":\"Maintenance\",\"serialNumber\":\"scxaq\",\"description\":\"ochcbonqvpkvl\",\"modelDescription\":\"njeaseipheofloke\",\"deviceType\":\"DataBoxEdgeDevice\",\"friendlyName\":\"nj\",\"culture\":\"lwtgrhpdj\",\"deviceModel\":\"umasxazjpq\",\"deviceSoftwareVersion\":\"gual\",\"deviceLocalCapacity\":2249320099988236526,\"timeZone\":\"e\",\"deviceHcsVersion\":\"zzvdudgwds\",\"configuredRoleTypes\":[\"ASA\",\"Functions\",\"IOT\",\"IOT\"],\"nodeCount\":1771103105}")
+            .toObject(DataBoxEdgeDeviceProperties.class);
+        Assertions.assertEquals(DataBoxEdgeDeviceStatus.MAINTENANCE, model.dataBoxEdgeDeviceStatus());
+        Assertions.assertEquals("ochcbonqvpkvl", model.description());
+        Assertions.assertEquals("njeaseipheofloke", model.modelDescription());
+        Assertions.assertEquals("nj", model.friendlyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataBoxEdgeDeviceProperties model =
-            new DataBoxEdgeDeviceProperties()
-                .withDataBoxEdgeDeviceStatus(DataBoxEdgeDeviceStatus.READY_TO_SETUP)
-                .withDescription("cpecfvmmcoofs")
-                .withModelDescription("zevgb")
-                .withFriendlyName("abcypmivk");
+        DataBoxEdgeDeviceProperties model
+            = new DataBoxEdgeDeviceProperties().withDataBoxEdgeDeviceStatus(DataBoxEdgeDeviceStatus.MAINTENANCE)
+                .withDescription("ochcbonqvpkvl")
+                .withModelDescription("njeaseipheofloke")
+                .withFriendlyName("nj");
         model = BinaryData.fromObject(model).toObject(DataBoxEdgeDeviceProperties.class);
-        Assertions.assertEquals(DataBoxEdgeDeviceStatus.READY_TO_SETUP, model.dataBoxEdgeDeviceStatus());
-        Assertions.assertEquals("cpecfvmmcoofs", model.description());
-        Assertions.assertEquals("zevgb", model.modelDescription());
-        Assertions.assertEquals("abcypmivk", model.friendlyName());
+        Assertions.assertEquals(DataBoxEdgeDeviceStatus.MAINTENANCE, model.dataBoxEdgeDeviceStatus());
+        Assertions.assertEquals("ochcbonqvpkvl", model.description());
+        Assertions.assertEquals("njeaseipheofloke", model.modelDescription());
+        Assertions.assertEquals("nj", model.friendlyName());
     }
 }
