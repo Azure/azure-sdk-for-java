@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datalakestore.fluent.models.CapabilityInformati
 public final class CapabilityInformationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CapabilityInformationInner model =
-            BinaryData
-                .fromString(
-                    "{\"subscriptionId\":\"fdfc4063-6309-48c1-88e2-51379232b7d4\",\"state\":\"Warned\",\"maxAccountCount\":1613770943,\"accountCount\":45811298,\"migrationState\":true}")
-                .toObject(CapabilityInformationInner.class);
+        CapabilityInformationInner model = BinaryData.fromString(
+            "{\"subscriptionId\":\"3d12fbb8-ef38-4c48-ba66-c25a1f0a64f7\",\"state\":\"Unregistered\",\"maxAccountCount\":425108971,\"accountCount\":614962425,\"migrationState\":false}")
+            .toObject(CapabilityInformationInner.class);
     }
 
     @org.junit.jupiter.api.Test

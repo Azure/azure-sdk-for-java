@@ -19,55 +19,48 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Accounts Create. */
+/**
+ * Samples for Accounts Create.
+ */
 public final class AccountsCreateSamples {
     /*
-     * x-ms-original-file: specification/datalake-store/resource-manager/Microsoft.DataLakeStore/stable/2016-11-01/examples/Accounts_Create.json
+     * x-ms-original-file:
+     * specification/datalake-store/resource-manager/Microsoft.DataLakeStore/stable/2016-11-01/examples/Accounts_Create.
+     * json
      */
     /**
      * Sample code: Creates the specified Data Lake Store account.
-     *
+     * 
      * @param manager Entry point to DataLakeStoreManager.
      */
-    public static void createsTheSpecifiedDataLakeStoreAccount(
-        com.azure.resourcemanager.datalakestore.DataLakeStoreManager manager) {
-        manager
-            .accounts()
+    public static void
+        createsTheSpecifiedDataLakeStoreAccount(com.azure.resourcemanager.datalakestore.DataLakeStoreManager manager) {
+        manager.accounts()
             .define("contosoadla")
             .withRegion("eastus2")
             .withExistingResourceGroup("contosorg")
-            .withTags(mapOf("test_key", "test_value"))
+            .withTags(mapOf("test_key", "fakeTokenPlaceholder"))
             .withIdentity(new EncryptionIdentity())
             .withDefaultGroup("test_default_group")
-            .withEncryptionConfig(
-                new EncryptionConfig()
-                    .withType(EncryptionConfigType.USER_MANAGED)
-                    .withKeyVaultMetaInfo(
-                        new KeyVaultMetaInfo()
-                            .withKeyVaultResourceId("fakeTokenPlaceholder")
-                            .withEncryptionKeyName("fakeTokenPlaceholder")
-                            .withEncryptionKeyVersion("fakeTokenPlaceholder")))
+            .withEncryptionConfig(new EncryptionConfig().withType(EncryptionConfigType.USER_MANAGED)
+                .withKeyVaultMetaInfo(new KeyVaultMetaInfo().withKeyVaultResourceId("fakeTokenPlaceholder")
+                    .withEncryptionKeyName("fakeTokenPlaceholder")
+                    .withEncryptionKeyVersion("fakeTokenPlaceholder")))
             .withEncryptionState(EncryptionState.ENABLED)
-            .withFirewallRules(
-                Arrays
-                    .asList(
-                        new CreateFirewallRuleWithAccountParameters()
-                            .withName("test_rule")
-                            .withStartIpAddress("1.1.1.1")
-                            .withEndIpAddress("2.2.2.2")))
+            .withFirewallRules(Arrays.asList(new CreateFirewallRuleWithAccountParameters().withName("test_rule")
+                .withStartIpAddress("1.1.1.1")
+                .withEndIpAddress("2.2.2.2")))
             .withFirewallState(FirewallState.ENABLED)
             .withFirewallAllowAzureIps(FirewallAllowAzureIpsState.ENABLED)
-            .withTrustedIdProviders(
-                Arrays
-                    .asList(
-                        new CreateTrustedIdProviderWithAccountParameters()
-                            .withName("test_trusted_id_provider_name")
-                            .withIdProvider("https://sts.windows.net/ea9ec534-a3e3-4e45-ad36-3afc5bb291c1")))
+            .withTrustedIdProviders(Arrays
+                .asList(new CreateTrustedIdProviderWithAccountParameters().withName("test_trusted_id_provider_name")
+                    .withIdProvider("https://sts.windows.net/ea9ec534-a3e3-4e45-ad36-3afc5bb291c1")))
             .withTrustedIdProviderState(TrustedIdProviderState.ENABLED)
             .withNewTier(TierType.CONSUMPTION)
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
