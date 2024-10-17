@@ -7,6 +7,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.stress.utils.OriginalContent;
@@ -34,9 +36,11 @@ public class BlockBlobOutputStream extends BlobScenarioBase<StorageStressOptions
     @Override
     protected void runInternal(Context span) throws IOException {
         BlockBlobClient blockBlobClient = syncClient.getBlockBlobClient();
+        BlockBlobOutputStreamOptions blockBlobOutputStreamOptions = new BlockBlobOutputStreamOptions()
+            .setParallelTransferOptions(new ParallelTransferOptions().setMaxConcurrency(parallelTransferOptions.getMaxConcurrency()));
 
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize());
-             BlobOutputStream outputStream = blockBlobClient.getBlobOutputStream(null, span)) {
+             BlobOutputStream outputStream = blockBlobClient.getBlobOutputStream(blockBlobOutputStreamOptions, span)) {
             byte[] buffer = new byte[4096]; // Define a buffer
             int bytesRead;
 

@@ -37,6 +37,7 @@ public class Upload extends DataLakeScenarioBase<StorageStressOptions> {
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getContentHead(), options.getSize())) {
             syncClient.uploadWithResponse(new FileParallelUploadOptions(inputStream)
                 .setParallelTransferOptions(new ParallelTransferOptions()
+                    .setMaxConcurrency(parallelTransferOptions.getMaxConcurrency())
                     .setMaxSingleUploadSizeLong(4 * 1024 * 1024L).setMaxConcurrency(1)),
                 null, span);
             originalContent.checkMatch(inputStream.getContentInfo(), span).block();
@@ -48,7 +49,9 @@ public class Upload extends DataLakeScenarioBase<StorageStressOptions> {
         Flux<ByteBuffer> byteBufferFlux = new CrcInputStream(originalContent.getContentHead(), options.getSize())
             .convertStreamToByteBuffer();
         return asyncClient.uploadWithResponse(new FileParallelUploadOptions(byteBufferFlux)
-                .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * 1024 * 1024L)))
+                .setParallelTransferOptions(new ParallelTransferOptions()
+                    .setMaxConcurrency(parallelTransferOptions.getMaxConcurrency())
+                    .setMaxSingleUploadSizeLong(4 * 1024 * 1024L)))
             .then(originalContent.checkMatch(byteBufferFlux, span));
     }
 

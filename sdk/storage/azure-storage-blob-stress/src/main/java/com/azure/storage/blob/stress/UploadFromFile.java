@@ -51,7 +51,9 @@ public class UploadFromFile extends BlobScenarioBase<StorageStressOptions> {
             Path uploadFilePath = generateFile(inputStream);
             downloadPath = downloadPath.resolve(CoreUtils.randomUuid() + ".txt");
             syncClient.uploadFromFileWithResponse(new BlobUploadFromFileOptions(uploadFilePath.toString())
-                .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * 1024 * 1024L)),
+                .setParallelTransferOptions(new ParallelTransferOptions()
+                    .setMaxConcurrency(parallelTransferOptions.getMaxConcurrency())
+                    .setMaxSingleUploadSizeLong(4 * 1024 * 1024L)),
                 null, span);
             // then download file using no fault client to verify the content
             syncNoFaultClient.downloadToFileWithResponse(
@@ -72,7 +74,9 @@ public class UploadFromFile extends BlobScenarioBase<StorageStressOptions> {
                 return Mono.using(
                     () -> downloadPath.resolve(UUID.randomUUID() + ".txt"),
                     path -> asyncClient.uploadFromFileWithResponse(new BlobUploadFromFileOptions(uploadFilePath.toString())
-                            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * 1024 * 1024L)))
+                            .setParallelTransferOptions(new ParallelTransferOptions()
+                                .setMaxConcurrency(parallelTransferOptions.getMaxConcurrency())
+                                .setMaxSingleUploadSizeLong(4 * 1024 * 1024L)))
                         .flatMap(ignored -> asyncNoFaultClient.downloadToFileWithResponse(
                             new BlobDownloadToFileOptions(path.toString()))
                         )
