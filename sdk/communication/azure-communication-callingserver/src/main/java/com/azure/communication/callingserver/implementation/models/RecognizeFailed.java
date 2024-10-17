@@ -6,49 +6,44 @@ package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonWriter;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /** The RecognizeFailed model. */
 @Fluent
-public final class RecognizeFailed {
+public final class RecognizeFailed implements JsonSerializable<RecognizeFailed> {
     /*
      * Operation context
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
      * Defines the code, sub-code and message for the operation
      */
-    @JsonProperty(value = "resultInfo")
     private ResultInformation resultInfo;
 
     /*
      * The type property.
      */
-    @JsonProperty(value = "type")
     private AcsEventTypeInternal type;
 
     /*
      * Call connection ID.
      */
-    @JsonProperty(value = "callConnectionId")
     private String callConnectionId;
 
     /*
      * Server call ID.
      */
-    @JsonProperty(value = "serverCallId")
     private String serverCallId;
 
     /*
-     * Correlation ID for event to call correlation. Also called ChainId for
-     * skype chain ID.
+     * Correlation ID for event to call correlation. Also called ChainId for skype chain ID.
      */
-    @JsonProperty(value = "correlationId")
     private String correlationId;
 
     /**
@@ -173,36 +168,52 @@ public final class RecognizeFailed {
         return this;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("operationContext", operationContext)
+            .writeJsonField("resultInfo", resultInfo)
+            .writeStringField("type", Objects.toString(type, null))
+            .writeStringField("callConnectionId", callConnectionId)
+            .writeStringField("serverCallId", serverCallId)
+            .writeStringField("correlationId", correlationId)
+            .writeEndObject();
+    }
+
     /**
-     * Reads an instance of {@link AddParticipantsRequestInternal} from the {@link JsonReader}.
+     * Reads an instance of {@link RecognizeFailed} from the {@link JsonReader}.
      *
      * @param jsonReader The {@link JsonReader} to read.
-     * @return An instance of {@link AddParticipantsRequestInternal}, or null if the {@link JsonReader} was pointing to
+     * @return An instance of {@link RecognizeFailed}, or null if the {@link JsonReader} was pointing to
      * {@link JsonToken#NULL}.
      * @throws IOException If an error occurs while reading the {@link JsonReader}.
      */
-    public static AddParticipantsRequestInternal fromJson(JsonReader jsonReader) throws IOException {
+    public static RecognizeFailed fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AddParticipantsRequestInternal request = new AddParticipantsRequestInternal();
+            RecognizeFailed recognizeFailed = new RecognizeFailed();
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("sourceCallerId".equals(fieldName)) {
-                    request.sourceCallerId = PhoneNumberIdentifierModel.fromJson(reader);
-                } else if ("participantsToAdd".equals(fieldName)) {
-                    request.participantsToAdd = reader.readArray(CommunicationIdentifierModel::fromJson);
-                } else if ("invitationTimeoutInSeconds".equals(fieldName)) {
-                    request.invitationTimeoutInSeconds = reader.getNullable(JsonReader::getInt);
-                } else if ("operationContext".equals(fieldName)) {
-                    request.operationContext = reader.getString();
+                if ("operationContext".equals(fieldName)) {
+                    recognizeFailed.operationContext = reader.getString();
+                } else if ("resultInfo".equals(fieldName)) {
+                    recognizeFailed.resultInfo = ResultInformation.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    recognizeFailed.type = AcsEventTypeInternal.fromString(reader.getString());
+                } else if ("callConnectionId".equals(fieldName)) {
+                    recognizeFailed.callConnectionId = reader.getString();
+                } else if ("serverCallId".equals(fieldName)) {
+                    recognizeFailed.serverCallId = reader.getString();
+                } else if ("correlationId".equals(fieldName)) {
+                    recognizeFailed.correlationId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return request;
+            return recognizeFailed;
         });
     }
 }

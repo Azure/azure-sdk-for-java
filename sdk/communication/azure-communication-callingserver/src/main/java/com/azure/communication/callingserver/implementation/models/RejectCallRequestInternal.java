@@ -6,24 +6,24 @@ package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonWriter;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /** The request payload for rejecting the call. */
 @Fluent
-public final class RejectCallRequestInternal {
+public final class RejectCallRequestInternal implements JsonSerializable<RejectCallRequestInternal> {
     /*
      * The context associated with the call.
      */
-    @JsonProperty(value = "incomingCallContext", required = true)
     private String incomingCallContext;
 
     /*
      * The rejection reason.
      */
-    @JsonProperty(value = "callRejectReason")
     private CallRejectReasonInternal callRejectReason;
 
     /**
@@ -66,30 +66,34 @@ public final class RejectCallRequestInternal {
         return this;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("incomingCallContext", incomingCallContext)
+            .writeStringField("callRejectReason", Objects.toString(callRejectReason, null))
+            .writeEndObject();
+    }
+
     /**
-     * Reads an instance of {@link AddParticipantsRequestInternal} from the {@link JsonReader}.
+     * Reads an instance of {@link RejectCallRequestInternal} from the {@link JsonReader}.
      *
      * @param jsonReader The {@link JsonReader} to read.
-     * @return An instance of {@link AddParticipantsRequestInternal}, or null if the {@link JsonReader} was pointing to
+     * @return An instance of {@link RejectCallRequestInternal}, or null if the {@link JsonReader} was pointing to
      * {@link JsonToken#NULL}.
      * @throws IOException If an error occurs while reading the {@link JsonReader}.
      */
-    public static AddParticipantsRequestInternal fromJson(JsonReader jsonReader) throws IOException {
+    public static RejectCallRequestInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AddParticipantsRequestInternal request = new AddParticipantsRequestInternal();
+            RejectCallRequestInternal request = new RejectCallRequestInternal();
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("sourceCallerId".equals(fieldName)) {
-                    request.sourceCallerId = PhoneNumberIdentifierModel.fromJson(reader);
-                } else if ("participantsToAdd".equals(fieldName)) {
-                    request.participantsToAdd = reader.readArray(CommunicationIdentifierModel::fromJson);
-                } else if ("invitationTimeoutInSeconds".equals(fieldName)) {
-                    request.invitationTimeoutInSeconds = reader.getNullable(JsonReader::getInt);
-                } else if ("operationContext".equals(fieldName)) {
-                    request.operationContext = reader.getString();
+                if ("incomingCallContext".equals(fieldName)) {
+                    request.incomingCallContext = reader.getString();
+                } else if ("callRejectReason".equals(fieldName)) {
+                    request.callRejectReason = CallRejectReasonInternal.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

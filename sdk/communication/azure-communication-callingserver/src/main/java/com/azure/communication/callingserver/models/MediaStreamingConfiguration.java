@@ -3,41 +3,36 @@
 
 package com.azure.communication.callingserver.models;
 
-import com.azure.communication.callingserver.implementation.models.AddParticipantsRequestInternal;
-import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
-import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonWriter;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /** The MediaStreamingConfigurationInternal model. */
 @Fluent
-public final class MediaStreamingConfiguration {
+public final class MediaStreamingConfiguration implements JsonSerializable<MediaStreamingConfiguration> {
     /*
      * Transport URL for media streaming
      */
-    @JsonProperty(value = "transportUrl")
     private final String transportUrl;
 
     /*
      * The type of tranport to be used for media streaming, eg. Websocket
      */
-    @JsonProperty(value = "transportType")
     private final MediaStreamingTransportType transportType;
 
     /*
      * Content type to stream, eg. audio, audio/video
      */
-    @JsonProperty(value = "contentType")
     private final MediaStreamingContentType contentType;
 
     /*
      * Audio channel type to stream, eg. unmixed audio, mixed audio
      */
-    @JsonProperty(value = "audioChannelType")
     private final MediaStreamingAudioChannelType audioChannelType;
 
     /**
@@ -47,7 +42,8 @@ public final class MediaStreamingConfiguration {
      * @param contentType - Content Type
      * @param audioChannelType - Audio Channel Type
      */
-    public MediaStreamingConfiguration(String transportUrl, MediaStreamingTransportType transportType, MediaStreamingContentType contentType, MediaStreamingAudioChannelType audioChannelType) {
+    public MediaStreamingConfiguration(String transportUrl, MediaStreamingTransportType transportType,
+        MediaStreamingContentType contentType, MediaStreamingAudioChannelType audioChannelType) {
         this.transportUrl = transportUrl;
         this.transportType = transportType;
         this.contentType = contentType;
@@ -90,36 +86,49 @@ public final class MediaStreamingConfiguration {
         return this.audioChannelType;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("transportUrl", transportUrl)
+            .writeStringField("transportType", Objects.toString(transportType, null))
+            .writeStringField("contentType", Objects.toString(contentType, null))
+            .writeStringField("audioChannelType", Objects.toString(audioChannelType, null))
+            .writeEndObject();
+    }
+
     /**
-     * Reads an instance of {@link AddParticipantsRequestInternal} from the {@link JsonReader}.
+     * Reads an instance of {@link MediaStreamingConfiguration} from the {@link JsonReader}.
      *
      * @param jsonReader The {@link JsonReader} to read.
-     * @return An instance of {@link AddParticipantsRequestInternal}, or null if the {@link JsonReader} was pointing to
+     * @return An instance of {@link MediaStreamingConfiguration}, or null if the {@link JsonReader} was pointing to
      * {@link JsonToken#NULL}.
      * @throws IOException If an error occurs while reading the {@link JsonReader}.
      */
-    public static AddParticipantsRequestInternal fromJson(JsonReader jsonReader) throws IOException {
+    public static MediaStreamingConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AddParticipantsRequestInternal request = new AddParticipantsRequestInternal();
+            String transportUrl = null;
+            MediaStreamingTransportType transportType = null;
+            MediaStreamingContentType contentType = null;
+            MediaStreamingAudioChannelType audioChannelType = null;
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("sourceCallerId".equals(fieldName)) {
-                    request.sourceCallerId = PhoneNumberIdentifierModel.fromJson(reader);
-                } else if ("participantsToAdd".equals(fieldName)) {
-                    request.participantsToAdd = reader.readArray(CommunicationIdentifierModel::fromJson);
-                } else if ("invitationTimeoutInSeconds".equals(fieldName)) {
-                    request.invitationTimeoutInSeconds = reader.getNullable(JsonReader::getInt);
-                } else if ("operationContext".equals(fieldName)) {
-                    request.operationContext = reader.getString();
+                if ("transportUrl".equals(fieldName)) {
+                    transportUrl = reader.getString();
+                } else if ("transportType".equals(fieldName)) {
+                    transportType = MediaStreamingTransportType.fromString(reader.getString());
+                } else if ("contentType".equals(fieldName)) {
+                    contentType = MediaStreamingContentType.fromString(reader.getString());
+                } else if ("audioChannelType".equals(fieldName)) {
+                    audioChannelType = MediaStreamingAudioChannelType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return request;
+            return new MediaStreamingConfiguration(transportUrl, transportType, contentType, audioChannelType);
         });
     }
 }

@@ -3,37 +3,34 @@
 
 package com.azure.communication.callingserver.models;
 
-import com.azure.communication.callingserver.implementation.models.AddParticipantsRequestInternal;
-import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
-import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 
 /** Options for DTMF recognition. */
 @Fluent
-public final class DtmfConfigurations {
+public final class DtmfConfigurations implements JsonSerializable<DtmfConfigurations> {
     /*
      * Time to wait between DTMF inputs to stop recognizing.
      */
-    @JsonProperty(value = "interToneTimeoutInSeconds")
     private Duration interToneTimeoutInSeconds;
 
     /*
      * Maximum number of DTMFs to be collected.
      */
-    @JsonProperty(value = "maxTonesToCollect")
     private Integer maxTonesToCollect;
 
     /*
      * List of tones that will stop recognizing.
      */
-    @JsonProperty(value = "stopTones")
     private List<StopTones> stopTones;
 
     /**
@@ -96,36 +93,44 @@ public final class DtmfConfigurations {
         return this;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("interToneTimeoutInSeconds",
+                CoreUtils.durationToStringWithDays(interToneTimeoutInSeconds))
+            .writeNumberField("maxTonesToCollect", maxTonesToCollect)
+            .writeArrayField("stopTones", stopTones, (writer, tone) -> writer.writeString(Objects.toString(tone, null)))
+            .writeEndObject();
+    }
+
     /**
-     * Reads an instance of {@link AddParticipantsRequestInternal} from the {@link JsonReader}.
+     * Reads an instance of {@link DtmfConfigurations} from the {@link JsonReader}.
      *
      * @param jsonReader The {@link JsonReader} to read.
-     * @return An instance of {@link AddParticipantsRequestInternal}, or null if the {@link JsonReader} was pointing to
+     * @return An instance of {@link DtmfConfigurations}, or null if the {@link JsonReader} was pointing to
      * {@link JsonToken#NULL}.
      * @throws IOException If an error occurs while reading the {@link JsonReader}.
      */
-    public static AddParticipantsRequestInternal fromJson(JsonReader jsonReader) throws IOException {
+    public static DtmfConfigurations fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AddParticipantsRequestInternal request = new AddParticipantsRequestInternal();
+            DtmfConfigurations configurations = new DtmfConfigurations();
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("sourceCallerId".equals(fieldName)) {
-                    request.sourceCallerId = PhoneNumberIdentifierModel.fromJson(reader);
-                } else if ("participantsToAdd".equals(fieldName)) {
-                    request.participantsToAdd = reader.readArray(CommunicationIdentifierModel::fromJson);
-                } else if ("invitationTimeoutInSeconds".equals(fieldName)) {
-                    request.invitationTimeoutInSeconds = reader.getNullable(JsonReader::getInt);
-                } else if ("operationContext".equals(fieldName)) {
-                    request.operationContext = reader.getString();
+                if ("interToneTimeoutInSeconds".equals(fieldName)) {
+                    configurations.interToneTimeoutInSeconds = reader.getNullable(nonNull -> Duration.parse(nonNull.getString()));
+                } else if ("maxTonesToCollect".equals(fieldName)) {
+                    configurations.maxTonesToCollect = reader.getNullable(JsonReader::getInt);
+                } else if ("stopTones".equals(fieldName)) {
+                    configurations.stopTones = reader.readArray(elem -> StopTones.fromString(elem.getString()));
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return request;
+            return configurations;
         });
     }
 }

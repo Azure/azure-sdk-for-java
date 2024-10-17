@@ -66,7 +66,7 @@ public final class CommunicationUserIdentifierModel implements JsonSerializable<
                 if ("id".equals(fieldName)) {
                     model.id = reader.getString();
                 } else {
-                    reader.skipChildren();;
+                    reader.skipChildren();
                 }
             }
 

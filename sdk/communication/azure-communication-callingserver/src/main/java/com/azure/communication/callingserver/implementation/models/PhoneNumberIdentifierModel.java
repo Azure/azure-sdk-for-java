@@ -66,7 +66,7 @@ public final class PhoneNumberIdentifierModel implements JsonSerializable<PhoneN
                 if ("value".equals(fieldName)) {
                     model.value = reader.getString();
                 } else {
-                    reader.skipChildren();;
+                    reader.skipChildren();
                 }
             }
 

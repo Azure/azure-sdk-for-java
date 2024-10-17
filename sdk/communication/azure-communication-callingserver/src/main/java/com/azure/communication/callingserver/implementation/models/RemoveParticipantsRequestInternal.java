@@ -6,25 +6,24 @@ package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 import java.util.List;
 
 /** The remove participant by identifier request. */
 @Fluent
-public final class RemoveParticipantsRequestInternal {
+public final class RemoveParticipantsRequestInternal implements JsonSerializable<RemoveParticipantsRequestInternal> {
     /*
      * The participants to invite.
      */
-    @JsonProperty(value = "participantsToRemove", required = true)
     private List<CommunicationIdentifierModel> participantsToRemove;
 
     /*
      * The operation context.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /**
@@ -68,28 +67,32 @@ public final class RemoveParticipantsRequestInternal {
         return this;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeArrayField("participantsToRemove", participantsToRemove, JsonWriter::writeJson)
+            .writeStringField("operationContext", operationContext)
+            .writeEndObject();
+    }
+
     /**
-     * Reads an instance of {@link AddParticipantsRequestInternal} from the {@link JsonReader}.
+     * Reads an instance of {@link RemoveParticipantsRequestInternal} from the {@link JsonReader}.
      *
      * @param jsonReader The {@link JsonReader} to read.
-     * @return An instance of {@link AddParticipantsRequestInternal}, or null if the {@link JsonReader} was pointing to
-     * {@link JsonToken#NULL}.
+     * @return An instance of {@link RemoveParticipantsRequestInternal}, or null if the {@link JsonReader} was pointing
+     * to {@link JsonToken#NULL}.
      * @throws IOException If an error occurs while reading the {@link JsonReader}.
      */
-    public static AddParticipantsRequestInternal fromJson(JsonReader jsonReader) throws IOException {
+    public static RemoveParticipantsRequestInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AddParticipantsRequestInternal request = new AddParticipantsRequestInternal();
+            RemoveParticipantsRequestInternal request = new RemoveParticipantsRequestInternal();
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("sourceCallerId".equals(fieldName)) {
-                    request.sourceCallerId = PhoneNumberIdentifierModel.fromJson(reader);
-                } else if ("participantsToAdd".equals(fieldName)) {
-                    request.participantsToAdd = reader.readArray(CommunicationIdentifierModel::fromJson);
-                } else if ("invitationTimeoutInSeconds".equals(fieldName)) {
-                    request.invitationTimeoutInSeconds = reader.getNullable(JsonReader::getInt);
+                if ("participantsToRemove".equals(fieldName)) {
+                    request.participantsToRemove = reader.readArray(CommunicationIdentifierModel::fromJson);
                 } else if ("operationContext".equals(fieldName)) {
                     request.operationContext = reader.getString();
                 } else {
