@@ -277,6 +277,17 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
         TestUtils.assertArraysEqual(randomBytes, convertInputStreamToByteArray(inputStream));
     }
 
+    @Test
+    public void inputStreamConsistentReadControlNullVersion() {
+        int length = Constants.KB;
+        byte[] randomBytes = getRandomByteArray(length);
+        bc.upload(new ByteArrayInputStream(randomBytes), length, true);
+
+        // Version ID set but not a versioned account
+        assertThrows(UnsupportedOperationException.class, () -> bc.openInputStream(new BlobInputStreamOptions()
+            .setConsistentReadControl(ConsistentReadControl.VERSION_ID)));
+    }
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void inputStreamConsistentReadControlETagUserProvidesVersionClientChoosesETag() {
