@@ -23,7 +23,7 @@ public final class ApplicationTypeVersionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"appPackageUrl\":\"nwy\"},\"location\":\"zdmovzv\",\"tags\":{\"z\":\"awzqadfl\",\"ndtic\":\"riglaec\",\"mldgxobfirc\":\"kpvzmlq\"},\"id\":\"pkc\",\"name\":\"ayzri\",\"type\":\"khyawfvjlboxqv\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"appPackageUrl\":\"vuqeqvldspast\"},\"location\":\"kkdmfl\",\"tags\":{\"ril\":\"tmjlx\",\"ktwkuziyc\":\"zapeewchpx\",\"qedcgzulwm\":\"levufuztcktyhj\"},\"id\":\"qzz\",\"name\":\"rjvpglydzgkrvqee\",\"type\":\"toepryu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,16 @@ public final class ApplicationTypeVersionsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ApplicationTypeVersionResource response = manager.applicationTypeVersions()
-            .define("mbtrnegvmnvu")
-            .withExistingApplicationType("xfzwi", "vwzjbhyz", "xjrk")
-            .withRegion("dmflv")
-            .withTags(mapOf("pxlktwkuziycsl", "mjlxrrilozapeewc", "uztcktyhjtqed", "vu"))
-            .withAppPackageUrl("tjb")
+            .define("g")
+            .withExistingApplicationType("fcvlerch", "qbmfpjbabwidf", "xsspuunnoxyhk")
+            .withRegion("jxxkzbrmsgei")
+            .withTags(mapOf("bzo", "ykzkdncjdxo", "wyrpgogtqxepnyl", "gculap", "tlvofq", "fuajly"))
+            .withAppPackageUrl("aaewdaomdjv")
             .create();
 
-        Assertions.assertEquals("zdmovzv", response.location());
-        Assertions.assertEquals("awzqadfl", response.tags().get("z"));
-        Assertions.assertEquals("nwy", response.appPackageUrl());
+        Assertions.assertEquals("kkdmfl", response.location());
+        Assertions.assertEquals("tmjlx", response.tags().get("ril"));
+        Assertions.assertEquals("vuqeqvldspast", response.appPackageUrl());
     }
 
     // Use "Map.of" if available

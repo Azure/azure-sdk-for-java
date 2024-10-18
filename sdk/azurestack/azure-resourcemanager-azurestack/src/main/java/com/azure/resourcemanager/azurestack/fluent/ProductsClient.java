@@ -16,11 +16,13 @@ import com.azure.resourcemanager.azurestack.fluent.models.ProductLogInner;
 import com.azure.resourcemanager.azurestack.models.DeviceConfiguration;
 import com.azure.resourcemanager.azurestack.models.MarketplaceProductLogUpdate;
 
-/** An instance of this class provides access to all the operations defined in ProductsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProductsClient.
+ */
 public interface ProductsClient {
     /**
      * Returns a list of products.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33,7 +35,7 @@ public interface ProductsClient {
 
     /**
      * Returns a list of products.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param context The context to associate with this operation.
@@ -47,7 +49,7 @@ public interface ProductsClient {
 
     /**
      * Returns the specified product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
@@ -58,12 +60,12 @@ public interface ProductsClient {
      * @return product information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProductInner> getWithResponse(
-        String resourceGroup, String registrationName, String productName, Context context);
+    Response<ProductInner> getWithResponse(String resourceGroup, String registrationName, String productName,
+        Context context);
 
     /**
      * Returns the specified product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
@@ -77,7 +79,7 @@ public interface ProductsClient {
 
     /**
      * Returns the extended properties of a product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
@@ -85,16 +87,16 @@ public interface ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extended description about the product required for installing it into Azure Stack along with {@link
-     *     Response}.
+     * @return extended description about the product required for installing it into Azure Stack along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExtendedProductInner> listDetailsWithResponse(
-        String resourceGroup, String registrationName, String productName, Context context);
+    Response<ExtendedProductInner> listDetailsWithResponse(String resourceGroup, String registrationName,
+        String productName, Context context);
 
     /**
      * Returns the extended properties of a product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
@@ -108,7 +110,7 @@ public interface ProductsClient {
 
     /**
      * Returns a list of products.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
@@ -120,16 +122,12 @@ public interface ProductsClient {
      * @return pageable list of products along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProductListInner> listProductsWithResponse(
-        String resourceGroup,
-        String registrationName,
-        String productName,
-        DeviceConfiguration deviceConfiguration,
-        Context context);
+    Response<ProductListInner> listProductsWithResponse(String resourceGroup, String registrationName,
+        String productName, DeviceConfiguration deviceConfiguration, Context context);
 
     /**
      * Returns a list of products.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
@@ -143,7 +141,7 @@ public interface ProductsClient {
 
     /**
      * Returns a list of products.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
@@ -155,16 +153,12 @@ public interface ProductsClient {
      * @return pageable list of products along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProductListInner> getProductsWithResponse(
-        String resourceGroup,
-        String registrationName,
-        String productName,
-        DeviceConfiguration deviceConfiguration,
-        Context context);
+    Response<ProductListInner> getProductsWithResponse(String resourceGroup, String registrationName,
+        String productName, DeviceConfiguration deviceConfiguration, Context context);
 
     /**
      * Returns a list of products.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
@@ -178,7 +172,7 @@ public interface ProductsClient {
 
     /**
      * Returns the specified product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
@@ -190,16 +184,12 @@ public interface ProductsClient {
      * @return product information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProductInner> getProductWithResponse(
-        String resourceGroup,
-        String registrationName,
-        String productName,
-        DeviceConfiguration deviceConfiguration,
-        Context context);
+    Response<ProductInner> getProductWithResponse(String resourceGroup, String registrationName, String productName,
+        DeviceConfiguration deviceConfiguration, Context context);
 
     /**
      * Returns the specified product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
@@ -213,7 +203,7 @@ public interface ProductsClient {
 
     /**
      * Returns the specified product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
@@ -225,16 +215,12 @@ public interface ProductsClient {
      * @return product action log along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProductLogInner> uploadLogWithResponse(
-        String resourceGroup,
-        String registrationName,
-        String productName,
-        MarketplaceProductLogUpdate marketplaceProductLogUpdate,
-        Context context);
+    Response<ProductLogInner> uploadLogWithResponse(String resourceGroup, String registrationName, String productName,
+        MarketplaceProductLogUpdate marketplaceProductLogUpdate, Context context);
 
     /**
      * Returns the specified product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.

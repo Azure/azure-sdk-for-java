@@ -6,68 +6,41 @@ package com.azure.resourcemanager.logic.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.logic.LogicManager;
 import com.azure.resourcemanager.logic.models.IntegrationAccountPartner;
 import com.azure.resourcemanager.logic.models.PartnerType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IntegrationAccountPartnersListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"partnerType\":\"NotSpecified\",\"createdTime\":\"2021-06-21T12:40:31Z\",\"changedTime\":\"2021-02-01T22:30:24Z\",\"metadata\":\"datajey\",\"content\":{\"b2b\":{\"businessIdentities\":[{\"qualifier\":\"ponkr\",\"value\":\"pyediudskca\"},{\"qualifier\":\"kyoou\",\"value\":\"qp\"},{\"qualifier\":\"jrb\",\"value\":\"ayduzzyxlyuw\"},{\"qualifier\":\"wzufmyanectf\",\"value\":\"bfgmgho\"}]}}},\"location\":\"ox\",\"tags\":{\"lqlib\":\"tsrvqcxrrkcv\"},\"id\":\"mfn\",\"name\":\"zs\",\"type\":\"hkkktlodsyyzmf\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"partnerType\":\"B2B\",\"createdTime\":\"2021-03-17T23:03Z\",\"changedTime\":\"2021-06-18T08:43:06Z\",\"metadata\":\"datallmqiyne\",\"content\":{}},\"location\":\"ellnkkii\",\"tags\":{\"uaxroqvqpilrgu\":\"tumxpymdj\"},\"id\":\"canlduwzorxs\",\"name\":\"mxaqklxym\",\"type\":\"kqv\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        LogicManager manager = LogicManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<IntegrationAccountPartner> response = manager.integrationAccountPartners()
+            .list("tdkwibdrivedsh", "xlhec", 328674659, "mwwm", com.azure.core.util.Context.NONE);
 
-        LogicManager manager =
-            LogicManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<IntegrationAccountPartner> response =
-            manager
-                .integrationAccountPartners()
-                .list("sqtbxxniu", "sdzhgbdgzpagsec", 2014409802, "db", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("ellnkkii", response.iterator().next().location());
-        Assertions.assertEquals("tumxpymdj", response.iterator().next().tags().get("uaxroqvqpilrgu"));
-        Assertions.assertEquals(PartnerType.B2B, response.iterator().next().partnerType());
+        Assertions.assertEquals("ox", response.iterator().next().location());
+        Assertions.assertEquals("tsrvqcxrrkcv", response.iterator().next().tags().get("lqlib"));
+        Assertions.assertEquals(PartnerType.NOT_SPECIFIED, response.iterator().next().partnerType());
+        Assertions.assertEquals("ponkr",
+            response.iterator().next().content().b2B().businessIdentities().get(0).qualifier());
+        Assertions.assertEquals("pyediudskca",
+            response.iterator().next().content().b2B().businessIdentities().get(0).value());
     }
 }

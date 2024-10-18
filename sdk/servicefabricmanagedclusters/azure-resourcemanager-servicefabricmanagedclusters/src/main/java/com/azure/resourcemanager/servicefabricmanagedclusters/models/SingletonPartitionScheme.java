@@ -43,7 +43,6 @@ public final class SingletonPartitionScheme extends Partition {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -11,12 +11,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.peering.fluent.models.PeeringRegisteredPrefixInner;
 
-/** An instance of this class provides access to all the operations defined in RegisteredPrefixesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RegisteredPrefixesClient.
+ */
 public interface RegisteredPrefixesClient {
     /**
      * Gets an existing registered prefix with the specified name under the given subscription, resource group and
      * peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredPrefixName The name of the registered prefix.
@@ -25,16 +27,16 @@ public interface RegisteredPrefixesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing registered prefix with the specified name under the given subscription, resource group and
-     *     peering along with {@link Response}.
+     * peering along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PeeringRegisteredPrefixInner> getWithResponse(
-        String resourceGroupName, String peeringName, String registeredPrefixName, Context context);
+    Response<PeeringRegisteredPrefixInner> getWithResponse(String resourceGroupName, String peeringName,
+        String registeredPrefixName, Context context);
 
     /**
      * Gets an existing registered prefix with the specified name under the given subscription, resource group and
      * peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredPrefixName The name of the registered prefix.
@@ -42,14 +44,14 @@ public interface RegisteredPrefixesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing registered prefix with the specified name under the given subscription, resource group and
-     *     peering.
+     * peering.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PeeringRegisteredPrefixInner get(String resourceGroupName, String peeringName, String registeredPrefixName);
 
     /**
      * Creates a new registered prefix with the specified name under the given subscription, resource group and peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredPrefixName The name of the registered prefix.
@@ -61,16 +63,12 @@ public interface RegisteredPrefixesClient {
      * @return the customer's prefix that is registered by the peering service provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PeeringRegisteredPrefixInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String peeringName,
-        String registeredPrefixName,
-        PeeringRegisteredPrefixInner registeredPrefix,
-        Context context);
+    Response<PeeringRegisteredPrefixInner> createOrUpdateWithResponse(String resourceGroupName, String peeringName,
+        String registeredPrefixName, PeeringRegisteredPrefixInner registeredPrefix, Context context);
 
     /**
      * Creates a new registered prefix with the specified name under the given subscription, resource group and peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredPrefixName The name of the registered prefix.
@@ -81,16 +79,13 @@ public interface RegisteredPrefixesClient {
      * @return the customer's prefix that is registered by the peering service provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PeeringRegisteredPrefixInner createOrUpdate(
-        String resourceGroupName,
-        String peeringName,
-        String registeredPrefixName,
-        PeeringRegisteredPrefixInner registeredPrefix);
+    PeeringRegisteredPrefixInner createOrUpdate(String resourceGroupName, String peeringName,
+        String registeredPrefixName, PeeringRegisteredPrefixInner registeredPrefix);
 
     /**
      * Deletes an existing registered prefix with the specified name under the given subscription, resource group and
      * peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredPrefixName The name of the registered prefix.
@@ -101,13 +96,13 @@ public interface RegisteredPrefixesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String peeringName, String registeredPrefixName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String peeringName, String registeredPrefixName,
+        Context context);
 
     /**
      * Deletes an existing registered prefix with the specified name under the given subscription, resource group and
      * peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredPrefixName The name of the registered prefix.
@@ -120,7 +115,7 @@ public interface RegisteredPrefixesClient {
 
     /**
      * Lists all registered prefixes under the given subscription, resource group and peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -133,7 +128,7 @@ public interface RegisteredPrefixesClient {
 
     /**
      * Lists all registered prefixes under the given subscription, resource group and peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param context The context to associate with this operation.
@@ -143,6 +138,6 @@ public interface RegisteredPrefixesClient {
      * @return the paginated list of peering registered prefixes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PeeringRegisteredPrefixInner> listByPeering(
-        String resourceGroupName, String peeringName, Context context);
+    PagedIterable<PeeringRegisteredPrefixInner> listByPeering(String resourceGroupName, String peeringName,
+        Context context);
 }

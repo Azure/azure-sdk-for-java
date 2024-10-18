@@ -13,66 +13,58 @@ import org.junit.jupiter.api.Assertions;
 public final class PerformanceTierPropertiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PerformanceTierPropertiesInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"hqyudxorrqnbpoc\",\"maxBackupRetentionDays\":2085551487,\"minBackupRetentionDays\":2041227856,\"maxStorageMB\":688230720,\"minLargeStorageMB\":1661944066,\"maxLargeStorageMB\":983918139,\"minStorageMB\":1045892554,\"serviceLevelObjectives\":[{\"id\":\"mvvd\",\"edition\":\"atkpnp\",\"vCore\":63177450,\"hardwareGeneration\":\"xbczwtruwiqz\",\"maxBackupRetentionDays\":124611793,\"minBackupRetentionDays\":1378529430,\"maxStorageMB\":863677105,\"minStorageMB\":79438477}]}")
-                .toObject(PerformanceTierPropertiesInner.class);
-        Assertions.assertEquals("hqyudxorrqnbpoc", model.id());
-        Assertions.assertEquals(2085551487, model.maxBackupRetentionDays());
-        Assertions.assertEquals(2041227856, model.minBackupRetentionDays());
-        Assertions.assertEquals(688230720, model.maxStorageMB());
-        Assertions.assertEquals(1661944066, model.minLargeStorageMB());
-        Assertions.assertEquals(983918139, model.maxLargeStorageMB());
-        Assertions.assertEquals(1045892554, model.minStorageMB());
-        Assertions.assertEquals("mvvd", model.serviceLevelObjectives().get(0).id());
-        Assertions.assertEquals("atkpnp", model.serviceLevelObjectives().get(0).edition());
-        Assertions.assertEquals(63177450, model.serviceLevelObjectives().get(0).vCore());
-        Assertions.assertEquals("xbczwtruwiqz", model.serviceLevelObjectives().get(0).hardwareGeneration());
-        Assertions.assertEquals(124611793, model.serviceLevelObjectives().get(0).maxBackupRetentionDays());
-        Assertions.assertEquals(1378529430, model.serviceLevelObjectives().get(0).minBackupRetentionDays());
-        Assertions.assertEquals(863677105, model.serviceLevelObjectives().get(0).maxStorageMB());
-        Assertions.assertEquals(79438477, model.serviceLevelObjectives().get(0).minStorageMB());
+        PerformanceTierPropertiesInner model = BinaryData.fromString(
+            "{\"id\":\"sfcpkvxodpuozm\",\"maxBackupRetentionDays\":466984415,\"minBackupRetentionDays\":1008080043,\"maxStorageMB\":1466756629,\"minLargeStorageMB\":119879881,\"maxLargeStorageMB\":906864290,\"minStorageMB\":1852056449,\"serviceLevelObjectives\":[{\"id\":\"okktwhrdxw\",\"edition\":\"wqsmbsur\",\"vCore\":1524544291,\"hardwareGeneration\":\"o\",\"maxBackupRetentionDays\":1010959661,\"minBackupRetentionDays\":994913433,\"maxStorageMB\":908271116,\"minStorageMB\":57544677}]}")
+            .toObject(PerformanceTierPropertiesInner.class);
+        Assertions.assertEquals("sfcpkvxodpuozm", model.id());
+        Assertions.assertEquals(466984415, model.maxBackupRetentionDays());
+        Assertions.assertEquals(1008080043, model.minBackupRetentionDays());
+        Assertions.assertEquals(1466756629, model.maxStorageMB());
+        Assertions.assertEquals(119879881, model.minLargeStorageMB());
+        Assertions.assertEquals(906864290, model.maxLargeStorageMB());
+        Assertions.assertEquals(1852056449, model.minStorageMB());
+        Assertions.assertEquals("okktwhrdxw", model.serviceLevelObjectives().get(0).id());
+        Assertions.assertEquals("wqsmbsur", model.serviceLevelObjectives().get(0).edition());
+        Assertions.assertEquals(1524544291, model.serviceLevelObjectives().get(0).vCore());
+        Assertions.assertEquals("o", model.serviceLevelObjectives().get(0).hardwareGeneration());
+        Assertions.assertEquals(1010959661, model.serviceLevelObjectives().get(0).maxBackupRetentionDays());
+        Assertions.assertEquals(994913433, model.serviceLevelObjectives().get(0).minBackupRetentionDays());
+        Assertions.assertEquals(908271116, model.serviceLevelObjectives().get(0).maxStorageMB());
+        Assertions.assertEquals(57544677, model.serviceLevelObjectives().get(0).minStorageMB());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PerformanceTierPropertiesInner model =
-            new PerformanceTierPropertiesInner()
-                .withId("hqyudxorrqnbpoc")
-                .withMaxBackupRetentionDays(2085551487)
-                .withMinBackupRetentionDays(2041227856)
-                .withMaxStorageMB(688230720)
-                .withMinLargeStorageMB(1661944066)
-                .withMaxLargeStorageMB(983918139)
-                .withMinStorageMB(1045892554)
-                .withServiceLevelObjectives(
-                    Arrays
-                        .asList(
-                            new PerformanceTierServiceLevelObjectives()
-                                .withId("mvvd")
-                                .withEdition("atkpnp")
-                                .withVCore(63177450)
-                                .withHardwareGeneration("xbczwtruwiqz")
-                                .withMaxBackupRetentionDays(124611793)
-                                .withMinBackupRetentionDays(1378529430)
-                                .withMaxStorageMB(863677105)
-                                .withMinStorageMB(79438477)));
+        PerformanceTierPropertiesInner model = new PerformanceTierPropertiesInner().withId("sfcpkvxodpuozm")
+            .withMaxBackupRetentionDays(466984415)
+            .withMinBackupRetentionDays(1008080043)
+            .withMaxStorageMB(1466756629)
+            .withMinLargeStorageMB(119879881)
+            .withMaxLargeStorageMB(906864290)
+            .withMinStorageMB(1852056449)
+            .withServiceLevelObjectives(Arrays.asList(new PerformanceTierServiceLevelObjectives().withId("okktwhrdxw")
+                .withEdition("wqsmbsur")
+                .withVCore(1524544291)
+                .withHardwareGeneration("o")
+                .withMaxBackupRetentionDays(1010959661)
+                .withMinBackupRetentionDays(994913433)
+                .withMaxStorageMB(908271116)
+                .withMinStorageMB(57544677)));
         model = BinaryData.fromObject(model).toObject(PerformanceTierPropertiesInner.class);
-        Assertions.assertEquals("hqyudxorrqnbpoc", model.id());
-        Assertions.assertEquals(2085551487, model.maxBackupRetentionDays());
-        Assertions.assertEquals(2041227856, model.minBackupRetentionDays());
-        Assertions.assertEquals(688230720, model.maxStorageMB());
-        Assertions.assertEquals(1661944066, model.minLargeStorageMB());
-        Assertions.assertEquals(983918139, model.maxLargeStorageMB());
-        Assertions.assertEquals(1045892554, model.minStorageMB());
-        Assertions.assertEquals("mvvd", model.serviceLevelObjectives().get(0).id());
-        Assertions.assertEquals("atkpnp", model.serviceLevelObjectives().get(0).edition());
-        Assertions.assertEquals(63177450, model.serviceLevelObjectives().get(0).vCore());
-        Assertions.assertEquals("xbczwtruwiqz", model.serviceLevelObjectives().get(0).hardwareGeneration());
-        Assertions.assertEquals(124611793, model.serviceLevelObjectives().get(0).maxBackupRetentionDays());
-        Assertions.assertEquals(1378529430, model.serviceLevelObjectives().get(0).minBackupRetentionDays());
-        Assertions.assertEquals(863677105, model.serviceLevelObjectives().get(0).maxStorageMB());
-        Assertions.assertEquals(79438477, model.serviceLevelObjectives().get(0).minStorageMB());
+        Assertions.assertEquals("sfcpkvxodpuozm", model.id());
+        Assertions.assertEquals(466984415, model.maxBackupRetentionDays());
+        Assertions.assertEquals(1008080043, model.minBackupRetentionDays());
+        Assertions.assertEquals(1466756629, model.maxStorageMB());
+        Assertions.assertEquals(119879881, model.minLargeStorageMB());
+        Assertions.assertEquals(906864290, model.maxLargeStorageMB());
+        Assertions.assertEquals(1852056449, model.minStorageMB());
+        Assertions.assertEquals("okktwhrdxw", model.serviceLevelObjectives().get(0).id());
+        Assertions.assertEquals("wqsmbsur", model.serviceLevelObjectives().get(0).edition());
+        Assertions.assertEquals(1524544291, model.serviceLevelObjectives().get(0).vCore());
+        Assertions.assertEquals("o", model.serviceLevelObjectives().get(0).hardwareGeneration());
+        Assertions.assertEquals(1010959661, model.serviceLevelObjectives().get(0).maxBackupRetentionDays());
+        Assertions.assertEquals(994913433, model.serviceLevelObjectives().get(0).minBackupRetentionDays());
+        Assertions.assertEquals(908271116, model.serviceLevelObjectives().get(0).maxStorageMB());
+        Assertions.assertEquals(57544677, model.serviceLevelObjectives().get(0).minStorageMB());
     }
 }

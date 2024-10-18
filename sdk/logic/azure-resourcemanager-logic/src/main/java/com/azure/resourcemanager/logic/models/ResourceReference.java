@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The resource reference. */
+/**
+ * The resource reference.
+ */
 @Fluent
-public class ResourceReference {
+public class ResourceReference implements JsonSerializable<ResourceReference> {
     /*
      * The resource id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Gets the resource name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Gets the resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ResourceReference class. */
+    /**
+     * Creates an instance of ResourceReference class.
+     */
     public ResourceReference() {
     }
 
     /**
      * Get the id property: The resource id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -43,7 +48,7 @@ public class ResourceReference {
 
     /**
      * Set the id property: The resource id.
-     *
+     * 
      * @param id the id value to set.
      * @return the ResourceReference object itself.
      */
@@ -54,7 +59,7 @@ public class ResourceReference {
 
     /**
      * Get the name property: Gets the resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -62,8 +67,19 @@ public class ResourceReference {
     }
 
     /**
+     * Set the name property: Gets the resource name.
+     * 
+     * @param name the name value to set.
+     * @return the ResourceReference object itself.
+     */
+    ResourceReference withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
      * Get the type property: Gets the resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -71,10 +87,61 @@ public class ResourceReference {
     }
 
     /**
+     * Set the type property: Gets the resource type.
+     * 
+     * @param type the type value to set.
+     * @return the ResourceReference object itself.
+     */
+    ResourceReference withType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceReference if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceReference.
+     */
+    public static ResourceReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceReference deserializedResourceReference = new ResourceReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedResourceReference.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedResourceReference.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedResourceReference.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceReference;
+        });
     }
 }

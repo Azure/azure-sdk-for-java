@@ -23,9 +23,9 @@ import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.fabric.fluent.FabricClient;
+import com.azure.resourcemanager.fabric.fluent.FabricManagementClient;
 import com.azure.resourcemanager.fabric.implementation.FabricCapacitiesImpl;
-import com.azure.resourcemanager.fabric.implementation.FabricClientBuilder;
+import com.azure.resourcemanager.fabric.implementation.FabricManagementClientBuilder;
 import com.azure.resourcemanager.fabric.implementation.OperationsImpl;
 import com.azure.resourcemanager.fabric.models.FabricCapacities;
 import com.azure.resourcemanager.fabric.models.Operations;
@@ -44,12 +44,12 @@ public final class FabricManager {
 
     private Operations operations;
 
-    private final FabricClient clientObject;
+    private final FabricManagementClient clientObject;
 
     private FabricManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new FabricClientBuilder().pipeline(httpPipeline)
+        this.clientObject = new FabricManagementClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
@@ -279,12 +279,12 @@ public final class FabricManager {
     }
 
     /**
-     * Gets wrapped service client FabricClient providing direct access to the underlying auto-generated API
+     * Gets wrapped service client FabricManagementClient providing direct access to the underlying auto-generated API
      * implementation, based on Azure REST API.
      * 
-     * @return Wrapped service client FabricClient.
+     * @return Wrapped service client FabricManagementClient.
      */
-    public FabricClient serviceClient() {
+    public FabricManagementClient serviceClient() {
         return this.clientObject;
     }
 }

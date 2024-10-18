@@ -26,6 +26,11 @@ public final class LogAnalyticsConfiguration implements JsonSerializable<LogAnal
      */
     private String sharedKey;
 
+    /*
+     * Boolean indicating whether to parse json string log into dynamic json columns
+     */
+    private Boolean dynamicJsonColumns;
+
     /**
      * Creates an instance of LogAnalyticsConfiguration class.
      */
@@ -73,6 +78,28 @@ public final class LogAnalyticsConfiguration implements JsonSerializable<LogAnal
     }
 
     /**
+     * Get the dynamicJsonColumns property: Boolean indicating whether to parse json string log into dynamic json
+     * columns.
+     * 
+     * @return the dynamicJsonColumns value.
+     */
+    public Boolean dynamicJsonColumns() {
+        return this.dynamicJsonColumns;
+    }
+
+    /**
+     * Set the dynamicJsonColumns property: Boolean indicating whether to parse json string log into dynamic json
+     * columns.
+     * 
+     * @param dynamicJsonColumns the dynamicJsonColumns value to set.
+     * @return the LogAnalyticsConfiguration object itself.
+     */
+    public LogAnalyticsConfiguration withDynamicJsonColumns(Boolean dynamicJsonColumns) {
+        this.dynamicJsonColumns = dynamicJsonColumns;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -88,6 +115,7 @@ public final class LogAnalyticsConfiguration implements JsonSerializable<LogAnal
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("customerId", this.customerId);
         jsonWriter.writeStringField("sharedKey", this.sharedKey);
+        jsonWriter.writeBooleanField("dynamicJsonColumns", this.dynamicJsonColumns);
         return jsonWriter.writeEndObject();
     }
 
@@ -110,6 +138,9 @@ public final class LogAnalyticsConfiguration implements JsonSerializable<LogAnal
                     deserializedLogAnalyticsConfiguration.customerId = reader.getString();
                 } else if ("sharedKey".equals(fieldName)) {
                     deserializedLogAnalyticsConfiguration.sharedKey = reader.getString();
+                } else if ("dynamicJsonColumns".equals(fieldName)) {
+                    deserializedLogAnalyticsConfiguration.dynamicJsonColumns
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

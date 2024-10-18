@@ -6,32 +6,38 @@ package com.azure.resourcemanager.storagepool.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagepool.fluent.models.StoragePoolRPOperationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of operations supported by the RP. */
+/**
+ * List of operations supported by the RP.
+ */
 @Fluent
-public final class StoragePoolOperationListResult {
+public final class StoragePoolOperationListResult implements JsonSerializable<StoragePoolOperationListResult> {
     /*
      * An array of operations supported by the StoragePool RP.
      */
-    @JsonProperty(value = "value", required = true)
     private List<StoragePoolRPOperationInner> value;
 
     /*
      * URI to fetch the next section of the paginated response.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of StoragePoolOperationListResult class. */
+    /**
+     * Creates an instance of StoragePoolOperationListResult class.
+     */
     public StoragePoolOperationListResult() {
     }
 
     /**
      * Get the value property: An array of operations supported by the StoragePool RP.
-     *
+     * 
      * @return the value value.
      */
     public List<StoragePoolRPOperationInner> value() {
@@ -40,7 +46,7 @@ public final class StoragePoolOperationListResult {
 
     /**
      * Set the value property: An array of operations supported by the StoragePool RP.
-     *
+     * 
      * @param value the value value to set.
      * @return the StoragePoolOperationListResult object itself.
      */
@@ -51,7 +57,7 @@ public final class StoragePoolOperationListResult {
 
     /**
      * Get the nextLink property: URI to fetch the next section of the paginated response.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +66,7 @@ public final class StoragePoolOperationListResult {
 
     /**
      * Set the nextLink property: URI to fetch the next section of the paginated response.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the StoragePoolOperationListResult object itself.
      */
@@ -71,19 +77,61 @@ public final class StoragePoolOperationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model StoragePoolOperationListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model StoragePoolOperationListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StoragePoolOperationListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StoragePoolOperationListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StoragePoolOperationListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StoragePoolOperationListResult.
+     */
+    public static StoragePoolOperationListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StoragePoolOperationListResult deserializedStoragePoolOperationListResult
+                = new StoragePoolOperationListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<StoragePoolRPOperationInner> value
+                        = reader.readArray(reader1 -> StoragePoolRPOperationInner.fromJson(reader1));
+                    deserializedStoragePoolOperationListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedStoragePoolOperationListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStoragePoolOperationListResult;
+        });
+    }
 }

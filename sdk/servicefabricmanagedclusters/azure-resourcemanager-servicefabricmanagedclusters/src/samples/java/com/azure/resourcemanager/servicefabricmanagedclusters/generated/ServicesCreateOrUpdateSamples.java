@@ -26,8 +26,8 @@ import java.util.Map;
 public final class ServicesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/stable/2024-04-01/examples/
-     * ServicePutOperation_example_min.json
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * examples/ServicePutOperation_example_min.json
      */
     /**
      * Sample code: Put a service with minimum parameters.
@@ -48,8 +48,8 @@ public final class ServicesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/stable/2024-04-01/examples/
-     * ServicePutOperation_example_max.json
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * examples/ServicePutOperation_example_max.json
      */
     /**
      * Sample code: Put a service with maximum parameters.

@@ -62,7 +62,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to PeeringManager. Peering Client. */
+/**
+ * Entry point to PeeringManager.
+ * Peering Client.
+ */
 public final class PeeringManager {
     private CdnPeeringPrefixes cdnPeeringPrefixes;
 
@@ -99,18 +102,16 @@ public final class PeeringManager {
     private PeeringManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new PeeringManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new PeeringManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
      * Creates an instance of Peering service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the Peering service API instance.
@@ -123,7 +124,7 @@ public final class PeeringManager {
 
     /**
      * Creates an instance of Peering service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the Peering service API instance.
@@ -136,14 +137,16 @@ public final class PeeringManager {
 
     /**
      * Gets a Configurable instance that can be used to create PeeringManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new PeeringManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -215,8 +218,8 @@ public final class PeeringManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -233,8 +236,8 @@ public final class PeeringManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -254,15 +257,13 @@ public final class PeeringManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.peering")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -287,38 +288,28 @@ public final class PeeringManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new PeeringManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of CdnPeeringPrefixes.
-     *
+     * 
      * @return Resource collection API of CdnPeeringPrefixes.
      */
     public CdnPeeringPrefixes cdnPeeringPrefixes() {
@@ -330,7 +321,7 @@ public final class PeeringManager {
 
     /**
      * Gets the resource collection API of ResourceProviders.
-     *
+     * 
      * @return Resource collection API of ResourceProviders.
      */
     public ResourceProviders resourceProviders() {
@@ -342,7 +333,7 @@ public final class PeeringManager {
 
     /**
      * Gets the resource collection API of LegacyPeerings.
-     *
+     * 
      * @return Resource collection API of LegacyPeerings.
      */
     public LegacyPeerings legacyPeerings() {
@@ -354,7 +345,7 @@ public final class PeeringManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -366,7 +357,7 @@ public final class PeeringManager {
 
     /**
      * Gets the resource collection API of PeerAsns. It manages PeerAsn.
-     *
+     * 
      * @return Resource collection API of PeerAsns.
      */
     public PeerAsns peerAsns() {
@@ -378,7 +369,7 @@ public final class PeeringManager {
 
     /**
      * Gets the resource collection API of PeeringLocations.
-     *
+     * 
      * @return Resource collection API of PeeringLocations.
      */
     public PeeringLocations peeringLocations() {
@@ -390,7 +381,7 @@ public final class PeeringManager {
 
     /**
      * Gets the resource collection API of RegisteredAsns. It manages PeeringRegisteredAsn.
-     *
+     * 
      * @return Resource collection API of RegisteredAsns.
      */
     public RegisteredAsns registeredAsns() {
@@ -402,7 +393,7 @@ public final class PeeringManager {
 
     /**
      * Gets the resource collection API of RegisteredPrefixes. It manages PeeringRegisteredPrefix.
-     *
+     * 
      * @return Resource collection API of RegisteredPrefixes.
      */
     public RegisteredPrefixes registeredPrefixes() {
@@ -414,7 +405,7 @@ public final class PeeringManager {
 
     /**
      * Gets the resource collection API of Peerings. It manages Peering.
-     *
+     * 
      * @return Resource collection API of Peerings.
      */
     public Peerings peerings() {
@@ -426,7 +417,7 @@ public final class PeeringManager {
 
     /**
      * Gets the resource collection API of ReceivedRoutes.
-     *
+     * 
      * @return Resource collection API of ReceivedRoutes.
      */
     public ReceivedRoutes receivedRoutes() {
@@ -438,33 +429,33 @@ public final class PeeringManager {
 
     /**
      * Gets the resource collection API of PeeringServiceCountries.
-     *
+     * 
      * @return Resource collection API of PeeringServiceCountries.
      */
     public PeeringServiceCountries peeringServiceCountries() {
         if (this.peeringServiceCountries == null) {
-            this.peeringServiceCountries =
-                new PeeringServiceCountriesImpl(clientObject.getPeeringServiceCountries(), this);
+            this.peeringServiceCountries
+                = new PeeringServiceCountriesImpl(clientObject.getPeeringServiceCountries(), this);
         }
         return peeringServiceCountries;
     }
 
     /**
      * Gets the resource collection API of PeeringServiceLocations.
-     *
+     * 
      * @return Resource collection API of PeeringServiceLocations.
      */
     public PeeringServiceLocations peeringServiceLocations() {
         if (this.peeringServiceLocations == null) {
-            this.peeringServiceLocations =
-                new PeeringServiceLocationsImpl(clientObject.getPeeringServiceLocations(), this);
+            this.peeringServiceLocations
+                = new PeeringServiceLocationsImpl(clientObject.getPeeringServiceLocations(), this);
         }
         return peeringServiceLocations;
     }
 
     /**
      * Gets the resource collection API of Prefixes. It manages PeeringServicePrefix.
-     *
+     * 
      * @return Resource collection API of Prefixes.
      */
     public Prefixes prefixes() {
@@ -476,20 +467,20 @@ public final class PeeringManager {
 
     /**
      * Gets the resource collection API of PeeringServiceProviders.
-     *
+     * 
      * @return Resource collection API of PeeringServiceProviders.
      */
     public PeeringServiceProviders peeringServiceProviders() {
         if (this.peeringServiceProviders == null) {
-            this.peeringServiceProviders =
-                new PeeringServiceProvidersImpl(clientObject.getPeeringServiceProviders(), this);
+            this.peeringServiceProviders
+                = new PeeringServiceProvidersImpl(clientObject.getPeeringServiceProviders(), this);
         }
         return peeringServiceProviders;
     }
 
     /**
      * Gets the resource collection API of PeeringServices. It manages PeeringService.
-     *
+     * 
      * @return Resource collection API of PeeringServices.
      */
     public PeeringServices peeringServices() {
@@ -500,8 +491,10 @@ public final class PeeringManager {
     }
 
     /**
-     * @return Wrapped service client PeeringManagementClient providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets wrapped service client PeeringManagementClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client PeeringManagementClient.
      */
     public PeeringManagementClient serviceClient() {
         return this.clientObject;

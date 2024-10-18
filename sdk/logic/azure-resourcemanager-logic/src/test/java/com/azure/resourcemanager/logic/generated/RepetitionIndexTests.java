@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class RepetitionIndexTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RepetitionIndex model =
-            BinaryData.fromString("{\"scopeName\":\"bnw\",\"itemIndex\":524895743}").toObject(RepetitionIndex.class);
-        Assertions.assertEquals("bnw", model.scopeName());
-        Assertions.assertEquals(524895743, model.itemIndex());
+        RepetitionIndex model = BinaryData.fromString("{\"scopeName\":\"nbsazejjoqkag\",\"itemIndex\":959686247}")
+            .toObject(RepetitionIndex.class);
+        Assertions.assertEquals("nbsazejjoqkag", model.scopeName());
+        Assertions.assertEquals(959686247, model.itemIndex());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RepetitionIndex model = new RepetitionIndex().withScopeName("bnw").withItemIndex(524895743);
+        RepetitionIndex model = new RepetitionIndex().withScopeName("nbsazejjoqkag").withItemIndex(959686247);
         model = BinaryData.fromObject(model).toObject(RepetitionIndex.class);
-        Assertions.assertEquals("bnw", model.scopeName());
-        Assertions.assertEquals(524895743, model.itemIndex());
+        Assertions.assertEquals("nbsazejjoqkag", model.scopeName());
+        Assertions.assertEquals(959686247, model.itemIndex());
     }
 }

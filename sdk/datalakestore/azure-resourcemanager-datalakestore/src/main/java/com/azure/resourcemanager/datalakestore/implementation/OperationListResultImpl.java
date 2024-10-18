@@ -15,8 +15,7 @@ public final class OperationListResultImpl implements OperationListResult {
 
     private final com.azure.resourcemanager.datalakestore.DataLakeStoreManager serviceManager;
 
-    OperationListResultImpl(
-        OperationListResultInner innerObject,
+    OperationListResultImpl(OperationListResultInner innerObject,
         com.azure.resourcemanager.datalakestore.DataLakeStoreManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

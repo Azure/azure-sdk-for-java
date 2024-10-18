@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IntegrationAccountPartners. */
+/**
+ * Resource collection API of IntegrationAccountPartners.
+ */
 public interface IntegrationAccountPartners {
     /**
      * Gets a list of integration account partners.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface IntegrationAccountPartners {
 
     /**
      * Gets a list of integration account partners.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param top The number of items to be included in the result.
@@ -35,12 +37,12 @@ public interface IntegrationAccountPartners {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of integration account partners as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<IntegrationAccountPartner> list(
-        String resourceGroupName, String integrationAccountName, Integer top, String filter, Context context);
+    PagedIterable<IntegrationAccountPartner> list(String resourceGroupName, String integrationAccountName, Integer top,
+        String filter, Context context);
 
     /**
      * Gets an integration account partner.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param partnerName The integration account partner name.
@@ -50,12 +52,12 @@ public interface IntegrationAccountPartners {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an integration account partner along with {@link Response}.
      */
-    Response<IntegrationAccountPartner> getWithResponse(
-        String resourceGroupName, String integrationAccountName, String partnerName, Context context);
+    Response<IntegrationAccountPartner> getWithResponse(String resourceGroupName, String integrationAccountName,
+        String partnerName, Context context);
 
     /**
      * Gets an integration account partner.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param partnerName The integration account partner name.
@@ -68,7 +70,7 @@ public interface IntegrationAccountPartners {
 
     /**
      * Deletes an integration account partner.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param partnerName The integration account partner name.
@@ -78,12 +80,12 @@ public interface IntegrationAccountPartners {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String integrationAccountName, String partnerName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String integrationAccountName, String partnerName,
+        Context context);
 
     /**
      * Deletes an integration account partner.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param partnerName The integration account partner name.
@@ -95,45 +97,39 @@ public interface IntegrationAccountPartners {
 
     /**
      * Get the content callback url.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param partnerName The integration account partner name.
-     * @param listContentCallbackUrl The callback url parameters.
+     * @param listContentCallbackUrl The listContentCallbackUrl parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the content callback url along with {@link Response}.
      */
-    Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        String partnerName,
-        GetCallbackUrlParameters listContentCallbackUrl,
+    Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(String resourceGroupName,
+        String integrationAccountName, String partnerName, GetCallbackUrlParameters listContentCallbackUrl,
         Context context);
 
     /**
      * Get the content callback url.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param partnerName The integration account partner name.
-     * @param listContentCallbackUrl The callback url parameters.
+     * @param listContentCallbackUrl The listContentCallbackUrl parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the content callback url.
      */
-    WorkflowTriggerCallbackUrl listContentCallbackUrl(
-        String resourceGroupName,
-        String integrationAccountName,
-        String partnerName,
-        GetCallbackUrlParameters listContentCallbackUrl);
+    WorkflowTriggerCallbackUrl listContentCallbackUrl(String resourceGroupName, String integrationAccountName,
+        String partnerName, GetCallbackUrlParameters listContentCallbackUrl);
 
     /**
      * Gets an integration account partner.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -144,7 +140,7 @@ public interface IntegrationAccountPartners {
 
     /**
      * Gets an integration account partner.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -156,7 +152,7 @@ public interface IntegrationAccountPartners {
 
     /**
      * Deletes an integration account partner.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -166,7 +162,7 @@ public interface IntegrationAccountPartners {
 
     /**
      * Deletes an integration account partner.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -178,7 +174,7 @@ public interface IntegrationAccountPartners {
 
     /**
      * Begins definition for a new IntegrationAccountPartner resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new IntegrationAccountPartner definition.
      */

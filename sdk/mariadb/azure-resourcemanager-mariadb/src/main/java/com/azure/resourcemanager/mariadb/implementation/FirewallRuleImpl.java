@@ -58,20 +58,16 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
     }
 
     public FirewallRule create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirewallRules()
-                .createOrUpdate(resourceGroupName, serverName, firewallRuleName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewallRules()
+            .createOrUpdate(resourceGroupName, serverName, firewallRuleName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public FirewallRule create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirewallRules()
-                .createOrUpdate(resourceGroupName, serverName, firewallRuleName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewallRules()
+            .createOrUpdate(resourceGroupName, serverName, firewallRuleName, this.innerModel(), context);
         return this;
     }
 
@@ -86,48 +82,40 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
     }
 
     public FirewallRule apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirewallRules()
-                .createOrUpdate(resourceGroupName, serverName, firewallRuleName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewallRules()
+            .createOrUpdate(resourceGroupName, serverName, firewallRuleName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public FirewallRule apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirewallRules()
-                .createOrUpdate(resourceGroupName, serverName, firewallRuleName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewallRules()
+            .createOrUpdate(resourceGroupName, serverName, firewallRuleName, this.innerModel(), context);
         return this;
     }
 
     FirewallRuleImpl(FirewallRuleInner innerObject, com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serverName = Utils.getValueFromIdByName(innerObject.id(), "servers");
-        this.firewallRuleName = Utils.getValueFromIdByName(innerObject.id(), "firewallRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "servers");
+        this.firewallRuleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "firewallRules");
     }
 
     public FirewallRule refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirewallRules()
-                .getWithResponse(resourceGroupName, serverName, firewallRuleName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewallRules()
+            .getWithResponse(resourceGroupName, serverName, firewallRuleName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public FirewallRule refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirewallRules()
-                .getWithResponse(resourceGroupName, serverName, firewallRuleName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewallRules()
+            .getWithResponse(resourceGroupName, serverName, firewallRuleName, context)
+            .getValue();
         return this;
     }
 

@@ -245,6 +245,14 @@ public class AppendBlobApiTests extends BlobTestBase {
     }
 
     @Test
+    public void createIfNotExistsSimple() {
+        bc = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
+
+        bc.createIfNotExists();
+        assertTrue(bc.exists());
+    }
+
+    @Test
     public void createIfNotExistsMin() {
         String blobName = cc.getBlobClient(generateBlobName()).getBlobName();
         bc = cc.getBlobClient(blobName).getAppendBlobClient();
@@ -875,5 +883,12 @@ public class AppendBlobApiTests extends BlobTestBase {
             .buildAppendBlobClient();
 
         assertTrue(aadBlob.exists());
+    }
+
+    @Test
+    public void getSnapshotClient() {
+        String fakeVersion = "2020-04-17T20:37:16.5129130Z";
+        BlobClientBase fakeSnapshotClient = bc.getSnapshotClient(fakeVersion);
+        assertEquals(fakeVersion, fakeSnapshotClient.getSnapshotId());
     }
 }

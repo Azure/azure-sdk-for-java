@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.MigrateSqlServerSqlDbSyncT
 public final class MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel model =
-            BinaryData
-                .fromString(
-                    "{\"resultType\":\"DatabaseLevelOutput\",\"databaseName\":\"dscwxqupevzhf\",\"startedOn\":\"2021-08-11T08:27:19Z\",\"endedOn\":\"2021-11-14T07:44:57Z\",\"migrationState\":\"UNDEFINED\",\"incomingChanges\":7195722350272905916,\"appliedChanges\":7090201070741462272,\"cdcInsertCounter\":686052529791158175,\"cdcDeleteCounter\":3920435085963862976,\"cdcUpdateCounter\":4971111949791382837,\"fullLoadCompletedTables\":8084058404803750830,\"fullLoadLoadingTables\":1158865571853625138,\"fullLoadQueuedTables\":2229563349522747265,\"fullLoadErroredTables\":6275857177727124744,\"initializationCompleted\":true,\"latency\":8274971032821131751,\"id\":\"kiwkkbnujr\"}")
-                .toObject(MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel.class);
+        MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel model = BinaryData.fromString(
+            "{\"resultType\":\"DatabaseLevelOutput\",\"databaseName\":\"rbgyefry\",\"startedOn\":\"2020-12-31T10:27:06Z\",\"endedOn\":\"2020-12-23T00:32:06Z\",\"migrationState\":\"COMPLETING\",\"incomingChanges\":4840101300202582176,\"appliedChanges\":8471289836284639425,\"cdcInsertCounter\":3010570452569358162,\"cdcDeleteCounter\":8990215421896908005,\"cdcUpdateCounter\":159751123697381023,\"fullLoadCompletedTables\":5137668435695893633,\"fullLoadLoadingTables\":2629501177722827198,\"fullLoadQueuedTables\":5653362505207852709,\"fullLoadErroredTables\":3558320105963115980,\"initializationCompleted\":false,\"latency\":5370468529550046523,\"id\":\"cpqjlihhyu\"}")
+            .toObject(MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel.class);
     }
 
     @org.junit.jupiter.api.Test

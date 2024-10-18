@@ -5,78 +5,76 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The AS2 agreement security settings. */
+/**
+ * The AS2 agreement security settings.
+ */
 @Fluent
-public final class AS2SecuritySettings {
+public final class AS2SecuritySettings implements JsonSerializable<AS2SecuritySettings> {
     /*
      * The value indicating whether to send or request a MDN.
      */
-    @JsonProperty(value = "overrideGroupSigningCertificate", required = true)
     private boolean overrideGroupSigningCertificate;
 
     /*
      * The name of the signing certificate.
      */
-    @JsonProperty(value = "signingCertificateName")
     private String signingCertificateName;
 
     /*
      * The name of the encryption certificate.
      */
-    @JsonProperty(value = "encryptionCertificateName")
     private String encryptionCertificateName;
 
     /*
      * The value indicating whether to enable NRR for inbound encoded messages.
      */
-    @JsonProperty(value = "enableNRRForInboundEncodedMessages", required = true)
     private boolean enableNrrForInboundEncodedMessages;
 
     /*
      * The value indicating whether to enable NRR for inbound decoded messages.
      */
-    @JsonProperty(value = "enableNRRForInboundDecodedMessages", required = true)
     private boolean enableNrrForInboundDecodedMessages;
 
     /*
      * The value indicating whether to enable NRR for outbound MDN.
      */
-    @JsonProperty(value = "enableNRRForOutboundMDN", required = true)
     private boolean enableNrrForOutboundMdn;
 
     /*
      * The value indicating whether to enable NRR for outbound encoded messages.
      */
-    @JsonProperty(value = "enableNRRForOutboundEncodedMessages", required = true)
     private boolean enableNrrForOutboundEncodedMessages;
 
     /*
      * The value indicating whether to enable NRR for outbound decoded messages.
      */
-    @JsonProperty(value = "enableNRRForOutboundDecodedMessages", required = true)
     private boolean enableNrrForOutboundDecodedMessages;
 
     /*
      * The value indicating whether to enable NRR for inbound MDN.
      */
-    @JsonProperty(value = "enableNRRForInboundMDN", required = true)
     private boolean enableNrrForInboundMdn;
 
     /*
      * The Sha2 algorithm format. Valid values are Sha2, ShaHashSize, ShaHyphenHashSize, Sha2UnderscoreHashSize.
      */
-    @JsonProperty(value = "sha2AlgorithmFormat")
     private String sha2AlgorithmFormat;
 
-    /** Creates an instance of AS2SecuritySettings class. */
+    /**
+     * Creates an instance of AS2SecuritySettings class.
+     */
     public AS2SecuritySettings() {
     }
 
     /**
      * Get the overrideGroupSigningCertificate property: The value indicating whether to send or request a MDN.
-     *
+     * 
      * @return the overrideGroupSigningCertificate value.
      */
     public boolean overrideGroupSigningCertificate() {
@@ -85,7 +83,7 @@ public final class AS2SecuritySettings {
 
     /**
      * Set the overrideGroupSigningCertificate property: The value indicating whether to send or request a MDN.
-     *
+     * 
      * @param overrideGroupSigningCertificate the overrideGroupSigningCertificate value to set.
      * @return the AS2SecuritySettings object itself.
      */
@@ -96,7 +94,7 @@ public final class AS2SecuritySettings {
 
     /**
      * Get the signingCertificateName property: The name of the signing certificate.
-     *
+     * 
      * @return the signingCertificateName value.
      */
     public String signingCertificateName() {
@@ -105,7 +103,7 @@ public final class AS2SecuritySettings {
 
     /**
      * Set the signingCertificateName property: The name of the signing certificate.
-     *
+     * 
      * @param signingCertificateName the signingCertificateName value to set.
      * @return the AS2SecuritySettings object itself.
      */
@@ -116,7 +114,7 @@ public final class AS2SecuritySettings {
 
     /**
      * Get the encryptionCertificateName property: The name of the encryption certificate.
-     *
+     * 
      * @return the encryptionCertificateName value.
      */
     public String encryptionCertificateName() {
@@ -125,7 +123,7 @@ public final class AS2SecuritySettings {
 
     /**
      * Set the encryptionCertificateName property: The name of the encryption certificate.
-     *
+     * 
      * @param encryptionCertificateName the encryptionCertificateName value to set.
      * @return the AS2SecuritySettings object itself.
      */
@@ -137,7 +135,7 @@ public final class AS2SecuritySettings {
     /**
      * Get the enableNrrForInboundEncodedMessages property: The value indicating whether to enable NRR for inbound
      * encoded messages.
-     *
+     * 
      * @return the enableNrrForInboundEncodedMessages value.
      */
     public boolean enableNrrForInboundEncodedMessages() {
@@ -147,7 +145,7 @@ public final class AS2SecuritySettings {
     /**
      * Set the enableNrrForInboundEncodedMessages property: The value indicating whether to enable NRR for inbound
      * encoded messages.
-     *
+     * 
      * @param enableNrrForInboundEncodedMessages the enableNrrForInboundEncodedMessages value to set.
      * @return the AS2SecuritySettings object itself.
      */
@@ -159,7 +157,7 @@ public final class AS2SecuritySettings {
     /**
      * Get the enableNrrForInboundDecodedMessages property: The value indicating whether to enable NRR for inbound
      * decoded messages.
-     *
+     * 
      * @return the enableNrrForInboundDecodedMessages value.
      */
     public boolean enableNrrForInboundDecodedMessages() {
@@ -169,7 +167,7 @@ public final class AS2SecuritySettings {
     /**
      * Set the enableNrrForInboundDecodedMessages property: The value indicating whether to enable NRR for inbound
      * decoded messages.
-     *
+     * 
      * @param enableNrrForInboundDecodedMessages the enableNrrForInboundDecodedMessages value to set.
      * @return the AS2SecuritySettings object itself.
      */
@@ -180,7 +178,7 @@ public final class AS2SecuritySettings {
 
     /**
      * Get the enableNrrForOutboundMdn property: The value indicating whether to enable NRR for outbound MDN.
-     *
+     * 
      * @return the enableNrrForOutboundMdn value.
      */
     public boolean enableNrrForOutboundMdn() {
@@ -189,7 +187,7 @@ public final class AS2SecuritySettings {
 
     /**
      * Set the enableNrrForOutboundMdn property: The value indicating whether to enable NRR for outbound MDN.
-     *
+     * 
      * @param enableNrrForOutboundMdn the enableNrrForOutboundMdn value to set.
      * @return the AS2SecuritySettings object itself.
      */
@@ -201,7 +199,7 @@ public final class AS2SecuritySettings {
     /**
      * Get the enableNrrForOutboundEncodedMessages property: The value indicating whether to enable NRR for outbound
      * encoded messages.
-     *
+     * 
      * @return the enableNrrForOutboundEncodedMessages value.
      */
     public boolean enableNrrForOutboundEncodedMessages() {
@@ -211,7 +209,7 @@ public final class AS2SecuritySettings {
     /**
      * Set the enableNrrForOutboundEncodedMessages property: The value indicating whether to enable NRR for outbound
      * encoded messages.
-     *
+     * 
      * @param enableNrrForOutboundEncodedMessages the enableNrrForOutboundEncodedMessages value to set.
      * @return the AS2SecuritySettings object itself.
      */
@@ -223,7 +221,7 @@ public final class AS2SecuritySettings {
     /**
      * Get the enableNrrForOutboundDecodedMessages property: The value indicating whether to enable NRR for outbound
      * decoded messages.
-     *
+     * 
      * @return the enableNrrForOutboundDecodedMessages value.
      */
     public boolean enableNrrForOutboundDecodedMessages() {
@@ -233,7 +231,7 @@ public final class AS2SecuritySettings {
     /**
      * Set the enableNrrForOutboundDecodedMessages property: The value indicating whether to enable NRR for outbound
      * decoded messages.
-     *
+     * 
      * @param enableNrrForOutboundDecodedMessages the enableNrrForOutboundDecodedMessages value to set.
      * @return the AS2SecuritySettings object itself.
      */
@@ -244,7 +242,7 @@ public final class AS2SecuritySettings {
 
     /**
      * Get the enableNrrForInboundMdn property: The value indicating whether to enable NRR for inbound MDN.
-     *
+     * 
      * @return the enableNrrForInboundMdn value.
      */
     public boolean enableNrrForInboundMdn() {
@@ -253,7 +251,7 @@ public final class AS2SecuritySettings {
 
     /**
      * Set the enableNrrForInboundMdn property: The value indicating whether to enable NRR for inbound MDN.
-     *
+     * 
      * @param enableNrrForInboundMdn the enableNrrForInboundMdn value to set.
      * @return the AS2SecuritySettings object itself.
      */
@@ -265,7 +263,7 @@ public final class AS2SecuritySettings {
     /**
      * Get the sha2AlgorithmFormat property: The Sha2 algorithm format. Valid values are Sha2, ShaHashSize,
      * ShaHyphenHashSize, Sha2UnderscoreHashSize.
-     *
+     * 
      * @return the sha2AlgorithmFormat value.
      */
     public String sha2AlgorithmFormat() {
@@ -275,7 +273,7 @@ public final class AS2SecuritySettings {
     /**
      * Set the sha2AlgorithmFormat property: The Sha2 algorithm format. Valid values are Sha2, ShaHashSize,
      * ShaHyphenHashSize, Sha2UnderscoreHashSize.
-     *
+     * 
      * @param sha2AlgorithmFormat the sha2AlgorithmFormat value to set.
      * @return the AS2SecuritySettings object itself.
      */
@@ -286,9 +284,73 @@ public final class AS2SecuritySettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("overrideGroupSigningCertificate", this.overrideGroupSigningCertificate);
+        jsonWriter.writeBooleanField("enableNRRForInboundEncodedMessages", this.enableNrrForInboundEncodedMessages);
+        jsonWriter.writeBooleanField("enableNRRForInboundDecodedMessages", this.enableNrrForInboundDecodedMessages);
+        jsonWriter.writeBooleanField("enableNRRForOutboundMDN", this.enableNrrForOutboundMdn);
+        jsonWriter.writeBooleanField("enableNRRForOutboundEncodedMessages", this.enableNrrForOutboundEncodedMessages);
+        jsonWriter.writeBooleanField("enableNRRForOutboundDecodedMessages", this.enableNrrForOutboundDecodedMessages);
+        jsonWriter.writeBooleanField("enableNRRForInboundMDN", this.enableNrrForInboundMdn);
+        jsonWriter.writeStringField("signingCertificateName", this.signingCertificateName);
+        jsonWriter.writeStringField("encryptionCertificateName", this.encryptionCertificateName);
+        jsonWriter.writeStringField("sha2AlgorithmFormat", this.sha2AlgorithmFormat);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AS2SecuritySettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AS2SecuritySettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AS2SecuritySettings.
+     */
+    public static AS2SecuritySettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AS2SecuritySettings deserializedAS2SecuritySettings = new AS2SecuritySettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("overrideGroupSigningCertificate".equals(fieldName)) {
+                    deserializedAS2SecuritySettings.overrideGroupSigningCertificate = reader.getBoolean();
+                } else if ("enableNRRForInboundEncodedMessages".equals(fieldName)) {
+                    deserializedAS2SecuritySettings.enableNrrForInboundEncodedMessages = reader.getBoolean();
+                } else if ("enableNRRForInboundDecodedMessages".equals(fieldName)) {
+                    deserializedAS2SecuritySettings.enableNrrForInboundDecodedMessages = reader.getBoolean();
+                } else if ("enableNRRForOutboundMDN".equals(fieldName)) {
+                    deserializedAS2SecuritySettings.enableNrrForOutboundMdn = reader.getBoolean();
+                } else if ("enableNRRForOutboundEncodedMessages".equals(fieldName)) {
+                    deserializedAS2SecuritySettings.enableNrrForOutboundEncodedMessages = reader.getBoolean();
+                } else if ("enableNRRForOutboundDecodedMessages".equals(fieldName)) {
+                    deserializedAS2SecuritySettings.enableNrrForOutboundDecodedMessages = reader.getBoolean();
+                } else if ("enableNRRForInboundMDN".equals(fieldName)) {
+                    deserializedAS2SecuritySettings.enableNrrForInboundMdn = reader.getBoolean();
+                } else if ("signingCertificateName".equals(fieldName)) {
+                    deserializedAS2SecuritySettings.signingCertificateName = reader.getString();
+                } else if ("encryptionCertificateName".equals(fieldName)) {
+                    deserializedAS2SecuritySettings.encryptionCertificateName = reader.getString();
+                } else if ("sha2AlgorithmFormat".equals(fieldName)) {
+                    deserializedAS2SecuritySettings.sha2AlgorithmFormat = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAS2SecuritySettings;
+        });
     }
 }

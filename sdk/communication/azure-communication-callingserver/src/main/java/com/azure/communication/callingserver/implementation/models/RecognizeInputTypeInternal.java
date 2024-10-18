@@ -5,7 +5,7 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for RecognizeInputTypeInternal. */
@@ -14,12 +14,21 @@ public final class RecognizeInputTypeInternal extends ExpandableStringEnum<Recog
     public static final RecognizeInputTypeInternal DTMF = fromString("dtmf");
 
     /**
+     * Creates an instance of {@link RecognizeInputTypeInternal} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to create or get an instance of {@link RecognizeInputTypeInternal}
+     * instead.
+     */
+    @Deprecated
+    public RecognizeInputTypeInternal() {
+    }
+
+    /**
      * Creates or finds a RecognizeInputTypeInternal from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding RecognizeInputTypeInternal.
      */
-    @JsonCreator
     public static RecognizeInputTypeInternal fromString(String name) {
         return fromString(name, RecognizeInputTypeInternal.class);
     }

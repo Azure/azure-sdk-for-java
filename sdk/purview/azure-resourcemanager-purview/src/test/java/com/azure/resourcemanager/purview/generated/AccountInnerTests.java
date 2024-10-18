@@ -18,40 +18,34 @@ import org.junit.jupiter.api.Assertions;
 public final class AccountInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccountInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"cloudConnectors\":{\"awsExternalId\":\"azakl\"},\"createdAt\":\"2021-04-01T05:22:51Z\",\"createdBy\":\"bcryffdfd\",\"createdByObjectId\":\"ygexpaojakhmsb\",\"endpoints\":{\"catalog\":\"crzevdphlx\",\"guardian\":\"lthqtrgqjbp\",\"scan\":\"fsinzgvfcjrwzoxx\"},\"friendlyName\":\"felluwfzitonpe\",\"managedResourceGroupName\":\"pjkjlxofpdv\",\"managedResources\":{\"eventHubNamespace\":\"xxypininmay\",\"resourceGroup\":\"ybb\",\"storageAccount\":\"odepoogin\"},\"privateEndpointConnections\":[{\"id\":\"iheogna\",\"name\":\"xzxtheo\",\"type\":\"usivye\"},{\"id\":\"ciqihnhung\",\"name\":\"wjzrnfygxgisp\",\"type\":\"mvtzfkufub\"},{\"id\":\"ofx\",\"name\":\"eofjaeqjh\",\"type\":\"jbasvmsmjqulngs\"}],\"provisioningState\":\"Failed\",\"publicNetworkAccess\":\"NotSpecified\"},\"sku\":{\"capacity\":1557726477,\"name\":\"Standard\"},\"identity\":{\"principalId\":\"wclxxwrl\",\"tenantId\":\"ouskcqvkocrc\",\"type\":\"None\",\"userAssignedIdentities\":{\"jfm\":{\"clientId\":\"hxbnjbiksqrg\",\"principalId\":\"sainqpjwnzl\"},\"vndhkrwpdapp\":{\"clientId\":\"eebvmgxsab\",\"principalId\":\"qduujitcjczdz\"}}},\"location\":\"bdkvwrwjf\",\"tags\":{\"zdatqxhocdg\":\"nhutjeltmrldhugj\"},\"id\":\"ablgphuticndvk\",\"name\":\"ozwyiftyhxhuro\",\"type\":\"ftyxolniw\"}")
-                .toObject(AccountInner.class);
-        Assertions.assertEquals("bdkvwrwjf", model.location());
-        Assertions.assertEquals("nhutjeltmrldhugj", model.tags().get("zdatqxhocdg"));
+        AccountInner model = BinaryData.fromString(
+            "{\"properties\":{\"cloudConnectors\":{\"awsExternalId\":\"jeiachboosfl\"},\"createdAt\":\"2021-10-01T08:17:31Z\",\"createdBy\":\"fqpte\",\"createdByObjectId\":\"zzvypyqrimzinp\",\"endpoints\":{\"catalog\":\"jdkirsoodqx\",\"guardian\":\"rmnohj\",\"scan\":\"kwh\"},\"friendlyName\":\"oifiyipjxsqwpgr\",\"managedResourceGroupName\":\"znorcj\",\"managedResources\":{\"eventHubNamespace\":\"nb\",\"resourceGroup\":\"qabnmoc\",\"storageAccount\":\"ysh\"},\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"ljjgpbtoqcjmkl\"},\"privateLinkServiceConnectionState\":{\"actionsRequired\":\"bqidtqaj\",\"description\":\"ulpkudjkrl\",\"status\":\"Approved\"},\"provisioningState\":\"hfepgzgqex\"},\"id\":\"locx\",\"name\":\"c\",\"type\":\"aierhhb\"}],\"provisioningState\":\"Creating\",\"publicNetworkAccess\":\"Enabled\"},\"sku\":{\"capacity\":187934940,\"name\":\"Standard\"},\"identity\":{\"principalId\":\"odxobnbdxkqpxok\",\"tenantId\":\"ionpimexg\",\"type\":\"None\",\"userAssignedIdentities\":{\"zaqsqsycbkbfk\":{\"clientId\":\"odgmaajrmvdjwz\",\"principalId\":\"ovmclwhijcoejct\"}}},\"location\":\"kdkexxp\",\"tags\":{\"jpgd\":\"mxaxc\"},\"id\":\"toc\",\"name\":\"j\",\"type\":\"hvpmoue\"}")
+            .toObject(AccountInner.class);
+        Assertions.assertEquals("kdkexxp", model.location());
+        Assertions.assertEquals("mxaxc", model.tags().get("jpgd"));
         Assertions.assertEquals(Type.NONE, model.identity().type());
-        Assertions.assertEquals("pjkjlxofpdv", model.managedResourceGroupName());
-        Assertions.assertEquals(PublicNetworkAccess.NOT_SPECIFIED, model.publicNetworkAccess());
+        Assertions.assertEquals("znorcj", model.managedResourceGroupName());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccountInner model =
-            new AccountInner()
-                .withLocation("bdkvwrwjf")
-                .withTags(mapOf("zdatqxhocdg", "nhutjeltmrldhugj"))
-                .withIdentity(
-                    new Identity()
-                        .withType(Type.NONE)
-                        .withUserAssignedIdentities(
-                            mapOf("jfm", new UserAssignedIdentity(), "vndhkrwpdapp", new UserAssignedIdentity())))
-                .withCloudConnectors(new CloudConnectors())
-                .withManagedResourceGroupName("pjkjlxofpdv")
-                .withPublicNetworkAccess(PublicNetworkAccess.NOT_SPECIFIED);
+        AccountInner model = new AccountInner().withLocation("kdkexxp")
+            .withTags(mapOf("jpgd", "mxaxc"))
+            .withIdentity(new Identity().withType(Type.NONE)
+                .withUserAssignedIdentities(mapOf("zaqsqsycbkbfk", new UserAssignedIdentity())))
+            .withCloudConnectors(new CloudConnectors())
+            .withManagedResourceGroupName("znorcj")
+            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
         model = BinaryData.fromObject(model).toObject(AccountInner.class);
-        Assertions.assertEquals("bdkvwrwjf", model.location());
-        Assertions.assertEquals("nhutjeltmrldhugj", model.tags().get("zdatqxhocdg"));
+        Assertions.assertEquals("kdkexxp", model.location());
+        Assertions.assertEquals("mxaxc", model.tags().get("jpgd"));
         Assertions.assertEquals(Type.NONE, model.identity().type());
-        Assertions.assertEquals("pjkjlxofpdv", model.managedResourceGroupName());
-        Assertions.assertEquals(PublicNetworkAccess.NOT_SPECIFIED, model.publicNetworkAccess());
+        Assertions.assertEquals("znorcj", model.managedResourceGroupName());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

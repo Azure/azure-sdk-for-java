@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.logz.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logz.models.UserRole;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Response for checking user's role for Logz.io account. */
+/**
+ * Response for checking user's role for Logz.io account.
+ */
 @Fluent
-public final class UserRoleResponseInner {
+public final class UserRoleResponseInner implements JsonSerializable<UserRoleResponseInner> {
     /*
      * User roles on configured in Logz.io account.
      */
-    @JsonProperty(value = "role")
     private UserRole role;
 
-    /** Creates an instance of UserRoleResponseInner class. */
+    /**
+     * Creates an instance of UserRoleResponseInner class.
+     */
     public UserRoleResponseInner() {
     }
 
     /**
      * Get the role property: User roles on configured in Logz.io account.
-     *
+     * 
      * @return the role value.
      */
     public UserRole role() {
@@ -32,7 +39,7 @@ public final class UserRoleResponseInner {
 
     /**
      * Set the role property: User roles on configured in Logz.io account.
-     *
+     * 
      * @param role the role value to set.
      * @return the UserRoleResponseInner object itself.
      */
@@ -43,9 +50,45 @@ public final class UserRoleResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserRoleResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserRoleResponseInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserRoleResponseInner.
+     */
+    public static UserRoleResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserRoleResponseInner deserializedUserRoleResponseInner = new UserRoleResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("role".equals(fieldName)) {
+                    deserializedUserRoleResponseInner.role = UserRole.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserRoleResponseInner;
+        });
     }
 }
