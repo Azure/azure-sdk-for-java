@@ -43,15 +43,15 @@ public class ServiceFabricManagedClustersManagerTests extends TestProxyTestBase 
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         serviceFabricManagedClustersManager = ServiceFabricManagedClustersManager
-                .configure()
-                .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-                .authenticate(credential, profile);
+           .configure()
+           .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+           .authenticate(credential, profile);
 
         resourceManager = ResourceManager
-                .configure()
-                .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-                .authenticate(credential, profile)
-                .withDefaultSubscription();
+           .configure()
+           .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+           .authenticate(credential, profile)
+           .withDefaultSubscription();
 
         canRegisterProviders(Arrays.asList("Microsoft.ServiceFabric"));
 
@@ -85,26 +85,22 @@ public class ServiceFabricManagedClustersManagerTests extends TestProxyTestBase 
             String adminPassWord = UUID.randomUUID().toString().replace("-", "@").substring(0, 13);
             // @embedmeStart
             managedCluster = serviceFabricManagedClustersManager
-                    .managedClusters()
-                    .define(clusterName)
-                    .withRegion(REGION)
-                    .withExistingResourceGroup(resourceGroupName)
-                    .withSku(new Sku().withName(SkuName.STANDARD))
-                    .withAdminUsername(adminUser)
-                    .withAdminPassword(adminPassWord)
-                    .withDnsName(clusterName)
-                    .withClientConnectionPort(19000)
-                    .withHttpGatewayConnectionPort(19080)
-                    .create();
+               .managedClusters()
+               .define(clusterName)
+               .withRegion(REGION)
+               .withExistingResourceGroup(resourceGroupName)
+               .withSku(new Sku().withName(SkuName.STANDARD))
+               .withAdminUsername(adminUser)
+               .withAdminPassword(adminPassWord)
+               .withDnsName(clusterName)
+               .withClientConnectionPort(19000)
+               .withHttpGatewayConnectionPort(19080)
+            .create();
             // @embedmeEnd
             managedCluster.refresh();
             Assertions.assertEquals(clusterName, managedCluster.name());
             Assertions.assertEquals(clusterName, serviceFabricManagedClustersManager.managedClusters().getById(managedCluster.id()).name());
-            Assertions.assertTrue(serviceFabricManagedClustersManager.managedClusters()
-                    .listByResourceGroup(resourceGroupName)
-                    .stream()
-                    .findAny()
-                    .isPresent());
+            Assertions.assertTrue(serviceFabricManagedClustersManager.managedClusters().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
         } finally {
             if (managedCluster != null) {
                 serviceFabricManagedClustersManager.managedClusters().deleteById(managedCluster.id());
