@@ -143,13 +143,12 @@ public final class RealtimeServerVadTurnDetection extends RealtimeTurnDetection 
 
     /**
      * Reads an instance of RealtimeServerVadTurnDetection from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of RealtimeServerVadTurnDetection if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RealtimeServerVadTurnDetection.
      */
-    @Generated
     public static RealtimeServerVadTurnDetection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RealtimeServerVadTurnDetection deserializedRealtimeServerVadTurnDetection
@@ -164,11 +163,12 @@ public final class RealtimeServerVadTurnDetection extends RealtimeTurnDetection 
                 } else if ("threshold".equals(fieldName)) {
                     deserializedRealtimeServerVadTurnDetection.threshold = reader.getNullable(JsonReader::getDouble);
                 } else if ("prefix_padding_ms".equals(fieldName)) {
+                    // TODO jpalvarezl: Figure out how to appropriately encode milliseconds in Duration in TypeSpec
                     deserializedRealtimeServerVadTurnDetection.prefixPaddingMs
-                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                        = reader.getNullable(nonNullReader -> Duration.ofMillis(nonNullReader.getLong()));
                 } else if ("silence_duration_ms".equals(fieldName)) {
                     deserializedRealtimeServerVadTurnDetection.silenceDurationMs
-                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                        = reader.getNullable(nonNullReader -> Duration.ofMillis(nonNullReader.getLong()));
                 } else {
                     reader.skipChildren();
                 }

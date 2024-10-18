@@ -10,6 +10,8 @@ import com.azure.ai.openai.implementation.websocket.WebSocketClientNettyImpl;
 import com.azure.ai.openai.implementation.websocket.WebSocketSession;
 import com.azure.ai.openai.models.realtime.RealtimeClientEvent;
 import com.azure.ai.openai.models.realtime.RealtimeServerEvent;
+import com.azure.ai.openai.models.realtime.RealtimeServerEventError;
+import com.azure.ai.openai.models.realtime.SendMessageFailedException;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -21,11 +23,14 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.TypeReference;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.concurrent.Queues;
 import reactor.util.retry.Retry;
 
+import javax.xml.validation.SchemaFactoryLoader;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.List;
@@ -59,6 +64,13 @@ public final class RealtimeAsyncClient implements Closeable {
 
     // retry
     private final Retry sendMessageRetrySpec;
+
+    // incoming message handlers:
+
+    // Server catch all:
+    private Sinks.Many<RealtimeServerEvent> serverEvents = Sinks.many()
+            .multicast()
+            .onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
     RealtimeAsyncClient(
             WebSocketClient webSocketClient, ClientEndpointConfiguration cec, String applicationId, RetryStrategy retryStrategy) {
@@ -151,9 +163,71 @@ public final class RealtimeAsyncClient implements Closeable {
                 });
     }
 
+    public Mono<Void> stop() {
+        if (clientState.get() == RealtimeClientState.CLOSED) {
+            return Mono.error(
+                    logger.logExceptionAsError(new IllegalStateException("Failed to stop. Client is CLOSED.")));
+        }
+
+        return Mono.defer(() -> {
+            logger.atInfo().addKeyValue("currentClientState", clientState.get()).log("Stop client called.");
+
+            if (clientState.get() == RealtimeClientState.STOPPED) {
+                // already STOPPED
+                return Mono.empty();
+            } else if (clientState.get() == RealtimeClientState.STOPPING) {
+                // already STOPPING
+                // isStoppedByUserMono will be signaled in handleClientStop
+                return getStoppedByUserMono();
+            }
+
+            // reset
+            isStoppedByUser.compareAndSet(false, true);
+            // groups.clear(); // This seems like WebPubSub specific code
+
+            WebSocketSession localSession = this.webSocketSession;
+            if (localSession != null && localSession.isOpen()) {
+                // should be CONNECTED
+                clientState.changeState(RealtimeClientState.STOPPING);
+                return Mono.fromCallable(() -> {
+                    localSession.close();
+                    return (Void) null;
+                }).subscribeOn(Schedulers.boundedElastic());
+            } else {
+                if (clientState.changeStateOn(RealtimeClientState.DISCONNECTED, RealtimeClientState.STOPPED)) {
+                    // handle transient state DISCONNECTED, directly change to STOPPED,
+                    // RECONNECTING via handleNoRecovery when autoReconnect=true
+                    handleClientStop();
+                    return Mono.empty();
+                } else {
+                    // handle transient state e.g. CONNECTING, RECOVERING, RECONNECTING
+                    // handleSessionOpen will close session if isStoppedByUser=true
+                    // isStoppedByUserMono will be signaled in handleClientStop
+                    return getStoppedByUserMono();
+                }
+            }
+        });
+    }
+
+
+    public Flux<RealtimeServerEvent> getServerEvents() {
+        return serverEvents.asFlux();
+    }
+
+    private Mono<Void> getStoppedByUserMono() {
+        Sinks.Empty<Void> sink = Sinks.empty();
+        boolean isStoppedByUserMonoSet = isStoppedByUserSink.compareAndSet(null, sink);
+        if (!isStoppedByUserMonoSet) {
+            sink = isStoppedByUserSink.get();
+        }
+        return sink == null ? Mono.empty() : sink.asMono();
+    }
+
     private void handleMessage(Object message) {
-        System.out.println((String) message);
+//        System.out.println(BinaryData.fromObject(message));
         // TODO jpalvarezl: implement this
+
+        serverEvents.tryEmitNext((RealtimeServerEvent) message);
     }
 
     private void handleSessionOpen(WebSocketSession session) {
@@ -169,11 +243,117 @@ public final class RealtimeAsyncClient implements Closeable {
         //TODO jpavarezl: implement this
     }
 
+    private void handleClientStop() {
+        handleClientStop(true);
+    }
+
     private void handleClientStop(boolean sendStoppedEvent) {
         clientState.changeState(RealtimeClientState.STOPPED);
         // TODO jpalvarezl: implement this
     }
 
+    private void updateLogger(String applicationId, String connectionId) {
+        logger = new ClientLogger(RealtimeAsyncClient.class,
+                LoggingUtils.createContextWithConnectionId(applicationId, connectionId));
+        loggerReference.set(logger);
+    }
+
+    private final class ClientState {
+        private final AtomicReference<RealtimeClientState> clientState = new AtomicReference<>(
+                RealtimeClientState.STOPPED);
+
+        RealtimeClientState get() {
+            return clientState.get();
+        }
+
+        RealtimeClientState changeState(RealtimeClientState newState) {
+            RealtimeClientState previousState = clientState.getAndSet(newState);
+            logger.atInfo()
+                    .addKeyValue("currentClientState", newState)
+                    .addKeyValue("previousClientState", previousState)
+                    .log("Client state changed");
+            return previousState;
+        }
+
+        boolean changeStateOn(RealtimeClientState expectedCurrentState, RealtimeClientState newState) {
+            boolean success = clientState.compareAndSet(expectedCurrentState, newState);
+            if (success) {
+                logger.atInfo()
+                        .addKeyValue("currentClientState", newState)
+                        .addKeyValue("previousClientState", expectedCurrentState)
+                        .log("Client state changed.");
+            }
+            return success;
+        }
+    }
+
+    private Mono<Void> sendMessage(RealtimeClientEvent message) {
+        return checkStateBeforeSend().then(Mono.create(sink -> {
+            //            if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+            //                try {
+            //                    String json = JacksonAdapter.createDefaultSerializerAdapter()
+            //                        .serialize(message, SerializerEncoding.JSON);
+            //                    logger.atVerbose().addKeyValue("message", json).log("Send message");
+            //                } catch (IOException e) {
+            //                    sink.error(new UncheckedIOException("Failed to serialize message for VERBOSE logging", e));
+            //                }
+            //            }
+
+            webSocketSession.sendObjectAsync(message, sendResult -> {
+                if (sendResult.isOK()) {
+                    sink.success();
+                } else {
+                    sink.error(logSendMessageFailedException("Failed to send message.", sendResult.getException(), true,
+                            message));
+                }
+            });
+        }));
+    }
+
+    private Mono<Void> checkStateBeforeSend() {
+        return Mono.defer(() -> {
+            RealtimeClientState state = clientState.get();
+            if (state == RealtimeClientState.CLOSED) {
+                return Mono.error(logger.logExceptionAsError(
+                        new IllegalStateException("Failed to send message. WebPubSubClient is CLOSED.")));
+            }
+            if (state != RealtimeClientState.CONNECTED) {
+                return Mono.error(
+                        logSendMessageFailedException("Failed to send message. Client is " + state.name() + ".", null,
+                                state == RealtimeClientState.RECOVERING || state == RealtimeClientState.CONNECTING
+                                        || state == RealtimeClientState.RECONNECTING || state == RealtimeClientState.DISCONNECTED,
+                                (Long) null));
+            }
+            if (webSocketSession == null || !webSocketSession.isOpen()) {
+                // something unexpected
+                return Mono.error(
+                        logSendMessageFailedException("Failed to send message. Websocket session is not opened.", null,
+                                false, (Long) null));
+            } else {
+                return Mono.empty();
+            }
+        });
+    }
+
+    private RuntimeException logSendMessageFailedException(String errorMessage, Throwable cause, boolean isTransient,
+                                                           RealtimeClientEvent message) {
+
+        // TODO jpalvarezl: Figure out what's `ackId` vs `message.getEventId()`
+        return logSendMessageFailedException(errorMessage, cause, isTransient, -1L);
+    }
+
+    private RuntimeException logSendMessageFailedException(String errorMessage, Throwable cause, boolean isTransient,
+                                                           Long ackId) {
+
+        return logSendMessageFailedException(errorMessage, cause, isTransient, ackId, null);
+    }
+
+    private RuntimeException logSendMessageFailedException(String errorMessage, Throwable cause, boolean isTransient,
+                                                           Long ackId, RealtimeServerEventError error) {
+
+        return logger.logExceptionAsWarning(
+                new SendMessageFailedException(errorMessage, cause, isTransient, ackId, error));
+    }
 
 //    /**
 //     * Starts a real-time conversation session.
@@ -240,40 +420,5 @@ public final class RealtimeAsyncClient implements Closeable {
 //    private static final TypeReference<List<RealtimeServerEvent>> TYPE_REFERENCE_LIST_REALTIME_SERVER_EVENT
 //            = new TypeReference<List<RealtimeServerEvent>>() {
 //    };
-
-    private void updateLogger(String applicationId, String connectionId) {
-        logger = new ClientLogger(RealtimeAsyncClient.class,
-                LoggingUtils.createContextWithConnectionId(applicationId, connectionId));
-        loggerReference.set(logger);
-    }
-
-    private final class ClientState {
-        private final AtomicReference<RealtimeClientState> clientState = new AtomicReference<>(
-                RealtimeClientState.STOPPED);
-
-        RealtimeClientState get() {
-            return clientState.get();
-        }
-
-        RealtimeClientState changeState(RealtimeClientState newState) {
-            RealtimeClientState previousState = clientState.getAndSet(newState);
-            logger.atInfo()
-                    .addKeyValue("currentClientState", newState)
-                    .addKeyValue("previousClientState", previousState)
-                    .log("Client state changed");
-            return previousState;
-        }
-
-        boolean changeStateOn(RealtimeClientState expectedCurrentState, RealtimeClientState newState) {
-            boolean success = clientState.compareAndSet(expectedCurrentState, newState);
-            if (success) {
-                logger.atInfo()
-                        .addKeyValue("currentClientState", newState)
-                        .addKeyValue("previousClientState", expectedCurrentState)
-                        .log("Client state changed.");
-            }
-            return success;
-        }
-    }
 }
 

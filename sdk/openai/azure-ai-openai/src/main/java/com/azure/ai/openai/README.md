@@ -12,3 +12,5 @@ Trying to figure out how we can best integrate the realtime spec into a Java SDK
 
 - Created subclasses for `ClientEndpointConfiguration` for `Azure` and `nonAzure` cases
 - Added SDK specific fields in there
+- Removed `clientUrlProvider` in favour of letting the `ClientEndpointConfiguration` handle this. This prevents me from supporting correctly `TokenCredentials`. TODO: implement something that returns a `Mono<>` with the request ready for connection.
+- `SendMessageFailedException` is the `AzureException` that wraps the reception of a `RealtimeServerEventError`

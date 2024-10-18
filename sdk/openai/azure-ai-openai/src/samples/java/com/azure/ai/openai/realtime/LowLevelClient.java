@@ -1,11 +1,11 @@
 package com.azure.ai.openai.realtime;
 
-import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.RealtimeAsyncClient;
 import com.azure.ai.openai.RealtimeClientBuilder;
+import com.azure.ai.openai.models.realtime.RealtimeServerEvent;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
-import org.apache.tools.ant.taskdefs.Sleep;
 
 public class LowLevelClient {
     public static void main(String[] args) {
@@ -13,7 +13,6 @@ public class LowLevelClient {
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
         String deploymentOrModelId = Configuration.getGlobalConfiguration().get("MODEL_OR_DEPLOYMENT_NAME");
 
-        System.out.println("Azure OpenAI Key: " + deploymentOrModelId);
         RealtimeAsyncClient client = new RealtimeClientBuilder()
                 .endpoint(endpoint)
                 .deploymentOrModelName(deploymentOrModelId)
@@ -21,6 +20,11 @@ public class LowLevelClient {
                 .buildAsyncClient();
 
         client.start().block();
+
+        RealtimeServerEvent firstEvent = client.getServerEvents().blockFirst();
+        System.out.println("First event: " + BinaryData.fromObject(firstEvent));
+
+        client.stop().block();
 
         try {
             client.close();
