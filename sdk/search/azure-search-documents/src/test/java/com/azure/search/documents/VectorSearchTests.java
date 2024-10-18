@@ -3,20 +3,19 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.models.GeoPoint;
+import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Context;
 import com.azure.search.documents.implementation.util.SearchPagedResponseAccessHelper;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
-import com.azure.search.documents.indexes.models.BinaryQuantizationCompression;
 import com.azure.search.documents.indexes.models.DistanceScoringFunction;
 import com.azure.search.documents.indexes.models.DistanceScoringParameters;
 import com.azure.search.documents.indexes.models.HnswAlgorithmConfiguration;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
-import com.azure.search.documents.indexes.models.ScalarQuantizationCompression;
 import com.azure.search.documents.indexes.models.ScoringFunctionAggregation;
 import com.azure.search.documents.indexes.models.ScoringProfile;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -53,6 +52,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -69,8 +69,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * Tests Vector search functionality.
  */
-
-@Execution(ExecutionMode.SAME_THREAD)
+@Execution(ExecutionMode.CONCURRENT)
 public class VectorSearchTests extends SearchTestBase {
     private static void assertKeysEqual(List<SearchResult> results, Function<SearchResult, String> keyAccessor,
                                         String[] expectedKeys) {
@@ -82,7 +81,7 @@ public class VectorSearchTests extends SearchTestBase {
 
     @BeforeAll
     public static void setupClass() {
-        TestProxyTestBase.setupClass();
+        TestBase.setupClass();
 
         if (TEST_MODE == TestMode.PLAYBACK) {
             return;
@@ -90,7 +89,8 @@ public class VectorSearchTests extends SearchTestBase {
 
         searchIndexClient = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(TestHelpers.getTestTokenCredential())
+            .serviceVersion(SearchServiceVersion.V2023_11_01)
+            .credential(new AzureKeyCredential(API_KEY))
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
             .buildClient();
 
@@ -387,7 +387,6 @@ public class VectorSearchTests extends SearchTestBase {
                 // Update document to add vector field data
                 resultDoc.put("DescriptionVector", VectorSearchEmbeddings.DEFAULT_VECTORIZE_DESCRIPTION);
                 return searchClient.mergeDocuments(Collections.singletonList(resultDoc));
-
             })
             .flatMap(ignored -> {
                 // Equivalent of 'waitForIndexing()' where in PLAYBACK getting the document is called right away,
@@ -395,8 +394,8 @@ public class VectorSearchTests extends SearchTestBase {
                 if (TEST_MODE == TestMode.PLAYBACK) {
                     return searchClient.getDocument("1", SearchDocument.class);
                 } else {
-                    waitForIndexing();
-                    return searchClient.getDocument("1", SearchDocument.class);
+                    return searchClient.getDocument("1", SearchDocument.class)
+                        .delaySubscription(Duration.ofSeconds(2));
                 }
             });
 
@@ -405,7 +404,6 @@ public class VectorSearchTests extends SearchTestBase {
             .assertNext(response -> {
                 assertEquals(document.get("Id"), response.get("Id"));
                 assertEquals(document.get("Name"), response.get("Name"));
-                assertNotNull(response.get("DescriptionVector"));
                 compareFloatListToDeserializedFloatList(VectorSearchEmbeddings.DEFAULT_VECTORIZE_DESCRIPTION,
                     (List<Number>) response.get("DescriptionVector"));
             })
@@ -489,186 +487,6 @@ public class VectorSearchTests extends SearchTestBase {
             (List<Number>) responseDocument.get("DescriptionVector"));
     }
 
-    // create a test that synchronously tests the ability to use VectorSearchCompression.truncationDimension to reduce the dimensionality of the vector
-    @SuppressWarnings("unchecked")
-    @Test
-    public void testVectorSearchCompressionTruncationDimensionSync() {
-        // create a new index with a vector field
-        String indexName = randomIndexName("compressiontruncationdimension");
-        String compressionName = "vector-compression-100";
-
-
-        SearchIndex searchIndex = new SearchIndex(indexName)
-            .setFields(
-                new SearchField("Id", SearchFieldDataType.STRING)
-                    .setKey(true),
-                new SearchField("Name", SearchFieldDataType.STRING)
-                    .setSearchable(true)
-                    .setFilterable(true),
-                new SearchField("DescriptionVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
-                    .setSearchable(true)
-                    .setHidden(false)
-                    .setVectorSearchDimensions(1536)
-                    .setVectorSearchProfileName("my-vector-profile"))
-            .setVectorSearch(new VectorSearch()
-                .setProfiles(Collections.singletonList(
-                    new VectorSearchProfile("my-vector-profile", "my-vector-config")))
-                .setAlgorithms(Collections.singletonList(new HnswAlgorithmConfiguration("my-vector-config")))
-                .setCompressions(new BinaryQuantizationCompression(compressionName).setTruncationDimension(100)));
-
-        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        searchIndexClient.createIndex(searchIndex);
-
-        indexesToDelete.add(indexName);
-
-        SearchIndex retrievedIndex = searchIndexClient.getIndex(indexName);
-        assertEquals(1, retrievedIndex.getVectorSearch().getCompressions().size());
-        assertEquals(compressionName, retrievedIndex.getVectorSearch().getCompressions().get(0).getCompressionName());
-
-    }
-
-
-
-    // create a test that asynchronously tests the ability to use VectorSearchCompression.truncationDimension to reduce the dimensionality of the vector
-    @SuppressWarnings("unchecked")
-    @Test
-    public void testVectorSearchCompressionTruncationDimensionAsync() {
-        // create a new index with a vector field
-        String indexName = randomIndexName("compressiontruncationdimensionasync");
-        String compressionName = "vector-compression-100";
-
-        SearchIndex searchIndex = new SearchIndex(indexName)
-            .setFields(
-                new SearchField("Id", SearchFieldDataType.STRING)
-                    .setKey(true),
-                new SearchField("Name", SearchFieldDataType.STRING)
-                    .setSearchable(true)
-                    .setFilterable(true),
-                new SearchField("DescriptionVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
-                    .setSearchable(true)
-                    .setHidden(false)
-                    .setVectorSearchDimensions(1536)
-                    .setVectorSearchProfileName("my-vector-profile"))
-            .setVectorSearch(new VectorSearch()
-                .setProfiles(Collections.singletonList(
-                    new VectorSearchProfile("my-vector-profile", "my-vector-config")))
-                .setAlgorithms(Collections.singletonList(new HnswAlgorithmConfiguration("my-vector-config")))
-                .setCompressions(new ScalarQuantizationCompression(compressionName).setTruncationDimension(100)));
-
-        SearchIndexAsyncClient searchIndexAsyncClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        searchIndexAsyncClient.createIndex(searchIndex).block();
-        waitForIndexing();
-        indexesToDelete.add(indexName);
-
-        StepVerifier.create(searchIndexAsyncClient.getIndex(indexName))
-            .assertNext(retrievedIndex -> {
-                assertEquals(1, retrievedIndex.getVectorSearch().getCompressions().size());
-                assertEquals(compressionName, retrievedIndex.getVectorSearch().getCompressions().get(0).getCompressionName());
-            })
-            .verifyComplete();
-    }
-
-    // write a test that asynchronously tests the ability to upload a vector field to an index using BinaryQuantizationCompression
-    @SuppressWarnings("unchecked")
-    @Test
-    public void testVectorSearchCompressionBinaryQuantizationAsync() {
-        // create a new index with a vector field
-        String indexName = randomIndexName("compressionbinaryquantizationasync");
-        String compressionName = "binary-vector-compression";
-
-        SearchIndex searchIndex = new SearchIndex(indexName)
-            .setFields(
-                new SearchField("Id", SearchFieldDataType.STRING)
-                    .setKey(true),
-                new SearchField("Name", SearchFieldDataType.STRING)
-                    .setSearchable(true)
-                    .setFilterable(true),
-                new SearchField("BinaryCompressedVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
-                    .setSearchable(true)
-                    .setHidden(false)
-                    .setVectorSearchDimensions(5)
-                    .setVectorSearchProfileName("my-vector-profile"))
-            .setVectorSearch(new VectorSearch()
-                .setProfiles(Collections.singletonList(
-                    new VectorSearchProfile("my-vector-profile", "my-vector-config")))
-                .setAlgorithms(Collections.singletonList(new HnswAlgorithmConfiguration("my-vector-config")))
-                .setCompressions(new BinaryQuantizationCompression(compressionName)));
-
-        SearchIndexAsyncClient searchIndexAsyncClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        searchIndexAsyncClient.createIndex(searchIndex).block();
-        indexesToDelete.add(indexName);
-
-        StepVerifier.create(searchIndexAsyncClient.getIndex(indexName))
-            .assertNext(retrievedIndex -> {
-                assertEquals(1, retrievedIndex.getVectorSearch().getCompressions().size());
-                assertEquals(compressionName, retrievedIndex.getVectorSearch().getCompressions().get(0).getCompressionName());
-            })
-            .verifyComplete();
-    }
-
-    // write a test that synchronously tests the ability to upload a vector field to an index using BinaryQuantizationCompression
-    @SuppressWarnings("unchecked")
-    @Test
-    public void testVectorSearchCompressionBinaryQuantizationSync() {
-        // create a new index with a vector field
-        String indexName = randomIndexName("compressionbinaryquantizationsync");
-        String compressionName = "binary-vector-compression";
-
-        SearchIndex searchIndex = new SearchIndex(indexName)
-            .setFields(
-                new SearchField("Id", SearchFieldDataType.STRING)
-                    .setKey(true),
-                new SearchField("Name", SearchFieldDataType.STRING)
-                    .setSearchable(true)
-                    .setFilterable(true),
-                new SearchField("BinaryCompressedVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
-                    .setSearchable(true)
-                    .setHidden(false)
-                    .setVectorSearchDimensions(5)
-                    .setVectorSearchProfileName("my-vector-profile"))
-            .setVectorSearch(new VectorSearch()
-                .setProfiles(Collections.singletonList(
-                    new VectorSearchProfile("my-vector-profile", "my-vector-config")))
-                .setAlgorithms(Collections.singletonList(new HnswAlgorithmConfiguration("my-vector-config")))
-                .setCompressions(new BinaryQuantizationCompression(compressionName)));
-
-        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        searchIndexClient.createIndex(searchIndex);
-        indexesToDelete.add(indexName);
-
-        SearchIndex retrievedIndex = searchIndexClient.getIndex(indexName);
-        assertEquals(1, retrievedIndex.getVectorSearch().getCompressions().size());
-        assertEquals(compressionName, retrievedIndex.getVectorSearch().getCompressions().get(0).getCompressionName());
-    }
-
-    // a test that creates a hybrid search query with a vector search query and a regular search query, and utilizes the vector query
-    // fiter override to filter the vector search results
-    @Test
-    public void testHybridSearchWithVectorFilterOverride() {
-        // create a new index with a vector field
-
-
-        // create a hybrid search query with a vector search query and a regular search query
-        SearchOptions searchOptions = new SearchOptions()
-            .setFilter("Rating ge 3")
-            .setSelect("HotelId", "HotelName", "Rating")
-            .setVectorSearchOptions(new VectorSearchOptions()
-                .setQueries(new VectorizedQuery(VectorSearchEmbeddings.DEFAULT_VECTORIZE_DESCRIPTION)
-                    .setFields("DescriptionVector")
-                    .setFilterOverride("HotelId eq '1'")));
-
-        // run the hybrid search query
-        SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
-        List<SearchResult> results = searchClient.search("fancy", searchOptions, Context.NONE)
-             .stream().collect(Collectors.toList());
-
-        // check that the results are as expected
-        assertEquals(1, results.size());
-        assertEquals("1", results.get(0).getDocument(SearchDocument.class).get("HotelId"));
-
-    }
-
-
     private static void compareFloatListToDeserializedFloatList(List<Float> expected, List<Number> actual) {
         if (actual == null) {
             assertNull(expected);
@@ -687,8 +505,6 @@ public class VectorSearchTests extends SearchTestBase {
                 + obj.getClass().getName());
         }
     }
-
-
 
     private static SearchIndex getVectorIndex() {
         return new SearchIndex(HOTEL_INDEX_NAME)

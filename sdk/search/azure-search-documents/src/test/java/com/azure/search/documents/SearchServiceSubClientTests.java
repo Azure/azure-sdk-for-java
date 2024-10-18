@@ -6,13 +6,11 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.http.MockHttpResponse;
 import com.azure.search.documents.indexes.IndexesTestHelpers;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -98,7 +96,6 @@ public class SearchServiceSubClientTests extends SearchTestBase {
 
     private SearchIndexClient getSearchIndexClient(RetryPolicy retryPolicy) {
         return new SearchIndexClientBuilder()
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .endpoint("https://test1.search.windows.net")
             .credential(new AzureKeyCredential("api-key"))
             .retryPolicy(retryPolicy)
@@ -107,7 +104,6 @@ public class SearchServiceSubClientTests extends SearchTestBase {
 
     private SearchIndexAsyncClient getSearchIndexAsyncClient() {
         return new SearchIndexClientBuilder()
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .endpoint("https://test1.search.windows.net")
             .credential(new AzureKeyCredential("api-key"))
             .buildAsyncClient();

@@ -72,11 +72,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     private List<CharFilter> charFilters;
 
     /*
-     * The normalizers for the index.
-     */
-    private List<LexicalNormalizer> normalizers;
-
-    /*
      * A description of an encryption key that you create in Azure Key Vault. This key is used to provide an additional
      * level of encryption-at-rest for your data when you want full assurance that no one, not even Microsoft, can
      * decrypt your data. Once you have encrypted your data, it will always remain encrypted. The search service will
@@ -311,26 +306,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     }
 
     /**
-     * Get the normalizers property: The normalizers for the index.
-     *
-     * @return the normalizers value.
-     */
-    public List<LexicalNormalizer> getNormalizers() {
-        return this.normalizers;
-    }
-
-    /**
-     * Set the normalizers property: The normalizers for the index.
-     *
-     * @param normalizers the normalizers value to set.
-     * @return the SearchIndex object itself.
-     */
-    public SearchIndex setNormalizers(List<LexicalNormalizer> normalizers) {
-        this.normalizers = normalizers;
-        return this;
-    }
-
-    /**
      * Get the encryptionKey property: A description of an encryption key that you create in Azure Key Vault. This key
      * is used to provide an additional level of encryption-at-rest for your data when you want full assurance that no
      * one, not even Microsoft, can decrypt your data. Once you have encrypted your data, it will always remain
@@ -463,7 +438,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
         jsonWriter.writeArrayField("tokenizers", this.tokenizers, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("tokenFilters", this.tokenFilters, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("charFilters", this.charFilters, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("normalizers", this.normalizers, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("encryptionKey", this.encryptionKey);
         jsonWriter.writeJsonField("similarity", this.similarity);
         jsonWriter.writeJsonField("semantic", this.semanticSearch);
@@ -494,7 +468,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
             List<LexicalTokenizer> tokenizers = null;
             List<TokenFilter> tokenFilters = null;
             List<CharFilter> charFilters = null;
-            List<LexicalNormalizer> normalizers = null;
             SearchResourceEncryptionKey encryptionKey = null;
             SimilarityAlgorithm similarity = null;
             SemanticSearch semanticSearch = null;
@@ -524,8 +497,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                     tokenFilters = reader.readArray(reader1 -> TokenFilter.fromJson(reader1));
                 } else if ("charFilters".equals(fieldName)) {
                     charFilters = reader.readArray(reader1 -> CharFilter.fromJson(reader1));
-                } else if ("normalizers".equals(fieldName)) {
-                    normalizers = reader.readArray(reader1 -> LexicalNormalizer.fromJson(reader1));
                 } else if ("encryptionKey".equals(fieldName)) {
                     encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
                 } else if ("similarity".equals(fieldName)) {
@@ -551,7 +522,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                 deserializedSearchIndex.tokenizers = tokenizers;
                 deserializedSearchIndex.tokenFilters = tokenFilters;
                 deserializedSearchIndex.charFilters = charFilters;
-                deserializedSearchIndex.normalizers = normalizers;
                 deserializedSearchIndex.encryptionKey = encryptionKey;
                 deserializedSearchIndex.similarity = similarity;
                 deserializedSearchIndex.semanticSearch = semanticSearch;
