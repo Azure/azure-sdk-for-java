@@ -22,11 +22,6 @@
   <suppress files="com.azure.cosmos.kafka.connect.TestItemAvro.java" checks="IndentationCheck" />
   <suppress files="com.azure.cosmos.kafka.connect.TestItemKeyAvro.java" checks="IndentationCheck" />
   <suppress files="com.azure.cosmos.kafka.connect.implementation.sink.idstrategy.AbstractIdStrategy.java" checks="JavadocMethodCheck" />
-  <suppress files="com.azure.cosmos.kafka.connect.implementation.CosmosAadAuthConfig.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.cosmos.kafka.connect.implementation.sink.CosmosBulkWriter.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.cosmos.kafka.connect.implementation.sink.idstrategy.AbstractIdStrategy.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.cosmos.kafka.connect.implementation.sink.patch.CosmosPatchConfig.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.cosmos.kafka.connect.implementation.source.ContainersMetadataTopicOffset.java" checks="JavadocPackageCheck" />
   <suppress files="com.azure.cosmos.kafka.connect.CosmosSourceConnectorITest.java" checks="LeftCurlyCheck" />
   <suppress files="com.azure.cosmos.kafka.connect.TestItemAvro.java" checks="LeftCurlyCheck" />
   <suppress files="com.azure.cosmos.kafka.connect.TestItemKeyAvro.java" checks="LeftCurlyCheck" />

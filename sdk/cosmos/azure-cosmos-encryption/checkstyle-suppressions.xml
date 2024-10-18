@@ -80,10 +80,6 @@
   <suppress files="com.azure.cosmos.encryption.implementation.mdesrc.cryptography.Serializer.java" checks="JavadocMethodCheck" />
   <suppress files="com.azure.cosmos.encryption.implementation.mdesrc.cryptography.SerializerFactory.java" checks="JavadocMethodCheck" />
   <suppress files="com.azure.cosmos.encryption.implementation.mdesrc.cryptography.StandardSerializerFactory.java" checks="JavadocMethodCheck" />
-  <suppress files="com.azure.cosmos.encryption.implementation.CachedEncryptionSettings.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.cosmos.encryption.implementation.keyprovider.EncryptionKeyStoreProviderImpl.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.cosmos.encryption.implementation.mdesrc.cryptography.AeadAes256CbcHmac256EncryptionAlgorithm.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm.java" checks="JavadocPackageCheck" />
   <suppress files="com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer.java" checks="LeftCurlyCheck" />
   <suppress files="com.azure.cosmos.encryption.implementation.EncryptionProcessor.java" checks="LeftCurlyCheck" />
   <suppress files="com.azure.cosmos.encryption.implementation.mdesrc.cryptography.DataEncryptionKey.java" checks="LeftCurlyCheck" />
