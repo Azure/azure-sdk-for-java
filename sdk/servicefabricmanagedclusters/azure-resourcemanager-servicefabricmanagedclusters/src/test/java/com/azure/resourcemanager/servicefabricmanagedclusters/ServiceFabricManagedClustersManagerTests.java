@@ -37,13 +37,11 @@ public class ServiceFabricManagedClustersManagerTests extends TestProxyTestBase 
         final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        serviceFabricManagedClustersManager = ServiceFabricManagedClustersManager
-            .configure()
+        serviceFabricManagedClustersManager = ServiceFabricManagedClustersManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -54,10 +52,7 @@ public class ServiceFabricManagedClustersManagerTests extends TestProxyTestBase 
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -77,8 +72,7 @@ public class ServiceFabricManagedClustersManagerTests extends TestProxyTestBase 
             String adminUser = "user" + randomPadding();
             String adminPassWord = UUID.randomUUID().toString().replace("-", "@").substring(0, 13);
             // @embedmeStart
-            managedCluster = serviceFabricManagedClustersManager
-                .managedClusters()
+            managedCluster = serviceFabricManagedClustersManager.managedClusters()
                 .define(clusterName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
@@ -92,8 +86,13 @@ public class ServiceFabricManagedClustersManagerTests extends TestProxyTestBase 
             // @embedmeEnd
             managedCluster.refresh();
             Assertions.assertEquals(clusterName, managedCluster.name());
-            Assertions.assertEquals(clusterName, serviceFabricManagedClustersManager.managedClusters().getById(managedCluster.id()).name());
-            Assertions.assertTrue(serviceFabricManagedClustersManager.managedClusters().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
+            Assertions.assertEquals(clusterName,
+                serviceFabricManagedClustersManager.managedClusters().getById(managedCluster.id()).name());
+            Assertions.assertTrue(serviceFabricManagedClustersManager.managedClusters()
+                .listByResourceGroup(resourceGroupName)
+                .stream()
+                .findAny()
+                .isPresent());
         } finally {
             if (managedCluster != null) {
                 serviceFabricManagedClustersManager.managedClusters().deleteById(managedCluster.id());
