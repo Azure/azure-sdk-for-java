@@ -1,6 +1,6 @@
 # Release History
 
-## 12.24.0 (2024-09-17)
+## 12.24.1 (Unreleased)
 
 ### Features Added
 - Added support for service version 2024-11-04.
