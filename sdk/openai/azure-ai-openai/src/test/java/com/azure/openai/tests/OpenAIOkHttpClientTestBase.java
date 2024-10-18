@@ -489,6 +489,13 @@ public class OpenAIOkHttpClientTestBase {
         assertPromptAndContentFilterResults(chatCompletion);
     }
 
+    void assertCannotAssistantMessage(ChatCompletion chatCompletion) {
+        assertChatCompletion(chatCompletion, 1);
+        String response = chatCompletion.choices().get(0).message().content().get();
+        assertTrue(response.contains("I can't help with that.") || response.contains("I cannot help with that.")
+            || response.contains("I can't assist with that.") || response.contains("I cannot assist with that."));
+    }
+
     void assertPromptAndContentFilterResults(ChatCompletion chatCompletion) {
 //        ChatCompletion.Choice choice = chatCompletion.choices().get(0);
 //        JsonValue promptFilterResults = chatCompletion._additionalProperties().get("prompt_filter_results");
@@ -518,32 +525,6 @@ public class OpenAIOkHttpClientTestBase {
 //        assertContentFilterResultAllSafe(contentFilterResultsMapInChoice);
     }
 
-    void assertBadRequestException(BadRequestException exception) {
-//        assertEquals(400, exception.statusCode());
-//        assertNotNull(exception.getMessage());
-//        OpenAIError error = exception.error();
-//        assertNotNull(error);
-//        JsonValue errorJsonValue = error.additionalProperties().get("error");
-//        assertNotNull(errorJsonValue);
-//
-//        Optional<Map<String, JsonValue>> errorJsonValueOptional = errorJsonValue.asObject();
-//        Map<String, JsonValue> errorMap = errorJsonValueOptional.isPresent()
-//            ? errorJsonValueOptional.get() : new HashMap<>();
-//
-//        assertEquals("content_filter", errorMap.get("code").asStringOrThrow());
-//        assertEquals("prompt", errorMap.get("param").asStringOrThrow());
-//        assertNotNull(errorMap.get("message"));
-//        assertFalse(errorMap.get("message").isMissing());
-//
-//        Map<String, JsonValue> innerErrorMap =
-//                (Map<String, JsonValue>) errorMap.get("innererror").asObject().get();
-//        assertEquals("ResponsibleAIPolicyViolation", innerErrorMap.get("code").asStringOrThrow());
-
-//        Map<String, JsonValue> contentFilterResult = (Map<String, JsonValue>)
-//                innerErrorMap.get("content_filter_result").asObject().get();
-//        assertContentFilterResult(contentFilterResult);
-    }
-
     void assertChatCompletionByod(ChatCompletion chatCompletion) {
 //        assertNotNull(chatCompletion._id());
 //        assertEquals("extensions.chat.completion", chatCompletion.object_().toString());
@@ -563,113 +544,6 @@ public class OpenAIOkHttpClientTestBase {
 //                (Map<String, JsonValue>) context.asObject().get();
 //        assertNotNull(contextMap.get("citations"));
 //        assertNotNull(contextMap.get("intent"));
-    }
-
-    void assertBlockListTerm(BadRequestException e) {
-//        OpenAIError error = e.error();
-//        Map<String, JsonValue> errorMap = error.additionalProperties();
-//        assertNotNull(errorMap);
-//        JsonValue errorDetails = errorMap.get("error");
-//        assertNotNull(errorDetails);
-//        Map<String, JsonValue> errorDetailsMap =
-//                (Map<String, JsonValue>) errorDetails.asObject().get();
-//        JsonValue code = errorDetailsMap.get("code");
-//        assertNotNull(code);
-//        assertEquals("content_filter", code.asString().get());
-//        JsonValue message = errorDetailsMap.get("message");
-//        assertNotNull(message);
-//
-//        Map<String, JsonValue> innererrorMap = (Map<String, JsonValue>)
-//                errorDetailsMap.get("innererror").asObject().get();
-//        assertNotNull(innererrorMap);
-//        JsonValue contentFilterResult = innererrorMap.get("content_filter_result");
-//        assertNotNull(contentFilterResult);
-//        Map<String, JsonValue> contentFilterResultMap =
-//                (Map<String, JsonValue>) contentFilterResult.asObject().get();
-//        JsonValue customBlocklists = contentFilterResultMap.get("custom_blocklists");
-//        assertNotNull(customBlocklists);
-//        Map<String, JsonValue> customBlocklistsMap =
-//                (Map<String, JsonValue>) customBlocklists.asObject().get();
-//        JsonValue filtered = customBlocklistsMap.get("filtered");
-//        assertNotNull(filtered);
-//        assertTrue((Boolean) filtered.asBoolean().get());
-//        List<JsonValue> detailsList =
-//                (List<JsonValue>) customBlocklistsMap.get("details").asArray().get();
-//        assertNotNull(detailsList);
-//
-//        Map<String, JsonValue> firstDetailMap =
-//                (Map<String, JsonValue>) detailsList.get(0).asObject().get();
-//        JsonValue isFiltered = firstDetailMap.get("filtered");
-//        assertNotNull(isFiltered);
-//        assertTrue((Boolean) isFiltered.asBoolean().get());
-//
-//        assertTrue(((String) firstDetailMap.get("id").asString().get()).startsWith("CustomBlockList"));
-//
-//        JsonValue hate = contentFilterResultMap.get("hate");
-//        assertNotNull(hate);
-//        Map<String, JsonValue> hateMap =
-//                (Map<String, JsonValue>) hate.asObject().get();
-//        JsonValue hateFiltered = hateMap.get("filtered");
-//        assertNotNull(hateFiltered);
-//        assertFalse((Boolean) hateFiltered.asBoolean().get());
-//        JsonValue hateSeverity = hateMap.get("severity");
-//        assertNotNull(hateSeverity);
-//        assertEquals("safe", hateSeverity.asString().get());
-//
-//        JsonValue selfHarm = contentFilterResultMap.get("self_harm");
-//        assertNotNull(selfHarm);
-//        Map<String, JsonValue> selfHarmMap =
-//                (Map<String, JsonValue>) selfHarm.asObject().get();
-//        JsonValue selfHarmFiltered = selfHarmMap.get("filtered");
-//        assertNotNull(selfHarmFiltered);
-//        assertFalse((Boolean) selfHarmFiltered.asBoolean().get());
-//        JsonValue selfHarmSeverity = selfHarmMap.get("severity");
-//        assertNotNull(selfHarmSeverity);
-//        assertEquals("safe", selfHarmSeverity.asString().get());
-//
-//        JsonValue sexual = contentFilterResultMap.get("sexual");
-//        assertNotNull(sexual);
-//        Map<String, JsonValue> sexualMap =
-//                (Map<String, JsonValue>) sexual.asObject().get();
-//        JsonValue sexualFiltered = sexualMap.get("filtered");
-//        assertNotNull(sexualFiltered);
-//        assertFalse((Boolean) sexualFiltered.asBoolean().get());
-//        JsonValue sexualSeverity = sexualMap.get("severity");
-//        assertNotNull(sexualSeverity);
-//        assertEquals("safe", sexualSeverity.asString().get());
-//
-//        JsonValue violence = contentFilterResultMap.get("violence");
-//        assertNotNull(violence);
-//        Map<String, JsonValue> violenceMap =
-//                (Map<String, JsonValue>) violence.asObject().get();
-//        JsonValue violenceFiltered = violenceMap.get("filtered");
-//        assertNotNull(violenceFiltered);
-//        assertFalse((Boolean) violenceFiltered.asBoolean().get());
-//        JsonValue violenceSeverity = violenceMap.get("severity");
-//        assertNotNull(violenceSeverity);
-//        assertEquals("safe", violenceSeverity.asString().get());
-//
-//        JsonValue profanity = contentFilterResultMap.get("profanity");
-//        assertNotNull(profanity);
-//        Map<String, JsonValue> profanityMap =
-//                (Map<String, JsonValue>) profanity.asObject().get();
-//        JsonValue profanityDetected = profanityMap.get("detected");
-//        assertNotNull(profanityDetected);
-//        assertFalse((Boolean) profanityDetected.asBoolean().get());
-//        JsonValue profanityFiltered = profanityMap.get("filtered");
-//        assertNotNull(profanityFiltered);
-//        assertFalse((Boolean) profanityFiltered.asBoolean().get());
-//
-//        JsonValue jailbreak = contentFilterResultMap.get("jailbreak");
-//        assertNotNull(jailbreak);
-//        Map<String, JsonValue> jailbreakMap =
-//                (Map<String, JsonValue>) jailbreak.asObject().get();
-//        JsonValue jailbreakDetected = jailbreakMap.get("detected");
-//        assertNotNull(jailbreakDetected);
-//        assertFalse((Boolean) jailbreakDetected.asBoolean().get());
-//        JsonValue jailbreakFiltered = jailbreakMap.get("filtered");
-//        assertNotNull(jailbreakFiltered);
-//        assertFalse((Boolean) jailbreakFiltered.asBoolean().get());
     }
 
     void assertRaiContentFilter(BadRequestException e) {
