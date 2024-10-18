@@ -14,7 +14,6 @@ import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
@@ -171,7 +170,6 @@ public class EncryptedBlobClientBuilderTests {
             .credential(new StorageSharedKeyCredential("foo", "bar"))
             .credential(new MockTokenCredential())
             .sasToken("foo")
-            .httpClient(new NoOpHttpClient())
             .buildEncryptedBlobClient());
     }
 
