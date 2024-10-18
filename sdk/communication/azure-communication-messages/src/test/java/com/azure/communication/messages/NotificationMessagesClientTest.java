@@ -52,7 +52,7 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
 
-        SendMessageResult result = messagesClient.send(new MediaNotificationContent(CHANNEL_REGISTRATION_ID,
+        SendMessageResult result = messagesClient.send(new ImageNotificationContent(CHANNEL_REGISTRATION_ID,
             recipients, "https://wallpapercave.com/wp/wp2163723.jpg"));
 
         assertEquals(1, result.getReceipts().size());
@@ -61,28 +61,15 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void shouldSendMessageTemplateWithImage(HttpClient httpClient) {
+    public void shouldSendImageMessageWithCaption(HttpClient httpClient) {
         messagesClient = buildNotificationMessagesClient(httpClient);
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
+        ImageNotificationContent imageMessage = new ImageNotificationContent(CHANNEL_REGISTRATION_ID,
+            recipients, "https://wallpapercave.com/wp/wp2163723.jpg");
+        imageMessage.setCaption("wow!");
 
-        //Update Template Name and language according your template associate to your channel.
-        MessageTemplate template = new MessageTemplate("sample_shipping_confirmation", "en_US");
-
-        //Update template parameter type and value
-        List<MessageTemplateValue> messageTemplateValues = new ArrayList<>();
-        messageTemplateValues.add(new MessageTemplateText("Days", "5"));
-        template.setValues(messageTemplateValues);
-
-        //Update template parameter binding
-        List<WhatsAppMessageTemplateBindingsComponent> components = new ArrayList<>();
-        components.add(new WhatsAppMessageTemplateBindingsComponent("Days"));
-        MessageTemplateBindings bindings = new WhatsAppMessageTemplateBindings()
-            .setBody(components);
-        template.setBindings(bindings);
-
-        SendMessageResult result = messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID,
-            recipients, template));
+        SendMessageResult result = messagesClient.send(imageMessage);
 
         assertEquals(1, result.getReceipts().size());
         assertNotNull(result.getReceipts().get(0).getMessageId());
@@ -90,8 +77,50 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void shouldSendMessageImageTemplateWithTokenCredential(HttpClient httpClient) {
-        messagesClient = buildNotificationMessagesClientWithTokenCredential(httpClient);
+    public void shouldSendVideoMessage(HttpClient httpClient) {
+        messagesClient = buildNotificationMessagesClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+
+        SendMessageResult result = messagesClient.send(new VideoNotificationContent(CHANNEL_REGISTRATION_ID,
+            recipients, "https://sample-videos.com/video321/mp4/480/big_buck_bunny_480p_1mb.mp4"));
+
+        assertEquals(1, result.getReceipts().size());
+        assertNotNull(result.getReceipts().get(0).getMessageId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void shouldSendAudioMessage(HttpClient httpClient) {
+        messagesClient = buildNotificationMessagesClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+
+        SendMessageResult result = messagesClient.send(new AudioNotificationContent(CHANNEL_REGISTRATION_ID,
+            recipients, "https://sample-videos.com/audio/mp3/wave.mp3"));
+
+        assertEquals(1, result.getReceipts().size());
+        assertNotNull(result.getReceipts().get(0).getMessageId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void shouldSendDocumentMessage(HttpClient httpClient) {
+        messagesClient = buildNotificationMessagesClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+
+        SendMessageResult result = messagesClient.send(new DocumentNotificationContent(CHANNEL_REGISTRATION_ID,
+            recipients, "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"));
+
+        assertEquals(1, result.getReceipts().size());
+        assertNotNull(result.getReceipts().get(0).getMessageId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void shouldSendMessageImageTemplate(HttpClient httpClient) {
+        messagesClient = buildNotificationMessagesClient(httpClient);
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
 

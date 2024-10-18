@@ -12,23 +12,22 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * @deprecated A request to send an image notification.
+ * A request to send a document notification.
  */
 @Fluent
-@Deprecated
-public final class MediaNotificationContent extends NotificationContent {
+public final class DocumentNotificationContent extends NotificationContent {
 
     /*
      * The type discriminator describing a notification type.
      */
     @Generated
-    private CommunicationMessageKind kind = CommunicationMessageKind.IMAGE_V0;
+    private CommunicationMessageKind kind = CommunicationMessageKind.DOCUMENT;
 
     /*
-     * Optional text content.
+     * Optional name for the file.
      */
     @Generated
-    private String content;
+    private String fileName;
 
     /*
      * A media url for the file. Required if the type is one of the supported media types, e.g. image
@@ -37,14 +36,14 @@ public final class MediaNotificationContent extends NotificationContent {
     private final String mediaUrl;
 
     /**
-     * Creates an instance of MediaNotificationContent class.
+     * Creates an instance of DocumentNotificationContent class.
      *
      * @param channelRegistrationId the channelRegistrationId value to set.
      * @param to the to value to set.
      * @param mediaUrl the mediaUrl value to set.
      */
     @Generated
-    public MediaNotificationContent(String channelRegistrationId, List<String> to, String mediaUrl) {
+    public DocumentNotificationContent(String channelRegistrationId, List<String> to, String mediaUrl) {
         super(channelRegistrationId, to);
         this.mediaUrl = mediaUrl;
     }
@@ -61,24 +60,24 @@ public final class MediaNotificationContent extends NotificationContent {
     }
 
     /**
-     * Get the content property: Optional text content.
+     * Get the fileName property: Optional name for the file.
      *
-     * @return the content value.
+     * @return the fileName value.
      */
     @Generated
-    public String getContent() {
-        return this.content;
+    public String getFileName() {
+        return this.fileName;
     }
 
     /**
-     * Set the content property: Optional text content.
+     * Set the fileName property: Optional name for the file.
      *
-     * @param content the content value to set.
-     * @return the MediaNotificationContent object itself.
+     * @param fileName the fileName value to set.
+     * @return the DocumentNotificationContent object itself.
      */
     @Generated
-    public MediaNotificationContent setContent(String content) {
-        this.content = content;
+    public DocumentNotificationContent setFileName(String fileName) {
+        this.fileName = fileName;
         return this;
     }
 
@@ -104,27 +103,29 @@ public final class MediaNotificationContent extends NotificationContent {
         jsonWriter.writeArrayField("to", getTo(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("mediaUri", this.mediaUrl);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeStringField("caption", this.caption);
+        jsonWriter.writeStringField("fileName", this.fileName);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of MediaNotificationContent from the JsonReader.
+     * Reads an instance of DocumentNotificationContent from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of MediaNotificationContent if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of DocumentNotificationContent if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the MediaNotificationContent.
+     * @throws IOException If an error occurs while reading the DocumentNotificationContent.
      */
     @Generated
-    public static MediaNotificationContent fromJson(JsonReader jsonReader) throws IOException {
+    public static DocumentNotificationContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String channelRegistrationId = null;
             List<String> to = null;
             String mediaUrl = null;
-            CommunicationMessageKind kind = CommunicationMessageKind.IMAGE_V0;
-            String content = null;
+            CommunicationMessageKind kind = CommunicationMessageKind.DOCUMENT;
+            String caption = null;
+            String fileName = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -136,17 +137,48 @@ public final class MediaNotificationContent extends NotificationContent {
                     mediaUrl = reader.getString();
                 } else if ("kind".equals(fieldName)) {
                     kind = CommunicationMessageKind.fromString(reader.getString());
-                } else if ("content".equals(fieldName)) {
-                    content = reader.getString();
+                } else if ("caption".equals(fieldName)) {
+                    caption = reader.getString();
+                } else if ("fileName".equals(fieldName)) {
+                    fileName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            MediaNotificationContent deserializedMediaNotificationContent
-                = new MediaNotificationContent(channelRegistrationId, to, mediaUrl);
-            deserializedMediaNotificationContent.kind = kind;
-            deserializedMediaNotificationContent.content = content;
-            return deserializedMediaNotificationContent;
+            DocumentNotificationContent deserializedDocumentNotificationContent
+                = new DocumentNotificationContent(channelRegistrationId, to, mediaUrl);
+            deserializedDocumentNotificationContent.kind = kind;
+            deserializedDocumentNotificationContent.caption = caption;
+            deserializedDocumentNotificationContent.fileName = fileName;
+            return deserializedDocumentNotificationContent;
         });
+    }
+
+    /*
+     * Optional text content.
+     */
+    @Generated
+    private String caption;
+
+    /**
+     * Get the caption property: Optional text content.
+     *
+     * @return the caption value.
+     */
+    @Generated
+    public String getCaption() {
+        return this.caption;
+    }
+
+    /**
+     * Set the caption property: Optional text content.
+     *
+     * @param caption the caption value to set.
+     * @return the DocumentNotificationContent object itself.
+     */
+    @Generated
+    public DocumentNotificationContent setCaption(String caption) {
+        this.caption = caption;
+        return this;
     }
 }

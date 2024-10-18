@@ -12,23 +12,16 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * @deprecated A request to send an image notification.
+ * A request to send a video notification.
  */
 @Fluent
-@Deprecated
-public final class MediaNotificationContent extends NotificationContent {
+public final class VideoNotificationContent extends NotificationContent {
 
     /*
      * The type discriminator describing a notification type.
      */
     @Generated
-    private CommunicationMessageKind kind = CommunicationMessageKind.IMAGE_V0;
-
-    /*
-     * Optional text content.
-     */
-    @Generated
-    private String content;
+    private CommunicationMessageKind kind = CommunicationMessageKind.VIDEO;
 
     /*
      * A media url for the file. Required if the type is one of the supported media types, e.g. image
@@ -37,14 +30,14 @@ public final class MediaNotificationContent extends NotificationContent {
     private final String mediaUrl;
 
     /**
-     * Creates an instance of MediaNotificationContent class.
+     * Creates an instance of VideoNotificationContent class.
      *
      * @param channelRegistrationId the channelRegistrationId value to set.
      * @param to the to value to set.
      * @param mediaUrl the mediaUrl value to set.
      */
     @Generated
-    public MediaNotificationContent(String channelRegistrationId, List<String> to, String mediaUrl) {
+    public VideoNotificationContent(String channelRegistrationId, List<String> to, String mediaUrl) {
         super(channelRegistrationId, to);
         this.mediaUrl = mediaUrl;
     }
@@ -58,28 +51,6 @@ public final class MediaNotificationContent extends NotificationContent {
     @Override
     public CommunicationMessageKind getKind() {
         return this.kind;
-    }
-
-    /**
-     * Get the content property: Optional text content.
-     *
-     * @return the content value.
-     */
-    @Generated
-    public String getContent() {
-        return this.content;
-    }
-
-    /**
-     * Set the content property: Optional text content.
-     *
-     * @param content the content value to set.
-     * @return the MediaNotificationContent object itself.
-     */
-    @Generated
-    public MediaNotificationContent setContent(String content) {
-        this.content = content;
-        return this;
     }
 
     /**
@@ -104,27 +75,27 @@ public final class MediaNotificationContent extends NotificationContent {
         jsonWriter.writeArrayField("to", getTo(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("mediaUri", this.mediaUrl);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeStringField("caption", this.caption);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of MediaNotificationContent from the JsonReader.
+     * Reads an instance of VideoNotificationContent from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of MediaNotificationContent if the JsonReader was pointing to an instance of it, or null if
+     * @return An instance of VideoNotificationContent if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the MediaNotificationContent.
+     * @throws IOException If an error occurs while reading the VideoNotificationContent.
      */
     @Generated
-    public static MediaNotificationContent fromJson(JsonReader jsonReader) throws IOException {
+    public static VideoNotificationContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String channelRegistrationId = null;
             List<String> to = null;
             String mediaUrl = null;
-            CommunicationMessageKind kind = CommunicationMessageKind.IMAGE_V0;
-            String content = null;
+            CommunicationMessageKind kind = CommunicationMessageKind.VIDEO;
+            String caption = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -136,17 +107,45 @@ public final class MediaNotificationContent extends NotificationContent {
                     mediaUrl = reader.getString();
                 } else if ("kind".equals(fieldName)) {
                     kind = CommunicationMessageKind.fromString(reader.getString());
-                } else if ("content".equals(fieldName)) {
-                    content = reader.getString();
+                } else if ("caption".equals(fieldName)) {
+                    caption = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            MediaNotificationContent deserializedMediaNotificationContent
-                = new MediaNotificationContent(channelRegistrationId, to, mediaUrl);
-            deserializedMediaNotificationContent.kind = kind;
-            deserializedMediaNotificationContent.content = content;
-            return deserializedMediaNotificationContent;
+            VideoNotificationContent deserializedVideoNotificationContent
+                = new VideoNotificationContent(channelRegistrationId, to, mediaUrl);
+            deserializedVideoNotificationContent.kind = kind;
+            deserializedVideoNotificationContent.caption = caption;
+            return deserializedVideoNotificationContent;
         });
+    }
+
+    /*
+     * Optional text content.
+     */
+    @Generated
+    private String caption;
+
+    /**
+     * Get the caption property: Optional text content.
+     *
+     * @return the caption value.
+     */
+    @Generated
+    public String getCaption() {
+        return this.caption;
+    }
+
+    /**
+     * Set the caption property: Optional text content.
+     *
+     * @param caption the caption value to set.
+     * @return the VideoNotificationContent object itself.
+     */
+    @Generated
+    public VideoNotificationContent setCaption(String caption) {
+        this.caption = caption;
+        return this;
     }
 }

@@ -25,26 +25,24 @@ public class MessagesSdkCustomization extends Customization {
         updateBuilderClass(packageCustomization, "MessageTemplateClientBuilder");
 
         PackageCustomization modelsPackage = libraryCustomization.getPackage("com.azure.communication.messages.models");
+        updateModelClassModifierToAbstract(modelsPackage, "NotificationContent");
+        updateModelClassModifierToAbstract(modelsPackage, "MessageTemplateValue");
+        updateModelClassModifierToAbstract(modelsPackage, "MessageTemplateItem");
         customizeMessageTemplateLocation(modelsPackage);
-        customizeNotificationContentModel(modelsPackage);
-        customizeMessageTemplateValueModel(modelsPackage);
         customizeMessageTemplateItemModel(modelsPackage);
+        AddDeprecateAnnotationToClass(modelsPackage, "MediaNotificationContent");
 
         PackageCustomization channelsModelsPackage = libraryCustomization.getPackage(
             "com.azure.communication.messages.models.channels");
         updateWhatsAppMessageTemplateItemWithBinaryDataContent(channelsModelsPackage);
     }
 
-    private void customizeNotificationContentModel(PackageCustomization modelsPackage) {
-        modelsPackage.getClass("NotificationContent")
-            .customizeAst(ast -> ast.getPrimaryType()
-                .ifPresent(clazz -> clazz.getConstructors().get(0).setModifiers(Modifier.Keyword.PROTECTED)));
-    }
-
-    private void customizeMessageTemplateValueModel(PackageCustomization modelsPackage) {
-        modelsPackage.getClass("MessageTemplateValue")
-            .customizeAst(ast -> ast.getPrimaryType()
-                .ifPresent(clazz -> clazz.getConstructors().get(0).setModifiers(Modifier.Keyword.PROTECTED)));
+    private void updateModelClassModifierToAbstract(PackageCustomization modelsPackage, String className) {
+        modelsPackage.getClass(className)
+            .customizeAst(ast ->  ast.getClassByName(className)
+                .ifPresent(clazz -> clazz.setModifiers(Modifier.Keyword.PUBLIC, Modifier.Keyword.ABSTRACT)
+                    .getConstructors().get(0).setModifiers(Modifier.Keyword.PROTECTED)));
+        removeJsonKnownDiscriminatorMethod(modelsPackage, className);
     }
 
     private void customizeMessageTemplateItemModel(PackageCustomization modelsPackage) {
@@ -189,5 +187,22 @@ public class MessagesSdkCustomization extends Customization {
                 clazz.getMethodsByName("fromJson").get(0).setBody(StaticJavaParser.parseBlock(fromJson));
             });
         });
+    }
+
+    private void removeJsonKnownDiscriminatorMethod(PackageCustomization modelPackage, String className) {
+        modelPackage.getClass(className).customizeAst(ast -> {
+            ast.getClassByName(className).ifPresent( clazz -> {
+                String fromJson = clazz.getMethodsByName("fromJson")
+                    .get(0).getBody().get().toString()
+                    .replace("return fromJsonKnownDiscriminator(readerToUse.reset());",
+                        "throw new IllegalStateException(\"Invalid Kind value - \"+discriminatorValue); ");
+                clazz.getMethodsByName("fromJson").get(0).setBody(StaticJavaParser.parseBlock(fromJson));
+                clazz.getMethodsByName("fromJsonKnownDiscriminator").get(0).remove();
+            });
+        });
+    }
+
+    private void AddDeprecateAnnotationToClass(PackageCustomization modelsPackage, String className) {
+        modelsPackage.getClass(className).addAnnotation("Deprecated");
     }
 }
