@@ -2228,21 +2228,6 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void getNonEncodedPathName() {
-        String pathName = "foo/bar";
-        String urlEncodedPathName = Utility.encodeUrlPath(pathName);
-
-        DataLakeDirectoryClient client = getPathClientBuilder(getDataLakeCredential(), ENVIRONMENT.getDataLakeAccount()
-            .getDataLakeEndpoint())
-            .fileSystemName(generateFileSystemName())
-            .pathName(urlEncodedPathName)
-            .buildDirectoryClient();
-
-        assertEquals(pathName, client.getDirectoryPath());
-        assertTrue(client.getDirectoryUrl().contains(Utility.urlEncode(pathName)));
-    }
-
-    @Test
     public void getPropertiesDefault() {
         Response<PathProperties> response = dc.getPropertiesWithResponse(null, null, null);
         HttpHeaders headers = response.getHeaders();

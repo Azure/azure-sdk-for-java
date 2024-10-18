@@ -384,12 +384,12 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<FileSystem> listFileSystemsSinglePage(String prefix, String continuation, Integer maxResults,
         String requestId, Integer timeout) {
+        final String resource = "account";
+        final String accept = "application/json";
+        ResponseBase<ServicesListFileSystemsHeaders, FileSystemList> res
+            = service.listFileSystemsSync(this.client.getUrl(), resource, prefix, continuation, maxResults, requestId,
+                timeout, this.client.getVersion(), accept, Context.NONE);
         try {
-            final String resource = "account";
-            final String accept = "application/json";
-            ResponseBase<ServicesListFileSystemsHeaders, FileSystemList> res
-                = service.listFileSystemsSync(this.client.getUrl(), resource, prefix, continuation, maxResults,
-                    requestId, timeout, this.client.getVersion(), accept, Context.NONE);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getFilesystems(), null, res.getDeserializedHeaders());
         } catch (DataLakeStorageExceptionInternal internalException) {
@@ -423,12 +423,12 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<FileSystem> listFileSystemsSinglePage(String prefix, String continuation, Integer maxResults,
         String requestId, Integer timeout, Context context) {
+        final String resource = "account";
+        final String accept = "application/json";
+        ResponseBase<ServicesListFileSystemsHeaders, FileSystemList> res
+            = service.listFileSystemsSync(this.client.getUrl(), resource, prefix, continuation, maxResults, requestId,
+                timeout, this.client.getVersion(), accept, context);
         try {
-            final String resource = "account";
-            final String accept = "application/json";
-            ResponseBase<ServicesListFileSystemsHeaders, FileSystemList> res
-                = service.listFileSystemsSync(this.client.getUrl(), resource, prefix, continuation, maxResults,
-                    requestId, timeout, this.client.getVersion(), accept, context);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getFilesystems(), null, res.getDeserializedHeaders());
         } catch (DataLakeStorageExceptionInternal internalException) {
@@ -520,11 +520,11 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<FileSystem> listFileSystemsNoCustomHeadersSinglePage(String prefix, String continuation,
         Integer maxResults, String requestId, Integer timeout) {
+        final String resource = "account";
+        final String accept = "application/json";
+        Response<FileSystemList> res = service.listFileSystemsNoCustomHeadersSync(this.client.getUrl(), resource,
+            prefix, continuation, maxResults, requestId, timeout, this.client.getVersion(), accept, Context.NONE);
         try {
-            final String resource = "account";
-            final String accept = "application/json";
-            Response<FileSystemList> res = service.listFileSystemsNoCustomHeadersSync(this.client.getUrl(), resource,
-                prefix, continuation, maxResults, requestId, timeout, this.client.getVersion(), accept, Context.NONE);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getFilesystems(), null, null);
         } catch (DataLakeStorageExceptionInternal internalException) {
@@ -558,11 +558,11 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<FileSystem> listFileSystemsNoCustomHeadersSinglePage(String prefix, String continuation,
         Integer maxResults, String requestId, Integer timeout, Context context) {
+        final String resource = "account";
+        final String accept = "application/json";
+        Response<FileSystemList> res = service.listFileSystemsNoCustomHeadersSync(this.client.getUrl(), resource,
+            prefix, continuation, maxResults, requestId, timeout, this.client.getVersion(), accept, context);
         try {
-            final String resource = "account";
-            final String accept = "application/json";
-            Response<FileSystemList> res = service.listFileSystemsNoCustomHeadersSync(this.client.getUrl(), resource,
-                prefix, continuation, maxResults, requestId, timeout, this.client.getVersion(), accept, context);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getFilesystems(), null, null);
         } catch (DataLakeStorageExceptionInternal internalException) {

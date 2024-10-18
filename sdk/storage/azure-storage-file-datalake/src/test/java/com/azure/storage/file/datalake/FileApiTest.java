@@ -16,7 +16,6 @@ import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.ProgressReceiver;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
@@ -2293,21 +2292,6 @@ public class FileApiTest extends DataLakeTestBase {
 
         // Note : Here I use Path because there is a test that tests the use of a /
         assertEquals(finalFileName, client.getFilePath());
-    }
-
-    @Test
-    public void getNonEncodedPathName() {
-        String pathName = "foo/bar";
-        String urlEncodedPathName = Utility.encodeUrlPath(pathName);
-
-        DataLakeFileClient client = getPathClientBuilder(getDataLakeCredential(), ENVIRONMENT.getDataLakeAccount()
-            .getDataLakeEndpoint())
-            .fileSystemName(generateFileSystemName())
-            .pathName(urlEncodedPathName)
-            .buildFileClient();
-
-        assertEquals(pathName, client.getFilePath());
-        assertTrue(client.getFileUrl().contains(Utility.urlEncode(pathName)));
     }
 
     @Test
