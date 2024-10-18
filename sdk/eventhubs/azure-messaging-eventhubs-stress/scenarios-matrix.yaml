@@ -12,6 +12,19 @@ matrix:
       processorInstancesCount: 1
       processorFailureRatio: 0
       messageSizeInBytes: 1024
+    processorV2:
+        imageBuildDir: ..\..\..\
+        testDurationMin: 15
+        senderTestClass: EventSender
+        sendRate: 38500
+        sendBatchSize: 385
+        sendConcurrency: 15
+        receiverTestClass: EventProcessor
+        processorBatchSize: 128
+        processorInstancesCount: 1
+        processorFailureRatio: 0
+        messageSizeInBytes: 1024
+        useV2: true
     forwarder:
       imageBuildDir: ..\..\..\
       testDurationMin: 15
@@ -24,6 +37,19 @@ matrix:
       processorInstancesCount: 2
       processorFailureRatio: 0.000003125
       messageSizeInBytes: 1024
+    forwarderV2:
+        imageBuildDir: ..\..\..\
+        testDurationMin: 15
+        senderTestClass: EventSender
+        sendRate: 20000
+        sendBatchSize: 50
+        sendConcurrency: 10
+        receiverTestClass: EventForwarder
+        processorBatchSize: 128
+        processorInstancesCount: 2
+        processorFailureRatio: 0.000003125
+        messageSizeInBytes: 1024
+        useV2: true
     idleSender:
       imageBuildDir: ..\..\..\
       testDurationMin: 2160
@@ -33,7 +59,7 @@ matrix:
       sendConcurrency: 5
       receiverTestClass: EventProcessor
       processorBatchSize: 32
-      processorInstancesCount: 2
+      processorInstancesCount: 1
       processorFailureRatio: 0.000003125
       messageSizeInBytes: 1024
       idleDurationMinutes: 40

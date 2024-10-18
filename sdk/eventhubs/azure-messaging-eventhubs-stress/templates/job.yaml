@@ -24,6 +24,7 @@ spec:
           export IDLE_DURATION_MINUTES={{ default 0 .Stress.idleDurationMinutes }}
           export CONTAINER_NAME=sender
           export DELAY_START_MINUTES=1
+          export USE_V2={{ default false .Stress.useV2 }}
           java \
           -Dotel.service.name={{ .Release.Name }}-{{ .Stress.BaseName }} \
           -Dotel.traces.sampler=traceidratio \
@@ -59,6 +60,7 @@ spec:
           export FORWARD_PARTITIONS_COUNT={{ default 32 .Stress.forwardPartitionsCount }}
           export IDLE_DURATION_MINUTES={{ default 0 .Stress.idleDurationMinutes }}
           export CONTAINER_NAME=receiver
+          export USE_V2={{ default false .Stress.useV2 }}
           java \
           -Dotel.service.name={{ .Release.Name }}-{{ .Stress.BaseName }} \
           -Dotel.traces.sampler=traceidratio \
