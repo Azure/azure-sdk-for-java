@@ -3,17 +3,13 @@
 
 package com.azure.developer.loadtesting;
 
-import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
-
-import java.io.IOException;
-import java.util.Map;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Sample demonstrates how to list tests, test files and test runs for a given resource.
@@ -37,26 +33,23 @@ public final class ListOperations {
     public static void listTests() {
         // BEGIN: java-listOperations-sample-listTests
         LoadTestAdministrationClient client = new LoadTestAdministrationClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint("<endpoint>")
-            .buildClient();
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("<endpoint>")
+                .buildClient();
 
         RequestOptions reqOpts = new RequestOptions()
-            .addQueryParam("orderBy", "lastModifiedDateTime")
-            .addQueryParam("maxPageSize", "10");
+                .addQueryParam("orderBy", "lastModifiedDateTime")
+                .addQueryParam("maxPageSize", "10");
 
         PagedIterable<BinaryData> tests = client.listTests(reqOpts);
 
-        tests.forEach(testBinary -> {
-            try (JsonReader jsonReader = JsonProviders.createReader(testBinary.toBytes())) {
-                Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
-
-                String testId = jsonTree.get("testId").toString();
-                String displayName = (jsonTree.get("displayName") != null)
-                    ? jsonTree.get("displayName").toString()
-                    : "";
+        tests.forEach((testBinary) -> {
+            try {
+                JsonNode test = new ObjectMapper().readTree(testBinary.toString());
+                String testId = test.get("testId").asText();
+                String displayName = (test.get("displayName") != null) ? test.get("displayName").asText() : "";
                 System.out.println(String.format("%s\t%s", testId, displayName));
-            } catch (IOException e) {
+            } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
         });
@@ -66,29 +59,26 @@ public final class ListOperations {
     public static void listTestRuns() {
         // BEGIN: java-listOperations-sample-listTestRuns
         LoadTestRunClient client = new LoadTestRunClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint("<endpoint>")
-            .buildClient();
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("<endpoint>")
+                .buildClient();
 
         RequestOptions reqOpts = new RequestOptions()
-            .addQueryParam("search", "scenario1")
-            .addQueryParam("orderBy", "lastModifiedDateTime")
-            .addQueryParam("status", "EXECUTING,DONE")
-            .addQueryParam("maxPageSize", "10");
+                .addQueryParam("search", "scenario1")
+                .addQueryParam("orderBy", "lastModifiedDateTime")
+                .addQueryParam("status", "EXECUTING,DONE")
+                .addQueryParam("maxPageSize", "10");
 
         PagedIterable<BinaryData> testRuns = client.listTestRuns(reqOpts);
 
-        testRuns.forEach(testRunBinary -> {
-            try (JsonReader jsonReader = JsonProviders.createReader(testRunBinary.toBytes())) {
-                Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
-
-                String testRunId = jsonTree.get("testRunId").toString();
-                String testId = jsonTree.get("testId").toString();
-                String displayName = (jsonTree.get("displayName") != null)
-                    ? jsonTree.get("displayName").toString()
-                    : "";
+        testRuns.forEach((testRunBinary) -> {
+            try {
+                JsonNode testRun = new ObjectMapper().readTree(testRunBinary.toString());
+                String testRunId = testRun.get("testRunId").asText();
+                String testId = testRun.get("testId").asText();
+                String displayName = (testRun.get("displayName") != null) ? testRun.get("displayName").asText() : "";
                 System.out.println(String.format("%s\t%s\t%s", testRunId, testId, displayName));
-            } catch (IOException e) {
+            } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
         });
@@ -98,22 +88,22 @@ public final class ListOperations {
     public static void listTestFiles() {
         // BEGIN: java-listOperations-sample-listTestFiles
         LoadTestAdministrationClient client = new LoadTestAdministrationClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint("<endpoint>")
-            .buildClient();
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("<endpoint>")
+                .buildClient();
 
         String inputTestId = "12345678-1234-1234-1234-123456789abc";
+
         PagedIterable<BinaryData> files = client.listTestFiles(inputTestId, null);
 
-        files.forEach(fileBinary -> {
-            try (JsonReader jsonReader = JsonProviders.createReader(fileBinary.toBytes())) {
-                Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
-
-                String blobUrl = jsonTree.get("url").toString();
-                String fileName = jsonTree.get("fileName").toString();
-                String fileType = jsonTree.get("fileType").toString();
+        files.forEach((fileBinary) -> {
+            try {
+                JsonNode file = new ObjectMapper().readTree(fileBinary.toString());
+                String blobUrl = file.get("url").asText();
+                String fileName = file.get("fileName").asText();
+                String fileType = file.get("fileType").asText();
                 System.out.println(String.format("%s\t%s\t%s", fileName, fileType, blobUrl));
-            } catch (IOException e) {
+            } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
         });
