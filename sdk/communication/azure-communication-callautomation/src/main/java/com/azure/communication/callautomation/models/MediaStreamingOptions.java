@@ -34,22 +34,29 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
      */
     private final MediaStreamingAudioChannel audioChannelType;
 
+    /*
+     * The type of transport to be used for media streaming, eg. Websocket
+     */
+    private final Boolean startMediaStreaming;
+
     /**
      * Creates a new instance of MediaStreamingConfiguration
      * @param transportUrl - The Transport URL
      * @param transportType - Transport type
      * @param contentType - Content Type
      * @param audioChannelType - Audio Channel Type
+     * @param startMediaStreaming - Start media streaming flag
      */
-    public MediaStreamingOptions(String transportUrl, MediaStreamingTransport transportType, MediaStreamingContent contentType, MediaStreamingAudioChannel audioChannelType) {
+    public MediaStreamingOptions(String transportUrl, MediaStreamingTransport transportType, MediaStreamingContent contentType, MediaStreamingAudioChannel audioChannelType, Boolean startMediaStreaming) {
         this.transportUrl = transportUrl;
         this.transportType = transportType;
         this.contentType = contentType;
         this.audioChannelType = audioChannelType;
+        this.startMediaStreaming = startMediaStreaming;
     }
 
     /**
-     * Get the transportUrl property: Transport URL for media streaming.
+     * Get the transportUrl property: Transport URL for media streaming., 
      *
      * @return the transportUrl value.
      */
@@ -84,6 +91,15 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
         return this.audioChannelType;
     }
 
+      /**
+     * Get the startMediaStreaming property: Enables intermediate results for the transcribed speech.
+     * 
+     * @return the startMediaStreaming value.
+     */
+    public Boolean isStartMediaStreamingEnabled() {
+        return this.startMediaStreaming;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +107,7 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
         jsonWriter.writeStringField("transportType", transportType != null ? transportType.toString() : null);
         jsonWriter.writeStringField("contentType", contentType != null ? contentType.toString() : null);
         jsonWriter.writeStringField("audioChannelType", audioChannelType != null ? audioChannelType.toString() : null);
+        jsonWriter.writeBooleanField("startMediaStreaming", startMediaStreaming);
         return jsonWriter.writeEndObject();
     }
 
@@ -108,6 +125,7 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
             MediaStreamingTransport transportType = null;
             MediaStreamingContent contentType = null;
             MediaStreamingAudioChannel audioChannelType = null;
+            boolean startMediaStreaming = false;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -119,11 +137,13 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
                     contentType = MediaStreamingContent.fromString(reader.getString());
                 } else if ("audioChannelType".equals(fieldName)) {
                     audioChannelType = MediaStreamingAudioChannel.fromString(reader.getString());
+                } else if ("startMediaStreaming".equals(fieldName)) {
+                    startMediaStreaming = reader.getBoolean();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new MediaStreamingOptions(transportUrl, transportType, contentType, audioChannelType);
+            return new MediaStreamingOptions(transportUrl, transportType, contentType, audioChannelType, startMediaStreaming);
         });
     }
 }
