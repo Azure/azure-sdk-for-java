@@ -11,13 +11,13 @@ import com.azure.resourcemanager.computefleet.models.AdditionalUnattendContentPa
 import com.azure.resourcemanager.computefleet.models.PatchSettings;
 import com.azure.resourcemanager.computefleet.models.ProtocolTypes;
 import com.azure.resourcemanager.computefleet.models.SettingNames;
+import com.azure.resourcemanager.computefleet.models.WinRMConfiguration;
+import com.azure.resourcemanager.computefleet.models.WinRMListener;
 import com.azure.resourcemanager.computefleet.models.WindowsConfiguration;
 import com.azure.resourcemanager.computefleet.models.WindowsPatchAssessmentMode;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchAutomaticByPlatformRebootSetting;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchAutomaticByPlatformSettings;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchMode;
-import com.azure.resourcemanager.computefleet.models.WinRMConfiguration;
-import com.azure.resourcemanager.computefleet.models.WinRMListener;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
