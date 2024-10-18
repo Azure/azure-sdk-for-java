@@ -9,13 +9,6 @@
 - Added AudioNotificationContent to  send audio message.
 - Deprecated MediaNotificationContent.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-
 ## 1.0.7 (2024-09-27)
 
 ### Other Changes
