@@ -10,8 +10,8 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
 public final class ApplicationTypeVersionsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/stable/2024-04-01/examples/
-     * ApplicationTypeVersionGetOperation_example.json
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * examples/ApplicationTypeVersionGetOperation_example.json
      */
     /**
      * Sample code: Get an application type version.

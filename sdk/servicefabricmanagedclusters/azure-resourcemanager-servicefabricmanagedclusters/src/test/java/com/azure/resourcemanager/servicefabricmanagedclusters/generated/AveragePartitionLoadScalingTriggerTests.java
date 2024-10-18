@@ -12,24 +12,24 @@ public final class AveragePartitionLoadScalingTriggerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AveragePartitionLoadScalingTrigger model = BinaryData.fromString(
-            "{\"kind\":\"AveragePartitionLoadTrigger\",\"metricName\":\"uutpwoqhih\",\"lowerLoadThreshold\":33.277762117005274,\"upperLoadThreshold\":2.0849586395403574,\"scaleInterval\":\"zpnfqntcypsxj\"}")
+            "{\"kind\":\"AveragePartitionLoadTrigger\",\"metricName\":\"ojfmwnco\",\"lowerLoadThreshold\":73.57272977114224,\"upperLoadThreshold\":23.704525792388196,\"scaleInterval\":\"irctymoxoftpipiw\"}")
             .toObject(AveragePartitionLoadScalingTrigger.class);
-        Assertions.assertEquals("uutpwoqhih", model.metricName());
-        Assertions.assertEquals(33.277762117005274, model.lowerLoadThreshold());
-        Assertions.assertEquals(2.0849586395403574, model.upperLoadThreshold());
-        Assertions.assertEquals("zpnfqntcypsxj", model.scaleInterval());
+        Assertions.assertEquals("ojfmwnco", model.metricName());
+        Assertions.assertEquals(73.57272977114224, model.lowerLoadThreshold());
+        Assertions.assertEquals(23.704525792388196, model.upperLoadThreshold());
+        Assertions.assertEquals("irctymoxoftpipiw", model.scaleInterval());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AveragePartitionLoadScalingTrigger model = new AveragePartitionLoadScalingTrigger().withMetricName("uutpwoqhih")
-            .withLowerLoadThreshold(33.277762117005274)
-            .withUpperLoadThreshold(2.0849586395403574)
-            .withScaleInterval("zpnfqntcypsxj");
+        AveragePartitionLoadScalingTrigger model = new AveragePartitionLoadScalingTrigger().withMetricName("ojfmwnco")
+            .withLowerLoadThreshold(73.57272977114224)
+            .withUpperLoadThreshold(23.704525792388196)
+            .withScaleInterval("irctymoxoftpipiw");
         model = BinaryData.fromObject(model).toObject(AveragePartitionLoadScalingTrigger.class);
-        Assertions.assertEquals("uutpwoqhih", model.metricName());
-        Assertions.assertEquals(33.277762117005274, model.lowerLoadThreshold());
-        Assertions.assertEquals(2.0849586395403574, model.upperLoadThreshold());
-        Assertions.assertEquals("zpnfqntcypsxj", model.scaleInterval());
+        Assertions.assertEquals("ojfmwnco", model.metricName());
+        Assertions.assertEquals(73.57272977114224, model.lowerLoadThreshold());
+        Assertions.assertEquals(23.704525792388196, model.upperLoadThreshold());
+        Assertions.assertEquals("irctymoxoftpipiw", model.scaleInterval());
     }
 }
