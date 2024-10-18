@@ -18,7 +18,6 @@ import java.io.IOException;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
-// Does not take ParallelTransferOptions
 public class AppendBlobOutputStream extends BlobScenarioBase<StorageStressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(BlockBlobOutputStream.class);
     private final OriginalContent originalContent = new OriginalContent();

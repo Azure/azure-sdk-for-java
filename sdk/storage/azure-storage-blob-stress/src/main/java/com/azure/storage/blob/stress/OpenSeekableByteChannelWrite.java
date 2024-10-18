@@ -23,7 +23,6 @@ import java.nio.ByteBuffer;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.storage.blob.options.BlockBlobSeekableByteChannelWriteOptions.WriteMode.OVERWRITE;
 
-// Does not take ParallelTransferOptions
 public class OpenSeekableByteChannelWrite extends BlobScenarioBase<StorageStressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(OpenSeekableByteChannelWrite.class);
     private final OriginalContent originalContent = new OriginalContent();

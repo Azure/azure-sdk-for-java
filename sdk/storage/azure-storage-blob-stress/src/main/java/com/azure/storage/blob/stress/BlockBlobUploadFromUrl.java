@@ -19,7 +19,6 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 
-// Does not take ParallelTransferOptions
 public class BlockBlobUploadFromUrl extends BlobScenarioBase<StorageStressOptions> {
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;

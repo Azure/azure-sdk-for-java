@@ -19,7 +19,6 @@ import java.nio.channels.Channels;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
-// Does not take ParallelTransferOptions
 public class OpenSeekableByteChannelRead extends BlobScenarioBase<StorageStressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(OpenSeekableByteChannelRead.class);
     private final OriginalContent originalContent = new OriginalContent();

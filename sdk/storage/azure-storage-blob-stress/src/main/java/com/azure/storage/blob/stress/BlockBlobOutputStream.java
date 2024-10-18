@@ -25,19 +25,21 @@ public class BlockBlobOutputStream extends BlobScenarioBase<StorageStressOptions
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncNoFaultClient;
+    private final ParallelTransferOptions parallelTransferOptions;
 
     public BlockBlobOutputStream(StorageStressOptions options) {
         super(options);
         String blobName = generateBlobName();
         this.asyncNoFaultClient = getAsyncContainerClientNoFault().getBlobAsyncClient(blobName);
         this.syncClient = getSyncContainerClient().getBlobClient(blobName);
+        this.parallelTransferOptions = new ParallelTransferOptions().setMaxConcurrency(options.getMaxConcurrency());
     }
 
     @Override
     protected void runInternal(Context span) throws IOException {
         BlockBlobClient blockBlobClient = syncClient.getBlockBlobClient();
         BlockBlobOutputStreamOptions blockBlobOutputStreamOptions = new BlockBlobOutputStreamOptions()
-            .setParallelTransferOptions(new ParallelTransferOptions().setMaxConcurrency(parallelTransferOptions.getMaxConcurrency()));
+            .setParallelTransferOptions(parallelTransferOptions);
 
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize());
              BlobOutputStream outputStream = blockBlobClient.getBlobOutputStream(blockBlobOutputStreamOptions, span)) {

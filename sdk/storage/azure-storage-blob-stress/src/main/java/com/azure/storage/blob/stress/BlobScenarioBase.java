@@ -32,7 +32,6 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
     private final BlobContainerAsyncClient asyncNoFaultContainerClient;
     private final BlobContainerClient syncNoFaultContainerClient;
     private Instant startTime;
-    protected final ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions();
 
     public BlobScenarioBase(TOptions options) {
         super(options);
@@ -60,7 +59,6 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
         syncNoFaultContainerClient = syncNoFaultClient.getBlobContainerClient(CONTAINER_NAME);
         syncContainerClient = syncClient.getBlobContainerClient(CONTAINER_NAME);
         asyncContainerClient = asyncClient.getBlobContainerAsyncClient(CONTAINER_NAME);
-        parallelTransferOptions.setMaxConcurrency(options.getMaxConcurrency());
     }
 
     @Override

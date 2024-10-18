@@ -12,7 +12,6 @@ import com.azure.storage.blob.stress.utils.OriginalContent;
 import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
-// Does not take ParallelTransferOptions
 public class DownloadContent extends BlobScenarioBase<StorageStressOptions> {
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;

@@ -28,6 +28,7 @@ public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncClient;
     private final BlobAsyncClient asyncNoFaultClient;
+    private final ParallelTransferOptions parallelTransferOptions;
 
     public DownloadToFile(StorageStressOptions options) {
         super(options);
@@ -36,6 +37,7 @@ public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
         this.asyncNoFaultClient = getAsyncContainerClientNoFault().getBlobAsyncClient(blobName);
         this.syncClient = getSyncContainerClient().getBlobClient(blobName);
         this.asyncClient = getAsyncContainerClient().getBlobAsyncClient(blobName);
+        this.parallelTransferOptions = new ParallelTransferOptions().setMaxConcurrency(options.getMaxConcurrency());
     }
 
     @Override

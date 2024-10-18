@@ -13,7 +13,6 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 
-// downloadStream doesn't have ParallelTransferOptions
 public class DownloadStream extends BlobScenarioBase<StorageStressOptions> {
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;

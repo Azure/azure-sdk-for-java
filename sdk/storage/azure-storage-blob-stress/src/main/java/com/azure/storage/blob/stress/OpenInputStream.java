@@ -17,7 +17,6 @@ import java.io.InputStream;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
-// Does not take ParallelTransferOptions
 public class OpenInputStream extends BlobScenarioBase<StorageStressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(OpenInputStream.class);
     private final OriginalContent originalContent = new OriginalContent();

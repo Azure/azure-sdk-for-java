@@ -24,7 +24,6 @@ import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.Collections;
 
-// Does not take ParallelTransferOptions
 public class StageBlockFromUrl extends BlobScenarioBase<StorageStressOptions> {
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
