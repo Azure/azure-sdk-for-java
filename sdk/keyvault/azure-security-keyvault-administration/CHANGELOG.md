@@ -1,6 +1,6 @@
 # Release History
 
-## 4.6.0-beta.1 (Unreleased)
+## 4.7.0-beta.1 (Unreleased)
 
 ### Features Added
 - Added support for pre-backup and pre-restore operations in `KeyVaultBackupClient` and `KeyVaultBackupAsyncClient`. These are long-running operations that check whether it is possible to perform a full key backup or a full key restore from a backup.
@@ -12,6 +12,18 @@
 ### Other Changes
 
 
+## 4.6.0 (2024-10-15)
+
+## Features Added
+- Added support for Continuous Access Evaluation (CAE). ([#41814](https://github.com/Azure/azure-sdk-for-java/pull/41814))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
+
 ## 4.5.8 (2024-09-27)
 
 ### Other Changes
@@ -22,7 +34,6 @@
 - Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
 - Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
 
-
 ## 4.5.7 (2024-08-24)
 
 ### Other Changes
@@ -31,7 +42,6 @@
 
 - Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
 - Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
-
 
 ## 4.5.6 (2024-07-29)
 
@@ -51,7 +61,6 @@
 
 - Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
 - Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
-
 
 ## 4.5.4 (2024-05-13)
 
@@ -77,7 +86,6 @@
 - Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
 - Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
 
-
 ## 4.5.1 (2024-03-20)
 
 ### Other Changes
@@ -86,7 +94,6 @@
 
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
 - Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
-
 
 ## 4.5.0 (2024-02-22)
 Changes when compared to the last stable release (`4.4.3`) include:
@@ -174,7 +181,6 @@ Changes when compared to the last stable release (`4.4.3`) include:
 
 - Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
 - Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
-
 
 ## 4.3.3 (2023-06-20)
 

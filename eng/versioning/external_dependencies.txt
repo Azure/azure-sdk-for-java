@@ -25,7 +25,7 @@ com.fasterxml.jackson.module:jackson-module-scala_2.12;2.17.2
 com.github.spotbugs:spotbugs;4.8.3
 com.github.spotbugs:spotbugs-annotations;4.8.3
 com.github.spotbugs:spotbugs-maven-plugin;4.8.2.0
-com.google.code.gson:gson;2.10.1
+com.google.code.gson:gson;2.11.0
 com.google.guava:guava;33.1.0-jre
 com.h2database:h2;2.2.220
 com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0
@@ -61,22 +61,22 @@ io.fabric8:kubernetes-client;6.12.1
 io.micrometer:micrometer-core;1.9.17
 io.micrometer:micrometer-registry-azure-monitor;1.9.17
 io.micrometer:micrometer-registry-graphite;1.9.17
-io.netty:netty-buffer;4.1.110.Final
-io.netty:netty-common;4.1.110.Final
-io.netty:netty-codec;4.1.110.Final
-io.netty:netty-codec-http;4.1.110.Final
-io.netty:netty-codec-http2;4.1.110.Final
-io.netty:netty-transport;4.1.110.Final
-io.netty:netty-handler;4.1.110.Final
-io.netty:netty-handler-proxy;4.1.110.Final
+io.netty:netty-buffer;4.1.112.Final
+io.netty:netty-common;4.1.112.Final
+io.netty:netty-codec;4.1.112.Final
+io.netty:netty-codec-http;4.1.112.Final
+io.netty:netty-codec-http2;4.1.112.Final
+io.netty:netty-transport;4.1.112.Final
+io.netty:netty-handler;4.1.112.Final
+io.netty:netty-handler-proxy;4.1.112.Final
 io.netty:netty-tcnative;2.0.65.Final
 io.netty:netty-tcnative-boringssl-static;2.0.65.Final
-io.netty:netty-transport-native-epoll;4.1.110.Final
-io.netty:netty-transport-native-unix-common;4.1.110.Final
-io.netty:netty-transport-native-kqueue;4.1.110.Final
-io.projectreactor.netty:reactor-netty;1.0.45
-io.projectreactor.netty:reactor-netty-http;1.0.45
-io.projectreactor:reactor-core;3.4.38
+io.netty:netty-transport-native-epoll;4.1.112.Final
+io.netty:netty-transport-native-unix-common;4.1.112.Final
+io.netty:netty-transport-native-kqueue;4.1.112.Final
+io.projectreactor.netty:reactor-netty;1.0.48
+io.projectreactor.netty:reactor-netty-http;1.0.48
+io.projectreactor:reactor-core;3.4.41
 io.vertx:vertx-codegen;4.5.10
 io.vertx:vertx-core;4.5.10
 io.vertx:vertx-reactive-streams;4.5.10
@@ -277,7 +277,7 @@ com.google.code.findbugs:jsr305;3.0.2
 com.microsoft.azure:azure-webapp-maven-plugin;1.14.0
 com.nimbusds:nimbus-jose-jwt;9.37.3
 com.puppycrawl.tools:checkstyle;9.3
-com.toasttab.android:gummy-bears-api-26;0.8.0
+com.toasttab.android:gummy-bears-api-26;0.10.0
 commons-io:commons-io;2.11.0
 commons-validator:commons-validator;1.6
 io.dropwizard.metrics:metrics-core;4.2.22
@@ -289,7 +289,6 @@ net.oneandone.reflections8:reflections8;0.11.7
 net.jonathangiles.tools:dependencyChecker-maven-plugin;1.0.6
 org.apache.commons:commons-collections4;4.4
 org.apache.commons:commons-text;1.10.0
-org.apache.commons:commons-dbcp2;2.9.0
 org.apache.maven:maven-plugin-api;3.9.6
 org.apache.maven:maven-project;2.2.1
 org.apache.maven.plugin-tools:maven-plugin-annotations;3.12.0
@@ -314,7 +313,7 @@ org.apache.maven.plugins:maven-shade-plugin;3.5.2
 org.apache.maven.plugins:maven-site-plugin;3.12.1
 org.apache.maven.plugins:maven-source-plugin;3.3.1
 org.apache.maven.plugins:maven-surefire-plugin;3.2.5
-org.codehaus.mojo:animal-sniffer-maven-plugin;1.23
+org.codehaus.mojo:animal-sniffer-maven-plugin;1.24
 org.codehaus.mojo:build-helper-maven-plugin;3.5.0
 org.codehaus.mojo:cobertura-maven-plugin;2.7
 org.codehaus.mojo:exec-maven-plugin;3.2.0
@@ -444,12 +443,6 @@ resourcemanager_com.jcraft:jsch;0.1.55
 
 # sdk\storage\azure-storage-blob-cryptography\pom.xml
 storage_com.microsoft.azure:azure-storage;8.6.6
-
-# sdk\appconfiguration\azure-spring-cloud-test-appconfiguration-config\pom.xml
-spring_com.microsoft.azure:azure;1.34.0
-
-# sdk\spring\spring-cloud-azure-service\pom.xml
-spring_redis.clients:jedis;3.8.0
 
 # sdk\spring\pom.xml modules
 springboot3_com.diffplug.spotless:spotless-maven-plugin;2.30.0

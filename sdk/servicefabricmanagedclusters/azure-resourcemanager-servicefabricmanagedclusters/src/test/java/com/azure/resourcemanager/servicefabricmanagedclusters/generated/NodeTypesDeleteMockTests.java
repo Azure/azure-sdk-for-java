@@ -27,7 +27,7 @@ public final class NodeTypesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.nodeTypes().delete("govfgpikqmhhaow", "rmzvupo", "qzdfuydzvkfvxcn", com.azure.core.util.Context.NONE);
+        manager.nodeTypes().delete("mmkjsvthnwpztek", "vmribiat", "gplucfotangcfhny", com.azure.core.util.Context.NONE);
 
     }
 }

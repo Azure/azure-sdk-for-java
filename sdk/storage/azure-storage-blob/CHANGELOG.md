@@ -1,6 +1,6 @@
 # Release History
 
-## 12.29.0-beta.1 (Unreleased)
+## 12.29.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,16 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.29.0-beta.1 (2024-10-17)
+
+### Features Added
+- Added BlobErrorCode BlobAccessTierNotSupportedForAccountType value.
+- Added support for service version 2025-01-05.
+
+### Bugs Fixed
+- Fixed an issue where you couldn't set an immutability policy on a blob version or blob snapshot.
+- Fixed an issue where you couldn't set a legal hold on a blob version.
 
 ## 12.28.1 (2024-10-08)
 
