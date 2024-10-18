@@ -195,7 +195,7 @@ public class MessagesSdkCustomization extends Customization {
                 String fromJson = clazz.getMethodsByName("fromJson")
                     .get(0).getBody().get().toString()
                     .replace("return fromJsonKnownDiscriminator(readerToUse.reset());",
-                        "throw new IllegalArgumentException(\"Invalid Kind value - \"+discriminatorValue); ");
+                        "throw new IllegalStateException(\"Invalid Kind value - \"+discriminatorValue); ");
                 clazz.getMethodsByName("fromJson").get(0).setBody(StaticJavaParser.parseBlock(fromJson));
                 clazz.getMethodsByName("fromJsonKnownDiscriminator").get(0).remove();
             });

@@ -156,7 +156,7 @@ public abstract class MessageTemplateItem implements JsonSerializable<MessageTem
                 if ("whatsApp".equals(discriminatorValue)) {
                     return WhatsAppMessageTemplateItem.fromJson(readerToUse.reset());
                 } else {
-                    throw new IllegalArgumentException("Invalid Kind value - " + discriminatorValue);
+                    throw new IllegalStateException("Invalid Kind value - " + discriminatorValue);
                 }
             }
         });

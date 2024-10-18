@@ -3,7 +3,21 @@
 
 package com.azure.communication.messages;
 
-import com.azure.communication.messages.models.*;
+import com.azure.communication.messages.models.AudioNotificationContent;
+import com.azure.communication.messages.models.DocumentNotificationContent;
+import com.azure.communication.messages.models.ImageNotificationContent;
+import com.azure.communication.messages.models.MessageTemplate;
+import com.azure.communication.messages.models.MessageTemplateBindings;
+import com.azure.communication.messages.models.MessageTemplateDocument;
+import com.azure.communication.messages.models.MessageTemplateImage;
+import com.azure.communication.messages.models.MessageTemplateQuickAction;
+import com.azure.communication.messages.models.MessageTemplateText;
+import com.azure.communication.messages.models.MessageTemplateValue;
+import com.azure.communication.messages.models.MessageTemplateVideo;
+import com.azure.communication.messages.models.TextNotificationContent;
+import com.azure.communication.messages.models.TemplateNotificationContent;
+import com.azure.communication.messages.models.VideoNotificationContent;
+import com.azure.communication.messages.models.SendMessageResult;
 import com.azure.communication.messages.models.channels.WhatsAppMessageButtonSubType;
 import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateBindings;
 import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateBindingsButton;
@@ -322,7 +336,7 @@ public class NotificationMessageSample {
 
     /*
      * This sample shows how to send video message with below details
-     * Supported video - video/3gp (.3gp), 	video/mp4 (.mp4)
+     * Supported video - video/3gp (.3gp), video/mp4 (.mp4)
      * Note: Business cannot initiate conversation with media message.
      * */
     public void sendVideoMessage() {

@@ -195,7 +195,6 @@ private void sendTextMessage() {
 ```
 
 ```java readme-sample-sendImageMessage
-// BEGIN: readme-sample-sendImageMessage
 /*
  * This sample shows how to send image message with below details.
  * Supported image - image/jpeg (.jpeg), image/png (.png)
@@ -207,20 +206,18 @@ public void sendImageMessage() {
     List<String> recipients = new ArrayList<>();
     recipients.add("<RECIPIENT_IDENTIFIER e.g. PhoneNumber>");
     NotificationMessagesClient client = new NotificationMessagesClientBuilder()
-    .connectionString("<CONNECTION_STRING>")
-    .buildClient();
+        .connectionString("<CONNECTION_STRING>")
+        .buildClient();
     SendMessageResult result = client.send(
-    new ImageNotificationContent("<CHANNEL_ID>", recipients, mediaUrl));
+        new ImageNotificationContent("<CHANNEL_ID>", recipients, mediaUrl));
 
     result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
-    }
-// END: readme-sample-sendImageMessage
+}
 ```
 ```java readme-sample-sendVideoMessage
-// BEGIN: readme-sample-sendVideoMessage
 /*
  * This sample shows how to send video message with below details
- * Supported video - video/3gp (.3gp), 	video/mp4 (.mp4)
+ * Supported video - video/3gp (.3gp), video/mp4 (.mp4)
  * Note: Business cannot initiate conversation with media message.
  * */
 public void sendVideoMessage() {
@@ -229,17 +226,15 @@ public void sendVideoMessage() {
     List<String> recipients = new ArrayList<>();
     recipients.add("<RECIPIENT_IDENTIFIER e.g. PhoneNumber>");
     NotificationMessagesClient client = new NotificationMessagesClientBuilder()
-    .connectionString("<CONNECTION_STRING>")
-    .buildClient();
+        .connectionString("<CONNECTION_STRING>")
+        .buildClient();
     SendMessageResult result = client.send(
-    new VideoNotificationContent("<CHANNEL_ID>", recipients, mediaUrl));
+        new VideoNotificationContent("<CHANNEL_ID>", recipients, mediaUrl));
 
     result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
-    }
-// END: readme-sample-sendVideoMessage
+}
 ```
 ```java readme-sample-sendAudioMessage
-// BEGIN: readme-sample-sendAudioMessage
 /*
  * This sample shows how to send audio message with below details
  * Supported audio - audio/aac (.aac), audio/amr (.amr), audio/mpeg (.mp3), audio/a4a (.mp4), audio/ogg (.ogg )
@@ -251,17 +246,15 @@ public void sendAudioMessage() {
     List<String> recipients = new ArrayList<>();
     recipients.add("<RECIPIENT_IDENTIFIER e.g. PhoneNumber>");
     NotificationMessagesClient client = new NotificationMessagesClientBuilder()
-    .connectionString("<CONNECTION_STRING>")
-    .buildClient();
+        .connectionString("<CONNECTION_STRING>")
+        .buildClient();
     SendMessageResult result = client.send(
-    new AudioNotificationContent("<CHANNEL_ID>", recipients, mediaUrl));
+        new AudioNotificationContent("<CHANNEL_ID>", recipients, mediaUrl));
 
     result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
-    }
-// END: readme-sample-sendAudioMessage
+}
 ```
 ```java readme-sample-sendDocumentMessage
-// BEGIN: readme-sample-sendDocumentMessage
 /*
  * This sample shows how to send document message with below details
  * Supported Document type - Plain Text (.txt), PDF (.pdf), Microsoft Excel, Word, PowerPoint
@@ -273,14 +266,13 @@ public void sendDocumentMessage() {
     List<String> recipients = new ArrayList<>();
     recipients.add("<RECIPIENT_IDENTIFIER e.g. PhoneNumber>");
     NotificationMessagesClient client = new NotificationMessagesClientBuilder()
-    .connectionString("<CONNECTION_STRING>")
-    .buildClient();
+        .connectionString("<CONNECTION_STRING>")
+        .buildClient();
     SendMessageResult result = client.send(
-    new DocumentNotificationContent("<CHANNEL_ID>", recipients, mediaUrl));
+        new DocumentNotificationContent("<CHANNEL_ID>", recipients, mediaUrl));
 
     result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
-    }
-// END: readme-sample-sendDocumentMessage
+}
 ```
 ### Get Template List for given channel example:
 ```java readme-sample-ListTemplates

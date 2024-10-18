@@ -12,7 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
 /**
- * &#064;deprecated A request to send an image notification.
+ * @deprecated A request to send an image notification.
  */
 @Fluent
 @Deprecated
