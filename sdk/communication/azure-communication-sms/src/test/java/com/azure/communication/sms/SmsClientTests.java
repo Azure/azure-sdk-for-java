@@ -17,6 +17,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -118,7 +119,7 @@ public class SmsClientTests extends SmsTestBase {
         try {
             client.send("+15550000000", TO_PHONE_NUMBER, MESSAGE);
         } catch (Exception exception) {
-            assertEquals(401, ((HttpResponseException) exception).getResponse().getStatusCode());
+            assertEquals(400, ((HttpResponseException) exception).getResponse().getStatusCode());
         }
     }
 
@@ -131,10 +132,24 @@ public class SmsClientTests extends SmsTestBase {
 
         // Action & Assert
         try {
-            client.send("+18007342577", TO_PHONE_NUMBER, MESSAGE);
+            SmsSendResult response = client.send("+18007342577", TO_PHONE_NUMBER, MESSAGE);
         } catch (Exception exception) {
+            assertNotNull(((HttpResponseException) exception).getResponse().getStatusCode());
             assertEquals(401, ((HttpResponseException) exception).getResponse().getStatusCode());
         }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendToFakePhoneNumber(HttpClient httpClient) {
+        // Arrange
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        client = setupSyncClient(builder, "sendToFakePhoneNumberSync");
+
+        // Action & Assert
+        SmsSendResult sendResult = client.send(FROM_PHONE_NUMBER, "+15550000000", MESSAGE);
+        assertFalse(sendResult.isSuccessful());
+        assertEquals(sendResult.getHttpStatusCode(), 400);
     }
 
     @ParameterizedTest
