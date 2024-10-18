@@ -14,11 +14,21 @@ import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
-import com.azure.resourcemanager.redisenterprise.models.*;
+import com.azure.resourcemanager.redisenterprise.models.Cluster;
+import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.redisenterprise.models.Sku;
+import com.azure.resourcemanager.redisenterprise.models.SkuName;
+import com.azure.resourcemanager.redisenterprise.models.TlsVersion;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.resources.models.Provider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class RedisEnterpriseManagerTests extends TestProxyTestBase {
@@ -42,6 +52,8 @@ public class RedisEnterpriseManagerTests extends TestProxyTestBase {
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
+
+        canRegisterProviders(Arrays.asList("Microsoft.Cache"));
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -90,5 +102,24 @@ public class RedisEnterpriseManagerTests extends TestProxyTestBase {
 
     private static String randomPadding() {
         return String.format("%05d", Math.abs(RANDOM.nextInt() % 100000));
+    }
+
+    /**
+     * Check and register service resources
+     *
+     * @param providerNamespaces the resource provider names
+     */
+    private void canRegisterProviders(List<String> providerNamespaces) {
+        providerNamespaces.forEach(providerNamespace -> {
+            Provider provider = resourceManager.providers().getByName(providerNamespace);
+            if (!"Registered".equalsIgnoreCase(provider.registrationState())
+                && !"Registering".equalsIgnoreCase(provider.registrationState())) {
+                provider = resourceManager.providers().register(providerNamespace);
+            }
+            while (!"Registered".equalsIgnoreCase(provider.registrationState())) {
+                ResourceManagerUtils.sleep(Duration.ofSeconds(5));
+                provider = resourceManager.providers().getByName(provider.namespace());
+            }
+        });
     }
 }
