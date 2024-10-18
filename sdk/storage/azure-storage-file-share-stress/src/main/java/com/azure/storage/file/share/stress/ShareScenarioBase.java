@@ -33,7 +33,6 @@ public abstract class ShareScenarioBase<TOptions extends StorageStressOptions> e
     private final ShareAsyncClient asyncNoFaultShareClient;
     private final ShareClient syncNoFaultShareClient;
     private Instant startTime;
-    protected final ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions();
 
     public ShareScenarioBase(TOptions options) {
         super(options);

@@ -17,7 +17,6 @@ import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 
-// Does not take ParallelTransferOptions
 public class Flush extends DataLakeScenarioBase<StorageStressOptions> {
     private final OriginalContent originalContent = new OriginalContent();
     private final DataLakeFileClient syncClient;

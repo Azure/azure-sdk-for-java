@@ -32,7 +32,6 @@ public abstract class DataLakeScenarioBase<TOptions extends StorageStressOptions
     private final DataLakeFileSystemAsyncClient asyncNoFaultFileSystemClient;
     private final DataLakeFileSystemClient syncNoFaultFileSystemClient;
     private Instant startTime;
-    protected final ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions();
 
     public DataLakeScenarioBase(TOptions options) {
         super(options);
@@ -60,7 +59,6 @@ public abstract class DataLakeScenarioBase<TOptions extends StorageStressOptions
         syncNoFaultFileSystemClient = syncNoFaultClient.getFileSystemClient(FILE_SYSTEM_NAME);
         syncFileSystemClient = syncClient.getFileSystemClient(FILE_SYSTEM_NAME);
         asyncFileSystemClient = asyncClient.getFileSystemAsyncClient(FILE_SYSTEM_NAME);
-        parallelTransferOptions.setMaxConcurrency(options.getMaxConcurrency());
     }
 
     @Override

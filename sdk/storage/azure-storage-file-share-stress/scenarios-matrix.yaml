@@ -5,7 +5,7 @@ matrix:
       testScenario: downloadtofile
       sync: true
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 5
       downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -15,7 +15,7 @@ matrix:
       testScenario: downloadtofile
       sync: false
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 5
       downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -25,7 +25,7 @@ matrix:
       testScenario: downloadtofile
       sync: true
       sizeBytes: "52428800"
-      parallelRuns: 10
+      parallelRuns: 5
       downloadFaults: true
       durationMin: 30
       imageBuildDir: "../../.."
@@ -35,7 +35,7 @@ matrix:
       testScenario: download
       sync: true
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 5
       downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -45,7 +45,7 @@ matrix:
       testScenario: download
       sync: false
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 5
       downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -55,7 +55,7 @@ matrix:
       testScenario: download
       sync: true
       sizeBytes: "52428800"
-      parallelRuns: 10
+      parallelRuns: 5
       downloadFaults: true
       durationMin: 30
       imageBuildDir: "../../.."
@@ -65,7 +65,7 @@ matrix:
       testScenario: openinputstream
       sync: true
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 5
       downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -75,7 +75,7 @@ matrix:
       testScenario: openinputstream
       sync: true
       sizeBytes: "52428800"
-      parallelRuns: 10
+      parallelRuns: 5
       downloadFaults: true
       durationMin: 30
       imageBuildDir: "../../.."
@@ -85,7 +85,7 @@ matrix:
       testScenario: fileseekablebytechannelread
       sync: true
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 5
       downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -95,7 +95,7 @@ matrix:
       testScenario: fileseekablebytechannelread
       sync: true
       sizeBytes: "52428800"
-      parallelRuns: 10
+      parallelRuns: 5
       downloadFaults: true
       durationMin: 30
       imageBuildDir: "../../.."
@@ -105,7 +105,7 @@ matrix:
       testScenario: upload
       sync: true
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 5
       uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -115,7 +115,7 @@ matrix:
       testScenario: upload
       sync: true
       sizeBytes: "26214400"
-      parallelRuns: 10
+      parallelRuns: 5
       uploadFaults: true
       durationMin: 30
       imageBuildDir: "../../.."
@@ -125,7 +125,7 @@ matrix:
       testScenario: uploadfromfile
       sync: true
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 5
       uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -135,9 +135,9 @@ matrix:
       testScenario: uploadfromfile
       sync: true
       sizeBytes: "52428800"
-      parallelRuns: 25
+      parallelRuns: 5
       uploadFaults: true
-      durationMin: 25
+      durationMin: 30
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes), small range of bytes from stream, no chunking
@@ -145,7 +145,7 @@ matrix:
       testScenario: uploadrange
       sync: true
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 5
       uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -155,9 +155,9 @@ matrix:
       testScenario: uploadrange
       sync: true
       sizeBytes: "4194304"
-      parallelRuns: 25
+      parallelRuns: 5
       uploadFaults: true
-      durationMin: 25
+      durationMin: 30
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes), small range of bytes from url, no chunking
@@ -165,7 +165,7 @@ matrix:
       testScenario: uploadrangefromurl
       sync: true
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 5
       uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -175,9 +175,9 @@ matrix:
       testScenario: uploadrangefromurl
       sync: true
       sizeBytes: "4194304"
-      parallelRuns: 25
+      parallelRuns: 5
       uploadFaults: true
-      durationMin: 25
+      durationMin: 30
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes) to file output stream, no chunking
@@ -185,7 +185,7 @@ matrix:
       testScenario: fileoutputstream
       sync: true
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 5
       uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -195,7 +195,7 @@ matrix:
       testScenario: fileoutputstream
       sync: true
       sizeBytes: "2097152"
-      parallelRuns: 10
+      parallelRuns: 5
       uploadFaults: true
       durationMin: 30
       imageBuildDir: "../../.."
@@ -205,7 +205,7 @@ matrix:
       testScenario: fileseekablebytechannelwrite
       sync: true
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 5
       uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -215,7 +215,7 @@ matrix:
       testScenario: fileseekablebytechannelwrite
       sync: true
       sizeBytes: "52428800"
-      parallelRuns: 25
+      parallelRuns: 5
       uploadFaults: true
-      durationMin: 25
+      durationMin: 30
       imageBuildDir: "../../.."

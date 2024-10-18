@@ -15,7 +15,6 @@ import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 
-// Does not take ParallelTransferOptions
 public class UploadRange extends ShareScenarioBase<StorageStressOptions> {
     private final OriginalContent originalContent = new OriginalContent();
     private final ShareFileClient syncClient;

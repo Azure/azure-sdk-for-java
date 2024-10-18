@@ -19,7 +19,6 @@ import java.nio.channels.SeekableByteChannel;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
-// Does not take ParallelTransferOptions
 public class FileSeekableByteChannelRead extends ShareScenarioBase<StorageStressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(FileSeekableByteChannelRead.class);
     private final OriginalContent originalContent = new OriginalContent();

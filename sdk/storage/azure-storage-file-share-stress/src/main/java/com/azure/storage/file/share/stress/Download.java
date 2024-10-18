@@ -14,7 +14,6 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 
-// Does not take ParallelTransferOptions
 public class Download extends ShareScenarioBase<StorageStressOptions> {
     private final OriginalContent originalContent = new OriginalContent();
     private final ShareFileClient syncClient;

@@ -5,7 +5,7 @@ matrix:
       testScenario: readtofile
       sync: true
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 5
       downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -15,7 +15,7 @@ matrix:
       testScenario: readtofile
       sync: false
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 5
       downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -25,7 +25,7 @@ matrix:
       testScenario: readtofile
       sync: false
       sizeBytes: "52428800"
-      parallelRuns: 10
+      parallelRuns: 5
       downloadFaults: true
       durationMin: 30
       imageBuildDir: "../../.."
@@ -35,7 +35,7 @@ matrix:
       testScenario: read
       sync: true
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 5
       downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -45,7 +45,7 @@ matrix:
       testScenario: read
       sync: false
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 5
       downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -55,7 +55,7 @@ matrix:
       testScenario: read
       sync: false
       sizeBytes: "52428800"
-      parallelRuns: 10
+      parallelRuns: 5
       downloadFaults: true
       durationMin: 30
       imageBuildDir: "../../.."
@@ -65,7 +65,7 @@ matrix:
       testScenario: openinputstream
       sync: true
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 5
       downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -75,7 +75,7 @@ matrix:
       testScenario: openinputstream
       sync: true
       sizeBytes: "52428800"
-      parallelRuns: 10
+      parallelRuns: 5
       downloadFaults: true
       durationMin: 30
       imageBuildDir: "../../.."
@@ -85,7 +85,7 @@ matrix:
       testScenario: append
       sync: true
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 5
       uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -95,7 +95,7 @@ matrix:
       testScenario: append
       sync: false
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 5
       uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -105,7 +105,7 @@ matrix:
       testScenario: append
       sync: true
       sizeBytes: "26214400"
-      parallelRuns: 10
+      parallelRuns: 5
       uploadFaults: true
       durationMin: 30
       imageBuildDir: "../../.."
@@ -115,7 +115,7 @@ matrix:
       testScenario: datalakeoutputstream
       sync: true
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 5
       uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -125,7 +125,7 @@ matrix:
       testScenario: datalakeoutputstream
       sync: true
       sizeBytes: "26214400"
-      parallelRuns: 10
+      parallelRuns: 5
       uploadFaults: true
       durationMin: 30
       imageBuildDir: "../../.."
@@ -135,7 +135,7 @@ matrix:
       testScenario: flush
       sync: true
       sizeBytes: 1024
-      parallelRuns: 10
+      parallelRuns: 5
       uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -145,7 +145,7 @@ matrix:
       testScenario: flush
       sync: false
       sizeBytes: 1024
-      parallelRuns: 10
+      parallelRuns: 5
       uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -155,7 +155,7 @@ matrix:
       testScenario: flush
       sync: true
       sizeBytes: "26214400"
-      parallelRuns: 10
+      parallelRuns: 5
       uploadFaults: true
       durationMin: 30
       imageBuildDir: "../../.."
@@ -165,7 +165,7 @@ matrix:
       testScenario: upload
       sync: true
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 5
       uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -175,7 +175,7 @@ matrix:
       testScenario: read
       sync: false
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 5
       uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -185,7 +185,7 @@ matrix:
       testScenario: upload
       sync: true
       sizeBytes: "26214400"
-      parallelRuns: 10
+      parallelRuns: 5
       uploadFaults: true
       durationMin: 30
       imageBuildDir: "../../.."
@@ -195,7 +195,7 @@ matrix:
       testScenario: uploadfromfile
       sync: true
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 5
       uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -205,7 +205,7 @@ matrix:
       testScenario: uploadfromfile
       sync: true
       sizeBytes: "52428800"
-      parallelRuns: 10
+      parallelRuns: 5
       uploadFaults: true
       durationMin: 30
       imageBuildDir: "../../.."

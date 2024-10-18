@@ -23,7 +23,6 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
-// Does not take ParallelTransferOptions
 public class UploadFromFile extends ShareScenarioBase<StorageStressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(UploadFromFile.class);
     private final OriginalContent originalContent = new OriginalContent();

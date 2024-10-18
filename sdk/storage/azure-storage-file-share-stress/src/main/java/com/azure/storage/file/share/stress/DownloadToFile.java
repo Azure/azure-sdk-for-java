@@ -18,7 +18,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
 
-// Does not take ParallelTransferOptions
 public class DownloadToFile extends ShareScenarioBase<StorageStressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(DownloadToFile.class);
     private final OriginalContent originalContent = new OriginalContent();

@@ -25,20 +25,21 @@ public class DataLakeOutputStream extends DataLakeScenarioBase<StorageStressOpti
     private final OriginalContent originalContent = new OriginalContent();
     private final DataLakeFileClient syncClient;
     private final DataLakeFileAsyncClient asyncNoFaultClient;
-    public final DataLakeFileClient syncNoFaultClient;
+    private final ParallelTransferOptions parallelTransferOptions;
+
 
     public DataLakeOutputStream(StorageStressOptions options) {
         super(options);
         String fileName = generateFileName();
         this.syncClient = getSyncFileSystemClient().getFileClient(fileName);
         this.asyncNoFaultClient = getAsyncFileSystemClientNoFault().getFileAsyncClient(fileName);
-        this.syncNoFaultClient = getSyncFileSystemClientNoFault().getFileClient(fileName);
+        this.parallelTransferOptions = new ParallelTransferOptions().setMaxConcurrency(options.getMaxConcurrency());
     }
 
     @Override
     protected void runInternal(Context span) throws IOException {
         DataLakeFileOutputStreamOptions dataLakeFileOutputStreamOptions = new DataLakeFileOutputStreamOptions()
-            .setParallelTransferOptions(new ParallelTransferOptions().setMaxConcurrency(parallelTransferOptions.getMaxConcurrency()));
+            .setParallelTransferOptions(parallelTransferOptions);
 
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getContentHead(), options.getSize());
              OutputStream outputStream = syncClient.getOutputStream(dataLakeFileOutputStreamOptions, span)) {

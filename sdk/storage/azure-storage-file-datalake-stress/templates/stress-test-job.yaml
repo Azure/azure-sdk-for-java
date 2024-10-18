@@ -46,7 +46,8 @@ spec:
             -Dreactor.schedulers.defaultBoundedElasticSize={{ .Stress.parallelRuns }} \
             -jar /app/azure-storage-file-datalake-stress-1.0.0-beta.1-jar-with-dependencies.jar \
             {{ .Stress.testScenario }} \
-            --parallel {{ .Stress.parallelRuns }} \
+            --parallel {{ default 1 .Stress.parallelRuns }} \
+            --maxConcurrency {{ default 10 .Stress.maxConcurrency }} \
             --duration {{ mul 60 .Stress.durationMin }} \
             --size {{ .Stress.sizeBytes }} \
             {{ ternary "--sync" "" .Stress.sync }} \
