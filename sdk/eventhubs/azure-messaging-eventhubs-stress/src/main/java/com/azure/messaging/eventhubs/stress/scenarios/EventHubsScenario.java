@@ -45,30 +45,6 @@ public abstract class EventHubsScenario implements AutoCloseable {
         toClose.add(() -> closeable.dispose());
     }
 
-    /**
-     * Gets the builder with common configuration values set.
-     *
-     * @return The builder with common configuration set.
-     */
-    protected EventHubClientBuilder createEventHubClientBuilder() {
-        EventHubClientBuilder builder = new EventHubClientBuilder()
-            .connectionString(options.getEventHubsConnectionString());
-
-        if (options.useV2Stack()) {
-            Configuration configuration = new ConfigurationBuilder()
-                .putProperty("com.azure.messaging.eventhubs.v2", "true")
-                .build();
-
-            builder.configuration(configuration);
-        }
-
-        if (options.getAmqpTransportType() != null) {
-            builder.transportType(options.getAmqpTransportType());
-        }
-
-        return builder;
-    }
-
     @Override
     public synchronized void close() {
         if (toClose.isEmpty()) {
