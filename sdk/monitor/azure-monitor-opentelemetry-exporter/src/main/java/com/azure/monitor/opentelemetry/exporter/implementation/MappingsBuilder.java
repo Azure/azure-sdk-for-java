@@ -10,9 +10,9 @@ import io.opentelemetry.api.common.AttributeKey;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.List;
 
 import static java.util.Arrays.asList;
 
@@ -21,9 +21,6 @@ class MappingsBuilder {
     enum MappingType {
         LOG, SPAN, METRIC
     }
-
-    public static final Mappings EMPTY_MAPPINGS
-        = new Mappings(Collections.emptyMap(), Trie.<PrefixMapping>newBuilder().build());
 
     // TODO need to keep this list in sync as new semantic conventions are defined
     private static final Set<String> IGNORED_LOG_AND_SPAN_STANDARD_ATTRIBUTE_PREFIXES
@@ -46,6 +43,8 @@ class MappingsBuilder {
                     prefixMappings.put(prefix, (telemetryBuilder, key, value) -> {
                     });
                 }
+                // keep db.cosmosdb.* attributes
+                prefixMappings.put("db.cosmosdb.", (telemetryBuilder, key, value) -> telemetryBuilder.addProperty(key, String.valueOf(value)));
                 break;
 
             case METRIC:
