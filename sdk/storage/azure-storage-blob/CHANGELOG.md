@@ -3,10 +3,13 @@
 ## 12.29.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added BlobErrorCode BlobAccessTierNotSupportedForAccountType value.
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed an issue where you couldn't set an immutability policy on a blob version or blob snapshot.
+- Fixed an issue where you couldn't set a legal hold on a blob version.
 
 ### Other Changes
 

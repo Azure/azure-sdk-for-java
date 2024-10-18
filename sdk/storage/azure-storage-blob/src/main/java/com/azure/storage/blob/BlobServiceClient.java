@@ -893,7 +893,7 @@ public final class BlobServiceClient {
         Context finalContext = context == null ? Context.NONE : context;
         Callable<ResponseBase<ServicesGetAccountInfoHeaders, Void>> operation =
             () ->
-            this.azureBlobStorage.getServices().getAccountInfoWithResponse(finalContext);
+            this.azureBlobStorage.getServices().getAccountInfoWithResponse(null, null, finalContext);
         ResponseBase<ServicesGetAccountInfoHeaders, Void> response = sendRequest(operation, timeout,
             BlobStorageException.class);
         ServicesGetAccountInfoHeaders hd = response.getDeserializedHeaders();

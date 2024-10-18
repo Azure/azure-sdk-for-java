@@ -116,6 +116,7 @@ public final class BlobsImpl {
             @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5,
             @HeaderParam("x-ms-range-get-content-crc64") Boolean rangeGetContentCRC64,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
             @HeaderParam("x-ms-encryption-key") String encryptionKey,
             @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
             @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
@@ -136,6 +137,7 @@ public final class BlobsImpl {
             @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5,
             @HeaderParam("x-ms-range-get-content-crc64") Boolean rangeGetContentCRC64,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
             @HeaderParam("x-ms-encryption-key") String encryptionKey,
             @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
             @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
@@ -156,6 +158,7 @@ public final class BlobsImpl {
             @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5,
             @HeaderParam("x-ms-range-get-content-crc64") Boolean rangeGetContentCRC64,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
             @HeaderParam("x-ms-encryption-key") String encryptionKey,
             @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
             @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
@@ -176,6 +179,7 @@ public final class BlobsImpl {
             @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5,
             @HeaderParam("x-ms-range-get-content-crc64") Boolean rangeGetContentCRC64,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
             @HeaderParam("x-ms-encryption-key") String encryptionKey,
             @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
             @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
@@ -484,6 +488,7 @@ public final class BlobsImpl {
             @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
             @HeaderParam("x-ms-immutability-policy-until-date") DateTimeRfc1123 immutabilityPolicyExpiry,
             @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
+            @QueryParam("snapshot") String snapshot, @QueryParam("versionid") String versionId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -496,6 +501,7 @@ public final class BlobsImpl {
             @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
             @HeaderParam("x-ms-immutability-policy-until-date") DateTimeRfc1123 immutabilityPolicyExpiry,
             @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
+            @QueryParam("snapshot") String snapshot, @QueryParam("versionid") String versionId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -508,6 +514,7 @@ public final class BlobsImpl {
             @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
             @HeaderParam("x-ms-immutability-policy-until-date") DateTimeRfc1123 immutabilityPolicyExpiry,
             @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
+            @QueryParam("snapshot") String snapshot, @QueryParam("versionid") String versionId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -520,6 +527,7 @@ public final class BlobsImpl {
             @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
             @HeaderParam("x-ms-immutability-policy-until-date") DateTimeRfc1123 immutabilityPolicyExpiry,
             @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
+            @QueryParam("snapshot") String snapshot, @QueryParam("versionid") String versionId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/{containerName}/{blob}")
@@ -529,6 +537,7 @@ public final class BlobsImpl {
             @HostParam("url") String url, @PathParam("containerName") String containerName,
             @PathParam("blob") String blob, @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @QueryParam("snapshot") String snapshot, @QueryParam("versionid") String versionId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/{containerName}/{blob}")
@@ -538,6 +547,7 @@ public final class BlobsImpl {
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @QueryParam("snapshot") String snapshot, @QueryParam("versionid") String versionId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/{containerName}/{blob}")
@@ -547,6 +557,7 @@ public final class BlobsImpl {
             @HostParam("url") String url, @PathParam("containerName") String containerName,
             @PathParam("blob") String blob, @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @QueryParam("snapshot") String snapshot, @QueryParam("versionid") String versionId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/{containerName}/{blob}")
@@ -556,6 +567,7 @@ public final class BlobsImpl {
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @QueryParam("snapshot") String snapshot, @QueryParam("versionid") String versionId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -565,7 +577,8 @@ public final class BlobsImpl {
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
-            @HeaderParam("x-ms-legal-hold") boolean legalHold, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-legal-hold") boolean legalHold, @QueryParam("snapshot") String snapshot,
+            @QueryParam("versionid") String versionId, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({ 200 })
@@ -574,7 +587,8 @@ public final class BlobsImpl {
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
-            @HeaderParam("x-ms-legal-hold") boolean legalHold, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-legal-hold") boolean legalHold, @QueryParam("snapshot") String snapshot,
+            @QueryParam("versionid") String versionId, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({ 200 })
@@ -583,7 +597,8 @@ public final class BlobsImpl {
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
-            @HeaderParam("x-ms-legal-hold") boolean legalHold, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-legal-hold") boolean legalHold, @QueryParam("snapshot") String snapshot,
+            @QueryParam("versionid") String versionId, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({ 200 })
@@ -592,7 +607,8 @@ public final class BlobsImpl {
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
-            @HeaderParam("x-ms-legal-hold") boolean legalHold, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-legal-hold") boolean legalHold, @QueryParam("snapshot") String snapshot,
+            @QueryParam("versionid") String versionId, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({ 200 })
@@ -1332,7 +1348,9 @@ public final class BlobsImpl {
         Mono<ResponseBase<BlobsGetAccountInfoHeaders, Void>> getAccountInfo(@HostParam("url") String url,
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
-            @HeaderParam("x-ms-version") String version, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({ 200 })
@@ -1340,7 +1358,9 @@ public final class BlobsImpl {
         Mono<Response<Void>> getAccountInfoNoCustomHeaders(@HostParam("url") String url,
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
-            @HeaderParam("x-ms-version") String version, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({ 200 })
@@ -1348,7 +1368,9 @@ public final class BlobsImpl {
         ResponseBase<BlobsGetAccountInfoHeaders, Void> getAccountInfoSync(@HostParam("url") String url,
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
-            @HeaderParam("x-ms-version") String version, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({ 200 })
@@ -1356,7 +1378,9 @@ public final class BlobsImpl {
         Response<Void> getAccountInfoNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
-            @HeaderParam("x-ms-version") String version, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Post("/{containerName}/{blob}")
         @ExpectedResponses({ 200, 206 })
@@ -1548,6 +1572,8 @@ public final class BlobsImpl {
      * hash for the range, as long as the range is less than or equal to 4 MB in size.
      * @param rangeGetContentCRC64 When set to true and specified together with the Range, the service returns the CRC64
      * hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
      * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
      * specified date/time.
      * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
@@ -1566,9 +1592,9 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>>> downloadWithResponseAsync(String containerName,
         String blob, String snapshot, String versionId, Integer timeout, String range, String leaseId,
-        Boolean rangeGetContentMD5, Boolean rangeGetContentCRC64, OffsetDateTime ifModifiedSince,
-        OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
-        CpkInfo cpkInfo) {
+        Boolean rangeGetContentMD5, Boolean rangeGetContentCRC64, String structuredBodyType,
+        OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
+        String ifTags, String requestId, CpkInfo cpkInfo) {
         final String accept = "application/xml";
         String encryptionKeyInternal = null;
         if (cpkInfo != null) {
@@ -1591,243 +1617,7 @@ public final class BlobsImpl {
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
             .withContext(context -> service.download(this.client.getUrl(), containerName, blob, snapshot, versionId,
-                timeout, range, leaseId, rangeGetContentMD5, rangeGetContentCRC64, encryptionKey, encryptionKeySha256,
-                encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-                this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
-    }
-
-    /**
-     * The Download operation reads or downloads a blob from the system, including its metadata and properties. You can
-     * also call Download to read a snapshot or version.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
-     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
-     * a Snapshot of a Blob.&lt;/a&gt;.
-     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
-     * of the blob to operate on. It's for service version 2019-10-10 and newer.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param range Return only the bytes of the blob in the specified range.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param rangeGetContentMD5 When set to true and specified together with the Range, the service returns the MD5
-     * hash for the range, as long as the range is less than or equal to 4 MB in size.
-     * @param rangeGetContentCRC64 When set to true and specified together with the Range, the service returns the CRC64
-     * hash for the range, as long as the range is less than or equal to 4 MB in size.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
-     * specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
-     * the specified date/time.
-     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
-     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
-     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @param cpkInfo Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>>> downloadWithResponseAsync(String containerName,
-        String blob, String snapshot, String versionId, Integer timeout, String range, String leaseId,
-        Boolean rangeGetContentMD5, Boolean rangeGetContentCRC64, OffsetDateTime ifModifiedSince,
-        OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
-        CpkInfo cpkInfo, Context context) {
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service
-            .download(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout, range, leaseId,
-                rangeGetContentMD5, rangeGetContentCRC64, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
-                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-                this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
-    }
-
-    /**
-     * The Download operation reads or downloads a blob from the system, including its metadata and properties. You can
-     * also call Download to read a snapshot or version.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
-     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
-     * a Snapshot of a Blob.&lt;/a&gt;.
-     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
-     * of the blob to operate on. It's for service version 2019-10-10 and newer.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param range Return only the bytes of the blob in the specified range.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param rangeGetContentMD5 When set to true and specified together with the Range, the service returns the MD5
-     * hash for the range, as long as the range is less than or equal to 4 MB in size.
-     * @param rangeGetContentCRC64 When set to true and specified together with the Range, the service returns the CRC64
-     * hash for the range, as long as the range is less than or equal to 4 MB in size.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
-     * specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
-     * the specified date/time.
-     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
-     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
-     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @param cpkInfo Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Flux<ByteBuffer> downloadAsync(String containerName, String blob, String snapshot, String versionId,
-        Integer timeout, String range, String leaseId, Boolean rangeGetContentMD5, Boolean rangeGetContentCRC64,
-        OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
-        String ifTags, String requestId, CpkInfo cpkInfo) {
-        return downloadWithResponseAsync(containerName, blob, snapshot, versionId, timeout, range, leaseId,
-            rangeGetContentMD5, rangeGetContentCRC64, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags,
-            requestId, cpkInfo).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
-    }
-
-    /**
-     * The Download operation reads or downloads a blob from the system, including its metadata and properties. You can
-     * also call Download to read a snapshot or version.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
-     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
-     * a Snapshot of a Blob.&lt;/a&gt;.
-     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
-     * of the blob to operate on. It's for service version 2019-10-10 and newer.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param range Return only the bytes of the blob in the specified range.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param rangeGetContentMD5 When set to true and specified together with the Range, the service returns the MD5
-     * hash for the range, as long as the range is less than or equal to 4 MB in size.
-     * @param rangeGetContentCRC64 When set to true and specified together with the Range, the service returns the CRC64
-     * hash for the range, as long as the range is less than or equal to 4 MB in size.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
-     * specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
-     * the specified date/time.
-     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
-     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
-     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @param cpkInfo Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Flux<ByteBuffer> downloadAsync(String containerName, String blob, String snapshot, String versionId,
-        Integer timeout, String range, String leaseId, Boolean rangeGetContentMD5, Boolean rangeGetContentCRC64,
-        OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
-        String ifTags, String requestId, CpkInfo cpkInfo, Context context) {
-        return downloadWithResponseAsync(containerName, blob, snapshot, versionId, timeout, range, leaseId,
-            rangeGetContentMD5, rangeGetContentCRC64, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags,
-            requestId, cpkInfo, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
-    }
-
-    /**
-     * The Download operation reads or downloads a blob from the system, including its metadata and properties. You can
-     * also call Download to read a snapshot or version.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
-     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
-     * a Snapshot of a Blob.&lt;/a&gt;.
-     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
-     * of the blob to operate on. It's for service version 2019-10-10 and newer.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param range Return only the bytes of the blob in the specified range.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param rangeGetContentMD5 When set to true and specified together with the Range, the service returns the MD5
-     * hash for the range, as long as the range is less than or equal to 4 MB in size.
-     * @param rangeGetContentCRC64 When set to true and specified together with the Range, the service returns the CRC64
-     * hash for the range, as long as the range is less than or equal to 4 MB in size.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
-     * specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
-     * the specified date/time.
-     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
-     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
-     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @param cpkInfo Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StreamResponse> downloadNoCustomHeadersWithResponseAsync(String containerName, String blob,
-        String snapshot, String versionId, Integer timeout, String range, String leaseId, Boolean rangeGetContentMD5,
-        Boolean rangeGetContentCRC64, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
-        String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo) {
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return FluxUtil
-            .withContext(context -> service.downloadNoCustomHeaders(this.client.getUrl(), containerName, blob, snapshot,
-                versionId, timeout, range, leaseId, rangeGetContentMD5, rangeGetContentCRC64, encryptionKey,
+                timeout, range, leaseId, rangeGetContentMD5, rangeGetContentCRC64, structuredBodyType, encryptionKey,
                 encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
                 ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
@@ -1854,6 +1644,8 @@ public final class BlobsImpl {
      * hash for the range, as long as the range is less than or equal to 4 MB in size.
      * @param rangeGetContentCRC64 When set to true and specified together with the Range, the service returns the CRC64
      * hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
      * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
      * specified date/time.
      * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
@@ -1868,13 +1660,14 @@ public final class BlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StreamResponse> downloadNoCustomHeadersWithResponseAsync(String containerName, String blob,
-        String snapshot, String versionId, Integer timeout, String range, String leaseId, Boolean rangeGetContentMD5,
-        Boolean rangeGetContentCRC64, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
-        String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo, Context context) {
+    public Mono<ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>>> downloadWithResponseAsync(String containerName,
+        String blob, String snapshot, String versionId, Integer timeout, String range, String leaseId,
+        Boolean rangeGetContentMD5, Boolean rangeGetContentCRC64, String structuredBodyType,
+        OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
+        String ifTags, String requestId, CpkInfo cpkInfo, Context context) {
         final String accept = "application/xml";
         String encryptionKeyInternal = null;
         if (cpkInfo != null) {
@@ -1896,8 +1689,8 @@ public final class BlobsImpl {
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service
-            .downloadNoCustomHeaders(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout, range,
-                leaseId, rangeGetContentMD5, rangeGetContentCRC64, encryptionKey, encryptionKeySha256,
+            .download(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout, range, leaseId,
+                rangeGetContentMD5, rangeGetContentCRC64, structuredBodyType, encryptionKey, encryptionKeySha256,
                 encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
@@ -1924,6 +1717,254 @@ public final class BlobsImpl {
      * hash for the range, as long as the range is less than or equal to 4 MB in size.
      * @param rangeGetContentCRC64 When set to true and specified together with the Range, the service returns the CRC64
      * hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
+     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param cpkInfo Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Flux<ByteBuffer> downloadAsync(String containerName, String blob, String snapshot, String versionId,
+        Integer timeout, String range, String leaseId, Boolean rangeGetContentMD5, Boolean rangeGetContentCRC64,
+        String structuredBodyType, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
+        String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo) {
+        return downloadWithResponseAsync(containerName, blob, snapshot, versionId, timeout, range, leaseId,
+            rangeGetContentMD5, rangeGetContentCRC64, structuredBodyType, ifModifiedSince, ifUnmodifiedSince, ifMatch,
+            ifNoneMatch, ifTags, requestId, cpkInfo)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+    }
+
+    /**
+     * The Download operation reads or downloads a blob from the system, including its metadata and properties. You can
+     * also call Download to read a snapshot or version.
+     *
+     * @param containerName The container name.
+     * @param blob The blob name.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param range Return only the bytes of the blob in the specified range.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param rangeGetContentMD5 When set to true and specified together with the Range, the service returns the MD5
+     * hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param rangeGetContentCRC64 When set to true and specified together with the Range, the service returns the CRC64
+     * hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
+     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param cpkInfo Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Flux<ByteBuffer> downloadAsync(String containerName, String blob, String snapshot, String versionId,
+        Integer timeout, String range, String leaseId, Boolean rangeGetContentMD5, Boolean rangeGetContentCRC64,
+        String structuredBodyType, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
+        String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo, Context context) {
+        return downloadWithResponseAsync(containerName, blob, snapshot, versionId, timeout, range, leaseId,
+            rangeGetContentMD5, rangeGetContentCRC64, structuredBodyType, ifModifiedSince, ifUnmodifiedSince, ifMatch,
+            ifNoneMatch, ifTags, requestId, cpkInfo, context)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+    }
+
+    /**
+     * The Download operation reads or downloads a blob from the system, including its metadata and properties. You can
+     * also call Download to read a snapshot or version.
+     *
+     * @param containerName The container name.
+     * @param blob The blob name.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param range Return only the bytes of the blob in the specified range.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param rangeGetContentMD5 When set to true and specified together with the Range, the service returns the MD5
+     * hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param rangeGetContentCRC64 When set to true and specified together with the Range, the service returns the CRC64
+     * hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
+     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param cpkInfo Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StreamResponse> downloadNoCustomHeadersWithResponseAsync(String containerName, String blob,
+        String snapshot, String versionId, Integer timeout, String range, String leaseId, Boolean rangeGetContentMD5,
+        Boolean rangeGetContentCRC64, String structuredBodyType, OffsetDateTime ifModifiedSince,
+        OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
+        CpkInfo cpkInfo) {
+        final String accept = "application/xml";
+        String encryptionKeyInternal = null;
+        if (cpkInfo != null) {
+            encryptionKeyInternal = cpkInfo.getEncryptionKey();
+        }
+        String encryptionKey = encryptionKeyInternal;
+        String encryptionKeySha256Internal = null;
+        if (cpkInfo != null) {
+            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+        }
+        String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return FluxUtil.withContext(
+            context -> service.downloadNoCustomHeaders(this.client.getUrl(), containerName, blob, snapshot, versionId,
+                timeout, range, leaseId, rangeGetContentMD5, rangeGetContentCRC64, structuredBodyType, encryptionKey,
+                encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
+                ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
+    }
+
+    /**
+     * The Download operation reads or downloads a blob from the system, including its metadata and properties. You can
+     * also call Download to read a snapshot or version.
+     *
+     * @param containerName The container name.
+     * @param blob The blob name.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param range Return only the bytes of the blob in the specified range.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param rangeGetContentMD5 When set to true and specified together with the Range, the service returns the MD5
+     * hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param rangeGetContentCRC64 When set to true and specified together with the Range, the service returns the CRC64
+     * hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
+     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param cpkInfo Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StreamResponse> downloadNoCustomHeadersWithResponseAsync(String containerName, String blob,
+        String snapshot, String versionId, Integer timeout, String range, String leaseId, Boolean rangeGetContentMD5,
+        Boolean rangeGetContentCRC64, String structuredBodyType, OffsetDateTime ifModifiedSince,
+        OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
+        CpkInfo cpkInfo, Context context) {
+        final String accept = "application/xml";
+        String encryptionKeyInternal = null;
+        if (cpkInfo != null) {
+            encryptionKeyInternal = cpkInfo.getEncryptionKey();
+        }
+        String encryptionKey = encryptionKeyInternal;
+        String encryptionKeySha256Internal = null;
+        if (cpkInfo != null) {
+            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+        }
+        String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service
+            .downloadNoCustomHeaders(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout, range,
+                leaseId, rangeGetContentMD5, rangeGetContentCRC64, structuredBodyType, encryptionKey,
+                encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
+                ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept, context)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
+    }
+
+    /**
+     * The Download operation reads or downloads a blob from the system, including its metadata and properties. You can
+     * also call Download to read a snapshot or version.
+     *
+     * @param containerName The container name.
+     * @param blob The blob name.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param range Return only the bytes of the blob in the specified range.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param rangeGetContentMD5 When set to true and specified together with the Range, the service returns the MD5
+     * hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param rangeGetContentCRC64 When set to true and specified together with the Range, the service returns the CRC64
+     * hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
      * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
      * specified date/time.
      * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
@@ -1943,8 +1984,9 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<BlobsDownloadHeaders, InputStream> downloadWithResponse(String containerName, String blob,
         String snapshot, String versionId, Integer timeout, String range, String leaseId, Boolean rangeGetContentMD5,
-        Boolean rangeGetContentCRC64, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
-        String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo, Context context) {
+        Boolean rangeGetContentCRC64, String structuredBodyType, OffsetDateTime ifModifiedSince,
+        OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
+        CpkInfo cpkInfo, Context context) {
         try {
             final String accept = "application/xml";
             String encryptionKeyInternal = null;
@@ -1967,9 +2009,9 @@ public final class BlobsImpl {
             DateTimeRfc1123 ifUnmodifiedSinceConverted
                 = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.downloadSync(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout, range,
-                leaseId, rangeGetContentMD5, rangeGetContentCRC64, encryptionKey, encryptionKeySha256,
-                encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-                this.client.getVersion(), requestId, accept, context);
+                leaseId, rangeGetContentMD5, rangeGetContentCRC64, structuredBodyType, encryptionKey,
+                encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
+                ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -1996,6 +2038,8 @@ public final class BlobsImpl {
      * hash for the range, as long as the range is less than or equal to 4 MB in size.
      * @param rangeGetContentCRC64 When set to true and specified together with the Range, the service returns the CRC64
      * hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
      * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
      * specified date/time.
      * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
@@ -2014,12 +2058,12 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InputStream download(String containerName, String blob, String snapshot, String versionId, Integer timeout,
         String range, String leaseId, Boolean rangeGetContentMD5, Boolean rangeGetContentCRC64,
-        OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
-        String ifTags, String requestId, CpkInfo cpkInfo) {
+        String structuredBodyType, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
+        String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo) {
         try {
             return downloadWithResponse(containerName, blob, snapshot, versionId, timeout, range, leaseId,
-                rangeGetContentMD5, rangeGetContentCRC64, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
-                ifTags, requestId, cpkInfo, Context.NONE).getValue();
+                rangeGetContentMD5, rangeGetContentCRC64, structuredBodyType, ifModifiedSince, ifUnmodifiedSince,
+                ifMatch, ifNoneMatch, ifTags, requestId, cpkInfo, Context.NONE).getValue();
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -2046,6 +2090,8 @@ public final class BlobsImpl {
      * hash for the range, as long as the range is less than or equal to 4 MB in size.
      * @param rangeGetContentCRC64 When set to true and specified together with the Range, the service returns the CRC64
      * hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
      * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
      * specified date/time.
      * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
@@ -2065,8 +2111,9 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InputStream> downloadNoCustomHeadersWithResponse(String containerName, String blob, String snapshot,
         String versionId, Integer timeout, String range, String leaseId, Boolean rangeGetContentMD5,
-        Boolean rangeGetContentCRC64, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
-        String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo, Context context) {
+        Boolean rangeGetContentCRC64, String structuredBodyType, OffsetDateTime ifModifiedSince,
+        OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
+        CpkInfo cpkInfo, Context context) {
         try {
             final String accept = "application/xml";
             String encryptionKeyInternal = null;
@@ -2089,9 +2136,9 @@ public final class BlobsImpl {
             DateTimeRfc1123 ifUnmodifiedSinceConverted
                 = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.downloadNoCustomHeadersSync(this.client.getUrl(), containerName, blob, snapshot, versionId,
-                timeout, range, leaseId, rangeGetContentMD5, rangeGetContentCRC64, encryptionKey, encryptionKeySha256,
-                encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-                this.client.getVersion(), requestId, accept, context);
+                timeout, range, leaseId, rangeGetContentMD5, rangeGetContentCRC64, structuredBodyType, encryptionKey,
+                encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
+                ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -4224,6 +4271,12 @@ public final class BlobsImpl {
      * the specified date/time.
      * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4232,7 +4285,8 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<BlobsSetImmutabilityPolicyHeaders, Void>> setImmutabilityPolicyWithResponseAsync(
         String containerName, String blob, Integer timeout, String requestId, OffsetDateTime ifUnmodifiedSince,
-        OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode) {
+        OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, String snapshot,
+        String versionId) {
         final String comp = "immutabilityPolicies";
         final String accept = "application/xml";
         DateTimeRfc1123 ifUnmodifiedSinceConverted
@@ -4242,7 +4296,7 @@ public final class BlobsImpl {
         return FluxUtil
             .withContext(context -> service.setImmutabilityPolicy(this.client.getUrl(), containerName, blob, comp,
                 timeout, this.client.getVersion(), requestId, ifUnmodifiedSinceConverted,
-                immutabilityPolicyExpiryConverted, immutabilityPolicyMode, accept, context))
+                immutabilityPolicyExpiryConverted, immutabilityPolicyMode, snapshot, versionId, accept, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -4260,6 +4314,12 @@ public final class BlobsImpl {
      * the specified date/time.
      * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -4269,7 +4329,8 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<BlobsSetImmutabilityPolicyHeaders, Void>> setImmutabilityPolicyWithResponseAsync(
         String containerName, String blob, Integer timeout, String requestId, OffsetDateTime ifUnmodifiedSince,
-        OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, Context context) {
+        OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, String snapshot,
+        String versionId, Context context) {
         final String comp = "immutabilityPolicies";
         final String accept = "application/xml";
         DateTimeRfc1123 ifUnmodifiedSinceConverted
@@ -4279,7 +4340,7 @@ public final class BlobsImpl {
         return service
             .setImmutabilityPolicy(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(),
                 requestId, ifUnmodifiedSinceConverted, immutabilityPolicyExpiryConverted, immutabilityPolicyMode,
-                accept, context)
+                snapshot, versionId, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -4297,6 +4358,12 @@ public final class BlobsImpl {
      * the specified date/time.
      * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4305,9 +4372,9 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setImmutabilityPolicyAsync(String containerName, String blob, Integer timeout, String requestId,
         OffsetDateTime ifUnmodifiedSince, OffsetDateTime immutabilityPolicyExpiry,
-        BlobImmutabilityPolicyMode immutabilityPolicyMode) {
+        BlobImmutabilityPolicyMode immutabilityPolicyMode, String snapshot, String versionId) {
         return setImmutabilityPolicyWithResponseAsync(containerName, blob, timeout, requestId, ifUnmodifiedSince,
-            immutabilityPolicyExpiry, immutabilityPolicyMode)
+            immutabilityPolicyExpiry, immutabilityPolicyMode, snapshot, versionId)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
@@ -4326,6 +4393,12 @@ public final class BlobsImpl {
      * the specified date/time.
      * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -4335,9 +4408,9 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setImmutabilityPolicyAsync(String containerName, String blob, Integer timeout, String requestId,
         OffsetDateTime ifUnmodifiedSince, OffsetDateTime immutabilityPolicyExpiry,
-        BlobImmutabilityPolicyMode immutabilityPolicyMode, Context context) {
+        BlobImmutabilityPolicyMode immutabilityPolicyMode, String snapshot, String versionId, Context context) {
         return setImmutabilityPolicyWithResponseAsync(containerName, blob, timeout, requestId, ifUnmodifiedSince,
-            immutabilityPolicyExpiry, immutabilityPolicyMode, context)
+            immutabilityPolicyExpiry, immutabilityPolicyMode, snapshot, versionId, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
@@ -4356,6 +4429,12 @@ public final class BlobsImpl {
      * the specified date/time.
      * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4364,7 +4443,7 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setImmutabilityPolicyNoCustomHeadersWithResponseAsync(String containerName, String blob,
         Integer timeout, String requestId, OffsetDateTime ifUnmodifiedSince, OffsetDateTime immutabilityPolicyExpiry,
-        BlobImmutabilityPolicyMode immutabilityPolicyMode) {
+        BlobImmutabilityPolicyMode immutabilityPolicyMode, String snapshot, String versionId) {
         final String comp = "immutabilityPolicies";
         final String accept = "application/xml";
         DateTimeRfc1123 ifUnmodifiedSinceConverted
@@ -4374,7 +4453,7 @@ public final class BlobsImpl {
         return FluxUtil
             .withContext(context -> service.setImmutabilityPolicyNoCustomHeaders(this.client.getUrl(), containerName,
                 blob, comp, timeout, this.client.getVersion(), requestId, ifUnmodifiedSinceConverted,
-                immutabilityPolicyExpiryConverted, immutabilityPolicyMode, accept, context))
+                immutabilityPolicyExpiryConverted, immutabilityPolicyMode, snapshot, versionId, accept, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -4392,6 +4471,12 @@ public final class BlobsImpl {
      * the specified date/time.
      * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -4401,7 +4486,7 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setImmutabilityPolicyNoCustomHeadersWithResponseAsync(String containerName, String blob,
         Integer timeout, String requestId, OffsetDateTime ifUnmodifiedSince, OffsetDateTime immutabilityPolicyExpiry,
-        BlobImmutabilityPolicyMode immutabilityPolicyMode, Context context) {
+        BlobImmutabilityPolicyMode immutabilityPolicyMode, String snapshot, String versionId, Context context) {
         final String comp = "immutabilityPolicies";
         final String accept = "application/xml";
         DateTimeRfc1123 ifUnmodifiedSinceConverted
@@ -4411,7 +4496,7 @@ public final class BlobsImpl {
         return service
             .setImmutabilityPolicyNoCustomHeaders(this.client.getUrl(), containerName, blob, comp, timeout,
                 this.client.getVersion(), requestId, ifUnmodifiedSinceConverted, immutabilityPolicyExpiryConverted,
-                immutabilityPolicyMode, accept, context)
+                immutabilityPolicyMode, snapshot, versionId, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -4429,6 +4514,12 @@ public final class BlobsImpl {
      * the specified date/time.
      * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -4438,7 +4529,8 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<BlobsSetImmutabilityPolicyHeaders, Void> setImmutabilityPolicyWithResponse(String containerName,
         String blob, Integer timeout, String requestId, OffsetDateTime ifUnmodifiedSince,
-        OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, Context context) {
+        OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, String snapshot,
+        String versionId, Context context) {
         try {
             final String comp = "immutabilityPolicies";
             final String accept = "application/xml";
@@ -4448,7 +4540,7 @@ public final class BlobsImpl {
                 = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
             return service.setImmutabilityPolicySync(this.client.getUrl(), containerName, blob, comp, timeout,
                 this.client.getVersion(), requestId, ifUnmodifiedSinceConverted, immutabilityPolicyExpiryConverted,
-                immutabilityPolicyMode, accept, context);
+                immutabilityPolicyMode, snapshot, versionId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -4468,6 +4560,12 @@ public final class BlobsImpl {
      * the specified date/time.
      * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4475,9 +4573,9 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setImmutabilityPolicy(String containerName, String blob, Integer timeout, String requestId,
         OffsetDateTime ifUnmodifiedSince, OffsetDateTime immutabilityPolicyExpiry,
-        BlobImmutabilityPolicyMode immutabilityPolicyMode) {
+        BlobImmutabilityPolicyMode immutabilityPolicyMode, String snapshot, String versionId) {
         setImmutabilityPolicyWithResponse(containerName, blob, timeout, requestId, ifUnmodifiedSince,
-            immutabilityPolicyExpiry, immutabilityPolicyMode, Context.NONE);
+            immutabilityPolicyExpiry, immutabilityPolicyMode, snapshot, versionId, Context.NONE);
     }
 
     /**
@@ -4494,6 +4592,12 @@ public final class BlobsImpl {
      * the specified date/time.
      * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -4503,7 +4607,7 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setImmutabilityPolicyNoCustomHeadersWithResponse(String containerName, String blob,
         Integer timeout, String requestId, OffsetDateTime ifUnmodifiedSince, OffsetDateTime immutabilityPolicyExpiry,
-        BlobImmutabilityPolicyMode immutabilityPolicyMode, Context context) {
+        BlobImmutabilityPolicyMode immutabilityPolicyMode, String snapshot, String versionId, Context context) {
         try {
             final String comp = "immutabilityPolicies";
             final String accept = "application/xml";
@@ -4513,7 +4617,7 @@ public final class BlobsImpl {
                 = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
             return service.setImmutabilityPolicyNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp,
                 timeout, this.client.getVersion(), requestId, ifUnmodifiedSinceConverted,
-                immutabilityPolicyExpiryConverted, immutabilityPolicyMode, accept, context);
+                immutabilityPolicyExpiryConverted, immutabilityPolicyMode, snapshot, versionId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -4529,6 +4633,12 @@ public final class BlobsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4536,12 +4646,12 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<BlobsDeleteImmutabilityPolicyHeaders, Void>> deleteImmutabilityPolicyWithResponseAsync(
-        String containerName, String blob, Integer timeout, String requestId) {
+        String containerName, String blob, Integer timeout, String requestId, String snapshot, String versionId) {
         final String comp = "immutabilityPolicies";
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.deleteImmutabilityPolicy(this.client.getUrl(), containerName, blob, comp,
-                timeout, this.client.getVersion(), requestId, accept, context))
+                timeout, this.client.getVersion(), requestId, snapshot, versionId, accept, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -4555,6 +4665,12 @@ public final class BlobsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -4563,12 +4679,13 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<BlobsDeleteImmutabilityPolicyHeaders, Void>> deleteImmutabilityPolicyWithResponseAsync(
-        String containerName, String blob, Integer timeout, String requestId, Context context) {
+        String containerName, String blob, Integer timeout, String requestId, String snapshot, String versionId,
+        Context context) {
         final String comp = "immutabilityPolicies";
         final String accept = "application/xml";
         return service
             .deleteImmutabilityPolicy(this.client.getUrl(), containerName, blob, comp, timeout,
-                this.client.getVersion(), requestId, accept, context)
+                this.client.getVersion(), requestId, snapshot, versionId, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -4582,6 +4699,12 @@ public final class BlobsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4589,8 +4712,8 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteImmutabilityPolicyAsync(String containerName, String blob, Integer timeout,
-        String requestId) {
-        return deleteImmutabilityPolicyWithResponseAsync(containerName, blob, timeout, requestId)
+        String requestId, String snapshot, String versionId) {
+        return deleteImmutabilityPolicyWithResponseAsync(containerName, blob, timeout, requestId, snapshot, versionId)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
@@ -4605,6 +4728,12 @@ public final class BlobsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -4613,9 +4742,9 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteImmutabilityPolicyAsync(String containerName, String blob, Integer timeout,
-        String requestId, Context context) {
-        return deleteImmutabilityPolicyWithResponseAsync(containerName, blob, timeout, requestId, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+        String requestId, String snapshot, String versionId, Context context) {
+        return deleteImmutabilityPolicyWithResponseAsync(containerName, blob, timeout, requestId, snapshot, versionId,
+            context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -4629,6 +4758,12 @@ public final class BlobsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4636,12 +4771,12 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteImmutabilityPolicyNoCustomHeadersWithResponseAsync(String containerName,
-        String blob, Integer timeout, String requestId) {
+        String blob, Integer timeout, String requestId, String snapshot, String versionId) {
         final String comp = "immutabilityPolicies";
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.deleteImmutabilityPolicyNoCustomHeaders(this.client.getUrl(), containerName,
-                blob, comp, timeout, this.client.getVersion(), requestId, accept, context))
+                blob, comp, timeout, this.client.getVersion(), requestId, snapshot, versionId, accept, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -4655,6 +4790,12 @@ public final class BlobsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -4663,12 +4804,12 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteImmutabilityPolicyNoCustomHeadersWithResponseAsync(String containerName,
-        String blob, Integer timeout, String requestId, Context context) {
+        String blob, Integer timeout, String requestId, String snapshot, String versionId, Context context) {
         final String comp = "immutabilityPolicies";
         final String accept = "application/xml";
         return service
             .deleteImmutabilityPolicyNoCustomHeaders(this.client.getUrl(), containerName, blob, comp, timeout,
-                this.client.getVersion(), requestId, accept, context)
+                this.client.getVersion(), requestId, snapshot, versionId, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -4682,6 +4823,12 @@ public final class BlobsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -4690,12 +4837,13 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<BlobsDeleteImmutabilityPolicyHeaders, Void> deleteImmutabilityPolicyWithResponse(
-        String containerName, String blob, Integer timeout, String requestId, Context context) {
+        String containerName, String blob, Integer timeout, String requestId, String snapshot, String versionId,
+        Context context) {
         try {
             final String comp = "immutabilityPolicies";
             final String accept = "application/xml";
             return service.deleteImmutabilityPolicySync(this.client.getUrl(), containerName, blob, comp, timeout,
-                this.client.getVersion(), requestId, accept, context);
+                this.client.getVersion(), requestId, snapshot, versionId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -4711,13 +4859,21 @@ public final class BlobsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteImmutabilityPolicy(String containerName, String blob, Integer timeout, String requestId) {
-        deleteImmutabilityPolicyWithResponse(containerName, blob, timeout, requestId, Context.NONE);
+    public void deleteImmutabilityPolicy(String containerName, String blob, Integer timeout, String requestId,
+        String snapshot, String versionId) {
+        deleteImmutabilityPolicyWithResponse(containerName, blob, timeout, requestId, snapshot, versionId,
+            Context.NONE);
     }
 
     /**
@@ -4730,6 +4886,12 @@ public final class BlobsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -4738,12 +4900,12 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteImmutabilityPolicyNoCustomHeadersWithResponse(String containerName, String blob,
-        Integer timeout, String requestId, Context context) {
+        Integer timeout, String requestId, String snapshot, String versionId, Context context) {
         try {
             final String comp = "immutabilityPolicies";
             final String accept = "application/xml";
             return service.deleteImmutabilityPolicyNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp,
-                timeout, this.client.getVersion(), requestId, accept, context);
+                timeout, this.client.getVersion(), requestId, snapshot, versionId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -4760,6 +4922,12 @@ public final class BlobsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4767,12 +4935,12 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<BlobsSetLegalHoldHeaders, Void>> setLegalHoldWithResponseAsync(String containerName,
-        String blob, boolean legalHold, Integer timeout, String requestId) {
+        String blob, boolean legalHold, Integer timeout, String requestId, String snapshot, String versionId) {
         final String comp = "legalhold";
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.setLegalHold(this.client.getUrl(), containerName, blob, comp, timeout,
-                this.client.getVersion(), requestId, legalHold, accept, context))
+                this.client.getVersion(), requestId, legalHold, snapshot, versionId, accept, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -4787,6 +4955,12 @@ public final class BlobsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -4795,12 +4969,13 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<BlobsSetLegalHoldHeaders, Void>> setLegalHoldWithResponseAsync(String containerName,
-        String blob, boolean legalHold, Integer timeout, String requestId, Context context) {
+        String blob, boolean legalHold, Integer timeout, String requestId, String snapshot, String versionId,
+        Context context) {
         final String comp = "legalhold";
         final String accept = "application/xml";
         return service
             .setLegalHold(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(), requestId,
-                legalHold, accept, context)
+                legalHold, snapshot, versionId, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -4815,6 +4990,12 @@ public final class BlobsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4822,8 +5003,8 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setLegalHoldAsync(String containerName, String blob, boolean legalHold, Integer timeout,
-        String requestId) {
-        return setLegalHoldWithResponseAsync(containerName, blob, legalHold, timeout, requestId)
+        String requestId, String snapshot, String versionId) {
+        return setLegalHoldWithResponseAsync(containerName, blob, legalHold, timeout, requestId, snapshot, versionId)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
@@ -4839,6 +5020,12 @@ public final class BlobsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -4847,9 +5034,9 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setLegalHoldAsync(String containerName, String blob, boolean legalHold, Integer timeout,
-        String requestId, Context context) {
-        return setLegalHoldWithResponseAsync(containerName, blob, legalHold, timeout, requestId, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+        String requestId, String snapshot, String versionId, Context context) {
+        return setLegalHoldWithResponseAsync(containerName, blob, legalHold, timeout, requestId, snapshot, versionId,
+            context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -4864,6 +5051,12 @@ public final class BlobsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4871,12 +5064,12 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setLegalHoldNoCustomHeadersWithResponseAsync(String containerName, String blob,
-        boolean legalHold, Integer timeout, String requestId) {
+        boolean legalHold, Integer timeout, String requestId, String snapshot, String versionId) {
         final String comp = "legalhold";
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.setLegalHoldNoCustomHeaders(this.client.getUrl(), containerName, blob, comp,
-                timeout, this.client.getVersion(), requestId, legalHold, accept, context))
+                timeout, this.client.getVersion(), requestId, legalHold, snapshot, versionId, accept, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -4891,6 +5084,12 @@ public final class BlobsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -4899,12 +5098,12 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setLegalHoldNoCustomHeadersWithResponseAsync(String containerName, String blob,
-        boolean legalHold, Integer timeout, String requestId, Context context) {
+        boolean legalHold, Integer timeout, String requestId, String snapshot, String versionId, Context context) {
         final String comp = "legalhold";
         final String accept = "application/xml";
         return service
             .setLegalHoldNoCustomHeaders(this.client.getUrl(), containerName, blob, comp, timeout,
-                this.client.getVersion(), requestId, legalHold, accept, context)
+                this.client.getVersion(), requestId, legalHold, snapshot, versionId, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -4919,6 +5118,12 @@ public final class BlobsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -4927,12 +5132,12 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<BlobsSetLegalHoldHeaders, Void> setLegalHoldWithResponse(String containerName, String blob,
-        boolean legalHold, Integer timeout, String requestId, Context context) {
+        boolean legalHold, Integer timeout, String requestId, String snapshot, String versionId, Context context) {
         try {
             final String comp = "legalhold";
             final String accept = "application/xml";
             return service.setLegalHoldSync(this.client.getUrl(), containerName, blob, comp, timeout,
-                this.client.getVersion(), requestId, legalHold, accept, context);
+                this.client.getVersion(), requestId, legalHold, snapshot, versionId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -4949,13 +5154,20 @@ public final class BlobsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void setLegalHold(String containerName, String blob, boolean legalHold, Integer timeout, String requestId) {
-        setLegalHoldWithResponse(containerName, blob, legalHold, timeout, requestId, Context.NONE);
+    public void setLegalHold(String containerName, String blob, boolean legalHold, Integer timeout, String requestId,
+        String snapshot, String versionId) {
+        setLegalHoldWithResponse(containerName, blob, legalHold, timeout, requestId, snapshot, versionId, Context.NONE);
     }
 
     /**
@@ -4969,6 +5181,12 @@ public final class BlobsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     * a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -4977,12 +5195,12 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setLegalHoldNoCustomHeadersWithResponse(String containerName, String blob, boolean legalHold,
-        Integer timeout, String requestId, Context context) {
+        Integer timeout, String requestId, String snapshot, String versionId, Context context) {
         try {
             final String comp = "legalhold";
             final String accept = "application/xml";
             return service.setLegalHoldNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
-                this.client.getVersion(), requestId, legalHold, accept, context);
+                this.client.getVersion(), requestId, legalHold, snapshot, versionId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -9981,6 +10199,11 @@ public final class BlobsImpl {
      *
      * @param containerName The container name.
      * @param blob The blob name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -9988,13 +10211,13 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<BlobsGetAccountInfoHeaders, Void>> getAccountInfoWithResponseAsync(String containerName,
-        String blob) {
+        String blob, Integer timeout, String requestId) {
         final String restype = "account";
         final String comp = "properties";
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.getAccountInfo(this.client.getUrl(), containerName, blob, restype, comp,
-                this.client.getVersion(), accept, context))
+                timeout, this.client.getVersion(), requestId, accept, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -10003,6 +10226,11 @@ public final class BlobsImpl {
      *
      * @param containerName The container name.
      * @param blob The blob name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -10011,13 +10239,13 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<BlobsGetAccountInfoHeaders, Void>> getAccountInfoWithResponseAsync(String containerName,
-        String blob, Context context) {
+        String blob, Integer timeout, String requestId, Context context) {
         final String restype = "account";
         final String comp = "properties";
         final String accept = "application/xml";
         return service
-            .getAccountInfo(this.client.getUrl(), containerName, blob, restype, comp, this.client.getVersion(), accept,
-                context)
+            .getAccountInfo(this.client.getUrl(), containerName, blob, restype, comp, timeout, this.client.getVersion(),
+                requestId, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -10026,14 +10254,19 @@ public final class BlobsImpl {
      *
      * @param containerName The container name.
      * @param blob The blob name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getAccountInfoAsync(String containerName, String blob) {
-        return getAccountInfoWithResponseAsync(containerName, blob)
+    public Mono<Void> getAccountInfoAsync(String containerName, String blob, Integer timeout, String requestId) {
+        return getAccountInfoWithResponseAsync(containerName, blob, timeout, requestId)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
@@ -10043,6 +10276,11 @@ public final class BlobsImpl {
      *
      * @param containerName The container name.
      * @param blob The blob name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -10050,8 +10288,9 @@ public final class BlobsImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getAccountInfoAsync(String containerName, String blob, Context context) {
-        return getAccountInfoWithResponseAsync(containerName, blob, context)
+    public Mono<Void> getAccountInfoAsync(String containerName, String blob, Integer timeout, String requestId,
+        Context context) {
+        return getAccountInfoWithResponseAsync(containerName, blob, timeout, requestId, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
@@ -10061,19 +10300,25 @@ public final class BlobsImpl {
      *
      * @param containerName The container name.
      * @param blob The blob name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> getAccountInfoNoCustomHeadersWithResponseAsync(String containerName, String blob) {
+    public Mono<Response<Void>> getAccountInfoNoCustomHeadersWithResponseAsync(String containerName, String blob,
+        Integer timeout, String requestId) {
         final String restype = "account";
         final String comp = "properties";
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.getAccountInfoNoCustomHeaders(this.client.getUrl(), containerName, blob,
-                restype, comp, this.client.getVersion(), accept, context))
+                restype, comp, timeout, this.client.getVersion(), requestId, accept, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -10082,6 +10327,11 @@ public final class BlobsImpl {
      *
      * @param containerName The container name.
      * @param blob The blob name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -10090,13 +10340,13 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getAccountInfoNoCustomHeadersWithResponseAsync(String containerName, String blob,
-        Context context) {
+        Integer timeout, String requestId, Context context) {
         final String restype = "account";
         final String comp = "properties";
         final String accept = "application/xml";
         return service
-            .getAccountInfoNoCustomHeaders(this.client.getUrl(), containerName, blob, restype, comp,
-                this.client.getVersion(), accept, context)
+            .getAccountInfoNoCustomHeaders(this.client.getUrl(), containerName, blob, restype, comp, timeout,
+                this.client.getVersion(), requestId, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -10105,6 +10355,11 @@ public final class BlobsImpl {
      *
      * @param containerName The container name.
      * @param blob The blob name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -10113,13 +10368,13 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<BlobsGetAccountInfoHeaders, Void> getAccountInfoWithResponse(String containerName, String blob,
-        Context context) {
+        Integer timeout, String requestId, Context context) {
         try {
             final String restype = "account";
             final String comp = "properties";
             final String accept = "application/xml";
-            return service.getAccountInfoSync(this.client.getUrl(), containerName, blob, restype, comp,
-                this.client.getVersion(), accept, context);
+            return service.getAccountInfoSync(this.client.getUrl(), containerName, blob, restype, comp, timeout,
+                this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -10130,13 +10385,18 @@ public final class BlobsImpl {
      *
      * @param containerName The container name.
      * @param blob The blob name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getAccountInfo(String containerName, String blob) {
-        getAccountInfoWithResponse(containerName, blob, Context.NONE);
+    public void getAccountInfo(String containerName, String blob, Integer timeout, String requestId) {
+        getAccountInfoWithResponse(containerName, blob, timeout, requestId, Context.NONE);
     }
 
     /**
@@ -10144,6 +10404,11 @@ public final class BlobsImpl {
      *
      * @param containerName The container name.
      * @param blob The blob name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -10151,14 +10416,14 @@ public final class BlobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getAccountInfoNoCustomHeadersWithResponse(String containerName, String blob,
-        Context context) {
+    public Response<Void> getAccountInfoNoCustomHeadersWithResponse(String containerName, String blob, Integer timeout,
+        String requestId, Context context) {
         try {
             final String restype = "account";
             final String comp = "properties";
             final String accept = "application/xml";
             return service.getAccountInfoNoCustomHeadersSync(this.client.getUrl(), containerName, blob, restype, comp,
-                this.client.getVersion(), accept, context);
+                timeout, this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
