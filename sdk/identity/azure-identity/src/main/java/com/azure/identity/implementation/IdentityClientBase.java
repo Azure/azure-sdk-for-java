@@ -345,7 +345,7 @@ public abstract class IdentityClientBase {
         if (options.getExecutorService() != null) {
             builder.executorService(options.getExecutorService());
         } else {
-            applicationBuilder.executorService(SharedExecutorService.getInstance());
+            builder.executorService(SharedExecutorService.getInstance());
         }
 
         if (enableCae) {
