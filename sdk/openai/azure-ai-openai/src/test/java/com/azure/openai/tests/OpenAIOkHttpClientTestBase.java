@@ -11,7 +11,9 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.util.Context;
-import com.openai.core.AzureOpenAIServiceVersion;
+import com.azure.identity.AuthenticationUtil;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.azure.AzureOpenAIServiceVersion;
 import com.openai.core.JsonValue;
 import com.openai.errors.BadRequestException;
 import com.openai.models.ChatCompletion;
@@ -29,6 +31,7 @@ import com.openai.models.ChatCompletionSystemMessageParam;
 import com.openai.models.ChatCompletionTool;
 import com.openai.models.ChatCompletionToolMessageParam;
 import com.openai.models.ChatCompletionUserMessageParam;
+import com.openai.models.CompletionUsage;
 import com.openai.models.FunctionDefinition;
 import com.openai.models.FunctionParameters;
 
@@ -51,40 +54,28 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class OpenAIOkHttpClientTestBase {
     static final String ASSISTANT_CONTENT =
             "Don't make assumptions about what values to plug into functions. Ask for clarification if a user request is ambiguous.";
-    static final String AZURE_OPENAI_SERVICE_VERSION_GA = AzureOpenAIServiceVersion.V2024_06_01;
-    static final String AZURE_OPENAI_SERVICE_VERSION_PREVIEW = AzureOpenAIServiceVersion.V2024_05_01_PREVIEW;
+    static final AzureOpenAIServiceVersion AZURE_OPENAI_SERVICE_VERSION_GA = AzureOpenAIServiceVersion.V2024_06_01.INSTANCE;
+    static final AzureOpenAIServiceVersion AZURE_OPENAI_SERVICE_VERSION_PREVIEW = AzureOpenAIServiceVersion.V2024_08_01_PREVIEW.INSTANCE;
     static final String USER_CONTENT = "Who won the world series in 2020?";
 
     // This method will be removed when Azure Identity library supports Azure TokenCredential as a Supplier of String
     static Supplier<String> getBearerTokenCredentialProvider(TokenCredential azureTokenCredential) {
-        return getTokenCredentialProvider(azureTokenCredential, "https://cognitiveservices.azure.com/.default");
+        return AuthenticationUtil.getBearerTokenSupplier(
+            new DefaultAzureCredentialBuilder().build(), "https://cognitiveservices.azure.com/.default");
     }
-
-    // A mock implementation of Azure Identity library's AzureTokenCredential.getTokenCredentialProvider() method to
-    // demonstrate how to use Azure TokenCredential as a Supplier of String
-    private static Supplier<String> getTokenCredentialProvider(TokenCredential credential, String... scopes) {
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new BearerTokenAuthenticationPolicy(credential, scopes)).build();
-        return () -> {
-            HttpRequest req = new HttpRequest(HttpMethod.GET, "https://www.example.com");
-            try (HttpResponse res = pipeline.sendSync(req, Context.NONE)) {
-                return res.getRequest().getHeaders().get("Authorization").getValue().split(" ")[1];
-            }
-        };
-    }
-
 
     // Request: Helper methods to prepare request params
     ChatCompletionMessageParam createSystemMessageParam() {
         return ChatCompletionMessageParam.ofChatCompletionSystemMessageParam(ChatCompletionSystemMessageParam.builder()
                 .role(ChatCompletionSystemMessageParam.Role.SYSTEM)
-                .content(ChatCompletionSystemMessageParam.Content.ofString(ASSISTANT_CONTENT))
+                .content(ChatCompletionSystemMessageParam.Content.ofTextContent(ASSISTANT_CONTENT))
                 .build());
     }
 
     ChatCompletionMessageParam createUserMessageParam(String content) {
         return ChatCompletionMessageParam.ofChatCompletionUserMessageParam(ChatCompletionUserMessageParam.builder()
                 .role(ChatCompletionUserMessageParam.Role.USER)
-                .content(ChatCompletionUserMessageParam.Content.ofString(content))
+                .content(ChatCompletionUserMessageParam.Content.ofTextContent(content))
                 .build());
     }
 
@@ -139,6 +130,7 @@ public class OpenAIOkHttpClientTestBase {
 
     ChatCompletionCreateParams createChatCompletionParamsWithTool(String testModel, String userMessage) {
         ChatCompletionTool chatCompletionTool = ChatCompletionTool.builder()
+            .type(JsonValue.from("function"))
             .function(FunctionDefinition.builder()
                 .name("get_current_weather")
                 .description("Get the current weather in a given location")
@@ -188,7 +180,7 @@ public class OpenAIOkHttpClientTestBase {
         ChatCompletionMessageParam userMessageParam =
                 ChatCompletionMessageParam.ofChatCompletionUserMessageParam(ChatCompletionUserMessageParam.builder()
                         .role(ChatCompletionUserMessageParam.Role.USER)
-                        .content(ChatCompletionUserMessageParam.Content.ofChatCompletionContentParts(asList(
+                        .content(ChatCompletionUserMessageParam.Content.ofArrayOfContentParts(asList(
                                 ChatCompletionContentPart.ofChatCompletionContentPartText(
                                         ChatCompletionContentPartText.builder()
                                                 .type(TEXT)
@@ -324,7 +316,7 @@ public class OpenAIOkHttpClientTestBase {
                 ChatCompletionMessageParam.ofChatCompletionToolMessageParam(ChatCompletionToolMessageParam.builder()
                         .role(ChatCompletionToolMessageParam.Role.TOOL)
                         .toolCallId(chatCompletionMessageToolCalls.get(0).id())
-                        .content(ChatCompletionToolMessageParam.Content.ofString(
+                        .content(ChatCompletionToolMessageParam.Content.ofTextContent(
                                 "{\"temperature\": \"22\", \"unit\": \"celsius\", \"description\": \"Sunny\"}"))
                         .build());
         // Add the tool message to the params
@@ -335,7 +327,7 @@ public class OpenAIOkHttpClientTestBase {
                     ChatCompletionMessageParam.ofChatCompletionToolMessageParam(ChatCompletionToolMessageParam.builder()
                             .role(ChatCompletionToolMessageParam.Role.TOOL)
                             .toolCallId(chatCompletionMessageToolCalls.get(1).id())
-                            .content(ChatCompletionToolMessageParam.Content.ofString(
+                            .content(ChatCompletionToolMessageParam.Content.ofTextContent(
                                     "{\"temperature\": \"80\", \"unit\": \"fahrenheit\", \"description\": \"Sunny\"}"))
                             .build());
             paramsBuilder.addMessage(toolMessageParam2);
@@ -373,7 +365,7 @@ public class OpenAIOkHttpClientTestBase {
         assertNotNull(chatCompletion.model());
         assertNotNull(chatCompletion.created());
 
-        ChatCompletion.Usage usage = chatCompletion.usage().get();
+        CompletionUsage usage = chatCompletion.usage().get();
         assertTrue(usage.completionTokens() > 0);
         assertTrue(usage.promptTokens() > 0);
         assertTrue(usage.totalTokens() > 0);
@@ -415,7 +407,7 @@ public class OpenAIOkHttpClientTestBase {
         assertNotNull(chatCompletion.model());
         assertNotNull(chatCompletion.created());
 
-        ChatCompletion.Usage usage = chatCompletion.usage().get();
+        CompletionUsage usage = chatCompletion.usage().get();
         assertTrue(usage.completionTokens() > 0);
         assertTrue(usage.promptTokens() > 0);
         assertEquals(usage.totalTokens(), usage.completionTokens() + usage.promptTokens());

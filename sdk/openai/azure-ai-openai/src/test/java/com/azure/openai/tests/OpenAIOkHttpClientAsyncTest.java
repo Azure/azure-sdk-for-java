@@ -6,10 +6,10 @@ package com.azure.openai.tests;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.openai.azure.credential.AzureApiKeyCredential;
 import com.openai.client.OpenAIClientAsync;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.core.JsonValue;
-import com.openai.credential.AzureApiKeyCredential;
 import com.openai.credential.BearerTokenCredential;
 import com.openai.errors.BadRequestException;
 import com.openai.models.ChatCompletion;
@@ -17,6 +17,7 @@ import com.openai.models.ChatCompletionCreateParams;
 import com.openai.models.ChatCompletionMessage;
 import com.openai.models.ChatCompletionMessageParam;
 import com.openai.models.ChatCompletionMessageToolCall;
+import com.openai.models.CompletionUsage;
 import com.openai.models.ResponseFormatJsonObject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
@@ -122,7 +123,7 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
                 createParamsBuilder(testModel).maxTokens(50).build();
         ChatCompletion chatCompletion = client.chat().completions().create(params).join();
         assertChatCompletion(chatCompletion, 1);
-        ChatCompletion.Usage usage = chatCompletion.usage().get();
+        CompletionUsage usage = chatCompletion.usage().get();
         assertTrue(usage.completionTokens() <= 50);
         assertEquals(usage.totalTokens(), usage.completionTokens() + usage.promptTokens());
     }
@@ -287,9 +288,8 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
     }
 
     // Azure-Only Test
-    @DisabledIf("com.azure.openai.tests.TestUtils#isAzureByodConfigMissing")
     @ParameterizedTest
-    @MethodSource("com.azure.openai.tests.TestUtils#azureByodOnlyClient")
+    @MethodSource("com.azure.openai.tests.TestUtils#azureOnlyClient")
     public void testChatCompletionByod(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
         ChatCompletionCreateParams params = createParamsBuilder(testModel)

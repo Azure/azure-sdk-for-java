@@ -18,6 +18,7 @@ public class TestUtils {
     private static final String GPT_4_VISION_PREVIEW = "gpt-4-vision-preview";
     private static final String GPT_35_TURBO_0613 = "gpt-35-turbo-0613";
     private static final String GPT_35_TURBO_1106 = "gpt-35-turbo-1106";
+    private static final String GPT_4O = "gpt-4o";
 
     static boolean isAzureConfigMissing() {
         return isAzureEndpointMissing() || isAzureApiKeyMissing();
@@ -84,8 +85,8 @@ public class TestUtils {
 
     static Stream<String[]> azureAdTokenOnly() {
         return Stream.of(new String[][] {
-            {AZURE_OPEN_AI, GA, GPT_35_TURBO_0613},
-            {AZURE_OPEN_AI, PREVIEW, GPT_35_TURBO_0613}
+            {AZURE_OPEN_AI, GA, GPT_4O},
+            {AZURE_OPEN_AI, PREVIEW, GPT_4O}
         });
     }
 }
