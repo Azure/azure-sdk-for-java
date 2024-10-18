@@ -141,27 +141,6 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
      */
     private Long paidBurstingMaxBandwidthMibps;
 
-    /*
-     * Only applicable to provisioned v2 storage accounts. The calculated burst IOPS of the share.
-     */
-    private Long includedBurstIops;
-
-    /*
-     * Only applicable to provisioned v2 storage accounts. The calculated maximum burst credits.
-     * This is not the current burst credit level, but the maximum burst credits the share can have.
-     */
-    private Long maxBurstCreditsForIops;
-
-    /*
-     * Only applicable to provisioned v2 storage accounts. The time the share can be downgraded to lower provisioned IOPs.
-     */
-    private OffsetDateTime nextAllowedProvisionedIopsDowngradeTime;
-
-    /*
-     * Only applicable to provisioned v2 storage accounts. The time the share can be downgraded to lower provisioned bandwidth.
-     */
-    private OffsetDateTime nextAllowedProvisionedBandwidthDowngradeTime;
-
     /**
      * Get the lastModified property: The lastModified property.
      *
@@ -694,98 +673,6 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
      */
     public ShareProperties setPaidBurstingMaxBandwidthMibps(Long paidBurstingMaxBandwidthMibps) {
         this.paidBurstingMaxBandwidthMibps = paidBurstingMaxBandwidthMibps;
-        return this;
-    }
-
-    /**
-     * Get the includedBurstIops property.
-     * Only applicable to provisioned v2 storage accounts. The calculated burst IOPS of the share.
-     *
-     * @return the includedBurstIops value itself.
-     */
-    public Long getIncludedBurstIops() {
-        return includedBurstIops;
-    }
-
-    /**
-     * Set the includedBurstIops property.
-     * Only applicable to provisioned v2 storage accounts. The calculated burst IOPS of the share.
-     *
-     * @param includedBurstIops the includedBurstIops value to set.
-     * @return the ShareProperties object itself.
-     */
-    public ShareProperties setIncludedBurstIops(Long includedBurstIops) {
-        this.includedBurstIops = includedBurstIops;
-        return this;
-    }
-
-    /**
-     * Get the maxBurstCreditsForIops property.
-     * Only applicable to provisioned v2 storage accounts. The calculated maximum burst credits.
-     * This is not the current burst credit level, but the maximum burst credits the share can have.
-     *
-     * @return the maxBurstCreditsForIops value itself.
-     */
-    public Long getMaxBurstCreditsForIops() {
-        return maxBurstCreditsForIops;
-    }
-
-    /**
-     * Set the maxBurstCreditsForIops property.
-     * Only applicable to provisioned v2 storage accounts. The calculated maximum burst credits.
-     * This is not the current burst credit level, but the maximum burst credits the share can have.
-     *
-     * @param maxBurstCreditsForIops the maxBurstCreditsForIops value to set.
-     * @return the ShareProperties object itself.
-     */
-    public ShareProperties setMaxBurstCreditsForIops(Long maxBurstCreditsForIops) {
-        this.maxBurstCreditsForIops = maxBurstCreditsForIops;
-        return this;
-    }
-
-    /**
-     * Get the nextAllowedProvisionedIopsDowngradeTime property.
-     * Only applicable to provisioned v2 storage accounts. The time the share can be downgraded to lower provisioned IOPs.
-     *
-     * @return the nextAllowedProvisionedIopsDowngradeTime value itself.
-     */
-    public OffsetDateTime getNextAllowedProvisionedIopsDowngradeTime() {
-        return nextAllowedProvisionedIopsDowngradeTime;
-    }
-
-    /**
-     * Set the nextAllowedProvisionedIopsDowngradeTime property.
-     * Only applicable to provisioned v2 storage accounts. The time the share can be downgraded to lower provisioned IOPs.
-     *
-     * @param nextAllowedProvisionedIopsDowngradeTime the nextAllowedProvisionedIopsDowngradeTime value to set.
-     * @return the ShareProperties object itself.
-     */
-    public ShareProperties setNextAllowedProvisionedIopsDowngradeTime(OffsetDateTime nextAllowedProvisionedIopsDowngradeTime) {
-        this.nextAllowedProvisionedIopsDowngradeTime = nextAllowedProvisionedIopsDowngradeTime;
-        return this;
-    }
-
-    /**
-     * Get the nextAllowedProvisionedBandwidthDowngradeTime property.
-     * Only applicable to provisioned v2 storage accounts.
-     * The time the share can be downgraded to lower provisioned bandwidth.
-     *
-     * @return the nextAllowedProvisionedBandwidthDowngradeTime value itself.
-     */
-    public OffsetDateTime getNextAllowedProvisionedBandwidthDowngradeTime() {
-        return nextAllowedProvisionedBandwidthDowngradeTime;
-    }
-
-    /**
-     * Set the nextAllowedProvisionedBandwidthDowngradeTime property.
-     * Only applicable to provisioned v2 storage accounts.
-     * The time the share can be downgraded to lower provisioned bandwidth.
-     *
-     * @param nextAllowedProvisionedBandwidthDowngradeTime the nextAllowedProvisionedBandwidthDowngradeTime value to set.
-     * @return the ShareProperties object itself.
-     */
-    public ShareProperties setNextAllowedProvisionedBandwidthDowngradeTime(OffsetDateTime nextAllowedProvisionedBandwidthDowngradeTime) {
-        this.nextAllowedProvisionedBandwidthDowngradeTime = nextAllowedProvisionedBandwidthDowngradeTime;
         return this;
     }
 

@@ -297,22 +297,6 @@ public class FileServiceApiTests extends FileShareTestBase {
         }
     }
 
-    @PlaybackOnly
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-01-05")
-    @Test
-    public void listSharesProvisionedV2() {
-        primaryFileServiceClient.createShare(shareName);
-
-        for (ShareItem shareItem : primaryFileServiceClient.listShares()) {
-            if (Objects.equals(shareItem.getName(), shareName)) {
-                assertNotNull(shareItem.getProperties().getIncludedBurstIops());
-                assertNotNull(shareItem.getProperties().getMaxBurstCreditsForIops());
-                assertNotNull(shareItem.getProperties().getNextAllowedProvisionedIopsDowngradeTime());
-                assertNotNull(shareItem.getProperties().getNextAllowedProvisionedBandwidthDowngradeTime());
-            }
-        }
-    }
-
     @ResourceLock("ServiceProperties")
     @Test
     public void setAndGetProperties() {

@@ -138,26 +138,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
     private Long paidBurstingMaxBandwidthMibps;
 
     /*
-     * The IncludedBurstIops property.
-     */
-    private Long includedBurstIops;
-
-    /*
-     * The MaxBurstCreditsForIops property.
-     */
-    private Long maxBurstCreditsForIops;
-
-    /*
-     * The NextAllowedProvisionedIopsDowngradeTime property.
-     */
-    private DateTimeRfc1123 nextAllowedProvisionedIopsDowngradeTime;
-
-    /*
-     * The NextAllowedProvisionedBandwidthDowngradeTime property.
-     */
-    private DateTimeRfc1123 nextAllowedProvisionedBandwidthDowngradeTime;
-
-    /*
      * Dictionary of <string>
      */
     private Map<String, String> metadata;
@@ -640,106 +620,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
     }
 
     /**
-     * Get the includedBurstIops property: The IncludedBurstIops property.
-     * 
-     * @return the includedBurstIops value.
-     */
-    public Long getIncludedBurstIops() {
-        return this.includedBurstIops;
-    }
-
-    /**
-     * Set the includedBurstIops property: The IncludedBurstIops property.
-     * 
-     * @param includedBurstIops the includedBurstIops value to set.
-     * @return the SharePropertiesInternal object itself.
-     */
-    public SharePropertiesInternal setIncludedBurstIops(Long includedBurstIops) {
-        this.includedBurstIops = includedBurstIops;
-        return this;
-    }
-
-    /**
-     * Get the maxBurstCreditsForIops property: The MaxBurstCreditsForIops property.
-     * 
-     * @return the maxBurstCreditsForIops value.
-     */
-    public Long getMaxBurstCreditsForIops() {
-        return this.maxBurstCreditsForIops;
-    }
-
-    /**
-     * Set the maxBurstCreditsForIops property: The MaxBurstCreditsForIops property.
-     * 
-     * @param maxBurstCreditsForIops the maxBurstCreditsForIops value to set.
-     * @return the SharePropertiesInternal object itself.
-     */
-    public SharePropertiesInternal setMaxBurstCreditsForIops(Long maxBurstCreditsForIops) {
-        this.maxBurstCreditsForIops = maxBurstCreditsForIops;
-        return this;
-    }
-
-    /**
-     * Get the nextAllowedProvisionedIopsDowngradeTime property: The NextAllowedProvisionedIopsDowngradeTime property.
-     * 
-     * @return the nextAllowedProvisionedIopsDowngradeTime value.
-     */
-    public OffsetDateTime getNextAllowedProvisionedIopsDowngradeTime() {
-        if (this.nextAllowedProvisionedIopsDowngradeTime == null) {
-            return null;
-        }
-        return this.nextAllowedProvisionedIopsDowngradeTime.getDateTime();
-    }
-
-    /**
-     * Set the nextAllowedProvisionedIopsDowngradeTime property: The NextAllowedProvisionedIopsDowngradeTime property.
-     * 
-     * @param nextAllowedProvisionedIopsDowngradeTime the nextAllowedProvisionedIopsDowngradeTime value to set.
-     * @return the SharePropertiesInternal object itself.
-     */
-    public SharePropertiesInternal
-        setNextAllowedProvisionedIopsDowngradeTime(OffsetDateTime nextAllowedProvisionedIopsDowngradeTime) {
-        if (nextAllowedProvisionedIopsDowngradeTime == null) {
-            this.nextAllowedProvisionedIopsDowngradeTime = null;
-        } else {
-            this.nextAllowedProvisionedIopsDowngradeTime = new DateTimeRfc1123(nextAllowedProvisionedIopsDowngradeTime);
-        }
-        return this;
-    }
-
-    /**
-     * Get the nextAllowedProvisionedBandwidthDowngradeTime property: The NextAllowedProvisionedBandwidthDowngradeTime
-     * property.
-     * 
-     * @return the nextAllowedProvisionedBandwidthDowngradeTime value.
-     */
-    public OffsetDateTime getNextAllowedProvisionedBandwidthDowngradeTime() {
-        if (this.nextAllowedProvisionedBandwidthDowngradeTime == null) {
-            return null;
-        }
-        return this.nextAllowedProvisionedBandwidthDowngradeTime.getDateTime();
-    }
-
-    /**
-     * Set the nextAllowedProvisionedBandwidthDowngradeTime property: The NextAllowedProvisionedBandwidthDowngradeTime
-     * property.
-     * 
-     * @param nextAllowedProvisionedBandwidthDowngradeTime the nextAllowedProvisionedBandwidthDowngradeTime value to
-     * set.
-     * @return the SharePropertiesInternal object itself.
-     */
-    public SharePropertiesInternal
-        setNextAllowedProvisionedBandwidthDowngradeTime(OffsetDateTime nextAllowedProvisionedBandwidthDowngradeTime) {
-        if (nextAllowedProvisionedBandwidthDowngradeTime == null) {
-            this.nextAllowedProvisionedBandwidthDowngradeTime = null;
-        } else {
-            this.nextAllowedProvisionedBandwidthDowngradeTime
-                = new DateTimeRfc1123(nextAllowedProvisionedBandwidthDowngradeTime);
-        }
-        return this;
-    }
-
-    /**
      * Get the metadata property: Dictionary of &lt;string&gt;.
      * 
      * @return the metadata value.
@@ -793,12 +673,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
         xmlWriter.writeBooleanElement("PaidBurstingEnabled", this.paidBurstingEnabled);
         xmlWriter.writeNumberElement("PaidBurstingMaxIops", this.paidBurstingMaxIops);
         xmlWriter.writeNumberElement("PaidBurstingMaxBandwidthMibps", this.paidBurstingMaxBandwidthMibps);
-        xmlWriter.writeNumberElement("IncludedBurstIops", this.includedBurstIops);
-        xmlWriter.writeNumberElement("MaxBurstCreditsForIops", this.maxBurstCreditsForIops);
-        xmlWriter.writeStringElement("NextAllowedProvisionedIopsDowngradeTime",
-            Objects.toString(this.nextAllowedProvisionedIopsDowngradeTime, null));
-        xmlWriter.writeStringElement("NextAllowedProvisionedBandwidthDowngradeTime",
-            Objects.toString(this.nextAllowedProvisionedBandwidthDowngradeTime, null));
         if (this.metadata != null) {
             xmlWriter.writeStartElement("Metadata");
             for (Map.Entry<String, String> entry : this.metadata.entrySet()) {
@@ -900,17 +774,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
                 } else if ("PaidBurstingMaxBandwidthMibps".equals(elementName.getLocalPart())) {
                     deserializedSharePropertiesInternal.paidBurstingMaxBandwidthMibps
                         = reader.getNullableElement(Long::parseLong);
-                } else if ("IncludedBurstIops".equals(elementName.getLocalPart())) {
-                    deserializedSharePropertiesInternal.includedBurstIops = reader.getNullableElement(Long::parseLong);
-                } else if ("MaxBurstCreditsForIops".equals(elementName.getLocalPart())) {
-                    deserializedSharePropertiesInternal.maxBurstCreditsForIops
-                        = reader.getNullableElement(Long::parseLong);
-                } else if ("NextAllowedProvisionedIopsDowngradeTime".equals(elementName.getLocalPart())) {
-                    deserializedSharePropertiesInternal.nextAllowedProvisionedIopsDowngradeTime
-                        = reader.getNullableElement(DateTimeRfc1123::new);
-                } else if ("NextAllowedProvisionedBandwidthDowngradeTime".equals(elementName.getLocalPart())) {
-                    deserializedSharePropertiesInternal.nextAllowedProvisionedBandwidthDowngradeTime
-                        = reader.getNullableElement(DateTimeRfc1123::new);
                 } else if ("Metadata".equals(elementName.getLocalPart())) {
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         if (deserializedSharePropertiesInternal.metadata == null) {

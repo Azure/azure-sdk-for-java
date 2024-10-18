@@ -33,11 +33,6 @@ public final class FilesUploadRangeHeaders {
     private DateTimeRfc1123 lastModified;
 
     /*
-     * The x-ms-structured-body property.
-     */
-    private String xMsStructuredBody;
-
-    /*
      * The x-ms-request-id property.
      */
     private String xMsRequestId;
@@ -64,8 +59,6 @@ public final class FilesUploadRangeHeaders {
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
-    private static final HttpHeaderName X_MS_STRUCTURED_BODY = HttpHeaderName.fromString("x-ms-structured-body");
-
     private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED
         = HttpHeaderName.fromString("x-ms-request-server-encrypted");
 
@@ -85,7 +78,6 @@ public final class FilesUploadRangeHeaders {
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        this.xMsStructuredBody = rawHeaders.getValue(X_MS_STRUCTURED_BODY);
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
         if (xMsRequestServerEncrypted != null) {
@@ -169,26 +161,6 @@ public final class FilesUploadRangeHeaders {
         } else {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        return this;
-    }
-
-    /**
-     * Get the xMsStructuredBody property: The x-ms-structured-body property.
-     * 
-     * @return the xMsStructuredBody value.
-     */
-    public String getXMsStructuredBody() {
-        return this.xMsStructuredBody;
-    }
-
-    /**
-     * Set the xMsStructuredBody property: The x-ms-structured-body property.
-     * 
-     * @param xMsStructuredBody the xMsStructuredBody value to set.
-     * @return the FilesUploadRangeHeaders object itself.
-     */
-    public FilesUploadRangeHeaders setXMsStructuredBody(String xMsStructuredBody) {
-        this.xMsStructuredBody = xMsStructuredBody;
         return this;
     }
 

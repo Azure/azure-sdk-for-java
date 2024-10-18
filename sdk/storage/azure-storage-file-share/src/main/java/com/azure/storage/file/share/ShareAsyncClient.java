@@ -375,8 +375,7 @@ public class ShareAsyncClient {
             .createNoCustomHeadersWithResponseAsync(shareName, null, options.getMetadata(), options.getQuotaInGb(),
                 options.getAccessTier(), enabledProtocol, options.getRootSquash(),
                 options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
-                options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
-                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), context)
+                options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(), context)
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -941,9 +940,8 @@ public class ShareAsyncClient {
         return azureFileStorageClient.getShares().setPropertiesNoCustomHeadersWithResponseAsync(shareName, null,
             options.getQuotaInGb(), options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(),
             options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
-            options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
-            options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), context)
-                .map(ModelHelper::mapToShareInfoResponse);
+            options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(), context)
+            .map(ModelHelper::mapToShareInfoResponse);
     }
 
     /**

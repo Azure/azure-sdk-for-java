@@ -60,19 +60,9 @@ public final class FilesDownloadHeaders {
     private DateTimeRfc1123 lastModified;
 
     /*
-     * The x-ms-structured-body property.
-     */
-    private String xMsStructuredBody;
-
-    /*
      * The x-ms-file-attributes property.
      */
     private String xMsFileAttributes;
-
-    /*
-     * The x-ms-structured-content-length property.
-     */
-    private Long xMsStructuredContentLength;
 
     /*
      * The Content-Encoding property.
@@ -209,12 +199,7 @@ public final class FilesDownloadHeaders {
 
     private static final HttpHeaderName X_MS_CONTENT_MD5 = HttpHeaderName.fromString("x-ms-content-md5");
 
-    private static final HttpHeaderName X_MS_STRUCTURED_BODY = HttpHeaderName.fromString("x-ms-structured-body");
-
     private static final HttpHeaderName X_MS_FILE_ATTRIBUTES = HttpHeaderName.fromString("x-ms-file-attributes");
-
-    private static final HttpHeaderName X_MS_STRUCTURED_CONTENT_LENGTH
-        = HttpHeaderName.fromString("x-ms-structured-content-length");
 
     private static final HttpHeaderName X_MS_COPY_STATUS_DESCRIPTION
         = HttpHeaderName.fromString("x-ms-copy-status-description");
@@ -275,12 +260,7 @@ public final class FilesDownloadHeaders {
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        this.xMsStructuredBody = rawHeaders.getValue(X_MS_STRUCTURED_BODY);
         this.xMsFileAttributes = rawHeaders.getValue(X_MS_FILE_ATTRIBUTES);
-        String xMsStructuredContentLength = rawHeaders.getValue(X_MS_STRUCTURED_CONTENT_LENGTH);
-        if (xMsStructuredContentLength != null) {
-            this.xMsStructuredContentLength = Long.parseLong(xMsStructuredContentLength);
-        }
         this.contentEncoding = rawHeaders.getValue(HttpHeaderName.CONTENT_ENCODING);
         this.xMsCopyStatusDescription = rawHeaders.getValue(X_MS_COPY_STATUS_DESCRIPTION);
         String xMsLeaseDuration = rawHeaders.getValue(X_MS_LEASE_DURATION);
@@ -492,26 +472,6 @@ public final class FilesDownloadHeaders {
     }
 
     /**
-     * Get the xMsStructuredBody property: The x-ms-structured-body property.
-     * 
-     * @return the xMsStructuredBody value.
-     */
-    public String getXMsStructuredBody() {
-        return this.xMsStructuredBody;
-    }
-
-    /**
-     * Set the xMsStructuredBody property: The x-ms-structured-body property.
-     * 
-     * @param xMsStructuredBody the xMsStructuredBody value to set.
-     * @return the FilesDownloadHeaders object itself.
-     */
-    public FilesDownloadHeaders setXMsStructuredBody(String xMsStructuredBody) {
-        this.xMsStructuredBody = xMsStructuredBody;
-        return this;
-    }
-
-    /**
      * Get the xMsFileAttributes property: The x-ms-file-attributes property.
      * 
      * @return the xMsFileAttributes value.
@@ -528,26 +488,6 @@ public final class FilesDownloadHeaders {
      */
     public FilesDownloadHeaders setXMsFileAttributes(String xMsFileAttributes) {
         this.xMsFileAttributes = xMsFileAttributes;
-        return this;
-    }
-
-    /**
-     * Get the xMsStructuredContentLength property: The x-ms-structured-content-length property.
-     * 
-     * @return the xMsStructuredContentLength value.
-     */
-    public Long getXMsStructuredContentLength() {
-        return this.xMsStructuredContentLength;
-    }
-
-    /**
-     * Set the xMsStructuredContentLength property: The x-ms-structured-content-length property.
-     * 
-     * @param xMsStructuredContentLength the xMsStructuredContentLength value to set.
-     * @return the FilesDownloadHeaders object itself.
-     */
-    public FilesDownloadHeaders setXMsStructuredContentLength(Long xMsStructuredContentLength) {
-        this.xMsStructuredContentLength = xMsStructuredContentLength;
         return this;
     }
 

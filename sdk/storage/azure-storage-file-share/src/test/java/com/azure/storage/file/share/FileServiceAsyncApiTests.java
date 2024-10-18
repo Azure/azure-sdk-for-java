@@ -7,7 +7,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.ListSharesOptions;
@@ -225,23 +224,6 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
                 assertNotNull(r.getProperties());
                 assertNotNull(r.getProperties().getETag());
                 assertNotNull(r.getProperties().getLastModified());
-            })
-            .verifyComplete();
-    }
-
-    @PlaybackOnly
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-01-05")
-    @Test
-    public void listSharesProvisionedV2() {
-        Flux<ShareItem> shares = primaryFileServiceAsyncClient.listShares().filter(item ->
-            Objects.equals(item.getName(), shareName));
-
-        StepVerifier.create(primaryFileServiceAsyncClient.createShare(shareName).thenMany(shares))
-            .assertNext(r -> {
-                assertNotNull(r.getProperties().getIncludedBurstIops());
-                assertNotNull(r.getProperties().getMaxBurstCreditsForIops());
-                assertNotNull(r.getProperties().getNextAllowedProvisionedIopsDowngradeTime());
-                assertNotNull(r.getProperties().getNextAllowedProvisionedBandwidthDowngradeTime());
             })
             .verifyComplete();
     }

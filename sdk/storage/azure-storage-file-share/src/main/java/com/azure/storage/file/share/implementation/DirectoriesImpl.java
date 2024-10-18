@@ -916,9 +916,9 @@ public final class DirectoriesImpl {
         String fileAttributes, Integer timeout, Map<String, String> metadata, String filePermission,
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
         String fileLastWriteTime, String fileChangeTime, Context context) {
+        final String restype = "directory";
+        final String accept = "application/xml";
         try {
-            final String restype = "directory";
-            final String accept = "application/xml";
             return service.createSync(this.client.getUrl(), shareName, directory, restype,
                 this.client.isAllowTrailingDot(), timeout, metadata, this.client.getVersion(), filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
@@ -1001,9 +1001,9 @@ public final class DirectoriesImpl {
         Integer timeout, Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
         String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
         Context context) {
+        final String restype = "directory";
+        final String accept = "application/xml";
         try {
-            final String restype = "directory";
-            final String accept = "application/xml";
             return service.createNoCustomHeadersSync(this.client.getUrl(), shareName, directory, restype,
                 this.client.isAllowTrailingDot(), timeout, metadata, this.client.getVersion(), filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
@@ -1194,9 +1194,9 @@ public final class DirectoriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<DirectoriesGetPropertiesHeaders, Void> getPropertiesWithResponse(String shareName,
         String directory, String sharesnapshot, Integer timeout, Context context) {
+        final String restype = "directory";
+        final String accept = "application/xml";
         try {
-            final String restype = "directory";
-            final String accept = "application/xml";
             return service.getPropertiesSync(this.client.getUrl(), shareName, directory, restype,
                 this.client.isAllowTrailingDot(), sharesnapshot, timeout, this.client.getVersion(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -1245,9 +1245,9 @@ public final class DirectoriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getPropertiesNoCustomHeadersWithResponse(String shareName, String directory,
         String sharesnapshot, Integer timeout, Context context) {
+        final String restype = "directory";
+        final String accept = "application/xml";
         try {
-            final String restype = "directory";
-            final String accept = "application/xml";
             return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), shareName, directory, restype,
                 this.client.isAllowTrailingDot(), sharesnapshot, timeout, this.client.getVersion(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -1415,9 +1415,9 @@ public final class DirectoriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<DirectoriesDeleteHeaders, Void> deleteWithResponse(String shareName, String directory,
         Integer timeout, Context context) {
+        final String restype = "directory";
+        final String accept = "application/xml";
         try {
-            final String restype = "directory";
-            final String accept = "application/xml";
             return service.deleteSync(this.client.getUrl(), shareName, directory, restype,
                 this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), this.client.getFileRequestIntent(),
                 accept, context);
@@ -1460,9 +1460,9 @@ public final class DirectoriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNoCustomHeadersWithResponse(String shareName, String directory, Integer timeout,
         Context context) {
+        final String restype = "directory";
+        final String accept = "application/xml";
         try {
-            final String restype = "directory";
-            final String accept = "application/xml";
             return service.deleteNoCustomHeadersSync(this.client.getUrl(), shareName, directory, restype,
                 this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), this.client.getFileRequestIntent(),
                 accept, context);
@@ -1766,10 +1766,10 @@ public final class DirectoriesImpl {
         String directory, String fileAttributes, Integer timeout, String filePermission,
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
         String fileLastWriteTime, String fileChangeTime, Context context) {
+        final String restype = "directory";
+        final String comp = "properties";
+        final String accept = "application/xml";
         try {
-            final String restype = "directory";
-            final String comp = "properties";
-            final String accept = "application/xml";
             return service.setPropertiesSync(this.client.getUrl(), shareName, directory, restype, comp, timeout,
                 this.client.getVersion(), filePermission, filePermissionFormat, filePermissionKey, fileAttributes,
                 fileCreationTime, fileLastWriteTime, fileChangeTime, this.client.isAllowTrailingDot(),
@@ -1850,10 +1850,10 @@ public final class DirectoriesImpl {
         String fileAttributes, Integer timeout, String filePermission, FilePermissionFormat filePermissionFormat,
         String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
         Context context) {
+        final String restype = "directory";
+        final String comp = "properties";
+        final String accept = "application/xml";
         try {
-            final String restype = "directory";
-            final String comp = "properties";
-            final String accept = "application/xml";
             return service.setPropertiesNoCustomHeadersSync(this.client.getUrl(), shareName, directory, restype, comp,
                 timeout, this.client.getVersion(), filePermission, filePermissionFormat, filePermissionKey,
                 fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, this.client.isAllowTrailingDot(),
@@ -2036,10 +2036,10 @@ public final class DirectoriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<DirectoriesSetMetadataHeaders, Void> setMetadataWithResponse(String shareName, String directory,
         Integer timeout, Map<String, String> metadata, Context context) {
+        final String restype = "directory";
+        final String comp = "metadata";
+        final String accept = "application/xml";
         try {
-            final String restype = "directory";
-            final String comp = "metadata";
-            final String accept = "application/xml";
             return service.setMetadataSync(this.client.getUrl(), shareName, directory, restype, comp, timeout, metadata,
                 this.client.getVersion(), this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept,
                 context);
@@ -2084,10 +2084,10 @@ public final class DirectoriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setMetadataNoCustomHeadersWithResponse(String shareName, String directory, Integer timeout,
         Map<String, String> metadata, Context context) {
+        final String restype = "directory";
+        final String comp = "metadata";
+        final String accept = "application/xml";
         try {
-            final String restype = "directory";
-            final String comp = "metadata";
-            final String accept = "application/xml";
             return service.setMetadataNoCustomHeadersSync(this.client.getUrl(), shareName, directory, restype, comp,
                 timeout, metadata, this.client.getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -2386,15 +2386,15 @@ public final class DirectoriesImpl {
         listFilesAndDirectoriesSegmentWithResponse(String shareName, String directory, String prefix,
             String sharesnapshot, String marker, Integer maxresults, Integer timeout,
             List<ListFilesIncludeType> include, Boolean includeExtendedInfo, Context context) {
+        final String restype = "directory";
+        final String comp = "list";
+        final String accept = "application/xml";
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         try {
-            final String restype = "directory";
-            final String comp = "list";
-            final String accept = "application/xml";
-            String includeConverted = (include == null)
-                ? null
-                : include.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
             return service.listFilesAndDirectoriesSegmentSync(this.client.getUrl(), shareName, directory, restype, comp,
                 prefix, sharesnapshot, marker, maxresults, timeout, this.client.getVersion(), includeConverted,
                 includeExtendedInfo, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept,
@@ -2471,15 +2471,15 @@ public final class DirectoriesImpl {
     public Response<ListFilesAndDirectoriesSegmentResponse> listFilesAndDirectoriesSegmentNoCustomHeadersWithResponse(
         String shareName, String directory, String prefix, String sharesnapshot, String marker, Integer maxresults,
         Integer timeout, List<ListFilesIncludeType> include, Boolean includeExtendedInfo, Context context) {
+        final String restype = "directory";
+        final String comp = "list";
+        final String accept = "application/xml";
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         try {
-            final String restype = "directory";
-            final String comp = "list";
-            final String accept = "application/xml";
-            String includeConverted = (include == null)
-                ? null
-                : include.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
             return service.listFilesAndDirectoriesSegmentNoCustomHeadersSync(this.client.getUrl(), shareName, directory,
                 restype, comp, prefix, sharesnapshot, marker, maxresults, timeout, this.client.getVersion(),
                 includeConverted, includeExtendedInfo, this.client.isAllowTrailingDot(),
@@ -2725,9 +2725,9 @@ public final class DirectoriesImpl {
     public ResponseBase<DirectoriesListHandlesHeaders, ListHandlesResponse> listHandlesWithResponse(String shareName,
         String directory, String marker, Integer maxresults, Integer timeout, String sharesnapshot, Boolean recursive,
         Context context) {
+        final String comp = "listhandles";
+        final String accept = "application/xml";
         try {
-            final String comp = "listhandles";
-            final String accept = "application/xml";
             return service.listHandlesSync(this.client.getUrl(), shareName, directory, comp, marker, maxresults,
                 timeout, sharesnapshot, recursive, this.client.getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -2797,9 +2797,9 @@ public final class DirectoriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ListHandlesResponse> listHandlesNoCustomHeadersWithResponse(String shareName, String directory,
         String marker, Integer maxresults, Integer timeout, String sharesnapshot, Boolean recursive, Context context) {
+        final String comp = "listhandles";
+        final String accept = "application/xml";
         try {
-            final String comp = "listhandles";
-            final String accept = "application/xml";
             return service.listHandlesNoCustomHeadersSync(this.client.getUrl(), shareName, directory, comp, marker,
                 maxresults, timeout, sharesnapshot, recursive, this.client.getVersion(),
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context);
@@ -3043,9 +3043,9 @@ public final class DirectoriesImpl {
     public ResponseBase<DirectoriesForceCloseHandlesHeaders, Void> forceCloseHandlesWithResponse(String shareName,
         String directory, String handleId, Integer timeout, String marker, String sharesnapshot, Boolean recursive,
         Context context) {
+        final String comp = "forceclosehandles";
+        final String accept = "application/xml";
         try {
-            final String comp = "forceclosehandles";
-            final String accept = "application/xml";
             return service.forceCloseHandlesSync(this.client.getUrl(), shareName, directory, comp, timeout, marker,
                 sharesnapshot, handleId, recursive, this.client.getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -3110,9 +3110,9 @@ public final class DirectoriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> forceCloseHandlesNoCustomHeadersWithResponse(String shareName, String directory,
         String handleId, Integer timeout, String marker, String sharesnapshot, Boolean recursive, Context context) {
+        final String comp = "forceclosehandles";
+        final String accept = "application/xml";
         try {
-            final String comp = "forceclosehandles";
-            final String accept = "application/xml";
             return service.forceCloseHandlesNoCustomHeadersSync(this.client.getUrl(), shareName, directory, comp,
                 timeout, marker, sharesnapshot, handleId, recursive, this.client.getVersion(),
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context);
@@ -3612,40 +3612,40 @@ public final class DirectoriesImpl {
         SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         Context context) {
+        final String restype = "directory";
+        final String comp = "rename";
+        final String accept = "application/xml";
+        String sourceLeaseIdInternal = null;
+        if (sourceLeaseAccessConditions != null) {
+            sourceLeaseIdInternal = sourceLeaseAccessConditions.getSourceLeaseId();
+        }
+        String sourceLeaseId = sourceLeaseIdInternal;
+        String destinationLeaseIdInternal = null;
+        if (destinationLeaseAccessConditions != null) {
+            destinationLeaseIdInternal = destinationLeaseAccessConditions.getDestinationLeaseId();
+        }
+        String destinationLeaseId = destinationLeaseIdInternal;
+        String fileAttributesInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
+        }
+        String fileAttributes = fileAttributesInternal;
+        String fileCreationTimeInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
+        }
+        String fileCreationTime = fileCreationTimeInternal;
+        String fileLastWriteTimeInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
+        }
+        String fileLastWriteTime = fileLastWriteTimeInternal;
+        String fileChangeTimeInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
+        }
+        String fileChangeTime = fileChangeTimeInternal;
         try {
-            final String restype = "directory";
-            final String comp = "rename";
-            final String accept = "application/xml";
-            String sourceLeaseIdInternal = null;
-            if (sourceLeaseAccessConditions != null) {
-                sourceLeaseIdInternal = sourceLeaseAccessConditions.getSourceLeaseId();
-            }
-            String sourceLeaseId = sourceLeaseIdInternal;
-            String destinationLeaseIdInternal = null;
-            if (destinationLeaseAccessConditions != null) {
-                destinationLeaseIdInternal = destinationLeaseAccessConditions.getDestinationLeaseId();
-            }
-            String destinationLeaseId = destinationLeaseIdInternal;
-            String fileAttributesInternal = null;
-            if (copyFileSmbInfo != null) {
-                fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
-            }
-            String fileAttributes = fileAttributesInternal;
-            String fileCreationTimeInternal = null;
-            if (copyFileSmbInfo != null) {
-                fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
-            }
-            String fileCreationTime = fileCreationTimeInternal;
-            String fileLastWriteTimeInternal = null;
-            if (copyFileSmbInfo != null) {
-                fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
-            }
-            String fileLastWriteTime = fileLastWriteTimeInternal;
-            String fileChangeTimeInternal = null;
-            if (copyFileSmbInfo != null) {
-                fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
-            }
-            String fileChangeTime = fileChangeTimeInternal;
             return service.renameSync(this.client.getUrl(), shareName, directory, restype, comp, timeout,
                 this.client.getVersion(), renameSource, replaceIfExists, ignoreReadOnly, sourceLeaseId,
                 destinationLeaseId, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission,
@@ -3748,40 +3748,40 @@ public final class DirectoriesImpl {
         SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         Context context) {
+        final String restype = "directory";
+        final String comp = "rename";
+        final String accept = "application/xml";
+        String sourceLeaseIdInternal = null;
+        if (sourceLeaseAccessConditions != null) {
+            sourceLeaseIdInternal = sourceLeaseAccessConditions.getSourceLeaseId();
+        }
+        String sourceLeaseId = sourceLeaseIdInternal;
+        String destinationLeaseIdInternal = null;
+        if (destinationLeaseAccessConditions != null) {
+            destinationLeaseIdInternal = destinationLeaseAccessConditions.getDestinationLeaseId();
+        }
+        String destinationLeaseId = destinationLeaseIdInternal;
+        String fileAttributesInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
+        }
+        String fileAttributes = fileAttributesInternal;
+        String fileCreationTimeInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
+        }
+        String fileCreationTime = fileCreationTimeInternal;
+        String fileLastWriteTimeInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
+        }
+        String fileLastWriteTime = fileLastWriteTimeInternal;
+        String fileChangeTimeInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
+        }
+        String fileChangeTime = fileChangeTimeInternal;
         try {
-            final String restype = "directory";
-            final String comp = "rename";
-            final String accept = "application/xml";
-            String sourceLeaseIdInternal = null;
-            if (sourceLeaseAccessConditions != null) {
-                sourceLeaseIdInternal = sourceLeaseAccessConditions.getSourceLeaseId();
-            }
-            String sourceLeaseId = sourceLeaseIdInternal;
-            String destinationLeaseIdInternal = null;
-            if (destinationLeaseAccessConditions != null) {
-                destinationLeaseIdInternal = destinationLeaseAccessConditions.getDestinationLeaseId();
-            }
-            String destinationLeaseId = destinationLeaseIdInternal;
-            String fileAttributesInternal = null;
-            if (copyFileSmbInfo != null) {
-                fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
-            }
-            String fileAttributes = fileAttributesInternal;
-            String fileCreationTimeInternal = null;
-            if (copyFileSmbInfo != null) {
-                fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
-            }
-            String fileCreationTime = fileCreationTimeInternal;
-            String fileLastWriteTimeInternal = null;
-            if (copyFileSmbInfo != null) {
-                fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
-            }
-            String fileLastWriteTime = fileLastWriteTimeInternal;
-            String fileChangeTimeInternal = null;
-            if (copyFileSmbInfo != null) {
-                fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
-            }
-            String fileChangeTime = fileChangeTimeInternal;
             return service.renameNoCustomHeadersSync(this.client.getUrl(), shareName, directory, restype, comp, timeout,
                 this.client.getVersion(), renameSource, replaceIfExists, ignoreReadOnly, sourceLeaseId,
                 destinationLeaseId, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission,

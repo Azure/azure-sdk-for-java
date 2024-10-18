@@ -390,10 +390,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<ServicesSetPropertiesHeaders, Void>
         setPropertiesWithResponse(ShareServiceProperties shareServiceProperties, Integer timeout, Context context) {
+        final String restype = "service";
+        final String comp = "properties";
+        final String accept = "application/xml";
         try {
-            final String restype = "service";
-            final String comp = "properties";
-            final String accept = "application/xml";
             return service.setPropertiesSync(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
                 this.client.getFileRequestIntent(), shareServiceProperties, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -435,10 +435,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesNoCustomHeadersWithResponse(ShareServiceProperties shareServiceProperties,
         Integer timeout, Context context) {
+        final String restype = "service";
+        final String comp = "properties";
+        final String accept = "application/xml";
         try {
-            final String restype = "service";
-            final String comp = "properties";
-            final String accept = "application/xml";
             return service.setPropertiesNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), this.client.getFileRequestIntent(), shareServiceProperties, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -609,10 +609,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<ServicesGetPropertiesHeaders, ShareServiceProperties> getPropertiesWithResponse(Integer timeout,
         Context context) {
+        final String restype = "service";
+        final String comp = "properties";
+        final String accept = "application/xml";
         try {
-            final String restype = "service";
-            final String comp = "properties";
-            final String accept = "application/xml";
             return service.getPropertiesSync(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
                 this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -658,10 +658,10 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareServiceProperties> getPropertiesNoCustomHeadersWithResponse(Integer timeout, Context context) {
+        final String restype = "service";
+        final String comp = "properties";
+        final String accept = "application/xml";
         try {
-            final String restype = "service";
-            final String comp = "properties";
-            final String accept = "application/xml";
             return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -951,17 +951,17 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ShareItemInternal> listSharesSegmentSinglePage(String prefix, String marker,
         Integer maxresults, List<ListSharesIncludeType> include, Integer timeout) {
+        final String comp = "list";
+        final String accept = "application/xml";
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        ResponseBase<ServicesListSharesSegmentHeaders, ListSharesResponse> res
+            = service.listSharesSegmentSync(this.client.getUrl(), comp, prefix, marker, maxresults, includeConverted,
+                timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept, Context.NONE);
         try {
-            final String comp = "list";
-            final String accept = "application/xml";
-            String includeConverted = (include == null)
-                ? null
-                : include.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
-            ResponseBase<ServicesListSharesSegmentHeaders, ListSharesResponse> res = service.listSharesSegmentSync(
-                this.client.getUrl(), comp, prefix, marker, maxresults, includeConverted, timeout,
-                this.client.getVersion(), this.client.getFileRequestIntent(), accept, Context.NONE);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (ShareStorageExceptionInternal internalException) {
@@ -992,17 +992,17 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ShareItemInternal> listSharesSegmentSinglePage(String prefix, String marker,
         Integer maxresults, List<ListSharesIncludeType> include, Integer timeout, Context context) {
+        final String comp = "list";
+        final String accept = "application/xml";
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        ResponseBase<ServicesListSharesSegmentHeaders, ListSharesResponse> res
+            = service.listSharesSegmentSync(this.client.getUrl(), comp, prefix, marker, maxresults, includeConverted,
+                timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
         try {
-            final String comp = "list";
-            final String accept = "application/xml";
-            String includeConverted = (include == null)
-                ? null
-                : include.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
-            ResponseBase<ServicesListSharesSegmentHeaders, ListSharesResponse> res = service.listSharesSegmentSync(
-                this.client.getUrl(), comp, prefix, marker, maxresults, includeConverted, timeout,
-                this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (ShareStorageExceptionInternal internalException) {
@@ -1087,17 +1087,17 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ShareItemInternal> listSharesSegmentNoCustomHeadersSinglePage(String prefix, String marker,
         Integer maxresults, List<ListSharesIncludeType> include, Integer timeout) {
+        final String comp = "list";
+        final String accept = "application/xml";
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        Response<ListSharesResponse> res = service.listSharesSegmentNoCustomHeadersSync(this.client.getUrl(), comp,
+            prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(),
+            this.client.getFileRequestIntent(), accept, Context.NONE);
         try {
-            final String comp = "list";
-            final String accept = "application/xml";
-            String includeConverted = (include == null)
-                ? null
-                : include.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
-            Response<ListSharesResponse> res = service.listSharesSegmentNoCustomHeadersSync(this.client.getUrl(), comp,
-                prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(),
-                this.client.getFileRequestIntent(), accept, Context.NONE);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), null);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -1128,17 +1128,17 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ShareItemInternal> listSharesSegmentNoCustomHeadersSinglePage(String prefix, String marker,
         Integer maxresults, List<ListSharesIncludeType> include, Integer timeout, Context context) {
+        final String comp = "list";
+        final String accept = "application/xml";
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        Response<ListSharesResponse> res = service.listSharesSegmentNoCustomHeadersSync(this.client.getUrl(), comp,
+            prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(),
+            this.client.getFileRequestIntent(), accept, context);
         try {
-            final String comp = "list";
-            final String accept = "application/xml";
-            String includeConverted = (include == null)
-                ? null
-                : include.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
-            Response<ListSharesResponse> res = service.listSharesSegmentNoCustomHeadersSync(this.client.getUrl(), comp,
-                prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(),
-                this.client.getFileRequestIntent(), accept, context);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), null);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -1305,11 +1305,11 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ShareItemInternal> listSharesSegmentNextSinglePage(String nextLink) {
+        final String accept = "application/xml";
+        ResponseBase<ServicesListSharesSegmentNextHeaders, ListSharesResponse> res
+            = service.listSharesSegmentNextSync(nextLink, this.client.getUrl(), this.client.getVersion(),
+                this.client.getFileRequestIntent(), accept, Context.NONE);
         try {
-            final String accept = "application/xml";
-            ResponseBase<ServicesListSharesSegmentNextHeaders, ListSharesResponse> res
-                = service.listSharesSegmentNextSync(nextLink, this.client.getUrl(), this.client.getVersion(),
-                    this.client.getFileRequestIntent(), accept, Context.NONE);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (ShareStorageExceptionInternal internalException) {
@@ -1331,11 +1331,11 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ShareItemInternal> listSharesSegmentNextSinglePage(String nextLink, Context context) {
+        final String accept = "application/xml";
+        ResponseBase<ServicesListSharesSegmentNextHeaders, ListSharesResponse> res
+            = service.listSharesSegmentNextSync(nextLink, this.client.getUrl(), this.client.getVersion(),
+                this.client.getFileRequestIntent(), accept, context);
         try {
-            final String accept = "application/xml";
-            ResponseBase<ServicesListSharesSegmentNextHeaders, ListSharesResponse> res
-                = service.listSharesSegmentNextSync(nextLink, this.client.getUrl(), this.client.getVersion(),
-                    this.client.getFileRequestIntent(), accept, context);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (ShareStorageExceptionInternal internalException) {
@@ -1356,11 +1356,10 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ShareItemInternal> listSharesSegmentNextNoCustomHeadersSinglePage(String nextLink) {
+        final String accept = "application/xml";
+        Response<ListSharesResponse> res = service.listSharesSegmentNextNoCustomHeadersSync(nextLink,
+            this.client.getUrl(), this.client.getVersion(), this.client.getFileRequestIntent(), accept, Context.NONE);
         try {
-            final String accept = "application/xml";
-            Response<ListSharesResponse> res
-                = service.listSharesSegmentNextNoCustomHeadersSync(nextLink, this.client.getUrl(),
-                    this.client.getVersion(), this.client.getFileRequestIntent(), accept, Context.NONE);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), null);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -1383,10 +1382,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ShareItemInternal> listSharesSegmentNextNoCustomHeadersSinglePage(String nextLink,
         Context context) {
+        final String accept = "application/xml";
+        Response<ListSharesResponse> res = service.listSharesSegmentNextNoCustomHeadersSync(nextLink,
+            this.client.getUrl(), this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
         try {
-            final String accept = "application/xml";
-            Response<ListSharesResponse> res = service.listSharesSegmentNextNoCustomHeadersSync(nextLink,
-                this.client.getUrl(), this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), null);
         } catch (ShareStorageExceptionInternal internalException) {
