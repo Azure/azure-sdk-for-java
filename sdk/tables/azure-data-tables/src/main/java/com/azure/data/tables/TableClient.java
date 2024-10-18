@@ -15,6 +15,7 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.ServiceVersion;
+import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
@@ -66,7 +67,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
@@ -75,7 +75,6 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.CoreUtils.getResultWithTimeout;
 import static com.azure.data.tables.implementation.TableUtils.callIterableWithOptionalTimeout;
 import static com.azure.data.tables.implementation.TableUtils.callWithOptionalTimeout;
-import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
 import static com.azure.data.tables.implementation.TableUtils.mapThrowableToTableServiceException;
 import static com.azure.data.tables.implementation.TableUtils.toTableServiceError;
 
@@ -290,8 +289,6 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  */
 @ServiceClient(builder = TableClientBuilder.class)
 public final class TableClient {
-
-    private static final ExecutorService THREAD_POOL = TableUtils.getThreadPoolWithShutdownHook();
     private final ClientLogger logger = new ClientLogger(TableClient.class);
     private final String tableName;
     private final AzureTableImpl tablesImplementation;
@@ -474,7 +471,7 @@ public final class TableClient {
             ResponseFormat.RETURN_NO_CONTENT, null, context),
                 TableItemAccessHelper.createItem(new TableResponseProperties().setTableName(tableName)));
 
-        return callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger);
+        return callWithOptionalTimeout(callable, timeout, logger);
     }
 
     /**
@@ -525,8 +522,7 @@ public final class TableClient {
             .deleteWithResponse(tableName, null, context), null);
 
         try {
-            return hasTimeout(timeout)
-                ? getResultWithTimeout(THREAD_POOL.submit(callable::get), timeout) : callable.get();
+            return getResultWithTimeout(SharedExecutorService.getInstance().submit(callable::get), timeout);
         } catch (InterruptedException | ExecutionException | TimeoutException ex) {
             throw logger.logExceptionAsError(new RuntimeException(ex));
         } catch (RuntimeException ex) {
@@ -621,7 +617,7 @@ public final class TableClient {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         };
 
-        return callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger);
+        return callWithOptionalTimeout(callable, timeout, logger);
     }
 
     /**
@@ -716,7 +712,7 @@ public final class TableClient {
             }
         };
 
-        return callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger);
+        return callWithOptionalTimeout(callable, timeout, logger);
     }
 
     /**
@@ -856,7 +852,7 @@ public final class TableClient {
             }
         };
 
-        return callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger);
+        return callWithOptionalTimeout(callable, timeout, logger);
     }
 
     /**
@@ -964,8 +960,7 @@ public final class TableClient {
             null, null, null, context);
 
         try {
-            return hasTimeout(timeout)
-                ? getResultWithTimeout(THREAD_POOL.submit(callable::get), timeout) : callable.get();
+            return getResultWithTimeout(SharedExecutorService.getInstance().submit(callable::get), timeout);
         } catch (InterruptedException | ExecutionException | TimeoutException ex) {
             throw logger.logExceptionAsError(new RuntimeException(ex));
         } catch (RuntimeException ex) {
@@ -1052,7 +1047,7 @@ public final class TableClient {
             () -> listEntitiesFirstPage(context, options, TableEntity.class),
             token -> listEntitiesNextPage(token, context, options, TableEntity.class));
 
-        return callIterableWithOptionalTimeout(callable, THREAD_POOL, timeout, logger);
+        return callIterableWithOptionalTimeout(callable, timeout, logger);
     }
 
     private <T extends TableEntity> PagedResponse<T> listEntitiesFirstPage(Context context, ListEntitiesOptions options,
@@ -1221,7 +1216,7 @@ public final class TableClient {
                 EntityHelper.convertToSubclass(entity, TableEntity.class, logger));
         };
 
-        return callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger);
+        return callWithOptionalTimeout(callable, timeout, logger);
     }
 
     /**
@@ -1298,7 +1293,7 @@ public final class TableClient {
                     .collect(Collectors.toList())));
         };
 
-        return callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger);
+        return callWithOptionalTimeout(callable, timeout, logger);
     }
 
 
@@ -1421,7 +1416,7 @@ public final class TableClient {
             return new SimpleResponse<>(response, response.getValue());
         };
 
-        return callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger);
+        return callWithOptionalTimeout(callable, timeout, logger);
     }
 
 
@@ -1671,8 +1666,7 @@ public final class TableClient {
         };
 
         try {
-            return hasTimeout(timeout)
-                ? getResultWithTimeout(THREAD_POOL.submit(callable::get), timeout) : callable.get();
+            return getResultWithTimeout(SharedExecutorService.getInstance().submit(callable::get), timeout);
         } catch (InterruptedException | ExecutionException | TimeoutException ex) {
             throw logger.logExceptionAsError(new RuntimeException(ex));
         } catch (RuntimeException ex) {

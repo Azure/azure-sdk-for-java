@@ -8,6 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.implementation.models.AccessPolicy;
 import com.azure.data.tables.implementation.models.CorsRule;
@@ -46,8 +47,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -62,7 +61,6 @@ import static com.azure.core.util.FluxUtil.monoError;
 public final class TableUtils {
     private static final String UTF8_CHARSET = "UTF-8";
     private static final String DELIMITER_CONTINUATION_TOKEN = ";";
-    private static final long THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS = 5;
 
     private TableUtils() {
         throw new UnsupportedOperationException("Cannot instantiate TablesUtils");
@@ -151,23 +149,6 @@ public final class TableUtils {
     }
 
     /**
-     * Blocks an asynchronous response with an optional timeout.
-     *
-     * @param response Asynchronous response to block.
-     * @param timeout Optional timeout.
-     * @param <T> Return type of the asynchronous response.
-     * @return The value of the asynchronous response.
-     * @throws RuntimeException If the asynchronous response doesn't complete before the timeout expires.
-     */
-    public static <T> T blockWithOptionalTimeout(Mono<T> response, Duration timeout) {
-        if (timeout == null) {
-            return response.block();
-        } else {
-            return response.block(timeout);
-        }
-    }
-
-    /**
      * Deserializes a given {@link Response HTTP response} including headers to a given class.
      *
      * @param statusCode The status code which will trigger exception swallowing.
@@ -176,7 +157,8 @@ public final class TableUtils {
      * @param <E> The class of the exception to swallow.
      * @return A {@link Mono} that contains the deserialized response.
      */
-    public static <E extends HttpResponseException> Mono<Response<Void>> swallowExceptionForStatusCode(int statusCode, E httpResponseException, ClientLogger logger) {
+    public static <E extends HttpResponseException> Mono<Response<Void>> swallowExceptionForStatusCode(int statusCode,
+        E httpResponseException, ClientLogger logger) {
         HttpResponse httpResponse = httpResponseException.getResponse();
 
         if (httpResponse.getStatusCode() == statusCode) {
@@ -185,10 +167,6 @@ public final class TableUtils {
         }
 
         return monoError(logger, httpResponseException);
-    }
-
-    public static boolean hasTimeout(Duration timeout) {
-        return timeout != null && !timeout.isZero() && !timeout.isNegative();
     }
 
     /**
@@ -297,7 +275,7 @@ public final class TableUtils {
             return null;
         }
 
-        if (stringToEncode.length() == 0) {
+        if (stringToEncode.isEmpty()) {
             return "";
         }
 
@@ -335,11 +313,6 @@ public final class TableUtils {
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);
         }
-    }
-
-    public static ExecutorService getThreadPoolWithShutdownHook() {
-        return CoreUtils.addShutdownHookSafely(Executors.newCachedThreadPool(),
-            Duration.ofSeconds(THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS));
     }
 
     public static TableServiceProperties toTableServiceProperties(
@@ -563,13 +536,15 @@ public final class TableUtils {
         return keys;
     }
 
-    public static <T> Response<T> callWithOptionalTimeout(Supplier<Response<T>> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger) {
-        return callWithOptionalTimeout(callable, threadPool, timeout, logger, false);
+    public static <T> Response<T> callWithOptionalTimeout(Supplier<Response<T>> callable, Duration timeout,
+        ClientLogger logger) {
+        return callWithOptionalTimeout(callable, timeout, logger, false);
     }
 
-    public static <T> Response<T> callWithOptionalTimeout(Supplier<Response<T>> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger, boolean skip409Logging) {
+    public static <T> Response<T> callWithOptionalTimeout(Supplier<Response<T>> callable, Duration timeout,
+        ClientLogger logger, boolean skip409Logging) {
         try {
-            return callHandler(callable, threadPool, timeout, logger);
+            return callHandler(callable, timeout, logger);
         } catch (Throwable thrown) {
             Throwable exception = mapThrowableToTableServiceException(thrown);
             if (exception instanceof TableServiceException) {
@@ -585,20 +560,19 @@ public final class TableUtils {
         }
     }
 
-    public static <T> PagedIterable<T> callIterableWithOptionalTimeout(Supplier<PagedIterable<T>> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger) {
+    public static <T> PagedIterable<T> callIterableWithOptionalTimeout(Supplier<PagedIterable<T>> callable,
+        Duration timeout, ClientLogger logger) {
         try {
-            return callHandler(callable, threadPool, timeout, logger);
+            return callHandler(callable, timeout, logger);
         } catch (Exception thrown) {
             Throwable exception = mapThrowableToTableServiceException(thrown);
             throw logger.logExceptionAsError((RuntimeException) exception);
         }
     }
 
-    private static <T> T callHandler(Supplier<T> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger) throws Exception {
+    private static <T> T callHandler(Supplier<T> callable, Duration timeout, ClientLogger logger) throws Exception {
         try {
-            return hasTimeout(timeout)
-                ? getResultWithTimeout(threadPool.submit(callable::get), timeout)
-                : callable.get();
+            return getResultWithTimeout(SharedExecutorService.getInstance().submit(callable::get), timeout);
         } catch (ExecutionException | InterruptedException | TimeoutException ex) {
 
             if (ex instanceof ExecutionException) {
