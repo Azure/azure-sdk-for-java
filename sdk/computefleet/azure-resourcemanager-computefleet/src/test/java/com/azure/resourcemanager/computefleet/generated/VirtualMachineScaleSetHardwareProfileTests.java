@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.computefleet.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetHardwareProfile;
 import com.azure.resourcemanager.computefleet.models.VMSizeProperties;
+import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetHardwareProfile;
 import org.junit.jupiter.api.Assertions;
 
 public final class VirtualMachineScaleSetHardwareProfileTests {

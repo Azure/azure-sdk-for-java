@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-mongocluster</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -75,16 +75,15 @@ mongoCluster = mongoClusterManager.mongoClusters()
     .define(clusterName)
     .withRegion(REGION)
     .withExistingResourceGroup(resourceGroupName)
-    .withProperties(
-        new MongoClusterProperties()
-            .withAdministrator(new AdministratorProperties().withUserName(loginUser).withPassword(loginPwd))
-            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-            .withStorage(new StorageProperties().withSizeGb(128L))
-            .withCompute(new ComputeProperties().withTier("M30"))
-            .withHighAvailability(new HighAvailabilityProperties().withTargetMode(HighAvailabilityMode.DISABLED))
-            .withSharding(new ShardingProperties().withShardCount(1))
-            .withServerVersion("7.0")
-        )
+    .withProperties(new MongoClusterProperties()
+        .withAdministrator(new AdministratorProperties().withUserName(loginUser).withPassword(loginPwd))
+        .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+        .withStorage(new StorageProperties().withSizeGb(128L))
+        .withCompute(new ComputeProperties().withTier("M30"))
+        .withHighAvailability(
+            new HighAvailabilityProperties().withTargetMode(HighAvailabilityMode.DISABLED))
+        .withSharding(new ShardingProperties().withShardCount(1))
+        .withServerVersion("7.0"))
     .create();
 ```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/mongocluster/azure-resourcemanager-mongocluster/SAMPLE.md)
