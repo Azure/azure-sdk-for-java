@@ -54,10 +54,20 @@ public class ScenarioOptions {
         return testClass;
     }
 
+    /**
+     * Gets the Event Hubs namespace connection string.
+     *
+     * @return The Event Hubs namespace connection string.
+     */
     public String getEventHubsConnectionString() {
         return eventhubsConnectionString;
     }
 
+    /**
+     * Gets the Event Hub name.
+     *
+     * @return The Event Hub name.
+     */
     public String getEventHubsEventHubName() {
         return eventHubsEventHubName;
     }
