@@ -86,8 +86,13 @@ public class ContainerAppsApiManagerTests extends TestProxyTestBase {
             // @embedmeEnd
             managedEnvironment.refresh();
             Assertions.assertEquals(envName, managedEnvironment.name());
-            Assertions.assertEquals(envName, containerAppsApiManager.managedEnvironments().getById(managedEnvironment.id()).name());
-            Assertions.assertTrue(containerAppsApiManager.managedEnvironments().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
+            Assertions.assertEquals(envName,
+                containerAppsApiManager.managedEnvironments().getById(managedEnvironment.id()).name());
+            Assertions.assertTrue(containerAppsApiManager.managedEnvironments()
+                .listByResourceGroup(resourceGroupName)
+                .stream()
+                .findAny()
+                .isPresent());
         } finally {
             if (managedEnvironment != null) {
                 containerAppsApiManager.managedEnvironments().deleteById(managedEnvironment.id());
