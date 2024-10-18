@@ -5,18 +5,13 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.communication.callautomation.implementation.accesshelpers.RemoveParticipantResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.models.RemoveParticipantResponseInternal;
-import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
-import com.azure.communication.callautomation.models.events.RemoveParticipantFailed;
-import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
 import com.azure.core.annotation.Immutable;
-import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.Objects;
 
 /** The RemoveParticipantResult model. */
 @Immutable
-public final class RemoveParticipantResult extends ResultWithEventHandling<RemoveParticipantEventResult> {
+public final class RemoveParticipantResult {
     /*
      * The operation context provided by client.
      */
@@ -33,7 +28,8 @@ public final class RemoveParticipantResult extends ResultWithEventHandling<Remov
     }
 
     /**
-     * Initializes a new instance of RemoveParticipantResult.
+     * Public constructor.
+     *
      */
     public RemoveParticipantResult() {
         this.operationContext = null;
@@ -57,33 +53,5 @@ public final class RemoveParticipantResult extends ResultWithEventHandling<Remov
      */
     public String getOperationContext() {
         return this.operationContext;
-    }
-
-    @Override
-    public Mono<RemoveParticipantEventResult> waitForEventProcessorAsync(Duration timeout) {
-        if (eventProcessor == null) {
-            return Mono.empty();
-        }
-
-        return (timeout == null ? eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
-            && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == RemoveParticipantSucceeded.class || event.getClass() == RemoveParticipantFailed.class))
-            : eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
-            && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == RemoveParticipantSucceeded.class || event.getClass() == RemoveParticipantFailed.class), timeout)
-        ).flatMap(event -> Mono.just(getReturnedEvent(event)));
-    }
-
-    @Override
-    protected RemoveParticipantEventResult getReturnedEvent(CallAutomationEventBase event) {
-        RemoveParticipantEventResult result = null;
-
-        if (event.getClass() == RemoveParticipantSucceeded.class) {
-            result = new RemoveParticipantEventResult(true, (RemoveParticipantSucceeded) event, null, ((RemoveParticipantSucceeded) event).getParticipant());
-        } else if (event.getClass() == RemoveParticipantFailed.class) {
-            result = new RemoveParticipantEventResult(false, null, (RemoveParticipantFailed) event, ((RemoveParticipantFailed) event).getParticipant());
-        }
-
-        return result;
     }
 }

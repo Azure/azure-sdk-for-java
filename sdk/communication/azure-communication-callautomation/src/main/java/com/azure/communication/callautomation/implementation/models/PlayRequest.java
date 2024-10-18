@@ -5,43 +5,45 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
  * The PlayRequest model.
  */
 @Fluent
-public final class PlayRequest implements JsonSerializable<PlayRequest> {
+public final class PlayRequest {
     /*
      * The source of the audio to be played.
      */
+    @JsonProperty(value = "playSources", required = true)
     private List<PlaySourceInternal> playSources;
 
     /*
      * The list of call participants play provided audio to.
      * Plays to everyone in the call when not provided.
      */
+    @JsonProperty(value = "playTo")
     private List<CommunicationIdentifierModel> playTo;
 
     /*
      * Defines options for playing the audio.
      */
+    @JsonProperty(value = "playOptions")
     private PlayOptionsInternal playOptions;
 
     /*
      * The value to identify context of the operation.
      */
+    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      */
+    @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
 
     /**
@@ -135,7 +137,8 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
     /**
      * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
      * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      * 
      * @return the operationCallbackUri value.
      */
@@ -146,7 +149,8 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
     /**
      * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
      * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      * 
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the PlayRequest object itself.
@@ -154,58 +158,5 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
     public PlayRequest setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("playSources", this.playSources, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("playTo", this.playTo, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("playOptions", this.playOptions);
-        jsonWriter.writeStringField("operationContext", this.operationContext);
-        jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of PlayRequest from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of PlayRequest if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the PlayRequest.
-     */
-    public static PlayRequest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            PlayRequest deserializedPlayRequest = new PlayRequest();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("playSources".equals(fieldName)) {
-                    List<PlaySourceInternal> playSources
-                        = reader.readArray(reader1 -> PlaySourceInternal.fromJson(reader1));
-                    deserializedPlayRequest.playSources = playSources;
-                } else if ("playTo".equals(fieldName)) {
-                    List<CommunicationIdentifierModel> playTo
-                        = reader.readArray(reader1 -> CommunicationIdentifierModel.fromJson(reader1));
-                    deserializedPlayRequest.playTo = playTo;
-                } else if ("playOptions".equals(fieldName)) {
-                    deserializedPlayRequest.playOptions = PlayOptionsInternal.fromJson(reader);
-                } else if ("operationContext".equals(fieldName)) {
-                    deserializedPlayRequest.operationContext = reader.getString();
-                } else if ("operationCallbackUri".equals(fieldName)) {
-                    deserializedPlayRequest.operationCallbackUri = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedPlayRequest;
-        });
     }
 }

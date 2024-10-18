@@ -4,6 +4,7 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
@@ -12,8 +13,8 @@ import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -97,7 +98,7 @@ public class CallAutomationClientBuilderUnitTests {
         CallAutomationAsyncClient callAutomationAsyncClient = builder
             .connectionString(MOCK_CONNECTION_STRING)
             .httpClient(new NoOpHttpClient())
-            .pipeline(new HttpPipelineBuilder().httpClient(new NoOpHttpClient()).build())
+            .pipeline(new HttpPipelineBuilder().build())
             .buildAsyncClient();
         assertNotNull(callAutomationAsyncClient);
     }
@@ -141,7 +142,7 @@ public class CallAutomationClientBuilderUnitTests {
             .connectionString(MOCK_CONNECTION_STRING)
             .addPolicy(new HmacAuthenticationPolicy(credential))
             .httpClient(new NoOpHttpClient())
-            .pipeline(new HttpPipelineBuilder().httpClient(new NoOpHttpClient()).build())
+            .pipeline(new HttpPipelineBuilder().build())
             .retryPolicy(new RetryPolicy())
             .buildAsyncClient();
         assertNotNull(callAutomationAsyncClient);
@@ -179,10 +180,11 @@ public class CallAutomationClientBuilderUnitTests {
 
     @Test
     public void argumentExceptionOnConnectionStringAndTokenCredential() {
+        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
         assertThrows(
             IllegalArgumentException.class, () -> builder
                 .connectionString(MOCK_CONNECTION_STRING)
-                .credential(new MockTokenCredential())
+                .credential(tokenCredential)
                 .httpClient(new NoOpHttpClient())
                 .buildAsyncClient());
     }
@@ -190,19 +192,21 @@ public class CallAutomationClientBuilderUnitTests {
     @Test
     public void argumentExceptionOnAzureKeyCredentialAndTokenCredential() {
         AzureKeyCredential credential = new AzureKeyCredential("key");
+        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
         assertThrows(
             IllegalArgumentException.class, () -> builder
                 .credential(credential)
-                .credential(new MockTokenCredential())
+                .credential(tokenCredential)
                 .httpClient(new NoOpHttpClient())
                 .buildAsyncClient());
     }
 
     @Test
     public void noPipelineWithToken() {
+        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
         CallAutomationAsyncClient callAutomationAsyncClient = builder
             .endpoint(MOCK_URL)
-            .credential(new MockTokenCredential())
+            .credential(tokenCredential)
             .httpClient(new NoOpHttpClient())
             .buildAsyncClient();
 

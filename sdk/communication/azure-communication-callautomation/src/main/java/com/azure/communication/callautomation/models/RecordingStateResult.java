@@ -32,7 +32,7 @@ public final class RecordingStateResult {
     }
 
     /**
-     * Get the RecordingKind property: The recording kind status of the recording.
+     * Get the RecordingState property: The recording kind status of the recording.
      *
      * @return the recordingKind value.
      */

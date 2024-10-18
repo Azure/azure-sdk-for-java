@@ -4,6 +4,7 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for RecognitionType. */
@@ -21,6 +22,7 @@ public final class CallMediaRecognitionType extends ExpandableStringEnum<CallMed
      * @param name a name to look for.
      * @return the corresponding RecognitionType.
      */
+    @JsonCreator
     public static CallMediaRecognitionType fromString(String name) {
         return fromString(name, CallMediaRecognitionType.class);
     }
