@@ -81,27 +81,26 @@ public class ModelsTest extends ModelsTestBase {
     public void getModelThrowsIfModelDoesNotExist(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
         final String nonExistentModelId = "dtmi:doesnotexist:fakemodel;1000";
-        getModelRunner(nonExistentModelId,
-            (modelId) -> assertRestException(() -> client.getModel(modelId), HttpURLConnection.HTTP_NOT_FOUND));
+        getModelRunner(nonExistentModelId, (modelId) -> assertRestException(() -> client.getModel(modelId), HttpURLConnection.HTTP_NOT_FOUND));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void createModelThrowsIfModelAlreadyExists(HttpClient httpClient,
-        DigitalTwinsServiceVersion serviceVersion) {
+    public void createModelThrowsIfModelAlreadyExists(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
         final List<String> modelsToCreate = new ArrayList<>();
-        final String wardModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WARD_MODEL_ID, client,
-            getRandomIntegerStringGenerator());
+        final String wardModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WARD_MODEL_ID, client, getRandomIntegerStringGenerator());
         final String wardModelPayload = TestAssetsHelper.getWardModelPayload(wardModelId);
         modelsToCreate.add(wardModelPayload);
 
         Iterable<DigitalTwinsModelData> createdModels = client.createModels(modelsToCreate);
         createdModels.forEach(Assertions::assertNotNull);
 
-        assertRestException(() -> client.createModels(modelsToCreate), HttpURLConnection.HTTP_CONFLICT);
+        assertRestException(
+            () -> client.createModels(modelsToCreate),
+            HttpURLConnection.HTTP_CONFLICT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -143,19 +142,14 @@ public class ModelsTest extends ModelsTestBase {
     public void getModelThrowsIfModelIdInvalid(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
         final String malformedModelId = "thisIsNotAValidModelId";
-        getModelRunner(malformedModelId,
-            (modelId) -> assertRestException(() -> client.getModel(modelId), HttpURLConnection.HTTP_BAD_REQUEST));
+        getModelRunner(malformedModelId, (modelId) -> assertRestException(() -> client.getModel(modelId), HttpURLConnection.HTTP_BAD_REQUEST));
     }
 
     private void createModelsRunner(DigitalTwinsClient client, Consumer<List<String>> createModelsTestRunner) {
-        String buildingModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.BUILDING_MODEL_ID, client,
-            getRandomIntegerStringGenerator());
-        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, client,
-            getRandomIntegerStringGenerator());
-        String hvacModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID, client,
-            getRandomIntegerStringGenerator());
-        String wardModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WARD_MODEL_ID, client,
-            getRandomIntegerStringGenerator());
+        String buildingModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.BUILDING_MODEL_ID, client, getRandomIntegerStringGenerator());
+        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, client, getRandomIntegerStringGenerator());
+        String hvacModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID, client, getRandomIntegerStringGenerator());
+        String wardModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WARD_MODEL_ID, client, getRandomIntegerStringGenerator());
 
         createModelsRunner(buildingModelId, floorModelId, hvacModelId, wardModelId, createModelsTestRunner);
     }

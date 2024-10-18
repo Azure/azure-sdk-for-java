@@ -5,36 +5,34 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Parameter group.
- */
+/** Parameter group. */
 @Fluent
 public final class DigitalTwinsUpdateRelationshipOptions {
     /*
      * Identifies the request in a distributed tracing system.
      */
+    @JsonProperty(value = "traceparent")
     private String traceparent;
 
     /*
-     * Provides vendor-specific trace identification information and is a companion to traceparent.
+     * Provides vendor-specific trace identification information and is a
+     * companion to traceparent.
      */
+    @JsonProperty(value = "tracestate")
     private String tracestate;
 
     /*
-     * Only perform the operation if the entity's etag matches one of the etags provided or * is provided.
+     * Only perform the operation if the entity's etag matches one of the etags
+     * provided or * is provided.
      */
+    @JsonProperty(value = "If-Match")
     private String ifMatch;
 
     /**
-     * Creates an instance of DigitalTwinsUpdateRelationshipOptions class.
-     */
-    public DigitalTwinsUpdateRelationshipOptions() {
-    }
-
-    /**
      * Get the traceparent property: Identifies the request in a distributed tracing system.
-     * 
+     *
      * @return the traceparent value.
      */
     public String getTraceparent() {
@@ -43,7 +41,7 @@ public final class DigitalTwinsUpdateRelationshipOptions {
 
     /**
      * Set the traceparent property: Identifies the request in a distributed tracing system.
-     * 
+     *
      * @param traceparent the traceparent value to set.
      * @return the DigitalTwinsUpdateRelationshipOptions object itself.
      */
@@ -55,7 +53,7 @@ public final class DigitalTwinsUpdateRelationshipOptions {
     /**
      * Get the tracestate property: Provides vendor-specific trace identification information and is a companion to
      * traceparent.
-     * 
+     *
      * @return the tracestate value.
      */
     public String getTracestate() {
@@ -65,7 +63,7 @@ public final class DigitalTwinsUpdateRelationshipOptions {
     /**
      * Set the tracestate property: Provides vendor-specific trace identification information and is a companion to
      * traceparent.
-     * 
+     *
      * @param tracestate the tracestate value to set.
      * @return the DigitalTwinsUpdateRelationshipOptions object itself.
      */
@@ -77,7 +75,7 @@ public final class DigitalTwinsUpdateRelationshipOptions {
     /**
      * Get the ifMatch property: Only perform the operation if the entity's etag matches one of the etags provided or *
      * is provided.
-     * 
+     *
      * @return the ifMatch value.
      */
     public String getIfMatch() {
@@ -87,7 +85,7 @@ public final class DigitalTwinsUpdateRelationshipOptions {
     /**
      * Set the ifMatch property: Only perform the operation if the entity's etag matches one of the etags provided or *
      * is provided.
-     * 
+     *
      * @param ifMatch the ifMatch value to set.
      * @return the DigitalTwinsUpdateRelationshipOptions object itself.
      */
@@ -95,4 +93,11 @@ public final class DigitalTwinsUpdateRelationshipOptions {
         this.ifMatch = ifMatch;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }
