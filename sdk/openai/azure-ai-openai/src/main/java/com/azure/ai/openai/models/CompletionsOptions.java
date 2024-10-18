@@ -600,6 +600,7 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
         jsonWriter.writeNumberField("best_of", this.bestOf);
         jsonWriter.writeBooleanField("stream", this.stream);
         jsonWriter.writeStringField("model", this.model);
+        jsonWriter.writeNumberField("seed", this.seed);
         return jsonWriter.writeEndObject();
     }
 
@@ -631,6 +632,7 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
             Integer bestOf = null;
             Boolean stream = null;
             String model = null;
+            Integer seed = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -666,6 +668,8 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
                     stream = reader.getNullable(JsonReader::getBoolean);
                 } else if ("model".equals(fieldName)) {
                     model = reader.getString();
+                } else if ("seed".equals(fieldName)) {
+                    seed = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
@@ -686,7 +690,48 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
             deserializedCompletionsOptions.bestOf = bestOf;
             deserializedCompletionsOptions.stream = stream;
             deserializedCompletionsOptions.model = model;
+            deserializedCompletionsOptions.seed = seed;
             return deserializedCompletionsOptions;
         });
+    }
+
+    /*
+     * If specified, our system will make a best effort to sample deterministically, such that repeated requests with
+     * the same `seed` and parameters should return the same result.
+     * 
+     * Determinism is not guaranteed, and you should refer to the `system_fingerprint` response parameter to monitor
+     * changes in the backend.
+     */
+    @Generated
+    private Integer seed;
+
+    /**
+     * Get the seed property: If specified, our system will make a best effort to sample deterministically, such that
+     * repeated requests with the same `seed` and parameters should return the same result.
+     *
+     * Determinism is not guaranteed, and you should refer to the `system_fingerprint` response parameter to monitor
+     * changes in the backend.
+     *
+     * @return the seed value.
+     */
+    @Generated
+    public Integer getSeed() {
+        return this.seed;
+    }
+
+    /**
+     * Set the seed property: If specified, our system will make a best effort to sample deterministically, such that
+     * repeated requests with the same `seed` and parameters should return the same result.
+     *
+     * Determinism is not guaranteed, and you should refer to the `system_fingerprint` response parameter to monitor
+     * changes in the backend.
+     *
+     * @param seed the seed value to set.
+     * @return the CompletionsOptions object itself.
+     */
+    @Generated
+    public CompletionsOptions setSeed(Integer seed) {
+        this.seed = seed;
+        return this;
     }
 }
