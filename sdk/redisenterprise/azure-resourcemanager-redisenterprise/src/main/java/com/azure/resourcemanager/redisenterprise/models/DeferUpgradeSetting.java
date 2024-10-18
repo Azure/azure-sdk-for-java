@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -38,7 +37,6 @@ public final class DeferUpgradeSetting extends ExpandableStringEnum<DeferUpgrade
      * @param name a name to look for.
      * @return the corresponding DeferUpgradeSetting.
      */
-    @JsonCreator
     public static DeferUpgradeSetting fromString(String name) {
         return fromString(name, DeferUpgradeSetting.class);
     }
