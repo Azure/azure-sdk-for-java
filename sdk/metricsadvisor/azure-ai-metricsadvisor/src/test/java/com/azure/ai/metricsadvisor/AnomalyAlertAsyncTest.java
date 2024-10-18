@@ -12,7 +12,6 @@ import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.annotation.DoNotRecord;
-import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.CoreUtils;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Disabled;
@@ -103,9 +102,7 @@ public class AnomalyAlertAsyncTest extends AnomalyAlertTestBase {
     @DoNotRecord
     public void getAnomalyAlertNullId() {
         // Arrange
-        client = getNonRecordAdminClient()
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-            .buildAsyncClient();
+        client = getNonRecordAdminClient().buildAsyncClient();
 
         // Act & Assert
         StepVerifier.create(client.getAlertConfig(null))
@@ -121,9 +118,7 @@ public class AnomalyAlertAsyncTest extends AnomalyAlertTestBase {
     @DoNotRecord
     public void getAnomalyAlertInvalidId() {
         // Arrange
-        client = getNonRecordAdminClient()
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-            .buildAsyncClient();
+        client = getNonRecordAdminClient().buildAsyncClient();
 
         // Act & Assert
         StepVerifier.create(client.getAlertConfig(INCORRECT_UUID))
