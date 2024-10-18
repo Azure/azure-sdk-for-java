@@ -626,8 +626,7 @@ public class EventHubsConsumerInstrumentationTests {
         assertEquals(1, durationPerPartition.size());
         if (duration != null) {
             double sec = getDoubleSeconds(duration);
-            // sanity check
-            assertEquals(sec, durationPerPartition.get(0).getValue(), sec + 10);
+            assertEquals(sec, durationPerPartition.get(0).getValue(), sec);
         }
 
         assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType,
