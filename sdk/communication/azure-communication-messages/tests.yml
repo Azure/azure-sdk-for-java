@@ -1,9 +1,29 @@
 trigger: none
 
-extends:
-  template: /sdk/communication/communication-tests-template.yml
-  parameters:
-      PackageName: azure-communication-messages
-      SafeName: azurecommunicationmessages
-      TestResourceDirectories:
-        - communication/azure-communication-messages/
+parameters:
+  - name: runOnlyPPE
+    displayName: "Run only the PPE stage"
+    type: boolean
+    default: false
+
+stages:
+    - template: /sdk/communication/communication-tests-template.yml
+      parameters:
+          PackageName: azure-communication-messages
+          SafeName: azurecommunicationmessages
+          ${{ if eq(parameters.runOnlyPPE, true) }}:
+            Clouds: 'PPE'
+          ${{ if eq(parameters.runOnlyPPE, false) }}:
+            Clouds: 'Public,PPE'
+          CloudConfig:
+            Public:
+              SubscriptionConfigurations:
+                - $(sub-config-azure-cloud-test-resources)
+                - $(sub-config-communication-services-cloud-test-resources-common)
+                - $(sub-config-communication-services-cloud-test-resources-java)
+            PPE:
+              SubscriptionConfigurations:
+                - $(sub-config-communication-ppe-test-resources-common)
+                - $(sub-config-communication-ppe-test-resources-java)
+          TestResourceDirectories:
+            - communication/azure-communication-messages/
