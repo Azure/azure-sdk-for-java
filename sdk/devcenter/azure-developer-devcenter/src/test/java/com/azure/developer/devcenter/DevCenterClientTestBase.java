@@ -7,6 +7,7 @@ package com.azure.developer.devcenter;
 // Based and modified from the 'generated' DevCenterClientTestBase
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
@@ -47,7 +48,7 @@ public class DevCenterClientTestBase extends TestProxyTestBase {
         DevCenterClientBuilder devCenterClientbuilder =
                 new DevCenterClientBuilder()
                         .endpoint(endpoint)
-                        .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+                        .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             devCenterClientbuilder

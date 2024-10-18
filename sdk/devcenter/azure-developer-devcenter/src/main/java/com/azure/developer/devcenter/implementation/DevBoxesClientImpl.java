@@ -173,7 +173,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listPools(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/pools")
         @ExpectedResponses({ 200 })
@@ -183,7 +183,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listPoolsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/pools/{poolName}")
         @ExpectedResponses({ 200 })
@@ -193,7 +193,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getPool(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @PathParam("poolName") String poolName, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @PathParam("poolName") String poolName, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/projects/{projectName}/pools/{poolName}")
@@ -204,7 +204,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getPoolSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @PathParam("poolName") String poolName, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @PathParam("poolName") String poolName, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/projects/{projectName}/pools/{poolName}/schedules")
@@ -215,7 +215,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listSchedules(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @PathParam("poolName") String poolName, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @PathParam("poolName") String poolName, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/projects/{projectName}/pools/{poolName}/schedules")
@@ -226,7 +226,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listSchedulesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @PathParam("poolName") String poolName, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @PathParam("poolName") String poolName, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/projects/{projectName}/pools/{poolName}/schedules/{scheduleName}")
@@ -238,7 +238,7 @@ public final class DevBoxesClientImpl {
         Mono<Response<BinaryData>> getSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("poolName") String poolName, @PathParam("scheduleName") String scheduleName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/pools/{poolName}/schedules/{scheduleName}")
         @ExpectedResponses({ 200 })
@@ -249,7 +249,7 @@ public final class DevBoxesClientImpl {
         Response<BinaryData> getScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("poolName") String poolName, @PathParam("scheduleName") String scheduleName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/devboxes")
         @ExpectedResponses({ 200 })
@@ -258,7 +258,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listAllDevBoxes(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/devboxes")
@@ -268,7 +268,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listAllDevBoxesSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/users/{userId}/devboxes")
@@ -279,7 +279,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listAllDevBoxesByUser(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("userId") String userId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/users/{userId}/devboxes")
         @ExpectedResponses({ 200 })
@@ -289,7 +289,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listAllDevBoxesByUserSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("userId") String userId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/users/{userId}/devboxes")
         @ExpectedResponses({ 200 })
@@ -299,7 +299,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDevBoxes(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @PathParam("userId") String userId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @PathParam("userId") String userId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/projects/{projectName}/users/{userId}/devboxes")
@@ -310,7 +310,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listDevBoxesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @PathParam("userId") String userId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @PathParam("userId") String userId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}")
@@ -322,7 +322,7 @@ public final class DevBoxesClientImpl {
         Mono<Response<BinaryData>> getDevBox(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}")
         @ExpectedResponses({ 200 })
@@ -333,7 +333,7 @@ public final class DevBoxesClientImpl {
         Response<BinaryData> getDevBoxSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}")
         @ExpectedResponses({ 200, 201 })
@@ -344,8 +344,8 @@ public final class DevBoxesClientImpl {
         Mono<Response<BinaryData>> createDevBox(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Put("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}")
         @ExpectedResponses({ 200, 201 })
@@ -356,8 +356,8 @@ public final class DevBoxesClientImpl {
         Response<BinaryData> createDevBoxSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}")
         @ExpectedResponses({ 202, 204 })
@@ -368,7 +368,7 @@ public final class DevBoxesClientImpl {
         Mono<Response<BinaryData>> deleteDevBox(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}")
         @ExpectedResponses({ 202, 204 })
@@ -379,7 +379,7 @@ public final class DevBoxesClientImpl {
         Response<BinaryData> deleteDevBoxSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}:start")
         @ExpectedResponses({ 202 })
@@ -390,7 +390,7 @@ public final class DevBoxesClientImpl {
         Mono<Response<BinaryData>> startDevBox(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}:start")
         @ExpectedResponses({ 202 })
@@ -401,7 +401,7 @@ public final class DevBoxesClientImpl {
         Response<BinaryData> startDevBoxSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}:stop")
         @ExpectedResponses({ 202 })
@@ -412,7 +412,7 @@ public final class DevBoxesClientImpl {
         Mono<Response<BinaryData>> stopDevBox(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}:stop")
         @ExpectedResponses({ 202 })
@@ -423,7 +423,7 @@ public final class DevBoxesClientImpl {
         Response<BinaryData> stopDevBoxSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}:restart")
         @ExpectedResponses({ 202 })
@@ -434,7 +434,7 @@ public final class DevBoxesClientImpl {
         Mono<Response<BinaryData>> restartDevBox(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}:restart")
         @ExpectedResponses({ 202 })
@@ -445,7 +445,7 @@ public final class DevBoxesClientImpl {
         Response<BinaryData> restartDevBoxSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}/remoteConnection")
         @ExpectedResponses({ 200 })
@@ -456,7 +456,7 @@ public final class DevBoxesClientImpl {
         Mono<Response<BinaryData>> getRemoteConnection(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}/remoteConnection")
         @ExpectedResponses({ 200 })
@@ -467,7 +467,7 @@ public final class DevBoxesClientImpl {
         Response<BinaryData> getRemoteConnectionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}/actions")
         @ExpectedResponses({ 200 })
@@ -478,7 +478,7 @@ public final class DevBoxesClientImpl {
         Mono<Response<BinaryData>> listDevBoxActions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}/actions")
         @ExpectedResponses({ 200 })
@@ -489,7 +489,7 @@ public final class DevBoxesClientImpl {
         Response<BinaryData> listDevBoxActionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}/actions/{actionName}")
         @ExpectedResponses({ 200 })
@@ -500,7 +500,7 @@ public final class DevBoxesClientImpl {
         Mono<Response<BinaryData>> getDevBoxAction(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @PathParam("actionName") String actionName, @HeaderParam("Accept") String accept,
+            @PathParam("actionName") String actionName, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}/actions/{actionName}")
@@ -512,7 +512,7 @@ public final class DevBoxesClientImpl {
         Response<BinaryData> getDevBoxActionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @PathParam("actionName") String actionName, @HeaderParam("Accept") String accept,
+            @PathParam("actionName") String actionName, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}/actions/{actionName}:skip")
@@ -524,7 +524,7 @@ public final class DevBoxesClientImpl {
         Mono<Response<Void>> skipAction(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @PathParam("actionName") String actionName, @HeaderParam("Accept") String accept,
+            @PathParam("actionName") String actionName, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}/actions/{actionName}:skip")
@@ -536,7 +536,7 @@ public final class DevBoxesClientImpl {
         Response<Void> skipActionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @PathParam("actionName") String actionName, @HeaderParam("Accept") String accept,
+            @PathParam("actionName") String actionName, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}/actions/{actionName}:delay")
@@ -549,7 +549,7 @@ public final class DevBoxesClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
             @PathParam("actionName") String actionName, @QueryParam("until") OffsetDateTime delayUntil,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}/actions/{actionName}:delay")
         @ExpectedResponses({ 200 })
@@ -561,7 +561,7 @@ public final class DevBoxesClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
             @PathParam("actionName") String actionName, @QueryParam("until") OffsetDateTime delayUntil,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}/actions:delay")
         @ExpectedResponses({ 200 })
@@ -572,7 +572,7 @@ public final class DevBoxesClientImpl {
         Mono<Response<BinaryData>> delayAllActions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @QueryParam("until") OffsetDateTime delayUntil, @HeaderParam("Accept") String accept,
+            @QueryParam("until") OffsetDateTime delayUntil, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/projects/{projectName}/users/{userId}/devboxes/{devBoxName}/actions:delay")
@@ -584,7 +584,7 @@ public final class DevBoxesClientImpl {
         Response<BinaryData> delayAllActionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("devBoxName") String devBoxName,
-            @QueryParam("until") OffsetDateTime delayUntil, @HeaderParam("Accept") String accept,
+            @QueryParam("until") OffsetDateTime delayUntil, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
@@ -594,7 +594,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listPoolsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -604,7 +604,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listPoolsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -614,7 +614,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listSchedulesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -624,7 +624,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listSchedulesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -634,7 +634,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listAllDevBoxesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -644,7 +644,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listAllDevBoxesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -655,7 +655,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listAllDevBoxesByUserNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -665,7 +665,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listAllDevBoxesByUserNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -674,7 +674,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDevBoxesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -684,7 +684,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listDevBoxesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -694,7 +694,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDevBoxActionsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -704,7 +704,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listDevBoxActionsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -714,7 +714,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> delayAllActionsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -724,7 +724,7 @@ public final class DevBoxesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> delayAllActionsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
     }
 
@@ -732,8 +732,7 @@ public final class DevBoxesClientImpl {
      * Lists available pools.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     location: String (Required)
@@ -763,8 +762,7 @@ public final class DevBoxesClientImpl {
      *     }
      *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -789,8 +787,7 @@ public final class DevBoxesClientImpl {
      * Lists available pools.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     location: String (Required)
@@ -820,8 +817,7 @@ public final class DevBoxesClientImpl {
      *     }
      *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -844,8 +840,7 @@ public final class DevBoxesClientImpl {
      * Lists available pools.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     location: String (Required)
@@ -875,8 +870,7 @@ public final class DevBoxesClientImpl {
      *     }
      *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -899,8 +893,7 @@ public final class DevBoxesClientImpl {
      * Lists available pools.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     location: String (Required)
@@ -930,8 +923,7 @@ public final class DevBoxesClientImpl {
      *     }
      *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -954,8 +946,7 @@ public final class DevBoxesClientImpl {
      * Gets a pool.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     location: String (Required)
@@ -985,8 +976,7 @@ public final class DevBoxesClientImpl {
      *     }
      *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param poolName Pool name.
@@ -1009,8 +999,7 @@ public final class DevBoxesClientImpl {
      * Gets a pool.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     location: String (Required)
@@ -1040,8 +1029,7 @@ public final class DevBoxesClientImpl {
      *     }
      *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param poolName Pool name.
@@ -1064,8 +1052,7 @@ public final class DevBoxesClientImpl {
      * Lists all schedules within a pool that are configured by your project administrator.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     type: String(StopDevBox) (Required)
@@ -1073,8 +1060,7 @@ public final class DevBoxesClientImpl {
      *     time: String (Required)
      *     timeZone: String (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param poolName The name of a pool of Dev Boxes.
@@ -1101,8 +1087,7 @@ public final class DevBoxesClientImpl {
      * Lists all schedules within a pool that are configured by your project administrator.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     type: String(StopDevBox) (Required)
@@ -1110,8 +1095,7 @@ public final class DevBoxesClientImpl {
      *     time: String (Required)
      *     timeZone: String (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param poolName The name of a pool of Dev Boxes.
@@ -1136,8 +1120,7 @@ public final class DevBoxesClientImpl {
      * Lists all schedules within a pool that are configured by your project administrator.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     type: String(StopDevBox) (Required)
@@ -1145,8 +1128,7 @@ public final class DevBoxesClientImpl {
      *     time: String (Required)
      *     timeZone: String (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param poolName The name of a pool of Dev Boxes.
@@ -1171,8 +1153,7 @@ public final class DevBoxesClientImpl {
      * Lists all schedules within a pool that are configured by your project administrator.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     type: String(StopDevBox) (Required)
@@ -1180,8 +1161,7 @@ public final class DevBoxesClientImpl {
      *     time: String (Required)
      *     timeZone: String (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param poolName The name of a pool of Dev Boxes.
@@ -1205,8 +1185,7 @@ public final class DevBoxesClientImpl {
      * Gets a schedule.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     type: String(StopDevBox) (Required)
@@ -1214,8 +1193,7 @@ public final class DevBoxesClientImpl {
      *     time: String (Required)
      *     timeZone: String (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param poolName Pool name.
@@ -1240,8 +1218,7 @@ public final class DevBoxesClientImpl {
      * Gets a schedule.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     type: String(StopDevBox) (Required)
@@ -1249,8 +1226,7 @@ public final class DevBoxesClientImpl {
      *     time: String (Required)
      *     timeZone: String (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param poolName Pool name.
@@ -1274,8 +1250,7 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes that the caller has access to in the DevCenter.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -1320,8 +1295,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1345,8 +1319,7 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes that the caller has access to in the DevCenter.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -1391,8 +1364,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1414,8 +1386,7 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes that the caller has access to in the DevCenter.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -1460,8 +1431,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1483,8 +1453,7 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes that the caller has access to in the DevCenter.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -1529,8 +1498,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1552,8 +1520,7 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the Dev Center for a particular user.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -1598,8 +1565,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -1626,8 +1592,7 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the Dev Center for a particular user.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -1672,8 +1637,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -1697,8 +1661,7 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the Dev Center for a particular user.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -1743,8 +1706,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -1768,8 +1730,7 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the Dev Center for a particular user.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -1814,8 +1775,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -1839,8 +1799,7 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the project for a particular user.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -1885,8 +1844,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1914,8 +1872,7 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the project for a particular user.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -1960,8 +1917,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1986,8 +1942,7 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the project for a particular user.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2032,8 +1987,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -2059,8 +2013,7 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the project for a particular user.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2105,8 +2058,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -2131,8 +2083,7 @@ public final class DevBoxesClientImpl {
      * Gets a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2177,8 +2128,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -2203,8 +2153,7 @@ public final class DevBoxesClientImpl {
      * Gets a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2249,8 +2198,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -2275,8 +2223,7 @@ public final class DevBoxesClientImpl {
      * Creates or replaces a Dev Box.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2321,13 +2268,11 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2372,8 +2317,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute the operation.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -2391,19 +2335,17 @@ public final class DevBoxesClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BinaryData>> createDevBoxWithResponseAsync(String projectName, String userId,
         String devBoxName, BinaryData body, RequestOptions requestOptions) {
-        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createDevBox(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                projectName, userId, devBoxName, contentType, accept, body, requestOptions, context));
+                projectName, userId, devBoxName, accept, body, requestOptions, context));
     }
 
     /**
      * Creates or replaces a Dev Box.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2448,13 +2390,11 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2499,8 +2439,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute the operation.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -2518,18 +2457,16 @@ public final class DevBoxesClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createDevBoxWithResponse(String projectName, String userId, String devBoxName,
         BinaryData body, RequestOptions requestOptions) {
-        final String contentType = "application/json";
         final String accept = "application/json";
         return service.createDevBoxSync(this.getEndpoint(), this.getServiceVersion().getVersion(), projectName, userId,
-            devBoxName, contentType, accept, body, requestOptions, Context.NONE);
+            devBoxName, accept, body, requestOptions, Context.NONE);
     }
 
     /**
      * Creates or replaces a Dev Box.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2574,13 +2511,11 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2625,8 +2560,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute the operation.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -2659,8 +2593,7 @@ public final class DevBoxesClientImpl {
      * Creates or replaces a Dev Box.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2705,13 +2638,11 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2756,8 +2687,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute the operation.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -2790,8 +2720,7 @@ public final class DevBoxesClientImpl {
      * Creates or replaces a Dev Box.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2836,13 +2765,11 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2887,8 +2814,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute the operation.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -2921,8 +2847,7 @@ public final class DevBoxesClientImpl {
      * Creates or replaces a Dev Box.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -2967,13 +2892,11 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -3018,8 +2941,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute the operation.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3052,8 +2974,7 @@ public final class DevBoxesClientImpl {
      * Deletes a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3076,8 +2997,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3103,8 +3023,7 @@ public final class DevBoxesClientImpl {
      * Deletes a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3127,8 +3046,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3153,8 +3071,7 @@ public final class DevBoxesClientImpl {
      * Deletes a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3177,8 +3094,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3209,8 +3125,7 @@ public final class DevBoxesClientImpl {
      * Deletes a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3233,8 +3148,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3265,8 +3179,7 @@ public final class DevBoxesClientImpl {
      * Deletes a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3289,8 +3202,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3321,8 +3233,7 @@ public final class DevBoxesClientImpl {
      * Deletes a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3345,8 +3256,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3377,8 +3287,7 @@ public final class DevBoxesClientImpl {
      * Starts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3401,8 +3310,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3428,8 +3336,7 @@ public final class DevBoxesClientImpl {
      * Starts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3452,8 +3359,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3478,8 +3384,7 @@ public final class DevBoxesClientImpl {
      * Starts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3502,8 +3407,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3534,8 +3438,7 @@ public final class DevBoxesClientImpl {
      * Starts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3558,8 +3461,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3590,8 +3492,7 @@ public final class DevBoxesClientImpl {
      * Starts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3614,8 +3515,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3646,8 +3546,7 @@ public final class DevBoxesClientImpl {
      * Starts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3670,8 +3569,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3709,8 +3607,7 @@ public final class DevBoxesClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3733,8 +3630,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3767,8 +3663,7 @@ public final class DevBoxesClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3791,8 +3686,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3824,8 +3718,7 @@ public final class DevBoxesClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3848,8 +3741,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3887,8 +3779,7 @@ public final class DevBoxesClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3911,8 +3802,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -3950,8 +3840,7 @@ public final class DevBoxesClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3974,8 +3863,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4013,8 +3901,7 @@ public final class DevBoxesClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -4037,8 +3924,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4069,8 +3955,7 @@ public final class DevBoxesClientImpl {
      * Restarts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -4093,8 +3978,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4120,8 +4004,7 @@ public final class DevBoxesClientImpl {
      * Restarts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -4144,8 +4027,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4170,8 +4052,7 @@ public final class DevBoxesClientImpl {
      * Restarts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -4194,8 +4075,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4226,8 +4106,7 @@ public final class DevBoxesClientImpl {
      * Restarts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -4250,8 +4129,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4282,8 +4160,7 @@ public final class DevBoxesClientImpl {
      * Restarts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -4306,8 +4183,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4338,8 +4214,7 @@ public final class DevBoxesClientImpl {
      * Restarts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -4362,8 +4237,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4394,14 +4268,12 @@ public final class DevBoxesClientImpl {
      * Gets RDP Connection info.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     webUrl: String (Optional)
      *     rdpConnectionUrl: String (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4426,14 +4298,12 @@ public final class DevBoxesClientImpl {
      * Gets RDP Connection info.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     webUrl: String (Optional)
      *     rdpConnectionUrl: String (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4458,8 +4328,7 @@ public final class DevBoxesClientImpl {
      * Lists actions on a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     actionType: String(Stop) (Required)
@@ -4469,8 +4338,7 @@ public final class DevBoxesClientImpl {
      *         scheduledTime: OffsetDateTime (Required)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4499,8 +4367,7 @@ public final class DevBoxesClientImpl {
      * Lists actions on a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     actionType: String(Stop) (Required)
@@ -4510,8 +4377,7 @@ public final class DevBoxesClientImpl {
      *         scheduledTime: OffsetDateTime (Required)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4538,8 +4404,7 @@ public final class DevBoxesClientImpl {
      * Lists actions on a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     actionType: String(Stop) (Required)
@@ -4549,8 +4414,7 @@ public final class DevBoxesClientImpl {
      *         scheduledTime: OffsetDateTime (Required)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4578,8 +4442,7 @@ public final class DevBoxesClientImpl {
      * Lists actions on a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     actionType: String(Stop) (Required)
@@ -4589,8 +4452,7 @@ public final class DevBoxesClientImpl {
      *         scheduledTime: OffsetDateTime (Required)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4617,8 +4479,7 @@ public final class DevBoxesClientImpl {
      * Gets an action.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     actionType: String(Stop) (Required)
@@ -4628,8 +4489,7 @@ public final class DevBoxesClientImpl {
      *         scheduledTime: OffsetDateTime (Required)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4656,8 +4516,7 @@ public final class DevBoxesClientImpl {
      * Gets an action.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     actionType: String(Stop) (Required)
@@ -4667,8 +4526,7 @@ public final class DevBoxesClientImpl {
      *         scheduledTime: OffsetDateTime (Required)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4741,8 +4599,7 @@ public final class DevBoxesClientImpl {
      * Delays the occurrence of an action.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     actionType: String(Stop) (Required)
@@ -4752,8 +4609,7 @@ public final class DevBoxesClientImpl {
      *         scheduledTime: OffsetDateTime (Required)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4782,8 +4638,7 @@ public final class DevBoxesClientImpl {
      * Delays the occurrence of an action.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     actionType: String(Stop) (Required)
@@ -4793,8 +4648,7 @@ public final class DevBoxesClientImpl {
      *         scheduledTime: OffsetDateTime (Required)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4821,8 +4675,7 @@ public final class DevBoxesClientImpl {
      * Delays all actions.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     result: String(Succeeded/Failed) (Required)
@@ -4848,8 +4701,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4879,8 +4731,7 @@ public final class DevBoxesClientImpl {
      * Delays all actions.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     result: String(Succeeded/Failed) (Required)
@@ -4906,8 +4757,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4936,8 +4786,7 @@ public final class DevBoxesClientImpl {
      * Delays all actions.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     result: String(Succeeded/Failed) (Required)
@@ -4963,8 +4812,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -4993,8 +4841,7 @@ public final class DevBoxesClientImpl {
      * Delays all actions.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     result: String(Succeeded/Failed) (Required)
@@ -5020,8 +4867,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -5050,8 +4896,7 @@ public final class DevBoxesClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     location: String (Required)
@@ -5081,8 +4926,7 @@ public final class DevBoxesClientImpl {
      *     }
      *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5107,8 +4951,7 @@ public final class DevBoxesClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     location: String (Required)
@@ -5138,8 +4981,7 @@ public final class DevBoxesClientImpl {
      *     }
      *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5162,8 +5004,7 @@ public final class DevBoxesClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     type: String(StopDevBox) (Required)
@@ -5171,8 +5012,7 @@ public final class DevBoxesClientImpl {
      *     time: String (Required)
      *     timeZone: String (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5198,8 +5038,7 @@ public final class DevBoxesClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     type: String(StopDevBox) (Required)
@@ -5207,8 +5046,7 @@ public final class DevBoxesClientImpl {
      *     time: String (Required)
      *     timeZone: String (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5231,8 +5069,7 @@ public final class DevBoxesClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -5277,8 +5114,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5304,8 +5140,7 @@ public final class DevBoxesClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -5350,8 +5185,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5374,8 +5208,7 @@ public final class DevBoxesClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -5420,8 +5253,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5446,8 +5278,7 @@ public final class DevBoxesClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -5492,8 +5323,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5517,8 +5347,7 @@ public final class DevBoxesClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -5563,8 +5392,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5590,8 +5418,7 @@ public final class DevBoxesClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     projectName: String (Optional)
@@ -5636,8 +5463,7 @@ public final class DevBoxesClientImpl {
      *     createdTime: OffsetDateTime (Optional)
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5660,8 +5486,7 @@ public final class DevBoxesClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     actionType: String(Stop) (Required)
@@ -5671,8 +5496,7 @@ public final class DevBoxesClientImpl {
      *         scheduledTime: OffsetDateTime (Required)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5698,8 +5522,7 @@ public final class DevBoxesClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     actionType: String(Stop) (Required)
@@ -5709,8 +5532,7 @@ public final class DevBoxesClientImpl {
      *         scheduledTime: OffsetDateTime (Required)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5733,8 +5555,7 @@ public final class DevBoxesClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     result: String(Succeeded/Failed) (Required)
@@ -5760,8 +5581,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5787,8 +5607,7 @@ public final class DevBoxesClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     result: String(Succeeded/Failed) (Required)
@@ -5814,8 +5633,7 @@ public final class DevBoxesClientImpl {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
