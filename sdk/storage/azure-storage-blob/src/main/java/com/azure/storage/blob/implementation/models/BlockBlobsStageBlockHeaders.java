@@ -33,11 +33,6 @@ public final class BlockBlobsStageBlockHeaders {
     private String xMsEncryptionKeySha256;
 
     /*
-     * The x-ms-structured-body property.
-     */
-    private String xMsStructuredBody;
-
-    /*
      * The x-ms-request-id property.
      */
     private String xMsRequestId;
@@ -74,8 +69,6 @@ public final class BlockBlobsStageBlockHeaders {
     private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256
         = HttpHeaderName.fromString("x-ms-encryption-key-sha256");
 
-    private static final HttpHeaderName X_MS_STRUCTURED_BODY = HttpHeaderName.fromString("x-ms-structured-body");
-
     private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED
         = HttpHeaderName.fromString("x-ms-request-server-encrypted");
 
@@ -94,7 +87,6 @@ public final class BlockBlobsStageBlockHeaders {
             this.xMsContentCrc64 = Base64.getDecoder().decode(xMsContentCrc64);
         }
         this.xMsEncryptionKeySha256 = rawHeaders.getValue(X_MS_ENCRYPTION_KEY_SHA256);
-        this.xMsStructuredBody = rawHeaders.getValue(X_MS_STRUCTURED_BODY);
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
         if (xMsRequestServerEncrypted != null) {
@@ -169,26 +161,6 @@ public final class BlockBlobsStageBlockHeaders {
      */
     public BlockBlobsStageBlockHeaders setXMsEncryptionKeySha256(String xMsEncryptionKeySha256) {
         this.xMsEncryptionKeySha256 = xMsEncryptionKeySha256;
-        return this;
-    }
-
-    /**
-     * Get the xMsStructuredBody property: The x-ms-structured-body property.
-     * 
-     * @return the xMsStructuredBody value.
-     */
-    public String getXMsStructuredBody() {
-        return this.xMsStructuredBody;
-    }
-
-    /**
-     * Set the xMsStructuredBody property: The x-ms-structured-body property.
-     * 
-     * @param xMsStructuredBody the xMsStructuredBody value to set.
-     * @return the BlockBlobsStageBlockHeaders object itself.
-     */
-    public BlockBlobsStageBlockHeaders setXMsStructuredBody(String xMsStructuredBody) {
-        this.xMsStructuredBody = xMsStructuredBody;
         return this;
     }
 

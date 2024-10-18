@@ -113,7 +113,6 @@ public class SasAsyncClientTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void blobSasReadPermissions() {
         BlobSasPermission permissions = new BlobSasPermission()
@@ -202,7 +201,6 @@ public class SasAsyncClientTests extends BlobTestBase {
         });
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void blobSasSnapshot() {
         BlobSasPermission permissions = new BlobSasPermission()
@@ -247,7 +245,6 @@ public class SasAsyncClientTests extends BlobTestBase {
     }
 
     // RBAC replication lag
-    @SuppressWarnings("deprecation")
     @Test
     public void blobSasSnapshotUserDelegation() {
         liveTestScenarioWithRetry(() -> {
@@ -472,6 +469,9 @@ public class SasAsyncClientTests extends BlobTestBase {
                 .setReadPermission(true);
 
             OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
+            String saoid = testResourceNamer.randomUuid();
+            BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
+                .setPreauthorizedAgentObjectId(saoid);
 
             Mono<BlobProperties> response = getOAuthServiceAsyncClient().getUserDelegationKey(null, expiryTime)
                 .flatMap(r -> {
@@ -481,17 +481,11 @@ public class SasAsyncClientTests extends BlobTestBase {
                     String keyTid = testResourceNamer.recordValueFromConfig(r.getSignedTenantId());
                     r.setSignedTenantId(keyTid);
 
-                    String saoid = testResourceNamer.randomUuid();
-
-                    BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
-                        .setPreauthorizedAgentObjectId(saoid);
                     String sasWithPermissions = sasClient.generateUserDelegationSas(sasValues, r);
+                    assertDoesNotThrow(() -> sasWithPermissions.contains("saoid=" + saoid));
 
                     BlobAsyncClient client = getBlobAsyncClient(sasWithPermissions, ccAsync.getBlobContainerUrl(), blobName,
                         null);
-
-                    assertDoesNotThrow(() -> sasWithPermissions.contains("saoid=" + saoid));
-
                     return client.getProperties();
                 });
 

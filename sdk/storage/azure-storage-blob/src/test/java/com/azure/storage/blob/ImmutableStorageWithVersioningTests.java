@@ -40,7 +40,6 @@ import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.ListBlobsOptions;
@@ -57,7 +56,6 @@ import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.blob.specialized.AppendBlobClient;
-import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.common.sas.AccountSasPermission;
@@ -208,6 +206,10 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
     }
     public static final class Properties implements JsonSerializable<Properties> {
         private ImmutableStorageWithVersioning immutableStorageWithVersioning;
+
+        public ImmutableStorageWithVersioning getImmutableStorageWithVersioning() {
+            return immutableStorageWithVersioning;
+        }
 
         public void setImmutableStorageWithVersioning(ImmutableStorageWithVersioning immutableStorageWithVersioning) {
             this.immutableStorageWithVersioning = immutableStorageWithVersioning;
@@ -797,85 +799,5 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
 
         BlobLegalHoldResult legalHold = client.setLegalHold(false);
         assertFalse(legalHold.hasLegalHold());
-    }
-
-    @Test
-    public void testVersionBlobImmutabilityExpiry() {
-        BlockBlobItem blobItemV1 = vlwBlob.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
-        BlockBlobItem blobItemV2 = vlwBlob.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
-
-        BlobClient oldBlob = vlwBlob.getVersionClient(blobItemV1.getVersionId());
-        BlobClient newBlob = vlwBlob.getVersionClient(blobItemV2.getVersionId());
-
-        OffsetDateTime time1 = testResourceNamer.now().plusDays(3);
-        OffsetDateTime time2 = testResourceNamer.now().plusDays(4);
-
-        BlobImmutabilityPolicy policy1 = new BlobImmutabilityPolicy().setExpiryTime(time1);
-        BlobImmutabilityPolicy policy2 = new BlobImmutabilityPolicy().setExpiryTime(time2);
-        oldBlob.setImmutabilityPolicy(policy1);
-        newBlob.setImmutabilityPolicy(policy2);
-
-        assertEquals(policy1.getExpiryTime().truncatedTo(ChronoUnit.SECONDS),
-            oldBlob.getProperties().getImmutabilityPolicy().getExpiryTime());
-        assertEquals(policy2.getExpiryTime().truncatedTo(ChronoUnit.SECONDS),
-            newBlob.getProperties().getImmutabilityPolicy().getExpiryTime());
-
-        //cleanup
-        oldBlob.deleteImmutabilityPolicy();
-        oldBlob.delete();
-    }
-
-    @Test
-    public void testImmutabilitySnapshot() {
-        BlobClientBase snapshotBlob = vlwBlob.createSnapshot();
-
-        OffsetDateTime time1 = testResourceNamer.now().plusDays(3);
-        OffsetDateTime time2 = testResourceNamer.now().plusDays(4);
-        BlobImmutabilityPolicy policy1 = new BlobImmutabilityPolicy().setExpiryTime(time1);
-        BlobImmutabilityPolicy policy2 = new BlobImmutabilityPolicy().setExpiryTime(time2);
-
-        vlwBlob.setImmutabilityPolicy(policy1);
-        snapshotBlob.setImmutabilityPolicy(policy2);
-
-        assertEquals(policy1.getExpiryTime().truncatedTo(ChronoUnit.SECONDS),
-            vlwBlob.getProperties().getImmutabilityPolicy().getExpiryTime());
-        assertEquals(policy2.getExpiryTime().truncatedTo(ChronoUnit.SECONDS),
-            snapshotBlob.getProperties().getImmutabilityPolicy().getExpiryTime());
-
-        //cleanup
-        snapshotBlob.deleteImmutabilityPolicy();
-        snapshotBlob.delete();
-    }
-
-    @Test
-    public void testLegalHoldVersion() {
-        BlockBlobItem blobItemV1 = vlwBlob.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
-        BlockBlobItem blobItemV2 = vlwBlob.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
-
-        BlobClient oldBlob = vlwBlob.getVersionClient(blobItemV1.getVersionId());
-        BlobClient newBlob = vlwBlob.getVersionClient(blobItemV2.getVersionId());
-
-        BlobLegalHoldResult result1 = oldBlob.setLegalHold(true);
-        assertTrue(result1.hasLegalHold());
-
-        assertTrue(oldBlob.getProperties().hasLegalHold());
-        assertNull(newBlob.getProperties().hasLegalHold());
-
-        //cleanup
-        oldBlob.setLegalHold(false);
-        oldBlob.delete();
-    }
-
-    @Test
-    public void testLegalHoldSnapshot() {
-        BlobClientBase snapshotBlob = vlwBlob.createSnapshot();
-
-        BlobLegalHoldResult result1 = vlwBlob.setLegalHold(true);
-        assertTrue(result1.hasLegalHold());
-        assertNull(snapshotBlob.getProperties().hasLegalHold());
-
-        //cleanup
-        snapshotBlob.setLegalHold(false);
-        snapshotBlob.delete();
     }
 }

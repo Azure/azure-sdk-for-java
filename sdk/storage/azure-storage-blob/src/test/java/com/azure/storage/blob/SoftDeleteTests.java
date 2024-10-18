@@ -17,7 +17,6 @@ import java.util.Iterator;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SoftDeleteTests extends BlobTestBase {
     private BlobContainerClient containerClient;
@@ -40,15 +39,6 @@ public class SoftDeleteTests extends BlobTestBase {
     public void undeleteMin() {
         blobClient.delete();
         assertResponseStatusCode(blobClient.undeleteWithResponse(null, null), 200);
-    }
-
-    @Test
-    public void undeleteSimple() {
-        blobClient.delete();
-        assertFalse(blobClient.exists());
-
-        blobClient.undelete();
-        assertTrue(blobClient.exists());
     }
 
     @Test

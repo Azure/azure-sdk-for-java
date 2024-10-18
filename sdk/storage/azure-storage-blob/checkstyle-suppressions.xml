@@ -35,14 +35,7 @@
   <suppress files="com.azure.storage.blob.implementation.util.ModelHelper.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
   <suppress files="com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder.java" checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" />
   <suppress files="com.azure.storage.blob.BlobClient.java" checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" />
-  <suppress files="com.azure.storage.blob.specialized.BlobLeaseClient.java" checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.storage.blob.specialized.BlobLeaseAsyncClient.java" checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.storage.blob.specialized.BlobInputStream.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="com.azure.storage.blob.specialized.BlobOutputStream.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.storage.blob.implementation.AppendBlobsImpl.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.storage.blob.implementation.PageBlobsImpl.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.storage.blob.implementation.ServicesImpl.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.storage.blob.implementation.BlobsImpl.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.storage.blob.implementation.BlockBlobsImpl.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.storage.blob.implementation.ContainersImpl.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
 </suppressions>

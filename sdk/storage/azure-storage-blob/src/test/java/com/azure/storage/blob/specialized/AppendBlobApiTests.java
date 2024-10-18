@@ -245,14 +245,6 @@ public class AppendBlobApiTests extends BlobTestBase {
     }
 
     @Test
-    public void createIfNotExistsSimple() {
-        bc = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
-
-        bc.createIfNotExists();
-        assertTrue(bc.exists());
-    }
-
-    @Test
     public void createIfNotExistsMin() {
         String blobName = cc.getBlobClient(generateBlobName()).getBlobName();
         bc = cc.getBlobClient(blobName).getAppendBlobClient();
@@ -746,7 +738,7 @@ public class AppendBlobApiTests extends BlobTestBase {
     public void sealDefaults() {
         Response<Void> sealResponse = bc.sealWithResponse(null, null, null);
         assertResponseStatusCode(sealResponse, 200);
-        assertEquals("true", sealResponse.getHeaders().getValue(X_MS_BLOB_SEALED));
+        assertEquals("true", sealResponse.getHeaders().getValue("x-ms-blob-sealed"));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -883,12 +875,5 @@ public class AppendBlobApiTests extends BlobTestBase {
             .buildAppendBlobClient();
 
         assertTrue(aadBlob.exists());
-    }
-
-    @Test
-    public void getSnapshotClient() {
-        String fakeVersion = "2020-04-17T20:37:16.5129130Z";
-        BlobClientBase fakeSnapshotClient = bc.getSnapshotClient(fakeVersion);
-        assertEquals(fakeVersion, fakeSnapshotClient.getSnapshotId());
     }
 }

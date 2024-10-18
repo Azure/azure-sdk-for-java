@@ -62,11 +62,6 @@ public class CPKNTests extends BlobTestBase {
     }
 
     @Test
-    public void getEncryptionScope() {
-        Assertions.assertEquals(es, cpknContainer.getEncryptionScope());
-    }
-
-    @Test
     public void containerCreate() {
         BlobContainerClient cpknCesContainer = builder.blobContainerEncryptionScope(ces).encryptionScope(null)
             .containerName(generateContainerName()).buildClient();

@@ -53,13 +53,13 @@ import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.common.policy.RetryPolicyType;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.http.WireTapHttpClient;
 import com.azure.storage.common.test.shared.policy.RequestAssertionPolicy;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -74,6 +74,7 @@ import reactor.util.function.Tuple2;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -260,26 +261,10 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @Test
     public void stageBlockIllegalArgumentsWithBinaryData() {
-        //This is done without a parameterized test as the toString call updates the internal length being stored,
-        //resulting in incorrect test behavior.
-        try {
-            StepVerifier.create(blockBlobAsyncClient.stageBlock(getBlockID(), null))
-                .verifyComplete();
-        } catch (NullPointerException e) {
-            //StepVerifier cant handle the error in the creation of BlockBlobStageBlockOptions
-            assertEquals("The argument must not be null or an empty string. Argument name:"
-                + " data must not be null.", e.getMessage());
-        }
+        assertThrows(NullPointerException.class, () -> blockBlobAsyncClient.stageBlock(getBlockID(), null).block());
 
-        try {
-            BinaryData data = BinaryData.fromStream(DATA.getDefaultInputStream(), null);
-            StepVerifier.create(blockBlobAsyncClient.stageBlock(getBlockID(), data))
-                .verifyComplete();
-        } catch (NullPointerException e) {
-            //StepVerifier cant handle the error in the creation of BlockBlobStageBlockOptions
-            assertEquals("The argument must not be null or an empty string. Argument name: data must have"
-                + " defined length.", e.getMessage());
-        }
+        assertThrows(NullPointerException.class, () -> blockBlobAsyncClient.stageBlock(getBlockID(),
+            BinaryData.fromStream(DATA.getDefaultInputStream(), null)).block());
 
         BinaryData binaryData = BinaryData.fromStream(DATA.getDefaultInputStream(),
             DATA.getDefaultDataSizeLong() + 1);
@@ -337,7 +322,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @Test
     public void stageBlockLease() {
-        Mono<Response<Void>> response = setupBlobLeaseCondition(blockBlobAsyncClient, RECEIVED_LEASE_ID)
+        Mono<Response<Void>> response = setupBlobLeaseConditionAsync(blockBlobAsyncClient, RECEIVED_LEASE_ID)
             .flatMap(r -> blockBlobAsyncClient.stageBlockWithResponse(getBlockID(), DATA.getDefaultFlux(),
                 DATA.getDefaultDataSize(), null, r));
 
@@ -346,7 +331,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @Test
     public void stageBlockLeaseBinaryData() {
-        Mono<Response<Void>> response = setupBlobLeaseCondition(blockBlobAsyncClient, RECEIVED_LEASE_ID)
+        Mono<Response<Void>> response = setupBlobLeaseConditionAsync(blockBlobAsyncClient, RECEIVED_LEASE_ID)
             .flatMap(r -> blockBlobAsyncClient.stageBlockWithResponse(
                 new BlockBlobStageBlockOptions(getBlockID(), BinaryData.fromBytes(DATA.getDefaultBytes()))
                     .setLeaseId(r)));
@@ -356,7 +341,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @Test
     public void stageBlockLeaseFail() {
-        StepVerifier.create(setupBlobLeaseCondition(blockBlobAsyncClient, RECEIVED_LEASE_ID)
+        StepVerifier.create(setupBlobLeaseConditionAsync(blockBlobAsyncClient, RECEIVED_LEASE_ID)
             .then(blockBlobAsyncClient.stageBlockWithResponse(getBlockID(), DATA.getDefaultFlux(),
                 DATA.getDefaultDataSize(), null, GARBAGE_LEASE_ID)))
             .verifyErrorSatisfies(r -> {
@@ -374,6 +359,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyError(BlobStorageException.class);
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void stageBlockRetryOnTransientFailure() {
         BlockBlobAsyncClient clientWithFailure = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
@@ -533,7 +519,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         String sas = blockBlobAsyncClient.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
 
-        Mono<Response<Void>> response = setupBlobLeaseCondition(blockBlobAsyncClient, RECEIVED_LEASE_ID)
+        Mono<Response<Void>> response = setupBlobLeaseConditionAsync(blockBlobAsyncClient, RECEIVED_LEASE_ID)
             .flatMap(r -> blockBlobAsyncClient.stageBlockFromUrlWithResponse(getBlockID(),
                 blockBlobAsyncClient.getBlobUrl() + "?" + sas, null, null,
                 r, null));
@@ -575,7 +561,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             new BlobContainerSasPermission().setReadPermission(true)));
 
         Mono<Response<Void>> response = sourceURL.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
-            .then(setupBlobMatchCondition(sourceURL, sourceIfMatch))
+            .then(setupBlobMatchConditionAsync(sourceURL, sourceIfMatch))
             .flatMap(r -> {
                 String newMatch = r;
                 if ("null".equals(newMatch)) {
@@ -613,7 +599,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             new BlobContainerSasPermission().setReadPermission(true)));
 
         Mono<Response<Void>> response = sourceURL.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
-            .then(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch))
+            .then(setupBlobMatchConditionAsync(sourceURL, sourceIfNoneMatch))
             .flatMap(r -> {
                 String newNoneMatch = r;
                 if ("null".equals(newNoneMatch)) {
@@ -717,9 +703,10 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .then(blockBlobAsyncClient.getPropertiesWithResponse(null));
 
         StepVerifier.create(response)
-            .assertNext(r ->
+            .assertNext(r -> {
                 validateBlobProperties(r, cacheControl, contentDisposition, contentEncoding, contentLanguage,
-                    contentMD5, finalContentType))
+                    contentMD5, finalContentType);
+            })
             .verifyComplete();
     }
 
@@ -796,7 +783,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
 
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.setTags(t)
-            .then(Mono.zip(setupBlobLeaseCondition(blockBlobAsyncClient, leaseID), setupBlobMatchCondition(blockBlobAsyncClient, match)))
+            .then(Mono.zip(setupBlobLeaseConditionAsync(blockBlobAsyncClient, leaseID), setupBlobMatchConditionAsync(blockBlobAsyncClient, match)))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -827,7 +814,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     public void commitBlockListACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
                                       String noneMatch, String leaseID, String tags) {
 
-        Mono<Response<BlockBlobItem>> response = Mono.zip(setupBlobLeaseCondition(blockBlobAsyncClient, leaseID), setupBlobMatchCondition(blockBlobAsyncClient, noneMatch))
+        Mono<Response<BlockBlobItem>> response = Mono.zip(setupBlobLeaseConditionAsync(blockBlobAsyncClient, leaseID), setupBlobMatchConditionAsync(blockBlobAsyncClient, noneMatch))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
                 if ("null".equals(newNoneMatch)) {
@@ -959,7 +946,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @Test
     public void getBlockListLease() {
-        Mono<Response<BlockList>> response = setupBlobLeaseCondition(blockBlobAsyncClient, RECEIVED_LEASE_ID)
+        Mono<Response<BlockList>> response = setupBlobLeaseConditionAsync(blockBlobAsyncClient, RECEIVED_LEASE_ID)
             .flatMap(r -> blockBlobAsyncClient.listBlocksWithResponse(BlockListType.ALL, r));
 
         StepVerifier.create(response)
@@ -969,7 +956,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @Test
     public void getBlockListLeaseFail() {
-        StepVerifier.create(setupBlobLeaseCondition(blockBlobAsyncClient, GARBAGE_LEASE_ID)
+        StepVerifier.create(setupBlobLeaseConditionAsync(blockBlobAsyncClient, GARBAGE_LEASE_ID)
             .then(blockBlobAsyncClient.listBlocksWithResponse(BlockListType.ALL, GARBAGE_LEASE_ID)))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
@@ -1414,9 +1401,10 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         StepVerifier.create(blockBlobAsyncClient.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(),
             headers, null, null, null, null)
             .then(blockBlobAsyncClient.getPropertiesWithResponse(null)))
-            .assertNext(r ->
+            .assertNext(r -> {
                 validateBlobProperties(r, cacheControl, contentDisposition, contentEncoding, contentLanguage, finalContentMD,
-                    finalContentType))
+                    finalContentType);
+            })
             .verifyComplete();
     }
 
@@ -1498,7 +1486,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         t.put("foo", "bar");
 
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.setTags(t)
-            .then(Mono.zip(setupBlobLeaseCondition(blockBlobAsyncClient, leaseID), setupBlobMatchCondition(blockBlobAsyncClient, match)))
+            .then(Mono.zip(setupBlobLeaseConditionAsync(blockBlobAsyncClient, leaseID), setupBlobMatchConditionAsync(blockBlobAsyncClient, match)))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -1529,7 +1517,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     public void uploadACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID, String tags) {
 
-        Mono<Response<BlockBlobItem>> response = Mono.zip(setupBlobLeaseCondition(blockBlobAsyncClient, leaseID), setupBlobMatchCondition(blockBlobAsyncClient, noneMatch))
+        Mono<Response<BlockBlobItem>> response = Mono.zip(setupBlobLeaseConditionAsync(blockBlobAsyncClient, leaseID), setupBlobMatchConditionAsync(blockBlobAsyncClient, noneMatch))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
                 if ("null".equals(newNoneMatch)) {
@@ -1801,7 +1789,6 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
-    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("bufferedUploadWithReporterSupplier")
     @LiveOnly
@@ -2091,7 +2078,6 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
-    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("bufferedUploadTagsSupplier")
@@ -2181,7 +2167,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     public void bufferedUploadAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID) {
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
-            .then(Mono.zip(setupBlobLeaseCondition(blockBlobAsyncClient, leaseID), setupBlobMatchCondition(blockBlobAsyncClient, match)))
+            .then(Mono.zip(setupBlobLeaseConditionAsync(blockBlobAsyncClient, leaseID), setupBlobMatchConditionAsync(blockBlobAsyncClient, match)))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -2223,7 +2209,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     public void bufferedUploadACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                      String leaseID) {
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
-            .then(Mono.zip(setupBlobLeaseCondition(blockBlobAsyncClient, leaseID), setupBlobMatchCondition(blockBlobAsyncClient, noneMatch)))
+            .then(Mono.zip(setupBlobLeaseConditionAsync(blockBlobAsyncClient, leaseID), setupBlobMatchConditionAsync(blockBlobAsyncClient, noneMatch)))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newNoneMatch = tuple.getT2();
@@ -2265,7 +2251,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .setMaxConcurrency(numBuffers);
 
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
-            .then(setupBlobLeaseCondition(blockBlobAsyncClient, GARBAGE_LEASE_ID))
+            .then(setupBlobLeaseConditionAsync(blockBlobAsyncClient, GARBAGE_LEASE_ID))
             .flatMap(r -> {
                 BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId(r);
                 return blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(dataLength)),
@@ -2278,7 +2264,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @LiveOnly
     @Test
-    public void bufferedUploadNetworkError() {
+    public void bufferedUploadNetworkError() throws MalformedURLException {
         /*
          This test uses a Flowable that does not allow multiple subscriptions and therefore ensures that we are
          buffering properly to allow for retries even given this source behavior.
@@ -2298,7 +2284,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         BlobAsyncClient blobAsyncClient = new BlobServiceClientBuilder()
             .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
             .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
-            .retryOptions(new RequestRetryOptions(null, 3, null, 500L,
+            .retryOptions(new RequestRetryOptions((RetryPolicyType) null, 3, (Integer) null, 500L,
                 1500L, null))
             .addPolicy(mockPolicy).buildAsyncClient()
             .getBlobContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName());
@@ -2551,6 +2537,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             });
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
     @Test
     public void uploadFromUrlMax() throws NoSuchAlgorithmException {
@@ -2630,16 +2617,14 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     public void uploadFromUrlSourceRequestConditions(BlobRequestConditions requestConditions, BlobErrorCode errorCode) {
         BlobAsyncClient sourceBlob = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
             .getBlobAsyncClient(generateBlobName());
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
+            .setSourceRequestConditions(requestConditions);
 
         Mono<Response<BlockBlobItem>> response = sourceBlob.upload(DATA.getDefaultFlux(), null)
-            .flatMap(r -> {
-                String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-                    new BlobContainerSasPermission().setReadPermission(true)));
-                BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
-                    .setSourceRequestConditions(requestConditions);
-                return blockBlobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), 0, true)
-                    .then(blockBlobAsyncClient.uploadFromUrlWithResponse(options));
-            });
+            .then(blockBlobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), 0, true))
+            .then(blockBlobAsyncClient.uploadFromUrlWithResponse(options));
 
         StepVerifier.create(response)
             .verifyErrorSatisfies(r -> {
@@ -2651,7 +2636,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     private static Stream<Arguments> uploadFromUrlSourceRequestConditionsSupplier() {
         return Stream.of(
             Arguments.of(new BlobRequestConditions().setIfMatch("dummy"), BlobErrorCode.SOURCE_CONDITION_NOT_MET),
-            Arguments.of(new BlobRequestConditions().setIfModifiedSince(OffsetDateTime.now().plusSeconds(10)),
+            Arguments.of(new BlobRequestConditions().setIfModifiedSince(OffsetDateTime.now().plusSeconds(20)),
                 BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE),
             Arguments.of(new BlobRequestConditions().setIfUnmodifiedSince(OffsetDateTime.now().minusDays(1)),
                 BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE)
@@ -2797,7 +2782,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .buildBlockBlobAsyncClient();
 
         StepVerifier.create(aadBlob.getProperties())
-            .assertNext(Assertions::assertNotNull)
+            .assertNext(r -> assertNotNull(r))
             .verifyComplete();
     }
 

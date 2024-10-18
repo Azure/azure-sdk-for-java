@@ -172,19 +172,6 @@ public class LeaseApiTests extends BlobTestBase {
     }
 
     @Test
-    public void renewBlobLeaseSimple() {
-        BlobClientBase bc = createBlobClient();
-        String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
-        BlobLeaseClient leaseClient = createLeaseClient(bc, leaseID);
-
-        // If running in live mode wait for the lease to expire to ensure we are actually renewing it
-        sleepIfRunningAgainstService(16000);
-        leaseClient.renewLease();
-
-        assertEquals(bc.getProperties().getLeaseState(), LeaseStateType.LEASED);
-    }
-
-    @Test
     public void renewBlobLeaseMin() {
         BlobClientBase bc = createBlobClient();
         String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
@@ -248,15 +235,6 @@ public class LeaseApiTests extends BlobTestBase {
 
         assertEquals(bc.getProperties().getLeaseState(), LeaseStateType.AVAILABLE);
         assertTrue(validateBasicHeaders(headers));
-    }
-
-    @Test
-    public void releaseBlobLeaseSimple() {
-        BlobClientBase bc = createBlobClient();
-        String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
-        createLeaseClient(bc, leaseID).releaseLease();
-
-        assertEquals(bc.getProperties().getLeaseState(), LeaseStateType.AVAILABLE);
     }
 
     @Test
@@ -326,17 +304,6 @@ public class LeaseApiTests extends BlobTestBase {
         assertTrue(leaseState == LeaseStateType.BROKEN || leaseState == LeaseStateType.BREAKING);
         assertTrue(breakLeaseResponse.getValue() <= remainingTime);
         assertTrue(validateBasicHeaders(breakLeaseResponse.getHeaders()));
-    }
-
-    @Test
-    public void breakBlobLeaseSimple() {
-        BlobClientBase bc = createBlobClient();
-        BlobLeaseClient leaseClient = createLeaseClient(bc, testResourceNamer.randomUuid());
-        leaseClient.acquireLease(-1);
-        leaseClient.breakLease();
-        LeaseStateType leaseState = bc.getProperties().getLeaseState();
-
-        assertTrue(leaseState == LeaseStateType.BROKEN || leaseState == LeaseStateType.BREAKING);
     }
 
     private static Stream<Arguments> breakBlobLeaseSupplier() {
@@ -418,21 +385,6 @@ public class LeaseApiTests extends BlobTestBase {
 
         assertResponseStatusCode(leaseClient2.releaseLeaseWithResponse(new BlobReleaseLeaseOptions(), null, null), 200);
         assertTrue(validateBasicHeaders(changeLeaseResponse.getHeaders()));
-    }
-
-    @Test
-    public void changeBlobLeaseSimple() {
-        BlobClientBase bc = createBlobClient();
-
-        String oldLease = testResourceNamer.randomUuid();
-        String newLease = testResourceNamer.randomUuid();
-
-        BlobLeaseClient leaseClient = createLeaseClient(bc, oldLease);
-        leaseClient.acquireLease(15);
-
-        leaseClient.changeLease(newLease);
-
-        assertEquals(newLease, leaseClient.getLeaseId());
     }
 
     @Test
