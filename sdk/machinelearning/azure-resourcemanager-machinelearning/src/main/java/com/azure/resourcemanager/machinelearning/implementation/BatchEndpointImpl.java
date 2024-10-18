@@ -49,16 +49,16 @@ public final class BatchEndpointImpl implements BatchEndpoint, BatchEndpoint.Def
         }
     }
 
-    public ManagedServiceIdentity identity() {
-        return this.innerModel().identity();
+    public BatchEndpointProperties properties() {
+        return this.innerModel().properties();
     }
 
     public String kind() {
         return this.innerModel().kind();
     }
 
-    public BatchEndpointProperties properties() {
-        return this.innerModel().properties();
+    public ManagedServiceIdentity identity() {
+        return this.innerModel().identity();
     }
 
     public Sku sku() {
@@ -104,20 +104,16 @@ public final class BatchEndpointImpl implements BatchEndpoint, BatchEndpoint.Def
     }
 
     public BatchEndpoint create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBatchEndpoints()
-                .createOrUpdate(resourceGroupName, workspaceName, endpointName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getBatchEndpoints()
+            .createOrUpdate(resourceGroupName, workspaceName, endpointName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public BatchEndpoint create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBatchEndpoints()
-                .createOrUpdate(resourceGroupName, workspaceName, endpointName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getBatchEndpoints()
+            .createOrUpdate(resourceGroupName, workspaceName, endpointName, this.innerModel(), context);
         return this;
     }
 
@@ -133,56 +129,46 @@ public final class BatchEndpointImpl implements BatchEndpoint, BatchEndpoint.Def
     }
 
     public BatchEndpoint apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBatchEndpoints()
-                .update(resourceGroupName, workspaceName, endpointName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getBatchEndpoints()
+            .update(resourceGroupName, workspaceName, endpointName, updateBody, Context.NONE);
         return this;
     }
 
     public BatchEndpoint apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBatchEndpoints()
-                .update(resourceGroupName, workspaceName, endpointName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getBatchEndpoints()
+            .update(resourceGroupName, workspaceName, endpointName, updateBody, context);
         return this;
     }
 
-    BatchEndpointImpl(
-        BatchEndpointInner innerObject,
+    BatchEndpointImpl(BatchEndpointInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.endpointName = Utils.getValueFromIdByName(innerObject.id(), "batchEndpoints");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.endpointName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "batchEndpoints");
     }
 
     public BatchEndpoint refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBatchEndpoints()
-                .getWithResponse(resourceGroupName, workspaceName, endpointName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBatchEndpoints()
+            .getWithResponse(resourceGroupName, workspaceName, endpointName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public BatchEndpoint refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBatchEndpoints()
-                .getWithResponse(resourceGroupName, workspaceName, endpointName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBatchEndpoints()
+            .getWithResponse(resourceGroupName, workspaceName, endpointName, context)
+            .getValue();
         return this;
     }
 
     public Response<EndpointAuthKeys> listKeysWithResponse(Context context) {
-        return serviceManager
-            .batchEndpoints()
+        return serviceManager.batchEndpoints()
             .listKeysWithResponse(resourceGroupName, workspaceName, endpointName, context);
     }
 
@@ -215,13 +201,13 @@ public final class BatchEndpointImpl implements BatchEndpoint, BatchEndpoint.Def
         }
     }
 
-    public BatchEndpointImpl withIdentity(ManagedServiceIdentity identity) {
-        this.innerModel().withIdentity(identity);
+    public BatchEndpointImpl withKind(String kind) {
+        this.innerModel().withKind(kind);
         return this;
     }
 
-    public BatchEndpointImpl withKind(String kind) {
-        this.innerModel().withKind(kind);
+    public BatchEndpointImpl withIdentity(ManagedServiceIdentity identity) {
+        this.innerModel().withIdentity(identity);
         return this;
     }
 

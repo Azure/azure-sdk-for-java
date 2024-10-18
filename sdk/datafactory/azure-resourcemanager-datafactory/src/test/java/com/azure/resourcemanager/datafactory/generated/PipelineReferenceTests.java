@@ -11,17 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class PipelineReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PipelineReference model = BinaryData.fromString("{\"referenceName\":\"d\",\"name\":\"rxwhydtlu\"}")
-            .toObject(PipelineReference.class);
-        Assertions.assertEquals("d", model.referenceName());
-        Assertions.assertEquals("rxwhydtlu", model.name());
+        PipelineReference model
+            = BinaryData.fromString("{\"referenceName\":\"pycvjqdvdwkqpldr\",\"name\":\"fgnaavuagnteta\"}")
+                .toObject(PipelineReference.class);
+        Assertions.assertEquals("pycvjqdvdwkqpldr", model.referenceName());
+        Assertions.assertEquals("fgnaavuagnteta", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PipelineReference model = new PipelineReference().withReferenceName("d").withName("rxwhydtlu");
+        PipelineReference model
+            = new PipelineReference().withReferenceName("pycvjqdvdwkqpldr").withName("fgnaavuagnteta");
         model = BinaryData.fromObject(model).toObject(PipelineReference.class);
-        Assertions.assertEquals("d", model.referenceName());
-        Assertions.assertEquals("rxwhydtlu", model.name());
+        Assertions.assertEquals("pycvjqdvdwkqpldr", model.referenceName());
+        Assertions.assertEquals("fgnaavuagnteta", model.name());
     }
 }

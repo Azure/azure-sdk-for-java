@@ -11,9 +11,7 @@ import com.azure.resourcemanager.batch.fluent.models.OperationInner;
  */
 public interface Operation {
     /**
-     * Gets the name property: The operation name.
-     * 
-     * This is of the format {provider}/{resource}/{operation}.
+     * Gets the name property: This is of the format {provider}/{resource}/{operation}.
      * 
      * @return the name value.
      */

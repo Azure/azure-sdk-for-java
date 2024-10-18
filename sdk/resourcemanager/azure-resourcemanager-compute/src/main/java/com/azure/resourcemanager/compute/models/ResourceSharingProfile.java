@@ -20,7 +20,7 @@ import java.util.List;
 public final class ResourceSharingProfile implements JsonSerializable<ResourceSharingProfile> {
     /*
      * Specifies an array of subscription resource IDs that capacity reservation group is shared with. **Note:** Minimum
-     * api-version: 2024-03-01. Please refer to https://aka.ms/computereservationsharing for more details.
+     * api-version: 2023-09-01. Please refer to https://aka.ms/computereservationsharing for more details.
      */
     private List<SubResource> subscriptionIds;
 
@@ -32,7 +32,7 @@ public final class ResourceSharingProfile implements JsonSerializable<ResourceSh
 
     /**
      * Get the subscriptionIds property: Specifies an array of subscription resource IDs that capacity reservation group
-     * is shared with. **Note:** Minimum api-version: 2024-03-01. Please refer to
+     * is shared with. **Note:** Minimum api-version: 2023-09-01. Please refer to
      * https://aka.ms/computereservationsharing for more details.
      * 
      * @return the subscriptionIds value.
@@ -43,7 +43,7 @@ public final class ResourceSharingProfile implements JsonSerializable<ResourceSh
 
     /**
      * Set the subscriptionIds property: Specifies an array of subscription resource IDs that capacity reservation group
-     * is shared with. **Note:** Minimum api-version: 2024-03-01. Please refer to
+     * is shared with. **Note:** Minimum api-version: 2023-09-01. Please refer to
      * https://aka.ms/computereservationsharing for more details.
      * 
      * @param subscriptionIds the subscriptionIds value to set.

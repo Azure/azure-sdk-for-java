@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.securityinsights.fluent.models.RelationInner;
 
-/** Resource collection API of IncidentRelations. */
+/**
+ * Resource collection API of IncidentRelations.
+ */
 public interface IncidentRelations {
     /**
      * Gets all incident relations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param incidentId Incident ID.
@@ -26,7 +28,7 @@ public interface IncidentRelations {
 
     /**
      * Gets all incident relations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param incidentId Incident ID.
@@ -34,27 +36,36 @@ public interface IncidentRelations {
      * @param orderby Sorts the results. Optional.
      * @param top Returns only the first n results. Optional.
      * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
-     *     specifies a starting point to use for subsequent calls. Optional.
+     * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
+     * a starting point to use for subsequent calls. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all incident relations as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Relation> list(
-        String resourceGroupName,
-        String workspaceName,
-        String incidentId,
-        String filter,
-        String orderby,
-        Integer top,
-        String skipToken,
-        Context context);
+    PagedIterable<Relation> list(String resourceGroupName, String workspaceName, String incidentId, String filter,
+        String orderby, Integer top, String skipToken, Context context);
 
     /**
      * Gets an incident relation.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param incidentId Incident ID.
+     * @param relationName Relation Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an incident relation along with {@link Response}.
+     */
+    Response<Relation> getWithResponse(String resourceGroupName, String workspaceName, String incidentId,
+        String relationName, Context context);
+
+    /**
+     * Gets an incident relation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param incidentId Incident ID.
@@ -67,40 +78,8 @@ public interface IncidentRelations {
     Relation get(String resourceGroupName, String workspaceName, String incidentId, String relationName);
 
     /**
-     * Gets an incident relation.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param incidentId Incident ID.
-     * @param relationName Relation Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an incident relation along with {@link Response}.
-     */
-    Response<Relation> getWithResponse(
-        String resourceGroupName, String workspaceName, String incidentId, String relationName, Context context);
-
-    /**
      * Creates or updates the incident relation.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param incidentId Incident ID.
-     * @param relationName Relation Name.
-     * @param relation The relation model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a relation between two resources.
-     */
-    Relation createOrUpdate(
-        String resourceGroupName, String workspaceName, String incidentId, String relationName, RelationInner relation);
-
-    /**
-     * Creates or updates the incident relation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param incidentId Incident ID.
@@ -112,30 +91,28 @@ public interface IncidentRelations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a relation between two resources along with {@link Response}.
      */
-    Response<Relation> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String incidentId,
-        String relationName,
-        RelationInner relation,
-        Context context);
+    Response<Relation> createOrUpdateWithResponse(String resourceGroupName, String workspaceName, String incidentId,
+        String relationName, RelationInner relation, Context context);
 
     /**
-     * Delete the incident relation.
-     *
+     * Creates or updates the incident relation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param incidentId Incident ID.
      * @param relationName Relation Name.
+     * @param relation The relation model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a relation between two resources.
      */
-    void delete(String resourceGroupName, String workspaceName, String incidentId, String relationName);
+    Relation createOrUpdate(String resourceGroupName, String workspaceName, String incidentId, String relationName,
+        RelationInner relation);
 
     /**
      * Delete the incident relation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param incidentId Incident ID.
@@ -146,6 +123,19 @@ public interface IncidentRelations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String incidentId, String relationName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String incidentId,
+        String relationName, Context context);
+
+    /**
+     * Delete the incident relation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param incidentId Incident ID.
+     * @param relationName Relation Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String workspaceName, String incidentId, String relationName);
 }

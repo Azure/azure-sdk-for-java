@@ -21,7 +21,7 @@ public final class ManagedPrivateEndpointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"connectionState\":{\"actionsRequired\":\"forxakpmzkdisr\",\"description\":\"krcjvoivnfdovw\",\"status\":\"eguvip\"},\"fqdns\":[\"inwrhfrbwoylpme\",\"cbblg\"],\"groupId\":\"e\",\"isReserved\":true,\"privateLinkResourceId\":\"rxuyorh\",\"provisioningState\":\"ihzwdoflwlm\",\"\":{\"vkuuyehmnvfhyiax\":\"datavmfosfpgqux\"}},\"name\":\"pwhczqjoovyps\",\"type\":\"ghwokbwzpxlx\",\"etag\":\"hhkabeo\",\"id\":\"qoetckm\"}";
+            = "{\"properties\":{\"connectionState\":{\"actionsRequired\":\"ofvzpbd\",\"description\":\"qtruyzbrkzsax\",\"status\":\"nsepdwxflmk\"},\"fqdns\":[\"idripnut\"],\"groupId\":\"hzejkuszq\",\"isReserved\":false,\"privateLinkResourceId\":\"tgzrgmc\",\"provisioningState\":\"vvjamxgqxb\",\"\":{\"ju\":\"dataxe\",\"uvxvdu\":\"dataykommmygmit\"}},\"name\":\"bd\",\"type\":\"vx\",\"etag\":\"o\",\"id\":\"xu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,12 @@ public final class ManagedPrivateEndpointsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ManagedPrivateEndpointResource response = manager.managedPrivateEndpoints()
-            .getWithResponse("qdtcibb", "ijkwzjlk", "moexughztr", "timtf", "uylqpzskngfcbl",
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("mlcenty", "d", "kvmft", "qaewu", "poltq", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qoetckm", response.id());
-        Assertions.assertEquals("inwrhfrbwoylpme", response.properties().fqdns().get(0));
-        Assertions.assertEquals("e", response.properties().groupId());
-        Assertions.assertEquals("rxuyorh", response.properties().privateLinkResourceId());
+        Assertions.assertEquals("xu", response.id());
+        Assertions.assertEquals("idripnut", response.properties().fqdns().get(0));
+        Assertions.assertEquals("hzejkuszq", response.properties().groupId());
+        Assertions.assertEquals("tgzrgmc", response.properties().privateLinkResourceId());
     }
 }

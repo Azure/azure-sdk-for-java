@@ -36,6 +36,7 @@ import com.azure.resourcemanager.containerservice.fluent.AgentPoolsClient;
 import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolAvailableVersionsInner;
 import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolInner;
 import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolUpgradeProfileInner;
+import com.azure.resourcemanager.containerservice.models.AgentPoolDeleteMachinesParameter;
 import com.azure.resourcemanager.containerservice.models.AgentPoolListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -117,7 +118,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
-            @PathParam("agentPoolName") String agentPoolName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("agentPoolName") String agentPoolName,
+            @QueryParam("ignore-pod-disruption-budget") Boolean ignorePodDisruptionBudget,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/upgradeProfiles/default")
@@ -127,6 +130,17 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @PathParam("agentPoolName") String agentPoolName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/deleteMachines")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> deleteMachines(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @PathParam("agentPoolName") String agentPoolName,
+            @BodyParam("application/json") AgentPoolDeleteMachinesParameter machines,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/availableAgentPoolVersions")
@@ -191,7 +205,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.abortLatestOperation(this.client.getEndpoint(), apiVersion,
@@ -236,7 +250,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.abortLatestOperation(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -449,7 +463,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -489,7 +503,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -596,7 +610,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -638,7 +652,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -734,7 +748,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
@@ -782,7 +796,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -954,6 +968,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     * considering Pod Disruption Budget.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -961,7 +977,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
-        String agentPoolName) {
+        String agentPoolName, Boolean ignorePodDisruptionBudget) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -980,11 +996,12 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
-                this.client.getSubscriptionId(), resourceGroupName, resourceName, agentPoolName, accept, context))
+            .withContext(
+                context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, resourceName, agentPoolName, ignorePodDisruptionBudget, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -994,6 +1011,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     * considering Pod Disruption Budget.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1002,7 +1021,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
-        String agentPoolName, Context context) {
+        String agentPoolName, Boolean ignorePodDisruptionBudget, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1021,11 +1040,33 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            resourceName, agentPoolName, accept, context);
+            resourceName, agentPoolName, ignorePodDisruptionBudget, accept, context);
+    }
+
+    /**
+     * Deletes an agent pool in the specified managed cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     * considering Pod Disruption Budget.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
+        String agentPoolName, Boolean ignorePodDisruptionBudget) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, resourceName, agentPoolName, ignorePodDisruptionBudget);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1042,7 +1083,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
         String agentPoolName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName, agentPoolName);
+        final Boolean ignorePodDisruptionBudget = null;
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, resourceName, agentPoolName, ignorePodDisruptionBudget);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -1053,6 +1096,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     * considering Pod Disruption Budget.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1061,10 +1106,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
-        String agentPoolName, Context context) {
+        String agentPoolName, Boolean ignorePodDisruptionBudget, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, resourceName, agentPoolName, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName, agentPoolName,
+            ignorePodDisruptionBudget, context);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             context);
     }
@@ -1083,7 +1128,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String agentPoolName) {
-        return this.beginDeleteAsync(resourceGroupName, resourceName, agentPoolName).getSyncPoller();
+        final Boolean ignorePodDisruptionBudget = null;
+        return this.beginDeleteAsync(resourceGroupName, resourceName, agentPoolName, ignorePodDisruptionBudget)
+            .getSyncPoller();
     }
 
     /**
@@ -1092,6 +1139,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     * considering Pod Disruption Budget.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1100,8 +1149,29 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
-        String agentPoolName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, resourceName, agentPoolName, context).getSyncPoller();
+        String agentPoolName, Boolean ignorePodDisruptionBudget, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, resourceName, agentPoolName, ignorePodDisruptionBudget, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes an agent pool in the specified managed cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     * considering Pod Disruption Budget.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String agentPoolName,
+        Boolean ignorePodDisruptionBudget) {
+        return beginDeleteAsync(resourceGroupName, resourceName, agentPoolName, ignorePodDisruptionBudget).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1117,7 +1187,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String agentPoolName) {
-        return beginDeleteAsync(resourceGroupName, resourceName, agentPoolName).last()
+        final Boolean ignorePodDisruptionBudget = null;
+        return beginDeleteAsync(resourceGroupName, resourceName, agentPoolName, ignorePodDisruptionBudget).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1127,6 +1198,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     * considering Pod Disruption Budget.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1135,8 +1208,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String agentPoolName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, agentPoolName, context).last()
+        Boolean ignorePodDisruptionBudget, Context context) {
+        return beginDeleteAsync(resourceGroupName, resourceName, agentPoolName, ignorePodDisruptionBudget, context)
+            .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1152,7 +1226,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String agentPoolName) {
-        deleteAsync(resourceGroupName, resourceName, agentPoolName).block();
+        final Boolean ignorePodDisruptionBudget = null;
+        deleteAsync(resourceGroupName, resourceName, agentPoolName, ignorePodDisruptionBudget).block();
     }
 
     /**
@@ -1161,14 +1236,17 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     * considering Pod Disruption Budget.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String resourceName, String agentPoolName, Context context) {
-        deleteAsync(resourceGroupName, resourceName, agentPoolName, context).block();
+    public void delete(String resourceGroupName, String resourceName, String agentPoolName,
+        Boolean ignorePodDisruptionBudget, Context context) {
+        deleteAsync(resourceGroupName, resourceName, agentPoolName, ignorePodDisruptionBudget, context).block();
     }
 
     /**
@@ -1204,7 +1282,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getUpgradeProfile(this.client.getEndpoint(), apiVersion,
@@ -1246,7 +1324,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getUpgradeProfile(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1307,6 +1385,253 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
+     * Deletes specific machines in an agent pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param machines A list of machines from the agent pool to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> deleteMachinesWithResponseAsync(String resourceGroupName,
+        String resourceName, String agentPoolName, AgentPoolDeleteMachinesParameter machines) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (agentPoolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
+        }
+        if (machines == null) {
+            return Mono.error(new IllegalArgumentException("Parameter machines is required and cannot be null."));
+        } else {
+            machines.validate();
+        }
+        final String apiVersion = "2024-08-01";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.deleteMachines(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, resourceName, agentPoolName, machines, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Deletes specific machines in an agent pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param machines A list of machines from the agent pool to be deleted.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> deleteMachinesWithResponseAsync(String resourceGroupName,
+        String resourceName, String agentPoolName, AgentPoolDeleteMachinesParameter machines, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (agentPoolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
+        }
+        if (machines == null) {
+            return Mono.error(new IllegalArgumentException("Parameter machines is required and cannot be null."));
+        } else {
+            machines.validate();
+        }
+        final String apiVersion = "2024-08-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.deleteMachines(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, resourceName, agentPoolName, machines, accept, context);
+    }
+
+    /**
+     * Deletes specific machines in an agent pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param machines A list of machines from the agent pool to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteMachinesAsync(String resourceGroupName, String resourceName,
+        String agentPoolName, AgentPoolDeleteMachinesParameter machines) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteMachinesWithResponseAsync(resourceGroupName, resourceName, agentPoolName, machines);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Deletes specific machines in an agent pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param machines A list of machines from the agent pool to be deleted.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteMachinesAsync(String resourceGroupName, String resourceName,
+        String agentPoolName, AgentPoolDeleteMachinesParameter machines, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteMachinesWithResponseAsync(resourceGroupName, resourceName, agentPoolName, machines, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Deletes specific machines in an agent pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param machines A list of machines from the agent pool to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteMachines(String resourceGroupName, String resourceName,
+        String agentPoolName, AgentPoolDeleteMachinesParameter machines) {
+        return this.beginDeleteMachinesAsync(resourceGroupName, resourceName, agentPoolName, machines).getSyncPoller();
+    }
+
+    /**
+     * Deletes specific machines in an agent pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param machines A list of machines from the agent pool to be deleted.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteMachines(String resourceGroupName, String resourceName,
+        String agentPoolName, AgentPoolDeleteMachinesParameter machines, Context context) {
+        return this.beginDeleteMachinesAsync(resourceGroupName, resourceName, agentPoolName, machines, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes specific machines in an agent pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param machines A list of machines from the agent pool to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteMachinesAsync(String resourceGroupName, String resourceName, String agentPoolName,
+        AgentPoolDeleteMachinesParameter machines) {
+        return beginDeleteMachinesAsync(resourceGroupName, resourceName, agentPoolName, machines).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes specific machines in an agent pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param machines A list of machines from the agent pool to be deleted.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteMachinesAsync(String resourceGroupName, String resourceName, String agentPoolName,
+        AgentPoolDeleteMachinesParameter machines, Context context) {
+        return beginDeleteMachinesAsync(resourceGroupName, resourceName, agentPoolName, machines, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes specific machines in an agent pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param machines A list of machines from the agent pool to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteMachines(String resourceGroupName, String resourceName, String agentPoolName,
+        AgentPoolDeleteMachinesParameter machines) {
+        deleteMachinesAsync(resourceGroupName, resourceName, agentPoolName, machines).block();
+    }
+
+    /**
+     * Deletes specific machines in an agent pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param machines A list of machines from the agent pool to be deleted.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteMachines(String resourceGroupName, String resourceName, String agentPoolName,
+        AgentPoolDeleteMachinesParameter machines, Context context) {
+        deleteMachinesAsync(resourceGroupName, resourceName, agentPoolName, machines, context).block();
+    }
+
+    /**
      * Gets a list of supported Kubernetes versions for the specified agent pool.
      * 
      * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
@@ -1338,7 +1663,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getAvailableAgentPoolVersions(this.client.getEndpoint(), apiVersion,
@@ -1379,7 +1704,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getAvailableAgentPoolVersions(this.client.getEndpoint(), apiVersion,
@@ -1481,7 +1806,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.upgradeNodeImageVersion(this.client.getEndpoint(), apiVersion,
@@ -1526,7 +1851,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.upgradeNodeImageVersion(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),

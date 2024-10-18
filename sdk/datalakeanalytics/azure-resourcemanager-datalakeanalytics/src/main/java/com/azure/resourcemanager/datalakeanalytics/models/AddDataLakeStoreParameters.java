@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.AddDataLakeStoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The parameters used to add a new Data Lake Store account. */
+/**
+ * The parameters used to add a new Data Lake Store account.
+ */
 @Fluent
-public final class AddDataLakeStoreParameters {
+public final class AddDataLakeStoreParameters implements JsonSerializable<AddDataLakeStoreParameters> {
     /*
      * The Data Lake Store account properties to use when adding a new Data Lake Store account.
      */
-    @JsonProperty(value = "properties")
     private AddDataLakeStoreProperties innerProperties;
 
-    /** Creates an instance of AddDataLakeStoreParameters class. */
+    /**
+     * Creates an instance of AddDataLakeStoreParameters class.
+     */
     public AddDataLakeStoreParameters() {
     }
 
     /**
      * Get the innerProperties property: The Data Lake Store account properties to use when adding a new Data Lake Store
      * account.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AddDataLakeStoreProperties innerProperties() {
@@ -33,7 +40,7 @@ public final class AddDataLakeStoreParameters {
 
     /**
      * Get the suffix property: The optional suffix for the Data Lake Store account.
-     *
+     * 
      * @return the suffix value.
      */
     public String suffix() {
@@ -42,7 +49,7 @@ public final class AddDataLakeStoreParameters {
 
     /**
      * Set the suffix property: The optional suffix for the Data Lake Store account.
-     *
+     * 
      * @param suffix the suffix value to set.
      * @return the AddDataLakeStoreParameters object itself.
      */
@@ -56,12 +63,49 @@ public final class AddDataLakeStoreParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddDataLakeStoreParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddDataLakeStoreParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AddDataLakeStoreParameters.
+     */
+    public static AddDataLakeStoreParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddDataLakeStoreParameters deserializedAddDataLakeStoreParameters = new AddDataLakeStoreParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedAddDataLakeStoreParameters.innerProperties
+                        = AddDataLakeStoreProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddDataLakeStoreParameters;
+        });
     }
 }

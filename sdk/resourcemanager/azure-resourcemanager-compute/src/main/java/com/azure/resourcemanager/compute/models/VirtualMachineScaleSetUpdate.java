@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetUpdateProperties;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,6 +38,11 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      * The identity of the virtual machine scale set, if configured.
      */
     private VirtualMachineScaleSetIdentity identity;
+
+    /*
+     * The virtual machine scale set zones.
+     */
+    private List<String> zones;
 
     /**
      * Creates an instance of VirtualMachineScaleSetUpdate class.
@@ -110,6 +116,26 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      */
     public VirtualMachineScaleSetUpdate withIdentity(VirtualMachineScaleSetIdentity identity) {
         this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the zones property: The virtual machine scale set zones.
+     * 
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: The virtual machine scale set zones.
+     * 
+     * @param zones the zones value to set.
+     * @return the VirtualMachineScaleSetUpdate object itself.
+     */
+    public VirtualMachineScaleSetUpdate withZones(List<String> zones) {
+        this.zones = zones;
         return this;
     }
 
@@ -419,6 +445,55 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
+     * Get the zonalPlatformFaultDomainAlignMode property: Specifies the align mode between Virtual Machine Scale Set
+     * compute and storage Fault Domain count.
+     * 
+     * @return the zonalPlatformFaultDomainAlignMode value.
+     */
+    public ZonalPlatformFaultDomainAlignMode zonalPlatformFaultDomainAlignMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().zonalPlatformFaultDomainAlignMode();
+    }
+
+    /**
+     * Set the zonalPlatformFaultDomainAlignMode property: Specifies the align mode between Virtual Machine Scale Set
+     * compute and storage Fault Domain count.
+     * 
+     * @param zonalPlatformFaultDomainAlignMode the zonalPlatformFaultDomainAlignMode value to set.
+     * @return the VirtualMachineScaleSetUpdate object itself.
+     */
+    public VirtualMachineScaleSetUpdate
+        withZonalPlatformFaultDomainAlignMode(ZonalPlatformFaultDomainAlignMode zonalPlatformFaultDomainAlignMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateProperties();
+        }
+        this.innerProperties().withZonalPlatformFaultDomainAlignMode(zonalPlatformFaultDomainAlignMode);
+        return this;
+    }
+
+    /**
+     * Get the skuProfile property: Specifies the sku profile for the virtual machine scale set.
+     * 
+     * @return the skuProfile value.
+     */
+    public SkuProfile skuProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().skuProfile();
+    }
+
+    /**
+     * Set the skuProfile property: Specifies the sku profile for the virtual machine scale set.
+     * 
+     * @param skuProfile the skuProfile value to set.
+     * @return the VirtualMachineScaleSetUpdate object itself.
+     */
+    public VirtualMachineScaleSetUpdate withSkuProfile(SkuProfile skuProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateProperties();
+        }
+        this.innerProperties().withSkuProfile(skuProfile);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -451,6 +526,7 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
         jsonWriter.writeJsonField("plan", this.plan);
         jsonWriter.writeJsonField("properties", this.innerProperties);
         jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -481,6 +557,9 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
                         = VirtualMachineScaleSetUpdateProperties.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetUpdate.identity = VirtualMachineScaleSetIdentity.fromJson(reader);
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualMachineScaleSetUpdate.zones = zones;
                 } else {
                     reader.skipChildren();
                 }

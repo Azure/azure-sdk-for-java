@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class ManagedIntegrationRuntimeNodeStatus
      * @param name a name to look for.
      * @return the corresponding ManagedIntegrationRuntimeNodeStatus.
      */
-    @JsonCreator
     public static ManagedIntegrationRuntimeNodeStatus fromString(String name) {
         return fromString(name, ManagedIntegrationRuntimeNodeStatus.class);
     }

@@ -4,31 +4,23 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-/** Samples for BillingProfiles ListByBillingAccount. */
+/**
+ * Samples for BillingProfiles ListByBillingAccount.
+ */
 public final class BillingProfilesListByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingProfilesListWithExpand.json
-     */
-    /**
-     * Sample code: BillingProfilesListWithExpand.
-     *
-     * @param manager Entry point to BillingManager.
-     */
-    public static void billingProfilesListWithExpand(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager
-            .billingProfiles()
-            .listByBillingAccount("{billingAccountName}", "invoiceSections", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingProfilesListByBillingAccount.json
+     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
+     * billingProfilesListByBillingAccount.json
      */
     /**
      * Sample code: BillingProfilesListByBillingAccount.
-     *
+     * 
      * @param manager Entry point to BillingManager.
      */
     public static void billingProfilesListByBillingAccount(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingProfiles().listByBillingAccount("{billingAccountName}", null, com.azure.core.util.Context.NONE);
+        manager.billingProfiles()
+            .listByBillingAccount(
+                "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", null, null,
+                null, null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }

@@ -6,117 +6,109 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Property definition. */
+/**
+ * Property definition.
+ */
 @Fluent
-public final class PropertyDefinition {
+public final class PropertyDefinition implements JsonSerializable<PropertyDefinition> {
     /*
      * Array value separator for properties with isArray set.
      */
-    @JsonProperty(value = "arrayValueSeparator")
     private String arrayValueSeparator;
 
     /*
      * Describes valid values for an enum property.
      */
-    @JsonProperty(value = "enumValidValues")
     private List<ProfileEnumValidValuesFormat> enumValidValues;
 
     /*
      * Name of the property.
      */
-    @JsonProperty(value = "fieldName", required = true)
     private String fieldName;
 
     /*
      * Type of the property.
      */
-    @JsonProperty(value = "fieldType", required = true)
     private String fieldType;
 
     /*
      * Indicates if the property is actually an array of the fieldType above on the data api.
      */
-    @JsonProperty(value = "isArray")
     private Boolean isArray;
 
     /*
      * Indicates if the property is an enum.
      */
-    @JsonProperty(value = "isEnum")
     private Boolean isEnum;
 
     /*
      * Indicates if the property is an flag enum.
      */
-    @JsonProperty(value = "isFlagEnum")
     private Boolean isFlagEnum;
 
     /*
      * Whether the property is an Image.
      */
-    @JsonProperty(value = "isImage")
     private Boolean isImage;
 
     /*
      * Whether the property is a localized string.
      */
-    @JsonProperty(value = "isLocalizedString")
     private Boolean isLocalizedString;
 
     /*
      * Whether the property is a name or a part of name.
      */
-    @JsonProperty(value = "isName")
     private Boolean isName;
 
     /*
-     * Whether property value is required on instances, IsRequired field only for Interaction. Profile Instance will
-     * not check for required field.
+     * Whether property value is required on instances, IsRequired field only for Interaction. Profile Instance will not
+     * check for required field.
      */
-    @JsonProperty(value = "isRequired")
     private Boolean isRequired;
 
     /*
      * The ID associated with the property.
      */
-    @JsonProperty(value = "propertyId")
     private String propertyId;
 
     /*
      * URL encoded schema.org item prop link for the property.
      */
-    @JsonProperty(value = "schemaItemPropLink")
     private String schemaItemPropLink;
 
     /*
      * Max length of string. Used only if type is string.
      */
-    @JsonProperty(value = "maxLength")
     private Integer maxLength;
 
     /*
      * Whether property is available in graph or not.
      */
-    @JsonProperty(value = "isAvailableInGraph")
     private Boolean isAvailableInGraph;
 
     /*
      * This is specific to interactions modeled as activities. Data sources are used to determine where data is stored
      * and also in precedence rules.
      */
-    @JsonProperty(value = "dataSourcePrecedenceRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<DataSourcePrecedence> dataSourcePrecedenceRules;
 
-    /** Creates an instance of PropertyDefinition class. */
+    /**
+     * Creates an instance of PropertyDefinition class.
+     */
     public PropertyDefinition() {
     }
 
     /**
      * Get the arrayValueSeparator property: Array value separator for properties with isArray set.
-     *
+     * 
      * @return the arrayValueSeparator value.
      */
     public String arrayValueSeparator() {
@@ -125,7 +117,7 @@ public final class PropertyDefinition {
 
     /**
      * Set the arrayValueSeparator property: Array value separator for properties with isArray set.
-     *
+     * 
      * @param arrayValueSeparator the arrayValueSeparator value to set.
      * @return the PropertyDefinition object itself.
      */
@@ -136,7 +128,7 @@ public final class PropertyDefinition {
 
     /**
      * Get the enumValidValues property: Describes valid values for an enum property.
-     *
+     * 
      * @return the enumValidValues value.
      */
     public List<ProfileEnumValidValuesFormat> enumValidValues() {
@@ -145,7 +137,7 @@ public final class PropertyDefinition {
 
     /**
      * Set the enumValidValues property: Describes valid values for an enum property.
-     *
+     * 
      * @param enumValidValues the enumValidValues value to set.
      * @return the PropertyDefinition object itself.
      */
@@ -156,7 +148,7 @@ public final class PropertyDefinition {
 
     /**
      * Get the fieldName property: Name of the property.
-     *
+     * 
      * @return the fieldName value.
      */
     public String fieldName() {
@@ -165,7 +157,7 @@ public final class PropertyDefinition {
 
     /**
      * Set the fieldName property: Name of the property.
-     *
+     * 
      * @param fieldName the fieldName value to set.
      * @return the PropertyDefinition object itself.
      */
@@ -176,7 +168,7 @@ public final class PropertyDefinition {
 
     /**
      * Get the fieldType property: Type of the property.
-     *
+     * 
      * @return the fieldType value.
      */
     public String fieldType() {
@@ -185,7 +177,7 @@ public final class PropertyDefinition {
 
     /**
      * Set the fieldType property: Type of the property.
-     *
+     * 
      * @param fieldType the fieldType value to set.
      * @return the PropertyDefinition object itself.
      */
@@ -196,7 +188,7 @@ public final class PropertyDefinition {
 
     /**
      * Get the isArray property: Indicates if the property is actually an array of the fieldType above on the data api.
-     *
+     * 
      * @return the isArray value.
      */
     public Boolean isArray() {
@@ -205,7 +197,7 @@ public final class PropertyDefinition {
 
     /**
      * Set the isArray property: Indicates if the property is actually an array of the fieldType above on the data api.
-     *
+     * 
      * @param isArray the isArray value to set.
      * @return the PropertyDefinition object itself.
      */
@@ -216,7 +208,7 @@ public final class PropertyDefinition {
 
     /**
      * Get the isEnum property: Indicates if the property is an enum.
-     *
+     * 
      * @return the isEnum value.
      */
     public Boolean isEnum() {
@@ -225,7 +217,7 @@ public final class PropertyDefinition {
 
     /**
      * Set the isEnum property: Indicates if the property is an enum.
-     *
+     * 
      * @param isEnum the isEnum value to set.
      * @return the PropertyDefinition object itself.
      */
@@ -236,7 +228,7 @@ public final class PropertyDefinition {
 
     /**
      * Get the isFlagEnum property: Indicates if the property is an flag enum.
-     *
+     * 
      * @return the isFlagEnum value.
      */
     public Boolean isFlagEnum() {
@@ -245,7 +237,7 @@ public final class PropertyDefinition {
 
     /**
      * Set the isFlagEnum property: Indicates if the property is an flag enum.
-     *
+     * 
      * @param isFlagEnum the isFlagEnum value to set.
      * @return the PropertyDefinition object itself.
      */
@@ -256,7 +248,7 @@ public final class PropertyDefinition {
 
     /**
      * Get the isImage property: Whether the property is an Image.
-     *
+     * 
      * @return the isImage value.
      */
     public Boolean isImage() {
@@ -265,7 +257,7 @@ public final class PropertyDefinition {
 
     /**
      * Set the isImage property: Whether the property is an Image.
-     *
+     * 
      * @param isImage the isImage value to set.
      * @return the PropertyDefinition object itself.
      */
@@ -276,7 +268,7 @@ public final class PropertyDefinition {
 
     /**
      * Get the isLocalizedString property: Whether the property is a localized string.
-     *
+     * 
      * @return the isLocalizedString value.
      */
     public Boolean isLocalizedString() {
@@ -285,7 +277,7 @@ public final class PropertyDefinition {
 
     /**
      * Set the isLocalizedString property: Whether the property is a localized string.
-     *
+     * 
      * @param isLocalizedString the isLocalizedString value to set.
      * @return the PropertyDefinition object itself.
      */
@@ -296,7 +288,7 @@ public final class PropertyDefinition {
 
     /**
      * Get the isName property: Whether the property is a name or a part of name.
-     *
+     * 
      * @return the isName value.
      */
     public Boolean isName() {
@@ -305,7 +297,7 @@ public final class PropertyDefinition {
 
     /**
      * Set the isName property: Whether the property is a name or a part of name.
-     *
+     * 
      * @param isName the isName value to set.
      * @return the PropertyDefinition object itself.
      */
@@ -317,7 +309,7 @@ public final class PropertyDefinition {
     /**
      * Get the isRequired property: Whether property value is required on instances, IsRequired field only for
      * Interaction. Profile Instance will not check for required field.
-     *
+     * 
      * @return the isRequired value.
      */
     public Boolean isRequired() {
@@ -327,7 +319,7 @@ public final class PropertyDefinition {
     /**
      * Set the isRequired property: Whether property value is required on instances, IsRequired field only for
      * Interaction. Profile Instance will not check for required field.
-     *
+     * 
      * @param isRequired the isRequired value to set.
      * @return the PropertyDefinition object itself.
      */
@@ -338,7 +330,7 @@ public final class PropertyDefinition {
 
     /**
      * Get the propertyId property: The ID associated with the property.
-     *
+     * 
      * @return the propertyId value.
      */
     public String propertyId() {
@@ -347,7 +339,7 @@ public final class PropertyDefinition {
 
     /**
      * Set the propertyId property: The ID associated with the property.
-     *
+     * 
      * @param propertyId the propertyId value to set.
      * @return the PropertyDefinition object itself.
      */
@@ -358,7 +350,7 @@ public final class PropertyDefinition {
 
     /**
      * Get the schemaItemPropLink property: URL encoded schema.org item prop link for the property.
-     *
+     * 
      * @return the schemaItemPropLink value.
      */
     public String schemaItemPropLink() {
@@ -367,7 +359,7 @@ public final class PropertyDefinition {
 
     /**
      * Set the schemaItemPropLink property: URL encoded schema.org item prop link for the property.
-     *
+     * 
      * @param schemaItemPropLink the schemaItemPropLink value to set.
      * @return the PropertyDefinition object itself.
      */
@@ -378,7 +370,7 @@ public final class PropertyDefinition {
 
     /**
      * Get the maxLength property: Max length of string. Used only if type is string.
-     *
+     * 
      * @return the maxLength value.
      */
     public Integer maxLength() {
@@ -387,7 +379,7 @@ public final class PropertyDefinition {
 
     /**
      * Set the maxLength property: Max length of string. Used only if type is string.
-     *
+     * 
      * @param maxLength the maxLength value to set.
      * @return the PropertyDefinition object itself.
      */
@@ -398,7 +390,7 @@ public final class PropertyDefinition {
 
     /**
      * Get the isAvailableInGraph property: Whether property is available in graph or not.
-     *
+     * 
      * @return the isAvailableInGraph value.
      */
     public Boolean isAvailableInGraph() {
@@ -407,7 +399,7 @@ public final class PropertyDefinition {
 
     /**
      * Set the isAvailableInGraph property: Whether property is available in graph or not.
-     *
+     * 
      * @param isAvailableInGraph the isAvailableInGraph value to set.
      * @return the PropertyDefinition object itself.
      */
@@ -419,7 +411,7 @@ public final class PropertyDefinition {
     /**
      * Get the dataSourcePrecedenceRules property: This is specific to interactions modeled as activities. Data sources
      * are used to determine where data is stored and also in precedence rules.
-     *
+     * 
      * @return the dataSourcePrecedenceRules value.
      */
     public List<DataSourcePrecedence> dataSourcePrecedenceRules() {
@@ -428,7 +420,7 @@ public final class PropertyDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -436,14 +428,12 @@ public final class PropertyDefinition {
             enumValidValues().forEach(e -> e.validate());
         }
         if (fieldName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property fieldName in model PropertyDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property fieldName in model PropertyDefinition"));
         }
         if (fieldType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property fieldType in model PropertyDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property fieldType in model PropertyDefinition"));
         }
         if (dataSourcePrecedenceRules() != null) {
             dataSourcePrecedenceRules().forEach(e -> e.validate());
@@ -451,4 +441,90 @@ public final class PropertyDefinition {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PropertyDefinition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("fieldName", this.fieldName);
+        jsonWriter.writeStringField("fieldType", this.fieldType);
+        jsonWriter.writeStringField("arrayValueSeparator", this.arrayValueSeparator);
+        jsonWriter.writeArrayField("enumValidValues", this.enumValidValues,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("isArray", this.isArray);
+        jsonWriter.writeBooleanField("isEnum", this.isEnum);
+        jsonWriter.writeBooleanField("isFlagEnum", this.isFlagEnum);
+        jsonWriter.writeBooleanField("isImage", this.isImage);
+        jsonWriter.writeBooleanField("isLocalizedString", this.isLocalizedString);
+        jsonWriter.writeBooleanField("isName", this.isName);
+        jsonWriter.writeBooleanField("isRequired", this.isRequired);
+        jsonWriter.writeStringField("propertyId", this.propertyId);
+        jsonWriter.writeStringField("schemaItemPropLink", this.schemaItemPropLink);
+        jsonWriter.writeNumberField("maxLength", this.maxLength);
+        jsonWriter.writeBooleanField("isAvailableInGraph", this.isAvailableInGraph);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PropertyDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PropertyDefinition if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PropertyDefinition.
+     */
+    public static PropertyDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PropertyDefinition deserializedPropertyDefinition = new PropertyDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String jsonFieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fieldName".equals(jsonFieldName)) {
+                    deserializedPropertyDefinition.fieldName = reader.getString();
+                } else if ("fieldType".equals(jsonFieldName)) {
+                    deserializedPropertyDefinition.fieldType = reader.getString();
+                } else if ("arrayValueSeparator".equals(jsonFieldName)) {
+                    deserializedPropertyDefinition.arrayValueSeparator = reader.getString();
+                } else if ("enumValidValues".equals(jsonFieldName)) {
+                    List<ProfileEnumValidValuesFormat> enumValidValues
+                        = reader.readArray(reader1 -> ProfileEnumValidValuesFormat.fromJson(reader1));
+                    deserializedPropertyDefinition.enumValidValues = enumValidValues;
+                } else if ("isArray".equals(jsonFieldName)) {
+                    deserializedPropertyDefinition.isArray = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isEnum".equals(jsonFieldName)) {
+                    deserializedPropertyDefinition.isEnum = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isFlagEnum".equals(jsonFieldName)) {
+                    deserializedPropertyDefinition.isFlagEnum = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isImage".equals(jsonFieldName)) {
+                    deserializedPropertyDefinition.isImage = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isLocalizedString".equals(jsonFieldName)) {
+                    deserializedPropertyDefinition.isLocalizedString = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isName".equals(jsonFieldName)) {
+                    deserializedPropertyDefinition.isName = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isRequired".equals(jsonFieldName)) {
+                    deserializedPropertyDefinition.isRequired = reader.getNullable(JsonReader::getBoolean);
+                } else if ("propertyId".equals(jsonFieldName)) {
+                    deserializedPropertyDefinition.propertyId = reader.getString();
+                } else if ("schemaItemPropLink".equals(jsonFieldName)) {
+                    deserializedPropertyDefinition.schemaItemPropLink = reader.getString();
+                } else if ("maxLength".equals(jsonFieldName)) {
+                    deserializedPropertyDefinition.maxLength = reader.getNullable(JsonReader::getInt);
+                } else if ("isAvailableInGraph".equals(jsonFieldName)) {
+                    deserializedPropertyDefinition.isAvailableInGraph = reader.getNullable(JsonReader::getBoolean);
+                } else if ("dataSourcePrecedenceRules".equals(jsonFieldName)) {
+                    List<DataSourcePrecedence> dataSourcePrecedenceRules
+                        = reader.readArray(reader1 -> DataSourcePrecedence.fromJson(reader1));
+                    deserializedPropertyDefinition.dataSourcePrecedenceRules = dataSourcePrecedenceRules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPropertyDefinition;
+        });
+    }
 }

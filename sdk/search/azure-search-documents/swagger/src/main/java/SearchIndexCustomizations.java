@@ -86,9 +86,9 @@ public class SearchIndexCustomizations extends Customization {
         customizeVectorQuery(packageCustomization.getClass("VectorQuery"));
         customizeVectorizedQuery(packageCustomization.getClass("VectorizedQuery"));
         customizeVectorizableTextQuery(packageCustomization.getClass("VectorizableTextQuery"));
-        //customizeVectorizableImageUrlQuery(packageCustomization.getClass("VectorizableImageUrlQuery"));
-        //customizeVectorizableImageBinaryQuery(packageCustomization.getClass("VectorizableImageBinaryQuery"));
-        //customizeSearchScoreThreshold(packageCustomization.getClass("SearchScoreThreshold"));
+        customizeVectorizableImageUrlQuery(packageCustomization.getClass("VectorizableImageUrlQuery"));
+        customizeVectorizableImageBinaryQuery(packageCustomization.getClass("VectorizableImageBinaryQuery"));
+        customizeSearchScoreThreshold(packageCustomization.getClass("SearchScoreThreshold"));
 
         packageCustomization.getClass("QueryAnswerResult").removeMethod("setAdditionalProperties");
         packageCustomization.getClass("QueryCaptionResult").removeMethod("setAdditionalProperties");

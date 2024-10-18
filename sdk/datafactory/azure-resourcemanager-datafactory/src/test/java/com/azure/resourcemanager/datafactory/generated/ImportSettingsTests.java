@@ -13,7 +13,7 @@ public final class ImportSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImportSettings model = BinaryData.fromString(
-            "{\"type\":\"ImportSettings\",\"\":{\"glwacsfbmbtcef\":\"datattptsdeequovan\",\"uslxyt\":\"datakuxgyumoamqxw\",\"nfpdilhzgjjeo\":\"dataobjledjxblob\"}}")
+            "{\"type\":\"ImportSettings\",\"\":{\"jmphyacd\":\"dataevpdbirh\",\"hljtkuyvytfuq\":\"datajmpnvgkxs\",\"kf\":\"datastqbxpyfawkjei\"}}")
             .toObject(ImportSettings.class);
     }
 

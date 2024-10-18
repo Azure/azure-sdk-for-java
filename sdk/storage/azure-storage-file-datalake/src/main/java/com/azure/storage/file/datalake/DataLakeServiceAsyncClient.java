@@ -22,8 +22,6 @@ import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
-import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImpl;
-import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImplBuilder;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeServiceProperties;
@@ -64,7 +62,8 @@ import static com.azure.core.util.FluxUtil.pagedFluxError;
 public class DataLakeServiceAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(DataLakeServiceAsyncClient.class);
 
-    private final AzureDataLakeStorageRestAPIImpl azureDataLakeStorage;
+    private final HttpPipeline pipeline;
+    private final String url;
 
     private final String accountName;
     private final DataLakeServiceVersion serviceVersion;
@@ -87,11 +86,8 @@ public class DataLakeServiceAsyncClient {
     DataLakeServiceAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, BlobServiceAsyncClient blobServiceAsyncClient, AzureSasCredential sasToken,
         boolean isTokenCredentialAuthenticated) {
-        this.azureDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
-            .pipeline(pipeline)
-            .url(url)
-            .version(serviceVersion.getVersion())
-            .buildClient();
+        this.pipeline = pipeline;
+        this.url = url;
         this.serviceVersion = serviceVersion;
 
         this.accountName = accountName;
@@ -135,7 +131,7 @@ public class DataLakeServiceAsyncClient {
      * @return The pipeline.
      */
     public HttpPipeline getHttpPipeline() {
-        return azureDataLakeStorage.getHttpPipeline();
+        return pipeline;
     }
 
     /**
@@ -255,7 +251,7 @@ public class DataLakeServiceAsyncClient {
      * @return the URL.
      */
     public String getAccountUrl() {
-        return azureDataLakeStorage.getUrl();
+        return url;
     }
 
     /**

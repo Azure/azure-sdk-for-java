@@ -42,6 +42,7 @@ import com.azure.resourcemanager.hdinsight.containers.models.ClusterListResult;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPatch;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterResizeData;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterUpgrade;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterUpgradeRollback;
 import com.azure.resourcemanager.hdinsight.containers.models.ServiceConfigListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -98,6 +99,17 @@ public final class ClustersClientImpl implements ClustersClient {
             @PathParam("clusterName") String clusterName,
             @BodyParam("application/json") ClusterUpgrade clusterUpgradeRequest, @HeaderParam("Accept") String accept,
             Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusterpools/{clusterPoolName}/clusters/{clusterName}/rollback")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> upgradeManualRollback(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("clusterPoolName") String clusterPoolName,
+            @PathParam("clusterName") String clusterName,
+            @BodyParam("application/json") ClusterUpgradeRollback clusterRollbackUpgradeRequest,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusterpools/{clusterPoolName}/clusters/{clusterName}/resize")
@@ -605,6 +617,270 @@ public final class ClustersClientImpl implements ClustersClient {
     public ClusterInner upgrade(String resourceGroupName, String clusterPoolName, String clusterName,
         ClusterUpgrade clusterUpgradeRequest, Context context) {
         return upgradeAsync(resourceGroupName, clusterPoolName, clusterName, clusterUpgradeRequest, context).block();
+    }
+
+    /**
+     * Manual rollback upgrade for a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterPoolName The name of the cluster pool.
+     * @param clusterName The name of the HDInsight cluster.
+     * @param clusterRollbackUpgradeRequest Manual rollback upgrade for a cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the cluster along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> upgradeManualRollbackWithResponseAsync(String resourceGroupName,
+        String clusterPoolName, String clusterName, ClusterUpgradeRollback clusterRollbackUpgradeRequest) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (clusterPoolName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter clusterPoolName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (clusterRollbackUpgradeRequest == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter clusterRollbackUpgradeRequest is required and cannot be null."));
+        } else {
+            clusterRollbackUpgradeRequest.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.upgradeManualRollback(this.client.getEndpoint(), resourceGroupName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), clusterPoolName, clusterName,
+                clusterRollbackUpgradeRequest, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Manual rollback upgrade for a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterPoolName The name of the cluster pool.
+     * @param clusterName The name of the HDInsight cluster.
+     * @param clusterRollbackUpgradeRequest Manual rollback upgrade for a cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the cluster along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> upgradeManualRollbackWithResponseAsync(String resourceGroupName,
+        String clusterPoolName, String clusterName, ClusterUpgradeRollback clusterRollbackUpgradeRequest,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (clusterPoolName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter clusterPoolName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (clusterRollbackUpgradeRequest == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter clusterRollbackUpgradeRequest is required and cannot be null."));
+        } else {
+            clusterRollbackUpgradeRequest.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.upgradeManualRollback(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), clusterPoolName, clusterName, clusterRollbackUpgradeRequest, accept,
+            context);
+    }
+
+    /**
+     * Manual rollback upgrade for a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterPoolName The name of the cluster pool.
+     * @param clusterName The name of the HDInsight cluster.
+     * @param clusterRollbackUpgradeRequest Manual rollback upgrade for a cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the cluster.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginUpgradeManualRollbackAsync(String resourceGroupName,
+        String clusterPoolName, String clusterName, ClusterUpgradeRollback clusterRollbackUpgradeRequest) {
+        Mono<Response<Flux<ByteBuffer>>> mono = upgradeManualRollbackWithResponseAsync(resourceGroupName,
+            clusterPoolName, clusterName, clusterRollbackUpgradeRequest);
+        return this.client.<ClusterInner, ClusterInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ClusterInner.class, ClusterInner.class, this.client.getContext());
+    }
+
+    /**
+     * Manual rollback upgrade for a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterPoolName The name of the cluster pool.
+     * @param clusterName The name of the HDInsight cluster.
+     * @param clusterRollbackUpgradeRequest Manual rollback upgrade for a cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the cluster.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginUpgradeManualRollbackAsync(String resourceGroupName,
+        String clusterPoolName, String clusterName, ClusterUpgradeRollback clusterRollbackUpgradeRequest,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = upgradeManualRollbackWithResponseAsync(resourceGroupName,
+            clusterPoolName, clusterName, clusterRollbackUpgradeRequest, context);
+        return this.client.<ClusterInner, ClusterInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ClusterInner.class, ClusterInner.class, context);
+    }
+
+    /**
+     * Manual rollback upgrade for a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterPoolName The name of the cluster pool.
+     * @param clusterName The name of the HDInsight cluster.
+     * @param clusterRollbackUpgradeRequest Manual rollback upgrade for a cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the cluster.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpgradeManualRollback(String resourceGroupName,
+        String clusterPoolName, String clusterName, ClusterUpgradeRollback clusterRollbackUpgradeRequest) {
+        return this
+            .beginUpgradeManualRollbackAsync(resourceGroupName, clusterPoolName, clusterName,
+                clusterRollbackUpgradeRequest)
+            .getSyncPoller();
+    }
+
+    /**
+     * Manual rollback upgrade for a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterPoolName The name of the cluster pool.
+     * @param clusterName The name of the HDInsight cluster.
+     * @param clusterRollbackUpgradeRequest Manual rollback upgrade for a cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the cluster.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpgradeManualRollback(String resourceGroupName,
+        String clusterPoolName, String clusterName, ClusterUpgradeRollback clusterRollbackUpgradeRequest,
+        Context context) {
+        return this
+            .beginUpgradeManualRollbackAsync(resourceGroupName, clusterPoolName, clusterName,
+                clusterRollbackUpgradeRequest, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Manual rollback upgrade for a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterPoolName The name of the cluster pool.
+     * @param clusterName The name of the HDInsight cluster.
+     * @param clusterRollbackUpgradeRequest Manual rollback upgrade for a cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the cluster on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ClusterInner> upgradeManualRollbackAsync(String resourceGroupName, String clusterPoolName,
+        String clusterName, ClusterUpgradeRollback clusterRollbackUpgradeRequest) {
+        return beginUpgradeManualRollbackAsync(resourceGroupName, clusterPoolName, clusterName,
+            clusterRollbackUpgradeRequest).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Manual rollback upgrade for a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterPoolName The name of the cluster pool.
+     * @param clusterName The name of the HDInsight cluster.
+     * @param clusterRollbackUpgradeRequest Manual rollback upgrade for a cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the cluster on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ClusterInner> upgradeManualRollbackAsync(String resourceGroupName, String clusterPoolName,
+        String clusterName, ClusterUpgradeRollback clusterRollbackUpgradeRequest, Context context) {
+        return beginUpgradeManualRollbackAsync(resourceGroupName, clusterPoolName, clusterName,
+            clusterRollbackUpgradeRequest, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Manual rollback upgrade for a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterPoolName The name of the cluster pool.
+     * @param clusterName The name of the HDInsight cluster.
+     * @param clusterRollbackUpgradeRequest Manual rollback upgrade for a cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ClusterInner upgradeManualRollback(String resourceGroupName, String clusterPoolName, String clusterName,
+        ClusterUpgradeRollback clusterRollbackUpgradeRequest) {
+        return upgradeManualRollbackAsync(resourceGroupName, clusterPoolName, clusterName,
+            clusterRollbackUpgradeRequest).block();
+    }
+
+    /**
+     * Manual rollback upgrade for a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterPoolName The name of the cluster pool.
+     * @param clusterName The name of the HDInsight cluster.
+     * @param clusterRollbackUpgradeRequest Manual rollback upgrade for a cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ClusterInner upgradeManualRollback(String resourceGroupName, String clusterPoolName, String clusterName,
+        ClusterUpgradeRollback clusterRollbackUpgradeRequest, Context context) {
+        return upgradeManualRollbackAsync(resourceGroupName, clusterPoolName, clusterName,
+            clusterRollbackUpgradeRequest, context).block();
     }
 
     /**
@@ -2181,9 +2457,7 @@ public final class ClustersClientImpl implements ClustersClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2211,9 +2485,7 @@ public final class ClustersClientImpl implements ClustersClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2241,9 +2513,7 @@ public final class ClustersClientImpl implements ClustersClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2271,9 +2541,7 @@ public final class ClustersClientImpl implements ClustersClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2301,9 +2569,7 @@ public final class ClustersClientImpl implements ClustersClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2330,9 +2596,7 @@ public final class ClustersClientImpl implements ClustersClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

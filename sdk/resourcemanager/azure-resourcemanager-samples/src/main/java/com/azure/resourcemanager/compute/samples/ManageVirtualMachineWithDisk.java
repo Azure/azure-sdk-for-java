@@ -49,7 +49,7 @@ public final class ManageVirtualMachineWithDisk {
         final String publicIPDnsLabel = Utils.randomResourceName(azureResourceManager, "pip", 15);
         final String userName = "tirekicker";
         final String sshPublicKey = Utils.sshPublicKey();
-        final Region region = Region.US_WEST;
+        final Region region = Region.US_WEST2;
 
         try {
             // Creates an empty data disk to attach to the virtual machine
@@ -105,7 +105,7 @@ public final class ManageVirtualMachineWithDisk {
                     .withExistingDataDisk(dataDisk1)
 
                     // End: Managed data disks
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D4a_v4"))
+                    .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)
                     .create();
 
             System.out.println("Created a Linux VM with managed OS and data disks: " + linuxVM.id());

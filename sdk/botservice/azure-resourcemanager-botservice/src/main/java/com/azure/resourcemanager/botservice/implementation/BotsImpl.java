@@ -29,12 +29,25 @@ public final class BotsImpl implements Bots {
         this.serviceManager = serviceManager;
     }
 
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, context);
+    }
+
     public void deleteByResourceGroup(String resourceGroupName, String resourceName) {
         this.serviceClient().delete(resourceGroupName, resourceName);
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, context);
+    public Response<Bot> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context) {
+        Response<BotInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BotImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Bot getByResourceGroup(String resourceGroupName, String resourceName) {
@@ -46,39 +59,36 @@ public final class BotsImpl implements Bots {
         }
     }
 
-    public Response<Bot> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        Response<BotInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new BotImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<Bot> listByResourceGroup(String resourceGroupName) {
         PagedIterable<BotInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new BotImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BotImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Bot> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<BotInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new BotImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BotImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Bot> list() {
         PagedIterable<BotInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new BotImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BotImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Bot> list(Context context) {
         PagedIterable<BotInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new BotImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BotImpl(inner1, this.manager()));
+    }
+
+    public Response<CheckNameAvailabilityResponseBody>
+        getCheckNameAvailabilityWithResponse(CheckNameAvailabilityRequestBody parameters, Context context) {
+        Response<CheckNameAvailabilityResponseBodyInner> inner
+            = this.serviceClient().getCheckNameAvailabilityWithResponse(parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CheckNameAvailabilityResponseBodyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CheckNameAvailabilityResponseBody getCheckNameAvailability(CheckNameAvailabilityRequestBody parameters) {
@@ -90,95 +100,60 @@ public final class BotsImpl implements Bots {
         }
     }
 
-    public Response<CheckNameAvailabilityResponseBody> getCheckNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequestBody parameters, Context context) {
-        Response<CheckNameAvailabilityResponseBodyInner> inner =
-            this.serviceClient().getCheckNameAvailabilityWithResponse(parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new CheckNameAvailabilityResponseBodyImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public Bot getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "botServices");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "botServices");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'botServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'botServices'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     public Response<Bot> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "botServices");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "botServices");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'botServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'botServices'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "botServices");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "botServices");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'botServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'botServices'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, resourceName, Context.NONE);
+        this.deleteByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "botServices");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "botServices");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'botServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'botServices'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, resourceName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, resourceName, context);
     }
 
     private BotsClient serviceClient() {

@@ -47,14 +47,18 @@
 ### Operations_List
 
 ```java
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Operations_List.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Operations_List.
+     * json
      */
     /**
      * Sample code: Operations_List.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void operationsList(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
@@ -69,19 +73,22 @@ public final class OperationsListSamples {
 import com.azure.resourcemanager.datamigration.models.ProjectSourcePlatform;
 import com.azure.resourcemanager.datamigration.models.ProjectTargetPlatform;
 
-/** Samples for Projects CreateOrUpdate. */
+/**
+ * Samples for Projects CreateOrUpdate.
+ */
 public final class ProjectsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Projects_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/
+     * Projects_CreateOrUpdate.json
      */
     /**
      * Sample code: Projects_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void projectsCreateOrUpdate(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
-        manager
-            .projects()
+        manager.projects()
             .define("DmsSdkProject")
             .withRegion("southcentralus")
             .withExistingService("DmsSdkRg", "DmsSdkService")
@@ -95,19 +102,22 @@ public final class ProjectsCreateOrUpdateSamples {
 ### Projects_Delete
 
 ```java
-/** Samples for Projects Delete. */
+/**
+ * Samples for Projects Delete.
+ */
 public final class ProjectsDeleteSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Projects_Delete.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Projects_Delete.
+     * json
      */
     /**
      * Sample code: Projects_Delete.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void projectsDelete(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
-        manager
-            .projects()
+        manager.projects()
             .deleteWithResponse("DmsSdkRg", "DmsSdkService", "DmsSdkProject", null, com.azure.core.util.Context.NONE);
     }
 }
@@ -116,19 +126,21 @@ public final class ProjectsDeleteSamples {
 ### Projects_Get
 
 ```java
-/** Samples for Projects Get. */
+/**
+ * Samples for Projects Get.
+ */
 public final class ProjectsGetSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Projects_Get.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Projects_Get.json
      */
     /**
      * Sample code: Projects_Get.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void projectsGet(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
-        manager
-            .projects()
+        manager.projects()
             .getWithResponse("DmsSdkRg", "DmsSdkService", "DmsSdkProject", com.azure.core.util.Context.NONE);
     }
 }
@@ -137,18 +149,22 @@ public final class ProjectsGetSamples {
 ### Projects_ListByResourceGroup
 
 ```java
-/** Samples for Projects ListByResourceGroup. */
+/**
+ * Samples for Projects ListByResourceGroup.
+ */
 public final class ProjectsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Projects_List.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Projects_List.
+     * json
      */
     /**
      * Sample code: Projects_ListByResourceGroup.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
-    public static void projectsListByResourceGroup(
-        com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
+    public static void
+        projectsListByResourceGroup(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
         manager.projects().listByResourceGroup("DmsSdkRg", "DmsSdkService", com.azure.core.util.Context.NONE);
     }
 }
@@ -161,24 +177,25 @@ import com.azure.resourcemanager.datamigration.models.Project;
 import com.azure.resourcemanager.datamigration.models.ProjectSourcePlatform;
 import com.azure.resourcemanager.datamigration.models.ProjectTargetPlatform;
 
-/** Samples for Projects Update. */
+/**
+ * Samples for Projects Update.
+ */
 public final class ProjectsUpdateSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Projects_Update.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Projects_Update.
+     * json
      */
     /**
      * Sample code: Projects_Update.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void projectsUpdate(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
-        Project resource =
-            manager
-                .projects()
-                .getWithResponse("DmsSdkRg", "DmsSdkService", "DmsSdkProject", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        Project resource = manager.projects()
+            .getWithResponse("DmsSdkRg", "DmsSdkService", "DmsSdkProject", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withSourcePlatform(ProjectSourcePlatform.SQL)
             .withTargetPlatform(ProjectTargetPlatform.SQLDB)
             .apply();
@@ -189,14 +206,18 @@ public final class ProjectsUpdateSamples {
 ### ResourceSkus_List
 
 ```java
-/** Samples for ResourceSkus List. */
+/**
+ * Samples for ResourceSkus List.
+ */
 public final class ResourceSkusListSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/ResourceSkus_ListSkus.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/
+     * ResourceSkus_ListSkus.json
      */
     /**
      * Sample code: ListSkus.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void listSkus(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
@@ -210,22 +231,25 @@ public final class ResourceSkusListSamples {
 ```java
 import com.azure.resourcemanager.datamigration.models.NameAvailabilityRequest;
 
-/** Samples for Services CheckNameAvailability. */
+/**
+ * Samples for Services CheckNameAvailability.
+ */
 public final class ServicesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_CheckNameAvailability.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/
+     * Services_CheckNameAvailability.json
      */
     /**
      * Sample code: Services_CheckNameAvailability.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
-    public static void servicesCheckNameAvailability(
-        com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
-        manager
-            .services()
-            .checkNameAvailabilityWithResponse(
-                "eastus", new NameAvailabilityRequest(), com.azure.core.util.Context.NONE);
+    public static void
+        servicesCheckNameAvailability(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
+        manager.services()
+            .checkNameAvailabilityWithResponse("eastus", new NameAvailabilityRequest(),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -233,14 +257,18 @@ public final class ServicesCheckNameAvailabilitySamples {
 ### Services_CheckStatus
 
 ```java
-/** Samples for Services CheckStatus. */
+/**
+ * Samples for Services CheckStatus.
+ */
 public final class ServicesCheckStatusSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_CheckStatus.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/
+     * Services_CheckStatus.json
      */
     /**
      * Sample code: Services_CheckStatus.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void servicesCheckStatus(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
@@ -254,19 +282,22 @@ public final class ServicesCheckStatusSamples {
 ```java
 import com.azure.resourcemanager.datamigration.models.ServiceSku;
 
-/** Samples for Services CreateOrUpdate. */
+/**
+ * Samples for Services CreateOrUpdate.
+ */
 public final class ServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/
+     * Services_CreateOrUpdate.json
      */
     /**
      * Sample code: Services_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void servicesCreateOrUpdate(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
-        manager
-            .services()
+        manager.services()
             .define("DmsSdkService")
             .withRegion("southcentralus")
             .withExistingResourceGroup("DmsSdkRg")
@@ -281,14 +312,18 @@ public final class ServicesCreateOrUpdateSamples {
 ### Services_Delete
 
 ```java
-/** Samples for Services Delete. */
+/**
+ * Samples for Services Delete.
+ */
 public final class ServicesDeleteSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_Delete.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_Delete.
+     * json
      */
     /**
      * Sample code: Services_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void servicesCreateOrUpdate(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
@@ -300,19 +335,21 @@ public final class ServicesDeleteSamples {
 ### Services_GetByResourceGroup
 
 ```java
-/** Samples for Services GetByResourceGroup. */
+/**
+ * Samples for Services GetByResourceGroup.
+ */
 public final class ServicesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_Get.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_Get.json
      */
     /**
      * Sample code: Services_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void servicesCreateOrUpdate(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
-        manager
-            .services()
+        manager.services()
             .getByResourceGroupWithResponse("DmsSdkRg", "DmsSdkService", com.azure.core.util.Context.NONE);
     }
 }
@@ -321,14 +358,18 @@ public final class ServicesGetByResourceGroupSamples {
 ### Services_List
 
 ```java
-/** Samples for Services List. */
+/**
+ * Samples for Services List.
+ */
 public final class ServicesListSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_List.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_List.
+     * json
      */
     /**
      * Sample code: Services_List.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void servicesList(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
@@ -340,18 +381,22 @@ public final class ServicesListSamples {
 ### Services_ListByResourceGroup
 
 ```java
-/** Samples for Services ListByResourceGroup. */
+/**
+ * Samples for Services ListByResourceGroup.
+ */
 public final class ServicesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_ListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/
+     * Services_ListByResourceGroup.json
      */
     /**
      * Sample code: Services_ListByResourceGroup.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
-    public static void servicesListByResourceGroup(
-        com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
+    public static void
+        servicesListByResourceGroup(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
         manager.services().listByResourceGroup("DmsSdkRg", com.azure.core.util.Context.NONE);
     }
 }
@@ -360,14 +405,18 @@ public final class ServicesListByResourceGroupSamples {
 ### Services_ListSkus
 
 ```java
-/** Samples for Services ListSkus. */
+/**
+ * Samples for Services ListSkus.
+ */
 public final class ServicesListSkusSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_ListSkus.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_ListSkus
+     * .json
      */
     /**
      * Sample code: Services_ListSkus.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void servicesListSkus(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
@@ -381,22 +430,25 @@ public final class ServicesListSkusSamples {
 ```java
 import com.azure.resourcemanager.datamigration.models.NameAvailabilityRequest;
 
-/** Samples for Services NestedCheckNameAvailability. */
+/**
+ * Samples for Services NestedCheckNameAvailability.
+ */
 public final class ServicesNestedCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_NestedCheckNameAvailability.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/
+     * Services_NestedCheckNameAvailability.json
      */
     /**
      * Sample code: Services_NestedCheckNameAvailability.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
-    public static void servicesNestedCheckNameAvailability(
-        com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
-        manager
-            .services()
-            .nestedCheckNameAvailabilityWithResponse(
-                "DmsSdkRg", "DmsSdkService", new NameAvailabilityRequest(), com.azure.core.util.Context.NONE);
+    public static void
+        servicesNestedCheckNameAvailability(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
+        manager.services()
+            .nestedCheckNameAvailabilityWithResponse("DmsSdkRg", "DmsSdkService", new NameAvailabilityRequest(),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -404,14 +456,18 @@ public final class ServicesNestedCheckNameAvailabilitySamples {
 ### Services_Start
 
 ```java
-/** Samples for Services Start. */
+/**
+ * Samples for Services Start.
+ */
 public final class ServicesStartSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_Start.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_Start.
+     * json
      */
     /**
      * Sample code: Services_Start.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void servicesStart(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
@@ -423,14 +479,18 @@ public final class ServicesStartSamples {
 ### Services_Stop
 
 ```java
-/** Samples for Services Stop. */
+/**
+ * Samples for Services Stop.
+ */
 public final class ServicesStopSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_Stop.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_Stop.
+     * json
      */
     /**
      * Sample code: Services_Stop.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void servicesStop(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
@@ -444,24 +504,25 @@ public final class ServicesStopSamples {
 ```java
 import com.azure.resourcemanager.datamigration.models.DataMigrationService;
 
-/** Samples for Services Update. */
+/**
+ * Samples for Services Update.
+ */
 public final class ServicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_Update.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_Update.
+     * json
      */
     /**
      * Sample code: Services_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void servicesCreateOrUpdate(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
-        DataMigrationService resource =
-            manager
-                .services()
-                .getByResourceGroupWithResponse("DmsSdkRg", "DmsSdkService", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        DataMigrationService resource = manager.services()
+            .getByResourceGroupWithResponse("DmsSdkRg", "DmsSdkService", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withVirtualSubnetId(
                 "/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkTestNetwork/providers/Microsoft.Network/virtualNetworks/DmsSdkTestNetwork/subnets/default")
             .apply();
@@ -472,21 +533,23 @@ public final class ServicesUpdateSamples {
 ### Tasks_Cancel
 
 ```java
-/** Samples for Tasks Cancel. */
+/**
+ * Samples for Tasks Cancel.
+ */
 public final class TasksCancelSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Tasks_Cancel.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Tasks_Cancel.json
      */
     /**
      * Sample code: Tasks_Cancel.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void tasksCancel(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
-        manager
-            .tasks()
-            .cancelWithResponse(
-                "DmsSdkRg", "DmsSdkService", "DmsSdkProject", "DmsSdkTask", com.azure.core.util.Context.NONE);
+        manager.tasks()
+            .cancelWithResponse("DmsSdkRg", "DmsSdkService", "DmsSdkProject", "DmsSdkTask",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -499,33 +562,31 @@ import com.azure.resourcemanager.datamigration.models.ConnectToTargetSqlDbTaskIn
 import com.azure.resourcemanager.datamigration.models.ConnectToTargetSqlDbTaskProperties;
 import com.azure.resourcemanager.datamigration.models.SqlConnectionInfo;
 
-/** Samples for Tasks CreateOrUpdate. */
+/**
+ * Samples for Tasks CreateOrUpdate.
+ */
 public final class TasksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Tasks_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/
+     * Tasks_CreateOrUpdate.json
      */
     /**
      * Sample code: Tasks_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void tasksCreateOrUpdate(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
-        manager
-            .tasks()
+        manager.tasks()
             .define("DmsSdkTask")
             .withExistingProject("DmsSdkRg", "DmsSdkService", "DmsSdkProject")
-            .withProperties(
-                new ConnectToTargetSqlDbTaskProperties()
-                    .withInput(
-                        new ConnectToTargetSqlDbTaskInput()
-                            .withTargetConnectionInfo(
-                                new SqlConnectionInfo()
-                                    .withUsername("testuser")
-                                    .withPassword("fakeTokenPlaceholder")
-                                    .withDataSource("ssma-test-server.database.windows.net")
-                                    .withAuthentication(AuthenticationType.SQL_AUTHENTICATION)
-                                    .withEncryptConnection(true)
-                                    .withTrustServerCertificate(true))))
+            .withProperties(new ConnectToTargetSqlDbTaskProperties().withInput(new ConnectToTargetSqlDbTaskInput()
+                .withTargetConnectionInfo(new SqlConnectionInfo().withUsername("testuser")
+                    .withPassword("fakeTokenPlaceholder")
+                    .withDataSource("ssma-test-server.database.windows.net")
+                    .withAuthentication(AuthenticationType.SQL_AUTHENTICATION)
+                    .withEncryptConnection(true)
+                    .withTrustServerCertificate(true))))
             .create();
     }
 }
@@ -534,21 +595,23 @@ public final class TasksCreateOrUpdateSamples {
 ### Tasks_Delete
 
 ```java
-/** Samples for Tasks Delete. */
+/**
+ * Samples for Tasks Delete.
+ */
 public final class TasksDeleteSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Tasks_Delete.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Tasks_Delete.json
      */
     /**
      * Sample code: Tasks_Delete.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void tasksDelete(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
-        manager
-            .tasks()
-            .deleteWithResponse(
-                "DmsSdkRg", "DmsSdkService", "DmsSdkProject", "DmsSdkTask", null, com.azure.core.util.Context.NONE);
+        manager.tasks()
+            .deleteWithResponse("DmsSdkRg", "DmsSdkService", "DmsSdkProject", "DmsSdkTask", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -556,21 +619,23 @@ public final class TasksDeleteSamples {
 ### Tasks_Get
 
 ```java
-/** Samples for Tasks Get. */
+/**
+ * Samples for Tasks Get.
+ */
 public final class TasksGetSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Tasks_Get.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Tasks_Get.json
      */
     /**
      * Sample code: Tasks_Get.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void tasksGet(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
-        manager
-            .tasks()
-            .getWithResponse(
-                "DmsSdkRg", "DmsSdkService", "DmsSdkProject", "DmsSdkTask", null, com.azure.core.util.Context.NONE);
+        manager.tasks()
+            .getWithResponse("DmsSdkRg", "DmsSdkService", "DmsSdkProject", "DmsSdkTask", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -578,14 +643,17 @@ public final class TasksGetSamples {
 ### Tasks_List
 
 ```java
-/** Samples for Tasks List. */
+/**
+ * Samples for Tasks List.
+ */
 public final class TasksListSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Tasks_List.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Tasks_List.json
      */
     /**
      * Sample code: Tasks_List.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void tasksList(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
@@ -603,37 +671,32 @@ import com.azure.resourcemanager.datamigration.models.ConnectToTargetSqlDbTaskPr
 import com.azure.resourcemanager.datamigration.models.ProjectTask;
 import com.azure.resourcemanager.datamigration.models.SqlConnectionInfo;
 
-/** Samples for Tasks Update. */
+/**
+ * Samples for Tasks Update.
+ */
 public final class TasksUpdateSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Tasks_Update.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Tasks_Update.json
      */
     /**
      * Sample code: Tasks_Update.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void tasksUpdate(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
-        ProjectTask resource =
-            manager
-                .tasks()
-                .getWithResponse(
-                    "DmsSdkRg", "DmsSdkService", "DmsSdkProject", "DmsSdkTask", null, com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withProperties(
-                new ConnectToTargetSqlDbTaskProperties()
-                    .withInput(
-                        new ConnectToTargetSqlDbTaskInput()
-                            .withTargetConnectionInfo(
-                                new SqlConnectionInfo()
-                                    .withUsername("testuser")
-                                    .withPassword("fakeTokenPlaceholder")
-                                    .withDataSource("ssma-test-server.database.windows.net")
-                                    .withAuthentication(AuthenticationType.SQL_AUTHENTICATION)
-                                    .withEncryptConnection(true)
-                                    .withTrustServerCertificate(true))))
+        ProjectTask resource = manager.tasks()
+            .getWithResponse("DmsSdkRg", "DmsSdkService", "DmsSdkProject", "DmsSdkTask", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new ConnectToTargetSqlDbTaskProperties().withInput(new ConnectToTargetSqlDbTaskInput()
+                .withTargetConnectionInfo(new SqlConnectionInfo().withUsername("testuser")
+                    .withPassword("fakeTokenPlaceholder")
+                    .withDataSource("ssma-test-server.database.windows.net")
+                    .withAuthentication(AuthenticationType.SQL_AUTHENTICATION)
+                    .withEncryptConnection(true)
+                    .withTrustServerCertificate(true))))
             .apply();
     }
 }
@@ -642,14 +705,17 @@ public final class TasksUpdateSamples {
 ### Usages_List
 
 ```java
-/** Samples for Usages List. */
+/**
+ * Samples for Usages List.
+ */
 public final class UsagesListSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Usages_List.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Usages_List.json
      */
     /**
      * Sample code: Services_Usages.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void servicesUsages(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {

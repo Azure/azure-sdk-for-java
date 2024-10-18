@@ -11,17 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class EncryptionInTransitPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EncryptionInTransitProperties model =
-            BinaryData
-                .fromString("{\"isEncryptionInTransitEnabled\":false}")
-                .toObject(EncryptionInTransitProperties.class);
+        EncryptionInTransitProperties model = BinaryData.fromString("{\"isEncryptionInTransitEnabled\":false}")
+            .toObject(EncryptionInTransitProperties.class);
         Assertions.assertEquals(false, model.isEncryptionInTransitEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EncryptionInTransitProperties model =
-            new EncryptionInTransitProperties().withIsEncryptionInTransitEnabled(false);
+        EncryptionInTransitProperties model
+            = new EncryptionInTransitProperties().withIsEncryptionInTransitEnabled(false);
         model = BinaryData.fromObject(model).toObject(EncryptionInTransitProperties.class);
         Assertions.assertEquals(false, model.isEncryptionInTransitEnabled());
     }

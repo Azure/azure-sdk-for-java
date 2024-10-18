@@ -17,8 +17,7 @@ public final class SettingListImpl implements SettingList {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    SettingListImpl(
-        SettingListInner innerObject,
+    SettingListImpl(SettingListInner innerObject,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,8 @@ public final class SettingListImpl implements SettingList {
     public List<Settings> value() {
         List<SettingsInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new SettingsImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new SettingsImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

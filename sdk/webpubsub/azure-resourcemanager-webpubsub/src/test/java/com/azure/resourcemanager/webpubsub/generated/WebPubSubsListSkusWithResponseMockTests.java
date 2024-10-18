@@ -6,62 +6,32 @@ package com.azure.resourcemanager.webpubsub.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.webpubsub.WebPubSubManager;
 import com.azure.resourcemanager.webpubsub.models.SkuList;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class WebPubSubsListSkusWithResponseMockTests {
     @Test
     public void testListSkusWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"resourceType\":\"cazuaw\",\"sku\":{\"name\":\"z\",\"tier\":\"Standard\",\"size\":\"mwabzxrvxc\",\"family\":\"hsphaivmxyas\",\"capacity\":1805110370},\"capacity\":{\"minimum\":1752644697,\"maximum\":826140742,\"default\":1920170301,\"allowedValues\":[298842617],\"scaleType\":\"Automatic\"}},{\"resourceType\":\"nsmjbl\",\"sku\":{\"name\":\"jhlnymzotqyryu\",\"tier\":\"Standard\",\"size\":\"qqvxmvwfgtayxons\",\"family\":\"e\",\"capacity\":2074822274},\"capacity\":{\"minimum\":330319008,\"maximum\":1093253007,\"default\":1664438715,\"allowedValues\":[1417564823,570379226,1936009218],\"scaleType\":\"Automatic\"}},{\"resourceType\":\"gsxgnxfyqon\",\"sku\":{\"name\":\"qoxwd\",\"tier\":\"Basic\",\"size\":\"xiqxeiiqbimh\",\"family\":\"wwinhehf\",\"capacity\":1711839978},\"capacity\":{\"minimum\":808176503,\"maximum\":712044714,\"default\":1779769711,\"allowedValues\":[29362657,1824383862],\"scaleType\":\"Manual\"}}],\"nextLink\":\"vqvxk\"}";
 
-        String responseStr =
-            "{\"value\":[{\"resourceType\":\"hrqbnjjrcg\",\"sku\":{\"name\":\"ydcwboxjumv\",\"tier\":\"Basic\",\"size\":\"ihrraiouaub\",\"family\":\"tloqxfuojrn\",\"capacity\":1614609688},\"capacity\":{\"minimum\":193344927,\"maximum\":2039990607,\"default\":1842642996,\"allowedValues\":[243616363,231724213,1776866664,1431120696],\"scaleType\":\"None\"}},{\"resourceType\":\"yjdfqwmky\",\"sku\":{\"name\":\"ufdvruz\",\"tier\":\"Standard\",\"size\":\"j\",\"family\":\"ctfnmdxotng\",\"capacity\":1293168350},\"capacity\":{\"minimum\":222223496,\"maximum\":2136201648,\"default\":1242659668,\"allowedValues\":[1233581087,692345701],\"scaleType\":\"Manual\"}}],\"nextLink\":\"absnmfpp\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        WebPubSubManager manager = WebPubSubManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        SkuList response = manager.webPubSubs()
+            .listSkusWithResponse("clt", "jedexxmlf", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        WebPubSubManager manager =
-            WebPubSubManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        SkuList response =
-            manager
-                .webPubSubs()
-                .listSkusWithResponse("pkcdqzhlct", "dunqnd", com.azure.core.util.Context.NONE)
-                .getValue();
     }
 }

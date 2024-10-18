@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,62 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.3 (2024-10-17)
+
+- Azure Resource Manager Subscription client library for Java. This package contains Microsoft Azure SDK for Subscription Management SDK. The subscription client. Package tag package-2020-09. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+#### `models.OperationDisplay` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Operation` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.PutAliasRequestProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.PutAliasRequest` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.SubscriptionPolicies` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SubscriptionListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.LocationListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.TenantListResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.SubscriptionName` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.PutAliasResponseProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 ## 1.0.0-beta.2 (2023-01-19)
 

@@ -20,7 +20,7 @@ public class PoolListOptions {
     /**
      * An OData $filter clause. For more information on constructing this
      * filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-pools.
      */
     @JsonProperty(value = "")
     private String filter;
@@ -75,7 +75,7 @@ public class PoolListOptions {
     private DateTimeRfc1123 ocpDate;
 
     /**
-     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.
+     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-pools.
      *
      * @return the filter value
      */
@@ -84,7 +84,7 @@ public class PoolListOptions {
     }
 
     /**
-     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.
+     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-pools.
      *
      * @param filter the filter value to set
      * @return the PoolListOptions object itself.

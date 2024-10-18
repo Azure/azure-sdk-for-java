@@ -32,7 +32,8 @@ public final class AttestationResponse<T> extends ResponseBase<Void, T> {
      * @param value The deserialized value of the HTTP response.
      * @param token The Attestation Token which was returned from the service.
      */
-    public AttestationResponse(HttpRequest request, int statusCode, HttpHeaders headers, T value, AttestationToken token) {
+    public AttestationResponse(HttpRequest request, int statusCode, HttpHeaders headers, T value,
+        AttestationToken token) {
         super(request, statusCode, headers, value, null);
         this.token = token;
     }

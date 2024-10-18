@@ -262,7 +262,6 @@ public final class NatRule extends FirewallPolicyRule {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

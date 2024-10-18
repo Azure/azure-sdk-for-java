@@ -7,26 +7,13 @@ package com.azure.resourcemanager.securityinsights.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of BookmarkOperations. */
+/**
+ * Resource collection API of BookmarkOperations.
+ */
 public interface BookmarkOperations {
     /**
      * Expand an bookmark.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param bookmarkId Bookmark ID.
-     * @param parameters The parameters required to execute an expand operation on the given bookmark.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity expansion result operation response.
-     */
-    BookmarkExpandResponse expand(
-        String resourceGroupName, String workspaceName, String bookmarkId, BookmarkExpandParameters parameters);
-
-    /**
-     * Expand an bookmark.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bookmarkId Bookmark ID.
@@ -37,10 +24,21 @@ public interface BookmarkOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity expansion result operation response along with {@link Response}.
      */
-    Response<BookmarkExpandResponse> expandWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String bookmarkId,
-        BookmarkExpandParameters parameters,
-        Context context);
+    Response<BookmarkExpandResponse> expandWithResponse(String resourceGroupName, String workspaceName,
+        String bookmarkId, BookmarkExpandParameters parameters, Context context);
+
+    /**
+     * Expand an bookmark.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param bookmarkId Bookmark ID.
+     * @param parameters The parameters required to execute an expand operation on the given bookmark.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the entity expansion result operation response.
+     */
+    BookmarkExpandResponse expand(String resourceGroupName, String workspaceName, String bookmarkId,
+        BookmarkExpandParameters parameters);
 }

@@ -13,29 +13,47 @@ import com.azure.resourcemanager.automation.fluent.models.AutomationAccountInner
 import com.azure.resourcemanager.automation.models.AutomationAccountCreateOrUpdateParameters;
 import com.azure.resourcemanager.automation.models.AutomationAccountUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in AutomationAccountsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AutomationAccountsClient.
+ */
 public interface AutomationAccountsClient {
     /**
      * Update an automation account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param parameters Parameters supplied to the update automation account.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the automation account type.
+     * @return definition of the automation account type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AutomationAccountInner update(
-        String resourceGroupName, String automationAccountName, AutomationAccountUpdateParameters parameters);
+    Response<AutomationAccountInner> updateWithResponse(String resourceGroupName, String automationAccountName,
+        AutomationAccountUpdateParameters parameters, Context context);
 
     /**
      * Update an automation account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param parameters Parameters supplied to the update automation account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the automation account type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AutomationAccountInner update(String resourceGroupName, String automationAccountName,
+        AutomationAccountUpdateParameters parameters);
+
+    /**
+     * Create or update automation account.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param parameters Parameters supplied to the create or update automation account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,15 +61,12 @@ public interface AutomationAccountsClient {
      * @return definition of the automation account type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AutomationAccountInner> updateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        AutomationAccountUpdateParameters parameters,
-        Context context);
+    Response<AutomationAccountInner> createOrUpdateWithResponse(String resourceGroupName, String automationAccountName,
+        AutomationAccountCreateOrUpdateParameters parameters, Context context);
 
     /**
      * Create or update automation account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param parameters Parameters supplied to the create or update automation account.
@@ -61,43 +76,12 @@ public interface AutomationAccountsClient {
      * @return definition of the automation account type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AutomationAccountInner createOrUpdate(
-        String resourceGroupName, String automationAccountName, AutomationAccountCreateOrUpdateParameters parameters);
-
-    /**
-     * Create or update automation account.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param parameters Parameters supplied to the create or update automation account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the automation account type along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AutomationAccountInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        AutomationAccountCreateOrUpdateParameters parameters,
-        Context context);
+    AutomationAccountInner createOrUpdate(String resourceGroupName, String automationAccountName,
+        AutomationAccountCreateOrUpdateParameters parameters);
 
     /**
      * Delete an automation account.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String automationAccountName);
-
-    /**
-     * Delete an automation account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
@@ -110,8 +94,35 @@ public interface AutomationAccountsClient {
     Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName, Context context);
 
     /**
+     * Delete an automation account.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String automationAccountName);
+
+    /**
      * Get information about an Automation Account.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about an Automation Account along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<AutomationAccountInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String automationAccountName, Context context);
+
+    /**
+     * Get information about an Automation Account.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -123,23 +134,8 @@ public interface AutomationAccountsClient {
     AutomationAccountInner getByResourceGroup(String resourceGroupName, String automationAccountName);
 
     /**
-     * Get information about an Automation Account.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about an Automation Account along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AutomationAccountInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String automationAccountName, Context context);
-
-    /**
      * Retrieve a list of accounts within a given resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -151,7 +147,7 @@ public interface AutomationAccountsClient {
 
     /**
      * Retrieve a list of accounts within a given resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -164,9 +160,9 @@ public interface AutomationAccountsClient {
 
     /**
      * Lists the Automation Accounts within an Azure subscription.
-     *
-     * <p>Retrieve a list of accounts within a given subscription.
-     *
+     * 
+     * Retrieve a list of accounts within a given subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list account operation as paginated response with {@link PagedIterable}.
@@ -176,9 +172,9 @@ public interface AutomationAccountsClient {
 
     /**
      * Lists the Automation Accounts within an Azure subscription.
-     *
-     * <p>Retrieve a list of accounts within a given subscription.
-     *
+     * 
+     * Retrieve a list of accounts within a given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

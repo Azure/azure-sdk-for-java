@@ -6,24 +6,26 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Cluster Instance View Properties.
  */
 @Fluent
-public class ClusterInstanceViewProperties {
+public class ClusterInstanceViewProperties implements JsonSerializable<ClusterInstanceViewProperties> {
     /*
      * Status of the instance view.
      */
-    @JsonProperty(value = "status", required = true)
     private ClusterInstanceViewPropertiesStatus status;
 
     /*
      * List of statuses of relevant services that make up the HDInsight on AKS cluster to surface to the customer.
      */
-    @JsonProperty(value = "serviceStatuses", required = true)
     private List<ServiceStatus> serviceStatuses;
 
     /**
@@ -53,8 +55,8 @@ public class ClusterInstanceViewProperties {
     }
 
     /**
-     * Get the serviceStatuses property: List of statuses of relevant services that make up the HDInsight on AKS
-     * cluster to surface to the customer.
+     * Get the serviceStatuses property: List of statuses of relevant services that make up the HDInsight on AKS cluster
+     * to surface to the customer.
      * 
      * @return the serviceStatuses value.
      */
@@ -63,8 +65,8 @@ public class ClusterInstanceViewProperties {
     }
 
     /**
-     * Set the serviceStatuses property: List of statuses of relevant services that make up the HDInsight on AKS
-     * cluster to surface to the customer.
+     * Set the serviceStatuses property: List of statuses of relevant services that make up the HDInsight on AKS cluster
+     * to surface to the customer.
      * 
      * @param serviceStatuses the serviceStatuses value to set.
      * @return the ClusterInstanceViewProperties object itself.
@@ -81,18 +83,64 @@ public class ClusterInstanceViewProperties {
      */
     public void validate() {
         if (status() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property status in model ClusterInstanceViewProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model ClusterInstanceViewProperties"));
         } else {
             status().validate();
         }
         if (serviceStatuses() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property serviceStatuses in model ClusterInstanceViewProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serviceStatuses in model ClusterInstanceViewProperties"));
         } else {
             serviceStatuses().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ClusterInstanceViewProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("status", this.status);
+        jsonWriter.writeArrayField("serviceStatuses", this.serviceStatuses,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterInstanceViewProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterInstanceViewProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterInstanceViewProperties.
+     */
+    public static ClusterInstanceViewProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterInstanceViewProperties deserializedClusterInstanceViewProperties
+                = new ClusterInstanceViewProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedClusterInstanceViewProperties.status
+                        = ClusterInstanceViewPropertiesStatus.fromJson(reader);
+                } else if ("serviceStatuses".equals(fieldName)) {
+                    List<ServiceStatus> serviceStatuses = reader.readArray(reader1 -> ServiceStatus.fromJson(reader1));
+                    deserializedClusterInstanceViewProperties.serviceStatuses = serviceStatuses;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterInstanceViewProperties;
+        });
+    }
 }

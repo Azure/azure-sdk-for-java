@@ -6,57 +6,55 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Azure Batch linked service properties.
  */
 @Fluent
-public final class AzureBatchLinkedServiceTypeProperties {
+public final class AzureBatchLinkedServiceTypeProperties
+    implements JsonSerializable<AzureBatchLinkedServiceTypeProperties> {
     /*
      * The Azure Batch account name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "accountName", required = true)
     private Object accountName;
 
     /*
      * The Azure Batch account access key.
      */
-    @JsonProperty(value = "accessKey")
     private SecretBase accessKey;
 
     /*
      * The Azure Batch URI. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "batchUri", required = true)
     private Object batchUri;
 
     /*
      * The Azure Batch pool name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "poolName", required = true)
     private Object poolName;
 
     /*
      * The Azure Storage linked service reference.
      */
-    @JsonProperty(value = "linkedServiceName", required = true)
     private LinkedServiceReference linkedServiceName;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /*
      * The credential reference containing authentication information.
      */
-    @JsonProperty(value = "credential")
     private CredentialReference credential;
 
     /**
@@ -244,4 +242,61 @@ public final class AzureBatchLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureBatchLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("accountName", this.accountName);
+        jsonWriter.writeUntypedField("batchUri", this.batchUri);
+        jsonWriter.writeUntypedField("poolName", this.poolName);
+        jsonWriter.writeJsonField("linkedServiceName", this.linkedServiceName);
+        jsonWriter.writeJsonField("accessKey", this.accessKey);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        jsonWriter.writeJsonField("credential", this.credential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBatchLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBatchLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureBatchLinkedServiceTypeProperties.
+     */
+    public static AzureBatchLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBatchLinkedServiceTypeProperties deserializedAzureBatchLinkedServiceTypeProperties
+                = new AzureBatchLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountName".equals(fieldName)) {
+                    deserializedAzureBatchLinkedServiceTypeProperties.accountName = reader.readUntyped();
+                } else if ("batchUri".equals(fieldName)) {
+                    deserializedAzureBatchLinkedServiceTypeProperties.batchUri = reader.readUntyped();
+                } else if ("poolName".equals(fieldName)) {
+                    deserializedAzureBatchLinkedServiceTypeProperties.poolName = reader.readUntyped();
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedAzureBatchLinkedServiceTypeProperties.linkedServiceName
+                        = LinkedServiceReference.fromJson(reader);
+                } else if ("accessKey".equals(fieldName)) {
+                    deserializedAzureBatchLinkedServiceTypeProperties.accessKey = SecretBase.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedAzureBatchLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else if ("credential".equals(fieldName)) {
+                    deserializedAzureBatchLinkedServiceTypeProperties.credential = CredentialReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureBatchLinkedServiceTypeProperties;
+        });
+    }
 }

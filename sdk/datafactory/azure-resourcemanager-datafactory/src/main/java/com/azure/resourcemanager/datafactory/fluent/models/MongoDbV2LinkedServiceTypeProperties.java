@@ -6,24 +6,27 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * MongoDB linked service properties.
  */
 @Fluent
-public final class MongoDbV2LinkedServiceTypeProperties {
+public final class MongoDbV2LinkedServiceTypeProperties
+    implements JsonSerializable<MongoDbV2LinkedServiceTypeProperties> {
     /*
      * The MongoDB connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string,
      * SecureString or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "connectionString", required = true)
     private Object connectionString;
 
     /*
      * The name of the MongoDB database that you want to access. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "database", required = true)
     private Object database;
 
     /**
@@ -95,4 +98,45 @@ public final class MongoDbV2LinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MongoDbV2LinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        jsonWriter.writeUntypedField("database", this.database);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MongoDbV2LinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MongoDbV2LinkedServiceTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MongoDbV2LinkedServiceTypeProperties.
+     */
+    public static MongoDbV2LinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MongoDbV2LinkedServiceTypeProperties deserializedMongoDbV2LinkedServiceTypeProperties
+                = new MongoDbV2LinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionString".equals(fieldName)) {
+                    deserializedMongoDbV2LinkedServiceTypeProperties.connectionString = reader.readUntyped();
+                } else if ("database".equals(fieldName)) {
+                    deserializedMongoDbV2LinkedServiceTypeProperties.database = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMongoDbV2LinkedServiceTypeProperties;
+        });
+    }
 }

@@ -1,6 +1,28 @@
 # Release History
 
-## 2.42.0-beta.1 (Unreleased)
+## 2.44.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Supported creating `GalleryImageVersion` from source virtual machine by specifying `withSourceVirtualMachine`.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+- Fixed a bug that VM state not refreshed after calling `VirtualMachine.deallocate`.
+
+### Other Changes
+
+## 2.43.0 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.42.0 (2024-08-23)
 
 ### Features Added
 
@@ -13,6 +35,10 @@
 ### Other Changes
 
 - Replaced `Jackson` with `azure-json` for serialization/deserialization.
+
+#### Dependency Updates
+
+- Updated `api-version` of ComputeRP to `2024-07-01`.
 
 ## 2.41.0 (2024-07-25)
 

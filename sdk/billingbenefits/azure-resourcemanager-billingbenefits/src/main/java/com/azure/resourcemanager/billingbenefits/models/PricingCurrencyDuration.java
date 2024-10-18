@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.billingbenefits.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Represents either billing plan or savings plan term in ISO 8601 format. */
+/**
+ * Represents either billing plan or savings plan term in ISO 8601 format.
+ */
 public final class PricingCurrencyDuration extends ExpandableStringEnum<PricingCurrencyDuration> {
-    /** Static value P1M for PricingCurrencyDuration. */
+    /**
+     * Static value P1M for PricingCurrencyDuration.
+     */
     public static final PricingCurrencyDuration P1M = fromString("P1M");
 
-    /** Static value P1Y for PricingCurrencyDuration. */
+    /**
+     * Static value P1Y for PricingCurrencyDuration.
+     */
     public static final PricingCurrencyDuration P1Y = fromString("P1Y");
 
-    /** Static value P3Y for PricingCurrencyDuration. */
+    /**
+     * Static value P3Y for PricingCurrencyDuration.
+     */
     public static final PricingCurrencyDuration P3Y = fromString("P3Y");
 
     /**
      * Creates a new instance of PricingCurrencyDuration value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class PricingCurrencyDuration extends ExpandableStringEnum<PricingC
 
     /**
      * Creates or finds a PricingCurrencyDuration from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PricingCurrencyDuration.
      */
-    @JsonCreator
     public static PricingCurrencyDuration fromString(String name) {
         return fromString(name, PricingCurrencyDuration.class);
     }
 
     /**
      * Gets known PricingCurrencyDuration values.
-     *
+     * 
      * @return known PricingCurrencyDuration values.
      */
     public static Collection<PricingCurrencyDuration> values() {

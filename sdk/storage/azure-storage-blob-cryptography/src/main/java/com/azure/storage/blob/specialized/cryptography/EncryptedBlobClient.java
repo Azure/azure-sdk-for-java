@@ -489,8 +489,12 @@ public class EncryptedBlobClient extends BlobClient {
 
         String encryptionDataKey = StorageImplUtils.getEncryptionDataKey(initialProperties.getMetadata());
         if (encryptionDataKey != null) {
-            context = context.addData(ENCRYPTION_DATA_KEY, EncryptionData.getAndValidateEncryptionData(
-                encryptionDataKey, encryptedBlobAsyncClient.isEncryptionRequired()));
+            EncryptionData encryptionData = EncryptionData.getAndValidateEncryptionData(
+                encryptionDataKey, encryptedBlobAsyncClient.isEncryptionRequired());
+
+            context = context.addData(ENCRYPTION_DATA_KEY, encryptionData)
+                .addData(Constants.ADJUSTED_BLOB_LENGTH_KEY,
+                    EncryptedBlobLength.computeAdjustedBlobLength(encryptionData, initialProperties.getBlobSize()));
         }
         return context;
     }
@@ -569,4 +573,7 @@ public class EncryptedBlobClient extends BlobClient {
             "Cannot query data encrypted on client side."));
     }
 
+    BlobClientSideEncryptionOptions getClientSideEncryptionOptions() {
+        return encryptedBlobAsyncClient.getClientSideEncryptionOptions();
+    }
 }

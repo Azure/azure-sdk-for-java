@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.desktopvirtualization.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.StartMenuItemInner;
 import com.azure.resourcemanager.desktopvirtualization.models.StartMenuItem;
 
@@ -12,8 +13,7 @@ public final class StartMenuItemImpl implements StartMenuItem {
 
     private final com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager;
 
-    StartMenuItemImpl(
-        StartMenuItemInner innerObject,
+    StartMenuItemImpl(StartMenuItemInner innerObject,
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -29,6 +29,10 @@ public final class StartMenuItemImpl implements StartMenuItem {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String appAlias() {

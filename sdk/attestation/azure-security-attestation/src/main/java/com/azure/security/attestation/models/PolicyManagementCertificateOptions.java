@@ -36,13 +36,15 @@ public final class PolicyManagementCertificateOptions {
         this.certificate = certificate;
         this.signer = signingKey;
     }
+
     /**
      * Sets the options used to validate attestation tokens returned from the service.
      * @param validationOptions Token Validation options to be used to enhance the validations
      *                          already performed by the SDK.
      * @return this {@link AttestationPolicySetOptions} object.
      */
-    public PolicyManagementCertificateOptions setValidationOptions(AttestationTokenValidationOptions validationOptions) {
+    public PolicyManagementCertificateOptions
+        setValidationOptions(AttestationTokenValidationOptions validationOptions) {
         this.validationOptions = validationOptions;
         return this;
     }

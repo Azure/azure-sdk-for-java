@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class GetDataFactoryOperationStatusResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GetDataFactoryOperationStatusResponse model
-            = BinaryData.fromString("{\"status\":\"n\",\"\":{\"pusllywpv\":\"dataqjrhuzgfxonj\"}}")
-                .toObject(GetDataFactoryOperationStatusResponse.class);
-        Assertions.assertEquals("n", model.status());
+        GetDataFactoryOperationStatusResponse model = BinaryData.fromString(
+            "{\"status\":\"xhhllxricct\",\"\":{\"eiyglesrwvaexhdc\":\"datauqqoaj\",\"hdmljz\":\"datarceqnkbrupob\",\"nzpphepife\":\"datacvumepjpbi\"}}")
+            .toObject(GetDataFactoryOperationStatusResponse.class);
+        Assertions.assertEquals("xhhllxricct", model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GetDataFactoryOperationStatusResponse model
-            = new GetDataFactoryOperationStatusResponse().withStatus("n").withAdditionalProperties(mapOf());
+            = new GetDataFactoryOperationStatusResponse().withStatus("xhhllxricct").withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(GetDataFactoryOperationStatusResponse.class);
-        Assertions.assertEquals("n", model.status());
+        Assertions.assertEquals("xhhllxricct", model.status());
     }
 
     // Use "Map.of" if available

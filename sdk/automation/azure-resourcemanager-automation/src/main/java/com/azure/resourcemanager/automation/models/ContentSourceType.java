@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets or sets the content source type. */
+/**
+ * Gets or sets the content source type.
+ */
 public final class ContentSourceType extends ExpandableStringEnum<ContentSourceType> {
-    /** Static value embeddedContent for ContentSourceType. */
+    /**
+     * Static value embeddedContent for ContentSourceType.
+     */
     public static final ContentSourceType EMBEDDED_CONTENT = fromString("embeddedContent");
 
-    /** Static value uri for ContentSourceType. */
+    /**
+     * Static value uri for ContentSourceType.
+     */
     public static final ContentSourceType URI = fromString("uri");
 
     /**
+     * Creates a new instance of ContentSourceType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContentSourceType() {
+    }
+
+    /**
      * Creates or finds a ContentSourceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ContentSourceType.
      */
-    @JsonCreator
     public static ContentSourceType fromString(String name) {
         return fromString(name, ContentSourceType.class);
     }
 
     /**
      * Gets known ContentSourceType values.
-     *
+     * 
      * @return known ContentSourceType values.
      */
     public static Collection<ContentSourceType> values() {

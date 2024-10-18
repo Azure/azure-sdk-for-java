@@ -38,6 +38,7 @@ import com.azure.storage.file.share.implementation.models.ServicesListSharesSegm
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
 import com.azure.storage.file.share.implementation.models.ShareStats;
+import com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal;
 import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotHeaders;
 import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.StringEncoded;
@@ -206,6 +207,10 @@ public class ModelHelper {
         properties.setPaidBurstingEnabled(sharePropertiesInternal.isPaidBurstingEnabled());
         properties.setPaidBurstingMaxIops(sharePropertiesInternal.getPaidBurstingMaxIops());
         properties.setPaidBurstingMaxBandwidthMibps(sharePropertiesInternal.getPaidBurstingMaxBandwidthMibps());
+        properties.setIncludedBurstIops(sharePropertiesInternal.getIncludedBurstIops());
+        properties.setMaxBurstCreditsForIops(sharePropertiesInternal.getMaxBurstCreditsForIops());
+        properties.setNextAllowedProvisionedIopsDowngradeTime(sharePropertiesInternal.getNextAllowedProvisionedIopsDowngradeTime());
+        properties.setNextAllowedProvisionedBandwidthDowngradeTime(sharePropertiesInternal.getNextAllowedProvisionedBandwidthDowngradeTime());
 
         return properties;
     }
@@ -467,7 +472,11 @@ public class ModelHelper {
             .setPaidBurstingEnabled(headers.isXMsSharePaidBurstingEnabled())
             .setPaidBurstingMaxIops(headers.getXMsSharePaidBurstingMaxIops())
             .setPaidBurstingMaxBandwidthMibps(headers.getXMsSharePaidBurstingMaxBandwidthMibps())
-            .setRootSquash(headers.getXMsRootSquash());
+            .setRootSquash(headers.getXMsRootSquash())
+            .setIncludedBurstIops(headers.getXMsShareIncludedBurstIops())
+            .setMaxBurstCreditsForIops(headers.getXMsShareMaxBurstCreditsForIops())
+            .setNextAllowedProvisionedIopsDowngradeTime(headers.getXMsShareNextAllowedProvisionedIopsDowngradeTime())
+            .setNextAllowedProvisionedBandwidthDowngradeTime(headers.getXMsShareNextAllowedProvisionedBandwidthDowngradeTime());
 
         return new SimpleResponse<>(response, shareProperties);
     }
@@ -616,5 +625,20 @@ public class ModelHelper {
                     "CopyStatusType is not supported. Status: " + status));
         }
         return operationStatus;
+    }
+
+    /**
+     * Maps the internal exception to a public exception, if and only if {@code internal} is an instance of
+     * {@link ShareStorageExceptionInternal} and it will be mapped to {@link ShareStorageException}.
+     * <p>
+     * The internal exception is required as the public exception was created using Object as the exception value. This
+     * was incorrect and should have been a specific type that was XML deserializable. So, an internal exception was
+     * added to handle this and we map that to the public exception, keeping the API the same.
+     *
+     * @param internal The internal exception.
+     * @return The public exception.
+     */
+    public static ShareStorageException mapToShareStorageException(ShareStorageExceptionInternal internal) {
+        return new ShareStorageException(internal.getMessage(), internal.getResponse(), internal.getValue());
     }
 }

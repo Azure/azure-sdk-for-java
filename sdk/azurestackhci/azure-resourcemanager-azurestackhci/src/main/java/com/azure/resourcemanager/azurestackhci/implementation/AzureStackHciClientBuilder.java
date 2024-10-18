@@ -14,17 +14,19 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the AzureStackHciClientImpl type. */
-@ServiceClientBuilder(serviceClients = {AzureStackHciClientImpl.class})
+/**
+ * A builder for creating a new instance of the AzureStackHciClientImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { AzureStackHciClientImpl.class })
 public final class AzureStackHciClientBuilder {
     /*
-     * The ID of the target subscription.
+     * The ID of the target subscription. The value must be an UUID.
      */
     private String subscriptionId;
 
     /**
-     * Sets The ID of the target subscription.
-     *
+     * Sets The ID of the target subscription. The value must be an UUID.
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the AzureStackHciClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class AzureStackHciClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the AzureStackHciClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class AzureStackHciClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the AzureStackHciClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class AzureStackHciClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the AzureStackHciClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class AzureStackHciClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the AzureStackHciClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class AzureStackHciClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the AzureStackHciClientBuilder.
      */
@@ -115,30 +117,22 @@ public final class AzureStackHciClientBuilder {
 
     /**
      * Builds an instance of AzureStackHciClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of AzureStackHciClientImpl.
      */
     public AzureStackHciClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        AzureStackHciClientImpl client =
-            new AzureStackHciClientImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                this.subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        AzureStackHciClientImpl client = new AzureStackHciClientImpl(localPipeline, localSerializerAdapter,
+            localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

@@ -25,7 +25,7 @@ public final class PoolsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"hhzjhfj\",\"properties\":{\"poolId\":\"vvmu\",\"size\":8218407291535487840,\"serviceLevel\":\"Standard\",\"provisioningState\":\"neqsxvmh\",\"totalThroughputMibps\":95.131905,\"utilizedThroughputMibps\":85.77395,\"qosType\":\"Auto\",\"coolAccess\":false,\"encryptionType\":\"Single\"},\"location\":\"hudypohyuemsl\",\"tags\":{\"oobrlttyms\":\"qyrp\"},\"id\":\"nygq\",\"name\":\"nfwqzdzgtilaxhn\",\"type\":\"hqlyvijo\"}]}";
+            = "{\"value\":[{\"etag\":\"wsdtutnwl\",\"properties\":{\"poolId\":\"ycvuzhyrmewipmv\",\"size\":643328908915970724,\"serviceLevel\":\"Premium\",\"provisioningState\":\"kuqgsjjxundxgket\",\"totalThroughputMibps\":43.33548,\"utilizedThroughputMibps\":51.96662,\"qosType\":\"Auto\",\"coolAccess\":true,\"encryptionType\":\"Double\"},\"location\":\"vmuvgpmu\",\"tags\":{\"mhfbuzjy\":\"sx\",\"ypoh\":\"hsasbhu\"},\"id\":\"uemsly\",\"name\":\"sqy\",\"type\":\"pfoobr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,14 +35,14 @@ public final class PoolsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<CapacityPool> response
-            = manager.pools().list("uzhyrmewipmvekdx", "kuqgsjjxundxgket", com.azure.core.util.Context.NONE);
+            = manager.pools().list("lbqvgaqvlgafcqu", "rdve", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hudypohyuemsl", response.iterator().next().location());
-        Assertions.assertEquals("qyrp", response.iterator().next().tags().get("oobrlttyms"));
-        Assertions.assertEquals(8218407291535487840L, response.iterator().next().size());
-        Assertions.assertEquals(ServiceLevel.STANDARD, response.iterator().next().serviceLevel());
+        Assertions.assertEquals("vmuvgpmu", response.iterator().next().location());
+        Assertions.assertEquals("sx", response.iterator().next().tags().get("mhfbuzjy"));
+        Assertions.assertEquals(643328908915970724L, response.iterator().next().size());
+        Assertions.assertEquals(ServiceLevel.PREMIUM, response.iterator().next().serviceLevel());
         Assertions.assertEquals(QosType.AUTO, response.iterator().next().qosType());
-        Assertions.assertEquals(false, response.iterator().next().coolAccess());
-        Assertions.assertEquals(EncryptionType.SINGLE, response.iterator().next().encryptionType());
+        Assertions.assertEquals(true, response.iterator().next().coolAccess());
+        Assertions.assertEquals(EncryptionType.DOUBLE, response.iterator().next().encryptionType());
     }
 }

@@ -29,8 +29,8 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
 
     public Response<PrivateEndpointConnection> getWithResponse(String resourceGroupName, String elasticSanName,
         String privateEndpointConnectionName, Context context) {
-        Response<PrivateEndpointConnectionInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            elasticSanName, privateEndpointConnectionName, context);
+        Response<PrivateEndpointConnectionInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, elasticSanName, privateEndpointConnectionName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PrivateEndpointConnectionImpl(inner.getValue(), this.manager()));

@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -1177,6 +1178,11 @@ public class CosmosClientBuilder implements
     CosmosAsyncClient buildAsyncClient(boolean logStartupInfo) {
         StopWatch stopwatch = new StopWatch();
         stopwatch.start();
+
+        if (Configs.shouldOptInDefaultCircuitBreakerConfig()) {
+            System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", "{\"isPartitionLevelCircuitBreakerEnabled\": true}");
+        }
+
         this.resetSessionCapturingType();
         validateConfig();
         buildConnectionPolicy();
@@ -1212,6 +1218,11 @@ public class CosmosClientBuilder implements
     public CosmosClient buildClient() {
         StopWatch stopwatch = new StopWatch();
         stopwatch.start();
+
+        if (Configs.shouldOptInDefaultCircuitBreakerConfig()) {
+            System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", "{\"isPartitionLevelCircuitBreakerEnabled\": true}");
+        }
+
         this.resetSessionCapturingType();
         validateConfig();
         buildConnectionPolicy();
@@ -1261,17 +1272,22 @@ public class CosmosClientBuilder implements
         URI uri;
         try {
             uri = new URI(serviceEndpoint);
+            if (!Strings.isNullOrEmpty(uri.getPath()) || !Strings.isNullOrEmpty(uri.getQuery())) {
+                serviceEndpoint = uri.getScheme() + "://" + uri.getAuthority() + "/";
+                uri = new URI(serviceEndpoint);
+            }
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("invalid serviceEndpoint", e);
         }
 
         if (preferredRegions != null) {
             // validate preferredRegions
+            URI finalUri = uri;
             preferredRegions.forEach(
                 preferredRegion -> {
                     Preconditions.checkArgument(StringUtils.trimToNull(preferredRegion) != null, "preferredRegion can't be empty");
                     String trimmedPreferredRegion = preferredRegion.toLowerCase(Locale.ROOT).replace(" ", "");
-                    LocationHelper.getLocationEndpoint(uri, trimmedPreferredRegion);
+                    LocationHelper.getLocationEndpoint(finalUri, trimmedPreferredRegion);
                 }
             );
         }

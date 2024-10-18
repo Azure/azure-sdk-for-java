@@ -13,14 +13,14 @@ public final class DatasetLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatasetLocation model = BinaryData.fromString(
-            "{\"type\":\"DatasetLocation\",\"folderPath\":\"datavlkpzwb\",\"fileName\":\"datarecchdidrmu\",\"\":{\"khhwmj\":\"datahmjedbiuc\",\"ihufoihp\":\"datajbweunxcqr\",\"kzcscpiuzvkun\":\"dataiybxvgnzuzpb\"}}")
+            "{\"type\":\"DatasetLocation\",\"folderPath\":\"datadhgjnaqyqi\",\"fileName\":\"datalzmvcdsvmwbi\",\"\":{\"bxqichgybfzdqe\":\"datadtfobvfi\",\"ulrqtbht\":\"dataivycpzcvdi\"}}")
             .toObject(DatasetLocation.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatasetLocation model = new DatasetLocation().withFolderPath("datavlkpzwb")
-            .withFileName("datarecchdidrmu")
+        DatasetLocation model = new DatasetLocation().withFolderPath("datadhgjnaqyqi")
+            .withFileName("datalzmvcdsvmwbi")
             .withAdditionalProperties(mapOf("type", "DatasetLocation"));
         model = BinaryData.fromObject(model).toObject(DatasetLocation.class);
     }

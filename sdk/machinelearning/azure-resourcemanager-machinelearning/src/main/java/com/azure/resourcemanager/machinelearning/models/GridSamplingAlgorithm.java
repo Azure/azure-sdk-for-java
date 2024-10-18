@@ -5,25 +5,83 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines a Sampling Algorithm that exhaustively generates every value combination in the space. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "samplingAlgorithmType")
-@JsonTypeName("Grid")
+/**
+ * Defines a Sampling Algorithm that exhaustively generates every value combination in the space.
+ */
 @Immutable
 public final class GridSamplingAlgorithm extends SamplingAlgorithm {
-    /** Creates an instance of GridSamplingAlgorithm class. */
+    /*
+     * [Required] The algorithm used for generating hyperparameter values, along with configuration properties
+     */
+    private SamplingAlgorithmType samplingAlgorithmType = SamplingAlgorithmType.GRID;
+
+    /**
+     * Creates an instance of GridSamplingAlgorithm class.
+     */
     public GridSamplingAlgorithm() {
     }
 
     /**
+     * Get the samplingAlgorithmType property: [Required] The algorithm used for generating hyperparameter values, along
+     * with configuration properties.
+     * 
+     * @return the samplingAlgorithmType value.
+     */
+    @Override
+    public SamplingAlgorithmType samplingAlgorithmType() {
+        return this.samplingAlgorithmType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("samplingAlgorithmType",
+            this.samplingAlgorithmType == null ? null : this.samplingAlgorithmType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GridSamplingAlgorithm from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GridSamplingAlgorithm if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GridSamplingAlgorithm.
+     */
+    public static GridSamplingAlgorithm fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GridSamplingAlgorithm deserializedGridSamplingAlgorithm = new GridSamplingAlgorithm();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("samplingAlgorithmType".equals(fieldName)) {
+                    deserializedGridSamplingAlgorithm.samplingAlgorithmType
+                        = SamplingAlgorithmType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGridSamplingAlgorithm;
+        });
     }
 }

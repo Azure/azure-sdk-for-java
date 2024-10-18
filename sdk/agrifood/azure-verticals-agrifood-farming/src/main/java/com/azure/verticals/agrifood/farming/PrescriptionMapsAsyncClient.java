@@ -23,7 +23,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = PrescriptionMapsClientBuilder.class, isAsync = true)
 public final class PrescriptionMapsAsyncClient {
-    @Generated private final PrescriptionMapsImpl serviceClient;
+    @Generated
+    private final PrescriptionMapsImpl serviceClient;
 
     /**
      * Initializes an instance of PrescriptionMapsAsyncClient class.
@@ -144,8 +145,8 @@ public final class PrescriptionMapsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(
-            String partyId, String prescriptionMapId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponse(String partyId, String prescriptionMapId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getWithResponseAsync(partyId, prescriptionMapId, requestOptions);
     }
 
@@ -215,10 +216,10 @@ public final class PrescriptionMapsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String partyId, String prescriptionMapId, BinaryData prescriptionMap, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(
-                partyId, prescriptionMapId, prescriptionMap, requestOptions);
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String partyId, String prescriptionMapId,
+        BinaryData prescriptionMap, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponseAsync(partyId, prescriptionMapId, prescriptionMap,
+            requestOptions);
     }
 
     /**
@@ -235,8 +236,8 @@ public final class PrescriptionMapsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(
-            String partyId, String prescriptionMapId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteWithResponse(String partyId, String prescriptionMapId,
+        RequestOptions requestOptions) {
         return this.serviceClient.deleteWithResponseAsync(partyId, prescriptionMapId, requestOptions);
     }
 
@@ -341,8 +342,8 @@ public final class PrescriptionMapsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(
-            String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(String jobId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getCascadeDeleteJobDetailsWithResponseAsync(jobId, requestOptions);
     }
 
@@ -380,8 +381,8 @@ public final class PrescriptionMapsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String partyId, String prescriptionMapId, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(String jobId, String partyId,
+        String prescriptionMapId, RequestOptions requestOptions) {
         return this.serviceClient.beginCreateCascadeDeleteJobAsync(jobId, partyId, prescriptionMapId, requestOptions);
     }
 }

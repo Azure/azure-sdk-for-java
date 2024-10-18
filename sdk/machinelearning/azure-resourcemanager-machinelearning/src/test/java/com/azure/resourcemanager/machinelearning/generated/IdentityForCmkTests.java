@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class IdentityForCmkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IdentityForCmk model =
-            BinaryData.fromString("{\"userAssignedIdentity\":\"hanufhfcbjysagi\"}").toObject(IdentityForCmk.class);
-        Assertions.assertEquals("hanufhfcbjysagi", model.userAssignedIdentity());
+        IdentityForCmk model = BinaryData.fromString("{\"userAssignedIdentity\":\"o\"}").toObject(IdentityForCmk.class);
+        Assertions.assertEquals("o", model.userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IdentityForCmk model = new IdentityForCmk().withUserAssignedIdentity("hanufhfcbjysagi");
+        IdentityForCmk model = new IdentityForCmk().withUserAssignedIdentity("o");
         model = BinaryData.fromObject(model).toObject(IdentityForCmk.class);
-        Assertions.assertEquals("hanufhfcbjysagi", model.userAssignedIdentity());
+        Assertions.assertEquals("o", model.userAssignedIdentity());
     }
 }

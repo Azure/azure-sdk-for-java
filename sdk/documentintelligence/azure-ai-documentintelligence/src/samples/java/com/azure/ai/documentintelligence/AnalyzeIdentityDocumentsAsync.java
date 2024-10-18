@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Async sample for analyzing commonly found license fields from a local file input stream of a license identity
- * document. See fields found on license <a href=https://aka.ms/documentintelligence/iddocumentfields>here</a>
+ * document. See fields found on license <a href=https://aka.ms/formrecognizer/iddocumentfields>here</a>
  */
 public class AnalyzeIdentityDocumentsAsync {
 

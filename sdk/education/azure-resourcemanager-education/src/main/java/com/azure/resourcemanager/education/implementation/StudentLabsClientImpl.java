@@ -30,22 +30,28 @@ import com.azure.resourcemanager.education.fluent.models.StudentLabDetailsInner;
 import com.azure.resourcemanager.education.models.StudentLabListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in StudentLabsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in StudentLabsClient.
+ */
 public final class StudentLabsClientImpl implements StudentLabsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final StudentLabsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final EducationManagementClientImpl client;
 
     /**
      * Initializes an instance of StudentLabsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     StudentLabsClientImpl(EducationManagementClientImpl client) {
-        this.service =
-            RestProxy.create(StudentLabsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(StudentLabsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -55,107 +61,79 @@ public final class StudentLabsClientImpl implements StudentLabsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "EducationManagementC")
-    private interface StudentLabsService {
-        @Headers({"Content-Type: application/json"})
+    public interface StudentLabsService {
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Education/studentLabs")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StudentLabListResult>> listAll(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<StudentLabListResult>> listAll(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Education/studentLabs/{studentLabName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StudentLabDetailsInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("studentLabName") String studentLabName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<StudentLabDetailsInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("studentLabName") String studentLabName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StudentLabListResult>> listAllNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<StudentLabListResult>> listAllNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get a list of all labs associated with the caller of the API.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all labs associated with the caller of the API along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StudentLabDetailsInner>> listAllSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listAll(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
-            .<PagedResponse<StudentLabDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<StudentLabDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a list of all labs associated with the caller of the API.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all labs associated with the caller of the API along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StudentLabDetailsInner>> listAllSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAll(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAll(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get a list of all labs associated with the caller of the API.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all labs associated with the caller of the API as paginated response with {@link PagedFlux}.
@@ -167,7 +145,7 @@ public final class StudentLabsClientImpl implements StudentLabsClient {
 
     /**
      * Get a list of all labs associated with the caller of the API.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -176,17 +154,17 @@ public final class StudentLabsClientImpl implements StudentLabsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StudentLabDetailsInner> listAllAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listAllSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listAllSinglePageAsync(context),
+            nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get a list of all labs associated with the caller of the API.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all labs associated with the caller of the API as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of all labs associated with the caller of the API as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StudentLabDetailsInner> listAll() {
@@ -195,13 +173,13 @@ public final class StudentLabsClientImpl implements StudentLabsClient {
 
     /**
      * Get a list of all labs associated with the caller of the API.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all labs associated with the caller of the API as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of all labs associated with the caller of the API as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StudentLabDetailsInner> listAll(Context context) {
@@ -210,52 +188,46 @@ public final class StudentLabsClientImpl implements StudentLabsClient {
 
     /**
      * Get the details for a specified lab associated with the student lab.
-     *
-     * @param studentLabName Student lab name.
+     * 
+     * @param studentLabName The ID that uniquely identifies a student lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for a specified lab associated with the student lab along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StudentLabDetailsInner>> getWithResponseAsync(String studentLabName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (studentLabName == null) {
             return Mono.error(new IllegalArgumentException("Parameter studentLabName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(this.client.getEndpoint(), studentLabName, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), studentLabName, this.client.getApiVersion(),
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the details for a specified lab associated with the student lab.
-     *
-     * @param studentLabName Student lab name.
+     * 
+     * @param studentLabName The ID that uniquely identifies a student lab.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for a specified lab associated with the student lab along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StudentLabDetailsInner>> getWithResponseAsync(String studentLabName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (studentLabName == null) {
             return Mono.error(new IllegalArgumentException("Parameter studentLabName is required and cannot be null."));
@@ -267,8 +239,8 @@ public final class StudentLabsClientImpl implements StudentLabsClient {
 
     /**
      * Get the details for a specified lab associated with the student lab.
-     *
-     * @param studentLabName Student lab name.
+     * 
+     * @param studentLabName The ID that uniquely identifies a student lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -281,8 +253,8 @@ public final class StudentLabsClientImpl implements StudentLabsClient {
 
     /**
      * Get the details for a specified lab associated with the student lab.
-     *
-     * @param studentLabName Student lab name.
+     * 
+     * @param studentLabName The ID that uniquely identifies a student lab.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -296,8 +268,8 @@ public final class StudentLabsClientImpl implements StudentLabsClient {
 
     /**
      * Get the details for a specified lab associated with the student lab.
-     *
-     * @param studentLabName Student lab name.
+     * 
+     * @param studentLabName The ID that uniquely identifies a student lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -310,9 +282,8 @@ public final class StudentLabsClientImpl implements StudentLabsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -324,31 +295,21 @@ public final class StudentLabsClientImpl implements StudentLabsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAllNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<StudentLabDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<StudentLabDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -361,23 +322,13 @@ public final class StudentLabsClientImpl implements StudentLabsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAllNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAllNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

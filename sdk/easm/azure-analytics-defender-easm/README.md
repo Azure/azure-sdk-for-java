@@ -102,7 +102,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [disco_template_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/DiscoTemplateSample.java
 [saved_filter_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/SavedFilterSample.java
 [external_ids_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/ManagingExternalIdsSample.java
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/samples
 [assets_documentation]: https://learn.microsoft.com/azure/external-attack-surface-management/understanding-inventory-assets
 [discovery_documentation]: https://learn.microsoft.com/azure/external-attack-surface-management/what-is-discovery

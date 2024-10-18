@@ -1,6 +1,6 @@
 # Release History
 
-## 1.52.0-beta.1 (Unreleased)
+## 1.54.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,38 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.53.0 (2024-10-01)
+
+### Features Added
+
+- Allow setting `SharedExecutorService`'s backing `ExecutorService` to allow for external configuration to manage the
+  shared thread pool. ([#41885](https://github.com/Azure/azure-sdk-for-java/pull/41885))
+- Change `SharedExecutorService` from implementing `ExecutorService` to `ScheduledExecutorService` to allow 
+  scheduled-based execution. ([#41885](https://github.com/Azure/azure-sdk-for-java/pull/41885))
+- Allow passing `schemaUrl` when creating a `Meter` or `Tracer` using `MeterProvider` and `TracerProvider`. ([#41789](https://github.com/Azure/azure-sdk-for-java/pull/41789))
+- Added `Binary.writeTo(JsonWriter)` to enable `BinaryData` to better integrate with `azure-json`. ([#42107](https://github.com/Azure/azure-sdk-for-java/pull/42107))
+- Added `ProofOfPossessionOptions` and a field to `TokenRequestContext` to indicate its use. ([#41852](https://github.com/Azure/azure-sdk-for-java/pull/41852))
+
+### Other Changes
+
+- Reduced synchronization lock contention when creating `URL`s with `UrlBuilder`. ([#41816](https://github.com/Azure/azure-sdk-for-java/pull/41816))
+- Don't let SPI loading errors crash an application. ([#41991](https://github.com/Azure/azure-sdk-for-java/pull/41991))
+
+## 1.52.0 (2024-09-12)
+
+### Features Added
+
+- Added new interface `ExpandableEnum` which allows for enums based on any type with expansion. Effectively, a generic
+  typed `ExpandableStringEnum`.
+
+### Bugs Fixed
+
+- Fixed a bug with serialization of arrays of `JsonSerializable`. ([#41645](https://github.com/Azure/azure-sdk-for-java/pull/41645))
+
+### Other Changes
+
+- Changed logging in `AccessTokenCache` to `VERBOSE`. ([#41648](https://github.com/Azure/azure-sdk-for-java/pull/41648))
 
 ## 1.51.0 (2024-07-31)
 

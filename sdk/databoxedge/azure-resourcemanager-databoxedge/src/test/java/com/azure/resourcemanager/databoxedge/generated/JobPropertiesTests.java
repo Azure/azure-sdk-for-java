@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class JobPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobProperties model =
-            BinaryData
-                .fromString(
-                    "{\"jobType\":\"RefreshContainer\",\"currentStage\":\"Unknown\",\"downloadProgress\":{\"downloadPhase\":\"Initializing\",\"percentComplete\":1879825209,\"totalBytesToDownload\":14.127280760623284,\"totalBytesDownloaded\":77.16376490043355,\"numberOfUpdatesToDownload\":207335442,\"numberOfUpdatesDownloaded\":1774598517},\"installProgress\":{\"percentComplete\":28529322,\"numberOfUpdatesToInstall\":766224962,\"numberOfUpdatesInstalled\":943269845},\"totalRefreshErrors\":771742090,\"errorManifestFile\":\"lhocohslkev\",\"refreshedEntityId\":\"ggzfbu\",\"folder\":\"mvfaxkffeiith\"}")
-                .toObject(JobProperties.class);
-        Assertions.assertEquals("mvfaxkffeiith", model.folder());
+        JobProperties model = BinaryData.fromString(
+            "{\"jobType\":\"InstallUpdates\",\"currentStage\":\"RescanStarted\",\"downloadProgress\":{\"downloadPhase\":\"Unknown\",\"percentComplete\":750094319,\"totalBytesToDownload\":21.972088249516553,\"totalBytesDownloaded\":8.8054477359928,\"numberOfUpdatesToDownload\":63986979,\"numberOfUpdatesDownloaded\":511745945},\"installProgress\":{\"percentComplete\":2122365511,\"numberOfUpdatesToInstall\":516508763,\"numberOfUpdatesInstalled\":1443350377},\"totalRefreshErrors\":2099560460,\"errorManifestFile\":\"zoggigrxwburvjxx\",\"refreshedEntityId\":\"spyd\",\"folder\":\"koen\"}")
+            .toObject(JobProperties.class);
+        Assertions.assertEquals("koen", model.folder());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobProperties model = new JobProperties().withFolder("mvfaxkffeiith");
+        JobProperties model = new JobProperties().withFolder("koen");
         model = BinaryData.fromObject(model).toObject(JobProperties.class);
-        Assertions.assertEquals("mvfaxkffeiith", model.folder());
+        Assertions.assertEquals("koen", model.folder());
     }
 }

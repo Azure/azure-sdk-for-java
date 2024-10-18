@@ -26,10 +26,11 @@ service-interface-as-public: true
 license-header: MICROSOFT_MIT_SMALL
 enable-sync-stack: true
 context-client-method-parameter: true
-default-http-exception-type: com.azure.storage.queue.models.QueueStorageException
+default-http-exception-type: com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal
 models-subpackage: implementation.models
 custom-types: QueueErrorCode,QueueSignedIdentifier,SendMessageResult,QueueMessageItem,PeekedMessageItem,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType,GeoReplication
 custom-types-subpackage: models
+customization-class: src/main/java/QueueStorageCustomization.java
 generic-response-type: true
 use-input-stream-for-binary: true
 no-custom-headers: true

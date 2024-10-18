@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OrchestratorResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OrchestratorResource model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"Kubernetes\",\"identity\":{\"principalId\":\"epoo\",\"tenantId\":\"nuvamiheogna\",\"type\":\"None\"},\"location\":\"xth\",\"tags\":{\"cciqihnhungbwjz\":\"usivye\",\"kufubljo\":\"nfygxgispemvtz\",\"v\":\"xqeofjaeqjhqjba\",\"zgcwrw\":\"smjqulngsntnbyb\"},\"id\":\"lxxwrljdouskc\",\"name\":\"vkocrcjdkwtn\",\"type\":\"xbnjbiksq\"}")
-                .toObject(OrchestratorResource.class);
+        OrchestratorResource model = BinaryData.fromString(
+            "{\"kind\":\"Kubernetes\",\"identity\":{\"principalId\":\"epoo\",\"tenantId\":\"nuvamiheogna\",\"type\":\"None\"},\"location\":\"xth\",\"tags\":{\"cciqihnhungbwjz\":\"usivye\",\"kufubljo\":\"nfygxgispemvtz\",\"v\":\"xqeofjaeqjhqjba\",\"zgcwrw\":\"smjqulngsntnbyb\"},\"id\":\"lxxwrljdouskc\",\"name\":\"vkocrcjdkwtn\",\"type\":\"xbnjbiksq\"}")
+            .toObject(OrchestratorResource.class);
         Assertions.assertEquals("xth", model.location());
         Assertions.assertEquals("usivye", model.tags().get("cciqihnhungbwjz"));
         Assertions.assertEquals(OrchestratorKind.KUBERNETES, model.kind());
@@ -29,21 +27,11 @@ public final class OrchestratorResourceTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OrchestratorResource model =
-            new OrchestratorResource()
-                .withLocation("xth")
-                .withTags(
-                    mapOf(
-                        "cciqihnhungbwjz",
-                        "usivye",
-                        "kufubljo",
-                        "nfygxgispemvtz",
-                        "v",
-                        "xqeofjaeqjhqjba",
-                        "zgcwrw",
-                        "smjqulngsntnbyb"))
-                .withKind(OrchestratorKind.KUBERNETES)
-                .withIdentity(new OrchestratorIdentity().withType(ResourceIdentityType.NONE));
+        OrchestratorResource model = new OrchestratorResource().withLocation("xth")
+            .withTags(mapOf("cciqihnhungbwjz", "usivye", "kufubljo", "nfygxgispemvtz", "v", "xqeofjaeqjhqjba", "zgcwrw",
+                "smjqulngsntnbyb"))
+            .withKind(OrchestratorKind.KUBERNETES)
+            .withIdentity(new OrchestratorIdentity().withType(ResourceIdentityType.NONE));
         model = BinaryData.fromObject(model).toObject(OrchestratorResource.class);
         Assertions.assertEquals("xth", model.location());
         Assertions.assertEquals("usivye", model.tags().get("cciqihnhungbwjz"));
@@ -51,6 +39,7 @@ public final class OrchestratorResourceTests {
         Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

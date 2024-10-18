@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hdinsight.fluent.models.PrivateEndpointConnectionInner;
 
-/** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient.
+ */
 public interface PrivateEndpointConnectionsClient {
     /**
      * Lists the private endpoint connections for a HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Lists the private endpoint connections for a HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -40,12 +42,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the list private endpoint connections response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateEndpointConnectionInner> listByCluster(
-        String resourceGroupName, String clusterName, Context context);
+    PagedIterable<PrivateEndpointConnectionInner> listByCluster(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Approve or reject a private endpoint connection manually.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -57,14 +59,12 @@ public interface PrivateEndpointConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String privateEndpointConnectionName,
+        String resourceGroupName, String clusterName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner parameters);
 
     /**
      * Approve or reject a private endpoint connection manually.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -77,15 +77,12 @@ public interface PrivateEndpointConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters,
-        Context context);
+        String resourceGroupName, String clusterName, String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters, Context context);
 
     /**
      * Approve or reject a private endpoint connection manually.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -96,15 +93,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters);
+    PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String clusterName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters);
 
     /**
      * Approve or reject a private endpoint connection manually.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -116,16 +110,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters,
-        Context context);
+    PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String clusterName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters, Context context);
 
     /**
      * Gets the specific private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -136,12 +126,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the specific private endpoint connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> getWithResponse(
-        String resourceGroupName, String clusterName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String clusterName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Gets the specific private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -151,12 +141,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the specific private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner get(
-        String resourceGroupName, String clusterName, String privateEndpointConnectionName);
+    PrivateEndpointConnectionInner get(String resourceGroupName, String clusterName,
+        String privateEndpointConnectionName);
 
     /**
      * Deletes the specific private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -166,12 +156,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String privateEndpointConnectionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String privateEndpointConnectionName);
 
     /**
      * Deletes the specific private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -182,12 +172,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String privateEndpointConnectionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Deletes the specific private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -200,7 +190,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes the specific private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection.

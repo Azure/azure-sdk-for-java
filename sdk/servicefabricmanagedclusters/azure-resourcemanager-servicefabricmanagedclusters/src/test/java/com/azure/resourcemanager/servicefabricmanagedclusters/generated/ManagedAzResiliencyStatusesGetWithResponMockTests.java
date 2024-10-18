@@ -20,7 +20,7 @@ public final class ManagedAzResiliencyStatusesGetWithResponMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"baseResourceStatus\":[{\"resourceName\":\"slnelx\",\"resourceType\":\"ixynllxecwcrojp\",\"isZoneResilient\":false,\"details\":\"cawjutifdwfmvi\"},{\"resourceName\":\"rqjb\",\"resourceType\":\"zhraglkafh\",\"isZoneResilient\":true,\"details\":\"ujeickp\"},{\"resourceName\":\"cpopmxel\",\"resourceType\":\"clt\",\"isZoneResilient\":true,\"details\":\"ex\"},{\"resourceName\":\"lfmk\",\"resourceType\":\"cazuaw\",\"isZoneResilient\":false,\"details\":\"puamwabzxr\"}],\"isClusterZoneResilient\":false}";
+            = "{\"baseResourceStatus\":[{\"resourceName\":\"abzmifrygznmmaxr\",\"resourceType\":\"kzobgopxlhsln\",\"isZoneResilient\":true,\"details\":\"eixynllxecwcroj\"},{\"resourceName\":\"slhcawjutifd\",\"resourceType\":\"mvi\",\"isZoneResilient\":false,\"details\":\"jbt\"},{\"resourceName\":\"h\",\"resourceType\":\"glka\",\"isZoneResilient\":true,\"details\":\"qjujeickpzvcp\"},{\"resourceName\":\"mxelnwcltyjed\",\"resourceType\":\"xm\",\"isZoneResilient\":false,\"details\":\"qscazuawxtz\"}],\"isClusterZoneResilient\":true}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ManagedAzResiliencyStatusesGetWithResponMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ManagedAzResiliencyStatus response = manager.managedAzResiliencyStatuses()
-            .getWithResponse("frygznmmax", "izkzobgo", com.azure.core.util.Context.NONE)
+            .getWithResponse("vntjlrigjk", "kyrioovzid", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

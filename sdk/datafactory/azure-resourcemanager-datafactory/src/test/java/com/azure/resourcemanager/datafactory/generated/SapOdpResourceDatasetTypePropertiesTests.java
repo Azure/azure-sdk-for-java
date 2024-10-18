@@ -11,15 +11,14 @@ public final class SapOdpResourceDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapOdpResourceDatasetTypeProperties model
-            = BinaryData.fromString("{\"context\":\"dataygihiclmslnu\",\"objectName\":\"datakqvzlbbbajdexq\"}")
+            = BinaryData.fromString("{\"context\":\"datasedfmzu\",\"objectName\":\"dataryxpi\"}")
                 .toObject(SapOdpResourceDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SapOdpResourceDatasetTypeProperties model
-            = new SapOdpResourceDatasetTypeProperties().withContext("dataygihiclmslnu")
-                .withObjectName("datakqvzlbbbajdexq");
+            = new SapOdpResourceDatasetTypeProperties().withContext("datasedfmzu").withObjectName("dataryxpi");
         model = BinaryData.fromObject(model).toObject(SapOdpResourceDatasetTypeProperties.class);
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,63 +12,99 @@ import java.util.Collection;
  * status to PendingFeaturing or Active through API.
  */
 public final class PredictionModelLifeCycle extends ExpandableStringEnum<PredictionModelLifeCycle> {
-    /** Static value New for PredictionModelLifeCycle. */
+    /**
+     * Static value New for PredictionModelLifeCycle.
+     */
     public static final PredictionModelLifeCycle NEW = fromString("New");
 
-    /** Static value Provisioning for PredictionModelLifeCycle. */
+    /**
+     * Static value Provisioning for PredictionModelLifeCycle.
+     */
     public static final PredictionModelLifeCycle PROVISIONING = fromString("Provisioning");
 
-    /** Static value ProvisioningFailed for PredictionModelLifeCycle. */
+    /**
+     * Static value ProvisioningFailed for PredictionModelLifeCycle.
+     */
     public static final PredictionModelLifeCycle PROVISIONING_FAILED = fromString("ProvisioningFailed");
 
-    /** Static value PendingDiscovering for PredictionModelLifeCycle. */
+    /**
+     * Static value PendingDiscovering for PredictionModelLifeCycle.
+     */
     public static final PredictionModelLifeCycle PENDING_DISCOVERING = fromString("PendingDiscovering");
 
-    /** Static value Discovering for PredictionModelLifeCycle. */
+    /**
+     * Static value Discovering for PredictionModelLifeCycle.
+     */
     public static final PredictionModelLifeCycle DISCOVERING = fromString("Discovering");
 
-    /** Static value PendingFeaturing for PredictionModelLifeCycle. */
+    /**
+     * Static value PendingFeaturing for PredictionModelLifeCycle.
+     */
     public static final PredictionModelLifeCycle PENDING_FEATURING = fromString("PendingFeaturing");
 
-    /** Static value Featuring for PredictionModelLifeCycle. */
+    /**
+     * Static value Featuring for PredictionModelLifeCycle.
+     */
     public static final PredictionModelLifeCycle FEATURING = fromString("Featuring");
 
-    /** Static value FeaturingFailed for PredictionModelLifeCycle. */
+    /**
+     * Static value FeaturingFailed for PredictionModelLifeCycle.
+     */
     public static final PredictionModelLifeCycle FEATURING_FAILED = fromString("FeaturingFailed");
 
-    /** Static value PendingTraining for PredictionModelLifeCycle. */
+    /**
+     * Static value PendingTraining for PredictionModelLifeCycle.
+     */
     public static final PredictionModelLifeCycle PENDING_TRAINING = fromString("PendingTraining");
 
-    /** Static value Training for PredictionModelLifeCycle. */
+    /**
+     * Static value Training for PredictionModelLifeCycle.
+     */
     public static final PredictionModelLifeCycle TRAINING = fromString("Training");
 
-    /** Static value TrainingFailed for PredictionModelLifeCycle. */
+    /**
+     * Static value TrainingFailed for PredictionModelLifeCycle.
+     */
     public static final PredictionModelLifeCycle TRAINING_FAILED = fromString("TrainingFailed");
 
-    /** Static value Evaluating for PredictionModelLifeCycle. */
+    /**
+     * Static value Evaluating for PredictionModelLifeCycle.
+     */
     public static final PredictionModelLifeCycle EVALUATING = fromString("Evaluating");
 
-    /** Static value EvaluatingFailed for PredictionModelLifeCycle. */
+    /**
+     * Static value EvaluatingFailed for PredictionModelLifeCycle.
+     */
     public static final PredictionModelLifeCycle EVALUATING_FAILED = fromString("EvaluatingFailed");
 
-    /** Static value PendingModelConfirmation for PredictionModelLifeCycle. */
+    /**
+     * Static value PendingModelConfirmation for PredictionModelLifeCycle.
+     */
     public static final PredictionModelLifeCycle PENDING_MODEL_CONFIRMATION = fromString("PendingModelConfirmation");
 
-    /** Static value Active for PredictionModelLifeCycle. */
+    /**
+     * Static value Active for PredictionModelLifeCycle.
+     */
     public static final PredictionModelLifeCycle ACTIVE = fromString("Active");
 
-    /** Static value Deleted for PredictionModelLifeCycle. */
+    /**
+     * Static value Deleted for PredictionModelLifeCycle.
+     */
     public static final PredictionModelLifeCycle DELETED = fromString("Deleted");
 
-    /** Static value HumanIntervention for PredictionModelLifeCycle. */
+    /**
+     * Static value HumanIntervention for PredictionModelLifeCycle.
+     */
     public static final PredictionModelLifeCycle HUMAN_INTERVENTION = fromString("HumanIntervention");
 
-    /** Static value Failed for PredictionModelLifeCycle. */
+    /**
+     * Static value Failed for PredictionModelLifeCycle.
+     */
     public static final PredictionModelLifeCycle FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of PredictionModelLifeCycle value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -78,18 +113,17 @@ public final class PredictionModelLifeCycle extends ExpandableStringEnum<Predict
 
     /**
      * Creates or finds a PredictionModelLifeCycle from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PredictionModelLifeCycle.
      */
-    @JsonCreator
     public static PredictionModelLifeCycle fromString(String name) {
         return fromString(name, PredictionModelLifeCycle.class);
     }
 
     /**
      * Gets known PredictionModelLifeCycle values.
-     *
+     * 
      * @return known PredictionModelLifeCycle values.
      */
     public static Collection<PredictionModelLifeCycle> values() {

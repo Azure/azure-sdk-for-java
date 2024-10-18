@@ -12,29 +12,26 @@ import org.junit.jupiter.api.Assertions;
 public final class QuotaBasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaBaseProperties model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"ozmyzydagfu\",\"type\":\"bezy\",\"limit\":1156651479695546396,\"unit\":\"Count\"}")
-                .toObject(QuotaBaseProperties.class);
-        Assertions.assertEquals("ozmyzydagfu", model.id());
-        Assertions.assertEquals("bezy", model.type());
-        Assertions.assertEquals(1156651479695546396L, model.limit());
+        QuotaBaseProperties model = BinaryData
+            .fromString(
+                "{\"id\":\"rbnlankxmyskp\",\"type\":\"enbtkcxywny\",\"limit\":3938572142149816322,\"unit\":\"Count\"}")
+            .toObject(QuotaBaseProperties.class);
+        Assertions.assertEquals("rbnlankxmyskp", model.id());
+        Assertions.assertEquals("enbtkcxywny", model.type());
+        Assertions.assertEquals(3938572142149816322L, model.limit());
         Assertions.assertEquals(QuotaUnit.COUNT, model.unit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaBaseProperties model =
-            new QuotaBaseProperties()
-                .withId("ozmyzydagfu")
-                .withType("bezy")
-                .withLimit(1156651479695546396L)
-                .withUnit(QuotaUnit.COUNT);
+        QuotaBaseProperties model = new QuotaBaseProperties().withId("rbnlankxmyskp")
+            .withType("enbtkcxywny")
+            .withLimit(3938572142149816322L)
+            .withUnit(QuotaUnit.COUNT);
         model = BinaryData.fromObject(model).toObject(QuotaBaseProperties.class);
-        Assertions.assertEquals("ozmyzydagfu", model.id());
-        Assertions.assertEquals("bezy", model.type());
-        Assertions.assertEquals(1156651479695546396L, model.limit());
+        Assertions.assertEquals("rbnlankxmyskp", model.id());
+        Assertions.assertEquals("enbtkcxywny", model.type());
+        Assertions.assertEquals(3938572142149816322L, model.limit());
         Assertions.assertEquals(QuotaUnit.COUNT, model.unit());
     }
 }

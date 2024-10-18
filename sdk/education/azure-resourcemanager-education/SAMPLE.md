@@ -45,32 +45,37 @@
 ### Grants_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Grants Get. */
+/**
+ * Samples for Grants Get.
+ */
 public final class GrantsGetSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/Grant.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/Grant.json
      */
     /**
      * Sample code: Grant.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void grant(com.azure.resourcemanager.education.EducationManager manager) {
-        manager.grants().getWithResponse("{billingAccountName}", "{billingProfileName}", false, Context.NONE);
+        manager.grants()
+            .getWithResponse("{billingAccountName}", "{billingProfileName}", false, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/GrantIncludeAllocatedBudget.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
+     * GrantIncludeAllocatedBudget.json
      */
     /**
      * Sample code: GrantIncludeAllocatedBudget.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void grantIncludeAllocatedBudget(com.azure.resourcemanager.education.EducationManager manager) {
-        manager.grants().getWithResponse("{billingAccountName}", "{billingProfileName}", false, Context.NONE);
+        manager.grants()
+            .getWithResponse("{billingAccountName}", "{billingProfileName}", false, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -78,32 +83,36 @@ public final class GrantsGetSamples {
 ### Grants_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Grants List. */
+/**
+ * Samples for Grants List.
+ */
 public final class GrantsListSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/GrantDefaultListIncludeAllocatedBudget.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
+     * GrantDefaultListIncludeAllocatedBudget.json
      */
     /**
      * Sample code: GrantListIncludeAllocatedBudget.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void grantListIncludeAllocatedBudget(com.azure.resourcemanager.education.EducationManager manager) {
-        manager.grants().list("{billingAccountName}", "{billingProfileName}", false, Context.NONE);
+        manager.grants().list("{billingAccountName}", "{billingProfileName}", false, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/GrantDefaultList.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/GrantDefaultList
+     * .json
      */
     /**
      * Sample code: GrantList.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void grantList(com.azure.resourcemanager.education.EducationManager manager) {
-        manager.grants().list("{billingAccountName}", "{billingProfileName}", false, Context.NONE);
+        manager.grants().list("{billingAccountName}", "{billingProfileName}", false, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -111,32 +120,35 @@ public final class GrantsListSamples {
 ### Grants_ListAll
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Grants ListAll. */
+/**
+ * Samples for Grants ListAll.
+ */
 public final class GrantsListAllSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/GrantListIncludeAllocatedBudget.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
+     * GrantListIncludeAllocatedBudget.json
      */
     /**
      * Sample code: GrantListIncludeAllocatedBudget.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void grantListIncludeAllocatedBudget(com.azure.resourcemanager.education.EducationManager manager) {
-        manager.grants().listAll(true, Context.NONE);
+        manager.grants().listAll(true, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/GrantList.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/GrantList.json
      */
     /**
      * Sample code: GrantList.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void grantList(com.azure.resourcemanager.education.EducationManager manager) {
-        manager.grants().listAll(false, Context.NONE);
+        manager.grants().listAll(false, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -144,27 +156,24 @@ public final class GrantsListAllSamples {
 ### JoinRequests_Approve
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for JoinRequests Approve. */
+/**
+ * Samples for JoinRequests Approve.
+ */
 public final class JoinRequestsApproveSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/JoinRequestApproveAndDeny.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
+     * JoinRequestApproveAndDeny.json
      */
     /**
      * Sample code: JoinRequestApprove.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void joinRequestApprove(com.azure.resourcemanager.education.EducationManager manager) {
-        manager
-            .joinRequests()
-            .approveWithResponse(
-                "{billingAccountName}",
-                "{billingProfileName}",
-                "{invoiceSectionName}",
-                "{joinRequestName}",
-                Context.NONE);
+        manager.joinRequests()
+            .approveWithResponse("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}",
+                "{joinRequestName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -172,27 +181,24 @@ public final class JoinRequestsApproveSamples {
 ### JoinRequests_Deny
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for JoinRequests Deny. */
+/**
+ * Samples for JoinRequests Deny.
+ */
 public final class JoinRequestsDenySamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/JoinRequestApproveAndDeny.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
+     * JoinRequestApproveAndDeny.json
      */
     /**
      * Sample code: JoinRequestDeny.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void joinRequestDeny(com.azure.resourcemanager.education.EducationManager manager) {
-        manager
-            .joinRequests()
-            .denyWithResponse(
-                "{billingAccountName}",
-                "{billingProfileName}",
-                "{invoiceSectionName}",
-                "{joinRequestName}",
-                Context.NONE);
+        manager.joinRequests()
+            .denyWithResponse("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}",
+                "{joinRequestName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -200,27 +206,23 @@ public final class JoinRequestsDenySamples {
 ### JoinRequests_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for JoinRequests Get. */
+/**
+ * Samples for JoinRequests Get.
+ */
 public final class JoinRequestsGetSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/JoinRequest.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/JoinRequest.json
      */
     /**
      * Sample code: JoinRequest.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void joinRequest(com.azure.resourcemanager.education.EducationManager manager) {
-        manager
-            .joinRequests()
-            .getWithResponse(
-                "{billingAccountName}",
-                "{billingProfileName}",
-                "{invoiceSectionName}",
-                "{joinRequestName}",
-                Context.NONE);
+        manager.joinRequests()
+            .getWithResponse("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}",
+                "{joinRequestName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -228,22 +230,24 @@ public final class JoinRequestsGetSamples {
 ### JoinRequests_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for JoinRequests List. */
+/**
+ * Samples for JoinRequests List.
+ */
 public final class JoinRequestsListSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/JoinRequestList.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/JoinRequestList.
+     * json
      */
     /**
      * Sample code: JoinRequestList.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void joinRequestList(com.azure.resourcemanager.education.EducationManager manager) {
-        manager
-            .joinRequests()
-            .list("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", false, Context.NONE);
+        manager.joinRequests()
+            .list("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", false,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -251,34 +255,31 @@ public final class JoinRequestsListSamples {
 ### Labs_CreateOrUpdate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.education.fluent.models.Amount;
 import com.azure.resourcemanager.education.fluent.models.LabDetailsInner;
 import java.time.OffsetDateTime;
 
-/** Samples for Labs CreateOrUpdate. */
+/**
+ * Samples for Labs CreateOrUpdate.
+ */
 public final class LabsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/CreateLab.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/CreateLab.json
      */
     /**
      * Sample code: CreateLab.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void createLab(com.azure.resourcemanager.education.EducationManager manager) {
-        manager
-            .labs()
-            .createOrUpdateWithResponse(
-                "{billingAccountName}",
-                "{billingProfileName}",
-                "{invoiceSectionName}",
-                new LabDetailsInner()
-                    .withDisplayName("example lab")
+        manager.labs()
+            .createOrUpdateWithResponse("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}",
+                new LabDetailsInner().withDisplayName("example lab")
                     .withBudgetPerStudent(new Amount().withCurrency("USD").withValue(100.0F))
                     .withDescription("example lab description")
                     .withExpirationDate(OffsetDateTime.parse("2021-12-09T22:11:29.422Z")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -286,22 +287,23 @@ public final class LabsCreateOrUpdateSamples {
 ### Labs_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Labs Delete. */
+/**
+ * Samples for Labs Delete.
+ */
 public final class LabsDeleteSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/DeleteLab.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/DeleteLab.json
      */
     /**
      * Sample code: DeleteLab.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void deleteLab(com.azure.resourcemanager.education.EducationManager manager) {
-        manager
-            .labs()
-            .deleteWithResponse("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", Context.NONE);
+        manager.labs()
+            .deleteWithResponse("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -309,29 +311,26 @@ public final class LabsDeleteSamples {
 ### Labs_GenerateInviteCode
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.education.models.InviteCodeGenerateRequest;
 
-/** Samples for Labs GenerateInviteCode. */
+/**
+ * Samples for Labs GenerateInviteCode.
+ */
 public final class LabsGenerateInviteCodeSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/GenerateInviteCode.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
+     * GenerateInviteCode.json
      */
     /**
      * Sample code: CreateLab.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void createLab(com.azure.resourcemanager.education.EducationManager manager) {
-        manager
-            .labs()
-            .generateInviteCodeWithResponse(
-                "{billingAccountName}",
-                "{billingProfileName}",
-                "{invoiceSectionName}",
-                new InviteCodeGenerateRequest().withMaxStudentCount(10.0F),
-                null,
-                Context.NONE);
+        manager.labs()
+            .generateInviteCodeWithResponse("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}",
+                new InviteCodeGenerateRequest().withMaxStudentCount(10.0F), null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -339,38 +338,39 @@ public final class LabsGenerateInviteCodeSamples {
 ### Labs_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Labs Get. */
+/**
+ * Samples for Labs Get.
+ */
 public final class LabsGetSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/LabIncludeBudget.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/LabIncludeBudget
+     * .json
      */
     /**
      * Sample code: LabIncludeBudget.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void labIncludeBudget(com.azure.resourcemanager.education.EducationManager manager) {
-        manager
-            .labs()
-            .getWithResponse(
-                "{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", true, Context.NONE);
+        manager.labs()
+            .getWithResponse("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", true,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/Lab.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/Lab.json
      */
     /**
      * Sample code: Lab.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void lab(com.azure.resourcemanager.education.EducationManager manager) {
-        manager
-            .labs()
-            .getWithResponse(
-                "{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", false, Context.NONE);
+        manager.labs()
+            .getWithResponse("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", false,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -378,33 +378,41 @@ public final class LabsGetSamples {
 ### Labs_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Labs List. */
+/**
+ * Samples for Labs List.
+ */
 public final class LabsListSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/LabListWithInvoiceSectionNameIncludeBudget.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
+     * LabListWithInvoiceSectionNameIncludeBudget.json
      */
     /**
      * Sample code: LabListWithInvoiceSectionNameIncludeBudget.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
-    public static void labListWithInvoiceSectionNameIncludeBudget(
-        com.azure.resourcemanager.education.EducationManager manager) {
-        manager.labs().list("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", true, Context.NONE);
+    public static void
+        labListWithInvoiceSectionNameIncludeBudget(com.azure.resourcemanager.education.EducationManager manager) {
+        manager.labs()
+            .list("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", true,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/LabListWithInvoiceSectionName.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
+     * LabListWithInvoiceSectionName.json
      */
     /**
      * Sample code: LabListWithInvoiceSectionName.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void labListWithInvoiceSectionName(com.azure.resourcemanager.education.EducationManager manager) {
-        manager.labs().list("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", true, Context.NONE);
+        manager.labs()
+            .list("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", true,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -412,32 +420,37 @@ public final class LabsListSamples {
 ### Labs_ListAll
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Labs ListAll. */
+/**
+ * Samples for Labs ListAll.
+ */
 public final class LabsListAllSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/LabList.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/LabList.json
      */
     /**
      * Sample code: LabList.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void labList(com.azure.resourcemanager.education.EducationManager manager) {
-        manager.labs().listAll("{billingAccountName}", "{billingProfileName}", false, null, Context.NONE);
+        manager.labs()
+            .listAll("{billingAccountName}", "{billingProfileName}", false, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/LabListIncludeBudget.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
+     * LabListIncludeBudget.json
      */
     /**
      * Sample code: LabListIncludeBudget.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void labListIncludeBudget(com.azure.resourcemanager.education.EducationManager manager) {
-        manager.labs().listAll("{billingAccountName}", "{billingProfileName}", true, null, Context.NONE);
+        manager.labs()
+            .listAll("{billingAccountName}", "{billingProfileName}", true, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -445,20 +458,22 @@ public final class LabsListAllSamples {
 ### Operations_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/GetOperations.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/GetOperations.
+     * json
      */
     /**
      * Sample code: GetOperations.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void getOperations(com.azure.resourcemanager.education.EducationManager manager) {
-        manager.operations().listWithResponse(Context.NONE);
+        manager.operations().listWithResponse(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -466,25 +481,26 @@ public final class OperationsListSamples {
 ### ResourceProvider_RedeemInvitationCode
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.education.models.RedeemRequest;
 
-/** Samples for ResourceProvider RedeemInvitationCode. */
+/**
+ * Samples for ResourceProvider RedeemInvitationCode.
+ */
 public final class ResourceProviderRedeemInvitationCodeSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/RedeemCode.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/RedeemCode.json
      */
     /**
      * Sample code: RedeemCode.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void redeemCode(com.azure.resourcemanager.education.EducationManager manager) {
-        manager
-            .resourceProviders()
+        manager.resourceProviders()
             .redeemInvitationCodeWithResponse(
-                new RedeemRequest().withRedeemCode("exampleRedeemCode").withFirstName("test").withLastName("user"),
-                Context.NONE);
+                new RedeemRequest().withRedeemCode("fakeTokenPlaceholder").withFirstName("test").withLastName("user"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -492,20 +508,21 @@ public final class ResourceProviderRedeemInvitationCodeSamples {
 ### StudentLabs_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for StudentLabs Get. */
+/**
+ * Samples for StudentLabs Get.
+ */
 public final class StudentLabsGetSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/StudentLab.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/StudentLab.json
      */
     /**
      * Sample code: StudentLab.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void studentLab(com.azure.resourcemanager.education.EducationManager manager) {
-        manager.studentLabs().getWithResponse("{studentLabName}", Context.NONE);
+        manager.studentLabs().getWithResponse("{studentLabName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -513,20 +530,22 @@ public final class StudentLabsGetSamples {
 ### StudentLabs_ListAll
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for StudentLabs ListAll. */
+/**
+ * Samples for StudentLabs ListAll.
+ */
 public final class StudentLabsListAllSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/StudentLabList.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/StudentLabList.
+     * json
      */
     /**
      * Sample code: StudentLabList.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void studentLabList(com.azure.resourcemanager.education.EducationManager manager) {
-        manager.studentLabs().listAll(Context.NONE);
+        manager.studentLabs().listAll(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -534,38 +553,36 @@ public final class StudentLabsListAllSamples {
 ### Students_CreateOrUpdate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.education.fluent.models.Amount;
 import com.azure.resourcemanager.education.fluent.models.StudentDetailsInner;
 import com.azure.resourcemanager.education.models.StudentRole;
 import java.time.OffsetDateTime;
 
-/** Samples for Students CreateOrUpdate. */
+/**
+ * Samples for Students CreateOrUpdate.
+ */
 public final class StudentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/CreateStudent.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/CreateStudent.
+     * json
      */
     /**
      * Sample code: Student.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void student(com.azure.resourcemanager.education.EducationManager manager) {
-        manager
-            .students()
-            .createOrUpdateWithResponse(
-                "{billingAccountName}",
-                "{billingProfileName}",
-                "{invoiceSectionName}",
+        manager.students()
+            .createOrUpdateWithResponse("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}",
                 "{studentAlias}",
-                new StudentDetailsInner()
-                    .withFirstName("test")
+                new StudentDetailsInner().withFirstName("test")
                     .withLastName("user")
                     .withEmail("test@contoso.com")
                     .withRole(StudentRole.STUDENT)
                     .withBudget(new Amount().withCurrency("USD").withValue(100.0F))
                     .withExpirationDate(OffsetDateTime.parse("2021-11-09T22:13:21.795Z")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -573,23 +590,24 @@ public final class StudentsCreateOrUpdateSamples {
 ### Students_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Students Delete. */
+/**
+ * Samples for Students Delete.
+ */
 public final class StudentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/DeleteStudent.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/DeleteStudent.
+     * json
      */
     /**
      * Sample code: DeleteLab.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void deleteLab(com.azure.resourcemanager.education.EducationManager manager) {
-        manager
-            .students()
-            .deleteWithResponse(
-                "{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", "{studentAlias}", Context.NONE);
+        manager.students()
+            .deleteWithResponse("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}",
+                "{studentAlias}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -597,23 +615,23 @@ public final class StudentsDeleteSamples {
 ### Students_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Students Get. */
+/**
+ * Samples for Students Get.
+ */
 public final class StudentsGetSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/Student.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/Student.json
      */
     /**
      * Sample code: Student.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void student(com.azure.resourcemanager.education.EducationManager manager) {
-        manager
-            .students()
-            .getWithResponse(
-                "{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", "{studentAlias}", Context.NONE);
+        manager.students()
+            .getWithResponse("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", "{studentAlias}",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -621,22 +639,23 @@ public final class StudentsGetSamples {
 ### Students_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Students List. */
+/**
+ * Samples for Students List.
+ */
 public final class StudentsListSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/StudentList.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/StudentList.json
      */
     /**
      * Sample code: StudentList.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void studentList(com.azure.resourcemanager.education.EducationManager manager) {
-        manager
-            .students()
-            .list("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", null, Context.NONE);
+        manager.students()
+            .list("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```

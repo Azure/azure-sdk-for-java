@@ -14,25 +14,27 @@ public final class RangerUsersyncSpecTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RangerUsersyncSpec model = BinaryData.fromString(
-            "{\"enabled\":false,\"groups\":[\"ngmtsavjcb\",\"wxqpsrknftguvri\"],\"mode\":\"automatic\",\"userMappingLocation\":\"wmdyvxqtay\",\"users\":[\"wroyqbexrmcq\"]}")
+            "{\"enabled\":true,\"groups\":[\"helxprglya\",\"dd\",\"kcbcue\",\"rjxgciqib\"],\"mode\":\"static\",\"userMappingLocation\":\"xsdqrhzoymibmrqy\",\"users\":[\"hwflu\",\"zdtmhrkwofy\",\"voqacpiexpbt\",\"iwbwoenwashrtdtk\"]}")
             .toObject(RangerUsersyncSpec.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("ngmtsavjcb", model.groups().get(0));
-        Assertions.assertEquals(RangerUsersyncMode.AUTOMATIC, model.mode());
-        Assertions.assertEquals("wmdyvxqtay", model.userMappingLocation());
-        Assertions.assertEquals("wroyqbexrmcq", model.users().get(0));
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("helxprglya", model.groups().get(0));
+        Assertions.assertEquals(RangerUsersyncMode.STATIC, model.mode());
+        Assertions.assertEquals("xsdqrhzoymibmrqy", model.userMappingLocation());
+        Assertions.assertEquals("hwflu", model.users().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RangerUsersyncSpec model = new RangerUsersyncSpec().withEnabled(false)
-            .withGroups(Arrays.asList("ngmtsavjcb", "wxqpsrknftguvri")).withMode(RangerUsersyncMode.AUTOMATIC)
-            .withUserMappingLocation("wmdyvxqtay").withUsers(Arrays.asList("wroyqbexrmcq"));
+        RangerUsersyncSpec model = new RangerUsersyncSpec().withEnabled(true)
+            .withGroups(Arrays.asList("helxprglya", "dd", "kcbcue", "rjxgciqib"))
+            .withMode(RangerUsersyncMode.STATIC)
+            .withUserMappingLocation("xsdqrhzoymibmrqy")
+            .withUsers(Arrays.asList("hwflu", "zdtmhrkwofy", "voqacpiexpbt", "iwbwoenwashrtdtk"));
         model = BinaryData.fromObject(model).toObject(RangerUsersyncSpec.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("ngmtsavjcb", model.groups().get(0));
-        Assertions.assertEquals(RangerUsersyncMode.AUTOMATIC, model.mode());
-        Assertions.assertEquals("wmdyvxqtay", model.userMappingLocation());
-        Assertions.assertEquals("wroyqbexrmcq", model.users().get(0));
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("helxprglya", model.groups().get(0));
+        Assertions.assertEquals(RangerUsersyncMode.STATIC, model.mode());
+        Assertions.assertEquals("xsdqrhzoymibmrqy", model.userMappingLocation());
+        Assertions.assertEquals("hwflu", model.users().get(0));
     }
 }

@@ -19,8 +19,6 @@ import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
-import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImpl;
-import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImplBuilder;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeServiceProperties;
@@ -53,7 +51,8 @@ public class DataLakeServiceClient {
     private static final ClientLogger LOGGER = new ClientLogger(DataLakeServiceClient.class);
     private final DataLakeServiceAsyncClient dataLakeServiceAsyncClient;
     final BlobServiceClient blobServiceClient;
-    private final AzureDataLakeStorageRestAPIImpl azureDataLakeStorage;
+    private final HttpPipeline pipeline;
+    private final String url;
     private final String accountName;
     private final DataLakeServiceVersion serviceVersion;
     private final AzureSasCredential sasToken;
@@ -70,11 +69,8 @@ public class DataLakeServiceClient {
         AzureSasCredential sasToken, boolean isTokenCredentialAuthenticated) {
         this.dataLakeServiceAsyncClient = dataLakeServiceAsyncClient;
         this.blobServiceClient = blobServiceClient;
-        this.azureDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
-            .pipeline(pipeline)
-            .url(url)
-            .version(serviceVersion.getVersion())
-            .buildClient();
+        this.pipeline = pipeline;
+        this.url = url;
         this.serviceVersion = serviceVersion;
         this.accountName = accountName;
         this.sasToken = sasToken;
@@ -112,7 +108,7 @@ public class DataLakeServiceClient {
      * @return The pipeline.
      */
     public HttpPipeline getHttpPipeline() {
-        return azureDataLakeStorage.getHttpPipeline();
+        return pipeline;
     }
 
     /**
@@ -240,7 +236,7 @@ public class DataLakeServiceClient {
      * @return the URL.
      */
     public String getAccountUrl() {
-        return azureDataLakeStorage.getUrl();
+        return url;
     }
 
     /**

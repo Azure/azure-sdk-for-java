@@ -111,32 +111,28 @@ public final class IntegrationAccountAgreementImpl
 
     private String agreementName;
 
-    public IntegrationAccountAgreementImpl withExistingIntegrationAccount(
-        String resourceGroupName, String integrationAccountName) {
+    public IntegrationAccountAgreementImpl withExistingIntegrationAccount(String resourceGroupName,
+        String integrationAccountName) {
         this.resourceGroupName = resourceGroupName;
         this.integrationAccountName = integrationAccountName;
         return this;
     }
 
     public IntegrationAccountAgreement create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountAgreements()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, agreementName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountAgreements()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, agreementName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public IntegrationAccountAgreement create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountAgreements()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, agreementName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountAgreements()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, agreementName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -151,67 +147,58 @@ public final class IntegrationAccountAgreementImpl
     }
 
     public IntegrationAccountAgreement apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountAgreements()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, agreementName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountAgreements()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, agreementName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public IntegrationAccountAgreement apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountAgreements()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, agreementName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountAgreements()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, agreementName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
-    IntegrationAccountAgreementImpl(
-        IntegrationAccountAgreementInner innerObject, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    IntegrationAccountAgreementImpl(IntegrationAccountAgreementInner innerObject,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.integrationAccountName = Utils.getValueFromIdByName(innerObject.id(), "integrationAccounts");
-        this.agreementName = Utils.getValueFromIdByName(innerObject.id(), "agreements");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.integrationAccountName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "integrationAccounts");
+        this.agreementName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "agreements");
     }
 
     public IntegrationAccountAgreement refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountAgreements()
-                .getWithResponse(resourceGroupName, integrationAccountName, agreementName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountAgreements()
+            .getWithResponse(resourceGroupName, integrationAccountName, agreementName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IntegrationAccountAgreement refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountAgreements()
-                .getWithResponse(resourceGroupName, integrationAccountName, agreementName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountAgreements()
+            .getWithResponse(resourceGroupName, integrationAccountName, agreementName, context)
+            .getValue();
         return this;
     }
 
-    public Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(
-        GetCallbackUrlParameters listContentCallbackUrl, Context context) {
-        return serviceManager
-            .integrationAccountAgreements()
-            .listContentCallbackUrlWithResponse(
-                resourceGroupName, integrationAccountName, agreementName, listContentCallbackUrl, context);
+    public Response<WorkflowTriggerCallbackUrl>
+        listContentCallbackUrlWithResponse(GetCallbackUrlParameters listContentCallbackUrl, Context context) {
+        return serviceManager.integrationAccountAgreements()
+            .listContentCallbackUrlWithResponse(resourceGroupName, integrationAccountName, agreementName,
+                listContentCallbackUrl, context);
     }
 
     public WorkflowTriggerCallbackUrl listContentCallbackUrl(GetCallbackUrlParameters listContentCallbackUrl) {
-        return serviceManager
-            .integrationAccountAgreements()
+        return serviceManager.integrationAccountAgreements()
             .listContentCallbackUrl(resourceGroupName, integrationAccountName, agreementName, listContentCallbackUrl);
     }
 

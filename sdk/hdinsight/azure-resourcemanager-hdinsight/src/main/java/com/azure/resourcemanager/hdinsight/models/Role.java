@@ -5,85 +5,82 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes a role on the cluster. */
+/**
+ * Describes a role on the cluster.
+ */
 @Fluent
-public final class Role {
+public final class Role implements JsonSerializable<Role> {
     /*
      * The name of the role.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The minimum instance count of the cluster.
      */
-    @JsonProperty(value = "minInstanceCount")
     private Integer minInstanceCount;
 
     /*
      * The instance count of the cluster.
      */
-    @JsonProperty(value = "targetInstanceCount")
     private Integer targetInstanceCount;
 
     /*
      * The name of the virtual machine group.
      */
-    @JsonProperty(value = "VMGroupName")
     private String vMGroupName;
 
     /*
      * The autoscale configurations.
      */
-    @JsonProperty(value = "autoscale")
     private Autoscale autoscaleConfiguration;
 
     /*
      * The hardware profile.
      */
-    @JsonProperty(value = "hardwareProfile")
     private HardwareProfile hardwareProfile;
 
     /*
      * The operating system profile.
      */
-    @JsonProperty(value = "osProfile")
     private OsProfile osProfile;
 
     /*
      * The virtual network profile.
      */
-    @JsonProperty(value = "virtualNetworkProfile")
     private VirtualNetworkProfile virtualNetworkProfile;
 
     /*
      * The data disks groups for the role.
      */
-    @JsonProperty(value = "dataDisksGroups")
     private List<DataDisksGroups> dataDisksGroups;
 
     /*
      * The list of script actions on the role.
      */
-    @JsonProperty(value = "scriptActions")
     private List<ScriptAction> scriptActions;
 
     /*
      * Indicates whether encrypt the data disks.
      */
-    @JsonProperty(value = "encryptDataDisks")
     private Boolean encryptDataDisks;
 
-    /** Creates an instance of Role class. */
+    /**
+     * Creates an instance of Role class.
+     */
     public Role() {
     }
 
     /**
      * Get the name property: The name of the role.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -92,7 +89,7 @@ public final class Role {
 
     /**
      * Set the name property: The name of the role.
-     *
+     * 
      * @param name the name value to set.
      * @return the Role object itself.
      */
@@ -103,7 +100,7 @@ public final class Role {
 
     /**
      * Get the minInstanceCount property: The minimum instance count of the cluster.
-     *
+     * 
      * @return the minInstanceCount value.
      */
     public Integer minInstanceCount() {
@@ -112,7 +109,7 @@ public final class Role {
 
     /**
      * Set the minInstanceCount property: The minimum instance count of the cluster.
-     *
+     * 
      * @param minInstanceCount the minInstanceCount value to set.
      * @return the Role object itself.
      */
@@ -123,7 +120,7 @@ public final class Role {
 
     /**
      * Get the targetInstanceCount property: The instance count of the cluster.
-     *
+     * 
      * @return the targetInstanceCount value.
      */
     public Integer targetInstanceCount() {
@@ -132,7 +129,7 @@ public final class Role {
 
     /**
      * Set the targetInstanceCount property: The instance count of the cluster.
-     *
+     * 
      * @param targetInstanceCount the targetInstanceCount value to set.
      * @return the Role object itself.
      */
@@ -143,7 +140,7 @@ public final class Role {
 
     /**
      * Get the vMGroupName property: The name of the virtual machine group.
-     *
+     * 
      * @return the vMGroupName value.
      */
     public String vMGroupName() {
@@ -152,7 +149,7 @@ public final class Role {
 
     /**
      * Set the vMGroupName property: The name of the virtual machine group.
-     *
+     * 
      * @param vMGroupName the vMGroupName value to set.
      * @return the Role object itself.
      */
@@ -163,7 +160,7 @@ public final class Role {
 
     /**
      * Get the autoscaleConfiguration property: The autoscale configurations.
-     *
+     * 
      * @return the autoscaleConfiguration value.
      */
     public Autoscale autoscaleConfiguration() {
@@ -172,7 +169,7 @@ public final class Role {
 
     /**
      * Set the autoscaleConfiguration property: The autoscale configurations.
-     *
+     * 
      * @param autoscaleConfiguration the autoscaleConfiguration value to set.
      * @return the Role object itself.
      */
@@ -183,7 +180,7 @@ public final class Role {
 
     /**
      * Get the hardwareProfile property: The hardware profile.
-     *
+     * 
      * @return the hardwareProfile value.
      */
     public HardwareProfile hardwareProfile() {
@@ -192,7 +189,7 @@ public final class Role {
 
     /**
      * Set the hardwareProfile property: The hardware profile.
-     *
+     * 
      * @param hardwareProfile the hardwareProfile value to set.
      * @return the Role object itself.
      */
@@ -203,7 +200,7 @@ public final class Role {
 
     /**
      * Get the osProfile property: The operating system profile.
-     *
+     * 
      * @return the osProfile value.
      */
     public OsProfile osProfile() {
@@ -212,7 +209,7 @@ public final class Role {
 
     /**
      * Set the osProfile property: The operating system profile.
-     *
+     * 
      * @param osProfile the osProfile value to set.
      * @return the Role object itself.
      */
@@ -223,7 +220,7 @@ public final class Role {
 
     /**
      * Get the virtualNetworkProfile property: The virtual network profile.
-     *
+     * 
      * @return the virtualNetworkProfile value.
      */
     public VirtualNetworkProfile virtualNetworkProfile() {
@@ -232,7 +229,7 @@ public final class Role {
 
     /**
      * Set the virtualNetworkProfile property: The virtual network profile.
-     *
+     * 
      * @param virtualNetworkProfile the virtualNetworkProfile value to set.
      * @return the Role object itself.
      */
@@ -243,7 +240,7 @@ public final class Role {
 
     /**
      * Get the dataDisksGroups property: The data disks groups for the role.
-     *
+     * 
      * @return the dataDisksGroups value.
      */
     public List<DataDisksGroups> dataDisksGroups() {
@@ -252,7 +249,7 @@ public final class Role {
 
     /**
      * Set the dataDisksGroups property: The data disks groups for the role.
-     *
+     * 
      * @param dataDisksGroups the dataDisksGroups value to set.
      * @return the Role object itself.
      */
@@ -263,7 +260,7 @@ public final class Role {
 
     /**
      * Get the scriptActions property: The list of script actions on the role.
-     *
+     * 
      * @return the scriptActions value.
      */
     public List<ScriptAction> scriptActions() {
@@ -272,7 +269,7 @@ public final class Role {
 
     /**
      * Set the scriptActions property: The list of script actions on the role.
-     *
+     * 
      * @param scriptActions the scriptActions value to set.
      * @return the Role object itself.
      */
@@ -283,7 +280,7 @@ public final class Role {
 
     /**
      * Get the encryptDataDisks property: Indicates whether encrypt the data disks.
-     *
+     * 
      * @return the encryptDataDisks value.
      */
     public Boolean encryptDataDisks() {
@@ -292,7 +289,7 @@ public final class Role {
 
     /**
      * Set the encryptDataDisks property: Indicates whether encrypt the data disks.
-     *
+     * 
      * @param encryptDataDisks the encryptDataDisks value to set.
      * @return the Role object itself.
      */
@@ -303,7 +300,7 @@ public final class Role {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -325,5 +322,75 @@ public final class Role {
         if (scriptActions() != null) {
             scriptActions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeNumberField("minInstanceCount", this.minInstanceCount);
+        jsonWriter.writeNumberField("targetInstanceCount", this.targetInstanceCount);
+        jsonWriter.writeStringField("VMGroupName", this.vMGroupName);
+        jsonWriter.writeJsonField("autoscale", this.autoscaleConfiguration);
+        jsonWriter.writeJsonField("hardwareProfile", this.hardwareProfile);
+        jsonWriter.writeJsonField("osProfile", this.osProfile);
+        jsonWriter.writeJsonField("virtualNetworkProfile", this.virtualNetworkProfile);
+        jsonWriter.writeArrayField("dataDisksGroups", this.dataDisksGroups,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("scriptActions", this.scriptActions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("encryptDataDisks", this.encryptDataDisks);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Role from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Role if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Role.
+     */
+    public static Role fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Role deserializedRole = new Role();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedRole.name = reader.getString();
+                } else if ("minInstanceCount".equals(fieldName)) {
+                    deserializedRole.minInstanceCount = reader.getNullable(JsonReader::getInt);
+                } else if ("targetInstanceCount".equals(fieldName)) {
+                    deserializedRole.targetInstanceCount = reader.getNullable(JsonReader::getInt);
+                } else if ("VMGroupName".equals(fieldName)) {
+                    deserializedRole.vMGroupName = reader.getString();
+                } else if ("autoscale".equals(fieldName)) {
+                    deserializedRole.autoscaleConfiguration = Autoscale.fromJson(reader);
+                } else if ("hardwareProfile".equals(fieldName)) {
+                    deserializedRole.hardwareProfile = HardwareProfile.fromJson(reader);
+                } else if ("osProfile".equals(fieldName)) {
+                    deserializedRole.osProfile = OsProfile.fromJson(reader);
+                } else if ("virtualNetworkProfile".equals(fieldName)) {
+                    deserializedRole.virtualNetworkProfile = VirtualNetworkProfile.fromJson(reader);
+                } else if ("dataDisksGroups".equals(fieldName)) {
+                    List<DataDisksGroups> dataDisksGroups
+                        = reader.readArray(reader1 -> DataDisksGroups.fromJson(reader1));
+                    deserializedRole.dataDisksGroups = dataDisksGroups;
+                } else if ("scriptActions".equals(fieldName)) {
+                    List<ScriptAction> scriptActions = reader.readArray(reader1 -> ScriptAction.fromJson(reader1));
+                    deserializedRole.scriptActions = scriptActions;
+                } else if ("encryptDataDisks".equals(fieldName)) {
+                    deserializedRole.encryptDataDisks = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRole;
+        });
     }
 }

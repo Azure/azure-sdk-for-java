@@ -15,26 +15,28 @@ public final class ClusterConfigFileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterConfigFile model = BinaryData.fromString(
-            "{\"fileName\":\"iukbldngkpoci\",\"content\":\"z\",\"encoding\":\"Base64\",\"path\":\"gukgjnpiucgygevq\",\"values\":{\"rbpizc\":\"yp\",\"j\":\"r\",\"yhxdeoejzicwi\":\"dpydn\",\"bkh\":\"sjttgzfbish\"}}")
+            "{\"fileName\":\"ttouwaboekqvkel\",\"content\":\"mvb\",\"encoding\":\"None\",\"path\":\"sflhhca\",\"values\":{\"yjpkiidzyexz\":\"jixisxyawjoyaqcs\"}}")
             .toObject(ClusterConfigFile.class);
-        Assertions.assertEquals("iukbldngkpoci", model.fileName());
-        Assertions.assertEquals("z", model.content());
-        Assertions.assertEquals(ContentEncoding.BASE64, model.encoding());
-        Assertions.assertEquals("gukgjnpiucgygevq", model.path());
-        Assertions.assertEquals("yp", model.values().get("rbpizc"));
+        Assertions.assertEquals("ttouwaboekqvkel", model.fileName());
+        Assertions.assertEquals("mvb", model.content());
+        Assertions.assertEquals(ContentEncoding.NONE, model.encoding());
+        Assertions.assertEquals("sflhhca", model.path());
+        Assertions.assertEquals("jixisxyawjoyaqcs", model.values().get("yjpkiidzyexz"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterConfigFile model = new ClusterConfigFile().withFileName("iukbldngkpoci").withContent("z")
-            .withEncoding(ContentEncoding.BASE64).withPath("gukgjnpiucgygevq")
-            .withValues(mapOf("rbpizc", "yp", "j", "r", "yhxdeoejzicwi", "dpydn", "bkh", "sjttgzfbish"));
+        ClusterConfigFile model = new ClusterConfigFile().withFileName("ttouwaboekqvkel")
+            .withContent("mvb")
+            .withEncoding(ContentEncoding.NONE)
+            .withPath("sflhhca")
+            .withValues(mapOf("yjpkiidzyexz", "jixisxyawjoyaqcs"));
         model = BinaryData.fromObject(model).toObject(ClusterConfigFile.class);
-        Assertions.assertEquals("iukbldngkpoci", model.fileName());
-        Assertions.assertEquals("z", model.content());
-        Assertions.assertEquals(ContentEncoding.BASE64, model.encoding());
-        Assertions.assertEquals("gukgjnpiucgygevq", model.path());
-        Assertions.assertEquals("yp", model.values().get("rbpizc"));
+        Assertions.assertEquals("ttouwaboekqvkel", model.fileName());
+        Assertions.assertEquals("mvb", model.content());
+        Assertions.assertEquals(ContentEncoding.NONE, model.encoding());
+        Assertions.assertEquals("sflhhca", model.path());
+        Assertions.assertEquals("jixisxyawjoyaqcs", model.values().get("yjpkiidzyexz"));
     }
 
     // Use "Map.of" if available

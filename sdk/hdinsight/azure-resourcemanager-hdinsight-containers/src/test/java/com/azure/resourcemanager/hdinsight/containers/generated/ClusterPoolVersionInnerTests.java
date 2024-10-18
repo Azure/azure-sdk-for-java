@@ -13,20 +13,22 @@ public final class ClusterPoolVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterPoolVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"clusterPoolVersion\":\"guufzd\",\"aksVersion\":\"yqtfihwh\",\"isPreview\":true},\"id\":\"ingamvp\",\"name\":\"ho\",\"type\":\"zqzudph\"}")
+            "{\"properties\":{\"clusterPoolVersion\":\"jgcyztsfmznba\",\"aksVersion\":\"ph\",\"isPreview\":true},\"id\":\"rn\",\"name\":\"pxehuwrykqga\",\"type\":\"fmviklby\"}")
             .toObject(ClusterPoolVersionInner.class);
-        Assertions.assertEquals("guufzd", model.properties().clusterPoolVersion());
-        Assertions.assertEquals("yqtfihwh", model.properties().aksVersion());
+        Assertions.assertEquals("jgcyztsfmznba", model.properties().clusterPoolVersion());
+        Assertions.assertEquals("ph", model.properties().aksVersion());
         Assertions.assertEquals(true, model.properties().isPreview());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterPoolVersionInner model = new ClusterPoolVersionInner().withProperties(new ClusterPoolVersionProperties()
-            .withClusterPoolVersion("guufzd").withAksVersion("yqtfihwh").withIsPreview(true));
+        ClusterPoolVersionInner model = new ClusterPoolVersionInner()
+            .withProperties(new ClusterPoolVersionProperties().withClusterPoolVersion("jgcyztsfmznba")
+                .withAksVersion("ph")
+                .withIsPreview(true));
         model = BinaryData.fromObject(model).toObject(ClusterPoolVersionInner.class);
-        Assertions.assertEquals("guufzd", model.properties().clusterPoolVersion());
-        Assertions.assertEquals("yqtfihwh", model.properties().aksVersion());
+        Assertions.assertEquals("jgcyztsfmznba", model.properties().clusterPoolVersion());
+        Assertions.assertEquals("ph", model.properties().aksVersion());
         Assertions.assertEquals(true, model.properties().isPreview());
     }
 }

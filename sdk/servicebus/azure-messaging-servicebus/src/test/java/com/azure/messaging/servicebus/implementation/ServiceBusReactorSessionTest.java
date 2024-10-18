@@ -12,6 +12,7 @@ import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ProtonSessionWrapper;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
@@ -110,9 +111,6 @@ public class ServiceBusReactorSessionTest {
     private Sender senderViaEntity;
     @Mock
     private Record record;
-    @Mock
-    private SendLinkHandler sendViaEntityLinkHandler;
-    @Mock
     private SendLinkHandler sendEntityLinkHandler;
     @Captor
     private ArgumentCaptor<Runnable> dispatcherCaptor;
@@ -143,25 +141,50 @@ public class ServiceBusReactorSessionTest {
         when(handler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
         FluxSink<EndpointState> sink1 = endpointStateReplayProcessor.sink();
         sink1.next(EndpointState.ACTIVE);
+        when(handler.getSessionName()).thenReturn(SESSION_NAME);
         when(handler.getHostname()).thenReturn(HOSTNAME);
         when(handler.getConnectionId()).thenReturn(CONNECTION_ID);
-
-        when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, VIA_ENTITY_PATH_SENDER_LINK_NAME, VIA_ENTITY_PATH))
-            .thenReturn(sendViaEntityLinkHandler);
-        when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, ENTITY_PATH))
-            .thenReturn(sendEntityLinkHandler);
 
         Delivery delivery = mock(Delivery.class);
         when(delivery.getRemoteState()).thenReturn(Accepted.getInstance());
         when(delivery.getTag()).thenReturn("tag".getBytes());
-        when(sendViaEntityLinkHandler.getDeliveredMessages()).thenReturn(Flux.just(delivery));
-        when(sendEntityLinkHandler.getDeliveredMessages()).thenReturn(Flux.just(delivery));
 
-        when(sendViaEntityLinkHandler.getLinkCredits()).thenReturn(Flux.just(100));
-        when(sendEntityLinkHandler.getLinkCredits()).thenReturn(Flux.just(100));
+        SendLinkHandler sendViaEntityLinkHandler = new SendLinkHandler("", "", "", "", null) {
+            @Override
+            public Flux<Delivery> getDeliveredMessages() {
+                return Flux.just(delivery);
+            }
 
-        when(sendViaEntityLinkHandler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
-        when(sendEntityLinkHandler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
+            @Override
+            public Flux<Integer> getLinkCredits() {
+                return Flux.just(100);
+            }
+
+            @Override
+            public Flux<EndpointState> getEndpointStates() {
+                return endpointStateReplayProcessor;
+            }
+        };
+        sendEntityLinkHandler = new SendLinkHandler("", "", "", "", null) {
+            @Override
+            public Flux<Delivery> getDeliveredMessages() {
+                return Flux.just(delivery);
+            }
+
+            @Override
+            public Flux<Integer> getLinkCredits() {
+                return Flux.just(100);
+            }
+
+            @Override
+            public Flux<EndpointState> getEndpointStates() {
+                return endpointStateReplayProcessor;
+            }
+        };
+        when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, VIA_ENTITY_PATH_SENDER_LINK_NAME, VIA_ENTITY_PATH))
+            .thenReturn(sendViaEntityLinkHandler);
+        when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, ENTITY_PATH))
+            .thenReturn(sendEntityLinkHandler);
 
         when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, VIA_ENTITY_PATH)).thenReturn(tokenManagerViaQueue);
         when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, ENTITY_PATH)).thenReturn(tokenManagerEntity);
@@ -187,7 +210,10 @@ public class ServiceBusReactorSessionTest {
         when(reactorProvider.getReactorDispatcher()).thenReturn(dispatcher);
 
         when(connection.getShutdownSignals()).thenReturn(Flux.empty());
-        serviceBusReactorSession = new ServiceBusReactorSession(connection, session, handler, SESSION_NAME, reactorProvider,
+        // TODO (anu): use 'ProtonSession' instead of 'ProtonSessionWrapper' and update the test.
+        final ProtonSessionWrapper sessionWrapper = new ProtonSessionWrapper(session, handler, reactorProvider);
+
+        serviceBusReactorSession = new ServiceBusReactorSession(connection, sessionWrapper,
             handlerProvider, linkProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer, retryOptions,
             new ServiceBusCreateSessionOptions(false), true);
         when(connection.getShutdownSignals()).thenReturn(Flux.never());
@@ -290,9 +316,11 @@ public class ServiceBusReactorSessionTest {
         doNothing().when(coordinatorSenderEntity).setTarget(any(Target.class));
         when(coordinatorSenderEntity.attachments()).thenReturn(record);
         when(session.sender(transactionLinkName)).thenReturn(coordinatorSenderEntity);
+        // TODO (anu): use 'ProtonSession' instead of 'ProtonSessionWrapper' and update the test.
+        final ProtonSessionWrapper sessionWrapper = new ProtonSessionWrapper(session, handler, reactorProvider);
 
-        final ServiceBusReactorSession serviceBusReactorSession = new ServiceBusReactorSession(connection, session, handler,
-            SESSION_NAME, reactorProvider, handlerProvider, linkProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer,
+        final ServiceBusReactorSession serviceBusReactorSession = new ServiceBusReactorSession(connection, sessionWrapper,
+            handlerProvider, linkProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer,
             retryOptions, new ServiceBusCreateSessionOptions(true), true);
 
         when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, transactionLinkName, transactionLinkName))

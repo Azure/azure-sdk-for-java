@@ -6,37 +6,42 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The tracking events definition. */
+/**
+ * The tracking events definition.
+ */
 @Fluent
-public final class TrackingEventsDefinition {
+public final class TrackingEventsDefinition implements JsonSerializable<TrackingEventsDefinition> {
     /*
      * The source type.
      */
-    @JsonProperty(value = "sourceType", required = true)
     private String sourceType;
 
     /*
      * The track events options.
      */
-    @JsonProperty(value = "trackEventsOptions")
     private TrackEventsOperationOptions trackEventsOptions;
 
     /*
      * The events.
      */
-    @JsonProperty(value = "events", required = true)
     private List<TrackingEvent> events;
 
-    /** Creates an instance of TrackingEventsDefinition class. */
+    /**
+     * Creates an instance of TrackingEventsDefinition class.
+     */
     public TrackingEventsDefinition() {
     }
 
     /**
      * Get the sourceType property: The source type.
-     *
+     * 
      * @return the sourceType value.
      */
     public String sourceType() {
@@ -45,7 +50,7 @@ public final class TrackingEventsDefinition {
 
     /**
      * Set the sourceType property: The source type.
-     *
+     * 
      * @param sourceType the sourceType value to set.
      * @return the TrackingEventsDefinition object itself.
      */
@@ -56,7 +61,7 @@ public final class TrackingEventsDefinition {
 
     /**
      * Get the trackEventsOptions property: The track events options.
-     *
+     * 
      * @return the trackEventsOptions value.
      */
     public TrackEventsOperationOptions trackEventsOptions() {
@@ -65,7 +70,7 @@ public final class TrackingEventsDefinition {
 
     /**
      * Set the trackEventsOptions property: The track events options.
-     *
+     * 
      * @param trackEventsOptions the trackEventsOptions value to set.
      * @return the TrackingEventsDefinition object itself.
      */
@@ -76,7 +81,7 @@ public final class TrackingEventsDefinition {
 
     /**
      * Get the events property: The events.
-     *
+     * 
      * @return the events value.
      */
     public List<TrackingEvent> events() {
@@ -85,7 +90,7 @@ public final class TrackingEventsDefinition {
 
     /**
      * Set the events property: The events.
-     *
+     * 
      * @param events the events value to set.
      * @return the TrackingEventsDefinition object itself.
      */
@@ -96,19 +101,18 @@ public final class TrackingEventsDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceType in model TrackingEventsDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceType in model TrackingEventsDefinition"));
         }
         if (events() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property events in model TrackingEventsDefinition"));
         } else {
             events().forEach(e -> e.validate());
@@ -116,4 +120,50 @@ public final class TrackingEventsDefinition {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TrackingEventsDefinition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceType", this.sourceType);
+        jsonWriter.writeArrayField("events", this.events, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("trackEventsOptions",
+            this.trackEventsOptions == null ? null : this.trackEventsOptions.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrackingEventsDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrackingEventsDefinition if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TrackingEventsDefinition.
+     */
+    public static TrackingEventsDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrackingEventsDefinition deserializedTrackingEventsDefinition = new TrackingEventsDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceType".equals(fieldName)) {
+                    deserializedTrackingEventsDefinition.sourceType = reader.getString();
+                } else if ("events".equals(fieldName)) {
+                    List<TrackingEvent> events = reader.readArray(reader1 -> TrackingEvent.fromJson(reader1));
+                    deserializedTrackingEventsDefinition.events = events;
+                } else if ("trackEventsOptions".equals(fieldName)) {
+                    deserializedTrackingEventsDefinition.trackEventsOptions
+                        = TrackEventsOperationOptions.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrackingEventsDefinition;
+        });
+    }
 }

@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Async sample for analyzing commonly found receipt fields from a local file input stream.
- * See fields found on a receipt <a href=https://aka.ms/documentintelligence/receiptfields>here</a>
+ * See fields found on a receipt <a href=https://aka.ms/formrecognizer/receiptfields>here</a>
  */
 public class AnalyzeReceiptsAsync {
 

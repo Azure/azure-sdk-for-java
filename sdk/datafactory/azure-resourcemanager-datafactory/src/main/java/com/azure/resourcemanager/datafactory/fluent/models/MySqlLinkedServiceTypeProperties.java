@@ -5,74 +5,68 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * MySQL linked service properties.
  */
 @Fluent
-public final class MySqlLinkedServiceTypeProperties {
+public final class MySqlLinkedServiceTypeProperties implements JsonSerializable<MySqlLinkedServiceTypeProperties> {
     /*
      * The version of the MySQL driver. Type: string. V1 or empty for legacy driver, V2 for new driver. V1 can support
      * connection string and property bag, V2 can only support connection string.
      */
-    @JsonProperty(value = "driverVersion")
     private Object driverVersion;
 
     /*
      * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "connectionString")
     private Object connectionString;
 
     /*
      * Server name for connection. Type: string.
      */
-    @JsonProperty(value = "server")
     private Object server;
 
     /*
      * The port for the connection. Type: integer.
      */
-    @JsonProperty(value = "port")
     private Object port;
 
     /*
      * Username for authentication. Type: string.
      */
-    @JsonProperty(value = "username")
     private Object username;
 
     /*
      * Database name for connection. Type: string.
      */
-    @JsonProperty(value = "database")
     private Object database;
 
     /*
      * SSL mode for connection. Type: integer. 0: disable, 1: prefer, 2: require, 3: verify-ca, 4: verify-full.
      */
-    @JsonProperty(value = "sslMode")
     private Object sslMode;
 
     /*
      * Use system trust store for connection. Type: integer. 0: enable, 1: disable.
      */
-    @JsonProperty(value = "useSystemTrustStore")
     private Object useSystemTrustStore;
 
     /*
      * The Azure key vault secret reference of password in connection string.
      */
-    @JsonProperty(value = "password")
     private AzureKeyVaultSecretReference password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -300,5 +294,70 @@ public final class MySqlLinkedServiceTypeProperties {
         if (password() != null) {
             password().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("driverVersion", this.driverVersion);
+        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        jsonWriter.writeUntypedField("server", this.server);
+        jsonWriter.writeUntypedField("port", this.port);
+        jsonWriter.writeUntypedField("username", this.username);
+        jsonWriter.writeUntypedField("database", this.database);
+        jsonWriter.writeUntypedField("sslMode", this.sslMode);
+        jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MySqlLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MySqlLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MySqlLinkedServiceTypeProperties.
+     */
+    public static MySqlLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MySqlLinkedServiceTypeProperties deserializedMySqlLinkedServiceTypeProperties
+                = new MySqlLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("driverVersion".equals(fieldName)) {
+                    deserializedMySqlLinkedServiceTypeProperties.driverVersion = reader.readUntyped();
+                } else if ("connectionString".equals(fieldName)) {
+                    deserializedMySqlLinkedServiceTypeProperties.connectionString = reader.readUntyped();
+                } else if ("server".equals(fieldName)) {
+                    deserializedMySqlLinkedServiceTypeProperties.server = reader.readUntyped();
+                } else if ("port".equals(fieldName)) {
+                    deserializedMySqlLinkedServiceTypeProperties.port = reader.readUntyped();
+                } else if ("username".equals(fieldName)) {
+                    deserializedMySqlLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("database".equals(fieldName)) {
+                    deserializedMySqlLinkedServiceTypeProperties.database = reader.readUntyped();
+                } else if ("sslMode".equals(fieldName)) {
+                    deserializedMySqlLinkedServiceTypeProperties.sslMode = reader.readUntyped();
+                } else if ("useSystemTrustStore".equals(fieldName)) {
+                    deserializedMySqlLinkedServiceTypeProperties.useSystemTrustStore = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedMySqlLinkedServiceTypeProperties.password
+                        = AzureKeyVaultSecretReference.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedMySqlLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMySqlLinkedServiceTypeProperties;
+        });
     }
 }

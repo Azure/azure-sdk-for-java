@@ -6,25 +6,27 @@ package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.resourcemanager.hdinsight.fluent.models.ClusterMonitoringResponseInner;
 
-/** An immutable client-side representation of ClusterMonitoringResponse. */
+/**
+ * An immutable client-side representation of ClusterMonitoringResponse.
+ */
 public interface ClusterMonitoringResponse {
     /**
      * Gets the clusterMonitoringEnabled property: The status of the monitor on the HDInsight cluster.
-     *
+     * 
      * @return the clusterMonitoringEnabled value.
      */
     Boolean clusterMonitoringEnabled();
 
     /**
      * Gets the workspaceId property: The workspace ID of the monitor on the HDInsight cluster.
-     *
+     * 
      * @return the workspaceId value.
      */
     String workspaceId();
 
     /**
      * Gets the inner com.azure.resourcemanager.hdinsight.fluent.models.ClusterMonitoringResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     ClusterMonitoringResponseInner innerModel();

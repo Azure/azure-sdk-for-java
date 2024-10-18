@@ -6,18 +6,20 @@ package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.resourcemanager.alertsmanagement.fluent.models.AlertsMetadataInner;
 
-/** An immutable client-side representation of AlertsMetadata. */
+/**
+ * An immutable client-side representation of AlertsMetadata.
+ */
 public interface AlertsMetadata {
     /**
      * Gets the properties property: alert meta data property bag.
-     *
+     * 
      * @return the properties value.
      */
     AlertsMetadataProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.alertsmanagement.fluent.models.AlertsMetadataInner object.
-     *
+     * 
      * @return the inner object.
      */
     AlertsMetadataInner innerModel();

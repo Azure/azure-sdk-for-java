@@ -51,7 +51,7 @@ public class OutputFileBlobContainerDestination {
      * files.
      * These headers will be specified when uploading files to Azure Storage.
      * Official document on allowed headers when uploading blobs:
-     * https://docs.microsoft.com/en-us/rest/api/storageservices/put-blob#request-headers-all-blob-types.
+     * https://docs.microsoft.com/rest/api/storageservices/put-blob#request-headers-all-blob-types.
      */
     @JsonProperty(value = "uploadHeaders")
     private List<HttpHeader> uploadHeaders;
@@ -117,7 +117,7 @@ public class OutputFileBlobContainerDestination {
     }
 
     /**
-     * Get these headers will be specified when uploading files to Azure Storage. Official document on allowed headers when uploading blobs: https://docs.microsoft.com/en-us/rest/api/storageservices/put-blob#request-headers-all-blob-types.
+     * Get these headers will be specified when uploading files to Azure Storage. Official document on allowed headers when uploading blobs: https://docs.microsoft.com/rest/api/storageservices/put-blob#request-headers-all-blob-types.
      *
      * @return the uploadHeaders value
      */
@@ -126,7 +126,7 @@ public class OutputFileBlobContainerDestination {
     }
 
     /**
-     * Set these headers will be specified when uploading files to Azure Storage. Official document on allowed headers when uploading blobs: https://docs.microsoft.com/en-us/rest/api/storageservices/put-blob#request-headers-all-blob-types.
+     * Set these headers will be specified when uploading files to Azure Storage. Official document on allowed headers when uploading blobs: https://docs.microsoft.com/rest/api/storageservices/put-blob#request-headers-all-blob-types.
      *
      * @param uploadHeaders the uploadHeaders value to set
      * @return the OutputFileBlobContainerDestination object itself.

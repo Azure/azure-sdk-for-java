@@ -10,13 +10,13 @@ import com.azure.resourcemanager.datafactory.fluent.models.SybaseTableDatasetTyp
 public final class SybaseTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SybaseTableDatasetTypeProperties model
-            = BinaryData.fromString("{\"tableName\":\"datajec\"}").toObject(SybaseTableDatasetTypeProperties.class);
+        SybaseTableDatasetTypeProperties model = BinaryData.fromString("{\"tableName\":\"datawsicvwqzoc\"}")
+            .toObject(SybaseTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SybaseTableDatasetTypeProperties model = new SybaseTableDatasetTypeProperties().withTableName("datajec");
+        SybaseTableDatasetTypeProperties model = new SybaseTableDatasetTypeProperties().withTableName("datawsicvwqzoc");
         model = BinaryData.fromObject(model).toObject(SybaseTableDatasetTypeProperties.class);
     }
 }

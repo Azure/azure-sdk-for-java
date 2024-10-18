@@ -12,20 +12,20 @@ public final class SubvolumeInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubvolumeInfoInner model = BinaryData.fromString(
-            "{\"properties\":{\"path\":\"tizzronasxif\",\"size\":1507601090527968063,\"parentPath\":\"zh\",\"provisioningState\":\"wesgogczh\"},\"id\":\"nxkrlgnyhmossxkk\",\"name\":\"thrrgh\",\"type\":\"jbdhqxvc\"}")
+            "{\"properties\":{\"path\":\"ndz\",\"size\":2225843863841311793,\"parentPath\":\"fdlwg\",\"provisioningState\":\"tsbwtovvtgse\"},\"id\":\"qfi\",\"name\":\"fxqknpirgneptt\",\"type\":\"qmsniffcdmqnro\"}")
             .toObject(SubvolumeInfoInner.class);
-        Assertions.assertEquals("tizzronasxif", model.path());
-        Assertions.assertEquals(1507601090527968063L, model.size());
-        Assertions.assertEquals("zh", model.parentPath());
+        Assertions.assertEquals("ndz", model.path());
+        Assertions.assertEquals(2225843863841311793L, model.size());
+        Assertions.assertEquals("fdlwg", model.parentPath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SubvolumeInfoInner model
-            = new SubvolumeInfoInner().withPath("tizzronasxif").withSize(1507601090527968063L).withParentPath("zh");
+            = new SubvolumeInfoInner().withPath("ndz").withSize(2225843863841311793L).withParentPath("fdlwg");
         model = BinaryData.fromObject(model).toObject(SubvolumeInfoInner.class);
-        Assertions.assertEquals("tizzronasxif", model.path());
-        Assertions.assertEquals(1507601090527968063L, model.size());
-        Assertions.assertEquals("zh", model.parentPath());
+        Assertions.assertEquals("ndz", model.path());
+        Assertions.assertEquals(2225843863841311793L, model.size());
+        Assertions.assertEquals("fdlwg", model.parentPath());
     }
 }

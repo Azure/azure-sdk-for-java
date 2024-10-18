@@ -49,7 +49,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.13.1</version>
+    <version>1.13.3</version>
 </dependency>
 ```
 
@@ -121,7 +121,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [azure_resource_manager]: https://docs.microsoft.com/azure/azure-resource-manager/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [cla]: https://cla.opensource.microsoft.com/
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/

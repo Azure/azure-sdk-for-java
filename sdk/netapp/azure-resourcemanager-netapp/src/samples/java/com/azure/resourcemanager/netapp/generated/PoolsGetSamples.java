@@ -10,7 +10,7 @@ package com.azure.resourcemanager.netapp.generated;
 public final class PoolsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/Pools_Get.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Pools_Get.json
      */
     /**
      * Sample code: Pools_Get.

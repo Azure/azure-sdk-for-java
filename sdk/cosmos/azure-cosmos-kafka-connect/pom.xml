@@ -69,6 +69,7 @@ Licensed under the MIT License.
       --add-exports com.azure.cosmos/com.azure.cosmos.implementation.query=com.azure.cosmos.kafka.connect
 
     </javaModulesSurefireArgLine>
+    <doclintMissingInclusion>-</doclintMissingInclusion>
   </properties>
 
   <dependencies>
@@ -82,7 +83,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.64.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.65.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
@@ -101,7 +102,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos-test</artifactId>
-      <version>1.0.0-beta.9</version> <!-- {x-version-update;com.azure:azure-cosmos-test;current} -->
+      <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure:azure-cosmos-test;current} -->
       <scope>test</scope>
     </dependency>
 
@@ -126,7 +127,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.13.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.14.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>

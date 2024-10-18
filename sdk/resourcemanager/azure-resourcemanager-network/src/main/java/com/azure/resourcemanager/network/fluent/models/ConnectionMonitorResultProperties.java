@@ -177,7 +177,24 @@ public final class ConnectionMonitorResultProperties extends ConnectionMonitorPa
      */
     @Override
     public void validate() {
-        super.validate();
+        if (source() != null) {
+            source().validate();
+        }
+        if (destination() != null) {
+            destination().validate();
+        }
+        if (endpoints() != null) {
+            endpoints().forEach(e -> e.validate());
+        }
+        if (testConfigurations() != null) {
+            testConfigurations().forEach(e -> e.validate());
+        }
+        if (testGroups() != null) {
+            testGroups().forEach(e -> e.validate());
+        }
+        if (outputs() != null) {
+            outputs().forEach(e -> e.validate());
+        }
     }
 
     /**

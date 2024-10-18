@@ -10,8 +10,8 @@ import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.ResourcePoolPro
 public final class ResourcePoolPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourcePoolProperties model =
-            BinaryData.fromString("{\"fullName\":\"txnrjaw\"}").toObject(ResourcePoolProperties.class);
+        ResourcePoolProperties model
+            = BinaryData.fromString("{\"fullName\":\"c\"}").toObject(ResourcePoolProperties.class);
     }
 
     @org.junit.jupiter.api.Test

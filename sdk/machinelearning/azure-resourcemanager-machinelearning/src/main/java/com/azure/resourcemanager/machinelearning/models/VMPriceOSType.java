@@ -5,24 +5,27 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
  * OS type
- *
- * <p>Operating system type used by the VM.
+ * 
+ * Operating system type used by the VM.
  */
 public final class VMPriceOSType extends ExpandableStringEnum<VMPriceOSType> {
-    /** Static value Linux for VMPriceOSType. */
+    /**
+     * Static value Linux for VMPriceOSType.
+     */
     public static final VMPriceOSType LINUX = fromString("Linux");
 
-    /** Static value Windows for VMPriceOSType. */
+    /**
+     * Static value Windows for VMPriceOSType.
+     */
     public static final VMPriceOSType WINDOWS = fromString("Windows");
 
     /**
      * Creates a new instance of VMPriceOSType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,18 +34,17 @@ public final class VMPriceOSType extends ExpandableStringEnum<VMPriceOSType> {
 
     /**
      * Creates or finds a VMPriceOSType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VMPriceOSType.
      */
-    @JsonCreator
     public static VMPriceOSType fromString(String name) {
         return fromString(name, VMPriceOSType.class);
     }
 
     /**
      * Gets known VMPriceOSType values.
-     *
+     * 
      * @return known VMPriceOSType values.
      */
     public static Collection<VMPriceOSType> values() {

@@ -5,35 +5,31 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity ORC sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = OrcSink.class, visible = true)
-@JsonTypeName("OrcSink")
 @Fluent
 public final class OrcSink extends CopySink {
     /*
      * Copy sink type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "OrcSink";
 
     /*
      * ORC store settings.
      */
-    @JsonProperty(value = "storeSettings")
     private StoreWriteSettings storeSettings;
 
     /*
      * ORC format settings.
      */
-    @JsonProperty(value = "formatSettings")
     private OrcWriteSettings formatSettings;
 
     /**
@@ -160,5 +156,76 @@ public final class OrcSink extends CopySink {
         if (formatSettings() != null) {
             formatSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
+        jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
+        jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
+        jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("storeSettings", this.storeSettings);
+        jsonWriter.writeJsonField("formatSettings", this.formatSettings);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrcSink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrcSink if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the OrcSink.
+     */
+    public static OrcSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrcSink deserializedOrcSink = new OrcSink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("writeBatchSize".equals(fieldName)) {
+                    deserializedOrcSink.withWriteBatchSize(reader.readUntyped());
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedOrcSink.withWriteBatchTimeout(reader.readUntyped());
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedOrcSink.withSinkRetryCount(reader.readUntyped());
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedOrcSink.withSinkRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedOrcSink.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedOrcSink.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedOrcSink.type = reader.getString();
+                } else if ("storeSettings".equals(fieldName)) {
+                    deserializedOrcSink.storeSettings = StoreWriteSettings.fromJson(reader);
+                } else if ("formatSettings".equals(fieldName)) {
+                    deserializedOrcSink.formatSettings = OrcWriteSettings.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedOrcSink.withAdditionalProperties(additionalProperties);
+
+            return deserializedOrcSink;
+        });
     }
 }

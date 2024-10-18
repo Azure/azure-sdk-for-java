@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.privatedns.generated;
 
 import com.azure.resourcemanager.privatedns.fluent.models.VirtualNetworkLinkInner;
+import com.azure.resourcemanager.privatedns.models.ResolutionPolicy;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ import java.util.Map;
 public final class VirtualNetworkLinksUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/VirtualNetworkLinkPatch.
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/VirtualNetworkLinkPatch.
      * json
      */
     /**
@@ -27,9 +28,10 @@ public final class VirtualNetworkLinksUpdateSamples {
             .manager()
             .serviceClient()
             .getVirtualNetworkLinks()
-            .update("resourceGroup1", "privatezone1.com", "virtualNetworkLink1",
+            .update("resourceGroup1", "privatelink.contoso.com", "virtualNetworkLink1",
                 new VirtualNetworkLinkInner().withTags(mapOf("key2", "fakeTokenPlaceholder"))
-                    .withRegistrationEnabled(true),
+                    .withRegistrationEnabled(true)
+                    .withResolutionPolicy(ResolutionPolicy.NX_DOMAIN_REDIRECT),
                 null, com.azure.core.util.Context.NONE);
     }
 

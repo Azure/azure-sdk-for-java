@@ -6,34 +6,58 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.ContentLink;
 import com.azure.resourcemanager.automation.models.RunbookParameter;
 import com.azure.resourcemanager.automation.models.RunbookProvisioningState;
 import com.azure.resourcemanager.automation.models.RunbookState;
 import com.azure.resourcemanager.automation.models.RunbookTypeEnum;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Definition of the runbook type. */
+/**
+ * Definition of the runbook type.
+ */
 @Fluent
 public final class RunbookInner extends Resource {
     /*
      * Gets or sets the runbook properties.
      */
-    @JsonProperty(value = "properties")
     private RunbookPropertiesInner innerProperties;
 
     /*
      * Gets or sets the etag of the resource.
      */
-    @JsonProperty(value = "etag")
     private String etag;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of RunbookInner class.
+     */
+    public RunbookInner() {
+    }
 
     /**
      * Get the innerProperties property: Gets or sets the runbook properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RunbookPropertiesInner innerProperties() {
@@ -42,7 +66,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Get the etag property: Gets or sets the etag of the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -51,7 +75,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Set the etag property: Gets or sets the etag of the resource.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the RunbookInner object itself.
      */
@@ -60,14 +84,48 @@ public final class RunbookInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RunbookInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RunbookInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -76,7 +134,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Get the runbookType property: Gets or sets the type of the runbook.
-     *
+     * 
      * @return the runbookType value.
      */
     public RunbookTypeEnum runbookType() {
@@ -85,7 +143,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Set the runbookType property: Gets or sets the type of the runbook.
-     *
+     * 
      * @param runbookType the runbookType value to set.
      * @return the RunbookInner object itself.
      */
@@ -99,7 +157,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Get the publishContentLink property: Gets or sets the published runbook content link.
-     *
+     * 
      * @return the publishContentLink value.
      */
     public ContentLink publishContentLink() {
@@ -108,7 +166,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Set the publishContentLink property: Gets or sets the published runbook content link.
-     *
+     * 
      * @param publishContentLink the publishContentLink value to set.
      * @return the RunbookInner object itself.
      */
@@ -122,7 +180,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Get the state property: Gets or sets the state of the runbook.
-     *
+     * 
      * @return the state value.
      */
     public RunbookState state() {
@@ -131,7 +189,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Set the state property: Gets or sets the state of the runbook.
-     *
+     * 
      * @param state the state value to set.
      * @return the RunbookInner object itself.
      */
@@ -145,7 +203,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Get the logVerbose property: Gets or sets verbose log option.
-     *
+     * 
      * @return the logVerbose value.
      */
     public Boolean logVerbose() {
@@ -154,7 +212,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Set the logVerbose property: Gets or sets verbose log option.
-     *
+     * 
      * @param logVerbose the logVerbose value to set.
      * @return the RunbookInner object itself.
      */
@@ -168,7 +226,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Get the logProgress property: Gets or sets progress log option.
-     *
+     * 
      * @return the logProgress value.
      */
     public Boolean logProgress() {
@@ -177,7 +235,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Set the logProgress property: Gets or sets progress log option.
-     *
+     * 
      * @param logProgress the logProgress value to set.
      * @return the RunbookInner object itself.
      */
@@ -191,7 +249,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Get the logActivityTrace property: Gets or sets the option to log activity trace of the runbook.
-     *
+     * 
      * @return the logActivityTrace value.
      */
     public Integer logActivityTrace() {
@@ -200,7 +258,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Set the logActivityTrace property: Gets or sets the option to log activity trace of the runbook.
-     *
+     * 
      * @param logActivityTrace the logActivityTrace value to set.
      * @return the RunbookInner object itself.
      */
@@ -214,7 +272,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Get the jobCount property: Gets or sets the job count of the runbook.
-     *
+     * 
      * @return the jobCount value.
      */
     public Integer jobCount() {
@@ -223,7 +281,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Set the jobCount property: Gets or sets the job count of the runbook.
-     *
+     * 
      * @param jobCount the jobCount value to set.
      * @return the RunbookInner object itself.
      */
@@ -237,7 +295,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Get the parameters property: Gets or sets the runbook parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, RunbookParameter> parameters() {
@@ -246,7 +304,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Set the parameters property: Gets or sets the runbook parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the RunbookInner object itself.
      */
@@ -260,7 +318,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Get the outputTypes property: Gets or sets the runbook output types.
-     *
+     * 
      * @return the outputTypes value.
      */
     public List<String> outputTypes() {
@@ -269,7 +327,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Set the outputTypes property: Gets or sets the runbook output types.
-     *
+     * 
      * @param outputTypes the outputTypes value to set.
      * @return the RunbookInner object itself.
      */
@@ -283,7 +341,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Get the draft property: Gets or sets the draft runbook properties.
-     *
+     * 
      * @return the draft value.
      */
     public RunbookDraftInner draft() {
@@ -292,7 +350,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Set the draft property: Gets or sets the draft runbook properties.
-     *
+     * 
      * @param draft the draft value to set.
      * @return the RunbookInner object itself.
      */
@@ -306,7 +364,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Get the provisioningState property: Gets or sets the provisioning state of the runbook.
-     *
+     * 
      * @return the provisioningState value.
      */
     public RunbookProvisioningState provisioningState() {
@@ -315,7 +373,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Set the provisioningState property: Gets or sets the provisioning state of the runbook.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the RunbookInner object itself.
      */
@@ -329,7 +387,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Get the lastModifiedBy property: Gets or sets the last modified by.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
@@ -338,7 +396,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Set the lastModifiedBy property: Gets or sets the last modified by.
-     *
+     * 
      * @param lastModifiedBy the lastModifiedBy value to set.
      * @return the RunbookInner object itself.
      */
@@ -352,7 +410,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Get the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -361,7 +419,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Set the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the RunbookInner object itself.
      */
@@ -375,7 +433,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Get the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -384,7 +442,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Set the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the RunbookInner object itself.
      */
@@ -398,7 +456,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Get the description property: Gets or sets the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -407,7 +465,7 @@ public final class RunbookInner extends Resource {
 
     /**
      * Set the description property: Gets or sets the description.
-     *
+     * 
      * @param description the description value to set.
      * @return the RunbookInner object itself.
      */
@@ -421,12 +479,65 @@ public final class RunbookInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("etag", this.etag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunbookInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunbookInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RunbookInner.
+     */
+    public static RunbookInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunbookInner deserializedRunbookInner = new RunbookInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRunbookInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRunbookInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRunbookInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedRunbookInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRunbookInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRunbookInner.innerProperties = RunbookPropertiesInner.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedRunbookInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunbookInner;
+        });
     }
 }

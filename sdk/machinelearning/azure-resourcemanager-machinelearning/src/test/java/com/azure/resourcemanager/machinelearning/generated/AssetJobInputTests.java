@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AssetJobInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssetJobInput model =
-            BinaryData.fromString("{\"mode\":\"ReadOnlyMount\",\"uri\":\"fgbrtt\"}").toObject(AssetJobInput.class);
-        Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.mode());
-        Assertions.assertEquals("fgbrtt", model.uri());
+        AssetJobInput model = BinaryData.fromString("{\"uri\":\"ynosugkfhaxt\",\"mode\":\"ReadWriteMount\"}")
+            .toObject(AssetJobInput.class);
+        Assertions.assertEquals("ynosugkfhaxt", model.uri());
+        Assertions.assertEquals(InputDeliveryMode.READ_WRITE_MOUNT, model.mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssetJobInput model = new AssetJobInput().withMode(InputDeliveryMode.READ_ONLY_MOUNT).withUri("fgbrtt");
+        AssetJobInput model = new AssetJobInput().withUri("ynosugkfhaxt").withMode(InputDeliveryMode.READ_WRITE_MOUNT);
         model = BinaryData.fromObject(model).toObject(AssetJobInput.class);
-        Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.mode());
-        Assertions.assertEquals("fgbrtt", model.uri());
+        Assertions.assertEquals("ynosugkfhaxt", model.uri());
+        Assertions.assertEquals(InputDeliveryMode.READ_WRITE_MOUNT, model.mode());
     }
 }

@@ -6,10 +6,11 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -17,36 +18,31 @@ import java.util.Map;
  * (Deprecated. Please use LogSettings) Log storage settings.
  */
 @Fluent
-public final class LogStorageSettings {
+public final class LogStorageSettings implements JsonSerializable<LogStorageSettings> {
     /*
      * Log storage linked service reference.
      */
-    @JsonProperty(value = "linkedServiceName", required = true)
     private LinkedServiceReference linkedServiceName;
 
     /*
      * The path to storage for storing detailed logs of activity execution. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "path")
     private Object path;
 
     /*
      * Gets or sets the log level, support: Info, Warning. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "logLevel")
     private Object logLevel;
 
     /*
      * Specifies whether to enable reliable logging. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "enableReliableLogging")
     private Object enableReliableLogging;
 
     /*
      * (Deprecated. Please use LogSettings) Log storage settings.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -146,7 +142,6 @@ public final class LogStorageSettings {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -160,14 +155,6 @@ public final class LogStorageSettings {
     public LogStorageSettings withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
-    }
-
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new LinkedHashMap<>();
-        }
-        additionalProperties.put(key, value);
     }
 
     /**
@@ -186,4 +173,61 @@ public final class LogStorageSettings {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LogStorageSettings.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("linkedServiceName", this.linkedServiceName);
+        jsonWriter.writeUntypedField("path", this.path);
+        jsonWriter.writeUntypedField("logLevel", this.logLevel);
+        jsonWriter.writeUntypedField("enableReliableLogging", this.enableReliableLogging);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogStorageSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogStorageSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LogStorageSettings.
+     */
+    public static LogStorageSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogStorageSettings deserializedLogStorageSettings = new LogStorageSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedServiceName".equals(fieldName)) {
+                    deserializedLogStorageSettings.linkedServiceName = LinkedServiceReference.fromJson(reader);
+                } else if ("path".equals(fieldName)) {
+                    deserializedLogStorageSettings.path = reader.readUntyped();
+                } else if ("logLevel".equals(fieldName)) {
+                    deserializedLogStorageSettings.logLevel = reader.readUntyped();
+                } else if ("enableReliableLogging".equals(fieldName)) {
+                    deserializedLogStorageSettings.enableReliableLogging = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedLogStorageSettings.additionalProperties = additionalProperties;
+
+            return deserializedLogStorageSettings;
+        });
+    }
 }

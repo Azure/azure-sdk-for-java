@@ -12,22 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class PeeringServiceProviderPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeeringServiceProviderProperties model =
-            BinaryData
-                .fromString("{\"serviceProviderName\":\"blytk\",\"peeringLocations\":[\"pe\"]}")
-                .toObject(PeeringServiceProviderProperties.class);
-        Assertions.assertEquals("blytk", model.serviceProviderName());
-        Assertions.assertEquals("pe", model.peeringLocations().get(0));
+        PeeringServiceProviderProperties model = BinaryData
+            .fromString(
+                "{\"serviceProviderName\":\"smocmbq\",\"peeringLocations\":[\"mkcxozapvh\",\"lxprglyatddckcbc\"]}")
+            .toObject(PeeringServiceProviderProperties.class);
+        Assertions.assertEquals("smocmbq", model.serviceProviderName());
+        Assertions.assertEquals("mkcxozapvh", model.peeringLocations().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeeringServiceProviderProperties model =
-            new PeeringServiceProviderProperties()
-                .withServiceProviderName("blytk")
-                .withPeeringLocations(Arrays.asList("pe"));
+        PeeringServiceProviderProperties model
+            = new PeeringServiceProviderProperties().withServiceProviderName("smocmbq")
+                .withPeeringLocations(Arrays.asList("mkcxozapvh", "lxprglyatddckcbc"));
         model = BinaryData.fromObject(model).toObject(PeeringServiceProviderProperties.class);
-        Assertions.assertEquals("blytk", model.serviceProviderName());
-        Assertions.assertEquals("pe", model.peeringLocations().get(0));
+        Assertions.assertEquals("smocmbq", model.serviceProviderName());
+        Assertions.assertEquals("mkcxozapvh", model.peeringLocations().get(0));
     }
 }

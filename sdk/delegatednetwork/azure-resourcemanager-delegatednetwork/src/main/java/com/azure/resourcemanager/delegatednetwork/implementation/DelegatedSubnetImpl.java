@@ -93,25 +93,21 @@ public final class DelegatedSubnetImpl implements DelegatedSubnet, DelegatedSubn
     }
 
     public DelegatedSubnet create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDelegatedSubnetServices()
-                .putDetails(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDelegatedSubnetServices()
+            .putDetails(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DelegatedSubnet create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDelegatedSubnetServices()
-                .putDetails(resourceGroupName, resourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDelegatedSubnetServices()
+            .putDetails(resourceGroupName, resourceName, this.innerModel(), context);
         return this;
     }
 
-    DelegatedSubnetImpl(
-        String name, com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager serviceManager) {
+    DelegatedSubnetImpl(String name,
+        com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager serviceManager) {
         this.innerObject = new DelegatedSubnetInner();
         this.serviceManager = serviceManager;
         this.resourceName = name;
@@ -123,49 +119,40 @@ public final class DelegatedSubnetImpl implements DelegatedSubnet, DelegatedSubn
     }
 
     public DelegatedSubnet apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDelegatedSubnetServices()
-                .patchDetails(resourceGroupName, resourceName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDelegatedSubnetServices()
+            .patchDetails(resourceGroupName, resourceName, updateParameters, Context.NONE);
         return this;
     }
 
     public DelegatedSubnet apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDelegatedSubnetServices()
-                .patchDetails(resourceGroupName, resourceName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDelegatedSubnetServices()
+            .patchDetails(resourceGroupName, resourceName, updateParameters, context);
         return this;
     }
 
-    DelegatedSubnetImpl(
-        DelegatedSubnetInner innerObject,
+    DelegatedSubnetImpl(DelegatedSubnetInner innerObject,
         com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "delegatedSubnets");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "delegatedSubnets");
     }
 
     public DelegatedSubnet refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDelegatedSubnetServices()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDelegatedSubnetServices()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DelegatedSubnet refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDelegatedSubnetServices()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDelegatedSubnetServices()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
+            .getValue();
         return this;
     }
 

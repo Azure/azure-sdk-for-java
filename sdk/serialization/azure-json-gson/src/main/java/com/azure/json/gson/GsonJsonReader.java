@@ -91,6 +91,7 @@ public final class GsonJsonReader extends JsonReader {
         this(reader, resetSupported, jsonBytes, jsonString, options.isNonNumericNumbersSupported());
     }
 
+    @SuppressWarnings("deprecation")
     private GsonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString,
         boolean nonNumericNumbersSupported) {
         this.reader = new com.google.gson.stream.JsonReader(reader);

@@ -5,43 +5,42 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Specification for the Ranger Usersync service.
  */
 @Fluent
-public final class RangerUsersyncSpec {
+public final class RangerUsersyncSpec implements JsonSerializable<RangerUsersyncSpec> {
     /*
      * Denotes whether usersync service should be enabled
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * List of groups that should be synced. These group names should match the object id of the respective AAD groups.
      */
-    @JsonProperty(value = "groups")
     private List<String> groups;
 
     /*
      * User & groups can be synced automatically or via a static list that's refreshed.
      */
-    @JsonProperty(value = "mode")
     private RangerUsersyncMode mode;
 
     /*
      * Azure storage location of a mapping file that lists user & group associations.
      */
-    @JsonProperty(value = "userMappingLocation")
     private String userMappingLocation;
 
     /*
      * List of user names that should be synced. These usernames should match the User principal name of the respective
      * AAD users.
      */
-    @JsonProperty(value = "users")
     private List<String> users;
 
     /**
@@ -135,8 +134,8 @@ public final class RangerUsersyncSpec {
     }
 
     /**
-     * Get the users property: List of user names that should be synced. These usernames should match the User
-     * principal name of the respective AAD users.
+     * Get the users property: List of user names that should be synced. These usernames should match the User principal
+     * name of the respective AAD users.
      * 
      * @return the users value.
      */
@@ -145,8 +144,8 @@ public final class RangerUsersyncSpec {
     }
 
     /**
-     * Set the users property: List of user names that should be synced. These usernames should match the User
-     * principal name of the respective AAD users.
+     * Set the users property: List of user names that should be synced. These usernames should match the User principal
+     * name of the respective AAD users.
      * 
      * @param users the users value to set.
      * @return the RangerUsersyncSpec object itself.
@@ -162,5 +161,55 @@ public final class RangerUsersyncSpec {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeArrayField("groups", this.groups, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeStringField("userMappingLocation", this.userMappingLocation);
+        jsonWriter.writeArrayField("users", this.users, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RangerUsersyncSpec from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RangerUsersyncSpec if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RangerUsersyncSpec.
+     */
+    public static RangerUsersyncSpec fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RangerUsersyncSpec deserializedRangerUsersyncSpec = new RangerUsersyncSpec();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedRangerUsersyncSpec.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("groups".equals(fieldName)) {
+                    List<String> groups = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRangerUsersyncSpec.groups = groups;
+                } else if ("mode".equals(fieldName)) {
+                    deserializedRangerUsersyncSpec.mode = RangerUsersyncMode.fromString(reader.getString());
+                } else if ("userMappingLocation".equals(fieldName)) {
+                    deserializedRangerUsersyncSpec.userMappingLocation = reader.getString();
+                } else if ("users".equals(fieldName)) {
+                    List<String> users = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRangerUsersyncSpec.users = users;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRangerUsersyncSpec;
+        });
     }
 }

@@ -5,104 +5,124 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
-/** Job execution constraints. */
+/**
+ * Job execution constraints.
+ */
 @Fluent
-public final class TableVerticalLimitSettings {
+public final class TableVerticalLimitSettings implements JsonSerializable<TableVerticalLimitSettings> {
     /*
-     * Enable early termination, determines whether or not if AutoMLJob will terminate early if there is no score
-     * improvement in last 20 iterations.
+     * Number of iterations.
      */
-    @JsonProperty(value = "enableEarlyTermination")
-    private Boolean enableEarlyTermination;
+    private Integer maxTrials;
 
     /*
-     * Exit score for the AutoML job.
+     * Iteration timeout.
      */
-    @JsonProperty(value = "exitScore")
-    private Double exitScore;
+    private Duration trialTimeout;
+
+    /*
+     * AutoML job timeout.
+     */
+    private Duration timeout;
 
     /*
      * Maximum Concurrent iterations.
      */
-    @JsonProperty(value = "maxConcurrentTrials")
     private Integer maxConcurrentTrials;
 
     /*
      * Max cores per iteration.
      */
-    @JsonProperty(value = "maxCoresPerTrial")
     private Integer maxCoresPerTrial;
 
     /*
-     * Number of iterations.
+     * Exit score for the AutoML job.
      */
-    @JsonProperty(value = "maxTrials")
-    private Integer maxTrials;
+    private Double exitScore;
 
     /*
-     * AutoML job timeout.
+     * Enable early termination, determines whether or not if AutoMLJob will terminate early if there is no score
+     * improvement in last 20 iterations.
      */
-    @JsonProperty(value = "timeout")
-    private Duration timeout;
+    private Boolean enableEarlyTermination;
 
-    /*
-     * Iteration timeout.
+    /**
+     * Creates an instance of TableVerticalLimitSettings class.
      */
-    @JsonProperty(value = "trialTimeout")
-    private Duration trialTimeout;
-
-    /** Creates an instance of TableVerticalLimitSettings class. */
     public TableVerticalLimitSettings() {
     }
 
     /**
-     * Get the enableEarlyTermination property: Enable early termination, determines whether or not if AutoMLJob will
-     * terminate early if there is no score improvement in last 20 iterations.
-     *
-     * @return the enableEarlyTermination value.
+     * Get the maxTrials property: Number of iterations.
+     * 
+     * @return the maxTrials value.
      */
-    public Boolean enableEarlyTermination() {
-        return this.enableEarlyTermination;
+    public Integer maxTrials() {
+        return this.maxTrials;
     }
 
     /**
-     * Set the enableEarlyTermination property: Enable early termination, determines whether or not if AutoMLJob will
-     * terminate early if there is no score improvement in last 20 iterations.
-     *
-     * @param enableEarlyTermination the enableEarlyTermination value to set.
+     * Set the maxTrials property: Number of iterations.
+     * 
+     * @param maxTrials the maxTrials value to set.
      * @return the TableVerticalLimitSettings object itself.
      */
-    public TableVerticalLimitSettings withEnableEarlyTermination(Boolean enableEarlyTermination) {
-        this.enableEarlyTermination = enableEarlyTermination;
+    public TableVerticalLimitSettings withMaxTrials(Integer maxTrials) {
+        this.maxTrials = maxTrials;
         return this;
     }
 
     /**
-     * Get the exitScore property: Exit score for the AutoML job.
-     *
-     * @return the exitScore value.
+     * Get the trialTimeout property: Iteration timeout.
+     * 
+     * @return the trialTimeout value.
      */
-    public Double exitScore() {
-        return this.exitScore;
+    public Duration trialTimeout() {
+        return this.trialTimeout;
     }
 
     /**
-     * Set the exitScore property: Exit score for the AutoML job.
-     *
-     * @param exitScore the exitScore value to set.
+     * Set the trialTimeout property: Iteration timeout.
+     * 
+     * @param trialTimeout the trialTimeout value to set.
      * @return the TableVerticalLimitSettings object itself.
      */
-    public TableVerticalLimitSettings withExitScore(Double exitScore) {
-        this.exitScore = exitScore;
+    public TableVerticalLimitSettings withTrialTimeout(Duration trialTimeout) {
+        this.trialTimeout = trialTimeout;
+        return this;
+    }
+
+    /**
+     * Get the timeout property: AutoML job timeout.
+     * 
+     * @return the timeout value.
+     */
+    public Duration timeout() {
+        return this.timeout;
+    }
+
+    /**
+     * Set the timeout property: AutoML job timeout.
+     * 
+     * @param timeout the timeout value to set.
+     * @return the TableVerticalLimitSettings object itself.
+     */
+    public TableVerticalLimitSettings withTimeout(Duration timeout) {
+        this.timeout = timeout;
         return this;
     }
 
     /**
      * Get the maxConcurrentTrials property: Maximum Concurrent iterations.
-     *
+     * 
      * @return the maxConcurrentTrials value.
      */
     public Integer maxConcurrentTrials() {
@@ -111,7 +131,7 @@ public final class TableVerticalLimitSettings {
 
     /**
      * Set the maxConcurrentTrials property: Maximum Concurrent iterations.
-     *
+     * 
      * @param maxConcurrentTrials the maxConcurrentTrials value to set.
      * @return the TableVerticalLimitSettings object itself.
      */
@@ -122,7 +142,7 @@ public final class TableVerticalLimitSettings {
 
     /**
      * Get the maxCoresPerTrial property: Max cores per iteration.
-     *
+     * 
      * @return the maxCoresPerTrial value.
      */
     public Integer maxCoresPerTrial() {
@@ -131,7 +151,7 @@ public final class TableVerticalLimitSettings {
 
     /**
      * Set the maxCoresPerTrial property: Max cores per iteration.
-     *
+     * 
      * @param maxCoresPerTrial the maxCoresPerTrial value to set.
      * @return the TableVerticalLimitSettings object itself.
      */
@@ -141,70 +161,109 @@ public final class TableVerticalLimitSettings {
     }
 
     /**
-     * Get the maxTrials property: Number of iterations.
-     *
-     * @return the maxTrials value.
+     * Get the exitScore property: Exit score for the AutoML job.
+     * 
+     * @return the exitScore value.
      */
-    public Integer maxTrials() {
-        return this.maxTrials;
+    public Double exitScore() {
+        return this.exitScore;
     }
 
     /**
-     * Set the maxTrials property: Number of iterations.
-     *
-     * @param maxTrials the maxTrials value to set.
+     * Set the exitScore property: Exit score for the AutoML job.
+     * 
+     * @param exitScore the exitScore value to set.
      * @return the TableVerticalLimitSettings object itself.
      */
-    public TableVerticalLimitSettings withMaxTrials(Integer maxTrials) {
-        this.maxTrials = maxTrials;
+    public TableVerticalLimitSettings withExitScore(Double exitScore) {
+        this.exitScore = exitScore;
         return this;
     }
 
     /**
-     * Get the timeout property: AutoML job timeout.
-     *
-     * @return the timeout value.
+     * Get the enableEarlyTermination property: Enable early termination, determines whether or not if AutoMLJob will
+     * terminate early if there is no score improvement in last 20 iterations.
+     * 
+     * @return the enableEarlyTermination value.
      */
-    public Duration timeout() {
-        return this.timeout;
+    public Boolean enableEarlyTermination() {
+        return this.enableEarlyTermination;
     }
 
     /**
-     * Set the timeout property: AutoML job timeout.
-     *
-     * @param timeout the timeout value to set.
+     * Set the enableEarlyTermination property: Enable early termination, determines whether or not if AutoMLJob will
+     * terminate early if there is no score improvement in last 20 iterations.
+     * 
+     * @param enableEarlyTermination the enableEarlyTermination value to set.
      * @return the TableVerticalLimitSettings object itself.
      */
-    public TableVerticalLimitSettings withTimeout(Duration timeout) {
-        this.timeout = timeout;
-        return this;
-    }
-
-    /**
-     * Get the trialTimeout property: Iteration timeout.
-     *
-     * @return the trialTimeout value.
-     */
-    public Duration trialTimeout() {
-        return this.trialTimeout;
-    }
-
-    /**
-     * Set the trialTimeout property: Iteration timeout.
-     *
-     * @param trialTimeout the trialTimeout value to set.
-     * @return the TableVerticalLimitSettings object itself.
-     */
-    public TableVerticalLimitSettings withTrialTimeout(Duration trialTimeout) {
-        this.trialTimeout = trialTimeout;
+    public TableVerticalLimitSettings withEnableEarlyTermination(Boolean enableEarlyTermination) {
+        this.enableEarlyTermination = enableEarlyTermination;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("maxTrials", this.maxTrials);
+        jsonWriter.writeStringField("trialTimeout", CoreUtils.durationToStringWithDays(this.trialTimeout));
+        jsonWriter.writeStringField("timeout", CoreUtils.durationToStringWithDays(this.timeout));
+        jsonWriter.writeNumberField("maxConcurrentTrials", this.maxConcurrentTrials);
+        jsonWriter.writeNumberField("maxCoresPerTrial", this.maxCoresPerTrial);
+        jsonWriter.writeNumberField("exitScore", this.exitScore);
+        jsonWriter.writeBooleanField("enableEarlyTermination", this.enableEarlyTermination);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TableVerticalLimitSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TableVerticalLimitSettings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TableVerticalLimitSettings.
+     */
+    public static TableVerticalLimitSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TableVerticalLimitSettings deserializedTableVerticalLimitSettings = new TableVerticalLimitSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxTrials".equals(fieldName)) {
+                    deserializedTableVerticalLimitSettings.maxTrials = reader.getNullable(JsonReader::getInt);
+                } else if ("trialTimeout".equals(fieldName)) {
+                    deserializedTableVerticalLimitSettings.trialTimeout
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("timeout".equals(fieldName)) {
+                    deserializedTableVerticalLimitSettings.timeout
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("maxConcurrentTrials".equals(fieldName)) {
+                    deserializedTableVerticalLimitSettings.maxConcurrentTrials = reader.getNullable(JsonReader::getInt);
+                } else if ("maxCoresPerTrial".equals(fieldName)) {
+                    deserializedTableVerticalLimitSettings.maxCoresPerTrial = reader.getNullable(JsonReader::getInt);
+                } else if ("exitScore".equals(fieldName)) {
+                    deserializedTableVerticalLimitSettings.exitScore = reader.getNullable(JsonReader::getDouble);
+                } else if ("enableEarlyTermination".equals(fieldName)) {
+                    deserializedTableVerticalLimitSettings.enableEarlyTermination
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTableVerticalLimitSettings;
+        });
     }
 }

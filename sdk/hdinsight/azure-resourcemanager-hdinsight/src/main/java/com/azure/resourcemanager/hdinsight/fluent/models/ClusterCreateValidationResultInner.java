@@ -5,46 +5,51 @@
 package com.azure.resourcemanager.hdinsight.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hdinsight.models.AaddsResourceDetails;
 import com.azure.resourcemanager.hdinsight.models.ValidationErrorInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
-/** The response of cluster create request validation. */
+/**
+ * The response of cluster create request validation.
+ */
 @Fluent
-public final class ClusterCreateValidationResultInner {
+public final class ClusterCreateValidationResultInner implements JsonSerializable<ClusterCreateValidationResultInner> {
     /*
      * The validation errors.
      */
-    @JsonProperty(value = "validationErrors")
     private List<ValidationErrorInfo> validationErrors;
 
     /*
      * The validation warnings.
      */
-    @JsonProperty(value = "validationWarnings")
     private List<ValidationErrorInfo> validationWarnings;
 
     /*
      * The estimated creation duration.
      */
-    @JsonProperty(value = "estimatedCreationDuration")
     private Duration estimatedCreationDuration;
 
     /*
      * The Azure active directory domain service resource details.
      */
-    @JsonProperty(value = "aaddsResourcesDetails")
     private List<AaddsResourceDetails> aaddsResourcesDetails;
 
-    /** Creates an instance of ClusterCreateValidationResultInner class. */
+    /**
+     * Creates an instance of ClusterCreateValidationResultInner class.
+     */
     public ClusterCreateValidationResultInner() {
     }
 
     /**
      * Get the validationErrors property: The validation errors.
-     *
+     * 
      * @return the validationErrors value.
      */
     public List<ValidationErrorInfo> validationErrors() {
@@ -53,7 +58,7 @@ public final class ClusterCreateValidationResultInner {
 
     /**
      * Set the validationErrors property: The validation errors.
-     *
+     * 
      * @param validationErrors the validationErrors value to set.
      * @return the ClusterCreateValidationResultInner object itself.
      */
@@ -64,7 +69,7 @@ public final class ClusterCreateValidationResultInner {
 
     /**
      * Get the validationWarnings property: The validation warnings.
-     *
+     * 
      * @return the validationWarnings value.
      */
     public List<ValidationErrorInfo> validationWarnings() {
@@ -73,7 +78,7 @@ public final class ClusterCreateValidationResultInner {
 
     /**
      * Set the validationWarnings property: The validation warnings.
-     *
+     * 
      * @param validationWarnings the validationWarnings value to set.
      * @return the ClusterCreateValidationResultInner object itself.
      */
@@ -84,7 +89,7 @@ public final class ClusterCreateValidationResultInner {
 
     /**
      * Get the estimatedCreationDuration property: The estimated creation duration.
-     *
+     * 
      * @return the estimatedCreationDuration value.
      */
     public Duration estimatedCreationDuration() {
@@ -93,7 +98,7 @@ public final class ClusterCreateValidationResultInner {
 
     /**
      * Set the estimatedCreationDuration property: The estimated creation duration.
-     *
+     * 
      * @param estimatedCreationDuration the estimatedCreationDuration value to set.
      * @return the ClusterCreateValidationResultInner object itself.
      */
@@ -104,7 +109,7 @@ public final class ClusterCreateValidationResultInner {
 
     /**
      * Get the aaddsResourcesDetails property: The Azure active directory domain service resource details.
-     *
+     * 
      * @return the aaddsResourcesDetails value.
      */
     public List<AaddsResourceDetails> aaddsResourcesDetails() {
@@ -113,19 +118,19 @@ public final class ClusterCreateValidationResultInner {
 
     /**
      * Set the aaddsResourcesDetails property: The Azure active directory domain service resource details.
-     *
+     * 
      * @param aaddsResourcesDetails the aaddsResourcesDetails value to set.
      * @return the ClusterCreateValidationResultInner object itself.
      */
-    public ClusterCreateValidationResultInner withAaddsResourcesDetails(
-        List<AaddsResourceDetails> aaddsResourcesDetails) {
+    public ClusterCreateValidationResultInner
+        withAaddsResourcesDetails(List<AaddsResourceDetails> aaddsResourcesDetails) {
         this.aaddsResourcesDetails = aaddsResourcesDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -138,5 +143,62 @@ public final class ClusterCreateValidationResultInner {
         if (aaddsResourcesDetails() != null) {
             aaddsResourcesDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("validationErrors", this.validationErrors,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("validationWarnings", this.validationWarnings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("estimatedCreationDuration",
+            CoreUtils.durationToStringWithDays(this.estimatedCreationDuration));
+        jsonWriter.writeArrayField("aaddsResourcesDetails", this.aaddsResourcesDetails,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterCreateValidationResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterCreateValidationResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterCreateValidationResultInner.
+     */
+    public static ClusterCreateValidationResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterCreateValidationResultInner deserializedClusterCreateValidationResultInner
+                = new ClusterCreateValidationResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("validationErrors".equals(fieldName)) {
+                    List<ValidationErrorInfo> validationErrors
+                        = reader.readArray(reader1 -> ValidationErrorInfo.fromJson(reader1));
+                    deserializedClusterCreateValidationResultInner.validationErrors = validationErrors;
+                } else if ("validationWarnings".equals(fieldName)) {
+                    List<ValidationErrorInfo> validationWarnings
+                        = reader.readArray(reader1 -> ValidationErrorInfo.fromJson(reader1));
+                    deserializedClusterCreateValidationResultInner.validationWarnings = validationWarnings;
+                } else if ("estimatedCreationDuration".equals(fieldName)) {
+                    deserializedClusterCreateValidationResultInner.estimatedCreationDuration
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("aaddsResourcesDetails".equals(fieldName)) {
+                    List<AaddsResourceDetails> aaddsResourcesDetails
+                        = reader.readArray(reader1 -> AaddsResourceDetails.fromJson(reader1));
+                    deserializedClusterCreateValidationResultInner.aaddsResourcesDetails = aaddsResourcesDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterCreateValidationResultInner;
+        });
     }
 }

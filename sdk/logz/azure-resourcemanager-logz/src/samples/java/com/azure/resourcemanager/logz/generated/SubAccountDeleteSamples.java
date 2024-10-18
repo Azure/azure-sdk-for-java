@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.logz.generated;
 
-/** Samples for SubAccount Delete. */
+/**
+ * Samples for SubAccount Delete.
+ */
 public final class SubAccountDeleteSamples {
     /*
-     * x-ms-original-file: specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/SubAccount_Delete.json
+     * x-ms-original-file:
+     * specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/SubAccount_Delete.json
      */
     /**
      * Sample code: SubAccount_Delete.
-     *
+     * 
      * @param manager Entry point to LogzManager.
      */
     public static void subAccountDelete(com.azure.resourcemanager.logz.LogzManager manager) {

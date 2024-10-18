@@ -10,8 +10,8 @@ import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.VirtualNetworkP
 public final class VirtualNetworkPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworkProperties model =
-            BinaryData.fromString("{\"privateCloudId\":\"fmtdaaygdvwvgp\"}").toObject(VirtualNetworkProperties.class);
+        VirtualNetworkProperties model
+            = BinaryData.fromString("{\"privateCloudId\":\"pxehuwrykqga\"}").toObject(VirtualNetworkProperties.class);
     }
 
     @org.junit.jupiter.api.Test

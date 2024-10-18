@@ -13,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -41,12 +41,12 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = AzureFleetClientBuilder.class)
 public final class AzureFleetClientImpl implements AzureFleetClient {
     /**
-     * Server parameter.
+     * Service host.
      */
     private final String endpoint;
 
     /**
-     * Gets Server parameter.
+     * Gets Service host.
      * 
      * @return the endpoint value.
      */
@@ -159,7 +159,7 @@ public final class AzureFleetClientImpl implements AzureFleetClient {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param endpoint Server parameter.
+     * @param endpoint Service host.
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      */
     AzureFleetClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,

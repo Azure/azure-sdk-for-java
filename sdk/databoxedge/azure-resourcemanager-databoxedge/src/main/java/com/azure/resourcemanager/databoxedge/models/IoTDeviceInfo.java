@@ -6,42 +6,46 @@ package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Metadata of IoT device/IoT Edge device to be configured. */
+/**
+ * Metadata of IoT device/IoT Edge device to be configured.
+ */
 @Fluent
-public final class IoTDeviceInfo {
+public final class IoTDeviceInfo implements JsonSerializable<IoTDeviceInfo> {
     /*
      * ID of the IoT device/edge device.
      */
-    @JsonProperty(value = "deviceId", required = true)
     private String deviceId;
 
     /*
      * Host name for the IoT hub associated to the device.
      */
-    @JsonProperty(value = "ioTHostHub", required = true)
     private String ioTHostHub;
 
     /*
      * Id for the IoT hub associated to the device.
      */
-    @JsonProperty(value = "ioTHostHubId")
     private String ioTHostHubId;
 
     /*
      * IoT device authentication info.
      */
-    @JsonProperty(value = "authentication")
     private Authentication authentication;
 
-    /** Creates an instance of IoTDeviceInfo class. */
+    /**
+     * Creates an instance of IoTDeviceInfo class.
+     */
     public IoTDeviceInfo() {
     }
 
     /**
      * Get the deviceId property: ID of the IoT device/edge device.
-     *
+     * 
      * @return the deviceId value.
      */
     public String deviceId() {
@@ -50,7 +54,7 @@ public final class IoTDeviceInfo {
 
     /**
      * Set the deviceId property: ID of the IoT device/edge device.
-     *
+     * 
      * @param deviceId the deviceId value to set.
      * @return the IoTDeviceInfo object itself.
      */
@@ -61,7 +65,7 @@ public final class IoTDeviceInfo {
 
     /**
      * Get the ioTHostHub property: Host name for the IoT hub associated to the device.
-     *
+     * 
      * @return the ioTHostHub value.
      */
     public String ioTHostHub() {
@@ -70,7 +74,7 @@ public final class IoTDeviceInfo {
 
     /**
      * Set the ioTHostHub property: Host name for the IoT hub associated to the device.
-     *
+     * 
      * @param ioTHostHub the ioTHostHub value to set.
      * @return the IoTDeviceInfo object itself.
      */
@@ -81,7 +85,7 @@ public final class IoTDeviceInfo {
 
     /**
      * Get the ioTHostHubId property: Id for the IoT hub associated to the device.
-     *
+     * 
      * @return the ioTHostHubId value.
      */
     public String ioTHostHubId() {
@@ -90,7 +94,7 @@ public final class IoTDeviceInfo {
 
     /**
      * Set the ioTHostHubId property: Id for the IoT hub associated to the device.
-     *
+     * 
      * @param ioTHostHubId the ioTHostHubId value to set.
      * @return the IoTDeviceInfo object itself.
      */
@@ -101,7 +105,7 @@ public final class IoTDeviceInfo {
 
     /**
      * Get the authentication property: IoT device authentication info.
-     *
+     * 
      * @return the authentication value.
      */
     public Authentication authentication() {
@@ -110,7 +114,7 @@ public final class IoTDeviceInfo {
 
     /**
      * Set the authentication property: IoT device authentication info.
-     *
+     * 
      * @param authentication the authentication value to set.
      * @return the IoTDeviceInfo object itself.
      */
@@ -121,19 +125,17 @@ public final class IoTDeviceInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (deviceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property deviceId in model IoTDeviceInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property deviceId in model IoTDeviceInfo"));
         }
         if (ioTHostHub() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ioTHostHub in model IoTDeviceInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ioTHostHub in model IoTDeviceInfo"));
         }
         if (authentication() != null) {
             authentication().validate();
@@ -141,4 +143,50 @@ public final class IoTDeviceInfo {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IoTDeviceInfo.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deviceId", this.deviceId);
+        jsonWriter.writeStringField("ioTHostHub", this.ioTHostHub);
+        jsonWriter.writeStringField("ioTHostHubId", this.ioTHostHubId);
+        jsonWriter.writeJsonField("authentication", this.authentication);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IoTDeviceInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IoTDeviceInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IoTDeviceInfo.
+     */
+    public static IoTDeviceInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IoTDeviceInfo deserializedIoTDeviceInfo = new IoTDeviceInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deviceId".equals(fieldName)) {
+                    deserializedIoTDeviceInfo.deviceId = reader.getString();
+                } else if ("ioTHostHub".equals(fieldName)) {
+                    deserializedIoTDeviceInfo.ioTHostHub = reader.getString();
+                } else if ("ioTHostHubId".equals(fieldName)) {
+                    deserializedIoTDeviceInfo.ioTHostHubId = reader.getString();
+                } else if ("authentication".equals(fieldName)) {
+                    deserializedIoTDeviceInfo.authentication = Authentication.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIoTDeviceInfo;
+        });
+    }
 }

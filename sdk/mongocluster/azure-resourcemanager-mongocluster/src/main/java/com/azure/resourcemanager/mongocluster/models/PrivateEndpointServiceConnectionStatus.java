@@ -13,17 +13,17 @@ import java.util.Collection;
 public final class PrivateEndpointServiceConnectionStatus
     extends ExpandableStringEnum<PrivateEndpointServiceConnectionStatus> {
     /**
-     * Static value Pending for PrivateEndpointServiceConnectionStatus.
+     * Connectionaiting for approval or rejection.
      */
     public static final PrivateEndpointServiceConnectionStatus PENDING = fromString("Pending");
 
     /**
-     * Static value Approved for PrivateEndpointServiceConnectionStatus.
+     * Connection approved.
      */
     public static final PrivateEndpointServiceConnectionStatus APPROVED = fromString("Approved");
 
     /**
-     * Static value Rejected for PrivateEndpointServiceConnectionStatus.
+     * Connection Rejected.
      */
     public static final PrivateEndpointServiceConnectionStatus REJECTED = fromString("Rejected");
 

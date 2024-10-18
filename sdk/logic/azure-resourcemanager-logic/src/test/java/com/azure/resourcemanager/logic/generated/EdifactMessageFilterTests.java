@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class EdifactMessageFilterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EdifactMessageFilter model =
-            BinaryData.fromString("{\"messageFilterType\":\"Exclude\"}").toObject(EdifactMessageFilter.class);
-        Assertions.assertEquals(MessageFilterType.EXCLUDE, model.messageFilterType());
+        EdifactMessageFilter model
+            = BinaryData.fromString("{\"messageFilterType\":\"Include\"}").toObject(EdifactMessageFilter.class);
+        Assertions.assertEquals(MessageFilterType.INCLUDE, model.messageFilterType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EdifactMessageFilter model = new EdifactMessageFilter().withMessageFilterType(MessageFilterType.EXCLUDE);
+        EdifactMessageFilter model = new EdifactMessageFilter().withMessageFilterType(MessageFilterType.INCLUDE);
         model = BinaryData.fromObject(model).toObject(EdifactMessageFilter.class);
-        Assertions.assertEquals(MessageFilterType.EXCLUDE, model.messageFilterType());
+        Assertions.assertEquals(MessageFilterType.INCLUDE, model.messageFilterType());
     }
 }

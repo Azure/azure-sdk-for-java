@@ -8,7 +8,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -27,12 +27,13 @@ import com.azure.resourcemanager.mediaservices.models.TransformOutput;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.Random;
 
-public class MediaServicesTests extends TestBase {
+public class MediaServicesTests extends TestProxyTestBase {
 
     private static final Random RANDOM = new Random();
 
@@ -42,6 +43,7 @@ public class MediaServicesTests extends TestBase {
 
     private String resourceGroup = "rg" + randomPadding();
 
+    @Disabled("resource in jobHttpBaseUri/jobFile is expired, didn't find a replacement")
     @Test
     @LiveOnly
     public void mediaServicesTest() {

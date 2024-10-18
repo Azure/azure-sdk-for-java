@@ -61,7 +61,6 @@ public class ConfigurationClientCredentials {
         return this.credentials.baseUri().toString();
     }
 
-
     /**
      * Sets the {@code Authorization} header on the request.
      *
@@ -96,17 +95,16 @@ public class ConfigurationClientCredentials {
 
             String signed = url.getHost() + ";" + date + ";" + contentHash;
 
-            headers.set(HttpHeaderName.HOST, url.getHost())
-                .set(X_MS_CONTENT_SHA256, contentHash);
+            headers.set(HttpHeaderName.HOST, url.getHost()).set(X_MS_CONTENT_SHA256, contentHash);
 
             // String-To-Sign=HTTP_METHOD + '\n' + path_and_query + '\n' + signed_headers_values
             // Signed headers: "host;x-ms-date;x-ms-content-sha256"
             // The line separator has to be \n. Using %n with String.format will result in a 401 from the service.
-            String stringToSign = httpRequest.getHttpMethod().toString().toUpperCase(Locale.US)
-                + "\n" + pathAndQuery + "\n" + signed;
+            String stringToSign
+                = httpRequest.getHttpMethod().toString().toUpperCase(Locale.US) + "\n" + pathAndQuery + "\n" + signed;
 
-            String signature = Base64.getEncoder()
-                .encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
+            String signature
+                = Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
             headers.set(HttpHeaderName.AUTHORIZATION, "HMAC-SHA256 Credential=" + credentials.id()
                 + "&SignedHeaders=Host;Date;x-ms-content-sha256&Signature=" + signature);
         } catch (GeneralSecurityException e) {
@@ -170,8 +168,10 @@ public class ConfigurationClientCredentials {
             this.id = id;
             this.secret = secret;
 
-            if (this.baseUri == null || CoreUtils.isNullOrEmpty(this.id)
-                || this.secret == null || this.secret.length == 0) {
+            if (this.baseUri == null
+                || CoreUtils.isNullOrEmpty(this.id)
+                || this.secret == null
+                || this.secret.length == 0) {
                 throw new IllegalArgumentException("Could not parse 'connectionString'."
                     + " Expected format: 'endpoint={endpoint};id={id};secret={secret}'. Actual:" + connectionString);
             }

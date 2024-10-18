@@ -49,7 +49,8 @@ public final class BlocklistClient {
      * request.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItems (Required): [
      *          (Required){
@@ -59,11 +60,13 @@ public final class BlocklistClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItems (Required): [
      *          (Required){
@@ -73,7 +76,8 @@ public final class BlocklistClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param name Text blocklist name.
      * @param options Options for adding or updating blocklist items.
@@ -97,21 +101,25 @@ public final class BlocklistClient {
      * Updates a text blocklist. If the blocklistName does not exist, a new blocklist will be created.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param name Text blocklist name.
      * @param options The resource instance.
@@ -154,12 +162,14 @@ public final class BlocklistClient {
      * Returns text blocklist details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param name Text blocklist name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -167,7 +177,9 @@ public final class BlocklistClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return text Blocklist along with {@link Response}.
+     * @return text Blocklist By blocklistName
+     *
+     * Returns text blocklist details along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -181,13 +193,15 @@ public final class BlocklistClient {
      * Get blocklistItem by blocklistName and blocklistItemId from a text blocklist.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItemId: String (Required)
      *     description: String (Optional)
      *     text: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param name Text blocklist name.
      * @param blocklistItemId The service will generate a BlocklistItemId, which will be a UUID.
@@ -196,7 +210,9 @@ public final class BlocklistClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return blocklistItem by blocklistName and blocklistItemId from a text blocklist along with {@link Response}.
+     * @return blocklistItem By blocklistName And blocklistItemId
+     *
+     * Get blocklistItem by blocklistName and blocklistItemId from a text blocklist along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -220,13 +236,15 @@ public final class BlocklistClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItemId: String (Required)
      *     description: String (Optional)
      *     text: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param name Text blocklist name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -234,7 +252,9 @@ public final class BlocklistClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return all blocklistItems in a text blocklist as paginated response with {@link PagedIterable}.
+     * @return all BlocklistItems By blocklistName
+     *
+     * Get all blocklistItems in a text blocklist as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -248,19 +268,23 @@ public final class BlocklistClient {
      * Get all text blocklists details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return all text blocklists details as paginated response with {@link PagedIterable}.
+     * @return all Text Blocklists
+     *
+     * Get all text blocklists details as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -274,13 +298,15 @@ public final class BlocklistClient {
      * Remove blocklistItems from a text blocklist. You can remove at most 100 BlocklistItems in one request.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItemIds (Required): [
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param name Text blocklist name.
      * @param options Options for removing blocklist items.
@@ -357,7 +383,9 @@ public final class BlocklistClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return text Blocklist.
+     * @return text Blocklist By blocklistName
+     *
+     * Returns text blocklist details.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -380,7 +408,9 @@ public final class BlocklistClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return blocklistItem by blocklistName and blocklistItemId from a text blocklist.
+     * @return blocklistItem By blocklistName And blocklistItemId
+     *
+     * Get blocklistItem by blocklistName and blocklistItemId from a text blocklist.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -405,7 +435,9 @@ public final class BlocklistClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all blocklistItems in a text blocklist as paginated response with {@link PagedIterable}.
+     * @return all BlocklistItems By blocklistName
+     *
+     * Get all blocklistItems in a text blocklist as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -434,7 +466,9 @@ public final class BlocklistClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all blocklistItems in a text blocklist as paginated response with {@link PagedIterable}.
+     * @return all BlocklistItems By blocklistName
+     *
+     * Get all blocklistItems in a text blocklist as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -455,7 +489,9 @@ public final class BlocklistClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all text blocklists details as paginated response with {@link PagedIterable}.
+     * @return all Text Blocklists
+     *
+     * Get all text blocklists details as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)

@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Schedule-based autoscale request parameters. */
+/**
+ * Schedule-based autoscale request parameters.
+ */
 @Fluent
-public final class AutoscaleRecurrence {
+public final class AutoscaleRecurrence implements JsonSerializable<AutoscaleRecurrence> {
     /*
      * The time zone for the autoscale schedule times
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
     /*
      * Array of schedule-based autoscale rules
      */
-    @JsonProperty(value = "schedule")
     private List<AutoscaleSchedule> schedule;
 
-    /** Creates an instance of AutoscaleRecurrence class. */
+    /**
+     * Creates an instance of AutoscaleRecurrence class.
+     */
     public AutoscaleRecurrence() {
     }
 
     /**
      * Get the timeZone property: The time zone for the autoscale schedule times.
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -38,7 +44,7 @@ public final class AutoscaleRecurrence {
 
     /**
      * Set the timeZone property: The time zone for the autoscale schedule times.
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the AutoscaleRecurrence object itself.
      */
@@ -49,7 +55,7 @@ public final class AutoscaleRecurrence {
 
     /**
      * Get the schedule property: Array of schedule-based autoscale rules.
-     *
+     * 
      * @return the schedule value.
      */
     public List<AutoscaleSchedule> schedule() {
@@ -58,7 +64,7 @@ public final class AutoscaleRecurrence {
 
     /**
      * Set the schedule property: Array of schedule-based autoscale rules.
-     *
+     * 
      * @param schedule the schedule value to set.
      * @return the AutoscaleRecurrence object itself.
      */
@@ -69,12 +75,52 @@ public final class AutoscaleRecurrence {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (schedule() != null) {
             schedule().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeArrayField("schedule", this.schedule, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoscaleRecurrence from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoscaleRecurrence if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutoscaleRecurrence.
+     */
+    public static AutoscaleRecurrence fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoscaleRecurrence deserializedAutoscaleRecurrence = new AutoscaleRecurrence();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timeZone".equals(fieldName)) {
+                    deserializedAutoscaleRecurrence.timeZone = reader.getString();
+                } else if ("schedule".equals(fieldName)) {
+                    List<AutoscaleSchedule> schedule = reader.readArray(reader1 -> AutoscaleSchedule.fromJson(reader1));
+                    deserializedAutoscaleRecurrence.schedule = schedule;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoscaleRecurrence;
+        });
     }
 }

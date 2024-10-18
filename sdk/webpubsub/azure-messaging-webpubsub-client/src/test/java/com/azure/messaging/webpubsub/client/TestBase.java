@@ -3,8 +3,9 @@
 
 package com.azure.messaging.webpubsub.client;
 
+import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.messaging.webpubsub.WebPubSubServiceClient;
 import com.azure.messaging.webpubsub.WebPubSubServiceClientBuilder;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubClientState;
@@ -18,7 +19,7 @@ import java.time.Duration;
  * Required environment variable for LIVE test:
  * - WEB_PUB_SUB_ENDPOINT: endpoint of the Web PubSub Service
  */
-public class TestBase extends com.azure.core.test.TestBase {
+public class TestBase extends TestProxyTestBase {
 
     protected static WebPubSubClientBuilder getClientBuilder() {
         return getClientBuilder("user1");
@@ -28,7 +29,7 @@ public class TestBase extends com.azure.core.test.TestBase {
         WebPubSubServiceClient client = new WebPubSubServiceClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get(
                 "WEB_PUB_SUB_ENDPOINT"))
-            .credential(new AzurePowerShellCredentialBuilder().build())
+            .credential(TestUtils.getIdentityTestCredential(TestMode.LIVE))
             .hub("hub1")
             .buildClient();
 

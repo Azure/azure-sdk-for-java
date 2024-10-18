@@ -7,38 +7,57 @@ package com.azure.resourcemanager.storagepool.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagepool.fluent.models.IscsiTargetCreateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Payload for iSCSI Target create or update requests. */
+/**
+ * Payload for iSCSI Target create or update requests.
+ */
 @Fluent
 public final class IscsiTargetCreate extends ProxyResource {
     /*
      * Properties for iSCSI Target create request.
      */
-    @JsonProperty(value = "properties", required = true)
     private IscsiTargetCreateProperties innerProperties = new IscsiTargetCreateProperties();
 
     /*
      * Azure resource id. Indicates if this resource is managed by another Azure resource.
      */
-    @JsonProperty(value = "managedBy")
     private String managedBy;
 
     /*
      * List of Azure resource ids that manage this resource.
      */
-    @JsonProperty(value = "managedByExtended")
     private List<String> managedByExtended;
 
-    /** Creates an instance of IscsiTargetCreate class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of IscsiTargetCreate class.
+     */
     public IscsiTargetCreate() {
     }
 
     /**
      * Get the innerProperties property: Properties for iSCSI Target create request.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IscsiTargetCreateProperties innerProperties() {
@@ -47,7 +66,7 @@ public final class IscsiTargetCreate extends ProxyResource {
 
     /**
      * Get the managedBy property: Azure resource id. Indicates if this resource is managed by another Azure resource.
-     *
+     * 
      * @return the managedBy value.
      */
     public String managedBy() {
@@ -56,7 +75,7 @@ public final class IscsiTargetCreate extends ProxyResource {
 
     /**
      * Set the managedBy property: Azure resource id. Indicates if this resource is managed by another Azure resource.
-     *
+     * 
      * @param managedBy the managedBy value to set.
      * @return the IscsiTargetCreate object itself.
      */
@@ -67,7 +86,7 @@ public final class IscsiTargetCreate extends ProxyResource {
 
     /**
      * Get the managedByExtended property: List of Azure resource ids that manage this resource.
-     *
+     * 
      * @return the managedByExtended value.
      */
     public List<String> managedByExtended() {
@@ -76,7 +95,7 @@ public final class IscsiTargetCreate extends ProxyResource {
 
     /**
      * Set the managedByExtended property: List of Azure resource ids that manage this resource.
-     *
+     * 
      * @param managedByExtended the managedByExtended value to set.
      * @return the IscsiTargetCreate object itself.
      */
@@ -86,8 +105,38 @@ public final class IscsiTargetCreate extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the aclMode property: Mode for Target connectivity.
-     *
+     * 
      * @return the aclMode value.
      */
     public IscsiTargetAclMode aclMode() {
@@ -96,7 +145,7 @@ public final class IscsiTargetCreate extends ProxyResource {
 
     /**
      * Set the aclMode property: Mode for Target connectivity.
-     *
+     * 
      * @param aclMode the aclMode value to set.
      * @return the IscsiTargetCreate object itself.
      */
@@ -110,7 +159,7 @@ public final class IscsiTargetCreate extends ProxyResource {
 
     /**
      * Get the targetIqn property: iSCSI Target IQN (iSCSI Qualified Name); example: "iqn.2005-03.org.iscsi:server".
-     *
+     * 
      * @return the targetIqn value.
      */
     public String targetIqn() {
@@ -119,7 +168,7 @@ public final class IscsiTargetCreate extends ProxyResource {
 
     /**
      * Set the targetIqn property: iSCSI Target IQN (iSCSI Qualified Name); example: "iqn.2005-03.org.iscsi:server".
-     *
+     * 
      * @param targetIqn the targetIqn value to set.
      * @return the IscsiTargetCreate object itself.
      */
@@ -133,7 +182,7 @@ public final class IscsiTargetCreate extends ProxyResource {
 
     /**
      * Get the staticAcls property: Access Control List (ACL) for an iSCSI Target; defines LUN masking policy.
-     *
+     * 
      * @return the staticAcls value.
      */
     public List<Acl> staticAcls() {
@@ -142,7 +191,7 @@ public final class IscsiTargetCreate extends ProxyResource {
 
     /**
      * Set the staticAcls property: Access Control List (ACL) for an iSCSI Target; defines LUN masking policy.
-     *
+     * 
      * @param staticAcls the staticAcls value to set.
      * @return the IscsiTargetCreate object itself.
      */
@@ -156,7 +205,7 @@ public final class IscsiTargetCreate extends ProxyResource {
 
     /**
      * Get the luns property: List of LUNs to be exposed through iSCSI Target.
-     *
+     * 
      * @return the luns value.
      */
     public List<IscsiLun> luns() {
@@ -165,7 +214,7 @@ public final class IscsiTargetCreate extends ProxyResource {
 
     /**
      * Set the luns property: List of LUNs to be exposed through iSCSI Target.
-     *
+     * 
      * @param luns the luns value to set.
      * @return the IscsiTargetCreate object itself.
      */
@@ -179,19 +228,69 @@ public final class IscsiTargetCreate extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model IscsiTargetCreate"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model IscsiTargetCreate"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IscsiTargetCreate.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("managedBy", this.managedBy);
+        jsonWriter.writeArrayField("managedByExtended", this.managedByExtended,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IscsiTargetCreate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IscsiTargetCreate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IscsiTargetCreate.
+     */
+    public static IscsiTargetCreate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IscsiTargetCreate deserializedIscsiTargetCreate = new IscsiTargetCreate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedIscsiTargetCreate.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIscsiTargetCreate.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIscsiTargetCreate.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIscsiTargetCreate.innerProperties = IscsiTargetCreateProperties.fromJson(reader);
+                } else if ("managedBy".equals(fieldName)) {
+                    deserializedIscsiTargetCreate.managedBy = reader.getString();
+                } else if ("managedByExtended".equals(fieldName)) {
+                    List<String> managedByExtended = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIscsiTargetCreate.managedByExtended = managedByExtended;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIscsiTargetCreate;
+        });
+    }
 }

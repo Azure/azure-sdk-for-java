@@ -11,17 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomTargetRollingWindowSizeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomTargetRollingWindowSize model =
-            BinaryData
-                .fromString("{\"mode\":\"Custom\",\"value\":482115950}")
-                .toObject(CustomTargetRollingWindowSize.class);
-        Assertions.assertEquals(482115950, model.value());
+        CustomTargetRollingWindowSize model = BinaryData.fromString("{\"mode\":\"Custom\",\"value\":725690227}")
+            .toObject(CustomTargetRollingWindowSize.class);
+        Assertions.assertEquals(725690227, model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomTargetRollingWindowSize model = new CustomTargetRollingWindowSize().withValue(482115950);
+        CustomTargetRollingWindowSize model = new CustomTargetRollingWindowSize().withValue(725690227);
         model = BinaryData.fromObject(model).toObject(CustomTargetRollingWindowSize.class);
-        Assertions.assertEquals(482115950, model.value());
+        Assertions.assertEquals(725690227, model.value());
     }
 }

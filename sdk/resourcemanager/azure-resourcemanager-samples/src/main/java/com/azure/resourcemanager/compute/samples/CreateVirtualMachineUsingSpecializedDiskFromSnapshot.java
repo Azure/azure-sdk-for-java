@@ -50,7 +50,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
         final String publicIpDnsLabel = Utils.randomResourceName(azureResourceManager, "pip", 15);
         final String userName = "tirekicker";
         final String sshPublicKey = Utils.sshPublicKey();
-        final Region region = Region.US_WEST;
+        final Region region = Region.US_WEST2;
 
         final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
         final String apacheInstallCommand = "bash install_apache.sh";
@@ -83,7 +83,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
                         .withPublicSetting("fileUris", apacheInstallScriptUris)
                         .withPublicSetting("commandToExecute", apacheInstallCommand)
                         .attach()
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                    .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
                     .create();
 
             System.out.println("Created a Linux VM with managed OS and data disks: " + linuxVM.id());
@@ -192,7 +192,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
                     .withSpecializedOSDisk(newOSDisk, OperatingSystemTypes.LINUX)
                     .withExistingDataDisk(newDataDisks.get(0))
                     .withExistingDataDisk(newDataDisks.get(1), 1, CachingTypes.READ_WRITE)
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                    .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
                     .create();
 
             Utils.print(linuxVM2);

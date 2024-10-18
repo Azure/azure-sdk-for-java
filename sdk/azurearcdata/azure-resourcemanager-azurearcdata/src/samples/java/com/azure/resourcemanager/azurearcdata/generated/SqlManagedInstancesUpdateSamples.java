@@ -8,25 +8,28 @@ import com.azure.resourcemanager.azurearcdata.models.SqlManagedInstance;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for SqlManagedInstances Update. */
+/**
+ * Samples for SqlManagedInstances Update.
+ */
 public final class SqlManagedInstancesUpdateSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/UpdateSqlManagedInstance.json
+     * x-ms-original-file:
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/
+     * UpdateSqlManagedInstance.json
      */
     /**
      * Sample code: Updates a sql Instance tags.
-     *
+     * 
      * @param manager Entry point to AzureArcDataManager.
      */
     public static void updatesASqlInstanceTags(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        SqlManagedInstance resource =
-            manager
-                .sqlManagedInstances()
-                .getByResourceGroupWithResponse("testrg", "testsqlManagedInstance", com.azure.core.util.Context.NONE)
-                .getValue();
+        SqlManagedInstance resource = manager.sqlManagedInstances()
+            .getByResourceGroupWithResponse("testrg", "testsqlManagedInstance", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("mytag", "myval")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

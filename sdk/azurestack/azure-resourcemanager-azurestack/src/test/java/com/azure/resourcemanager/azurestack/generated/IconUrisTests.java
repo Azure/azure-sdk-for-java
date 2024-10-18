@@ -11,32 +11,28 @@ import org.junit.jupiter.api.Assertions;
 public final class IconUrisTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IconUris model =
-            BinaryData
-                .fromString(
-                    "{\"large\":\"nlebxetqgtzxd\",\"wide\":\"qbqqwxr\",\"medium\":\"eallnwsubisnj\",\"small\":\"pmng\",\"hero\":\"scxaq\"}")
-                .toObject(IconUris.class);
-        Assertions.assertEquals("nlebxetqgtzxd", model.large());
-        Assertions.assertEquals("qbqqwxr", model.wide());
-        Assertions.assertEquals("eallnwsubisnj", model.medium());
-        Assertions.assertEquals("pmng", model.small());
-        Assertions.assertEquals("scxaq", model.hero());
+        IconUris model = BinaryData.fromString(
+            "{\"large\":\"spkwlhzdobpxjm\",\"wide\":\"bvvnchrkcciw\",\"medium\":\"juqk\",\"small\":\"sa\",\"hero\":\"wkuofoskghsauu\"}")
+            .toObject(IconUris.class);
+        Assertions.assertEquals("spkwlhzdobpxjm", model.large());
+        Assertions.assertEquals("bvvnchrkcciw", model.wide());
+        Assertions.assertEquals("juqk", model.medium());
+        Assertions.assertEquals("sa", model.small());
+        Assertions.assertEquals("wkuofoskghsauu", model.hero());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IconUris model =
-            new IconUris()
-                .withLarge("nlebxetqgtzxd")
-                .withWide("qbqqwxr")
-                .withMedium("eallnwsubisnj")
-                .withSmall("pmng")
-                .withHero("scxaq");
+        IconUris model = new IconUris().withLarge("spkwlhzdobpxjm")
+            .withWide("bvvnchrkcciw")
+            .withMedium("juqk")
+            .withSmall("sa")
+            .withHero("wkuofoskghsauu");
         model = BinaryData.fromObject(model).toObject(IconUris.class);
-        Assertions.assertEquals("nlebxetqgtzxd", model.large());
-        Assertions.assertEquals("qbqqwxr", model.wide());
-        Assertions.assertEquals("eallnwsubisnj", model.medium());
-        Assertions.assertEquals("pmng", model.small());
-        Assertions.assertEquals("scxaq", model.hero());
+        Assertions.assertEquals("spkwlhzdobpxjm", model.large());
+        Assertions.assertEquals("bvvnchrkcciw", model.wide());
+        Assertions.assertEquals("juqk", model.medium());
+        Assertions.assertEquals("sa", model.small());
+        Assertions.assertEquals("wkuofoskghsauu", model.hero());
     }
 }

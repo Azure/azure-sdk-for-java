@@ -5,10 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -16,17 +17,15 @@ import java.util.Map;
  * Execution policy for an execute pipeline activity.
  */
 @Fluent
-public final class ExecutePipelineActivityPolicy {
+public final class ExecutePipelineActivityPolicy implements JsonSerializable<ExecutePipelineActivityPolicy> {
     /*
      * When set to true, Input from activity is considered as secure and will not be logged to monitoring.
      */
-    @JsonProperty(value = "secureInput")
     private Boolean secureInput;
 
     /*
      * Execution policy for an execute pipeline activity.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -62,7 +61,6 @@ public final class ExecutePipelineActivityPolicy {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -78,19 +76,59 @@ public final class ExecutePipelineActivityPolicy {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new LinkedHashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("secureInput", this.secureInput);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExecutePipelineActivityPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExecutePipelineActivityPolicy if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExecutePipelineActivityPolicy.
+     */
+    public static ExecutePipelineActivityPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExecutePipelineActivityPolicy deserializedExecutePipelineActivityPolicy
+                = new ExecutePipelineActivityPolicy();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("secureInput".equals(fieldName)) {
+                    deserializedExecutePipelineActivityPolicy.secureInput = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedExecutePipelineActivityPolicy.additionalProperties = additionalProperties;
+
+            return deserializedExecutePipelineActivityPolicy;
+        });
     }
 }

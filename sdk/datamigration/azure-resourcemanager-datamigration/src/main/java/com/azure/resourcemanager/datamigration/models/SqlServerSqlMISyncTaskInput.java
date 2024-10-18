@@ -6,56 +6,58 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Input for task that migrates SQL Server databases to Azure SQL Database Managed Instance online scenario. */
+/**
+ * Input for task that migrates SQL Server databases to Azure SQL Database Managed Instance online scenario.
+ */
 @Fluent
-public class SqlServerSqlMISyncTaskInput {
+public class SqlServerSqlMISyncTaskInput implements JsonSerializable<SqlServerSqlMISyncTaskInput> {
     /*
      * Databases to migrate
      */
-    @JsonProperty(value = "selectedDatabases", required = true)
     private List<MigrateSqlServerSqlMIDatabaseInput> selectedDatabases;
 
     /*
      * Backup file share information for all selected databases.
      */
-    @JsonProperty(value = "backupFileShare")
     private FileShare backupFileShare;
 
     /*
      * Fully qualified resourceId of storage
      */
-    @JsonProperty(value = "storageResourceId", required = true)
     private String storageResourceId;
 
     /*
      * Connection information for source SQL Server
      */
-    @JsonProperty(value = "sourceConnectionInfo", required = true)
     private SqlConnectionInfo sourceConnectionInfo;
 
     /*
      * Connection information for Azure SQL Database Managed Instance
      */
-    @JsonProperty(value = "targetConnectionInfo", required = true)
     private MiSqlConnectionInfo targetConnectionInfo;
 
     /*
      * Azure Active Directory Application the DMS instance will use to connect to the target instance of Azure SQL
      * Database Managed Instance and the Azure Storage Account
      */
-    @JsonProperty(value = "azureApp", required = true)
     private AzureActiveDirectoryApp azureApp;
 
-    /** Creates an instance of SqlServerSqlMISyncTaskInput class. */
+    /**
+     * Creates an instance of SqlServerSqlMISyncTaskInput class.
+     */
     public SqlServerSqlMISyncTaskInput() {
     }
 
     /**
      * Get the selectedDatabases property: Databases to migrate.
-     *
+     * 
      * @return the selectedDatabases value.
      */
     public List<MigrateSqlServerSqlMIDatabaseInput> selectedDatabases() {
@@ -64,19 +66,19 @@ public class SqlServerSqlMISyncTaskInput {
 
     /**
      * Set the selectedDatabases property: Databases to migrate.
-     *
+     * 
      * @param selectedDatabases the selectedDatabases value to set.
      * @return the SqlServerSqlMISyncTaskInput object itself.
      */
-    public SqlServerSqlMISyncTaskInput withSelectedDatabases(
-        List<MigrateSqlServerSqlMIDatabaseInput> selectedDatabases) {
+    public SqlServerSqlMISyncTaskInput
+        withSelectedDatabases(List<MigrateSqlServerSqlMIDatabaseInput> selectedDatabases) {
         this.selectedDatabases = selectedDatabases;
         return this;
     }
 
     /**
      * Get the backupFileShare property: Backup file share information for all selected databases.
-     *
+     * 
      * @return the backupFileShare value.
      */
     public FileShare backupFileShare() {
@@ -85,7 +87,7 @@ public class SqlServerSqlMISyncTaskInput {
 
     /**
      * Set the backupFileShare property: Backup file share information for all selected databases.
-     *
+     * 
      * @param backupFileShare the backupFileShare value to set.
      * @return the SqlServerSqlMISyncTaskInput object itself.
      */
@@ -96,7 +98,7 @@ public class SqlServerSqlMISyncTaskInput {
 
     /**
      * Get the storageResourceId property: Fully qualified resourceId of storage.
-     *
+     * 
      * @return the storageResourceId value.
      */
     public String storageResourceId() {
@@ -105,7 +107,7 @@ public class SqlServerSqlMISyncTaskInput {
 
     /**
      * Set the storageResourceId property: Fully qualified resourceId of storage.
-     *
+     * 
      * @param storageResourceId the storageResourceId value to set.
      * @return the SqlServerSqlMISyncTaskInput object itself.
      */
@@ -116,7 +118,7 @@ public class SqlServerSqlMISyncTaskInput {
 
     /**
      * Get the sourceConnectionInfo property: Connection information for source SQL Server.
-     *
+     * 
      * @return the sourceConnectionInfo value.
      */
     public SqlConnectionInfo sourceConnectionInfo() {
@@ -125,7 +127,7 @@ public class SqlServerSqlMISyncTaskInput {
 
     /**
      * Set the sourceConnectionInfo property: Connection information for source SQL Server.
-     *
+     * 
      * @param sourceConnectionInfo the sourceConnectionInfo value to set.
      * @return the SqlServerSqlMISyncTaskInput object itself.
      */
@@ -136,7 +138,7 @@ public class SqlServerSqlMISyncTaskInput {
 
     /**
      * Get the targetConnectionInfo property: Connection information for Azure SQL Database Managed Instance.
-     *
+     * 
      * @return the targetConnectionInfo value.
      */
     public MiSqlConnectionInfo targetConnectionInfo() {
@@ -145,7 +147,7 @@ public class SqlServerSqlMISyncTaskInput {
 
     /**
      * Set the targetConnectionInfo property: Connection information for Azure SQL Database Managed Instance.
-     *
+     * 
      * @param targetConnectionInfo the targetConnectionInfo value to set.
      * @return the SqlServerSqlMISyncTaskInput object itself.
      */
@@ -157,7 +159,7 @@ public class SqlServerSqlMISyncTaskInput {
     /**
      * Get the azureApp property: Azure Active Directory Application the DMS instance will use to connect to the target
      * instance of Azure SQL Database Managed Instance and the Azure Storage Account.
-     *
+     * 
      * @return the azureApp value.
      */
     public AzureActiveDirectoryApp azureApp() {
@@ -167,7 +169,7 @@ public class SqlServerSqlMISyncTaskInput {
     /**
      * Set the azureApp property: Azure Active Directory Application the DMS instance will use to connect to the target
      * instance of Azure SQL Database Managed Instance and the Azure Storage Account.
-     *
+     * 
      * @param azureApp the azureApp value to set.
      * @return the SqlServerSqlMISyncTaskInput object itself.
      */
@@ -178,15 +180,14 @@ public class SqlServerSqlMISyncTaskInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (selectedDatabases() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property selectedDatabases in model SqlServerSqlMISyncTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property selectedDatabases in model SqlServerSqlMISyncTaskInput"));
         } else {
             selectedDatabases().forEach(e -> e.validate());
         }
@@ -194,36 +195,87 @@ public class SqlServerSqlMISyncTaskInput {
             backupFileShare().validate();
         }
         if (storageResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageResourceId in model SqlServerSqlMISyncTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageResourceId in model SqlServerSqlMISyncTaskInput"));
         }
         if (sourceConnectionInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceConnectionInfo in model SqlServerSqlMISyncTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceConnectionInfo in model SqlServerSqlMISyncTaskInput"));
         } else {
             sourceConnectionInfo().validate();
         }
         if (targetConnectionInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetConnectionInfo in model SqlServerSqlMISyncTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetConnectionInfo in model SqlServerSqlMISyncTaskInput"));
         } else {
             targetConnectionInfo().validate();
         }
         if (azureApp() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property azureApp in model SqlServerSqlMISyncTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property azureApp in model SqlServerSqlMISyncTaskInput"));
         } else {
             azureApp().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SqlServerSqlMISyncTaskInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("selectedDatabases", this.selectedDatabases,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("storageResourceId", this.storageResourceId);
+        jsonWriter.writeJsonField("sourceConnectionInfo", this.sourceConnectionInfo);
+        jsonWriter.writeJsonField("targetConnectionInfo", this.targetConnectionInfo);
+        jsonWriter.writeJsonField("azureApp", this.azureApp);
+        jsonWriter.writeJsonField("backupFileShare", this.backupFileShare);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlServerSqlMISyncTaskInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlServerSqlMISyncTaskInput if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlServerSqlMISyncTaskInput.
+     */
+    public static SqlServerSqlMISyncTaskInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlServerSqlMISyncTaskInput deserializedSqlServerSqlMISyncTaskInput = new SqlServerSqlMISyncTaskInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("selectedDatabases".equals(fieldName)) {
+                    List<MigrateSqlServerSqlMIDatabaseInput> selectedDatabases
+                        = reader.readArray(reader1 -> MigrateSqlServerSqlMIDatabaseInput.fromJson(reader1));
+                    deserializedSqlServerSqlMISyncTaskInput.selectedDatabases = selectedDatabases;
+                } else if ("storageResourceId".equals(fieldName)) {
+                    deserializedSqlServerSqlMISyncTaskInput.storageResourceId = reader.getString();
+                } else if ("sourceConnectionInfo".equals(fieldName)) {
+                    deserializedSqlServerSqlMISyncTaskInput.sourceConnectionInfo = SqlConnectionInfo.fromJson(reader);
+                } else if ("targetConnectionInfo".equals(fieldName)) {
+                    deserializedSqlServerSqlMISyncTaskInput.targetConnectionInfo = MiSqlConnectionInfo.fromJson(reader);
+                } else if ("azureApp".equals(fieldName)) {
+                    deserializedSqlServerSqlMISyncTaskInput.azureApp = AzureActiveDirectoryApp.fromJson(reader);
+                } else if ("backupFileShare".equals(fieldName)) {
+                    deserializedSqlServerSqlMISyncTaskInput.backupFileShare = FileShare.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlServerSqlMISyncTaskInput;
+        });
+    }
 }

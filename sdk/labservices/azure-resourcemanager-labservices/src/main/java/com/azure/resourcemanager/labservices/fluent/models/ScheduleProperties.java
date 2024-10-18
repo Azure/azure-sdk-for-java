@@ -5,58 +5,80 @@
 package com.azure.resourcemanager.labservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.labservices.models.ProvisioningState;
 import com.azure.resourcemanager.labservices.models.RecurrencePattern;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Schedule resource properties. */
+/**
+ * Schedule resource properties.
+ */
 @Fluent
 public final class ScheduleProperties extends ScheduleUpdateProperties {
     /*
      * Current provisioning state of the schedule.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
+     * Creates an instance of ScheduleProperties class.
+     */
+    public ScheduleProperties() {
+    }
+
+    /**
      * Get the provisioningState property: Current provisioning state of the schedule.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScheduleProperties withStartAt(OffsetDateTime startAt) {
         super.withStartAt(startAt);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScheduleProperties withStopAt(OffsetDateTime stopAt) {
         super.withStopAt(stopAt);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScheduleProperties withRecurrencePattern(RecurrencePattern recurrencePattern) {
         super.withRecurrencePattern(recurrencePattern);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScheduleProperties withTimeZoneId(String timeZoneId) {
         super.withTimeZoneId(timeZoneId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScheduleProperties withNotes(String notes) {
         super.withNotes(notes);
@@ -65,11 +87,67 @@ public final class ScheduleProperties extends ScheduleUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (recurrencePattern() != null) {
+            recurrencePattern().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startAt",
+            startAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(startAt()));
+        jsonWriter.writeStringField("stopAt",
+            stopAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(stopAt()));
+        jsonWriter.writeJsonField("recurrencePattern", recurrencePattern());
+        jsonWriter.writeStringField("timeZoneId", timeZoneId());
+        jsonWriter.writeStringField("notes", notes());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduleProperties.
+     */
+    public static ScheduleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleProperties deserializedScheduleProperties = new ScheduleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startAt".equals(fieldName)) {
+                    deserializedScheduleProperties.withStartAt(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("stopAt".equals(fieldName)) {
+                    deserializedScheduleProperties.withStopAt(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("recurrencePattern".equals(fieldName)) {
+                    deserializedScheduleProperties.withRecurrencePattern(RecurrencePattern.fromJson(reader));
+                } else if ("timeZoneId".equals(fieldName)) {
+                    deserializedScheduleProperties.withTimeZoneId(reader.getString());
+                } else if ("notes".equals(fieldName)) {
+                    deserializedScheduleProperties.withNotes(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedScheduleProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleProperties;
+        });
     }
 }

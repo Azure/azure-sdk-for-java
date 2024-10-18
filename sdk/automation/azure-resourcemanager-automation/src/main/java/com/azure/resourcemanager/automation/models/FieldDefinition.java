@@ -6,32 +6,41 @@ package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Definition of the connection fields. */
+/**
+ * Definition of the connection fields.
+ */
 @Fluent
-public final class FieldDefinition {
+public final class FieldDefinition implements JsonSerializable<FieldDefinition> {
     /*
      * Gets or sets the isEncrypted flag of the connection field definition.
      */
-    @JsonProperty(value = "isEncrypted")
     private Boolean isEncrypted;
 
     /*
      * Gets or sets the isOptional flag of the connection field definition.
      */
-    @JsonProperty(value = "isOptional")
     private Boolean isOptional;
 
     /*
      * Gets or sets the type of the connection field definition.
      */
-    @JsonProperty(value = "type", required = true)
     private String type;
 
     /**
+     * Creates an instance of FieldDefinition class.
+     */
+    public FieldDefinition() {
+    }
+
+    /**
      * Get the isEncrypted property: Gets or sets the isEncrypted flag of the connection field definition.
-     *
+     * 
      * @return the isEncrypted value.
      */
     public Boolean isEncrypted() {
@@ -40,7 +49,7 @@ public final class FieldDefinition {
 
     /**
      * Set the isEncrypted property: Gets or sets the isEncrypted flag of the connection field definition.
-     *
+     * 
      * @param isEncrypted the isEncrypted value to set.
      * @return the FieldDefinition object itself.
      */
@@ -51,7 +60,7 @@ public final class FieldDefinition {
 
     /**
      * Get the isOptional property: Gets or sets the isOptional flag of the connection field definition.
-     *
+     * 
      * @return the isOptional value.
      */
     public Boolean isOptional() {
@@ -60,7 +69,7 @@ public final class FieldDefinition {
 
     /**
      * Set the isOptional property: Gets or sets the isOptional flag of the connection field definition.
-     *
+     * 
      * @param isOptional the isOptional value to set.
      * @return the FieldDefinition object itself.
      */
@@ -71,7 +80,7 @@ public final class FieldDefinition {
 
     /**
      * Get the type property: Gets or sets the type of the connection field definition.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -80,7 +89,7 @@ public final class FieldDefinition {
 
     /**
      * Set the type property: Gets or sets the type of the connection field definition.
-     *
+     * 
      * @param type the type value to set.
      * @return the FieldDefinition object itself.
      */
@@ -91,16 +100,58 @@ public final class FieldDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model FieldDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model FieldDefinition"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FieldDefinition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeBooleanField("isEncrypted", this.isEncrypted);
+        jsonWriter.writeBooleanField("isOptional", this.isOptional);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FieldDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FieldDefinition if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FieldDefinition.
+     */
+    public static FieldDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FieldDefinition deserializedFieldDefinition = new FieldDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedFieldDefinition.type = reader.getString();
+                } else if ("isEncrypted".equals(fieldName)) {
+                    deserializedFieldDefinition.isEncrypted = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isOptional".equals(fieldName)) {
+                    deserializedFieldDefinition.isOptional = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFieldDefinition;
+        });
+    }
 }

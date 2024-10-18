@@ -6,47 +6,46 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Profile of load based Autoscale.
  */
 @Fluent
-public final class LoadBasedConfig {
+public final class LoadBasedConfig implements JsonSerializable<LoadBasedConfig> {
     /*
      * User needs to set the minimum number of nodes for load based scaling, the load based scaling will use this to
      * scale up and scale down between minimum and maximum number of nodes.
      */
-    @JsonProperty(value = "minNodes", required = true)
     private int minNodes;
 
     /*
      * User needs to set the maximum number of nodes for load based scaling, the load based scaling will use this to
      * scale up and scale down between minimum and maximum number of nodes.
      */
-    @JsonProperty(value = "maxNodes", required = true)
     private int maxNodes;
 
     /*
      * User can specify the poll interval, this is the time period (in seconds) after which scaling metrics are polled
      * for triggering a scaling operation.
      */
-    @JsonProperty(value = "pollInterval")
     private Integer pollInterval;
 
     /*
      * This is a cool down period, this is a time period in seconds, which determines the amount of time that must
-     * elapse between a scaling activity started by a rule and the start of the next scaling activity, regardless of
-     * the rule that triggers it. The default value is 300 seconds.
+     * elapse between a scaling activity started by a rule and the start of the next scaling activity, regardless of the
+     * rule that triggers it. The default value is 300 seconds.
      */
-    @JsonProperty(value = "cooldownPeriod")
     private Integer cooldownPeriod;
 
     /*
      * The scaling rules.
      */
-    @JsonProperty(value = "scalingRules", required = true)
     private List<ScalingRule> scalingRules;
 
     /**
@@ -172,12 +171,62 @@ public final class LoadBasedConfig {
      */
     public void validate() {
         if (scalingRules() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property scalingRules in model LoadBasedConfig"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property scalingRules in model LoadBasedConfig"));
         } else {
             scalingRules().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LoadBasedConfig.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("minNodes", this.minNodes);
+        jsonWriter.writeIntField("maxNodes", this.maxNodes);
+        jsonWriter.writeArrayField("scalingRules", this.scalingRules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("pollInterval", this.pollInterval);
+        jsonWriter.writeNumberField("cooldownPeriod", this.cooldownPeriod);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LoadBasedConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LoadBasedConfig if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LoadBasedConfig.
+     */
+    public static LoadBasedConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LoadBasedConfig deserializedLoadBasedConfig = new LoadBasedConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("minNodes".equals(fieldName)) {
+                    deserializedLoadBasedConfig.minNodes = reader.getInt();
+                } else if ("maxNodes".equals(fieldName)) {
+                    deserializedLoadBasedConfig.maxNodes = reader.getInt();
+                } else if ("scalingRules".equals(fieldName)) {
+                    List<ScalingRule> scalingRules = reader.readArray(reader1 -> ScalingRule.fromJson(reader1));
+                    deserializedLoadBasedConfig.scalingRules = scalingRules;
+                } else if ("pollInterval".equals(fieldName)) {
+                    deserializedLoadBasedConfig.pollInterval = reader.getNullable(JsonReader::getInt);
+                } else if ("cooldownPeriod".equals(fieldName)) {
+                    deserializedLoadBasedConfig.cooldownPeriod = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLoadBasedConfig;
+        });
+    }
 }

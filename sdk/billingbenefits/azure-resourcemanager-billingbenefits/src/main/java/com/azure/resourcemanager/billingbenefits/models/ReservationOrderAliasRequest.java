@@ -8,44 +8,62 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.billingbenefits.fluent.models.ReservationOrderAliasRequestProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Reservation order alias. */
+/**
+ * Reservation order alias.
+ */
 @Fluent
 public final class ReservationOrderAliasRequest extends ProxyResource {
     /*
      * Reservation order SKU
      */
-    @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
     /*
      * The Azure Region where the reservation benefits are applied to.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Reservation order alias request properties
      */
-    @JsonProperty(value = "properties")
     private ReservationOrderAliasRequestProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ReservationOrderAliasRequest class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ReservationOrderAliasRequest class.
+     */
     public ReservationOrderAliasRequest() {
     }
 
     /**
      * Get the sku property: Reservation order SKU.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -54,7 +72,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
 
     /**
      * Set the sku property: Reservation order SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ReservationOrderAliasRequest object itself.
      */
@@ -65,7 +83,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
 
     /**
      * Get the location property: The Azure Region where the reservation benefits are applied to.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -74,7 +92,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
 
     /**
      * Set the location property: The Azure Region where the reservation benefits are applied to.
-     *
+     * 
      * @param location the location value to set.
      * @return the ReservationOrderAliasRequest object itself.
      */
@@ -85,7 +103,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
 
     /**
      * Get the innerProperties property: Reservation order alias request properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ReservationOrderAliasRequestProperties innerProperties() {
@@ -94,7 +112,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -102,8 +120,38 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the displayName property: Display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -112,7 +160,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
 
     /**
      * Set the displayName property: Display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ReservationOrderAliasRequest object itself.
      */
@@ -126,7 +174,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
 
     /**
      * Get the billingScopeId property: Subscription that will be charged for purchasing the benefit.
-     *
+     * 
      * @return the billingScopeId value.
      */
     public String billingScopeId() {
@@ -135,7 +183,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
 
     /**
      * Set the billingScopeId property: Subscription that will be charged for purchasing the benefit.
-     *
+     * 
      * @param billingScopeId the billingScopeId value to set.
      * @return the ReservationOrderAliasRequest object itself.
      */
@@ -149,7 +197,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
 
     /**
      * Get the term property: Represent benefit term in ISO 8601 format.
-     *
+     * 
      * @return the term value.
      */
     public Term term() {
@@ -158,7 +206,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
 
     /**
      * Set the term property: Represent benefit term in ISO 8601 format.
-     *
+     * 
      * @param term the term value to set.
      * @return the ReservationOrderAliasRequest object itself.
      */
@@ -173,7 +221,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
     /**
      * Get the billingPlan property: Represents the billing plan in ISO 8601 format. Required only for monthly billing
      * plans.
-     *
+     * 
      * @return the billingPlan value.
      */
     public BillingPlan billingPlan() {
@@ -183,7 +231,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
     /**
      * Set the billingPlan property: Represents the billing plan in ISO 8601 format. Required only for monthly billing
      * plans.
-     *
+     * 
      * @param billingPlan the billingPlan value to set.
      * @return the ReservationOrderAliasRequest object itself.
      */
@@ -197,7 +245,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
 
     /**
      * Get the appliedScopeType property: Type of the Applied Scope.
-     *
+     * 
      * @return the appliedScopeType value.
      */
     public AppliedScopeType appliedScopeType() {
@@ -206,7 +254,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
 
     /**
      * Set the appliedScopeType property: Type of the Applied Scope.
-     *
+     * 
      * @param appliedScopeType the appliedScopeType value to set.
      * @return the ReservationOrderAliasRequest object itself.
      */
@@ -221,7 +269,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
     /**
      * Get the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
      * applicable.
-     *
+     * 
      * @return the appliedScopeProperties value.
      */
     public AppliedScopeProperties appliedScopeProperties() {
@@ -231,7 +279,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
     /**
      * Set the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
      * applicable.
-     *
+     * 
      * @param appliedScopeProperties the appliedScopeProperties value to set.
      * @return the ReservationOrderAliasRequest object itself.
      */
@@ -245,7 +293,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
 
     /**
      * Get the quantity property: Total Quantity of the SKUs purchased in the Reservation.
-     *
+     * 
      * @return the quantity value.
      */
     public Integer quantity() {
@@ -254,7 +302,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
 
     /**
      * Set the quantity property: Total Quantity of the SKUs purchased in the Reservation.
-     *
+     * 
      * @param quantity the quantity value to set.
      * @return the ReservationOrderAliasRequest object itself.
      */
@@ -269,7 +317,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
     /**
      * Get the renew property: Setting this to true will automatically purchase a new benefit on the expiration date
      * time.
-     *
+     * 
      * @return the renew value.
      */
     public Boolean renew() {
@@ -279,7 +327,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
     /**
      * Set the renew property: Setting this to true will automatically purchase a new benefit on the expiration date
      * time.
-     *
+     * 
      * @param renew the renew value to set.
      * @return the ReservationOrderAliasRequest object itself.
      */
@@ -293,7 +341,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
 
     /**
      * Get the reservedResourceType property: The type of the resource that is being reserved.
-     *
+     * 
      * @return the reservedResourceType value.
      */
     public ReservedResourceType reservedResourceType() {
@@ -302,7 +350,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
 
     /**
      * Set the reservedResourceType property: The type of the resource that is being reserved.
-     *
+     * 
      * @param reservedResourceType the reservedResourceType value to set.
      * @return the ReservationOrderAliasRequest object itself.
      */
@@ -316,7 +364,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
 
     /**
      * Get the reviewDateTime property: This is the date-time when the Azure Hybrid Benefit needs to be reviewed.
-     *
+     * 
      * @return the reviewDateTime value.
      */
     public OffsetDateTime reviewDateTime() {
@@ -325,7 +373,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
 
     /**
      * Set the reviewDateTime property: This is the date-time when the Azure Hybrid Benefit needs to be reviewed.
-     *
+     * 
      * @param reviewDateTime the reviewDateTime value to set.
      * @return the ReservationOrderAliasRequest object itself.
      */
@@ -340,7 +388,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
     /**
      * Get the reservedResourceProperties property: Properties specific to each reserved resource type. Not required if
      * not applicable.
-     *
+     * 
      * @return the reservedResourceProperties value.
      */
     public ReservationOrderAliasRequestPropertiesReservedResourceProperties reservedResourceProperties() {
@@ -350,7 +398,7 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
     /**
      * Set the reservedResourceProperties property: Properties specific to each reserved resource type. Not required if
      * not applicable.
-     *
+     * 
      * @param reservedResourceProperties the reservedResourceProperties value to set.
      * @return the ReservationOrderAliasRequest object itself.
      */
@@ -365,15 +413,14 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sku in model ReservationOrderAliasRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sku in model ReservationOrderAliasRequest"));
         } else {
             sku().validate();
         }
@@ -383,4 +430,56 @@ public final class ReservationOrderAliasRequest extends ProxyResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ReservationOrderAliasRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReservationOrderAliasRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReservationOrderAliasRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ReservationOrderAliasRequest.
+     */
+    public static ReservationOrderAliasRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReservationOrderAliasRequest deserializedReservationOrderAliasRequest = new ReservationOrderAliasRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedReservationOrderAliasRequest.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedReservationOrderAliasRequest.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedReservationOrderAliasRequest.type = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedReservationOrderAliasRequest.sku = Sku.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedReservationOrderAliasRequest.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedReservationOrderAliasRequest.innerProperties
+                        = ReservationOrderAliasRequestProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedReservationOrderAliasRequest.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReservationOrderAliasRequest;
+        });
+    }
 }

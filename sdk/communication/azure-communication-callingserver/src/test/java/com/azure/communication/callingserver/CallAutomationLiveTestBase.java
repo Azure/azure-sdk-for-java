@@ -9,8 +9,9 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -26,7 +27,9 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CallAutomationLiveTestBase extends TestBase {
+// Package marked to be deprecated
+@LiveOnly()
+public class CallAutomationLiveTestBase extends TestProxyTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(CallAutomationLiveTestBase.class);
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()

@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.machinelearning.fluent.models.BatchDeploymentInner;
 import com.azure.resourcemanager.machinelearning.models.PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties;
 
-/** An instance of this class provides access to all the operations defined in BatchDeploymentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BatchDeploymentsClient.
+ */
 public interface BatchDeploymentsClient {
     /**
      * Lists Batch inference deployments in the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -32,7 +34,7 @@ public interface BatchDeploymentsClient {
 
     /**
      * Lists Batch inference deployments in the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -46,18 +48,12 @@ public interface BatchDeploymentsClient {
      * @return a paginated list of BatchDeployment entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BatchDeploymentInner> list(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String orderBy,
-        Integer top,
-        String skip,
-        Context context);
+    PagedIterable<BatchDeploymentInner> list(String resourceGroupName, String workspaceName, String endpointName,
+        String orderBy, Integer top, String skip, Context context);
 
     /**
      * Delete Batch Inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -68,12 +64,12 @@ public interface BatchDeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName);
 
     /**
      * Delete Batch Inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -85,12 +81,12 @@ public interface BatchDeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, Context context);
 
     /**
      * Delete Batch Inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -104,7 +100,7 @@ public interface BatchDeploymentsClient {
 
     /**
      * Delete Batch Inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -115,12 +111,12 @@ public interface BatchDeploymentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context);
+    void delete(String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
+        Context context);
 
     /**
      * Gets a batch inference deployment by id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -132,12 +128,12 @@ public interface BatchDeploymentsClient {
      * @return a batch inference deployment by id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BatchDeploymentInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context);
+    Response<BatchDeploymentInner> getWithResponse(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, Context context);
 
     /**
      * Gets a batch inference deployment by id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -148,12 +144,12 @@ public interface BatchDeploymentsClient {
      * @return a batch inference deployment by id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BatchDeploymentInner get(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName);
+    BatchDeploymentInner get(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName);
 
     /**
      * Update a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -165,16 +161,13 @@ public interface BatchDeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
+    SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginUpdate(String resourceGroupName,
+        String workspaceName, String endpointName, String deploymentName,
         PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body);
 
     /**
      * Update a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -187,17 +180,13 @@ public interface BatchDeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body,
-        Context context);
+    SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginUpdate(String resourceGroupName,
+        String workspaceName, String endpointName, String deploymentName,
+        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body, Context context);
 
     /**
      * Update a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -209,16 +198,12 @@ public interface BatchDeploymentsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BatchDeploymentInner update(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body);
+    BatchDeploymentInner update(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body);
 
     /**
      * Update a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -231,17 +216,12 @@ public interface BatchDeploymentsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BatchDeploymentInner update(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body,
-        Context context);
+    BatchDeploymentInner update(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body, Context context);
 
     /**
      * Creates/updates a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -253,16 +233,12 @@ public interface BatchDeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        BatchDeploymentInner body);
+    SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String endpointName, String deploymentName, BatchDeploymentInner body);
 
     /**
      * Creates/updates a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -275,17 +251,12 @@ public interface BatchDeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        BatchDeploymentInner body,
-        Context context);
+    SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String endpointName, String deploymentName, BatchDeploymentInner body, Context context);
 
     /**
      * Creates/updates a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -297,16 +268,12 @@ public interface BatchDeploymentsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BatchDeploymentInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        BatchDeploymentInner body);
+    BatchDeploymentInner createOrUpdate(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, BatchDeploymentInner body);
 
     /**
      * Creates/updates a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -319,11 +286,6 @@ public interface BatchDeploymentsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BatchDeploymentInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        BatchDeploymentInner body,
-        Context context);
+    BatchDeploymentInner createOrUpdate(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, BatchDeploymentInner body, Context context);
 }

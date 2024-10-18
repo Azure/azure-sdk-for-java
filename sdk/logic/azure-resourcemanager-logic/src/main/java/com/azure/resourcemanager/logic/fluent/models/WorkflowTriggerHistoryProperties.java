@@ -5,95 +5,92 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.models.ContentLink;
 import com.azure.resourcemanager.logic.models.Correlation;
 import com.azure.resourcemanager.logic.models.ResourceReference;
 import com.azure.resourcemanager.logic.models.WorkflowStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The workflow trigger history properties. */
+/**
+ * The workflow trigger history properties.
+ */
 @Fluent
-public final class WorkflowTriggerHistoryProperties {
+public final class WorkflowTriggerHistoryProperties implements JsonSerializable<WorkflowTriggerHistoryProperties> {
     /*
      * Gets the start time.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * Gets the end time.
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * The scheduled time.
      */
-    @JsonProperty(value = "scheduledTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime scheduledTime;
 
     /*
      * Gets the status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private WorkflowStatus status;
 
     /*
      * Gets the code.
      */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /*
      * Gets the error.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private Object error;
 
     /*
      * Gets the tracking id.
      */
-    @JsonProperty(value = "trackingId", access = JsonProperty.Access.WRITE_ONLY)
     private String trackingId;
 
     /*
      * The run correlation.
      */
-    @JsonProperty(value = "correlation")
     private Correlation correlation;
 
     /*
      * Gets the link to input parameters.
      */
-    @JsonProperty(value = "inputsLink", access = JsonProperty.Access.WRITE_ONLY)
     private ContentLink inputsLink;
 
     /*
      * Gets the link to output parameters.
      */
-    @JsonProperty(value = "outputsLink", access = JsonProperty.Access.WRITE_ONLY)
     private ContentLink outputsLink;
 
     /*
      * The value indicating whether trigger was fired.
      */
-    @JsonProperty(value = "fired", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean fired;
 
     /*
      * Gets the reference to workflow run.
      */
-    @JsonProperty(value = "run", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceReference run;
 
-    /** Creates an instance of WorkflowTriggerHistoryProperties class. */
+    /**
+     * Creates an instance of WorkflowTriggerHistoryProperties class.
+     */
     public WorkflowTriggerHistoryProperties() {
     }
 
     /**
      * Get the startTime property: Gets the start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -102,7 +99,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Get the endTime property: Gets the end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -111,7 +108,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Get the scheduledTime property: The scheduled time.
-     *
+     * 
      * @return the scheduledTime value.
      */
     public OffsetDateTime scheduledTime() {
@@ -120,7 +117,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Get the status property: Gets the status.
-     *
+     * 
      * @return the status value.
      */
     public WorkflowStatus status() {
@@ -129,7 +126,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Get the code property: Gets the code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -138,7 +135,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Get the error property: Gets the error.
-     *
+     * 
      * @return the error value.
      */
     public Object error() {
@@ -147,7 +144,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Get the trackingId property: Gets the tracking id.
-     *
+     * 
      * @return the trackingId value.
      */
     public String trackingId() {
@@ -156,7 +153,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Get the correlation property: The run correlation.
-     *
+     * 
      * @return the correlation value.
      */
     public Correlation correlation() {
@@ -165,7 +162,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Set the correlation property: The run correlation.
-     *
+     * 
      * @param correlation the correlation value to set.
      * @return the WorkflowTriggerHistoryProperties object itself.
      */
@@ -176,7 +173,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Get the inputsLink property: Gets the link to input parameters.
-     *
+     * 
      * @return the inputsLink value.
      */
     public ContentLink inputsLink() {
@@ -185,7 +182,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Get the outputsLink property: Gets the link to output parameters.
-     *
+     * 
      * @return the outputsLink value.
      */
     public ContentLink outputsLink() {
@@ -194,7 +191,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Get the fired property: The value indicating whether trigger was fired.
-     *
+     * 
      * @return the fired value.
      */
     public Boolean fired() {
@@ -203,7 +200,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Get the run property: Gets the reference to workflow run.
-     *
+     * 
      * @return the run value.
      */
     public ResourceReference run() {
@@ -212,7 +209,7 @@ public final class WorkflowTriggerHistoryProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -228,5 +225,67 @@ public final class WorkflowTriggerHistoryProperties {
         if (run() != null) {
             run().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("correlation", this.correlation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowTriggerHistoryProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowTriggerHistoryProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkflowTriggerHistoryProperties.
+     */
+    public static WorkflowTriggerHistoryProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowTriggerHistoryProperties deserializedWorkflowTriggerHistoryProperties
+                = new WorkflowTriggerHistoryProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedWorkflowTriggerHistoryProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedWorkflowTriggerHistoryProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("scheduledTime".equals(fieldName)) {
+                    deserializedWorkflowTriggerHistoryProperties.scheduledTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedWorkflowTriggerHistoryProperties.status = WorkflowStatus.fromString(reader.getString());
+                } else if ("code".equals(fieldName)) {
+                    deserializedWorkflowTriggerHistoryProperties.code = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedWorkflowTriggerHistoryProperties.error = reader.readUntyped();
+                } else if ("trackingId".equals(fieldName)) {
+                    deserializedWorkflowTriggerHistoryProperties.trackingId = reader.getString();
+                } else if ("correlation".equals(fieldName)) {
+                    deserializedWorkflowTriggerHistoryProperties.correlation = Correlation.fromJson(reader);
+                } else if ("inputsLink".equals(fieldName)) {
+                    deserializedWorkflowTriggerHistoryProperties.inputsLink = ContentLink.fromJson(reader);
+                } else if ("outputsLink".equals(fieldName)) {
+                    deserializedWorkflowTriggerHistoryProperties.outputsLink = ContentLink.fromJson(reader);
+                } else if ("fired".equals(fieldName)) {
+                    deserializedWorkflowTriggerHistoryProperties.fired = reader.getNullable(JsonReader::getBoolean);
+                } else if ("run".equals(fieldName)) {
+                    deserializedWorkflowTriggerHistoryProperties.run = ResourceReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowTriggerHistoryProperties;
+        });
     }
 }

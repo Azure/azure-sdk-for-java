@@ -11,14 +11,14 @@ public final class Office365DatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Office365DatasetTypeProperties model
-            = BinaryData.fromString("{\"tableName\":\"datadrrp\",\"predicate\":\"dataehkuns\"}")
+            = BinaryData.fromString("{\"tableName\":\"datatv\",\"predicate\":\"dataqxxpqhmlqi\"}")
                 .toObject(Office365DatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Office365DatasetTypeProperties model
-            = new Office365DatasetTypeProperties().withTableName("datadrrp").withPredicate("dataehkuns");
+            = new Office365DatasetTypeProperties().withTableName("datatv").withPredicate("dataqxxpqhmlqi");
         model = BinaryData.fromObject(model).toObject(Office365DatasetTypeProperties.class);
     }
 }

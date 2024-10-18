@@ -26,15 +26,12 @@ public final class AdvisorsImpl implements Advisors {
         this.serviceManager = serviceManager;
     }
 
-    public Response<Advisor> getWithResponse(
-        String resourceGroupName, String serverName, String advisorName, Context context) {
-        Response<AdvisorInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serverName, advisorName, context);
+    public Response<Advisor> getWithResponse(String resourceGroupName, String serverName, String advisorName,
+        Context context) {
+        Response<AdvisorInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serverName, advisorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AdvisorImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -52,12 +49,12 @@ public final class AdvisorsImpl implements Advisors {
 
     public PagedIterable<Advisor> listByServer(String resourceGroupName, String serverName) {
         PagedIterable<AdvisorInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return Utils.mapPage(inner, inner1 -> new AdvisorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AdvisorImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Advisor> listByServer(String resourceGroupName, String serverName, Context context) {
         PagedIterable<AdvisorInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName, context);
-        return Utils.mapPage(inner, inner1 -> new AdvisorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AdvisorImpl(inner1, this.manager()));
     }
 
     private AdvisorsClient serviceClient() {

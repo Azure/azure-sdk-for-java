@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class BillingResourcesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BillingResources model =
-            BinaryData
-                .fromString(
-                    "{\"region\":\"fcluyov\",\"billingMeters\":[{\"meterParameter\":\"kfezzxscyhwz\",\"meter\":\"irujbz\",\"unit\":\"mvzzbtdcqvp\"},{\"meterParameter\":\"yujviylwdshfssn\",\"meter\":\"gy\",\"unit\":\"rymsgaojfmw\"},{\"meterParameter\":\"otmrfhir\",\"meter\":\"ymoxoftpipiwyczu\",\"unit\":\"a\"}],\"diskBillingMeters\":[{\"diskRpMeter\":\"lihhyuspskasdvlm\",\"sku\":\"dgzxulucvpamrsr\",\"tier\":\"Premium\"},{\"diskRpMeter\":\"xurisjnhnyt\",\"sku\":\"fq\",\"tier\":\"Premium\"},{\"diskRpMeter\":\"mrhublwpc\",\"sku\":\"utr\",\"tier\":\"Standard\"},{\"diskRpMeter\":\"auutpwoqhihe\",\"sku\":\"g\",\"tier\":\"Premium\"}]}")
-                .toObject(BillingResources.class);
+        BillingResources model = BinaryData.fromString(
+            "{\"region\":\"fcluyov\",\"billingMeters\":[{\"meterParameter\":\"kfezzxscyhwz\",\"meter\":\"irujbz\",\"unit\":\"mvzzbtdcqvp\"},{\"meterParameter\":\"yujviylwdshfssn\",\"meter\":\"gy\",\"unit\":\"rymsgaojfmw\"},{\"meterParameter\":\"otmrfhir\",\"meter\":\"ymoxoftpipiwyczu\",\"unit\":\"a\"}],\"diskBillingMeters\":[{\"diskRpMeter\":\"lihhyuspskasdvlm\",\"sku\":\"dgzxulucvpamrsr\",\"tier\":\"Premium\"},{\"diskRpMeter\":\"xurisjnhnyt\",\"sku\":\"fq\",\"tier\":\"Premium\"},{\"diskRpMeter\":\"mrhublwpc\",\"sku\":\"utr\",\"tier\":\"Standard\"},{\"diskRpMeter\":\"auutpwoqhihe\",\"sku\":\"g\",\"tier\":\"Premium\"}]}")
+            .toObject(BillingResources.class);
         Assertions.assertEquals("fcluyov", model.region());
         Assertions.assertEquals("kfezzxscyhwz", model.billingMeters().get(0).meterParameter());
         Assertions.assertEquals("irujbz", model.billingMeters().get(0).meter());
@@ -31,37 +29,18 @@ public final class BillingResourcesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BillingResources model =
-            new BillingResources()
-                .withRegion("fcluyov")
-                .withBillingMeters(
-                    Arrays
-                        .asList(
-                            new BillingMeters()
-                                .withMeterParameter("kfezzxscyhwz")
-                                .withMeter("irujbz")
-                                .withUnit("mvzzbtdcqvp"),
-                            new BillingMeters()
-                                .withMeterParameter("yujviylwdshfssn")
-                                .withMeter("gy")
-                                .withUnit("rymsgaojfmw"),
-                            new BillingMeters()
-                                .withMeterParameter("otmrfhir")
-                                .withMeter("ymoxoftpipiwyczu")
-                                .withUnit("a")))
-                .withDiskBillingMeters(
-                    Arrays
-                        .asList(
-                            new DiskBillingMeters()
-                                .withDiskRpMeter("lihhyuspskasdvlm")
-                                .withSku("dgzxulucvpamrsr")
-                                .withTier(Tier.PREMIUM),
-                            new DiskBillingMeters().withDiskRpMeter("xurisjnhnyt").withSku("fq").withTier(Tier.PREMIUM),
-                            new DiskBillingMeters().withDiskRpMeter("mrhublwpc").withSku("utr").withTier(Tier.STANDARD),
-                            new DiskBillingMeters()
-                                .withDiskRpMeter("auutpwoqhihe")
-                                .withSku("g")
-                                .withTier(Tier.PREMIUM)));
+        BillingResources model = new BillingResources().withRegion("fcluyov")
+            .withBillingMeters(Arrays.asList(
+                new BillingMeters().withMeterParameter("kfezzxscyhwz").withMeter("irujbz").withUnit("mvzzbtdcqvp"),
+                new BillingMeters().withMeterParameter("yujviylwdshfssn").withMeter("gy").withUnit("rymsgaojfmw"),
+                new BillingMeters().withMeterParameter("otmrfhir").withMeter("ymoxoftpipiwyczu").withUnit("a")))
+            .withDiskBillingMeters(Arrays.asList(
+                new DiskBillingMeters().withDiskRpMeter("lihhyuspskasdvlm")
+                    .withSku("dgzxulucvpamrsr")
+                    .withTier(Tier.PREMIUM),
+                new DiskBillingMeters().withDiskRpMeter("xurisjnhnyt").withSku("fq").withTier(Tier.PREMIUM),
+                new DiskBillingMeters().withDiskRpMeter("mrhublwpc").withSku("utr").withTier(Tier.STANDARD),
+                new DiskBillingMeters().withDiskRpMeter("auutpwoqhihe").withSku("g").withTier(Tier.PREMIUM)));
         model = BinaryData.fromObject(model).toObject(BillingResources.class);
         Assertions.assertEquals("fcluyov", model.region());
         Assertions.assertEquals("kfezzxscyhwz", model.billingMeters().get(0).meterParameter());

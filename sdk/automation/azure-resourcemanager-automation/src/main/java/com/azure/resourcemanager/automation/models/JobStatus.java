@@ -5,64 +5,99 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets or sets the status of the job. */
+/**
+ * Gets or sets the status of the job.
+ */
 public final class JobStatus extends ExpandableStringEnum<JobStatus> {
-    /** Static value New for JobStatus. */
+    /**
+     * Static value New for JobStatus.
+     */
     public static final JobStatus NEW = fromString("New");
 
-    /** Static value Activating for JobStatus. */
+    /**
+     * Static value Activating for JobStatus.
+     */
     public static final JobStatus ACTIVATING = fromString("Activating");
 
-    /** Static value Running for JobStatus. */
+    /**
+     * Static value Running for JobStatus.
+     */
     public static final JobStatus RUNNING = fromString("Running");
 
-    /** Static value Completed for JobStatus. */
+    /**
+     * Static value Completed for JobStatus.
+     */
     public static final JobStatus COMPLETED = fromString("Completed");
 
-    /** Static value Failed for JobStatus. */
+    /**
+     * Static value Failed for JobStatus.
+     */
     public static final JobStatus FAILED = fromString("Failed");
 
-    /** Static value Stopped for JobStatus. */
+    /**
+     * Static value Stopped for JobStatus.
+     */
     public static final JobStatus STOPPED = fromString("Stopped");
 
-    /** Static value Blocked for JobStatus. */
+    /**
+     * Static value Blocked for JobStatus.
+     */
     public static final JobStatus BLOCKED = fromString("Blocked");
 
-    /** Static value Suspended for JobStatus. */
+    /**
+     * Static value Suspended for JobStatus.
+     */
     public static final JobStatus SUSPENDED = fromString("Suspended");
 
-    /** Static value Disconnected for JobStatus. */
+    /**
+     * Static value Disconnected for JobStatus.
+     */
     public static final JobStatus DISCONNECTED = fromString("Disconnected");
 
-    /** Static value Suspending for JobStatus. */
+    /**
+     * Static value Suspending for JobStatus.
+     */
     public static final JobStatus SUSPENDING = fromString("Suspending");
 
-    /** Static value Stopping for JobStatus. */
+    /**
+     * Static value Stopping for JobStatus.
+     */
     public static final JobStatus STOPPING = fromString("Stopping");
 
-    /** Static value Resuming for JobStatus. */
+    /**
+     * Static value Resuming for JobStatus.
+     */
     public static final JobStatus RESUMING = fromString("Resuming");
 
-    /** Static value Removing for JobStatus. */
+    /**
+     * Static value Removing for JobStatus.
+     */
     public static final JobStatus REMOVING = fromString("Removing");
 
     /**
+     * Creates a new instance of JobStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JobStatus() {
+    }
+
+    /**
      * Creates or finds a JobStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding JobStatus.
      */
-    @JsonCreator
     public static JobStatus fromString(String name) {
         return fromString(name, JobStatus.class);
     }
 
     /**
      * Gets known JobStatus values.
-     *
+     * 
      * @return known JobStatus values.
      */
     public static Collection<JobStatus> values() {

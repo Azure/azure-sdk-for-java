@@ -23,6 +23,12 @@ public class BaseContainer implements JsonSerializable<BaseContainer> {
     private String image;
 
     /*
+     * The type of the image. Set to CloudBuild to let the system manages the image, where user will not be able to
+     * update image through image field. Set to ContainerImage for user provided image.
+     */
+    private ImageType imageType;
+
+    /*
      * Custom container name.
      */
     private String name;
@@ -75,6 +81,28 @@ public class BaseContainer implements JsonSerializable<BaseContainer> {
      */
     public BaseContainer withImage(String image) {
         this.image = image;
+        return this;
+    }
+
+    /**
+     * Get the imageType property: The type of the image. Set to CloudBuild to let the system manages the image, where
+     * user will not be able to update image through image field. Set to ContainerImage for user provided image.
+     * 
+     * @return the imageType value.
+     */
+    public ImageType imageType() {
+        return this.imageType;
+    }
+
+    /**
+     * Set the imageType property: The type of the image. Set to CloudBuild to let the system manages the image, where
+     * user will not be able to update image through image field. Set to ContainerImage for user provided image.
+     * 
+     * @param imageType the imageType value to set.
+     * @return the BaseContainer object itself.
+     */
+    public BaseContainer withImageType(ImageType imageType) {
+        this.imageType = imageType;
         return this;
     }
 
@@ -222,6 +250,7 @@ public class BaseContainer implements JsonSerializable<BaseContainer> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("image", this.image);
+        jsonWriter.writeStringField("imageType", this.imageType == null ? null : this.imageType.toString());
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeArrayField("command", this.command, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("args", this.args, (writer, element) -> writer.writeString(element));
@@ -248,6 +277,8 @@ public class BaseContainer implements JsonSerializable<BaseContainer> {
 
                 if ("image".equals(fieldName)) {
                     deserializedBaseContainer.image = reader.getString();
+                } else if ("imageType".equals(fieldName)) {
+                    deserializedBaseContainer.imageType = ImageType.fromString(reader.getString());
                 } else if ("name".equals(fieldName)) {
                     deserializedBaseContainer.name = reader.getString();
                 } else if ("command".equals(fieldName)) {

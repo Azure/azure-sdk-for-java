@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A system service running on a compute. */
+/**
+ * A system service running on a compute.
+ */
 @Immutable
-public final class SystemService {
+public final class SystemService implements JsonSerializable<SystemService> {
     /*
      * The type of this system service.
      */
-    @JsonProperty(value = "systemServiceType", access = JsonProperty.Access.WRITE_ONLY)
     private String systemServiceType;
 
     /*
      * Public IP address
      */
-    @JsonProperty(value = "publicIpAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String publicIpAddress;
 
     /*
      * The version for this type.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
-    /** Creates an instance of SystemService class. */
+    /**
+     * Creates an instance of SystemService class.
+     */
     public SystemService() {
     }
 
     /**
      * Get the systemServiceType property: The type of this system service.
-     *
+     * 
      * @return the systemServiceType value.
      */
     public String systemServiceType() {
@@ -43,7 +48,7 @@ public final class SystemService {
 
     /**
      * Get the publicIpAddress property: Public IP address.
-     *
+     * 
      * @return the publicIpAddress value.
      */
     public String publicIpAddress() {
@@ -52,7 +57,7 @@ public final class SystemService {
 
     /**
      * Get the version property: The version for this type.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -61,9 +66,48 @@ public final class SystemService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SystemService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SystemService if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SystemService.
+     */
+    public static SystemService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SystemService deserializedSystemService = new SystemService();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("systemServiceType".equals(fieldName)) {
+                    deserializedSystemService.systemServiceType = reader.getString();
+                } else if ("publicIpAddress".equals(fieldName)) {
+                    deserializedSystemService.publicIpAddress = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedSystemService.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSystemService;
+        });
     }
 }

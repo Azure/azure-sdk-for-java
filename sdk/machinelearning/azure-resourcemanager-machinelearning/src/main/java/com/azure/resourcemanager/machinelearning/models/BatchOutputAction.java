@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enum to determine how batch inferencing will handle output. */
+/**
+ * Enum to determine how batch inferencing will handle output.
+ */
 public final class BatchOutputAction extends ExpandableStringEnum<BatchOutputAction> {
-    /** Static value SummaryOnly for BatchOutputAction. */
+    /**
+     * Static value SummaryOnly for BatchOutputAction.
+     */
     public static final BatchOutputAction SUMMARY_ONLY = fromString("SummaryOnly");
 
-    /** Static value AppendRow for BatchOutputAction. */
+    /**
+     * Static value AppendRow for BatchOutputAction.
+     */
     public static final BatchOutputAction APPEND_ROW = fromString("AppendRow");
 
     /**
      * Creates a new instance of BatchOutputAction value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class BatchOutputAction extends ExpandableStringEnum<BatchOutputAct
 
     /**
      * Creates or finds a BatchOutputAction from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BatchOutputAction.
      */
-    @JsonCreator
     public static BatchOutputAction fromString(String name) {
         return fromString(name, BatchOutputAction.class);
     }
 
     /**
      * Gets known BatchOutputAction values.
-     *
+     * 
      * @return known BatchOutputAction values.
      */
     public static Collection<BatchOutputAction> values() {

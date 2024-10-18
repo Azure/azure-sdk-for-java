@@ -39,14 +39,14 @@ public final class ConfigurationSettingDeserializationHelper {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
 
     static final String FEATURE_FLAG_CONTENT_TYPE = "application/vnd.microsoft.appconfig.ff+json;charset=utf-8";
-    static final String SECRET_REFERENCE_CONTENT_TYPE =
-        "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8";
+    static final String SECRET_REFERENCE_CONTENT_TYPE
+        = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8";
 
     /*
      * Utility method for translating KeyValue to ConfigurationSetting with PagedResponse.
      */
-    public static PagedResponseBase<Object, ConfigurationSetting> toConfigurationSettingWithPagedResponse(
-        PagedResponse<KeyValue> pagedResponse) {
+    public static PagedResponseBase<Object, ConfigurationSetting>
+        toConfigurationSettingWithPagedResponse(PagedResponse<KeyValue> pagedResponse) {
         List<ConfigurationSetting> settings = new ArrayList<>(pagedResponse.getValue().size());
         pagedResponse.getValue().forEach(keyValue -> settings.add(toConfigurationSetting(keyValue)));
 
@@ -74,8 +74,7 @@ public final class ConfigurationSettingDeserializationHelper {
         final String label = keyValue.getLabel();
         final String etag = keyValue.getEtag();
         final Map<String, String> tags = keyValue.getTags();
-        final ConfigurationSetting setting = new ConfigurationSetting()
-            .setKey(key)
+        final ConfigurationSetting setting = new ConfigurationSetting().setKey(key)
             .setValue(value)
             .setLabel(label)
             .setContentType(contentType)
@@ -94,26 +93,25 @@ public final class ConfigurationSettingDeserializationHelper {
                     .setTags(setting.getTags());
             } else if (SECRET_REFERENCE_CONTENT_TYPE.equals(contentType)) {
                 return subclassConfigurationSettingReflection(setting,
-                    parseSecretReferenceFieldValue(setting.getKey(), setting.getValue()))
-                    .setValue(value)
-                    .setLabel(label)
-                    .setETag(etag)
-                    .setContentType(contentType)
-                    .setTags(tags);
+                    parseSecretReferenceFieldValue(setting.getKey(), setting.getValue())).setValue(value)
+                        .setLabel(label)
+                        .setETag(etag)
+                        .setContentType(contentType)
+                        .setTags(tags);
             } else {
                 // Configuration Setting
                 return setting;
             }
         } catch (Exception exception) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(
-                "The setting is neither a 'FeatureFlagConfigurationSetting' nor "
+            throw LOGGER.logExceptionAsError(
+                new RuntimeException("The setting is neither a 'FeatureFlagConfigurationSetting' nor "
                     + "'SecretReferenceConfigurationSetting', return the setting as 'ConfigurationSetting'. "
                     + "Error: ", exception));
         }
     }
 
-    private static <T extends ConfigurationSetting> ConfigurationSetting subclassConfigurationSettingReflection(
-        ConfigurationSetting setting, T derivedClassSetting) {
+    private static <T extends ConfigurationSetting> ConfigurationSetting
+        subclassConfigurationSettingReflection(ConfigurationSetting setting, T derivedClassSetting) {
         ConfigurationSettingHelper.setReadOnly(derivedClassSetting, setting.isReadOnly());
         ConfigurationSettingHelper.setLastModified(derivedClassSetting, setting.getLastModified());
         return derivedClassSetting;
@@ -183,8 +181,7 @@ public final class ConfigurationSettingDeserializationHelper {
                 }
             }
 
-            return new FeatureFlagConfigurationSetting(featureId, isEnabled)
-                .setDescription(description)
+            return new FeatureFlagConfigurationSetting(featureId, isEnabled).setDescription(description)
                 .setDisplayName(displayName)
                 .setClientFilters(clientFilters);
         });

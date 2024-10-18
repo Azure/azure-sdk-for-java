@@ -14,11 +14,11 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,8 +116,8 @@ public final class ReadmeSamples {
         BinaryData fileData = BinaryData.fromFile(new File("path/to/file").toPath());
 
         // receive response with BinaryData content
-        Response<BinaryData> fileUrlOut =
-            adminClient.uploadTestFileWithResponse("test12345", "sample-file.jmx", fileData, null);
+        PollResponse<BinaryData> fileUrlOut = adminClient.beginUploadTestFile("test12345", "sample-file.jmx", fileData, null)
+            .waitForCompletion(Duration.ofMinutes(2));
         System.out.println(fileUrlOut.getValue().toString());
         // END: java-readme-sample-uploadTestFile
     }
@@ -143,14 +143,14 @@ public final class ReadmeSamples {
         poller = poller.setPollInterval(pollInterval);
 
         // wait for test to reach terminal state
-        JsonNode testRunJson = null;
+        Map<String, Object> jsonTree = null;
         String testStatus;
         PollResponse<BinaryData> pollResponse = poller.poll();
         while (pollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
             || pollResponse.getStatus() == LongRunningOperationStatus.NOT_STARTED) {
 
             try (JsonReader jsonReader = JsonProviders.createReader(pollResponse.getValue().toBytes())) {
-                Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+                jsonTree = jsonReader.readMap(JsonReader::readUntyped);
 
                 testStatus = jsonTree.get("status").toString();
                 System.out.println("Test run status: " + testStatus);
@@ -173,7 +173,7 @@ public final class ReadmeSamples {
         BinaryData testRunBinary = poller.getFinalResult();
 
         try (JsonReader jsonReader = JsonProviders.createReader(testRunBinary.toBytes())) {
-            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+            jsonTree = jsonReader.readMap(JsonReader::readUntyped);
 
             testStatus = jsonTree.get("status").toString();
             System.out.println("Test run status: " + testStatus);
@@ -182,15 +182,17 @@ public final class ReadmeSamples {
             // handle error condition
         }
 
-        String startDateTime = testRunJson.get("startDateTime").asText();
-        String endDateTime = testRunJson.get("endDateTime").asText();
+        String startDateTime = jsonTree.get("startDateTime").toString();
+        String endDateTime = jsonTree.get("endDateTime").toString();
+        OffsetDateTime startOffsetDateTime = OffsetDateTime.parse(startDateTime);
+        OffsetDateTime endOffsetDateTime = OffsetDateTime.parse(endDateTime);
 
         // get list of all metric namespaces and pick the first one
         Response<BinaryData> metricNamespacesOut = testRunClient.getMetricNamespacesWithResponse("testrun12345", null);
         String metricNamespace = null;
         // parse JSON and read first value
         try (JsonReader jsonReader = JsonProviders.createReader(metricNamespacesOut.getValue().toBytes())) {
-            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+            jsonTree = jsonReader.readMap(JsonReader::readUntyped);
             List<Object> metricNamespaces = (List<Object>) jsonTree.get("value");
             Map<String, Object> namespaceMap = (Map<String, Object>) metricNamespaces.get(0);
             metricNamespace = namespaceMap.get("name").toString();
@@ -204,7 +206,7 @@ public final class ReadmeSamples {
         String metricName = null;
         // parse JSON and read first value
         try (JsonReader jsonReader = JsonProviders.createReader(metricDefinitionsOut.getValue().toBytes())) {
-            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+            jsonTree = jsonReader.readMap(JsonReader::readUntyped);
             List<Object> metricDefinitions = (List<Object>) jsonTree.get("value");
             Map<String, Object> definitionMap = (Map<String, Object>) metricDefinitions.get(0);
             Map<String, Object> nameMap = (Map<String, Object>) definitionMap.get("name");

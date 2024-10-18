@@ -12,26 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"identityType\":\"Managed\",\"clientId\":\"49930aac-491a-4ce3-99bb-f763f6db3ac3\",\"objectId\":\"2fd57264-6306-4a7e-bd5d-0d45048516e5\",\"resourceId\":\"clg\"}")
-                .toObject(ManagedIdentity.class);
-        Assertions.assertEquals(UUID.fromString("49930aac-491a-4ce3-99bb-f763f6db3ac3"), model.clientId());
-        Assertions.assertEquals(UUID.fromString("2fd57264-6306-4a7e-bd5d-0d45048516e5"), model.objectId());
-        Assertions.assertEquals("clg", model.resourceId());
+        ManagedIdentity model = BinaryData.fromString(
+            "{\"identityType\":\"Managed\",\"clientId\":\"c1cac5a4-f742-4da9-85fd-d6c1a568ade8\",\"objectId\":\"571ce55d-766a-492c-b0fc-2ed317841bdc\",\"resourceId\":\"stubw\"}")
+            .toObject(ManagedIdentity.class);
+        Assertions.assertEquals(UUID.fromString("c1cac5a4-f742-4da9-85fd-d6c1a568ade8"), model.clientId());
+        Assertions.assertEquals(UUID.fromString("571ce55d-766a-492c-b0fc-2ed317841bdc"), model.objectId());
+        Assertions.assertEquals("stubw", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedIdentity model =
-            new ManagedIdentity()
-                .withClientId(UUID.fromString("49930aac-491a-4ce3-99bb-f763f6db3ac3"))
-                .withObjectId(UUID.fromString("2fd57264-6306-4a7e-bd5d-0d45048516e5"))
-                .withResourceId("clg");
+        ManagedIdentity model
+            = new ManagedIdentity().withClientId(UUID.fromString("c1cac5a4-f742-4da9-85fd-d6c1a568ade8"))
+                .withObjectId(UUID.fromString("571ce55d-766a-492c-b0fc-2ed317841bdc"))
+                .withResourceId("stubw");
         model = BinaryData.fromObject(model).toObject(ManagedIdentity.class);
-        Assertions.assertEquals(UUID.fromString("49930aac-491a-4ce3-99bb-f763f6db3ac3"), model.clientId());
-        Assertions.assertEquals(UUID.fromString("2fd57264-6306-4a7e-bd5d-0d45048516e5"), model.objectId());
-        Assertions.assertEquals("clg", model.resourceId());
+        Assertions.assertEquals(UUID.fromString("c1cac5a4-f742-4da9-85fd-d6c1a568ade8"), model.clientId());
+        Assertions.assertEquals(UUID.fromString("571ce55d-766a-492c-b0fc-2ed317841bdc"), model.objectId());
+        Assertions.assertEquals("stubw", model.resourceId());
     }
 }

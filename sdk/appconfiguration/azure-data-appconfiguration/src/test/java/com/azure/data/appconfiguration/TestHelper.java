@@ -23,8 +23,8 @@ import static com.azure.core.test.TestBase.getHttpClients;
 class TestHelper {
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String AZURE_APPCONFIG_TEST_SERVICE_VERSIONS = "AZURE_APPCONFIG_TEST_SERVICE_VERSIONS";
-    private static final String SERVICE_VERSION_FROM_ENV =
-        Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_TEST_SERVICE_VERSIONS);
+    private static final String SERVICE_VERSION_FROM_ENV
+        = Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_TEST_SERVICE_VERSIONS);
 
     /**
      * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
@@ -66,8 +66,8 @@ class TestHelper {
             return true;
         }
         String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
-        return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
-            serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
+        return Arrays.stream(configuredServiceVersionList)
+            .anyMatch(configuredServiceVersion -> serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
     }
 
     static TokenCredential getTokenCredential(InterceptorManager interceptorManager) {

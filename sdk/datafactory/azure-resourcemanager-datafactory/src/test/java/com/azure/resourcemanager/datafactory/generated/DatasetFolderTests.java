@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class DatasetFolderTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatasetFolder model = BinaryData.fromString("{\"name\":\"eyvpnqicvinvkj\"}").toObject(DatasetFolder.class);
-        Assertions.assertEquals("eyvpnqicvinvkj", model.name());
+        DatasetFolder model = BinaryData.fromString("{\"name\":\"wem\"}").toObject(DatasetFolder.class);
+        Assertions.assertEquals("wem", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatasetFolder model = new DatasetFolder().withName("eyvpnqicvinvkj");
+        DatasetFolder model = new DatasetFolder().withName("wem");
         model = BinaryData.fromObject(model).toObject(DatasetFolder.class);
-        Assertions.assertEquals("eyvpnqicvinvkj", model.name());
+        Assertions.assertEquals("wem", model.name());
     }
 }

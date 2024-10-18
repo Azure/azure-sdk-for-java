@@ -20,120 +20,81 @@ import org.junit.jupiter.api.Assertions;
 public final class RecommendationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecommendationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"category\":\"OperationalExcellence\",\"impact\":\"Medium\",\"impactedField\":\"irsoodqxhcrmnohj\",\"impactedValue\":\"kwh\",\"lastUpdated\":\"2021-05-11T08:11:32Z\",\"metadata\":{\"pjxsqwpgrjbznor\":\"dataiy\",\"ocpcy\":\"datajxvsnbyxqabn\",\"gpbtoqcjmklj\":\"datahurzafblj\",\"qajzyulpkudjkr\":\"datavbqid\"},\"recommendationTypeId\":\"hbzhfepg\",\"shortDescription\":{\"problem\":\"e\",\"solution\":\"locx\"},\"suppressionIds\":[\"6b445862-0f55-4f3d-858d-420859a95f61\",\"e41a5c93-9e36-4f1a-b2cc-9640330c27f2\"],\"extendedProperties\":{\"jtjaodxobnbdxkq\":\"erhhbcsglumm\",\"ajionpimexgstxg\":\"xo\",\"gmaajrm\":\"po\",\"clwhijcoejctbz\":\"djwzrlov\"},\"resourceMetadata\":{\"resourceId\":\"qsycbkbfkgu\",\"source\":\"kexxppof\",\"action\":{\"fjpgddtocjjxhvp\":\"datax\",\"exhd\":\"datao\",\"bzv\":\"dataxibqeojnx\",\"pzaoqvuhr\":\"datadntwndeicbtw\"},\"singular\":\"f\",\"plural\":\"yd\"},\"description\":\"lmjthjq\",\"label\":\"pyeicxm\",\"learnMoreLink\":\"iwqvhkh\",\"potentialBenefits\":\"uigdtopbobjog\",\"actions\":[{\"m\":\"datau\"}],\"remediation\":{\"t\":\"datarzayv\",\"ln\":\"datagvdfgiotkftutq\",\"qmi\":\"dataxlefgugnxkrx\",\"abhjybi\":\"datatthzrvqd\"},\"exposedMetadataProperties\":{\"zlcuiywgqywgndrv\":\"dataoqfbowskanyk\"}}")
-                .toObject(RecommendationProperties.class);
-        Assertions.assertEquals(Category.OPERATIONAL_EXCELLENCE, model.category());
-        Assertions.assertEquals(Impact.MEDIUM, model.impact());
-        Assertions.assertEquals("irsoodqxhcrmnohj", model.impactedField());
-        Assertions.assertEquals("kwh", model.impactedValue());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-11T08:11:32Z"), model.lastUpdated());
-        Assertions.assertEquals("hbzhfepg", model.recommendationTypeId());
-        Assertions.assertEquals("e", model.shortDescription().problem());
-        Assertions.assertEquals("locx", model.shortDescription().solution());
-        Assertions.assertEquals(UUID.fromString("6b445862-0f55-4f3d-858d-420859a95f61"), model.suppressionIds().get(0));
-        Assertions.assertEquals("erhhbcsglumm", model.extendedProperties().get("jtjaodxobnbdxkq"));
-        Assertions.assertEquals("qsycbkbfkgu", model.resourceMetadata().resourceId());
-        Assertions.assertEquals("kexxppof", model.resourceMetadata().source());
-        Assertions.assertEquals("f", model.resourceMetadata().singular());
-        Assertions.assertEquals("yd", model.resourceMetadata().plural());
-        Assertions.assertEquals("lmjthjq", model.description());
-        Assertions.assertEquals("pyeicxm", model.label());
-        Assertions.assertEquals("iwqvhkh", model.learnMoreLink());
-        Assertions.assertEquals("uigdtopbobjog", model.potentialBenefits());
+        RecommendationProperties model = BinaryData.fromString(
+            "{\"category\":\"Performance\",\"impact\":\"High\",\"impactedField\":\"hqyudxorrqnbpoc\",\"impactedValue\":\"yifqrvkdvjsllrmv\",\"lastUpdated\":\"2021-05-03T22:43:17Z\",\"metadata\":{\"pnpulexxbczwtru\":\"datat\",\"vsovmyokac\":\"dataiqzbq\"},\"recommendationTypeId\":\"kwlhzdo\",\"shortDescription\":{\"problem\":\"jmflbvvnch\",\"solution\":\"cciw\"},\"suppressionIds\":[\"714dacd0-9228-4963-ae4d-e6ffc0c99a6b\"],\"extendedProperties\":{\"jiwkuofoskghsau\":\"khrs\"},\"resourceMetadata\":{\"resourceId\":\"jmvxie\",\"source\":\"ugidyjrr\",\"action\":{\"e\":\"dataaos\"},\"singular\":\"sonpclhocohs\",\"plural\":\"ev\"},\"description\":\"ggzfbu\",\"label\":\"mvfaxkffeiith\",\"learnMoreLink\":\"m\",\"potentialBenefits\":\"yvshxmz\",\"actions\":[{\"xxjnspydptk\":\"dataoggigrxwburv\",\"iukbldngkpoci\":\"dataenkouknvudw\",\"npiucgygevqznty\":\"dataazyxoegukg\",\"dpydn\":\"datamrbpizcdrqj\"},{\"cwif\":\"datahxdeoejz\",\"ishc\":\"datajttgzf\",\"eyeam\":\"datakhaj\",\"agalpbuxwgipwhon\":\"datap\"},{\"kix\":\"datakgshwa\",\"eputtmrywnuzoqf\":\"databin\"}],\"remediation\":{\"sicohoqqnwvlry\":\"dataqzrnkcqvyxlwhz\",\"konocu\":\"datavwhheunmmqhgyx\",\"zf\":\"dataoklyaxuconuq\",\"vjektcxsenh\":\"databeypewrmjmw\"},\"exposedMetadataProperties\":{\"frzpwvlqdqgb\":\"datas\",\"fcivfsnkym\":\"dataqylihkaetckt\",\"jf\":\"datactq\",\"fuwutttxf\":\"dataebrjcxe\"}}")
+            .toObject(RecommendationProperties.class);
+        Assertions.assertEquals(Category.PERFORMANCE, model.category());
+        Assertions.assertEquals(Impact.HIGH, model.impact());
+        Assertions.assertEquals("hqyudxorrqnbpoc", model.impactedField());
+        Assertions.assertEquals("yifqrvkdvjsllrmv", model.impactedValue());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-03T22:43:17Z"), model.lastUpdated());
+        Assertions.assertEquals("kwlhzdo", model.recommendationTypeId());
+        Assertions.assertEquals("jmflbvvnch", model.shortDescription().problem());
+        Assertions.assertEquals("cciw", model.shortDescription().solution());
+        Assertions.assertEquals(UUID.fromString("714dacd0-9228-4963-ae4d-e6ffc0c99a6b"), model.suppressionIds().get(0));
+        Assertions.assertEquals("khrs", model.extendedProperties().get("jiwkuofoskghsau"));
+        Assertions.assertEquals("jmvxie", model.resourceMetadata().resourceId());
+        Assertions.assertEquals("ugidyjrr", model.resourceMetadata().source());
+        Assertions.assertEquals("sonpclhocohs", model.resourceMetadata().singular());
+        Assertions.assertEquals("ev", model.resourceMetadata().plural());
+        Assertions.assertEquals("ggzfbu", model.description());
+        Assertions.assertEquals("mvfaxkffeiith", model.label());
+        Assertions.assertEquals("m", model.learnMoreLink());
+        Assertions.assertEquals("yvshxmz", model.potentialBenefits());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecommendationProperties model =
-            new RecommendationProperties()
-                .withCategory(Category.OPERATIONAL_EXCELLENCE)
-                .withImpact(Impact.MEDIUM)
-                .withImpactedField("irsoodqxhcrmnohj")
-                .withImpactedValue("kwh")
-                .withLastUpdated(OffsetDateTime.parse("2021-05-11T08:11:32Z"))
-                .withMetadata(
-                    mapOf(
-                        "pjxsqwpgrjbznor",
-                        "dataiy",
-                        "ocpcy",
-                        "datajxvsnbyxqabn",
-                        "gpbtoqcjmklj",
-                        "datahurzafblj",
-                        "qajzyulpkudjkr",
-                        "datavbqid"))
-                .withRecommendationTypeId("hbzhfepg")
-                .withShortDescription(new ShortDescription().withProblem("e").withSolution("locx"))
-                .withSuppressionIds(
-                    Arrays
-                        .asList(
-                            UUID.fromString("6b445862-0f55-4f3d-858d-420859a95f61"),
-                            UUID.fromString("e41a5c93-9e36-4f1a-b2cc-9640330c27f2")))
-                .withExtendedProperties(
-                    mapOf(
-                        "jtjaodxobnbdxkq",
-                        "erhhbcsglumm",
-                        "ajionpimexgstxg",
-                        "xo",
-                        "gmaajrm",
-                        "po",
-                        "clwhijcoejctbz",
-                        "djwzrlov"))
-                .withResourceMetadata(
-                    new ResourceMetadata()
-                        .withResourceId("qsycbkbfkgu")
-                        .withSource("kexxppof")
-                        .withAction(
-                            mapOf(
-                                "fjpgddtocjjxhvp",
-                                "datax",
-                                "exhd",
-                                "datao",
-                                "bzv",
-                                "dataxibqeojnx",
-                                "pzaoqvuhr",
-                                "datadntwndeicbtw"))
-                        .withSingular("f")
-                        .withPlural("yd"))
-                .withDescription("lmjthjq")
-                .withLabel("pyeicxm")
-                .withLearnMoreLink("iwqvhkh")
-                .withPotentialBenefits("uigdtopbobjog")
-                .withActions(Arrays.asList(mapOf("m", "datau")))
-                .withRemediation(
-                    mapOf(
-                        "t",
-                        "datarzayv",
-                        "ln",
-                        "datagvdfgiotkftutq",
-                        "qmi",
-                        "dataxlefgugnxkrx",
-                        "abhjybi",
-                        "datatthzrvqd"))
-                .withExposedMetadataProperties(mapOf("zlcuiywgqywgndrv", "dataoqfbowskanyk"));
+        RecommendationProperties model = new RecommendationProperties().withCategory(Category.PERFORMANCE)
+            .withImpact(Impact.HIGH)
+            .withImpactedField("hqyudxorrqnbpoc")
+            .withImpactedValue("yifqrvkdvjsllrmv")
+            .withLastUpdated(OffsetDateTime.parse("2021-05-03T22:43:17Z"))
+            .withMetadata(mapOf("pnpulexxbczwtru", "datat", "vsovmyokac", "dataiqzbq"))
+            .withRecommendationTypeId("kwlhzdo")
+            .withShortDescription(new ShortDescription().withProblem("jmflbvvnch").withSolution("cciw"))
+            .withSuppressionIds(Arrays.asList(UUID.fromString("714dacd0-9228-4963-ae4d-e6ffc0c99a6b")))
+            .withExtendedProperties(mapOf("jiwkuofoskghsau", "khrs"))
+            .withResourceMetadata(new ResourceMetadata().withResourceId("jmvxie")
+                .withSource("ugidyjrr")
+                .withAction(mapOf("e", "dataaos"))
+                .withSingular("sonpclhocohs")
+                .withPlural("ev"))
+            .withDescription("ggzfbu")
+            .withLabel("mvfaxkffeiith")
+            .withLearnMoreLink("m")
+            .withPotentialBenefits("yvshxmz")
+            .withActions(Arrays.asList(
+                mapOf("xxjnspydptk", "dataoggigrxwburv", "iukbldngkpoci", "dataenkouknvudw", "npiucgygevqznty",
+                    "dataazyxoegukg", "dpydn", "datamrbpizcdrqj"),
+                mapOf("cwif", "datahxdeoejz", "ishc", "datajttgzf", "eyeam", "datakhaj", "agalpbuxwgipwhon", "datap"),
+                mapOf("kix", "datakgshwa", "eputtmrywnuzoqf", "databin")))
+            .withRemediation(mapOf("sicohoqqnwvlry", "dataqzrnkcqvyxlwhz", "konocu", "datavwhheunmmqhgyx", "zf",
+                "dataoklyaxuconuq", "vjektcxsenh", "databeypewrmjmw"))
+            .withExposedMetadataProperties(mapOf("frzpwvlqdqgb", "datas", "fcivfsnkym", "dataqylihkaetckt", "jf",
+                "datactq", "fuwutttxf", "dataebrjcxe"));
         model = BinaryData.fromObject(model).toObject(RecommendationProperties.class);
-        Assertions.assertEquals(Category.OPERATIONAL_EXCELLENCE, model.category());
-        Assertions.assertEquals(Impact.MEDIUM, model.impact());
-        Assertions.assertEquals("irsoodqxhcrmnohj", model.impactedField());
-        Assertions.assertEquals("kwh", model.impactedValue());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-11T08:11:32Z"), model.lastUpdated());
-        Assertions.assertEquals("hbzhfepg", model.recommendationTypeId());
-        Assertions.assertEquals("e", model.shortDescription().problem());
-        Assertions.assertEquals("locx", model.shortDescription().solution());
-        Assertions.assertEquals(UUID.fromString("6b445862-0f55-4f3d-858d-420859a95f61"), model.suppressionIds().get(0));
-        Assertions.assertEquals("erhhbcsglumm", model.extendedProperties().get("jtjaodxobnbdxkq"));
-        Assertions.assertEquals("qsycbkbfkgu", model.resourceMetadata().resourceId());
-        Assertions.assertEquals("kexxppof", model.resourceMetadata().source());
-        Assertions.assertEquals("f", model.resourceMetadata().singular());
-        Assertions.assertEquals("yd", model.resourceMetadata().plural());
-        Assertions.assertEquals("lmjthjq", model.description());
-        Assertions.assertEquals("pyeicxm", model.label());
-        Assertions.assertEquals("iwqvhkh", model.learnMoreLink());
-        Assertions.assertEquals("uigdtopbobjog", model.potentialBenefits());
+        Assertions.assertEquals(Category.PERFORMANCE, model.category());
+        Assertions.assertEquals(Impact.HIGH, model.impact());
+        Assertions.assertEquals("hqyudxorrqnbpoc", model.impactedField());
+        Assertions.assertEquals("yifqrvkdvjsllrmv", model.impactedValue());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-03T22:43:17Z"), model.lastUpdated());
+        Assertions.assertEquals("kwlhzdo", model.recommendationTypeId());
+        Assertions.assertEquals("jmflbvvnch", model.shortDescription().problem());
+        Assertions.assertEquals("cciw", model.shortDescription().solution());
+        Assertions.assertEquals(UUID.fromString("714dacd0-9228-4963-ae4d-e6ffc0c99a6b"), model.suppressionIds().get(0));
+        Assertions.assertEquals("khrs", model.extendedProperties().get("jiwkuofoskghsau"));
+        Assertions.assertEquals("jmvxie", model.resourceMetadata().resourceId());
+        Assertions.assertEquals("ugidyjrr", model.resourceMetadata().source());
+        Assertions.assertEquals("sonpclhocohs", model.resourceMetadata().singular());
+        Assertions.assertEquals("ev", model.resourceMetadata().plural());
+        Assertions.assertEquals("ggzfbu", model.description());
+        Assertions.assertEquals("mvfaxkffeiith", model.label());
+        Assertions.assertEquals("m", model.learnMoreLink());
+        Assertions.assertEquals("yvshxmz", model.potentialBenefits());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

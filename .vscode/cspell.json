@@ -493,7 +493,10 @@
         "AICLIP",
         "TLARGE",
         "TBASE",
-        "TGIANT"
+        "TGIANT",
+        "tiktoken",
+        "AITOKENS",
+        "Matryoshka"
       ]
     },
     {
@@ -587,6 +590,14 @@
         "authorid",
         "encounterid",
         "docid"
+      ]
+    },
+    {
+      "filename": "sdk/healthinsights/azure-health-insights-radiologyinsights/**",
+      "words": [
+        "pericholecystic",
+        "craniocaudally",
+        "angiomyolipomas"
       ]
     },
     {
@@ -834,6 +845,13 @@
       "filename": "/sdk/agrifood/**",
       "words": [
         "NDVI"
+      ]
+    },
+    {
+      "filename": "/sdk/ai/**",
+      "words": [
+        "ubinary",
+        "UBINARY"
       ]
     },
     {
@@ -1156,7 +1174,10 @@
         "xsom",
         "yasson",
         "yugabytedb",
-        "zaxxer"
+        "zaxxer",
+        "LINUXVMIMAGE",
+        "LINUXPOOL",
+        "OSVmImage"
       ]
     },
     {

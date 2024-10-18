@@ -23,7 +23,7 @@ public final class NetAppResourcesUpdateNetworkSiblingSetMockTests {
     @Test
     public void testUpdateNetworkSiblingSet() throws Exception {
         String responseStr
-            = "{\"networkSiblingSetId\":\"vusfzld\",\"subnetId\":\"zuxylfsbtkadpyso\",\"networkSiblingSetStateId\":\"btgkbugrjqctoj\",\"networkFeatures\":\"Standard_Basic\",\"provisioningState\":\"Succeeded\",\"nicInfoList\":[{\"ipAddress\":\"ypefojyqdhcupl\",\"volumeResourceIds\":[\"cwkhihi\",\"lhzdsqtzb\",\"rgnowcjhfgm\"]},{\"ipAddress\":\"cact\",\"volumeResourceIds\":[\"oteyowc\",\"uqovekqvgqouwif\"]}]}";
+            = "{\"networkSiblingSetId\":\"kmoyxcdyuibh\",\"subnetId\":\"dnbzydvfvfcjn\",\"networkSiblingSetStateId\":\"oisrvhmgorffu\",\"networkFeatures\":\"Basic_Standard\",\"provisioningState\":\"Updating\",\"nicInfoList\":[{\"ipAddress\":\"hwplefaxvx\",\"volumeResourceIds\":[\"btgn\",\"nzeyqxtjj\"]},{\"ipAddress\":\"qlqhycavodg\",\"volumeResourceIds\":[\"beesmieknlra\",\"iaa\"]},{\"ipAddress\":\"uagydwqfbylyrf\",\"volumeResourceIds\":[\"gtcojocqwo\"]},{\"ipAddress\":\"nzjvusfzldm\",\"volumeResourceIds\":[\"xylfsb\",\"kadpysown\",\"tgkbugrjqctojc\",\"isofieypefojyqd\"]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +33,17 @@ public final class NetAppResourcesUpdateNetworkSiblingSetMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         NetworkSiblingSet response = manager.netAppResources()
-            .updateNetworkSiblingSet("dbeesmie",
-                new UpdateNetworkSiblingSetRequest().withNetworkSiblingSetId("nlrariaawiuagy")
-                    .withSubnetId("wqfbylyrfgiagt")
-                    .withNetworkSiblingSetStateId("ojocqwogf")
-                    .withNetworkFeatures(NetworkFeatures.BASIC_STANDARD),
+            .updateNetworkSiblingSet("wafqroud",
+                new UpdateNetworkSiblingSetRequest().withNetworkSiblingSetId("spave")
+                    .withSubnetId("hrv")
+                    .withNetworkSiblingSetStateId("bunzozudh")
+                    .withNetworkFeatures(NetworkFeatures.BASIC),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vusfzld", response.networkSiblingSetId());
-        Assertions.assertEquals("zuxylfsbtkadpyso", response.subnetId());
-        Assertions.assertEquals("btgkbugrjqctoj", response.networkSiblingSetStateId());
-        Assertions.assertEquals(NetworkFeatures.STANDARD_BASIC, response.networkFeatures());
-        Assertions.assertEquals("cwkhihi", response.nicInfoList().get(0).volumeResourceIds().get(0));
+        Assertions.assertEquals("kmoyxcdyuibh", response.networkSiblingSetId());
+        Assertions.assertEquals("dnbzydvfvfcjn", response.subnetId());
+        Assertions.assertEquals("oisrvhmgorffu", response.networkSiblingSetStateId());
+        Assertions.assertEquals(NetworkFeatures.BASIC_STANDARD, response.networkFeatures());
+        Assertions.assertEquals("btgn", response.nicInfoList().get(0).volumeResourceIds().get(0));
     }
 }

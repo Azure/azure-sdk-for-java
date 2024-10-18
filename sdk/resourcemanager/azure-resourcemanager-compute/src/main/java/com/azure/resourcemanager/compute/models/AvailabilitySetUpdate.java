@@ -178,6 +178,31 @@ public final class AvailabilitySetUpdate extends UpdateResource {
     }
 
     /**
+     * Get the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the availability set.
+     * 
+     * @return the scheduledEventsPolicy value.
+     */
+    public ScheduledEventsPolicy scheduledEventsPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().scheduledEventsPolicy();
+    }
+
+    /**
+     * Set the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the availability set.
+     * 
+     * @param scheduledEventsPolicy the scheduledEventsPolicy value to set.
+     * @return the AvailabilitySetUpdate object itself.
+     */
+    public AvailabilitySetUpdate withScheduledEventsPolicy(ScheduledEventsPolicy scheduledEventsPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailabilitySetProperties();
+        }
+        this.innerProperties().withScheduledEventsPolicy(scheduledEventsPolicy);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

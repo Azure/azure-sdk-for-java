@@ -6,28 +6,38 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.ThreatIntelligenceInformationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of all the threat intelligence information objects. */
+/**
+ * List of all the threat intelligence information objects.
+ */
 @Fluent
-public final class ThreatIntelligenceInformationList {
+public final class ThreatIntelligenceInformationList implements JsonSerializable<ThreatIntelligenceInformationList> {
     /*
      * URL to fetch the next set of information objects.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /*
      * Array of threat intelligence information objects.
      */
-    @JsonProperty(value = "value", required = true)
     private List<ThreatIntelligenceInformationInner> value;
 
     /**
+     * Creates an instance of ThreatIntelligenceInformationList class.
+     */
+    public ThreatIntelligenceInformationList() {
+    }
+
+    /**
      * Get the nextLink property: URL to fetch the next set of information objects.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -36,7 +46,7 @@ public final class ThreatIntelligenceInformationList {
 
     /**
      * Get the value property: Array of threat intelligence information objects.
-     *
+     * 
      * @return the value value.
      */
     public List<ThreatIntelligenceInformationInner> value() {
@@ -45,7 +55,7 @@ public final class ThreatIntelligenceInformationList {
 
     /**
      * Set the value property: Array of threat intelligence information objects.
-     *
+     * 
      * @param value the value value to set.
      * @return the ThreatIntelligenceInformationList object itself.
      */
@@ -56,19 +66,60 @@ public final class ThreatIntelligenceInformationList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model ThreatIntelligenceInformationList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model ThreatIntelligenceInformationList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ThreatIntelligenceInformationList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThreatIntelligenceInformationList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThreatIntelligenceInformationList if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ThreatIntelligenceInformationList.
+     */
+    public static ThreatIntelligenceInformationList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ThreatIntelligenceInformationList deserializedThreatIntelligenceInformationList
+                = new ThreatIntelligenceInformationList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ThreatIntelligenceInformationInner> value
+                        = reader.readArray(reader1 -> ThreatIntelligenceInformationInner.fromJson(reader1));
+                    deserializedThreatIntelligenceInformationList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedThreatIntelligenceInformationList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedThreatIntelligenceInformationList;
+        });
+    }
 }

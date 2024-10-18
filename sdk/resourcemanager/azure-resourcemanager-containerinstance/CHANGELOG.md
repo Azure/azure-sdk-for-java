@@ -1,12 +1,28 @@
 # Release History
 
-## 2.42.0-beta.1 (Unreleased)
+## 2.44.0-beta.2 (Unreleased)
 
 ### Features Added
 
-### Breaking Changes
+- Supported `beginCreate` method for `ContainerGroup`.
 
-### Bugs Fixed
+## 2.44.0-beta.1 (2024-10-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-05-01-preview`.
+
+## 2.43.0 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.42.0 (2024-08-23)
 
 ### Other Changes
 

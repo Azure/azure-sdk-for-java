@@ -13,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -45,12 +45,12 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = StandbyPoolClientBuilder.class)
 public final class StandbyPoolClientImpl implements StandbyPoolClient {
     /**
-     * Server parameter.
+     * Service host.
      */
     private final String endpoint;
 
     /**
-     * Gets Server parameter.
+     * Gets Service host.
      * 
      * @return the endpoint value.
      */
@@ -219,7 +219,7 @@ public final class StandbyPoolClientImpl implements StandbyPoolClient {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param endpoint Server parameter.
+     * @param endpoint Service host.
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      */
     StandbyPoolClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
@@ -229,7 +229,7 @@ public final class StandbyPoolClientImpl implements StandbyPoolClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-03-01-preview";
+        this.apiVersion = "2024-03-01";
         this.operations = new OperationsClientImpl(this);
         this.standbyVirtualMachinePools = new StandbyVirtualMachinePoolsClientImpl(this);
         this.standbyVirtualMachines = new StandbyVirtualMachinesClientImpl(this);

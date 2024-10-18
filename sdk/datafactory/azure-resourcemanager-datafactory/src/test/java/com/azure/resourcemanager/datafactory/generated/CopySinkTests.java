@@ -13,18 +13,18 @@ public final class CopySinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CopySink model = BinaryData.fromString(
-            "{\"type\":\"CopySink\",\"writeBatchSize\":\"datakbdwzvhtgfdygap\",\"writeBatchTimeout\":\"datawmivazfnbzcjms\",\"sinkRetryCount\":\"datarjby\",\"sinkRetryWait\":\"datakcvahvby\",\"maxConcurrentConnections\":\"datat\",\"disableMetricsCollection\":\"datavwvengicyc\",\"\":{\"vskqxgb\":\"datahgjyholsmahbjc\",\"lklaurly\":\"datagozr\"}}")
+            "{\"type\":\"CopySink\",\"writeBatchSize\":\"datazgolfensibqi\",\"writeBatchTimeout\":\"datapyjzv\",\"sinkRetryCount\":\"dataml\",\"sinkRetryWait\":\"dataavzczvvwr\",\"maxConcurrentConnections\":\"datagalywgq\",\"disableMetricsCollection\":\"datavb\",\"\":{\"prkfvvx\":\"dataeyxewcsktvkw\",\"ypuotmkbofu\":\"dataikrjamztvnmrgv\",\"otrgyyjeagovjdun\":\"datamhksgouzvegtnph\"}}")
             .toObject(CopySink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CopySink model = new CopySink().withWriteBatchSize("datakbdwzvhtgfdygap")
-            .withWriteBatchTimeout("datawmivazfnbzcjms")
-            .withSinkRetryCount("datarjby")
-            .withSinkRetryWait("datakcvahvby")
-            .withMaxConcurrentConnections("datat")
-            .withDisableMetricsCollection("datavwvengicyc")
+        CopySink model = new CopySink().withWriteBatchSize("datazgolfensibqi")
+            .withWriteBatchTimeout("datapyjzv")
+            .withSinkRetryCount("dataml")
+            .withSinkRetryWait("dataavzczvvwr")
+            .withMaxConcurrentConnections("datagalywgq")
+            .withDisableMetricsCollection("datavb")
             .withAdditionalProperties(mapOf("type", "CopySink"));
         model = BinaryData.fromObject(model).toObject(CopySink.class);
     }

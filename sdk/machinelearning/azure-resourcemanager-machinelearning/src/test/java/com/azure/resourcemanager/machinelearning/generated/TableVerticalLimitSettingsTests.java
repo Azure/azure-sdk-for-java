@@ -12,38 +12,34 @@ import org.junit.jupiter.api.Assertions;
 public final class TableVerticalLimitSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TableVerticalLimitSettings model =
-            BinaryData
-                .fromString(
-                    "{\"enableEarlyTermination\":false,\"exitScore\":93.94093189506944,\"maxConcurrentTrials\":976047571,\"maxCoresPerTrial\":1086162181,\"maxTrials\":943881137,\"timeout\":\"PT74H46M4S\",\"trialTimeout\":\"PT5H4M5S\"}")
-                .toObject(TableVerticalLimitSettings.class);
-        Assertions.assertEquals(false, model.enableEarlyTermination());
-        Assertions.assertEquals(93.94093189506944D, model.exitScore());
-        Assertions.assertEquals(976047571, model.maxConcurrentTrials());
-        Assertions.assertEquals(1086162181, model.maxCoresPerTrial());
-        Assertions.assertEquals(943881137, model.maxTrials());
-        Assertions.assertEquals(Duration.parse("PT74H46M4S"), model.timeout());
-        Assertions.assertEquals(Duration.parse("PT5H4M5S"), model.trialTimeout());
+        TableVerticalLimitSettings model = BinaryData.fromString(
+            "{\"maxTrials\":1966845044,\"trialTimeout\":\"PT99H7M46S\",\"timeout\":\"PT45H54M58S\",\"maxConcurrentTrials\":595135013,\"maxCoresPerTrial\":1991622972,\"exitScore\":96.52498690136247,\"enableEarlyTermination\":true}")
+            .toObject(TableVerticalLimitSettings.class);
+        Assertions.assertEquals(1966845044, model.maxTrials());
+        Assertions.assertEquals(Duration.parse("PT99H7M46S"), model.trialTimeout());
+        Assertions.assertEquals(Duration.parse("PT45H54M58S"), model.timeout());
+        Assertions.assertEquals(595135013, model.maxConcurrentTrials());
+        Assertions.assertEquals(1991622972, model.maxCoresPerTrial());
+        Assertions.assertEquals(96.52498690136247D, model.exitScore());
+        Assertions.assertEquals(true, model.enableEarlyTermination());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TableVerticalLimitSettings model =
-            new TableVerticalLimitSettings()
-                .withEnableEarlyTermination(false)
-                .withExitScore(93.94093189506944D)
-                .withMaxConcurrentTrials(976047571)
-                .withMaxCoresPerTrial(1086162181)
-                .withMaxTrials(943881137)
-                .withTimeout(Duration.parse("PT74H46M4S"))
-                .withTrialTimeout(Duration.parse("PT5H4M5S"));
+        TableVerticalLimitSettings model = new TableVerticalLimitSettings().withMaxTrials(1966845044)
+            .withTrialTimeout(Duration.parse("PT99H7M46S"))
+            .withTimeout(Duration.parse("PT45H54M58S"))
+            .withMaxConcurrentTrials(595135013)
+            .withMaxCoresPerTrial(1991622972)
+            .withExitScore(96.52498690136247D)
+            .withEnableEarlyTermination(true);
         model = BinaryData.fromObject(model).toObject(TableVerticalLimitSettings.class);
-        Assertions.assertEquals(false, model.enableEarlyTermination());
-        Assertions.assertEquals(93.94093189506944D, model.exitScore());
-        Assertions.assertEquals(976047571, model.maxConcurrentTrials());
-        Assertions.assertEquals(1086162181, model.maxCoresPerTrial());
-        Assertions.assertEquals(943881137, model.maxTrials());
-        Assertions.assertEquals(Duration.parse("PT74H46M4S"), model.timeout());
-        Assertions.assertEquals(Duration.parse("PT5H4M5S"), model.trialTimeout());
+        Assertions.assertEquals(1966845044, model.maxTrials());
+        Assertions.assertEquals(Duration.parse("PT99H7M46S"), model.trialTimeout());
+        Assertions.assertEquals(Duration.parse("PT45H54M58S"), model.timeout());
+        Assertions.assertEquals(595135013, model.maxConcurrentTrials());
+        Assertions.assertEquals(1991622972, model.maxCoresPerTrial());
+        Assertions.assertEquals(96.52498690136247D, model.exitScore());
+        Assertions.assertEquals(true, model.enableEarlyTermination());
     }
 }

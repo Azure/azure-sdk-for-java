@@ -25,12 +25,12 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
-import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
+import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
@@ -336,8 +336,7 @@ public class ShareDirectoryAsyncClient {
      * shareDirectoryAsyncClient.createWithResponse&#40;options&#41;
      *         .subscribe&#40;response -&gt;
      *             System.out.println&#40;&quot;Completed creating the directory with status code:&quot; + response.getStatusCode&#40;&#41;&#41;,
-     *             error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;
-     * &#41;;
+     *             error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.createWithResponse#ShareDirectoryCreateOptions -->
      *

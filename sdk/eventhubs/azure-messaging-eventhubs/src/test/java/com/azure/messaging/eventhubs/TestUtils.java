@@ -13,7 +13,13 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.core.amqp.models.AmqpAnnotatedMessage;
+import com.azure.core.util.Context;
+import com.azure.messaging.eventhubs.implementation.instrumentation.OperationName;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
+import io.opentelemetry.api.common.Attributes;
+import io.opentelemetry.api.trace.StatusCode;
+import io.opentelemetry.sdk.trace.data.SpanData;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -54,6 +60,18 @@ import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
 import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.ERROR_TYPE;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_NAME;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_CONSUMER_GROUP_NAME;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_PARTITION_ID;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_NAME;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_TYPE;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM_VALUE;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.SERVER_ADDRESS;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.getOperationType;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Contains helper methods for working with AMQP messages
@@ -308,6 +326,58 @@ public final class TestUtils {
 
     private static String getPropertyValue(String propertyName) {
         return Configuration.getGlobalConfiguration().get(propertyName, System.getenv(propertyName));
+    }
+
+    public static void assertAttributes(String hostname, String entityName, OperationName operationName, Map<String, Object> attributes) {
+        assertAllAttributes(hostname, entityName, null, null, null, operationName, attributes);
+    }
+
+    public static Map<String, Object> attributesToMap(Attributes attributes) {
+        return attributes.asMap().entrySet().stream()
+                .collect(Collectors.toMap(e -> e.getKey().getKey(), e -> e.getValue()));
+    }
+
+    public static String getSpanName(OperationName operation, String eventHubName) {
+        return String.format("%s %s", operation, eventHubName);
+    }
+
+    public static void assertAllAttributes(String hostname, String entityName, String partitionId,
+        String consumerGroup, String errorType, OperationName operationName, Map<String, Object> attributes) {
+        assertEquals(MESSAGING_SYSTEM_VALUE, attributes.get(MESSAGING_SYSTEM));
+        assertEquals(hostname, attributes.get(SERVER_ADDRESS));
+        assertEquals(entityName, attributes.get(MESSAGING_DESTINATION_NAME));
+        assertEquals(partitionId, attributes.get(MESSAGING_DESTINATION_PARTITION_ID));
+        assertEquals(consumerGroup, attributes.get(MESSAGING_CONSUMER_GROUP_NAME));
+        if (operationName == null) {
+            assertNull(attributes.get(MESSAGING_OPERATION_NAME));
+            assertNull(attributes.get(MESSAGING_OPERATION_TYPE));
+        } else {
+            assertEquals(operationName.toString(), attributes.get(MESSAGING_OPERATION_NAME));
+            assertEquals(getOperationType(operationName), attributes.get(MESSAGING_OPERATION_TYPE));
+        }
+        assertEquals(errorType, attributes.get(ERROR_TYPE));
+    }
+
+    public static void assertSpanStatus(String description, SpanData span) {
+        if (description != null) {
+            assertEquals(StatusCode.ERROR, span.getStatus().getStatusCode());
+            assertEquals(description, span.getStatus().getDescription());
+        } else {
+            assertEquals(StatusCode.UNSET, span.getStatus().getStatusCode());
+        }
+    }
+
+    public static EventData createEventData(AmqpAnnotatedMessage amqpAnnotatedMessage, long offset,
+                                                                   long sequenceNumber, Instant enqueuedTime) {
+        amqpAnnotatedMessage.getMessageAnnotations()
+                .put(AmqpMessageConstant.OFFSET_ANNOTATION_NAME.getValue(), offset);
+        amqpAnnotatedMessage.getMessageAnnotations()
+                .put(AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
+        amqpAnnotatedMessage.getMessageAnnotations()
+                .put(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
+
+        SystemProperties systemProperties = new SystemProperties(amqpAnnotatedMessage, offset, enqueuedTime, sequenceNumber, null);
+        return new EventData(amqpAnnotatedMessage, systemProperties, Context.NONE);
     }
 
     private TestUtils() {

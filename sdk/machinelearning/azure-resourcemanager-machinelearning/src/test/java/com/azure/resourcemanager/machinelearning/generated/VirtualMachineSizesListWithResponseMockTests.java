@@ -6,62 +6,45 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
+import com.azure.resourcemanager.machinelearning.models.BillingCurrency;
+import com.azure.resourcemanager.machinelearning.models.UnitOfMeasure;
 import com.azure.resourcemanager.machinelearning.models.VirtualMachineSizeListResult;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.machinelearning.models.VMPriceOSType;
+import com.azure.resourcemanager.machinelearning.models.VMTier;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class VirtualMachineSizesListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"name\":\"bvjh\",\"family\":\"pmqququxl\",\"vCPUs\":241242158,\"gpus\":1242468021,\"osVhdSizeMB\":650458247,\"maxResourceVolumeMB\":132435040,\"memoryGB\":31.054010870691286,\"lowPriorityCapable\":true,\"premiumIO\":true,\"estimatedVMPrices\":{\"billingCurrency\":\"USD\",\"unitOfMeasure\":\"OneHour\",\"values\":[{\"retailPrice\":9.524913939318969,\"osType\":\"Linux\",\"vmTier\":\"Standard\"}]},\"supportedComputeTypes\":[\"qpfy\",\"vhtvijvwmrg\"]},{\"name\":\"zhrplcxfmbzqu\",\"family\":\"tqmh\",\"vCPUs\":1980172415,\"gpus\":1049452948,\"osVhdSizeMB\":939315181,\"maxResourceVolumeMB\":823035085,\"memoryGB\":7.69921960533233,\"lowPriorityCapable\":false,\"premiumIO\":true,\"estimatedVMPrices\":{\"billingCurrency\":\"USD\",\"unitOfMeasure\":\"OneHour\",\"values\":[{\"retailPrice\":69.40534502928313,\"osType\":\"Linux\",\"vmTier\":\"Standard\"},{\"retailPrice\":80.17743221655657,\"osType\":\"Windows\",\"vmTier\":\"Spot\"}]},\"supportedComputeTypes\":[\"fufkekzfk\",\"cxhsevmnkgghvsr\",\"jokvlwvbjsa\",\"xsv\"]}]}";
 
-        String responseStr =
-            "{\"value\":[{\"name\":\"mq\",\"family\":\"uiocuselqkrsazr\",\"vCPUs\":907855670,\"gpus\":162147994,\"osVhdSizeMB\":1160671233,\"maxResourceVolumeMB\":1893332175,\"memoryGB\":44.634673287925494,\"lowPriorityCapable\":false,\"premiumIO\":true,\"supportedComputeTypes\":[\"mw\",\"mdlgy\",\"ixokwtjawhv\",\"gnqfqqdlcvmyol\"]},{\"name\":\"ymjc\",\"family\":\"vsnvlaq\",\"vCPUs\":4380351,\"gpus\":1268203688,\"osVhdSizeMB\":1622025421,\"maxResourceVolumeMB\":2099242028,\"memoryGB\":84.58306289880801,\"lowPriorityCapable\":true,\"premiumIO\":true,\"supportedComputeTypes\":[\"thymgobl\",\"msn\",\"gwi\"]}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MachineLearningManager manager = MachineLearningManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        VirtualMachineSizeListResult response = manager.virtualMachineSizes()
+            .listWithResponse("ksutacuctiha", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        MachineLearningManager manager =
-            MachineLearningManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        VirtualMachineSizeListResult response =
-            manager.virtualMachineSizes().listWithResponse("bpfiddhlrufz", com.azure.core.util.Context.NONE).getValue();
-
-        Assertions.assertEquals("mw", response.value().get(0).supportedComputeTypes().get(0));
+        Assertions.assertEquals(BillingCurrency.USD, response.value().get(0).estimatedVMPrices().billingCurrency());
+        Assertions.assertEquals(UnitOfMeasure.ONE_HOUR, response.value().get(0).estimatedVMPrices().unitOfMeasure());
+        Assertions.assertEquals(9.524913939318969,
+            response.value().get(0).estimatedVMPrices().values().get(0).retailPrice());
+        Assertions.assertEquals(VMPriceOSType.LINUX,
+            response.value().get(0).estimatedVMPrices().values().get(0).osType());
+        Assertions.assertEquals(VMTier.STANDARD, response.value().get(0).estimatedVMPrices().values().get(0).vmTier());
+        Assertions.assertEquals("qpfy", response.value().get(0).supportedComputeTypes().get(0));
     }
 }
