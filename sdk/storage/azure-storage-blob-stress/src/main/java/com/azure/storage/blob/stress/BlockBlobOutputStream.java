@@ -7,6 +7,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.stress.utils.OriginalContent;
@@ -23,20 +25,24 @@ public class BlockBlobOutputStream extends BlobScenarioBase<StorageStressOptions
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncNoFaultClient;
+    private final ParallelTransferOptions parallelTransferOptions;
 
     public BlockBlobOutputStream(StorageStressOptions options) {
         super(options);
         String blobName = generateBlobName();
         this.asyncNoFaultClient = getAsyncContainerClientNoFault().getBlobAsyncClient(blobName);
         this.syncClient = getSyncContainerClient().getBlobClient(blobName);
+        this.parallelTransferOptions = new ParallelTransferOptions().setMaxConcurrency(options.getMaxConcurrency());
     }
 
     @Override
     protected void runInternal(Context span) throws IOException {
         BlockBlobClient blockBlobClient = syncClient.getBlockBlobClient();
+        BlockBlobOutputStreamOptions blockBlobOutputStreamOptions = new BlockBlobOutputStreamOptions()
+            .setParallelTransferOptions(parallelTransferOptions);
 
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize());
-             BlobOutputStream outputStream = blockBlobClient.getBlobOutputStream(null, span)) {
+             BlobOutputStream outputStream = blockBlobClient.getBlobOutputStream(blockBlobOutputStreamOptions, span)) {
             byte[] buffer = new byte[4096]; // Define a buffer
             int bytesRead;
 

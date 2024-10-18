@@ -33,6 +33,7 @@ public class UploadFromFile extends BlobScenarioBase<StorageStressOptions> {
     private final BlobAsyncClient asyncClient;
     private final BlobClient syncNoFaultClient;
     private final BlobAsyncClient asyncNoFaultClient;
+    private final ParallelTransferOptions parallelTransferOptions;
 
     public UploadFromFile(StorageStressOptions options) {
         super(options);
@@ -41,6 +42,9 @@ public class UploadFromFile extends BlobScenarioBase<StorageStressOptions> {
         this.syncNoFaultClient = getSyncContainerClientNoFault().getBlobClient(blobName);
         this.syncClient = getSyncContainerClient().getBlobClient(blobName);
         this.asyncClient = getAsyncContainerClient().getBlobAsyncClient(blobName);
+        this.parallelTransferOptions = new ParallelTransferOptions()
+            .setMaxConcurrency(options.getMaxConcurrency())
+            .setMaxSingleUploadSizeLong(4 * 1024 * 1024L);
     }
 
     @Override
@@ -51,8 +55,7 @@ public class UploadFromFile extends BlobScenarioBase<StorageStressOptions> {
             Path uploadFilePath = generateFile(inputStream);
             downloadPath = downloadPath.resolve(CoreUtils.randomUuid() + ".txt");
             syncClient.uploadFromFileWithResponse(new BlobUploadFromFileOptions(uploadFilePath.toString())
-                .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * 1024 * 1024L)),
-                null, span);
+                .setParallelTransferOptions(parallelTransferOptions), null, span);
             // then download file using no fault client to verify the content
             syncNoFaultClient.downloadToFileWithResponse(
                 new BlobDownloadToFileOptions(downloadPath.toString()), null, span);
@@ -72,7 +75,9 @@ public class UploadFromFile extends BlobScenarioBase<StorageStressOptions> {
                 return Mono.using(
                     () -> downloadPath.resolve(UUID.randomUUID() + ".txt"),
                     path -> asyncClient.uploadFromFileWithResponse(new BlobUploadFromFileOptions(uploadFilePath.toString())
-                            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * 1024 * 1024L)))
+                            .setParallelTransferOptions(new ParallelTransferOptions()
+                                .setMaxConcurrency(parallelTransferOptions.getMaxConcurrency())
+                                .setMaxSingleUploadSizeLong(4 * 1024 * 1024L)))
                         .flatMap(ignored -> asyncNoFaultClient.downloadToFileWithResponse(
                             new BlobDownloadToFileOptions(path.toString()))
                         )

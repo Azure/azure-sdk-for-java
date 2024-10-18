@@ -16,6 +16,8 @@ public class StorageStressOptions extends PerfStressOptions {
     private String endpointString = Configuration.getGlobalConfiguration().get("STORAGE_ENDPOINT_STRING");
     @Parameter(names = { "--pbEndpoint"}, description = "Page Blob Storage endpoint string")
     private String pageBlobEndpointString = Configuration.getGlobalConfiguration().get("PAGE_BLOB_STORAGE_ENDPOINT_STRING");
+    @Parameter(names = { "--maxConcurrency" }, description = "Max concurrency of ParallelTransferOptions")
+    private int maxConcurrency = 1;
 
     public boolean isFaultInjectionEnabledForDownloads() {
         return enableFaultInjectionDownloads;
@@ -37,5 +39,13 @@ public class StorageStressOptions extends PerfStressOptions {
 
     public String getPageBlobEndpointString() {
         return pageBlobEndpointString;
+    }
+
+    /**
+     * Get the max concurrency of ParallelTransferOptions.
+     * @return the max concurrency of ParallelTransferOptions.
+     */
+    public int getMaxConcurrency() {
+        return maxConcurrency;
     }
 }

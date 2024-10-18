@@ -14,6 +14,7 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.stress.TelemetryHelper;
 import com.azure.storage.stress.FaultInjectionProbabilities;
 import com.azure.storage.stress.FaultInjectingHttpPolicy;
@@ -21,7 +22,6 @@ import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
-import java.util.Objects;
 import java.util.UUID;
 
 public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> extends PerfStressTest<TOptions> {
