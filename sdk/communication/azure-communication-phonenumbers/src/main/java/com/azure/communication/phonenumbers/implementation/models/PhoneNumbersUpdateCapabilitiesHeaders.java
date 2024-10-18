@@ -5,56 +5,38 @@
 package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The PhoneNumbersUpdateCapabilitiesHeaders model.
- */
+/** The PhoneNumbersUpdateCapabilitiesHeaders model. */
 @Fluent
 public final class PhoneNumbersUpdateCapabilitiesHeaders {
     /*
      * The capabilities-id property.
      */
+    @JsonProperty(value = "capabilities-id")
     private String capabilitiesId;
 
     /*
      * The operation-id property.
      */
+    @JsonProperty(value = "operation-id")
     private String operationId;
 
     /*
      * The Operation-Location property.
      */
+    @JsonProperty(value = "Operation-Location")
     private String operationLocation;
 
     /*
      * The Location property.
      */
+    @JsonProperty(value = "Location")
     private String location;
-
-    private static final HttpHeaderName CAPABILITIES_ID = HttpHeaderName.fromString("capabilities-id");
-
-    private static final HttpHeaderName OPERATION_ID = HttpHeaderName.fromString("operation-id");
-
-    private static final HttpHeaderName OPERATION_LOCATION = HttpHeaderName.fromString("Operation-Location");
-
-    // HttpHeaders containing the raw property values.
-    /**
-     * Creates an instance of PhoneNumbersUpdateCapabilitiesHeaders class.
-     * 
-     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
-     */
-    public PhoneNumbersUpdateCapabilitiesHeaders(HttpHeaders rawHeaders) {
-        this.capabilitiesId = rawHeaders.getValue(CAPABILITIES_ID);
-        this.operationId = rawHeaders.getValue(OPERATION_ID);
-        this.operationLocation = rawHeaders.getValue(OPERATION_LOCATION);
-        this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
-    }
 
     /**
      * Get the capabilitiesId property: The capabilities-id property.
-     * 
+     *
      * @return the capabilitiesId value.
      */
     public String getCapabilitiesId() {
@@ -63,7 +45,7 @@ public final class PhoneNumbersUpdateCapabilitiesHeaders {
 
     /**
      * Set the capabilitiesId property: The capabilities-id property.
-     * 
+     *
      * @param capabilitiesId the capabilitiesId value to set.
      * @return the PhoneNumbersUpdateCapabilitiesHeaders object itself.
      */
@@ -74,7 +56,7 @@ public final class PhoneNumbersUpdateCapabilitiesHeaders {
 
     /**
      * Get the operationId property: The operation-id property.
-     * 
+     *
      * @return the operationId value.
      */
     public String getOperationId() {
@@ -83,7 +65,7 @@ public final class PhoneNumbersUpdateCapabilitiesHeaders {
 
     /**
      * Set the operationId property: The operation-id property.
-     * 
+     *
      * @param operationId the operationId value to set.
      * @return the PhoneNumbersUpdateCapabilitiesHeaders object itself.
      */
@@ -94,7 +76,7 @@ public final class PhoneNumbersUpdateCapabilitiesHeaders {
 
     /**
      * Get the operationLocation property: The Operation-Location property.
-     * 
+     *
      * @return the operationLocation value.
      */
     public String getOperationLocation() {
@@ -103,7 +85,7 @@ public final class PhoneNumbersUpdateCapabilitiesHeaders {
 
     /**
      * Set the operationLocation property: The Operation-Location property.
-     * 
+     *
      * @param operationLocation the operationLocation value to set.
      * @return the PhoneNumbersUpdateCapabilitiesHeaders object itself.
      */
@@ -114,7 +96,7 @@ public final class PhoneNumbersUpdateCapabilitiesHeaders {
 
     /**
      * Get the location property: The Location property.
-     * 
+     *
      * @return the location value.
      */
     public String getLocation() {
@@ -123,7 +105,7 @@ public final class PhoneNumbersUpdateCapabilitiesHeaders {
 
     /**
      * Set the location property: The Location property.
-     * 
+     *
      * @param location the location value to set.
      * @return the PhoneNumbersUpdateCapabilitiesHeaders object itself.
      */
