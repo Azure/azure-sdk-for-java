@@ -120,7 +120,7 @@ public class ServiceFabricManagedClustersManagerTests extends TestProxyTestBase 
         providerNamespaces.forEach(providerNamespace -> {
             Provider provider = resourceManager.providers().getByName(providerNamespace);
             if (!"Registered".equalsIgnoreCase(provider.registrationState())
-                    && !"Registering".equalsIgnoreCase(provider.registrationState())) {
+                && !"Registering".equalsIgnoreCase(provider.registrationState())) {
                 provider = resourceManager.providers().register(providerNamespace);
             }
             while (!"Registered".equalsIgnoreCase(provider.registrationState())) {
