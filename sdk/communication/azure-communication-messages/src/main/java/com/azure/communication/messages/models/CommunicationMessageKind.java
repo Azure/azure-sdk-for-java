@@ -80,8 +80,9 @@ public final class CommunicationMessageKind extends ExpandableStringEnum<Communi
     public static final CommunicationMessageKind AUDIO = fromString("audio");
 
     /**
-     * Image message type. Legacy image type for `MediaNotificationContent` which is being deprecated.
+     * @deprecated Image message type. Legacy image type for `MediaNotificationContent` which is being deprecated.
      */
     @Generated
+    @Deprecated
     public static final CommunicationMessageKind IMAGE_V0 = fromString("image_v0");
 }

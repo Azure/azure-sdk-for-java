@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * &#064;deprecated A request to send an image notification.
+ * @deprecated A request to send an image notification.
  */
 @Fluent
 @Deprecated
