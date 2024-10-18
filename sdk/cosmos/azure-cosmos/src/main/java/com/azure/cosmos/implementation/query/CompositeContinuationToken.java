@@ -31,6 +31,7 @@ public final class CompositeContinuationToken extends JsonSerializable implement
         this.setRange(range);
     }
 
+
     public CompositeContinuationToken(ObjectNode node) {
         super(node);
     }
