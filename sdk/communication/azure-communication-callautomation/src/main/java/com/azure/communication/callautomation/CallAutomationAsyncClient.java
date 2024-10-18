@@ -17,24 +17,17 @@ import com.azure.communication.callautomation.implementation.models.CallRejectRe
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.CommunicationUserIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.CreateCallRequestInternal;
-import com.azure.communication.callautomation.implementation.models.MediaStreamingAudioChannelTypeInternal;
-import com.azure.communication.callautomation.implementation.models.MediaStreamingContentTypeInternal;
-import com.azure.communication.callautomation.implementation.models.MediaStreamingOptionsInternal;
-import com.azure.communication.callautomation.implementation.models.MediaStreamingTransportTypeInternal;
 import com.azure.communication.callautomation.implementation.models.RedirectCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RejectCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.ConnectRequestInternal;
 import com.azure.communication.callautomation.implementation.models.CallLocatorInternal;
 import com.azure.communication.callautomation.implementation.models.CallLocatorKindInternal;
-import com.azure.communication.callautomation.implementation.models.TranscriptionOptionsInternal;
-import com.azure.communication.callautomation.implementation.models.TranscriptionTransportTypeInternal;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
-import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
 import com.azure.communication.callautomation.models.ConnectCallOptions;
@@ -44,7 +37,6 @@ import com.azure.communication.callautomation.models.GroupCallLocator;
 import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.RoomCallLocator;
 import com.azure.communication.callautomation.models.ConnectCallResult;
-import com.azure.communication.callautomation.models.TranscriptionOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -215,19 +207,7 @@ public final class CallAutomationAsyncClient {
             .setTargets(targetsModel)
             .setCallbackUri(createCallOptions.getCallbackUrl())
             .setCallIntelligenceOptions(callIntelligenceOptionsInternal)
-            .setOperationContext(createCallOptions.getOperationContext());        
-
-        if (createCallOptions.getMediaStreamingOptions() != null) {
-            MediaStreamingOptionsInternal streamingOptionsInternal =
-                getMediaStreamingOptionsInternal(createCallOptions.getMediaStreamingOptions());
-            request.setMediaStreamingOptions(streamingOptionsInternal);
-        }
-
-        if (createCallOptions.getTranscriptionOptions() != null) {
-            TranscriptionOptionsInternal  transcriptionOptionsInternal =
-                getTranscriptionOptionsInternal(createCallOptions.getTranscriptionOptions());
-            request.setTranscriptionOptions(transcriptionOptionsInternal);
-        }
+            .setOperationContext(createCallOptions.getOperationContext());
 
         return request;
     }
@@ -251,48 +231,7 @@ public final class CallAutomationAsyncClient {
             .setCallIntelligenceOptions(callIntelligenceOptionsInternal)
             .setOperationContext(createCallGroupOptions.getOperationContext());
 
-        if (createCallGroupOptions.getMediaStreamingOptions() != null) {
-            MediaStreamingOptionsInternal streamingOptionsInternal =
-                getMediaStreamingOptionsInternal(createCallGroupOptions.getMediaStreamingOptions());
-            request.setMediaStreamingOptions(streamingOptionsInternal);
-        }
-
-        if (createCallGroupOptions.getTranscriptionOptions() != null) {
-            TranscriptionOptionsInternal transcriptionOptionsInternal =
-                getTranscriptionOptionsInternal(createCallGroupOptions.getTranscriptionOptions());
-            request.setTranscriptionOptions(transcriptionOptionsInternal);
-        }
-
         return request;
-    }
-
-    private MediaStreamingOptionsInternal getMediaStreamingOptionsInternal(
-        MediaStreamingOptions mediaStreamingOptions) {
-        return new MediaStreamingOptionsInternal()
-            .setTransportUrl(mediaStreamingOptions.getTransportUrl())
-            .setAudioChannelType(
-                MediaStreamingAudioChannelTypeInternal.fromString(
-                    mediaStreamingOptions.getAudioChannelType().toString()))
-            .setContentType(
-                MediaStreamingContentTypeInternal.fromString(
-                    mediaStreamingOptions.getContentType().toString()))
-            .setTransportType(
-                MediaStreamingTransportTypeInternal.fromString(
-                    mediaStreamingOptions.getTransportType().toString()))
-            .setStartMediaStreaming(mediaStreamingOptions.isStartMediaStreamingEnabled());
-    }
-
-    private TranscriptionOptionsInternal getTranscriptionOptionsInternal(
-        TranscriptionOptions transcriptionOptions) {
-        return new TranscriptionOptionsInternal()
-            .setTransportUrl(transcriptionOptions.getTransportUrl())
-            .setTransportType(
-                TranscriptionTransportTypeInternal.fromString(
-                    transcriptionOptions.getTransportType().toString()))
-            .setLocale(transcriptionOptions.getLocale())
-            .setStartTranscription(transcriptionOptions.getStartTranscription())
-            .setEnableIntermediateResults(transcriptionOptions.isIntermediateResultsEnabled())
-            .setSpeechRecognitionModelEndpointId(transcriptionOptions.getSpeechRecognitionModelEndpointId());
     }
 
     /**
@@ -338,18 +277,6 @@ public final class CallAutomationAsyncClient {
                 CallIntelligenceOptionsInternal callIntelligenceOptionsInternal = new CallIntelligenceOptionsInternal();
                 callIntelligenceOptionsInternal.setCognitiveServicesEndpoint(answerCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint());
                 request.setCallIntelligenceOptions(callIntelligenceOptionsInternal);
-            }
-
-            if (answerCallOptions.getMediaStreamingOptions() != null) {
-                MediaStreamingOptionsInternal streamingOptionsInternal =
-                    getMediaStreamingOptionsInternal(answerCallOptions.getMediaStreamingOptions());
-                request.setMediaStreamingOptions(streamingOptionsInternal);
-            }
-
-            if (answerCallOptions.getTranscriptionOptions() != null) {
-                TranscriptionOptionsInternal transcriptionOptionsInternal =
-                    getTranscriptionOptionsInternal(answerCallOptions.getTranscriptionOptions());
-                request.setTranscriptionOptions(transcriptionOptionsInternal);
             }
 
             return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(

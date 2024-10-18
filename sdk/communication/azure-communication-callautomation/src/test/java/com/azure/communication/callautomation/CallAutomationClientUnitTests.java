@@ -84,9 +84,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
                     CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, null, null), 200)
             )));
 
-        AnswerCallOptions answerCallOptions = new AnswerCallOptions(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL)
-            .setMediaStreamingOptions(MEDIA_STREAMING_CONFIGURATION)
-            .setTranscriptionOptions(TRANSCRIPTION_CONFIGURATION);
+        AnswerCallOptions answerCallOptions = new AnswerCallOptions(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL);
 
         Response<AnswerCallResult> answerCallResult = callAutomationClient.answerCallWithResponse(
             answerCallOptions, Context.NONE);
@@ -94,8 +92,6 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(answerCallResult);
         assertEquals(200, answerCallResult.getStatusCode());
         assertNotNull(answerCallResult.getValue());
-        // assertEquals(MEDIA_SUBSCRIPTION_ID, answerCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
-        // assertEquals(DATA_SUBSCRIPTION_ID, answerCallResult.getValue().getCallConnectionProperties().getDataSubscriptionId());
     }
 
     @Test

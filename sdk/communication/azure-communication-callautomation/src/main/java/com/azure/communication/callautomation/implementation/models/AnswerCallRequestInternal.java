@@ -41,16 +41,6 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
      */
     private CommunicationUserIdentifierModel answeredBy;
 
-    /*
-     * Media Streaming Options.
-     */
-    private MediaStreamingOptionsInternal mediaStreamingOptions;
-
-    /*
-     * Transcription Options.
-     */
-    private TranscriptionOptionsInternal transcriptionOptions;
-
     /**
      * Creates an instance of AnswerCallRequestInternal class.
      */
@@ -158,46 +148,6 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
         return this;
     }
 
-    /**
-     * Get the mediaStreamingOptions property: Media Streaming Options.
-     * 
-     * @return the mediaStreamingOptions value.
-     */
-    public MediaStreamingOptionsInternal getMediaStreamingOptions() {
-        return this.mediaStreamingOptions;
-    }
-
-    /**
-     * Set the mediaStreamingOptions property: Media Streaming Options.
-     * 
-     * @param mediaStreamingOptions the mediaStreamingOptions value to set.
-     * @return the AnswerCallRequestInternal object itself.
-     */
-    public AnswerCallRequestInternal setMediaStreamingOptions(MediaStreamingOptionsInternal mediaStreamingOptions) {
-        this.mediaStreamingOptions = mediaStreamingOptions;
-        return this;
-    }
-
-    /**
-     * Get the transcriptionOptions property: Transcription Options.
-     * 
-     * @return the transcriptionOptions value.
-     */
-    public TranscriptionOptionsInternal getTranscriptionOptions() {
-        return this.transcriptionOptions;
-    }
-
-    /**
-     * Set the transcriptionOptions property: Transcription Options.
-     * 
-     * @param transcriptionOptions the transcriptionOptions value to set.
-     * @return the AnswerCallRequestInternal object itself.
-     */
-    public AnswerCallRequestInternal setTranscriptionOptions(TranscriptionOptionsInternal transcriptionOptions) {
-        this.transcriptionOptions = transcriptionOptions;
-        return this;
-    }
-
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -206,8 +156,6 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
         jsonWriter.writeStringField("operationContext", this.operationContext);
         jsonWriter.writeJsonField("callIntelligenceOptions", this.callIntelligenceOptions);
         jsonWriter.writeJsonField("answeredBy", this.answeredBy);
-        jsonWriter.writeJsonField("mediaStreamingOptions", this.mediaStreamingOptions);
-        jsonWriter.writeJsonField("transcriptionOptions", this.transcriptionOptions);
         return jsonWriter.writeEndObject();
     }
 
@@ -239,12 +187,6 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
                 } else if ("answeredBy".equals(fieldName)) {
                     deserializedAnswerCallRequestInternal.answeredBy
                         = CommunicationUserIdentifierModel.fromJson(reader);
-                } else if ("mediaStreamingOptions".equals(fieldName)) {
-                    deserializedAnswerCallRequestInternal.mediaStreamingOptions
-                        = MediaStreamingOptionsInternal.fromJson(reader);
-                } else if ("transcriptionOptions".equals(fieldName)) {
-                    deserializedAnswerCallRequestInternal.transcriptionOptions
-                        = TranscriptionOptionsInternal.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

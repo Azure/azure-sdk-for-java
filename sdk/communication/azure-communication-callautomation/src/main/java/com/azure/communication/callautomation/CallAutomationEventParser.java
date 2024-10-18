@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.models.events.AnswerFailed;
 import com.azure.communication.callautomation.models.events.AddParticipantFailed;
 import com.azure.communication.callautomation.models.events.AddParticipantSucceeded;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
@@ -29,16 +30,9 @@ import com.azure.communication.callautomation.models.events.RecognizeFailed;
 import com.azure.communication.callautomation.models.events.RecordingStateChanged;
 import com.azure.communication.callautomation.models.events.RemoveParticipantFailed;
 import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
-import com.azure.communication.callautomation.models.events.TranscriptionFailed;
-import com.azure.communication.callautomation.models.events.TranscriptionResumed;
-import com.azure.communication.callautomation.models.events.TranscriptionStarted;
-import com.azure.communication.callautomation.models.events.TranscriptionStopped;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesCompleted;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesFailed;
-import com.azure.communication.callautomation.models.events.TranscriptionUpdated;
-import com.azure.communication.callautomation.models.events.MediaStreamingStarted;
-import com.azure.communication.callautomation.models.events.MediaStreamingStopped;
-import com.azure.communication.callautomation.models.events.MediaStreamingFailed;
+
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
@@ -148,24 +142,10 @@ public final class CallAutomationEventParser {
                 ret = ConnectFailed.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CreateCallFailed")) {
                 ret = CreateCallFailed.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionStarted")) {
-                ret = TranscriptionStarted.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionFailed")) {
-                ret = TranscriptionFailed.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionResumed")) {
-                ret = TranscriptionResumed.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionStopped")) {
-                ret = TranscriptionStopped.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionUpdated")) {
-                ret = TranscriptionUpdated.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.HoldFailed")) {
                 ret = HoldFailed.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.MediaStreamingStarted")) {
-                ret = MediaStreamingStarted.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.MediaStreamingStopped")) {
-                ret = MediaStreamingStopped.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.MediaStreamingFailed")) {
-                ret = MediaStreamingFailed.fromJson(jsonReader);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.AnswerFailed")) {
+                ret = AnswerFailed.fromJson(jsonReader);
             } else {
                 ret = null;
             }

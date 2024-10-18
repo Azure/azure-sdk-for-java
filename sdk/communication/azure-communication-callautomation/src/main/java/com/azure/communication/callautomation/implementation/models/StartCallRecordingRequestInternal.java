@@ -65,7 +65,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     private Boolean pauseOnStart;
 
     /*
-     * The externalStorage property.
+     * Optional property to specify location where recording will be stored
      */
     private RecordingStorageInternal externalStorage;
 
@@ -253,7 +253,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     }
 
     /**
-     * Get the externalStorage property: The externalStorage property.
+     * Get the externalStorage property: Optional property to specify location where recording will be stored.
      * 
      * @return the externalStorage value.
      */
@@ -262,7 +262,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     }
 
     /**
-     * Set the externalStorage property: The externalStorage property.
+     * Set the externalStorage property: Optional property to specify location where recording will be stored.
      * 
      * @param externalStorage the externalStorage value to set.
      * @return the StartCallRecordingRequestInternal object itself.

@@ -30,16 +30,6 @@ public final class CreateGroupCallOptions {
     private String operationContext;
 
     /**
-     * Media Streaming Configuration.
-     */
-    private MediaStreamingOptions mediaStreamingOptions;
-
-    /**
-     * Transcription Configuration.
-     */
-    private TranscriptionOptions transcriptionOptions;
-
-    /**
      * Display name for call source
      */
     private String sourceDisplayName;
@@ -122,28 +112,6 @@ public final class CreateGroupCallOptions {
     }
 
     /**
-     * Set the media streaming configuration.
-     *
-     * @param mediaStreamingOptions The media streaming options.
-     * @return the CreateGroupCallOptions object itself.
-     */
-    public CreateGroupCallOptions setMediaStreamingOptions(MediaStreamingOptions mediaStreamingOptions) {
-        this.mediaStreamingOptions = mediaStreamingOptions;
-        return this;
-    }
-
-    /**
-     * Set the transcription configuration.
-     *
-     * @param transcriptionOptions The transcription options.
-     * @return the CreateGroupCallOptions object itself.
-     */
-    public CreateGroupCallOptions setTranscriptionOptions(TranscriptionOptions transcriptionOptions) {
-        this.transcriptionOptions = transcriptionOptions;
-        return this;
-    }
-
-    /**
      * set display name for caller
      * @param sourceDisplayName display name for caller
      * @return the CreateGroupCallOptions object itself
@@ -181,23 +149,5 @@ public final class CreateGroupCallOptions {
     public CreateGroupCallOptions setCallIntelligenceOptions(CallIntelligenceOptions callIntelligenceOptions) {
         this.callIntelligenceOptions = callIntelligenceOptions;
         return this;
-    }
-
-    /**
-     * Get the Media Streaming Options.
-     *
-     * @return the mediaStreamingOptions.
-     */
-    public MediaStreamingOptions getMediaStreamingOptions() {
-        return mediaStreamingOptions;
-    }
-
-    /**
-     * Get the Transcription Options.
-     *
-     * @return the transcriptionOptions.
-     */
-    public TranscriptionOptions getTranscriptionOptions() {
-        return transcriptionOptions;
     }
 }

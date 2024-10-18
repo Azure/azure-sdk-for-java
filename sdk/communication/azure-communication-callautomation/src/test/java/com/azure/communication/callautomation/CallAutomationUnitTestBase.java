@@ -17,12 +17,6 @@ import com.azure.communication.callautomation.implementation.models.CallConnecti
 import com.azure.communication.callautomation.implementation.models.CallConnectionStateModelInternal;
 import com.azure.communication.callautomation.implementation.models.CallParticipantInternal;
 import com.azure.communication.callautomation.implementation.models.GetParticipantsResponseInternal;
-import com.azure.communication.callautomation.models.MediaStreamingAudioChannel;
-import com.azure.communication.callautomation.models.MediaStreamingOptions;
-import com.azure.communication.callautomation.models.MediaStreamingContent;
-import com.azure.communication.callautomation.models.MediaStreamingTransport;
-import com.azure.communication.callautomation.models.TranscriptionOptions;
-import com.azure.communication.callautomation.models.TranscriptionTransport;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -53,21 +47,6 @@ public class CallAutomationUnitTestBase {
     static final String CALL_OPERATION_CONTEXT = "operationContext";
     static final String DIALOG_ID = "dialogId";
     static final String BOT_APP_ID = "botAppId";
-
-    static final MediaStreamingOptions MEDIA_STREAMING_CONFIGURATION = new MediaStreamingOptions(
-        "https://websocket.url.com",
-        MediaStreamingTransport.WEBSOCKET,
-        MediaStreamingContent.AUDIO,
-        MediaStreamingAudioChannel.MIXED,
-        true
-    );
-
-    static final TranscriptionOptions TRANSCRIPTION_CONFIGURATION = new TranscriptionOptions(
-        "https://websocket.url.com",
-        TranscriptionTransport.WEBSOCKET,
-        "en-US",
-        true
-    );
 
     public static String generateDownloadResult(String content) {
         return content;

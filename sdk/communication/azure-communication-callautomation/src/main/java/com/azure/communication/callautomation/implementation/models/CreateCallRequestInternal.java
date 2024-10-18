@@ -53,16 +53,6 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
      */
     private CallIntelligenceOptionsInternal callIntelligenceOptions;
 
-    /*
-     * Media Streaming Options.
-     */
-    private MediaStreamingOptionsInternal mediaStreamingOptions;
-
-    /*
-     * Transcription Options.
-     */
-    private TranscriptionOptionsInternal transcriptionOptions;
-
     /**
      * Creates an instance of CreateCallRequestInternal class.
      */
@@ -214,46 +204,6 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
         return this;
     }
 
-    /**
-     * Get the mediaStreamingOptions property: Media Streaming Options.
-     * 
-     * @return the mediaStreamingOptions value.
-     */
-    public MediaStreamingOptionsInternal getMediaStreamingOptions() {
-        return this.mediaStreamingOptions;
-    }
-
-    /**
-     * Set the mediaStreamingOptions property: Media Streaming Options.
-     * 
-     * @param mediaStreamingOptions the mediaStreamingOptions value to set.
-     * @return the CreateCallRequestInternal object itself.
-     */
-    public CreateCallRequestInternal setMediaStreamingOptions(MediaStreamingOptionsInternal mediaStreamingOptions) {
-        this.mediaStreamingOptions = mediaStreamingOptions;
-        return this;
-    }
-
-    /**
-     * Get the transcriptionOptions property: Transcription Options.
-     * 
-     * @return the transcriptionOptions value.
-     */
-    public TranscriptionOptionsInternal getTranscriptionOptions() {
-        return this.transcriptionOptions;
-    }
-
-    /**
-     * Set the transcriptionOptions property: Transcription Options.
-     * 
-     * @param transcriptionOptions the transcriptionOptions value to set.
-     * @return the CreateCallRequestInternal object itself.
-     */
-    public CreateCallRequestInternal setTranscriptionOptions(TranscriptionOptionsInternal transcriptionOptions) {
-        this.transcriptionOptions = transcriptionOptions;
-        return this;
-    }
-
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -264,8 +214,6 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
         jsonWriter.writeJsonField("source", this.source);
         jsonWriter.writeStringField("operationContext", this.operationContext);
         jsonWriter.writeJsonField("callIntelligenceOptions", this.callIntelligenceOptions);
-        jsonWriter.writeJsonField("mediaStreamingOptions", this.mediaStreamingOptions);
-        jsonWriter.writeJsonField("transcriptionOptions", this.transcriptionOptions);
         return jsonWriter.writeEndObject();
     }
 
@@ -303,12 +251,6 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
                 } else if ("callIntelligenceOptions".equals(fieldName)) {
                     deserializedCreateCallRequestInternal.callIntelligenceOptions
                         = CallIntelligenceOptionsInternal.fromJson(reader);
-                } else if ("mediaStreamingOptions".equals(fieldName)) {
-                    deserializedCreateCallRequestInternal.mediaStreamingOptions
-                        = MediaStreamingOptionsInternal.fromJson(reader);
-                } else if ("transcriptionOptions".equals(fieldName)) {
-                    deserializedCreateCallRequestInternal.transcriptionOptions
-                        = TranscriptionOptionsInternal.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

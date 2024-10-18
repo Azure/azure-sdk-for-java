@@ -20,16 +20,6 @@ public final class AnswerCallOptions {
      */
     private final String callbackUrl;
 
-    /**
-     * Media Streaming Configuration.
-     */
-    private MediaStreamingOptions mediaStreamingOptions;
-
-    /**
-     * Transcription Configuration.
-     */
-    private TranscriptionOptions transcriptionOptions;
-
     /*
      * AI options for the call.
      */
@@ -70,32 +60,12 @@ public final class AnswerCallOptions {
     }
 
     /**
-     * Get the Transcription configuration.
-     *
-     * @return the transcriptionOptions.
-     */
-    public TranscriptionOptions getTranscriptionOptions() {
-        return transcriptionOptions;
-    }
-
-    /**
      * Get the operationContext.
      *
      * @return the operationContext
      */
     public String getOperationContext() {
         return operationContext;
-    }
-
-    /**
-     * Set the transcription configuration.
-     *
-     * @param transcriptionOptions The transcription options.
-     * @return the AnswerCallOptions object itself.
-     */
-    public AnswerCallOptions setTranscriptionOptions(TranscriptionOptions transcriptionOptions) {
-        this.transcriptionOptions = transcriptionOptions;
-        return this;
     }
 
      /**
@@ -126,26 +96,6 @@ public final class AnswerCallOptions {
      */
     public AnswerCallOptions setCallIntelligenceOptions(CallIntelligenceOptions callIntelligenceOptions) {
         this.callIntelligenceOptions = callIntelligenceOptions;
-        return this;
-    }
-
-    /**
-     * Get the Media Streaming configuration.
-     *
-     * @return the mediaStreamingOptions.
-     */
-    public MediaStreamingOptions getMediaStreamingOptions() {
-        return mediaStreamingOptions;
-    }
-
-    /**
-     * Set the media streaming configuration.
-     *
-     * @param mediaStreamingOptions The media streaming options.
-     * @return the AnswerCallOptions object itself.
-     */
-    public AnswerCallOptions setMediaStreamingOptions(MediaStreamingOptions mediaStreamingOptions) {
-        this.mediaStreamingOptions = mediaStreamingOptions;
         return this;
     }
 }
