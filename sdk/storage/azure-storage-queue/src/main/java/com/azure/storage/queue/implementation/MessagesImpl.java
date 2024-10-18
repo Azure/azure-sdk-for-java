@@ -428,8 +428,8 @@ public final class MessagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<MessagesDequeueHeaders, QueueMessageItemInternalWrapper> dequeueWithResponse(String queueName,
         Integer numberOfMessages, Integer visibilitytimeout, Integer timeout, String requestId, Context context) {
+        final String accept = "application/xml";
         try {
-            final String accept = "application/xml";
             return service.dequeueSync(this.client.getUrl(), queueName, numberOfMessages, visibilitytimeout, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -494,8 +494,8 @@ public final class MessagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueMessageItemInternalWrapper> dequeueNoCustomHeadersWithResponse(String queueName,
         Integer numberOfMessages, Integer visibilitytimeout, Integer timeout, String requestId, Context context) {
+        final String accept = "application/xml";
         try {
-            final String accept = "application/xml";
             return service.dequeueNoCustomHeadersSync(this.client.getUrl(), queueName, numberOfMessages,
                 visibilitytimeout, timeout, this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -661,8 +661,8 @@ public final class MessagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<MessagesClearHeaders, Void> clearWithResponse(String queueName, Integer timeout,
         String requestId, Context context) {
+        final String accept = "application/xml";
         try {
-            final String accept = "application/xml";
             return service.clearSync(this.client.getUrl(), queueName, timeout, this.client.getVersion(), requestId,
                 accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -706,8 +706,8 @@ public final class MessagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> clearNoCustomHeadersWithResponse(String queueName, Integer timeout, String requestId,
         Context context) {
+        final String accept = "application/xml";
         try {
-            final String accept = "application/xml";
             return service.clearNoCustomHeadersSync(this.client.getUrl(), queueName, timeout, this.client.getVersion(),
                 requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -976,8 +976,8 @@ public final class MessagesImpl {
     public ResponseBase<MessagesEnqueueHeaders, SendMessageResultWrapper> enqueueWithResponse(String queueName,
         QueueMessage queueMessage, Integer visibilitytimeout, Integer messageTimeToLive, Integer timeout,
         String requestId, Context context) {
+        final String accept = "application/xml";
         try {
-            final String accept = "application/xml";
             return service.enqueueSync(this.client.getUrl(), queueName, visibilitytimeout, messageTimeToLive, timeout,
                 this.client.getVersion(), requestId, queueMessage, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1055,8 +1055,8 @@ public final class MessagesImpl {
     public Response<SendMessageResultWrapper> enqueueNoCustomHeadersWithResponse(String queueName,
         QueueMessage queueMessage, Integer visibilitytimeout, Integer messageTimeToLive, Integer timeout,
         String requestId, Context context) {
+        final String accept = "application/xml";
         try {
-            final String accept = "application/xml";
             return service.enqueueNoCustomHeadersSync(this.client.getUrl(), queueName, visibilitytimeout,
                 messageTimeToLive, timeout, this.client.getVersion(), requestId, queueMessage, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1261,9 +1261,9 @@ public final class MessagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper> peekWithResponse(String queueName,
         Integer numberOfMessages, Integer timeout, String requestId, Context context) {
+        final String peekonly = "true";
+        final String accept = "application/xml";
         try {
-            final String peekonly = "true";
-            final String accept = "application/xml";
             return service.peekSync(this.client.getUrl(), queueName, peekonly, numberOfMessages, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1321,9 +1321,9 @@ public final class MessagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PeekedMessageItemInternalWrapper> peekNoCustomHeadersWithResponse(String queueName,
         Integer numberOfMessages, Integer timeout, String requestId, Context context) {
+        final String peekonly = "true";
+        final String accept = "application/xml";
         try {
-            final String peekonly = "true";
-            final String accept = "application/xml";
             return service.peekNoCustomHeadersSync(this.client.getUrl(), queueName, peekonly, numberOfMessages, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
