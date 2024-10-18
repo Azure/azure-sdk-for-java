@@ -31,8 +31,8 @@ public final class MetricResult {
      * @param description The display description of the metric.
      * @param httpResponseError The error information if the request failed to fetch the queried metric.
      */
-    public MetricResult(String id, String resourceType, MetricUnit unit, String metricName,
-        List<TimeSeriesElement> timeSeries, String description, ResponseError httpResponseError) {
+    public MetricResult(String id, String resourceType, MetricUnit unit, String metricName, List<TimeSeriesElement> timeSeries,
+                        String description, ResponseError httpResponseError) {
         this.id = id;
         this.resourceType = resourceType;
         this.unit = unit;

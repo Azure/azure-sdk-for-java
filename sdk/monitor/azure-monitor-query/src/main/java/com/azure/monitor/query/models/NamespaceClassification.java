@@ -21,8 +21,7 @@ public final class NamespaceClassification extends ExpandableStringEnum<Namespac
     /**
      * Creates an instance of NamespaceClassification.
      */
-    public NamespaceClassification() {
-    }
+    public NamespaceClassification() { }
 
     /**
      * Creates or finds a NamespaceClassification from its string representation.

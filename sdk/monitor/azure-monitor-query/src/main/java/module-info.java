@@ -6,10 +6,8 @@
  */
 module com.azure.monitor.query {
     requires transitive com.azure.core;
-
     exports com.azure.monitor.query;
     exports com.azure.monitor.query.models;
-
     opens com.azure.monitor.query.models to com.azure.core;
     opens com.azure.monitor.query.implementation.logs.models to com.azure.core;
     opens com.azure.monitor.query.implementation.metrics.models to com.azure.core;
