@@ -41,8 +41,10 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
 
         AtomicInteger count = new AtomicInteger();
         LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
-        LogsIngestionClient client
-            = clientBuilder.addPolicy(new BatchCountPolicy(count)).addPolicy(logsCountPolicy).buildClient();
+        LogsIngestionClient client = clientBuilder
+            .addPolicy(new BatchCountPolicy(count))
+            .addPolicy(logsCountPolicy)
+            .buildClient();
         client.upload(dataCollectionRuleId, streamName, logs);
         assertEquals(2, count.get());
         assertEquals(logs.size(), logsCountPolicy.getTotalLogsCount());
@@ -54,8 +56,10 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
 
         AtomicInteger count = new AtomicInteger();
         LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
-        LogsIngestionClient client
-            = clientBuilder.addPolicy(new BatchCountPolicy(count)).addPolicy(logsCountPolicy).buildClient();
+        LogsIngestionClient client = clientBuilder
+            .addPolicy(new BatchCountPolicy(count))
+            .addPolicy(logsCountPolicy)
+            .buildClient();
         client.upload(dataCollectionRuleId, streamName, logs, new LogsUploadOptions().setMaxConcurrency(3));
         assertEquals(2, count.get());
         assertEquals(logs.size(), logsCountPolicy.getTotalLogsCount());
@@ -69,8 +73,10 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
         AtomicInteger count = new AtomicInteger();
         LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
 
-        LogsIngestionClient client
-            = clientBuilder.addPolicy(new PartialFailurePolicy(count)).addPolicy(logsCountPolicy).buildClient();
+        LogsIngestionClient client = clientBuilder
+            .addPolicy(new PartialFailurePolicy(count))
+            .addPolicy(logsCountPolicy)
+            .buildClient();
 
         LogsUploadException uploadLogsException = assertThrows(LogsUploadException.class, () -> {
             client.upload(dataCollectionRuleId, streamName, logs);
@@ -92,8 +98,10 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
             .setLogsUploadErrorConsumer(error -> failedLogsCount.addAndGet(error.getFailedLogs().size()));
         LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
 
-        LogsIngestionClient client
-            = clientBuilder.addPolicy(new PartialFailurePolicy(count)).addPolicy(logsCountPolicy).buildClient();
+        LogsIngestionClient client = clientBuilder
+            .addPolicy(new PartialFailurePolicy(count))
+            .addPolicy(logsCountPolicy)
+            .buildClient();
 
         client.upload(dataCollectionRuleId, streamName, logs, logsUploadOptions);
         assertEquals(11, count.get());
@@ -108,17 +116,20 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
         // Live Only, as it times out in CI playback mode.  TODO: Re-record and update test base to exclude any sanitizers as needed.
         List<Object> logs = getObjects(100000);
         AtomicInteger count = new AtomicInteger();
-        LogsUploadOptions logsUploadOptions = new LogsUploadOptions().setLogsUploadErrorConsumer(error -> {
-            // throw on first error
-            throw error.getResponseException();
-        });
+        LogsUploadOptions logsUploadOptions = new LogsUploadOptions()
+            .setLogsUploadErrorConsumer(error -> {
+                // throw on first error
+                throw error.getResponseException();
+            });
         LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
 
-        LogsIngestionClient client
-            = clientBuilder.addPolicy(new PartialFailurePolicy(count)).addPolicy(logsCountPolicy).buildClient();
+        LogsIngestionClient client = clientBuilder
+            .addPolicy(new PartialFailurePolicy(count))
+            .addPolicy(logsCountPolicy)
+            .buildClient();
 
-        assertThrows(HttpResponseException.class,
-            () -> client.upload(dataCollectionRuleId, streamName, logs, logsUploadOptions));
+        assertThrows(HttpResponseException.class, () -> client.upload(dataCollectionRuleId, streamName, logs,
+            logsUploadOptions));
         assertEquals(2, count.get());
 
         // only a subset of logs should be sent
@@ -136,16 +147,13 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
 
     @Test
     @RecordWithoutRequestBody
-    @EnabledIfEnvironmentVariable(
-        named = "AZURE_TEST_MODE",
-        matches = "LIVE",
-        disabledReason = "Test proxy network connection is timing out for this test in playback mode.")
+    @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE", disabledReason = "Test proxy network connection is timing out for this test in playback mode.")
     public void testUploadLargeLogsProtocolMethod() {
         List<Object> logs = getObjects(375000);
         LogsIngestionClient client = clientBuilder.buildClient();
 
-        HttpResponseException responseException = assertThrows(HttpResponseException.class, () -> client
-            .uploadWithResponse(dataCollectionRuleId, streamName, BinaryData.fromObject(logs), new RequestOptions()));
+        HttpResponseException responseException = assertThrows(HttpResponseException.class,
+            () -> client.uploadWithResponse(dataCollectionRuleId, streamName, BinaryData.fromObject(logs), new RequestOptions()));
         assertEquals(413, responseException.getResponse().getStatusCode());
     }
 }

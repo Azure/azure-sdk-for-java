@@ -86,8 +86,8 @@ public class Batcher implements Iterator<LogsIngestionRequest> {
      */
     public Stream<LogsIngestionRequest> toStream() {
         if (concurrency == 1) {
-            return StreamSupport
-                .stream(Spliterators.spliteratorUnknownSize(this, Spliterator.NONNULL | Spliterator.ORDERED), false);
+            return StreamSupport.stream(
+                Spliterators.spliteratorUnknownSize(this, Spliterator.NONNULL | Spliterator.ORDERED), false);
         }
 
         return StreamSupport.stream(new ConcurrencyLimitingSpliterator<>(this, concurrency), true);
