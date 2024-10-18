@@ -5,31 +5,23 @@
 package com.azure.communication.rooms.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ParticipantProperties model.
- */
+/** The ParticipantProperties model. */
 @Fluent
-public final class ParticipantProperties implements JsonSerializable<ParticipantProperties> {
+public final class ParticipantProperties {
     /*
      * The role of a room participant. The default value is Attendee.
      */
+    @JsonProperty(value = "role", required = true)
     private ParticipantRole role;
 
-    /**
-     * Creates an instance of ParticipantProperties class.
-     */
-    public ParticipantProperties() {
-    }
+    /** Creates an instance of ParticipantProperties class. */
+    public ParticipantProperties() {}
 
     /**
      * Get the role property: The role of a room participant. The default value is Attendee.
-     * 
+     *
      * @return the role value.
      */
     public ParticipantRole getRole() {
@@ -38,46 +30,12 @@ public final class ParticipantProperties implements JsonSerializable<Participant
 
     /**
      * Set the role property: The role of a room participant. The default value is Attendee.
-     * 
+     *
      * @param role the role value to set.
      * @return the ParticipantProperties object itself.
      */
     public ParticipantProperties setRole(ParticipantRole role) {
         this.role = role;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ParticipantProperties from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ParticipantProperties if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ParticipantProperties.
-     */
-    public static ParticipantProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ParticipantProperties deserializedParticipantProperties = new ParticipantProperties();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("role".equals(fieldName)) {
-                    deserializedParticipantProperties.role = ParticipantRole.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedParticipantProperties;
-        });
     }
 }
