@@ -14,18 +14,19 @@ public final class ForceLinkParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ForceLinkParameters model = BinaryData.fromString(
-            "{\"groupNickname\":\"ishc\",\"linkedDatabases\":[{\"id\":\"ajdeyeamdphaga\",\"state\":\"LinkFailed\"}]}")
+            "{\"groupNickname\":\"oskg\",\"linkedDatabases\":[{\"id\":\"uuimjmvxieduug\",\"state\":\"UnlinkFailed\"},{\"id\":\"rrfbyaosvexcson\",\"state\":\"Linked\"}]}")
             .toObject(ForceLinkParameters.class);
-        Assertions.assertEquals("ishc", model.groupNickname());
-        Assertions.assertEquals("ajdeyeamdphaga", model.linkedDatabases().get(0).id());
+        Assertions.assertEquals("oskg", model.groupNickname());
+        Assertions.assertEquals("uuimjmvxieduug", model.linkedDatabases().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ForceLinkParameters model = new ForceLinkParameters().withGroupNickname("ishc")
-            .withLinkedDatabases(Arrays.asList(new LinkedDatabase().withId("ajdeyeamdphaga")));
+        ForceLinkParameters model = new ForceLinkParameters().withGroupNickname("oskg")
+            .withLinkedDatabases(Arrays.asList(new LinkedDatabase().withId("uuimjmvxieduug"),
+                new LinkedDatabase().withId("rrfbyaosvexcson")));
         model = BinaryData.fromObject(model).toObject(ForceLinkParameters.class);
-        Assertions.assertEquals("ishc", model.groupNickname());
-        Assertions.assertEquals("ajdeyeamdphaga", model.linkedDatabases().get(0).id());
+        Assertions.assertEquals("oskg", model.groupNickname());
+        Assertions.assertEquals("uuimjmvxieduug", model.linkedDatabases().get(0).id());
     }
 }

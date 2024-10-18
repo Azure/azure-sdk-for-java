@@ -5,11 +5,11 @@
 package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Sets the frequency at which data is written to disk.
+ * Sets the frequency at which data is written to disk. Defaults to '1s', meaning 'every second'. Note that the 'always'
+ * setting is deprecated, because of its performance impact.
  */
 public final class AofFrequency extends ExpandableStringEnum<AofFrequency> {
     /**
@@ -37,7 +37,6 @@ public final class AofFrequency extends ExpandableStringEnum<AofFrequency> {
      * @param name a name to look for.
      * @return the corresponding AofFrequency.
      */
-    @JsonCreator
     public static AofFrequency fromString(String name) {
         return fromString(name, AofFrequency.class);
     }

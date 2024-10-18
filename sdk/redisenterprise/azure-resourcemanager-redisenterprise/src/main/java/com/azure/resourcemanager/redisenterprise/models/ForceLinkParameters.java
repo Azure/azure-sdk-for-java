@@ -6,7 +6,11 @@ package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,17 +18,17 @@ import java.util.List;
  * replication group.
  */
 @Fluent
-public final class ForceLinkParameters {
+public final class ForceLinkParameters implements JsonSerializable<ForceLinkParameters> {
     /*
      * The name of the group of linked database resources. This should match the existing replication group name.
      */
-    @JsonProperty(value = "groupNickname", required = true)
     private String groupNickname;
 
     /*
-     * The resource IDs of the databases that are expected to be linked and included in the replication group. This parameter is used to validate that the linking is to the expected (unlinked) part of the replication group, if it is splintered.
+     * The resource IDs of the databases that are expected to be linked and included in the replication group. This
+     * parameter is used to validate that the linking is to the expected (unlinked) part of the replication group, if it
+     * is splintered.
      */
-    @JsonProperty(value = "linkedDatabases", required = true)
     private List<LinkedDatabase> linkedDatabases;
 
     /**
@@ -100,4 +104,47 @@ public final class ForceLinkParameters {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ForceLinkParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("groupNickname", this.groupNickname);
+        jsonWriter.writeArrayField("linkedDatabases", this.linkedDatabases,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ForceLinkParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ForceLinkParameters if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ForceLinkParameters.
+     */
+    public static ForceLinkParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ForceLinkParameters deserializedForceLinkParameters = new ForceLinkParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("groupNickname".equals(fieldName)) {
+                    deserializedForceLinkParameters.groupNickname = reader.getString();
+                } else if ("linkedDatabases".equals(fieldName)) {
+                    List<LinkedDatabase> linkedDatabases
+                        = reader.readArray(reader1 -> LinkedDatabase.fromJson(reader1));
+                    deserializedForceLinkParameters.linkedDatabases = linkedDatabases;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedForceLinkParameters;
+        });
+    }
 }
