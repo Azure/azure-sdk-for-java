@@ -111,7 +111,7 @@ public abstract class MessageTemplateValue implements JsonSerializable<MessageTe
                 } else if ("quickAction".equals(discriminatorValue)) {
                     return MessageTemplateQuickAction.fromJson(readerToUse.reset());
                 } else {
-                    throw new IllegalArgumentException("Invalid Kind value - " + discriminatorValue);
+                    throw new IllegalStateException("Invalid Kind value - " + discriminatorValue);
                 }
             }
         });

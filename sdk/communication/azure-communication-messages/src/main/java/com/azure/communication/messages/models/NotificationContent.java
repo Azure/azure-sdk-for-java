@@ -133,7 +133,7 @@ public abstract class NotificationContent implements JsonSerializable<Notificati
                 } else if ("template".equals(discriminatorValue)) {
                     return TemplateNotificationContent.fromJson(readerToUse.reset());
                 } else {
-                    throw new IllegalArgumentException("Invalid Kind value - " + discriminatorValue);
+                    throw new IllegalStateException("Invalid Kind value - " + discriminatorValue);
                 }
             }
         });
