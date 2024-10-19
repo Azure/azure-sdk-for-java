@@ -69,4 +69,14 @@ public class ConfigsTests {
             System.clearProperty("COSMOS.METRICS_CONFIG");
         }
     }
+
+
+    @Test(groups = { "unit" })
+    public void allowUnquotedControlChars() {
+        assertThat(Configs.shouldAllowUnquotedControlChars()).isTrue();
+
+        System.setProperty("COSMOS.ALLOW_UNQUOTED_CONTROL_CHARS", "false");
+        assertThat(Configs.shouldAllowUnquotedControlChars()).isFalse();
+        System.clearProperty("COSMOS.ALLOW_UNQUOTED_CONTROL_CHARS");
+    }
 }
