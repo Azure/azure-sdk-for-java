@@ -9,6 +9,8 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Enabled JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS by default. - See [PR 42472](https://github.com/Azure/azure-sdk-for-java/pull/42472)
+* Added system property support to allow enable/disable JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS. - See [PR 42472](https://github.com/Azure/azure-sdk-for-java/pull/42472)
 
 ### 4.64.0 (2024-10-10)
 
