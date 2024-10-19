@@ -72,10 +72,10 @@ public class ConfigsTests {
 
     @Test(groups = { "unit" })
     public void allowUnquotedControlChars() {
-        assertThat(Configs.shouldAllowUnquotedControlChars()).isFalse();
-
-        System.setProperty("COSMOS.ALLOW_UNQUOTED_CONTROL_CHARS", "true");
         assertThat(Configs.shouldAllowUnquotedControlChars()).isTrue();
+
+        System.setProperty("COSMOS.ALLOW_UNQUOTED_CONTROL_CHARS", "false");
+        assertThat(Configs.shouldAllowUnquotedControlChars()).isFalse();
         System.clearProperty("COSMOS.ALLOW_UNQUOTED_CONTROL_CHARS");
     }
 }

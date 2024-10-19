@@ -249,7 +249,7 @@ public class Configs {
     private static final String PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN";
 
     // Flag to indicate whether enable JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS
-    private static final boolean DEFAULT_ALLOW_UNQUOTED_CONTROL_CHARS = false;
+    private static final boolean DEFAULT_ALLOW_UNQUOTED_CONTROL_CHARS = true;
     private static final String ALLOW_UNQUOTED_CONTROL_CHARS = "COSMOS.ALLOW_UNQUOTED_CONTROL_CHARS";
 
     public Configs() {
