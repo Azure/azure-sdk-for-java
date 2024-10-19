@@ -248,6 +248,9 @@ public class Configs {
     private static final boolean DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = false;
     private static final String PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN";
 
+    // Flag to indicate whether enable JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS
+    private static final boolean DEFAULT_ALLOW_UNQUOTED_CONTROL_CHARS = false;
+    private static final String ALLOW_UNQUOTED_CONTROL_CHARS = "COSMOS.ALLOW_UNQUOTED_CONTROL_CHARS";
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -789,5 +792,17 @@ public class Configs {
         }
 
         return DEFAULT_CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS;
+    }
+
+    public static boolean shouldAllowUnquotedControlChars() {
+
+        String shouldAllowUnquotedControlCharsConfig =
+            System.getProperty(
+                ALLOW_UNQUOTED_CONTROL_CHARS,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(ALLOW_UNQUOTED_CONTROL_CHARS)),
+                    String.valueOf(DEFAULT_ALLOW_UNQUOTED_CONTROL_CHARS)));
+
+        return Boolean.parseBoolean(shouldAllowUnquotedControlCharsConfig);
     }
 }

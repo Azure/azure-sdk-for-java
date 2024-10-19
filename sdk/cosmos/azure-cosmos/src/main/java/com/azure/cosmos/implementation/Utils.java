@@ -115,6 +115,9 @@ public class Utils {
             objectMapper.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
         }
         objectMapper.configure(DeserializationFeature.ACCEPT_FLOAT_AS_INT, false);
+        if (Configs.shouldAllowUnquotedControlChars()) {
+            objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
+        }
 
         tryToLoadJacksonPerformanceLibrary(objectMapper);
 
