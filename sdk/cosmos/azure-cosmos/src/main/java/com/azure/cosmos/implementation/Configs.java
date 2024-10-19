@@ -790,4 +790,5 @@ public class Configs {
 
         return DEFAULT_CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS;
     }
+    
 }
