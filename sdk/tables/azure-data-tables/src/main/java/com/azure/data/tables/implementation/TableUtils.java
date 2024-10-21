@@ -570,9 +570,21 @@ public final class TableUtils {
         }
     }
 
+    /**
+     * Checks whether the timeout exists (is not null and has a positive duration).
+     *
+     * @param timeout The timeout to check.
+     * @return Whether the timeout exists (is not null and has a positive duration).
+     */
+    public static boolean hasTimeout(Duration timeout) {
+        return timeout != null && (timeout.getSeconds() | timeout.getNano()) > 0;
+    }
+
     private static <T> T callHandler(Supplier<T> callable, Duration timeout, ClientLogger logger) throws Exception {
         try {
-            return getResultWithTimeout(SharedExecutorService.getInstance().submit(callable::get), timeout);
+            return hasTimeout(timeout)
+                ? getResultWithTimeout(SharedExecutorService.getInstance().submit(callable::get), timeout)
+                : callable.get();
         } catch (ExecutionException | InterruptedException | TimeoutException ex) {
 
             if (ex instanceof ExecutionException) {

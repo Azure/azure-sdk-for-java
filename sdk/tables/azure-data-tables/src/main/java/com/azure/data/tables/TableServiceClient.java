@@ -50,6 +50,7 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.CoreUtils.getResultWithTimeout;
 import static com.azure.data.tables.implementation.TableUtils.callIterableWithOptionalTimeout;
 import static com.azure.data.tables.implementation.TableUtils.callWithOptionalTimeout;
+import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
 
 /**
  *
@@ -540,7 +541,9 @@ public final class TableServiceClient {
     public Response<Void> deleteTableWithResponse(String tableName, Duration timeout, Context context) {
         Supplier<Response<Void>> callable = () -> deleteTableWithResponse(tableName, context);
         try {
-            return getResultWithTimeout(SharedExecutorService.getInstance().submit(callable::get), timeout);
+            return hasTimeout(timeout)
+                ? getResultWithTimeout(SharedExecutorService.getInstance().submit(callable::get), timeout)
+                : callable.get();
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             throw logger.logExceptionAsError(new RuntimeException(e));
         } catch (RuntimeException e) {

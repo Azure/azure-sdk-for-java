@@ -75,6 +75,7 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.CoreUtils.getResultWithTimeout;
 import static com.azure.data.tables.implementation.TableUtils.callIterableWithOptionalTimeout;
 import static com.azure.data.tables.implementation.TableUtils.callWithOptionalTimeout;
+import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
 import static com.azure.data.tables.implementation.TableUtils.mapThrowableToTableServiceException;
 import static com.azure.data.tables.implementation.TableUtils.toTableServiceError;
 
@@ -522,7 +523,9 @@ public final class TableClient {
             .deleteWithResponse(tableName, null, context), null);
 
         try {
-            return getResultWithTimeout(SharedExecutorService.getInstance().submit(callable::get), timeout);
+            return hasTimeout(timeout)
+                ? getResultWithTimeout(SharedExecutorService.getInstance().submit(callable::get), timeout)
+                : callable.get();
         } catch (InterruptedException | ExecutionException | TimeoutException ex) {
             throw logger.logExceptionAsError(new RuntimeException(ex));
         } catch (RuntimeException ex) {
@@ -960,7 +963,9 @@ public final class TableClient {
             null, null, null, context);
 
         try {
-            return getResultWithTimeout(SharedExecutorService.getInstance().submit(callable::get), timeout);
+            return hasTimeout(timeout)
+                ? getResultWithTimeout(SharedExecutorService.getInstance().submit(callable::get), timeout)
+                : callable.get();
         } catch (InterruptedException | ExecutionException | TimeoutException ex) {
             throw logger.logExceptionAsError(new RuntimeException(ex));
         } catch (RuntimeException ex) {
@@ -1666,7 +1671,9 @@ public final class TableClient {
         };
 
         try {
-            return getResultWithTimeout(SharedExecutorService.getInstance().submit(callable::get), timeout);
+            return hasTimeout(timeout)
+                ? getResultWithTimeout(SharedExecutorService.getInstance().submit(callable::get), timeout)
+                : callable.get();
         } catch (InterruptedException | ExecutionException | TimeoutException ex) {
             throw logger.logExceptionAsError(new RuntimeException(ex));
         } catch (RuntimeException ex) {
