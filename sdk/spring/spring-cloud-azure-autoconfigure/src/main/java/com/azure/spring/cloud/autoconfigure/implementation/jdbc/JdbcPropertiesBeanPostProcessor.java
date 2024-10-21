@@ -64,7 +64,7 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
             DataSourceProperties dataSourceProperties = (DataSourceProperties) bean;
             BeanDefinition bd = applicationContext.getBeanDefinition(beanName);
             String datasourcePropertiesPrefix = "spring.datasource";
-            if(bd != null && bd.getSource() instanceof AnnotatedTypeMetadata metadata) {
+            if (bd != null && bd.getSource() instanceof AnnotatedTypeMetadata metadata) {
                 Map<String, Object> annotationAttributes = metadata.getAnnotationAttributes(ConfigurationProperties.class.getName());
                 if (annotationAttributes != null) {
                     datasourcePropertiesPrefix = (String) annotationAttributes.get("prefix");
@@ -73,8 +73,8 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
             String passwordlessPropertiesPrefix = datasourcePropertiesPrefix + ".azure";
             AzureJdbcPasswordlessProperties properties = buildAzureProperties(passwordlessPropertiesPrefix);
             if (!properties.isPasswordlessEnabled()) {
-                LOGGER.debug("Feature passwordless authentication is not enabled(bean name is {} and {}.passwordless-enabled=false), " +
-                    "skip enhancing jdbc url.", beanName, passwordlessPropertiesPrefix);
+                LOGGER.debug("Feature passwordless authentication is not enabled(bean name is {} and {}.passwordless-enabled=false), "
+                    + "skip enhancing jdbc url.", beanName, passwordlessPropertiesPrefix);
                 return bean;
             }
 
@@ -101,8 +101,8 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
 
             DatabaseType databaseType = connectionString.getDatabaseType();
             if (!databaseType.isDatabasePluginAvailable()) {
-                LOGGER.debug("The jdbc plugin with provided jdbc schema is not on the classpath, " +
-                    "skip enhancing jdbc url ({}).", datasourcePropertiesPrefix);
+                LOGGER.debug("The jdbc plugin with provided jdbc schema is not on the classpath, "
+                    + "skip enhancing jdbc url ({}).", datasourcePropertiesPrefix);
                 return bean;
             }
 

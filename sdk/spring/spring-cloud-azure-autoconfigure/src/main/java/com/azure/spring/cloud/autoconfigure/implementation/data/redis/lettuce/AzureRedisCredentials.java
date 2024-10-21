@@ -42,7 +42,7 @@ public class AzureRedisCredentials implements RedisCredentials {
     public AzureRedisCredentials(GenericApplicationContext applicationContext,
                                  String username,
                                  PasswordlessProperties passwordlessProperties) {
-        this( null, applicationContext, username, passwordlessProperties);
+        this(null, applicationContext, username, passwordlessProperties);
     }
 
     public AzureRedisCredentials(String passwordlessPropertiesPrefix,
@@ -93,8 +93,8 @@ public class AzureRedisCredentials implements RedisCredentials {
     private void enhancePasswordlessProperties(Properties properties, PasswordlessProperties passwordlessProperties) {
         if (!passwordlessProperties.isPasswordlessEnabled()) {
             if (!passwordlessProperties.isPasswordlessEnabled()) {
-                LOGGER.debug("Feature passwordless authentication is not enabled({}.passwordless-enabled=false), " +
-                    "skip enhancing Redis properties.", passwordlessPropertiesPrefix);
+                LOGGER.debug("Feature passwordless authentication is not enabled({}.passwordless-enabled=false), "
+                    + "skip enhancing Redis properties.", passwordlessPropertiesPrefix);
                 return;
             }
         }
