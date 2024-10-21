@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.12 (Unreleased)
+## 1.0.0-beta.12 (2024-10-22)
 
 ### Features Added
 - Added support for service API version `2024-08-01-preview`.
@@ -28,9 +28,10 @@
 - Removed `azure_ml_index` from `AzureChatExtensionConfiguration` class, and its response models `AzureMachineLearningIndexConfiguration` and `AzureMachineLearningIndexChatExtensionParameters`.
 - Removed `role_information` from `AzureSearchChatExtensionParameters`, `ElasticsearchChatExtensionParameters` and `PineconeChatExtensionParameters` classes.
 
-### Bugs Fixed
-
 ### Other Changes
+
+- Upgraded `azure-core` to version `1.53.0`.
+- Upgraded `azure-core-http-netty` to version `1.15.5`.
 
 ## 1.0.0-beta.11 (2024-08-29)
 
