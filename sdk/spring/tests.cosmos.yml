@@ -29,6 +29,9 @@ pr:
 
 extends:
   # NOTE: This is for running spring data cosmos emulator tests
+  # Note: skipPublishDevFeed needs to be done for this library because this
+  # pipeline also runs scheduled, nightly builds but because azure-spring-data-cosmos
+  # is published to the dev feed in spring's ci.yml file and shouln't be published here.
   template: /eng/pipelines/templates/stages/cosmos-sdk-client.yml #NOTE: Non-standard template.
   parameters:
     ServiceDirectory: spring
@@ -38,6 +41,7 @@ extends:
         groupId: com.azure
         safeName: azurespringdatacosmos
         releaseInBatch: true
+        skipPublishDevFeed: true
     MatrixFilters:
       - JavaTestVersion=^(?!1.8|1.11).*
     LanguageFilter:
