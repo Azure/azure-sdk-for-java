@@ -31,22 +31,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MonitorOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MonitorOperationsClient.
+ */
 public final class MonitorOperationsClientImpl implements MonitorOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MonitorOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftElasticImpl client;
 
     /**
      * Initializes an instance of MonitorOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MonitorOperationsClientImpl(MicrosoftElasticImpl client) {
-        this.service =
-            RestProxy.create(MonitorOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(MonitorOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,26 +63,21 @@ public final class MonitorOperationsClientImpl implements MonitorOperationsClien
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftElasticMoni")
     public interface MonitorOperationsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/upgrade")
-        @ExpectedResponses({202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/upgrade")
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> upgrade(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @BodyParam("application/json") ElasticMonitorUpgrade body,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> upgrade(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @BodyParam("application/json") ElasticMonitorUpgrade body, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Upgradable version for a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body Elastic Monitor Upgrade Parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -85,19 +86,15 @@ public final class MonitorOperationsClientImpl implements MonitorOperationsClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(
-        String resourceGroupName, String monitorName, ElasticMonitorUpgrade body) {
+    private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(String resourceGroupName, String monitorName,
+        ElasticMonitorUpgrade body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -111,25 +108,15 @@ public final class MonitorOperationsClientImpl implements MonitorOperationsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .upgrade(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.upgrade(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Upgradable version for a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body Elastic Monitor Upgrade Parameters.
      * @param context The context to associate with this operation.
@@ -139,19 +126,15 @@ public final class MonitorOperationsClientImpl implements MonitorOperationsClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(
-        String resourceGroupName, String monitorName, ElasticMonitorUpgrade body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(String resourceGroupName, String monitorName,
+        ElasticMonitorUpgrade body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -165,22 +148,14 @@ public final class MonitorOperationsClientImpl implements MonitorOperationsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .upgrade(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                body,
-                accept,
-                context);
+        return service.upgrade(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, monitorName, body, accept, context);
     }
 
     /**
      * Upgradable version for a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body Elastic Monitor Upgrade Parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -189,19 +164,17 @@ public final class MonitorOperationsClientImpl implements MonitorOperationsClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpgradeAsync(
-        String resourceGroupName, String monitorName, ElasticMonitorUpgrade body) {
+    private PollerFlux<PollResult<Void>, Void> beginUpgradeAsync(String resourceGroupName, String monitorName,
+        ElasticMonitorUpgrade body) {
         Mono<Response<Flux<ByteBuffer>>> mono = upgradeWithResponseAsync(resourceGroupName, monitorName, body);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Upgradable version for a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -212,16 +185,14 @@ public final class MonitorOperationsClientImpl implements MonitorOperationsClien
     private PollerFlux<PollResult<Void>, Void> beginUpgradeAsync(String resourceGroupName, String monitorName) {
         final ElasticMonitorUpgrade body = null;
         Mono<Response<Flux<ByteBuffer>>> mono = upgradeWithResponseAsync(resourceGroupName, monitorName, body);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Upgradable version for a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body Elastic Monitor Upgrade Parameters.
      * @param context The context to associate with this operation.
@@ -231,19 +202,18 @@ public final class MonitorOperationsClientImpl implements MonitorOperationsClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpgradeAsync(
-        String resourceGroupName, String monitorName, ElasticMonitorUpgrade body, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginUpgradeAsync(String resourceGroupName, String monitorName,
+        ElasticMonitorUpgrade body, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = upgradeWithResponseAsync(resourceGroupName, monitorName, body, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Upgradable version for a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -258,8 +228,8 @@ public final class MonitorOperationsClientImpl implements MonitorOperationsClien
 
     /**
      * Upgradable version for a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body Elastic Monitor Upgrade Parameters.
      * @param context The context to associate with this operation.
@@ -269,15 +239,15 @@ public final class MonitorOperationsClientImpl implements MonitorOperationsClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpgrade(
-        String resourceGroupName, String monitorName, ElasticMonitorUpgrade body, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginUpgrade(String resourceGroupName, String monitorName,
+        ElasticMonitorUpgrade body, Context context) {
         return this.beginUpgradeAsync(resourceGroupName, monitorName, body, context).getSyncPoller();
     }
 
     /**
      * Upgradable version for a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body Elastic Monitor Upgrade Parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -287,15 +257,14 @@ public final class MonitorOperationsClientImpl implements MonitorOperationsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> upgradeAsync(String resourceGroupName, String monitorName, ElasticMonitorUpgrade body) {
-        return beginUpgradeAsync(resourceGroupName, monitorName, body)
-            .last()
+        return beginUpgradeAsync(resourceGroupName, monitorName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Upgradable version for a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -305,15 +274,14 @@ public final class MonitorOperationsClientImpl implements MonitorOperationsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> upgradeAsync(String resourceGroupName, String monitorName) {
         final ElasticMonitorUpgrade body = null;
-        return beginUpgradeAsync(resourceGroupName, monitorName, body)
-            .last()
+        return beginUpgradeAsync(resourceGroupName, monitorName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Upgradable version for a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body Elastic Monitor Upgrade Parameters.
      * @param context The context to associate with this operation.
@@ -323,17 +291,16 @@ public final class MonitorOperationsClientImpl implements MonitorOperationsClien
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> upgradeAsync(
-        String resourceGroupName, String monitorName, ElasticMonitorUpgrade body, Context context) {
-        return beginUpgradeAsync(resourceGroupName, monitorName, body, context)
-            .last()
+    private Mono<Void> upgradeAsync(String resourceGroupName, String monitorName, ElasticMonitorUpgrade body,
+        Context context) {
+        return beginUpgradeAsync(resourceGroupName, monitorName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Upgradable version for a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -347,8 +314,8 @@ public final class MonitorOperationsClientImpl implements MonitorOperationsClien
 
     /**
      * Upgradable version for a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body Elastic Monitor Upgrade Parameters.
      * @param context The context to associate with this operation.

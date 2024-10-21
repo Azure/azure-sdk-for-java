@@ -29,23 +29,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DetachTrafficFiltersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DetachTrafficFiltersClient.
+ */
 public final class DetachTrafficFiltersClientImpl implements DetachTrafficFiltersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DetachTrafficFiltersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftElasticImpl client;
 
     /**
      * Initializes an instance of DetachTrafficFiltersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DetachTrafficFiltersClientImpl(MicrosoftElasticImpl client) {
-        this.service =
-            RestProxy
-                .create(DetachTrafficFiltersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(DetachTrafficFiltersService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,26 +61,20 @@ public final class DetachTrafficFiltersClientImpl implements DetachTrafficFilter
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftElasticDeta")
     public interface DetachTrafficFiltersService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/detachTrafficFilter")
-        @ExpectedResponses({202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/detachTrafficFilter")
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @QueryParam("rulesetId") String rulesetId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @QueryParam("rulesetId") String rulesetId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Detach traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param rulesetId Ruleset Id of the filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -84,19 +83,15 @@ public final class DetachTrafficFiltersClientImpl implements DetachTrafficFilter
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String monitorName, String rulesetId) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String monitorName,
+        String rulesetId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -107,25 +102,15 @@ public final class DetachTrafficFiltersClientImpl implements DetachTrafficFilter
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            rulesetId,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, rulesetId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Detach traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param rulesetId Ruleset Id of the filter.
      * @param context The context to associate with this operation.
@@ -135,19 +120,15 @@ public final class DetachTrafficFiltersClientImpl implements DetachTrafficFilter
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String monitorName, String rulesetId, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String monitorName,
+        String rulesetId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -158,22 +139,14 @@ public final class DetachTrafficFiltersClientImpl implements DetachTrafficFilter
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                rulesetId,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, monitorName, rulesetId, accept, context);
     }
 
     /**
      * Detach traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param rulesetId Ruleset Id of the filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -182,19 +155,17 @@ public final class DetachTrafficFiltersClientImpl implements DetachTrafficFilter
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdateAsync(
-        String resourceGroupName, String monitorName, String rulesetId) {
+    private PollerFlux<PollResult<Void>, Void> beginUpdateAsync(String resourceGroupName, String monitorName,
+        String rulesetId) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, monitorName, rulesetId);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Detach traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -205,16 +176,14 @@ public final class DetachTrafficFiltersClientImpl implements DetachTrafficFilter
     private PollerFlux<PollResult<Void>, Void> beginUpdateAsync(String resourceGroupName, String monitorName) {
         final String rulesetId = null;
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, monitorName, rulesetId);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Detach traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param rulesetId Ruleset Id of the filter.
      * @param context The context to associate with this operation.
@@ -224,20 +193,19 @@ public final class DetachTrafficFiltersClientImpl implements DetachTrafficFilter
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdateAsync(
-        String resourceGroupName, String monitorName, String rulesetId, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginUpdateAsync(String resourceGroupName, String monitorName,
+        String rulesetId, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, monitorName, rulesetId, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, monitorName, rulesetId, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Detach traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -252,8 +220,8 @@ public final class DetachTrafficFiltersClientImpl implements DetachTrafficFilter
 
     /**
      * Detach traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param rulesetId Ruleset Id of the filter.
      * @param context The context to associate with this operation.
@@ -263,15 +231,15 @@ public final class DetachTrafficFiltersClientImpl implements DetachTrafficFilter
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdate(
-        String resourceGroupName, String monitorName, String rulesetId, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String monitorName,
+        String rulesetId, Context context) {
         return this.beginUpdateAsync(resourceGroupName, monitorName, rulesetId, context).getSyncPoller();
     }
 
     /**
      * Detach traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param rulesetId Ruleset Id of the filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,15 +249,14 @@ public final class DetachTrafficFiltersClientImpl implements DetachTrafficFilter
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> updateAsync(String resourceGroupName, String monitorName, String rulesetId) {
-        return beginUpdateAsync(resourceGroupName, monitorName, rulesetId)
-            .last()
+        return beginUpdateAsync(resourceGroupName, monitorName, rulesetId).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Detach traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -299,15 +266,14 @@ public final class DetachTrafficFiltersClientImpl implements DetachTrafficFilter
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> updateAsync(String resourceGroupName, String monitorName) {
         final String rulesetId = null;
-        return beginUpdateAsync(resourceGroupName, monitorName, rulesetId)
-            .last()
+        return beginUpdateAsync(resourceGroupName, monitorName, rulesetId).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Detach traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param rulesetId Ruleset Id of the filter.
      * @param context The context to associate with this operation.
@@ -318,15 +284,14 @@ public final class DetachTrafficFiltersClientImpl implements DetachTrafficFilter
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> updateAsync(String resourceGroupName, String monitorName, String rulesetId, Context context) {
-        return beginUpdateAsync(resourceGroupName, monitorName, rulesetId, context)
-            .last()
+        return beginUpdateAsync(resourceGroupName, monitorName, rulesetId, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Detach traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -340,8 +305,8 @@ public final class DetachTrafficFiltersClientImpl implements DetachTrafficFilter
 
     /**
      * Detach traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param rulesetId Ruleset Id of the filter.
      * @param context The context to associate with this operation.

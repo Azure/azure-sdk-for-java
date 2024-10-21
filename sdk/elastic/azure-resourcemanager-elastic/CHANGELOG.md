@@ -1,14 +1,226 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0 (2024-10-21)
+
+- Azure Resource Manager elastic client library for Java. This package contains Microsoft Azure SDK for elastic Management SDK.  Package tag package-2024-03-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.ElasticOrganizationToAzureSubscriptionMappingResponseProperties` was added
 
-### Bugs Fixed
+* `models.ConnectedPartnerResourceProperties` was added
 
-### Other Changes
+* `models.OpenAIIntegrationRPModel` was added
+
+* `models.OpenAIIntegrationStatusResponse` was added
+
+* `models.ElasticOrganizationToAzureSubscriptionMappingResponse` was added
+
+* `models.ConnectedPartnerResourcesListFormat` was added
+
+* `models.OpenAIIntegrationRPModel$UpdateStages` was added
+
+* `models.BillingInfoResponse` was added
+
+* `models.ConnectedPartnerResourcesListResponse` was added
+
+* `models.ConnectedPartnerResources` was added
+
+* `models.OpenAIIntegrationProperties` was added
+
+* `models.OpenAIIntegrationRPModel$Update` was added
+
+* `models.PartnerBillingEntity` was added
+
+* `models.OpenAIIntegrationRPModel$DefinitionStages` was added
+
+* `models.OpenAIs` was added
+
+* `models.BillingInfoes` was added
+
+* `models.OpenAIIntegrationRPModel$Definition` was added
+
+* `models.PlanDetails` was added
+
+* `models.OpenAIIntegrationStatusResponseProperties` was added
+
+* `models.OpenAIIntegrationRPModelListResponse` was added
+
+#### `models.IdentityProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ElasticProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ElasticMonitorResourceUpdateParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ExternalUserInfo` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.MarketplaceSaaSInfoMarketplaceSubscription` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DeploymentInfoResponse` was modified
+
+* `elasticsearchEndPoint()` was added
+
+#### `models.CompanyInfo` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.UserEmailId` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ElasticCloudUser` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.MonitorProperties` was modified
+
+* `sourceCampaignId()` was added
+* `withSourceCampaignId(java.lang.String)` was added
+* `subscriptionState()` was added
+* `withSubscriptionState(java.lang.String)` was added
+* `withPlanDetails(models.PlanDetails)` was added
+* `sourceCampaignName()` was added
+* `saaSAzureSubscriptionStatus()` was added
+* `withSourceCampaignName(java.lang.String)` was added
+* `planDetails()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `withSaaSAzureSubscriptionStatus(java.lang.String)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ElasticMonitorUpgrade` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ElasticVersionsListResponse` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `ElasticManager` was modified
+
+* `openAIs()` was added
+* `billingInfoes()` was added
+* `connectedPartnerResources()` was added
+
+#### `models.OperationListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.MonitoringTagRulesProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.MarketplaceSaaSInfo` was modified
+
+* `subscribed()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `marketplaceStatus()` was added
+* `withSubscribed(java.lang.Boolean)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `billedAzureSubscriptionId()` was added
+* `withBilledAzureSubscriptionId(java.lang.String)` was added
+* `withMarketplaceStatus(java.lang.String)` was added
+
+#### `models.ElasticMonitorResourceListResponse` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.UserInfo` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ElasticTrafficFilterRule` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ElasticTrafficFilter` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Organizations` was modified
+
+* `getElasticToAzureSubscriptionMapping()` was added
+* `getElasticToAzureSubscriptionMappingWithResponse(com.azure.core.util.Context)` was added
+
+#### `models.MonitoringTagRulesListResponse` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ElasticVersionListProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.LogRules` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.VMHostListResponse` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ResourceSku` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.FilteringTag` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.MonitoredResourceListResponse` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ElasticCloudDeployment` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.OperationDisplay` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.VMCollectionUpdate` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.UserApiKeyResponseProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 ## 1.0.0-beta.4 (2023-05-23)
 

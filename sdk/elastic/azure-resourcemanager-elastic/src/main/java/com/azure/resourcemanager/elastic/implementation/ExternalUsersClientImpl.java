@@ -27,22 +27,28 @@ import com.azure.resourcemanager.elastic.fluent.models.ExternalUserCreationRespo
 import com.azure.resourcemanager.elastic.models.ExternalUserInfo;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ExternalUsersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ExternalUsersClient.
+ */
 public final class ExternalUsersClientImpl implements ExternalUsersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ExternalUsersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftElasticImpl client;
 
     /**
      * Initializes an instance of ExternalUsersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ExternalUsersClientImpl(MicrosoftElasticImpl client) {
-        this.service =
-            RestProxy.create(ExternalUsersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ExternalUsersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,49 +59,40 @@ public final class ExternalUsersClientImpl implements ExternalUsersClient {
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftElasticExte")
     public interface ExternalUsersService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/createOrUpdateExternalUser")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/createOrUpdateExternalUser")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExternalUserCreationResponseInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @BodyParam("application/json") ExternalUserInfo body,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<ExternalUserCreationResponseInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @BodyParam("application/json") ExternalUserInfo body, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Create User inside elastic deployment which are used by customers to perform operations on the elastic
      * deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body Elastic External User Creation Parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the response we got from elastic while creating external user along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the properties of the response we got from elastic while creating external user along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExternalUserCreationResponseInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String monitorName, ExternalUserInfo body) {
+    private Mono<Response<ExternalUserCreationResponseInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String monitorName, ExternalUserInfo body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -109,49 +106,35 @@ public final class ExternalUsersClientImpl implements ExternalUsersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create User inside elastic deployment which are used by customers to perform operations on the elastic
      * deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body Elastic External User Creation Parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the response we got from elastic while creating external user along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the properties of the response we got from elastic while creating external user along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExternalUserCreationResponseInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String monitorName, ExternalUserInfo body, Context context) {
+    private Mono<Response<ExternalUserCreationResponseInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String monitorName, ExternalUserInfo body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -165,29 +148,21 @@ public final class ExternalUsersClientImpl implements ExternalUsersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                body,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, monitorName, body, accept, context);
     }
 
     /**
      * Create User inside elastic deployment which are used by customers to perform operations on the elastic
      * deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the response we got from elastic while creating external user on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExternalUserCreationResponseInner> createOrUpdateAsync(String resourceGroupName, String monitorName) {
@@ -199,28 +174,28 @@ public final class ExternalUsersClientImpl implements ExternalUsersClient {
     /**
      * Create User inside elastic deployment which are used by customers to perform operations on the elastic
      * deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body Elastic External User Creation Parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the response we got from elastic while creating external user along with {@link
-     *     Response}.
+     * @return the properties of the response we got from elastic while creating external user along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExternalUserCreationResponseInner> createOrUpdateWithResponse(
-        String resourceGroupName, String monitorName, ExternalUserInfo body, Context context) {
+    public Response<ExternalUserCreationResponseInner> createOrUpdateWithResponse(String resourceGroupName,
+        String monitorName, ExternalUserInfo body, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, monitorName, body, context).block();
     }
 
     /**
      * Create User inside elastic deployment which are used by customers to perform operations on the elastic
      * deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
