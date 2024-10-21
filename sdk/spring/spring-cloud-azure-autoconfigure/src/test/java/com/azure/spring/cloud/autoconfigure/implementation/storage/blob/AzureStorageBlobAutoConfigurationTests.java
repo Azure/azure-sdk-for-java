@@ -7,7 +7,6 @@ import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.AbstractAzureServiceConfigurationTests;
 import com.azure.spring.cloud.autoconfigure.implementation.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properties.AzureStorageBlobConnectionDetails;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properties.AzureStorageBlobProperties;
 import com.azure.spring.cloud.service.implementation.storage.blob.BlobServiceClientBuilderFactory;

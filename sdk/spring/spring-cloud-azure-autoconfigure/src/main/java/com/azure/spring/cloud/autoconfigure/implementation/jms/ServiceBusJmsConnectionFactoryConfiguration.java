@@ -38,7 +38,7 @@ import static com.azure.spring.cloud.service.implementation.identity.credential.
 @ConditionalOnMissingBean(ConnectionFactory.class)
 class ServiceBusJmsConnectionFactoryConfiguration  {
 
-    private static final Log logger = LogFactory.getLog(ServiceBusJmsConnectionFactoryConfiguration.class);
+    private static final Log LOGGER = LogFactory.getLog(ServiceBusJmsConnectionFactoryConfiguration.class);
     private final GenericApplicationContext applicationContext;
 
     ServiceBusJmsConnectionFactoryConfiguration(GenericApplicationContext applicationContext) {
@@ -55,8 +55,8 @@ class ServiceBusJmsConnectionFactoryConfiguration  {
 
     private TokenCredentialProvider getPasswordlessTokenCredentialProvider(AzureServiceBusJmsProperties serviceBusJmsProperties) {
         if (!serviceBusJmsProperties.isPasswordlessEnabled()) {
-            logger.debug("Feature passwordless authentication is not enabled(" + AzureServiceBusJmsProperties.PREFIX + ".passwordless-enabled=false), " +
-                "skip enhancing Service Bus JMS properties.");
+            LOGGER.debug("Feature passwordless authentication is not enabled(" + AzureServiceBusJmsProperties.PREFIX + ".passwordless-enabled=false), "
+                + "skip enhancing Service Bus JMS properties.");
             return null;
         }
 
