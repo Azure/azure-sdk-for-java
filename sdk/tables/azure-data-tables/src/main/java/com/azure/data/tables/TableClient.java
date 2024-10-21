@@ -30,12 +30,11 @@ import com.azure.data.tables.implementation.TransactionalBatchImpl;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
-import com.azure.data.tables.implementation.models.SignedIdentifier;
-import com.azure.data.tables.implementation.models.SignedIdentifierWrapper;
 import com.azure.data.tables.implementation.models.TableEntityQueryResponse;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
 import com.azure.data.tables.implementation.models.TableServiceJsonError;
+import com.azure.data.tables.implementation.models.TableSignedIdentifierWrapper;
 import com.azure.data.tables.implementation.models.TablesGetAccessPolicyHeaders;
 import com.azure.data.tables.implementation.models.TablesQueryEntitiesHeaders;
 import com.azure.data.tables.implementation.models.TablesQueryEntityWithPartitionAndRowKeyHeaders;
@@ -1290,12 +1289,10 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableAccessPolicies> getAccessPoliciesWithResponse(Duration timeout, Context context) {
         Supplier<Response<TableAccessPolicies>> callable = () -> {
-            ResponseBase<TablesGetAccessPolicyHeaders, SignedIdentifierWrapper> response =
+            ResponseBase<TablesGetAccessPolicyHeaders, TableSignedIdentifierWrapper> response =
                 tablesImplementation.getTables().getAccessPolicyWithResponse(tableName, null, null, context);
             return new SimpleResponse<>(response,
-                new TableAccessPolicies(response.getValue() == null ? null : response.getValue().items().stream()
-                    .map(TableUtils::toTableSignedIdentifier)
-                    .collect(Collectors.toList())));
+                new TableAccessPolicies(response.getValue() == null ? null : response.getValue().items()));
         };
 
         return callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger);
@@ -1383,41 +1380,28 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
                                                         Duration timeout, Context context) {
-        List<SignedIdentifier> signedIdentifiers = null;
-
         if (tableSignedIdentifiers != null) {
-            signedIdentifiers = tableSignedIdentifiers.stream()
-                .map(tableSignedIdentifier -> {
-                    SignedIdentifier signedIdentifier = TableUtils.toSignedIdentifier(tableSignedIdentifier);
-
-                    if (signedIdentifier != null) {
-                        if (signedIdentifier.getAccessPolicy() != null
-                            && signedIdentifier.getAccessPolicy().getStart() != null) {
-
-                            signedIdentifier.getAccessPolicy()
-                                .setStart(signedIdentifier.getAccessPolicy()
-                                    .getStart().truncatedTo(ChronoUnit.SECONDS));
-                        }
-
-                        if (signedIdentifier.getAccessPolicy() != null
-                            && signedIdentifier.getAccessPolicy().getExpiry() != null) {
-
-                            signedIdentifier.getAccessPolicy()
-                                .setExpiry(signedIdentifier.getAccessPolicy()
-                                    .getExpiry().truncatedTo(ChronoUnit.SECONDS));
-                        }
+            for (TableSignedIdentifier signedIdentifier : tableSignedIdentifiers) {
+                if (signedIdentifier != null && signedIdentifier.getAccessPolicy() != null) {
+                    if (signedIdentifier.getAccessPolicy().getStartsOn() != null) {
+                        signedIdentifier.getAccessPolicy()
+                            .setStartsOn(signedIdentifier.getAccessPolicy()
+                                .getStartsOn().truncatedTo(ChronoUnit.SECONDS));
                     }
 
-                    return signedIdentifier;
-                })
-                .collect(Collectors.toList());
+                    if (signedIdentifier.getAccessPolicy().getExpiresOn() != null) {
+                        signedIdentifier.getAccessPolicy()
+                            .setExpiresOn(signedIdentifier.getAccessPolicy()
+                                .getExpiresOn().truncatedTo(ChronoUnit.SECONDS));
+                    }
+                }
+            }
         }
 
-        List<SignedIdentifier> finalSignedIdentifiers = signedIdentifiers;
         Supplier<Response<Void>> callable = () -> {
             ResponseBase<TablesSetAccessPolicyHeaders, Void> response = tablesImplementation.getTables()
                 .setAccessPolicyWithResponse(tableName, null, null,
-                    finalSignedIdentifiers, context);
+                    tableSignedIdentifiers, context);
             return new SimpleResponse<>(response, response.getValue());
         };
 

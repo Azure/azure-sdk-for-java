@@ -719,7 +719,7 @@ public final class TableServiceAsyncClient {
         try {
             return this.implementation.getServices().getPropertiesWithResponseAsync(null, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
-                .map(response -> new SimpleResponse<>(response, TableUtils.toTableServiceProperties(response.getValue())));
+                .map(response -> new SimpleResponse<>(response, response.getValue()));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -806,12 +806,10 @@ public final class TableServiceAsyncClient {
 
     Mono<Response<Void>> setPropertiesWithResponse(TableServiceProperties tableServiceProperties, Context context) {
         try {
-            return
-                this.implementation.getServices()
-                    .setPropertiesWithResponseAsync(TableUtils.toImplTableServiceProperties(tableServiceProperties), null, null,
-                        context)
-                    .onErrorMap(TableUtils::mapThrowableToTableServiceException)
-                    .map(response -> new SimpleResponse<>(response, null));
+            return this.implementation.getServices()
+                .setPropertiesWithResponseAsync(tableServiceProperties, null, null, context)
+                .onErrorMap(TableUtils::mapThrowableToTableServiceException)
+                .map(response -> new SimpleResponse<>(response, null));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -876,7 +874,7 @@ public final class TableServiceAsyncClient {
         try {
             return this.implementation.getServices().getStatisticsWithResponseAsync(null, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
-                .map(response -> new SimpleResponse<>(response, TableUtils.toTableServiceStatistics(response.getValue())));
+                .map(response -> new SimpleResponse<>(response, response.getValue()));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }

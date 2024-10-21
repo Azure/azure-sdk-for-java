@@ -30,7 +30,6 @@ import com.azure.data.tables.implementation.TransactionalBatchImpl;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
-import com.azure.data.tables.implementation.models.SignedIdentifier;
 import com.azure.data.tables.implementation.models.TableEntityQueryResponse;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
@@ -1339,9 +1338,7 @@ public final class TableAsyncClient {
                 .getAccessPolicyWithResponseAsync(tableName, null, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> new SimpleResponse<>(response,
-                    new TableAccessPolicies(response.getValue() == null ? null : response.getValue().items().stream()
-                        .map(TableUtils::toTableSignedIdentifier)
-                        .collect(Collectors.toList()))));
+                    new TableAccessPolicies(response.getValue() == null ? null : response.getValue().items())));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -1432,45 +1429,34 @@ public final class TableAsyncClient {
 
     Mono<Response<Void>> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
                                                        Context context) {
-        List<SignedIdentifier> signedIdentifiers = null;
-
         /*
-        We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
-        OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
-        allows for proper serialization with no real detriment to users as sub-second precision on active time for
-        signed identifiers is not really necessary.
+         * We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
+         * OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
+         * allows for proper serialization with no real detriment to users as sub-second precision on active time for
+         * signed identifiers is not really necessary.
          */
         if (tableSignedIdentifiers != null) {
-            signedIdentifiers = tableSignedIdentifiers.stream()
-                .map(tableSignedIdentifier -> {
-                    SignedIdentifier signedIdentifier = TableUtils.toSignedIdentifier(tableSignedIdentifier);
-
-                    if (signedIdentifier != null) {
-                        if (signedIdentifier.getAccessPolicy() != null
-                            && signedIdentifier.getAccessPolicy().getStart() != null) {
-
-                            signedIdentifier.getAccessPolicy()
-                                .setStart(signedIdentifier.getAccessPolicy()
-                                    .getStart().truncatedTo(ChronoUnit.SECONDS));
-                        }
-
-                        if (signedIdentifier.getAccessPolicy() != null
-                            && signedIdentifier.getAccessPolicy().getExpiry() != null) {
-
-                            signedIdentifier.getAccessPolicy()
-                                .setExpiry(signedIdentifier.getAccessPolicy()
-                                    .getExpiry().truncatedTo(ChronoUnit.SECONDS));
-                        }
+            for (TableSignedIdentifier signedIdentifier : tableSignedIdentifiers) {
+                if (signedIdentifier != null && signedIdentifier.getAccessPolicy() != null) {
+                    if (signedIdentifier.getAccessPolicy().getStartsOn() != null) {
+                        signedIdentifier.getAccessPolicy()
+                            .setStartsOn(signedIdentifier.getAccessPolicy()
+                                .getStartsOn().truncatedTo(ChronoUnit.SECONDS));
                     }
 
-                    return signedIdentifier;
-                })
-                .collect(Collectors.toList());
+                    if (signedIdentifier.getAccessPolicy().getExpiresOn() != null) {
+
+                        signedIdentifier.getAccessPolicy()
+                            .setExpiresOn(signedIdentifier.getAccessPolicy()
+                                .getExpiresOn().truncatedTo(ChronoUnit.SECONDS));
+                    }
+                }
+            }
         }
 
         try {
             return tablesImplementation.getTables()
-                .setAccessPolicyWithResponseAsync(tableName, null, null, signedIdentifiers, context)
+                .setAccessPolicyWithResponseAsync(tableName, null, null, tableSignedIdentifiers, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> new SimpleResponse<>(response, response.getValue()));
         } catch (RuntimeException e) {
