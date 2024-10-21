@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The UserApiKeyResponseProperties model. */
+/**
+ * The UserApiKeyResponseProperties model.
+ */
 @Fluent
-public final class UserApiKeyResponseProperties {
+public final class UserApiKeyResponseProperties implements JsonSerializable<UserApiKeyResponseProperties> {
     /*
      * The User Api Key Generated based on GenerateApiKey flag. This is applicable for non-Portal clients only.
      */
-    @JsonProperty(value = "apiKey")
     private String apiKey;
 
-    /** Creates an instance of UserApiKeyResponseProperties class. */
+    /**
+     * Creates an instance of UserApiKeyResponseProperties class.
+     */
     public UserApiKeyResponseProperties() {
     }
 
     /**
      * Get the apiKey property: The User Api Key Generated based on GenerateApiKey flag. This is applicable for
      * non-Portal clients only.
-     *
+     * 
      * @return the apiKey value.
      */
     public String apiKey() {
@@ -33,7 +40,7 @@ public final class UserApiKeyResponseProperties {
     /**
      * Set the apiKey property: The User Api Key Generated based on GenerateApiKey flag. This is applicable for
      * non-Portal clients only.
-     *
+     * 
      * @param apiKey the apiKey value to set.
      * @return the UserApiKeyResponseProperties object itself.
      */
@@ -44,9 +51,45 @@ public final class UserApiKeyResponseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("apiKey", this.apiKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserApiKeyResponseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserApiKeyResponseProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserApiKeyResponseProperties.
+     */
+    public static UserApiKeyResponseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserApiKeyResponseProperties deserializedUserApiKeyResponseProperties = new UserApiKeyResponseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("apiKey".equals(fieldName)) {
+                    deserializedUserApiKeyResponseProperties.apiKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserApiKeyResponseProperties;
+        });
     }
 }

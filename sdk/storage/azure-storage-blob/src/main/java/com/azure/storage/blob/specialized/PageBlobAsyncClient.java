@@ -32,6 +32,7 @@ import com.azure.storage.blob.implementation.models.PageBlobsUpdateSequenceNumbe
 import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesFromURLHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesHeaders;
 import com.azure.storage.blob.implementation.models.PageListHelper;
+import com.azure.storage.blob.implementation.util.BlobConstants;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
@@ -92,12 +93,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     /**
      * Indicates the number of bytes in a page.
      */
-    public static final int PAGE_BYTES = 512;
+    public static final int PAGE_BYTES = BlobConstants.PAGE_BYTES;
 
     /**
      * Indicates the maximum number of bytes that may be sent in a call to putPage.
      */
-    public static final int MAX_PUT_PAGES_BYTES = 4 * Constants.MB;
+    public static final int MAX_PUT_PAGES_BYTES = BlobConstants.MAX_PUT_PAGES_BYTES;
 
     private static final ClientLogger LOGGER = new ClientLogger(PageBlobAsyncClient.class);
 
@@ -160,23 +161,6 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         return new PageBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), finalCustomerProvidedKey, encryptionScope,
             getVersionId());
-    }
-
-    private static String pageRangeToString(PageRange pageRange) {
-        if (pageRange.getStart() < 0 || pageRange.getEnd() <= 0) {
-            throw new IllegalArgumentException("PageRange's start and end values must be greater than or equal to "
-                + "0 if specified.");
-        }
-        if (pageRange.getStart() % PAGE_BYTES != 0) {
-            throw new IllegalArgumentException("PageRange's start value must be a multiple of 512.");
-        }
-        if (pageRange.getEnd() % PAGE_BYTES != PAGE_BYTES - 1) {
-            throw new IllegalArgumentException("PageRange's end value must be 1 less than a multiple of 512.");
-        }
-        if (pageRange.getEnd() <= pageRange.getStart()) {
-            throw new IllegalArgumentException("PageRange's End value must be after the start.");
-        }
-        return "bytes=" + pageRange.getStart() + '-' + pageRange.getEnd();
     }
 
     /**
@@ -339,7 +323,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             options.getSize(), null, null, options.getMetadata(), requestConditions.getLeaseId(),
             requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
             requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(),
-            options.getSequenceNumber(), null, tagsToString(options.getTags()),
+            options.getSequenceNumber(), null, ModelHelper.tagsToString(options.getTags()),
             immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(), options.isLegalHold(),
             options.getHeaders(), getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
@@ -529,7 +513,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             // subscription.
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("pageRange cannot be null."));
         }
-        String pageRangeStr = pageRangeToString(pageRange);
+        String pageRangeStr = ModelHelper.pageRangeToString(pageRange);
         context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.getPageBlobs().uploadPagesWithResponseAsync(containerName, blobName,
@@ -540,7 +524,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             pageBlobRequestConditions.getIfSequenceNumberEqualTo(), pageBlobRequestConditions.getIfModifiedSince(),
             pageBlobRequestConditions.getIfUnmodifiedSince(), pageBlobRequestConditions.getIfMatch(),
             pageBlobRequestConditions.getIfNoneMatch(), pageBlobRequestConditions.getTagsConditions(), null,
-            getCustomerProvidedKey(), encryptionScope, context)
+            null, null, getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
                 PageBlobsUploadPagesHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -688,11 +672,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("range cannot be null."));
         }
 
-        String rangeString = pageRangeToString(options.getRange());
+        String rangeString = ModelHelper.pageRangeToString(options.getRange());
 
         long sourceOffset = options.getSourceOffset() == null ? 0L : options.getSourceOffset();
 
-        String sourceRangeString = pageRangeToString(new PageRange()
+        String sourceRangeString = ModelHelper.pageRangeToString(new PageRange()
             .setStart(sourceOffset)
             .setEnd(sourceOffset + (options.getRange().getEnd() - options.getRange().getStart())));
 
@@ -803,7 +787,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             // subscription.
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("pageRange cannot be null."));
         }
-        String pageRangeStr = pageRangeToString(pageRange);
+        String pageRangeStr = ModelHelper.pageRangeToString(pageRange);
         context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.getPageBlobs().clearPagesWithResponseAsync(containerName, blobName, 0,

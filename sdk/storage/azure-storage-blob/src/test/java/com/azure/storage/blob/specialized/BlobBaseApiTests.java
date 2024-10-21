@@ -702,7 +702,7 @@ public class BlobBaseApiTests extends BlobTestBase {
 
         BlobAsyncClientBase clientMock = mock(BlobAsyncClientBase.class);
         when(clientMock.queryWithResponse(options)).thenReturn(Mono.empty());
-
+        when(clientMock.getServiceVersion()).thenReturn(BlobServiceVersion.getLatest());
         BlobClientBase bc = new BlobClientBase(clientMock);
 
         assertThrows(IllegalStateException.class, () -> bc.openQueryInputStreamWithResponse(options));

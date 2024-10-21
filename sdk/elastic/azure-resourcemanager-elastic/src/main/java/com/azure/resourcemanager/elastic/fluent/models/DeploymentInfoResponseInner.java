@@ -5,56 +5,64 @@
 package com.azure.resourcemanager.elastic.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.elastic.models.ElasticDeploymentStatus;
 import com.azure.resourcemanager.elastic.models.MarketplaceSaaSInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of deployment in Elastic cloud corresponding to the Elastic monitor resource. */
+/**
+ * The properties of deployment in Elastic cloud corresponding to the Elastic monitor resource.
+ */
 @Immutable
-public final class DeploymentInfoResponseInner {
+public final class DeploymentInfoResponseInner implements JsonSerializable<DeploymentInfoResponseInner> {
     /*
      * The Elastic deployment status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ElasticDeploymentStatus status;
 
     /*
      * Version of the elasticsearch in Elastic cloud deployment.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
      * RAM capacity of the elasticsearch in Elastic cloud deployment.
      */
-    @JsonProperty(value = "memoryCapacity", access = JsonProperty.Access.WRITE_ONLY)
     private String memoryCapacity;
 
     /*
      * Disk capacity of the elasticsearch in Elastic cloud deployment.
      */
-    @JsonProperty(value = "diskCapacity", access = JsonProperty.Access.WRITE_ONLY)
     private String diskCapacity;
+
+    /*
+     * Elasticsearch endpoint in Elastic cloud deployment. This is either the aliased_endpoint if available, or the
+     * service_url otherwise.
+     */
+    private String elasticsearchEndPoint;
 
     /*
      * Deployment URL of the elasticsearch in Elastic cloud deployment.
      */
-    @JsonProperty(value = "deploymentUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String deploymentUrl;
 
     /*
      * Marketplace SaaS Info of the resource.
      */
-    @JsonProperty(value = "marketplaceSaasInfo", access = JsonProperty.Access.WRITE_ONLY)
     private MarketplaceSaaSInfo marketplaceSaasInfo;
 
-    /** Creates an instance of DeploymentInfoResponseInner class. */
+    /**
+     * Creates an instance of DeploymentInfoResponseInner class.
+     */
     public DeploymentInfoResponseInner() {
     }
 
     /**
      * Get the status property: The Elastic deployment status.
-     *
+     * 
      * @return the status value.
      */
     public ElasticDeploymentStatus status() {
@@ -63,7 +71,7 @@ public final class DeploymentInfoResponseInner {
 
     /**
      * Get the version property: Version of the elasticsearch in Elastic cloud deployment.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -72,7 +80,7 @@ public final class DeploymentInfoResponseInner {
 
     /**
      * Get the memoryCapacity property: RAM capacity of the elasticsearch in Elastic cloud deployment.
-     *
+     * 
      * @return the memoryCapacity value.
      */
     public String memoryCapacity() {
@@ -81,7 +89,7 @@ public final class DeploymentInfoResponseInner {
 
     /**
      * Get the diskCapacity property: Disk capacity of the elasticsearch in Elastic cloud deployment.
-     *
+     * 
      * @return the diskCapacity value.
      */
     public String diskCapacity() {
@@ -89,8 +97,18 @@ public final class DeploymentInfoResponseInner {
     }
 
     /**
+     * Get the elasticsearchEndPoint property: Elasticsearch endpoint in Elastic cloud deployment. This is either the
+     * aliased_endpoint if available, or the service_url otherwise.
+     * 
+     * @return the elasticsearchEndPoint value.
+     */
+    public String elasticsearchEndPoint() {
+        return this.elasticsearchEndPoint;
+    }
+
+    /**
      * Get the deploymentUrl property: Deployment URL of the elasticsearch in Elastic cloud deployment.
-     *
+     * 
      * @return the deploymentUrl value.
      */
     public String deploymentUrl() {
@@ -99,7 +117,7 @@ public final class DeploymentInfoResponseInner {
 
     /**
      * Get the marketplaceSaasInfo property: Marketplace SaaS Info of the resource.
-     *
+     * 
      * @return the marketplaceSaasInfo value.
      */
     public MarketplaceSaaSInfo marketplaceSaasInfo() {
@@ -108,12 +126,60 @@ public final class DeploymentInfoResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (marketplaceSaasInfo() != null) {
             marketplaceSaasInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentInfoResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentInfoResponseInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeploymentInfoResponseInner.
+     */
+    public static DeploymentInfoResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentInfoResponseInner deserializedDeploymentInfoResponseInner = new DeploymentInfoResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedDeploymentInfoResponseInner.status
+                        = ElasticDeploymentStatus.fromString(reader.getString());
+                } else if ("version".equals(fieldName)) {
+                    deserializedDeploymentInfoResponseInner.version = reader.getString();
+                } else if ("memoryCapacity".equals(fieldName)) {
+                    deserializedDeploymentInfoResponseInner.memoryCapacity = reader.getString();
+                } else if ("diskCapacity".equals(fieldName)) {
+                    deserializedDeploymentInfoResponseInner.diskCapacity = reader.getString();
+                } else if ("elasticsearchEndPoint".equals(fieldName)) {
+                    deserializedDeploymentInfoResponseInner.elasticsearchEndPoint = reader.getString();
+                } else if ("deploymentUrl".equals(fieldName)) {
+                    deserializedDeploymentInfoResponseInner.deploymentUrl = reader.getString();
+                } else if ("marketplaceSaasInfo".equals(fieldName)) {
+                    deserializedDeploymentInfoResponseInner.marketplaceSaasInfo = MarketplaceSaaSInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentInfoResponseInner;
+        });
     }
 }

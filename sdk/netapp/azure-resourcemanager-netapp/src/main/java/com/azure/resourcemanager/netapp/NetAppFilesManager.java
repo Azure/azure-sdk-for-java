@@ -11,8 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -26,11 +26,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.NetAppManagementClient;
 import com.azure.resourcemanager.netapp.implementation.AccountsImpl;
 import com.azure.resourcemanager.netapp.implementation.BackupPoliciesImpl;
+import com.azure.resourcemanager.netapp.implementation.BackupVaultsImpl;
 import com.azure.resourcemanager.netapp.implementation.BackupsImpl;
 import com.azure.resourcemanager.netapp.implementation.BackupsUnderAccountsImpl;
 import com.azure.resourcemanager.netapp.implementation.BackupsUnderBackupVaultsImpl;
 import com.azure.resourcemanager.netapp.implementation.BackupsUnderVolumesImpl;
-import com.azure.resourcemanager.netapp.implementation.BackupVaultsImpl;
 import com.azure.resourcemanager.netapp.implementation.NetAppManagementClientBuilder;
 import com.azure.resourcemanager.netapp.implementation.NetAppResourceQuotaLimitsImpl;
 import com.azure.resourcemanager.netapp.implementation.NetAppResourceRegionInfosImpl;
@@ -45,11 +45,11 @@ import com.azure.resourcemanager.netapp.implementation.VolumeQuotaRulesImpl;
 import com.azure.resourcemanager.netapp.implementation.VolumesImpl;
 import com.azure.resourcemanager.netapp.models.Accounts;
 import com.azure.resourcemanager.netapp.models.BackupPolicies;
+import com.azure.resourcemanager.netapp.models.BackupVaults;
 import com.azure.resourcemanager.netapp.models.Backups;
 import com.azure.resourcemanager.netapp.models.BackupsUnderAccounts;
 import com.azure.resourcemanager.netapp.models.BackupsUnderBackupVaults;
 import com.azure.resourcemanager.netapp.models.BackupsUnderVolumes;
-import com.azure.resourcemanager.netapp.models.BackupVaults;
 import com.azure.resourcemanager.netapp.models.NetAppResourceQuotaLimits;
 import com.azure.resourcemanager.netapp.models.NetAppResourceRegionInfos;
 import com.azure.resourcemanager.netapp.models.NetAppResources;
@@ -273,7 +273,7 @@ public final class NetAppFilesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.netapp")
                 .append("/")
-                .append("1.4.0");
+                .append("1.5.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
