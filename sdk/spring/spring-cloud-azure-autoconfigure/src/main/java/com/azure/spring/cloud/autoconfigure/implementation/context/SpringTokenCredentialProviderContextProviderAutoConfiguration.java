@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(AzureAuthenticationTemplate.class)
-class SpringTokenCredentialProviderContextProviderAutoConfiguration {
+public class SpringTokenCredentialProviderContextProviderAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean

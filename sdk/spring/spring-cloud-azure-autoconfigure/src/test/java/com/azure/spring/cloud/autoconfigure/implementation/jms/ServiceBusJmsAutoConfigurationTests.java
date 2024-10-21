@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.jms;
 
+import com.azure.spring.cloud.autoconfigure.implementation.context.SpringTokenCredentialProviderContextProviderAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
@@ -45,7 +46,10 @@ class ServiceBusJmsAutoConfigurationTests {
         new AzureServiceBusJmsPropertiesEnvironmentPostProcessor();
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-        .withConfiguration(AutoConfigurations.of(JmsAutoConfiguration.class, ServiceBusJmsAutoConfiguration.class))
+        .withConfiguration(AutoConfigurations.of(
+            SpringTokenCredentialProviderContextProviderAutoConfiguration.class,
+            JmsAutoConfiguration.class,
+            ServiceBusJmsAutoConfiguration.class))
         .withInitializer(context -> processor.postProcessEnvironment(context.getEnvironment(), null));
 
     private void testQueueJmsListenerContainerFactoryWithCustomSettings(AssertableApplicationContext loaded) {
