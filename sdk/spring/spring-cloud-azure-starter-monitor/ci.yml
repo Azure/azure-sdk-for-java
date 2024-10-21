@@ -9,7 +9,6 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/spring/ci.monitor.yml
       - sdk/spring/spring-cloud-azure-starter-monitor/
       - sdk/spring/spring-cloud-azure-starter-monitor-test/
 pr:
@@ -21,12 +20,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/spring/ci.monitor.yml
       - sdk/spring/spring-cloud-azure-starter-monitor/
       - sdk/spring/spring-cloud-azure-starter-monitor-test/
 
 extends:
-  template:  ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  template:  /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: spring
     Artifacts:
