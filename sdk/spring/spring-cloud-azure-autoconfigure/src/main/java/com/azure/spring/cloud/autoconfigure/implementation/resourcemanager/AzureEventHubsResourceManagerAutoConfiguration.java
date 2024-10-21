@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.resourcemanager;
 
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.implementation.condition.ConditionalOnMissingProperty;
+import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.resourcemanager.implementation.connectionstring.EventHubsArmConnectionStringProvider;
 import com.azure.spring.cloud.resourcemanager.implementation.provisioning.DefaultEventHubsProvisioner;
@@ -42,7 +43,11 @@ public class AzureEventHubsResourceManagerAutoConfiguration extends AzureService
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureEventHubsProperties.PREFIX, value = "namespace")
-    @ConditionalOnMissingProperty(prefix = AzureEventHubsProperties.PREFIX, value = "connection-string")
+    @ConditionalOnMissingProperty({
+        AzureEventHubsProperties.PREFIX + ".connection-string",
+        AzureGlobalProperties.PREFIX + ".credential.token-credential-bean-name",
+        AzureEventHubsProperties.PREFIX + ".credential.token-credential-bean-name"
+    })
     @Order
     EventHubsArmConnectionStringProvider eventHubsArmConnectionStringProvider() {
 
