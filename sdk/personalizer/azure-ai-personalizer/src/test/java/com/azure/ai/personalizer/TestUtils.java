@@ -4,15 +4,21 @@
 package com.azure.ai.personalizer;
 
 import com.azure.ai.personalizer.models.PersonalizerAudience;
+import com.azure.ai.personalizer.testmodels.ReadValue;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzureAuthorityHosts;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
 import org.junit.jupiter.params.provider.Arguments;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
@@ -104,5 +110,33 @@ public final class TestUtils {
         String[] configuredServiceVersionList = serviceVersionFromEnv.split(",");
         return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
             serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
+    }
+
+    /**
+     * Helper method for deserializing {@link JsonSerializable} instances that don't have constructor parameters.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @param createObject The supplier that creates a new instance of the type being deserialized if the
+     * {@link JsonReader} isn't pointing to {@link JsonToken#NULL}.
+     * @param readValue The handler for reading each field in the JSON object.
+     * @return An instance of the type being deserialized, or null if the {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @param <T> The type being deserialized.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static <T> T deserializationHelper(JsonReader jsonReader, Supplier<T> createObject,
+        ReadValue<T> readValue) throws IOException {
+        return jsonReader.readObject(reader -> {
+            T object = createObject.get();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                readValue.read(reader, fieldName, object);
+            }
+
+            return object;
+        });
     }
 }
