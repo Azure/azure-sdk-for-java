@@ -10,12 +10,14 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 
-/** An instance of this class provides access to all the operations defined in CreateAndAssociateIpFiltersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CreateAndAssociateIpFiltersClient.
+ */
 public interface CreateAndAssociateIpFiltersClient {
     /**
      * Create and Associate IP traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -27,8 +29,8 @@ public interface CreateAndAssociateIpFiltersClient {
 
     /**
      * Create and Associate IP traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ips List of ips.
      * @param name Name of the traffic filter.
@@ -39,13 +41,13 @@ public interface CreateAndAssociateIpFiltersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreate(
-        String resourceGroupName, String monitorName, String ips, String name, Context context);
+    SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String monitorName, String ips,
+        String name, Context context);
 
     /**
      * Create and Associate IP traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -56,8 +58,8 @@ public interface CreateAndAssociateIpFiltersClient {
 
     /**
      * Create and Associate IP traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ips List of ips.
      * @param name Name of the traffic filter.

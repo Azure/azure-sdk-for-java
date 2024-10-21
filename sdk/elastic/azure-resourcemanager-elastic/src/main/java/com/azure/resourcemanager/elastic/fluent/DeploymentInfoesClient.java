@@ -10,28 +10,30 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.elastic.fluent.models.DeploymentInfoResponseInner;
 
-/** An instance of this class provides access to all the operations defined in DeploymentInfoesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DeploymentInfoesClient.
+ */
 public interface DeploymentInfoesClient {
     /**
      * Fetch information regarding Elastic cloud deployment corresponding to the Elastic monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of deployment in Elastic cloud corresponding to the Elastic monitor resource along with
-     *     {@link Response}.
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeploymentInfoResponseInner> listWithResponse(
-        String resourceGroupName, String monitorName, Context context);
+    Response<DeploymentInfoResponseInner> listWithResponse(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * Fetch information regarding Elastic cloud deployment corresponding to the Elastic monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
