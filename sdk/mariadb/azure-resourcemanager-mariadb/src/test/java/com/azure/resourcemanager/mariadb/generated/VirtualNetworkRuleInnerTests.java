@@ -11,23 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualNetworkRuleInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworkRuleInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"virtualNetworkSubnetId\":\"krlkhbzhfepg\",\"ignoreMissingVnetServiceEndpoint\":false,\"state\":\"InProgress\"},\"id\":\"zloc\",\"name\":\"scpai\",\"type\":\"rhhbcs\"}")
-                .toObject(VirtualNetworkRuleInner.class);
-        Assertions.assertEquals("krlkhbzhfepg", model.virtualNetworkSubnetId());
-        Assertions.assertEquals(false, model.ignoreMissingVnetServiceEndpoint());
+        VirtualNetworkRuleInner model = BinaryData.fromString(
+            "{\"properties\":{\"virtualNetworkSubnetId\":\"wjdk\",\"ignoreMissingVnetServiceEndpoint\":true,\"state\":\"Deleting\"},\"id\":\"dqxhcrmnohjtckwh\",\"name\":\"soifiyipjxsqw\",\"type\":\"gr\"}")
+            .toObject(VirtualNetworkRuleInner.class);
+        Assertions.assertEquals("wjdk", model.virtualNetworkSubnetId());
+        Assertions.assertEquals(true, model.ignoreMissingVnetServiceEndpoint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualNetworkRuleInner model =
-            new VirtualNetworkRuleInner()
-                .withVirtualNetworkSubnetId("krlkhbzhfepg")
-                .withIgnoreMissingVnetServiceEndpoint(false);
+        VirtualNetworkRuleInner model = new VirtualNetworkRuleInner().withVirtualNetworkSubnetId("wjdk")
+            .withIgnoreMissingVnetServiceEndpoint(true);
         model = BinaryData.fromObject(model).toObject(VirtualNetworkRuleInner.class);
-        Assertions.assertEquals("krlkhbzhfepg", model.virtualNetworkSubnetId());
-        Assertions.assertEquals(false, model.ignoreMissingVnetServiceEndpoint());
+        Assertions.assertEquals("wjdk", model.virtualNetworkSubnetId());
+        Assertions.assertEquals(true, model.ignoreMissingVnetServiceEndpoint());
     }
 }

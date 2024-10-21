@@ -6,49 +6,52 @@ package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The purchase SKU for CloudSimple paid resources. */
+/**
+ * The purchase SKU for CloudSimple paid resources.
+ */
 @Fluent
-public final class Sku {
+public final class Sku implements JsonSerializable<Sku> {
     /*
      * The capacity of the SKU
      */
-    @JsonProperty(value = "capacity")
     private String capacity;
 
     /*
      * dedicatedCloudNode example: 8 x Ten-Core Intel® Xeon® Processor E5-2640 v4 2.40GHz 25MB Cache (90W); 12 x 64GB
      * PC4-19200 2400MHz DDR4 ECC Registered DIMM, ...
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * If the service has different generations of hardware, for the same SKU, then that can be captured here
      */
-    @JsonProperty(value = "family")
     private String family;
 
     /*
      * The name of the SKU for VMWare CloudSimple Node
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The tier of the SKU
      */
-    @JsonProperty(value = "tier")
     private String tier;
 
-    /** Creates an instance of Sku class. */
+    /**
+     * Creates an instance of Sku class.
+     */
     public Sku() {
     }
 
     /**
      * Get the capacity property: The capacity of the SKU.
-     *
+     * 
      * @return the capacity value.
      */
     public String capacity() {
@@ -57,7 +60,7 @@ public final class Sku {
 
     /**
      * Set the capacity property: The capacity of the SKU.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the Sku object itself.
      */
@@ -69,7 +72,7 @@ public final class Sku {
     /**
      * Get the description property: dedicatedCloudNode example: 8 x Ten-Core Intel® Xeon® Processor E5-2640 v4 2.40GHz
      * 25MB Cache (90W); 12 x 64GB PC4-19200 2400MHz DDR4 ECC Registered DIMM, ...
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -79,7 +82,7 @@ public final class Sku {
     /**
      * Set the description property: dedicatedCloudNode example: 8 x Ten-Core Intel® Xeon® Processor E5-2640 v4 2.40GHz
      * 25MB Cache (90W); 12 x 64GB PC4-19200 2400MHz DDR4 ECC Registered DIMM, ...
-     *
+     * 
      * @param description the description value to set.
      * @return the Sku object itself.
      */
@@ -91,7 +94,7 @@ public final class Sku {
     /**
      * Get the family property: If the service has different generations of hardware, for the same SKU, then that can be
      * captured here.
-     *
+     * 
      * @return the family value.
      */
     public String family() {
@@ -101,7 +104,7 @@ public final class Sku {
     /**
      * Set the family property: If the service has different generations of hardware, for the same SKU, then that can be
      * captured here.
-     *
+     * 
      * @param family the family value to set.
      * @return the Sku object itself.
      */
@@ -112,7 +115,7 @@ public final class Sku {
 
     /**
      * Get the name property: The name of the SKU for VMWare CloudSimple Node.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -121,7 +124,7 @@ public final class Sku {
 
     /**
      * Set the name property: The name of the SKU for VMWare CloudSimple Node.
-     *
+     * 
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -132,7 +135,7 @@ public final class Sku {
 
     /**
      * Get the tier property: The tier of the SKU.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -141,7 +144,7 @@ public final class Sku {
 
     /**
      * Set the tier property: The tier of the SKU.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the Sku object itself.
      */
@@ -152,15 +155,63 @@ public final class Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Sku"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property name in model Sku"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Sku.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("capacity", this.capacity);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("family", this.family);
+        jsonWriter.writeStringField("tier", this.tier);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Sku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Sku if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Sku.
+     */
+    public static Sku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Sku deserializedSku = new Sku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSku.name = reader.getString();
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedSku.capacity = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedSku.description = reader.getString();
+                } else if ("family".equals(fieldName)) {
+                    deserializedSku.family = reader.getString();
+                } else if ("tier".equals(fieldName)) {
+                    deserializedSku.tier = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSku;
+        });
+    }
 }

@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.vmwarecloudsimple.generated;
 
-/** Samples for DedicatedCloudServices List. */
+/**
+ * Samples for DedicatedCloudServices List.
+ */
 public final class DedicatedCloudServicesListSamples {
     /*
-     * x-ms-original-file: specification/vmwarecloudsimple/resource-manager/Microsoft.VMwareCloudSimple/stable/2019-04-01/examples/ListDedicatedCloudServices.json
+     * x-ms-original-file:
+     * specification/vmwarecloudsimple/resource-manager/Microsoft.VMwareCloudSimple/stable/2019-04-01/examples/
+     * ListDedicatedCloudServices.json
      */
     /**
      * Sample code: ListDedicatedCloudServices.
-     *
+     * 
      * @param manager Entry point to VMwareCloudSimpleManager.
      */
-    public static void listDedicatedCloudServices(
-        com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager manager) {
+    public static void
+        listDedicatedCloudServices(com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager manager) {
         manager.dedicatedCloudServices().list(null, null, null, com.azure.core.util.Context.NONE);
     }
 }

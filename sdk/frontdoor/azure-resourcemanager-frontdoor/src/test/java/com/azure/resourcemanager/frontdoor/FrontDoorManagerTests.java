@@ -71,13 +71,13 @@ public class FrontDoorManagerTests extends TestProxyTestBase {
         WebApplicationFirewallPolicy policy = null;
         try {
             String policyName = "policy" + randomPadding();
-            // @embedStart
+            // @embedmeStart
             policy = frontDoorManager.policies()
                 .define(policyName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             policy.refresh();
             Assertions.assertEquals(policyName, policy.name());
             Assertions.assertEquals(policyName, frontDoorManager.policies().getById(policy.id()).name());

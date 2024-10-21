@@ -17,8 +17,8 @@ public final class ProductListImpl implements ProductList {
 
     private final com.azure.resourcemanager.azurestack.AzureStackManager serviceManager;
 
-    ProductListImpl(
-        ProductListInner innerObject, com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
+    ProductListImpl(ProductListInner innerObject,
+        com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -30,9 +30,8 @@ public final class ProductListImpl implements ProductList {
     public List<Product> value() {
         List<ProductInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner.stream().map(inner1 -> new ProductImpl(inner1, this.manager())).collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new ProductImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

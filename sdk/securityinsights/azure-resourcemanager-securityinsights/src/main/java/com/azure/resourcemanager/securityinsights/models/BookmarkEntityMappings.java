@@ -5,27 +5,37 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes the entity mappings of a single entity. */
+/**
+ * Describes the entity mappings of a single entity.
+ */
 @Fluent
-public final class BookmarkEntityMappings {
+public final class BookmarkEntityMappings implements JsonSerializable<BookmarkEntityMappings> {
     /*
      * The entity type
      */
-    @JsonProperty(value = "entityType")
     private String entityType;
 
     /*
      * Array of fields mapping for that entity type
      */
-    @JsonProperty(value = "fieldMappings")
     private List<EntityFieldMapping> fieldMappings;
 
     /**
+     * Creates an instance of BookmarkEntityMappings class.
+     */
+    public BookmarkEntityMappings() {
+    }
+
+    /**
      * Get the entityType property: The entity type.
-     *
+     * 
      * @return the entityType value.
      */
     public String entityType() {
@@ -34,7 +44,7 @@ public final class BookmarkEntityMappings {
 
     /**
      * Set the entityType property: The entity type.
-     *
+     * 
      * @param entityType the entityType value to set.
      * @return the BookmarkEntityMappings object itself.
      */
@@ -45,7 +55,7 @@ public final class BookmarkEntityMappings {
 
     /**
      * Get the fieldMappings property: Array of fields mapping for that entity type.
-     *
+     * 
      * @return the fieldMappings value.
      */
     public List<EntityFieldMapping> fieldMappings() {
@@ -54,7 +64,7 @@ public final class BookmarkEntityMappings {
 
     /**
      * Set the fieldMappings property: Array of fields mapping for that entity type.
-     *
+     * 
      * @param fieldMappings the fieldMappings value to set.
      * @return the BookmarkEntityMappings object itself.
      */
@@ -65,12 +75,53 @@ public final class BookmarkEntityMappings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (fieldMappings() != null) {
             fieldMappings().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("entityType", this.entityType);
+        jsonWriter.writeArrayField("fieldMappings", this.fieldMappings, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BookmarkEntityMappings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BookmarkEntityMappings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BookmarkEntityMappings.
+     */
+    public static BookmarkEntityMappings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BookmarkEntityMappings deserializedBookmarkEntityMappings = new BookmarkEntityMappings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("entityType".equals(fieldName)) {
+                    deserializedBookmarkEntityMappings.entityType = reader.getString();
+                } else if ("fieldMappings".equals(fieldName)) {
+                    List<EntityFieldMapping> fieldMappings
+                        = reader.readArray(reader1 -> EntityFieldMapping.fromJson(reader1));
+                    deserializedBookmarkEntityMappings.fieldMappings = fieldMappings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBookmarkEntityMappings;
+        });
     }
 }

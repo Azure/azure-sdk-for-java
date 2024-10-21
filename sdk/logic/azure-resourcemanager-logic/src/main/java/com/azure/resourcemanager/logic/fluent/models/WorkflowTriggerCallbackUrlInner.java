@@ -5,56 +5,58 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.models.WorkflowTriggerListCallbackUrlQueries;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The workflow trigger callback URL. */
+/**
+ * The workflow trigger callback URL.
+ */
 @Fluent
-public final class WorkflowTriggerCallbackUrlInner {
+public final class WorkflowTriggerCallbackUrlInner implements JsonSerializable<WorkflowTriggerCallbackUrlInner> {
     /*
      * Gets the workflow trigger callback URL.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
     /*
      * Gets the workflow trigger callback URL HTTP method.
      */
-    @JsonProperty(value = "method", access = JsonProperty.Access.WRITE_ONLY)
     private String method;
 
     /*
      * Gets the workflow trigger callback URL base path.
      */
-    @JsonProperty(value = "basePath", access = JsonProperty.Access.WRITE_ONLY)
     private String basePath;
 
     /*
      * Gets the workflow trigger callback URL relative path.
      */
-    @JsonProperty(value = "relativePath", access = JsonProperty.Access.WRITE_ONLY)
     private String relativePath;
 
     /*
      * Gets the workflow trigger callback URL relative path parameters.
      */
-    @JsonProperty(value = "relativePathParameters")
     private List<String> relativePathParameters;
 
     /*
      * Gets the workflow trigger callback URL query parameters.
      */
-    @JsonProperty(value = "queries")
     private WorkflowTriggerListCallbackUrlQueries queries;
 
-    /** Creates an instance of WorkflowTriggerCallbackUrlInner class. */
+    /**
+     * Creates an instance of WorkflowTriggerCallbackUrlInner class.
+     */
     public WorkflowTriggerCallbackUrlInner() {
     }
 
     /**
      * Get the value property: Gets the workflow trigger callback URL.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -63,7 +65,7 @@ public final class WorkflowTriggerCallbackUrlInner {
 
     /**
      * Get the method property: Gets the workflow trigger callback URL HTTP method.
-     *
+     * 
      * @return the method value.
      */
     public String method() {
@@ -72,7 +74,7 @@ public final class WorkflowTriggerCallbackUrlInner {
 
     /**
      * Get the basePath property: Gets the workflow trigger callback URL base path.
-     *
+     * 
      * @return the basePath value.
      */
     public String basePath() {
@@ -81,7 +83,7 @@ public final class WorkflowTriggerCallbackUrlInner {
 
     /**
      * Get the relativePath property: Gets the workflow trigger callback URL relative path.
-     *
+     * 
      * @return the relativePath value.
      */
     public String relativePath() {
@@ -90,7 +92,7 @@ public final class WorkflowTriggerCallbackUrlInner {
 
     /**
      * Get the relativePathParameters property: Gets the workflow trigger callback URL relative path parameters.
-     *
+     * 
      * @return the relativePathParameters value.
      */
     public List<String> relativePathParameters() {
@@ -99,7 +101,7 @@ public final class WorkflowTriggerCallbackUrlInner {
 
     /**
      * Set the relativePathParameters property: Gets the workflow trigger callback URL relative path parameters.
-     *
+     * 
      * @param relativePathParameters the relativePathParameters value to set.
      * @return the WorkflowTriggerCallbackUrlInner object itself.
      */
@@ -110,7 +112,7 @@ public final class WorkflowTriggerCallbackUrlInner {
 
     /**
      * Get the queries property: Gets the workflow trigger callback URL query parameters.
-     *
+     * 
      * @return the queries value.
      */
     public WorkflowTriggerListCallbackUrlQueries queries() {
@@ -119,7 +121,7 @@ public final class WorkflowTriggerCallbackUrlInner {
 
     /**
      * Set the queries property: Gets the workflow trigger callback URL query parameters.
-     *
+     * 
      * @param queries the queries value to set.
      * @return the WorkflowTriggerCallbackUrlInner object itself.
      */
@@ -130,12 +132,63 @@ public final class WorkflowTriggerCallbackUrlInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (queries() != null) {
             queries().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("relativePathParameters", this.relativePathParameters,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("queries", this.queries);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowTriggerCallbackUrlInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowTriggerCallbackUrlInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkflowTriggerCallbackUrlInner.
+     */
+    public static WorkflowTriggerCallbackUrlInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowTriggerCallbackUrlInner deserializedWorkflowTriggerCallbackUrlInner
+                = new WorkflowTriggerCallbackUrlInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedWorkflowTriggerCallbackUrlInner.value = reader.getString();
+                } else if ("method".equals(fieldName)) {
+                    deserializedWorkflowTriggerCallbackUrlInner.method = reader.getString();
+                } else if ("basePath".equals(fieldName)) {
+                    deserializedWorkflowTriggerCallbackUrlInner.basePath = reader.getString();
+                } else if ("relativePath".equals(fieldName)) {
+                    deserializedWorkflowTriggerCallbackUrlInner.relativePath = reader.getString();
+                } else if ("relativePathParameters".equals(fieldName)) {
+                    List<String> relativePathParameters = reader.readArray(reader1 -> reader1.getString());
+                    deserializedWorkflowTriggerCallbackUrlInner.relativePathParameters = relativePathParameters;
+                } else if ("queries".equals(fieldName)) {
+                    deserializedWorkflowTriggerCallbackUrlInner.queries
+                        = WorkflowTriggerListCallbackUrlQueries.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowTriggerCallbackUrlInner;
+        });
     }
 }

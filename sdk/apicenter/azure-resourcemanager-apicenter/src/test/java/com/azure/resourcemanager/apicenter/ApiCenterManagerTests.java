@@ -71,13 +71,13 @@ public class ApiCenterManagerTests extends TestProxyTestBase {
         Service service = null;
         try {
             String serviceName = "service" + randomPadding();
-            // @embedStart
+            // @embedmeStart
             service = apiCenterManager.services()
                 .define(serviceName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             service.refresh();
             Assertions.assertEquals(serviceName, service.name());
             Assertions.assertEquals(serviceName, apiCenterManager.services().getById(service.id()).name());

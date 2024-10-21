@@ -42,7 +42,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to SubscriptionManager. The subscription client. */
+/**
+ * Entry point to SubscriptionManager.
+ * The subscription client.
+ */
 public final class SubscriptionManager {
     private Subscriptions subscriptions;
 
@@ -59,17 +62,15 @@ public final class SubscriptionManager {
     private SubscriptionManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new SubscriptionClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new SubscriptionClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
      * Creates an instance of Subscription service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the Subscription service API instance.
@@ -82,7 +83,7 @@ public final class SubscriptionManager {
 
     /**
      * Creates an instance of Subscription service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the Subscription service API instance.
@@ -95,14 +96,16 @@ public final class SubscriptionManager {
 
     /**
      * Gets a Configurable instance that can be used to create SubscriptionManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new SubscriptionManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -174,8 +177,8 @@ public final class SubscriptionManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -192,8 +195,8 @@ public final class SubscriptionManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -213,15 +216,13 @@ public final class SubscriptionManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.subscription")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -246,38 +247,28 @@ public final class SubscriptionManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new SubscriptionManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of Subscriptions.
-     *
+     * 
      * @return Resource collection API of Subscriptions.
      */
     public Subscriptions subscriptions() {
@@ -289,7 +280,7 @@ public final class SubscriptionManager {
 
     /**
      * Gets the resource collection API of Tenants.
-     *
+     * 
      * @return Resource collection API of Tenants.
      */
     public Tenants tenants() {
@@ -301,20 +292,20 @@ public final class SubscriptionManager {
 
     /**
      * Gets the resource collection API of SubscriptionOperations.
-     *
+     * 
      * @return Resource collection API of SubscriptionOperations.
      */
     public SubscriptionOperations subscriptionOperations() {
         if (this.subscriptionOperations == null) {
-            this.subscriptionOperations =
-                new SubscriptionOperationsImpl(clientObject.getSubscriptionOperations(), this);
+            this.subscriptionOperations
+                = new SubscriptionOperationsImpl(clientObject.getSubscriptionOperations(), this);
         }
         return subscriptionOperations;
     }
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -326,7 +317,7 @@ public final class SubscriptionManager {
 
     /**
      * Gets the resource collection API of Alias.
-     *
+     * 
      * @return Resource collection API of Alias.
      */
     public Alias alias() {
@@ -337,8 +328,10 @@ public final class SubscriptionManager {
     }
 
     /**
-     * @return Wrapped service client SubscriptionClient providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets wrapped service client SubscriptionClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client SubscriptionClient.
      */
     public SubscriptionClient serviceClient() {
         return this.clientObject;

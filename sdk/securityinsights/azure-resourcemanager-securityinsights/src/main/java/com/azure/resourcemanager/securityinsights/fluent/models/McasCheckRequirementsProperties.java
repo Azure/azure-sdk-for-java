@@ -5,12 +5,27 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.DataConnectorTenantId;
+import java.io.IOException;
 
-/** MCAS (Microsoft Cloud App Security) requirements check properties. */
+/**
+ * MCAS (Microsoft Cloud App Security) requirements check properties.
+ */
 @Fluent
 public final class McasCheckRequirementsProperties extends DataConnectorTenantId {
-    /** {@inheritDoc} */
+    /**
+     * Creates an instance of McasCheckRequirementsProperties class.
+     */
+    public McasCheckRequirementsProperties() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public McasCheckRequirementsProperties withTenantId(String tenantId) {
         super.withTenantId(tenantId);
@@ -19,11 +34,55 @@ public final class McasCheckRequirementsProperties extends DataConnectorTenantId
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (tenantId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property tenantId in model McasCheckRequirementsProperties"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(McasCheckRequirementsProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tenantId", tenantId());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of McasCheckRequirementsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of McasCheckRequirementsProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the McasCheckRequirementsProperties.
+     */
+    public static McasCheckRequirementsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            McasCheckRequirementsProperties deserializedMcasCheckRequirementsProperties
+                = new McasCheckRequirementsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedMcasCheckRequirementsProperties.withTenantId(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMcasCheckRequirementsProperties;
+        });
     }
 }

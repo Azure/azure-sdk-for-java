@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The anomaly SecurityMLAnalyticsSettings status. */
+/**
+ * The anomaly SecurityMLAnalyticsSettings status.
+ */
 public final class SettingsStatus extends ExpandableStringEnum<SettingsStatus> {
-    /** Static value Production for SettingsStatus. */
+    /**
+     * Static value Production for SettingsStatus.
+     */
     public static final SettingsStatus PRODUCTION = fromString("Production");
 
-    /** Static value Flighting for SettingsStatus. */
+    /**
+     * Static value Flighting for SettingsStatus.
+     */
     public static final SettingsStatus FLIGHTING = fromString("Flighting");
 
     /**
+     * Creates a new instance of SettingsStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SettingsStatus() {
+    }
+
+    /**
      * Creates or finds a SettingsStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SettingsStatus.
      */
-    @JsonCreator
     public static SettingsStatus fromString(String name) {
         return fromString(name, SettingsStatus.class);
     }
 
     /**
      * Gets known SettingsStatus values.
-     *
+     * 
      * @return known SettingsStatus values.
      */
     public static Collection<SettingsStatus> values() {

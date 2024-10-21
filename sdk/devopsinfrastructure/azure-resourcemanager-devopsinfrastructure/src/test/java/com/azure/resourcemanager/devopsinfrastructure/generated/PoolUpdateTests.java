@@ -26,7 +26,7 @@ public final class PoolUpdateTests {
         PoolUpdate model = BinaryData.fromString(
             "{\"identity\":{\"principalId\":\"yip\",\"tenantId\":\"sqwpgrjb\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"shurzafbljjgpbto\":{\"principalId\":\"jxvsnbyxqabn\",\"clientId\":\"cpc\"},\"kudjkrlkhb\":{\"principalId\":\"jmkljavbqidtqajz\",\"clientId\":\"l\"},\"scpai\":{\"principalId\":\"fepgzgq\",\"clientId\":\"zloc\"},\"onpimexgstxg\":{\"principalId\":\"hhbcsglummajtjao\",\"clientId\":\"obnbdxkqpxokaj\"}}},\"tags\":{\"aajrm\":\"dg\",\"clwhijcoejctbz\":\"djwzrlov\",\"bkbfkgukdkex\":\"qsqsy\",\"ocjjxhvpmouexh\":\"ppofmxaxcfjpgdd\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"maximumConcurrency\":1730783579,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"bzv\"}}")
             .toObject(PoolUpdate.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_AND_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
         Assertions.assertEquals("dg", model.tags().get("aajrm"));
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.properties().provisioningState());
         Assertions.assertEquals(1730783579, model.properties().maximumConcurrency());
@@ -38,7 +38,7 @@ public final class PoolUpdateTests {
         PoolUpdate model
             = new PoolUpdate()
                 .withIdentity(
-                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_AND_USER_ASSIGNED)
+                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
                         .withUserAssignedIdentities(mapOf("shurzafbljjgpbto", new UserAssignedIdentity(), "kudjkrlkhb",
                             new UserAssignedIdentity(), "scpai", new UserAssignedIdentity(), "onpimexgstxg",
                             new UserAssignedIdentity())))
@@ -52,7 +52,7 @@ public final class PoolUpdateTests {
                     .withFabricProfile(new FabricProfile())
                     .withDevCenterProjectResourceId("bzv"));
         model = BinaryData.fromObject(model).toObject(PoolUpdate.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_AND_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
         Assertions.assertEquals("dg", model.tags().get("aajrm"));
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.properties().provisioningState());
         Assertions.assertEquals(1730783579, model.properties().maximumConcurrency());

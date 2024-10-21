@@ -6,20 +6,22 @@ package com.azure.resourcemanager.azurestack.generated;
 
 import com.azure.resourcemanager.azurestack.models.Location;
 
-/** Samples for Registrations CreateOrUpdate. */
+/**
+ * Samples for Registrations CreateOrUpdate.
+ */
 public final class RegistrationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Registration/Put.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Registration/Put.json
      */
     /**
      * Sample code: Create or update an Azure Stack registration.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
-    public static void createOrUpdateAnAzureStackRegistration(
-        com.azure.resourcemanager.azurestack.AzureStackManager manager) {
-        manager
-            .registrations()
+    public static void
+        createOrUpdateAnAzureStackRegistration(com.azure.resourcemanager.azurestack.AzureStackManager manager) {
+        manager.registrations()
             .define("testregistration")
             .withLocation(Location.GLOBAL)
             .withExistingResourceGroup("azurestack")

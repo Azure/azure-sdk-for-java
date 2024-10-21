@@ -7,34 +7,29 @@ package com.azure.resourcemanager.policyinsights.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.policyinsights.models.OperationDisplay;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OperationDisplayTests {
-    @Test
-    public void testDeserialize() {
-        OperationDisplay model =
-            BinaryData
-                .fromString(
-                    "{\"provider\":\"sotbob\",\"resource\":\"opcjwvnhd\",\"operation\":\"wmgxcxrsl\",\"description\":\"utwu\"}")
-                .toObject(OperationDisplay.class);
-        Assertions.assertEquals("sotbob", model.provider());
-        Assertions.assertEquals("opcjwvnhd", model.resource());
-        Assertions.assertEquals("wmgxcxrsl", model.operation());
-        Assertions.assertEquals("utwu", model.description());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OperationDisplay model = BinaryData.fromString(
+            "{\"provider\":\"piudeugfsxzecpa\",\"resource\":\"kufykhvu\",\"operation\":\"epmrut\",\"description\":\"abaobnslujdjltym\"}")
+            .toObject(OperationDisplay.class);
+        Assertions.assertEquals("piudeugfsxzecpa", model.provider());
+        Assertions.assertEquals("kufykhvu", model.resource());
+        Assertions.assertEquals("epmrut", model.operation());
+        Assertions.assertEquals("abaobnslujdjltym", model.description());
     }
 
-    @Test
-    public void testSerialize() {
-        OperationDisplay model =
-            new OperationDisplay()
-                .withProvider("sotbob")
-                .withResource("opcjwvnhd")
-                .withOperation("wmgxcxrsl")
-                .withDescription("utwu");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        OperationDisplay model = new OperationDisplay().withProvider("piudeugfsxzecpa")
+            .withResource("kufykhvu")
+            .withOperation("epmrut")
+            .withDescription("abaobnslujdjltym");
         model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
-        Assertions.assertEquals("sotbob", model.provider());
-        Assertions.assertEquals("opcjwvnhd", model.resource());
-        Assertions.assertEquals("wmgxcxrsl", model.operation());
-        Assertions.assertEquals("utwu", model.description());
+        Assertions.assertEquals("piudeugfsxzecpa", model.provider());
+        Assertions.assertEquals("kufykhvu", model.resource());
+        Assertions.assertEquals("epmrut", model.operation());
+        Assertions.assertEquals("abaobnslujdjltym", model.description());
     }
 }

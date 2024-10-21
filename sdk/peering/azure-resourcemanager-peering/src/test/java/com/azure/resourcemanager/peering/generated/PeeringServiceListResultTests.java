@@ -16,71 +16,43 @@ import org.junit.jupiter.api.Assertions;
 public final class PeeringServiceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeeringServiceListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"sku\":{\"name\":\"adbzmnvdfznud\"},\"properties\":{\"peeringServiceLocation\":\"vxzbncb\",\"peeringServiceProvider\":\"lpstdbhhxsrzdz\",\"provisioningState\":\"Deleting\",\"providerPrimaryPeeringLocation\":\"scdntnevf\",\"providerBackupPeeringLocation\":\"jmygtdsslswtmwer\"},\"location\":\"ofz\",\"tags\":{\"hhszh\":\"semwabnet\",\"lvwiwubmwmbesl\":\"d\",\"pp\":\"nkww\"},\"id\":\"flcxoga\",\"name\":\"konzmnsik\",\"type\":\"mkqzeqqkdltfzxmh\"},{\"sku\":{\"name\":\"gureodkwobdag\"},\"properties\":{\"peeringServiceLocation\":\"bqdxbx\",\"peeringServiceProvider\":\"kbogqxndlkzgx\",\"provisioningState\":\"Succeeded\",\"providerPrimaryPeeringLocation\":\"plbpodxun\",\"providerBackupPeeringLocation\":\"ebxmubyynt\"},\"location\":\"lrb\",\"tags\":{\"wlauwzizxbmpg\":\"oievseotgqrlltm\",\"p\":\"jefuzmuvpbttdumo\"},\"id\":\"xe\",\"name\":\"mnzb\",\"type\":\"bhjpglkfgohdne\"},{\"sku\":{\"name\":\"fphsdyhtozfikdow\"},\"properties\":{\"peeringServiceLocation\":\"uvxzxclvi\",\"peeringServiceProvider\":\"hqzonosggbhcoh\",\"provisioningState\":\"Updating\",\"providerPrimaryPeeringLocation\":\"jnkaljutiiswacff\",\"providerBackupPeeringLocation\":\"k\"},\"location\":\"zewk\",\"tags\":{\"wdmhdlxyjrxs\":\"qcrailvpnppfufl\",\"bcvkcvqvpkeq\":\"gafcnihgwqapnedg\",\"obzdopcjwvnhdl\":\"cvdrhvoodsot\"},\"id\":\"wmgxcxrsl\",\"name\":\"mutwuoe\",\"type\":\"rpkhjwn\"}],\"nextLink\":\"qsluicp\"}")
-                .toObject(PeeringServiceListResult.class);
-        Assertions.assertEquals("adbzmnvdfznud", model.value().get(0).sku().name());
-        Assertions.assertEquals("ofz", model.value().get(0).location());
-        Assertions.assertEquals("semwabnet", model.value().get(0).tags().get("hhszh"));
-        Assertions.assertEquals("vxzbncb", model.value().get(0).peeringServiceLocation());
-        Assertions.assertEquals("lpstdbhhxsrzdz", model.value().get(0).peeringServiceProvider());
-        Assertions.assertEquals("scdntnevf", model.value().get(0).providerPrimaryPeeringLocation());
-        Assertions.assertEquals("jmygtdsslswtmwer", model.value().get(0).providerBackupPeeringLocation());
-        Assertions.assertEquals("qsluicp", model.nextLink());
+        PeeringServiceListResult model = BinaryData.fromString(
+            "{\"value\":[{\"sku\":{\"name\":\"ipfpubji\"},\"properties\":{\"peeringServiceLocation\":\"iftohqkvpu\",\"peeringServiceProvider\":\"sgplsakn\",\"provisioningState\":\"Deleting\",\"providerPrimaryPeeringLocation\":\"ynl\",\"providerBackupPeeringLocation\":\"huopxodlqiynto\"},\"location\":\"zihleosjswsr\",\"tags\":{\"ox\":\"yzrpzbchckqqzq\",\"rwyhqmibzyhwitsm\":\"ysuiizynkedya\",\"pcdpumnz\":\"pyy\",\"abikns\":\"mwzn\"},\"id\":\"rgjhxb\",\"name\":\"dtlwwrlkd\",\"type\":\"tncvokot\"}],\"nextLink\":\"xdy\"}")
+            .toObject(PeeringServiceListResult.class);
+        Assertions.assertEquals("ipfpubji", model.value().get(0).sku().name());
+        Assertions.assertEquals("zihleosjswsr", model.value().get(0).location());
+        Assertions.assertEquals("yzrpzbchckqqzq", model.value().get(0).tags().get("ox"));
+        Assertions.assertEquals("iftohqkvpu", model.value().get(0).peeringServiceLocation());
+        Assertions.assertEquals("sgplsakn", model.value().get(0).peeringServiceProvider());
+        Assertions.assertEquals("ynl", model.value().get(0).providerPrimaryPeeringLocation());
+        Assertions.assertEquals("huopxodlqiynto", model.value().get(0).providerBackupPeeringLocation());
+        Assertions.assertEquals("xdy", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeeringServiceListResult model =
-            new PeeringServiceListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new PeeringServiceInner()
-                                .withSku(new PeeringServiceSku().withName("adbzmnvdfznud"))
-                                .withLocation("ofz")
-                                .withTags(mapOf("hhszh", "semwabnet", "lvwiwubmwmbesl", "d", "pp", "nkww"))
-                                .withPeeringServiceLocation("vxzbncb")
-                                .withPeeringServiceProvider("lpstdbhhxsrzdz")
-                                .withProviderPrimaryPeeringLocation("scdntnevf")
-                                .withProviderBackupPeeringLocation("jmygtdsslswtmwer"),
-                            new PeeringServiceInner()
-                                .withSku(new PeeringServiceSku().withName("gureodkwobdag"))
-                                .withLocation("lrb")
-                                .withTags(mapOf("wlauwzizxbmpg", "oievseotgqrlltm", "p", "jefuzmuvpbttdumo"))
-                                .withPeeringServiceLocation("bqdxbx")
-                                .withPeeringServiceProvider("kbogqxndlkzgx")
-                                .withProviderPrimaryPeeringLocation("plbpodxun")
-                                .withProviderBackupPeeringLocation("ebxmubyynt"),
-                            new PeeringServiceInner()
-                                .withSku(new PeeringServiceSku().withName("fphsdyhtozfikdow"))
-                                .withLocation("zewk")
-                                .withTags(
-                                    mapOf(
-                                        "wdmhdlxyjrxs",
-                                        "qcrailvpnppfufl",
-                                        "bcvkcvqvpkeq",
-                                        "gafcnihgwqapnedg",
-                                        "obzdopcjwvnhdl",
-                                        "cvdrhvoodsot"))
-                                .withPeeringServiceLocation("uvxzxclvi")
-                                .withPeeringServiceProvider("hqzonosggbhcoh")
-                                .withProviderPrimaryPeeringLocation("jnkaljutiiswacff")
-                                .withProviderBackupPeeringLocation("k")))
-                .withNextLink("qsluicp");
+        PeeringServiceListResult model = new PeeringServiceListResult()
+            .withValue(Arrays.asList(new PeeringServiceInner().withSku(new PeeringServiceSku().withName("ipfpubji"))
+                .withLocation("zihleosjswsr")
+                .withTags(mapOf("ox", "yzrpzbchckqqzq", "rwyhqmibzyhwitsm", "ysuiizynkedya", "pcdpumnz", "pyy",
+                    "abikns", "mwzn"))
+                .withPeeringServiceLocation("iftohqkvpu")
+                .withPeeringServiceProvider("sgplsakn")
+                .withProviderPrimaryPeeringLocation("ynl")
+                .withProviderBackupPeeringLocation("huopxodlqiynto")))
+            .withNextLink("xdy");
         model = BinaryData.fromObject(model).toObject(PeeringServiceListResult.class);
-        Assertions.assertEquals("adbzmnvdfznud", model.value().get(0).sku().name());
-        Assertions.assertEquals("ofz", model.value().get(0).location());
-        Assertions.assertEquals("semwabnet", model.value().get(0).tags().get("hhszh"));
-        Assertions.assertEquals("vxzbncb", model.value().get(0).peeringServiceLocation());
-        Assertions.assertEquals("lpstdbhhxsrzdz", model.value().get(0).peeringServiceProvider());
-        Assertions.assertEquals("scdntnevf", model.value().get(0).providerPrimaryPeeringLocation());
-        Assertions.assertEquals("jmygtdsslswtmwer", model.value().get(0).providerBackupPeeringLocation());
-        Assertions.assertEquals("qsluicp", model.nextLink());
+        Assertions.assertEquals("ipfpubji", model.value().get(0).sku().name());
+        Assertions.assertEquals("zihleosjswsr", model.value().get(0).location());
+        Assertions.assertEquals("yzrpzbchckqqzq", model.value().get(0).tags().get("ox"));
+        Assertions.assertEquals("iftohqkvpu", model.value().get(0).peeringServiceLocation());
+        Assertions.assertEquals("sgplsakn", model.value().get(0).peeringServiceProvider());
+        Assertions.assertEquals("ynl", model.value().get(0).providerPrimaryPeeringLocation());
+        Assertions.assertEquals("huopxodlqiynto", model.value().get(0).providerBackupPeeringLocation());
+        Assertions.assertEquals("xdy", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

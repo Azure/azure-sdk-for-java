@@ -34,13 +34,11 @@ public class ContainerServiceFleetManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        containerServiceFleetManager = ContainerServiceFleetManager
-            .configure()
+        containerServiceFleetManager = ContainerServiceFleetManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -51,10 +49,7 @@ public class ContainerServiceFleetManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -71,13 +66,13 @@ public class ContainerServiceFleetManagerTests extends TestProxyTestBase {
         Fleet fleet = null;
         try {
             String fleetName = "fleet" + randomPadding();
-            // @embedStart
+            // @embedmeStart
             fleet = containerServiceFleetManager.fleets()
                 .define(fleetName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             fleet.refresh();
             Assertions.assertEquals(fleet.name(), fleetName);
             Assertions.assertEquals(fleet.name(), containerServiceFleetManager.fleets().getById(fleet.id()).name());

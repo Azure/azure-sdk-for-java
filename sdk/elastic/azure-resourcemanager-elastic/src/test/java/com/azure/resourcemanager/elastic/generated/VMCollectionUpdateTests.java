@@ -12,20 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class VMCollectionUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMCollectionUpdate model =
-            BinaryData
-                .fromString("{\"vmResourceId\":\"nxqbzvddn\",\"operationName\":\"Add\"}")
-                .toObject(VMCollectionUpdate.class);
-        Assertions.assertEquals("nxqbzvddn", model.vmResourceId());
-        Assertions.assertEquals(OperationName.ADD, model.operationName());
+        VMCollectionUpdate model = BinaryData.fromString("{\"vmResourceId\":\"enhwlrs\",\"operationName\":\"Delete\"}")
+            .toObject(VMCollectionUpdate.class);
+        Assertions.assertEquals("enhwlrs", model.vmResourceId());
+        Assertions.assertEquals(OperationName.DELETE, model.operationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMCollectionUpdate model =
-            new VMCollectionUpdate().withVmResourceId("nxqbzvddn").withOperationName(OperationName.ADD);
+        VMCollectionUpdate model
+            = new VMCollectionUpdate().withVmResourceId("enhwlrs").withOperationName(OperationName.DELETE);
         model = BinaryData.fromObject(model).toObject(VMCollectionUpdate.class);
-        Assertions.assertEquals("nxqbzvddn", model.vmResourceId());
-        Assertions.assertEquals(OperationName.ADD, model.operationName());
+        Assertions.assertEquals("enhwlrs", model.vmResourceId());
+        Assertions.assertEquals(OperationName.DELETE, model.operationName());
     }
 }

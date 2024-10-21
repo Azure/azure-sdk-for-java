@@ -11,6 +11,7 @@ import com.azure.resourcemanager.compute.models.GalleryImageVersionSafetyProfile
 import com.azure.resourcemanager.compute.models.GalleryImageVersionStorageProfile;
 import com.azure.resourcemanager.compute.models.ReplicationStatus;
 import com.azure.resourcemanager.compute.models.TargetRegion;
+import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
 import com.azure.resourcemanager.compute.fluent.models.GalleryImageVersionInner;
 import com.azure.core.management.Region;
@@ -24,6 +25,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /** The implementation for GalleryImageVersion and its create and update interfaces. */
 class GalleryImageVersionImpl
@@ -204,19 +206,28 @@ class GalleryImageVersionImpl
 
     @Override
     public GalleryImageVersionImpl withSourceCustomImage(String customImageId) {
-        if (this.innerModel().storageProfile() == null) {
-            this.innerModel().withStorageProfile(new GalleryImageVersionStorageProfile());
-        }
-        if (this.innerModel().storageProfile().source() == null) {
-            this.innerModel().storageProfile().withSource(new GalleryArtifactVersionFullSource());
-        }
+        ensureSource();
         this.innerModel().storageProfile().source().withId(customImageId);
         return this;
     }
 
     @Override
     public GalleryImageVersionImpl withSourceCustomImage(VirtualMachineCustomImage customImage) {
+        Objects.requireNonNull(customImage);
         return this.withSourceCustomImage(customImage.id());
+    }
+
+    @Override
+    public GalleryImageVersionImpl withSourceVirtualMachine(String vmId) {
+        ensureSource();
+        this.innerModel().storageProfile().source().withVirtualMachineId(vmId);
+        return this;
+    }
+
+    @Override
+    public GalleryImageVersionImpl withSourceVirtualMachine(VirtualMachine virtualMachine) {
+        Objects.requireNonNull(virtualMachine);
+        return this.withSourceVirtualMachine(virtualMachine.id());
     }
 
     @Override
@@ -383,5 +394,14 @@ class GalleryImageVersionImpl
             }
         }
         return null;
+    }
+
+    private void ensureSource() {
+        if (this.innerModel().storageProfile() == null) {
+            this.innerModel().withStorageProfile(new GalleryImageVersionStorageProfile());
+        }
+        if (this.innerModel().storageProfile().source() == null) {
+            this.innerModel().storageProfile().withSource(new GalleryArtifactVersionFullSource());
+        }
     }
 }

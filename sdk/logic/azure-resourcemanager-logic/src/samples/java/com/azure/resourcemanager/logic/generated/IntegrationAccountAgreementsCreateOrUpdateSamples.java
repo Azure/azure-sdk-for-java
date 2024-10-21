@@ -25,20 +25,22 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for IntegrationAccountAgreements CreateOrUpdate. */
+/**
+ * Samples for IntegrationAccountAgreements CreateOrUpdate.
+ */
 public final class IntegrationAccountAgreementsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationAccountAgreements_CreateOrUpdate.json
+     * x-ms-original-file: specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/
+     * IntegrationAccountAgreements_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update an agreement.
-     *
+     * 
      * @param manager Entry point to LogicManager.
      */
     public static void createOrUpdateAnAgreement(com.azure.resourcemanager.logic.LogicManager manager)
         throws IOException {
-        manager
-            .integrationAccountAgreements()
+        manager.integrationAccountAgreements()
             .define("testAgreement")
             .withRegion("westus")
             .withExistingIntegrationAccount("testResourceGroup", "testIntegrationAccount")
@@ -47,142 +49,106 @@ public final class IntegrationAccountAgreementsCreateOrUpdateSamples {
             .withGuestPartner("GuestPartner")
             .withHostIdentity(new BusinessIdentity().withQualifier("ZZ").withValue("ZZ"))
             .withGuestIdentity(new BusinessIdentity().withQualifier("AA").withValue("AA"))
-            .withContent(
-                new AgreementContent()
-                    .withAS2(
-                        new AS2AgreementContent()
-                            .withReceiveAgreement(
-                                new AS2OneWayAgreement()
-                                    .withSenderBusinessIdentity(
-                                        new BusinessIdentity().withQualifier("AA").withValue("AA"))
-                                    .withReceiverBusinessIdentity(
-                                        new BusinessIdentity().withQualifier("ZZ").withValue("ZZ"))
-                                    .withProtocolSettings(
-                                        new AS2ProtocolSettings()
-                                            .withMessageConnectionSettings(
-                                                new AS2MessageConnectionSettings()
-                                                    .withIgnoreCertificateNameMismatch(true)
-                                                    .withSupportHttpStatusCodeContinue(true)
-                                                    .withKeepHttpConnectionAlive(true)
-                                                    .withUnfoldHttpHeaders(true))
-                                            .withAcknowledgementConnectionSettings(
-                                                new AS2AcknowledgementConnectionSettings()
-                                                    .withIgnoreCertificateNameMismatch(true)
-                                                    .withSupportHttpStatusCodeContinue(true)
-                                                    .withKeepHttpConnectionAlive(true)
-                                                    .withUnfoldHttpHeaders(true))
-                                            .withMdnSettings(
-                                                new AS2MdnSettings()
-                                                    .withNeedMdn(true)
-                                                    .withSignMdn(true)
-                                                    .withSendMdnAsynchronously(true)
-                                                    .withReceiptDeliveryUrl("http://tempuri.org")
-                                                    .withDispositionNotificationTo("http://tempuri.org")
-                                                    .withSignOutboundMdnIfOptional(true)
-                                                    .withMdnText("Sample")
-                                                    .withSendInboundMdnToMessageBox(true)
-                                                    .withMicHashingAlgorithm(HashingAlgorithm.SHA1))
-                                            .withSecuritySettings(
-                                                new AS2SecuritySettings()
-                                                    .withOverrideGroupSigningCertificate(false)
-                                                    .withEnableNrrForInboundEncodedMessages(true)
-                                                    .withEnableNrrForInboundDecodedMessages(true)
-                                                    .withEnableNrrForOutboundMdn(true)
-                                                    .withEnableNrrForOutboundEncodedMessages(true)
-                                                    .withEnableNrrForOutboundDecodedMessages(true)
-                                                    .withEnableNrrForInboundMdn(true))
-                                            .withValidationSettings(
-                                                new AS2ValidationSettings()
-                                                    .withOverrideMessageProperties(true)
-                                                    .withEncryptMessage(false)
-                                                    .withSignMessage(false)
-                                                    .withCompressMessage(true)
-                                                    .withCheckDuplicateMessage(true)
-                                                    .withInterchangeDuplicatesValidityDays(100)
-                                                    .withCheckCertificateRevocationListOnSend(true)
-                                                    .withCheckCertificateRevocationListOnReceive(true)
-                                                    .withEncryptionAlgorithm(EncryptionAlgorithm.AES128))
-                                            .withEnvelopeSettings(
-                                                new AS2EnvelopeSettings()
-                                                    .withMessageContentType("text/plain")
-                                                    .withTransmitFileNameInMimeHeader(true)
-                                                    .withFileNameTemplate("Test")
-                                                    .withSuspendMessageOnFileNameGenerationError(true)
-                                                    .withAutogenerateFileName(true))
-                                            .withErrorSettings(
-                                                new AS2ErrorSettings()
-                                                    .withSuspendDuplicateMessage(true)
-                                                    .withResendIfMdnNotReceived(true))))
-                            .withSendAgreement(
-                                new AS2OneWayAgreement()
-                                    .withSenderBusinessIdentity(
-                                        new BusinessIdentity().withQualifier("ZZ").withValue("ZZ"))
-                                    .withReceiverBusinessIdentity(
-                                        new BusinessIdentity().withQualifier("AA").withValue("AA"))
-                                    .withProtocolSettings(
-                                        new AS2ProtocolSettings()
-                                            .withMessageConnectionSettings(
-                                                new AS2MessageConnectionSettings()
-                                                    .withIgnoreCertificateNameMismatch(true)
-                                                    .withSupportHttpStatusCodeContinue(true)
-                                                    .withKeepHttpConnectionAlive(true)
-                                                    .withUnfoldHttpHeaders(true))
-                                            .withAcknowledgementConnectionSettings(
-                                                new AS2AcknowledgementConnectionSettings()
-                                                    .withIgnoreCertificateNameMismatch(true)
-                                                    .withSupportHttpStatusCodeContinue(true)
-                                                    .withKeepHttpConnectionAlive(true)
-                                                    .withUnfoldHttpHeaders(true))
-                                            .withMdnSettings(
-                                                new AS2MdnSettings()
-                                                    .withNeedMdn(true)
-                                                    .withSignMdn(true)
-                                                    .withSendMdnAsynchronously(true)
-                                                    .withReceiptDeliveryUrl("http://tempuri.org")
-                                                    .withDispositionNotificationTo("http://tempuri.org")
-                                                    .withSignOutboundMdnIfOptional(true)
-                                                    .withMdnText("Sample")
-                                                    .withSendInboundMdnToMessageBox(true)
-                                                    .withMicHashingAlgorithm(HashingAlgorithm.SHA1))
-                                            .withSecuritySettings(
-                                                new AS2SecuritySettings()
-                                                    .withOverrideGroupSigningCertificate(false)
-                                                    .withEnableNrrForInboundEncodedMessages(true)
-                                                    .withEnableNrrForInboundDecodedMessages(true)
-                                                    .withEnableNrrForOutboundMdn(true)
-                                                    .withEnableNrrForOutboundEncodedMessages(true)
-                                                    .withEnableNrrForOutboundDecodedMessages(true)
-                                                    .withEnableNrrForInboundMdn(true))
-                                            .withValidationSettings(
-                                                new AS2ValidationSettings()
-                                                    .withOverrideMessageProperties(true)
-                                                    .withEncryptMessage(false)
-                                                    .withSignMessage(false)
-                                                    .withCompressMessage(true)
-                                                    .withCheckDuplicateMessage(true)
-                                                    .withInterchangeDuplicatesValidityDays(100)
-                                                    .withCheckCertificateRevocationListOnSend(true)
-                                                    .withCheckCertificateRevocationListOnReceive(true)
-                                                    .withEncryptionAlgorithm(EncryptionAlgorithm.AES128))
-                                            .withEnvelopeSettings(
-                                                new AS2EnvelopeSettings()
-                                                    .withMessageContentType("text/plain")
-                                                    .withTransmitFileNameInMimeHeader(true)
-                                                    .withFileNameTemplate("Test")
-                                                    .withSuspendMessageOnFileNameGenerationError(true)
-                                                    .withAutogenerateFileName(true))
-                                            .withErrorSettings(
-                                                new AS2ErrorSettings()
-                                                    .withSuspendDuplicateMessage(true)
-                                                    .withResendIfMdnNotReceived(true))))))
+            .withContent(new AgreementContent().withAS2(new AS2AgreementContent()
+                .withReceiveAgreement(new AS2OneWayAgreement()
+                    .withSenderBusinessIdentity(new BusinessIdentity().withQualifier("AA").withValue("AA"))
+                    .withReceiverBusinessIdentity(new BusinessIdentity().withQualifier("ZZ").withValue("ZZ"))
+                    .withProtocolSettings(new AS2ProtocolSettings()
+                        .withMessageConnectionSettings(
+                            new AS2MessageConnectionSettings().withIgnoreCertificateNameMismatch(true)
+                                .withSupportHttpStatusCodeContinue(true)
+                                .withKeepHttpConnectionAlive(true)
+                                .withUnfoldHttpHeaders(true))
+                        .withAcknowledgementConnectionSettings(
+                            new AS2AcknowledgementConnectionSettings().withIgnoreCertificateNameMismatch(true)
+                                .withSupportHttpStatusCodeContinue(true)
+                                .withKeepHttpConnectionAlive(true)
+                                .withUnfoldHttpHeaders(true))
+                        .withMdnSettings(new AS2MdnSettings().withNeedMdn(true)
+                            .withSignMdn(true)
+                            .withSendMdnAsynchronously(true)
+                            .withReceiptDeliveryUrl("http://tempuri.org")
+                            .withDispositionNotificationTo("http://tempuri.org")
+                            .withSignOutboundMdnIfOptional(true)
+                            .withMdnText("Sample")
+                            .withSendInboundMdnToMessageBox(true)
+                            .withMicHashingAlgorithm(HashingAlgorithm.SHA1))
+                        .withSecuritySettings(new AS2SecuritySettings().withOverrideGroupSigningCertificate(false)
+                            .withEnableNrrForInboundEncodedMessages(true)
+                            .withEnableNrrForInboundDecodedMessages(true)
+                            .withEnableNrrForOutboundMdn(true)
+                            .withEnableNrrForOutboundEncodedMessages(true)
+                            .withEnableNrrForOutboundDecodedMessages(true)
+                            .withEnableNrrForInboundMdn(true))
+                        .withValidationSettings(new AS2ValidationSettings().withOverrideMessageProperties(true)
+                            .withEncryptMessage(false)
+                            .withSignMessage(false)
+                            .withCompressMessage(true)
+                            .withCheckDuplicateMessage(true)
+                            .withInterchangeDuplicatesValidityDays(100)
+                            .withCheckCertificateRevocationListOnSend(true)
+                            .withCheckCertificateRevocationListOnReceive(true)
+                            .withEncryptionAlgorithm(EncryptionAlgorithm.AES128))
+                        .withEnvelopeSettings(new AS2EnvelopeSettings().withMessageContentType("text/plain")
+                            .withTransmitFileNameInMimeHeader(true)
+                            .withFileNameTemplate("Test")
+                            .withSuspendMessageOnFileNameGenerationError(true)
+                            .withAutogenerateFileName(true))
+                        .withErrorSettings(
+                            new AS2ErrorSettings().withSuspendDuplicateMessage(true).withResendIfMdnNotReceived(true))))
+                .withSendAgreement(new AS2OneWayAgreement()
+                    .withSenderBusinessIdentity(new BusinessIdentity().withQualifier("ZZ").withValue("ZZ"))
+                    .withReceiverBusinessIdentity(new BusinessIdentity().withQualifier("AA").withValue("AA"))
+                    .withProtocolSettings(new AS2ProtocolSettings()
+                        .withMessageConnectionSettings(
+                            new AS2MessageConnectionSettings().withIgnoreCertificateNameMismatch(true)
+                                .withSupportHttpStatusCodeContinue(true)
+                                .withKeepHttpConnectionAlive(true)
+                                .withUnfoldHttpHeaders(true))
+                        .withAcknowledgementConnectionSettings(
+                            new AS2AcknowledgementConnectionSettings().withIgnoreCertificateNameMismatch(true)
+                                .withSupportHttpStatusCodeContinue(true)
+                                .withKeepHttpConnectionAlive(true)
+                                .withUnfoldHttpHeaders(true))
+                        .withMdnSettings(new AS2MdnSettings().withNeedMdn(true)
+                            .withSignMdn(true)
+                            .withSendMdnAsynchronously(true)
+                            .withReceiptDeliveryUrl("http://tempuri.org")
+                            .withDispositionNotificationTo("http://tempuri.org")
+                            .withSignOutboundMdnIfOptional(true)
+                            .withMdnText("Sample")
+                            .withSendInboundMdnToMessageBox(true)
+                            .withMicHashingAlgorithm(HashingAlgorithm.SHA1))
+                        .withSecuritySettings(new AS2SecuritySettings().withOverrideGroupSigningCertificate(false)
+                            .withEnableNrrForInboundEncodedMessages(true)
+                            .withEnableNrrForInboundDecodedMessages(true)
+                            .withEnableNrrForOutboundMdn(true)
+                            .withEnableNrrForOutboundEncodedMessages(true)
+                            .withEnableNrrForOutboundDecodedMessages(true)
+                            .withEnableNrrForInboundMdn(true))
+                        .withValidationSettings(new AS2ValidationSettings().withOverrideMessageProperties(true)
+                            .withEncryptMessage(false)
+                            .withSignMessage(false)
+                            .withCompressMessage(true)
+                            .withCheckDuplicateMessage(true)
+                            .withInterchangeDuplicatesValidityDays(100)
+                            .withCheckCertificateRevocationListOnSend(true)
+                            .withCheckCertificateRevocationListOnReceive(true)
+                            .withEncryptionAlgorithm(EncryptionAlgorithm.AES128))
+                        .withEnvelopeSettings(new AS2EnvelopeSettings().withMessageContentType("text/plain")
+                            .withTransmitFileNameInMimeHeader(true)
+                            .withFileNameTemplate("Test")
+                            .withSuspendMessageOnFileNameGenerationError(true)
+                            .withAutogenerateFileName(true))
+                        .withErrorSettings(new AS2ErrorSettings().withSuspendDuplicateMessage(true)
+                            .withResendIfMdnNotReceived(true))))))
             .withTags(mapOf("IntegrationAccountAgreement", "<IntegrationAccountAgreementName>"))
-            .withMetadata(
-                SerializerFactory
-                    .createDefaultManagementSerializerAdapter()
-                    .deserialize("{}", Object.class, SerializerEncoding.JSON))
+            .withMetadata(SerializerFactory.createDefaultManagementSerializerAdapter()
+                .deserialize("{}", Object.class, SerializerEncoding.JSON))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

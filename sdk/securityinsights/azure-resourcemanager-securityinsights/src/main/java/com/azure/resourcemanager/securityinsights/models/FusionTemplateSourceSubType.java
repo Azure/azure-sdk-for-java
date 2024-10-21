@@ -6,33 +6,42 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Represents a source subtype under a source signal consumed in Fusion detection. */
+/**
+ * Represents a source subtype under a source signal consumed in Fusion detection.
+ */
 @Fluent
-public final class FusionTemplateSourceSubType {
+public final class FusionTemplateSourceSubType implements JsonSerializable<FusionTemplateSourceSubType> {
     /*
      * The name of source subtype under a source signal consumed in Fusion detection.
      */
-    @JsonProperty(value = "sourceSubTypeName", required = true)
     private String sourceSubTypeName;
 
     /*
      * The display name of source subtype under a source signal consumed in Fusion detection.
      */
-    @JsonProperty(value = "sourceSubTypeDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceSubTypeDisplayName;
 
     /*
      * Severity configuration available for a source subtype consumed in fusion detection.
      */
-    @JsonProperty(value = "severityFilter", required = true)
     private FusionTemplateSubTypeSeverityFilter severityFilter;
+
+    /**
+     * Creates an instance of FusionTemplateSourceSubType class.
+     */
+    public FusionTemplateSourceSubType() {
+    }
 
     /**
      * Get the sourceSubTypeName property: The name of source subtype under a source signal consumed in Fusion
      * detection.
-     *
+     * 
      * @return the sourceSubTypeName value.
      */
     public String sourceSubTypeName() {
@@ -42,7 +51,7 @@ public final class FusionTemplateSourceSubType {
     /**
      * Set the sourceSubTypeName property: The name of source subtype under a source signal consumed in Fusion
      * detection.
-     *
+     * 
      * @param sourceSubTypeName the sourceSubTypeName value to set.
      * @return the FusionTemplateSourceSubType object itself.
      */
@@ -54,7 +63,7 @@ public final class FusionTemplateSourceSubType {
     /**
      * Get the sourceSubTypeDisplayName property: The display name of source subtype under a source signal consumed in
      * Fusion detection.
-     *
+     * 
      * @return the sourceSubTypeDisplayName value.
      */
     public String sourceSubTypeDisplayName() {
@@ -64,7 +73,7 @@ public final class FusionTemplateSourceSubType {
     /**
      * Get the severityFilter property: Severity configuration available for a source subtype consumed in fusion
      * detection.
-     *
+     * 
      * @return the severityFilter value.
      */
     public FusionTemplateSubTypeSeverityFilter severityFilter() {
@@ -74,7 +83,7 @@ public final class FusionTemplateSourceSubType {
     /**
      * Set the severityFilter property: Severity configuration available for a source subtype consumed in fusion
      * detection.
-     *
+     * 
      * @param severityFilter the severityFilter value to set.
      * @return the FusionTemplateSourceSubType object itself.
      */
@@ -85,25 +94,66 @@ public final class FusionTemplateSourceSubType {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceSubTypeName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceSubTypeName in model FusionTemplateSourceSubType"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceSubTypeName in model FusionTemplateSourceSubType"));
         }
         if (severityFilter() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property severityFilter in model FusionTemplateSourceSubType"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property severityFilter in model FusionTemplateSourceSubType"));
         } else {
             severityFilter().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FusionTemplateSourceSubType.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceSubTypeName", this.sourceSubTypeName);
+        jsonWriter.writeJsonField("severityFilter", this.severityFilter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FusionTemplateSourceSubType from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FusionTemplateSourceSubType if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FusionTemplateSourceSubType.
+     */
+    public static FusionTemplateSourceSubType fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FusionTemplateSourceSubType deserializedFusionTemplateSourceSubType = new FusionTemplateSourceSubType();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceSubTypeName".equals(fieldName)) {
+                    deserializedFusionTemplateSourceSubType.sourceSubTypeName = reader.getString();
+                } else if ("severityFilter".equals(fieldName)) {
+                    deserializedFusionTemplateSourceSubType.severityFilter
+                        = FusionTemplateSubTypeSeverityFilter.fromJson(reader);
+                } else if ("sourceSubTypeDisplayName".equals(fieldName)) {
+                    deserializedFusionTemplateSourceSubType.sourceSubTypeDisplayName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFusionTemplateSourceSubType;
+        });
+    }
 }

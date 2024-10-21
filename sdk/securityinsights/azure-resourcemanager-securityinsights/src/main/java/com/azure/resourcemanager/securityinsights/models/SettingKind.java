@@ -5,37 +5,54 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The kind of the setting. */
+/**
+ * The kind of the setting.
+ */
 public final class SettingKind extends ExpandableStringEnum<SettingKind> {
-    /** Static value Anomalies for SettingKind. */
+    /**
+     * Static value Anomalies for SettingKind.
+     */
     public static final SettingKind ANOMALIES = fromString("Anomalies");
 
-    /** Static value EyesOn for SettingKind. */
+    /**
+     * Static value EyesOn for SettingKind.
+     */
     public static final SettingKind EYES_ON = fromString("EyesOn");
 
-    /** Static value EntityAnalytics for SettingKind. */
+    /**
+     * Static value EntityAnalytics for SettingKind.
+     */
     public static final SettingKind ENTITY_ANALYTICS = fromString("EntityAnalytics");
 
-    /** Static value Ueba for SettingKind. */
+    /**
+     * Static value Ueba for SettingKind.
+     */
     public static final SettingKind UEBA = fromString("Ueba");
 
     /**
+     * Creates a new instance of SettingKind value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SettingKind() {
+    }
+
+    /**
      * Creates or finds a SettingKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SettingKind.
      */
-    @JsonCreator
     public static SettingKind fromString(String name) {
         return fromString(name, SettingKind.class);
     }
 
     /**
      * Gets known SettingKind values.
-     *
+     * 
      * @return known SettingKind values.
      */
     public static Collection<SettingKind> values() {

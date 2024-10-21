@@ -11,13 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.VirtualMachineTemplateInner;
 
-/** An instance of this class provides access to all the operations defined in VirtualMachineTemplatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualMachineTemplatesClient.
+ */
 public interface VirtualMachineTemplatesClient {
     /**
      * Implements list of available VM templates
-     *
-     * <p>Returns list of virtual machine templates in region for private cloud.
-     *
+     * 
+     * Returns list of virtual machine templates in region for private cloud.
+     * 
      * @param pcName The private cloud name.
      * @param regionId The region Id (westus, eastus).
      * @param resourcePoolName Resource pool used to derive vSphere cluster which contains VM templates.
@@ -31,9 +33,9 @@ public interface VirtualMachineTemplatesClient {
 
     /**
      * Implements list of available VM templates
-     *
-     * <p>Returns list of virtual machine templates in region for private cloud.
-     *
+     * 
+     * Returns list of virtual machine templates in region for private cloud.
+     * 
      * @param pcName The private cloud name.
      * @param regionId The region Id (westus, eastus).
      * @param resourcePoolName Resource pool used to derive vSphere cluster which contains VM templates.
@@ -44,14 +46,14 @@ public interface VirtualMachineTemplatesClient {
      * @return list of virtual machine templates as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualMachineTemplateInner> list(
-        String pcName, String regionId, String resourcePoolName, Context context);
+    PagedIterable<VirtualMachineTemplateInner> list(String pcName, String regionId, String resourcePoolName,
+        Context context);
 
     /**
      * Implements virtual machine template GET method
-     *
-     * <p>Returns virtual machine templates by its name.
-     *
+     * 
+     * Returns virtual machine templates by its name.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param virtualMachineTemplateName virtual machine template id (vsphereId).
@@ -62,14 +64,14 @@ public interface VirtualMachineTemplatesClient {
      * @return virtual machine template model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualMachineTemplateInner> getWithResponse(
-        String regionId, String pcName, String virtualMachineTemplateName, Context context);
+    Response<VirtualMachineTemplateInner> getWithResponse(String regionId, String pcName,
+        String virtualMachineTemplateName, Context context);
 
     /**
      * Implements virtual machine template GET method
-     *
-     * <p>Returns virtual machine templates by its name.
-     *
+     * 
+     * Returns virtual machine templates by its name.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param virtualMachineTemplateName virtual machine template id (vsphereId).

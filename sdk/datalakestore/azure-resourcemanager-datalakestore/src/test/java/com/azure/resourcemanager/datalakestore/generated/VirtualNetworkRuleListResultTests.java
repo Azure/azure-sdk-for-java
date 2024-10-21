@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datalakestore.models.VirtualNetworkRuleListResu
 public final class VirtualNetworkRuleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworkRuleListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"subnetId\":\"vqdra\"},\"name\":\"jybige\",\"type\":\"qfbow\",\"id\":\"anyktzlcuiywg\"},{\"properties\":{\"subnetId\":\"gndrvynh\"},\"name\":\"pphrcgynco\",\"type\":\"ecfvmm\",\"id\":\"ofsx\"}],\"nextLink\":\"evgbmqjq\"}")
-                .toObject(VirtualNetworkRuleListResult.class);
+        VirtualNetworkRuleListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"subnetId\":\"xdcu\"},\"name\":\"fsrpymzidnse\",\"type\":\"xtbzsgfyccsne\",\"id\":\"dwzjeiach\"}],\"nextLink\":\"osfln\"}")
+            .toObject(VirtualNetworkRuleListResult.class);
     }
 
     @org.junit.jupiter.api.Test

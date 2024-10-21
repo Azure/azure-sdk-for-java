@@ -6,88 +6,90 @@ package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.resourcemanager.azurestack.fluent.models.ProductLogInner;
 
-/** An immutable client-side representation of ProductLog. */
+/**
+ * An immutable client-side representation of ProductLog.
+ */
 public interface ProductLog {
     /**
      * Gets the id property: Log ID.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the productId property: Logged product ID.
-     *
+     * 
      * @return the productId value.
      */
     String productId();
 
     /**
      * Gets the subscriptionId property: Logged subscription ID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     String subscriptionId();
 
     /**
      * Gets the registrationName property: Logged registration name.
-     *
+     * 
      * @return the registrationName value.
      */
     String registrationName();
 
     /**
      * Gets the resourceGroupName property: Logged resource group name.
-     *
+     * 
      * @return the resourceGroupName value.
      */
     String resourceGroupName();
 
     /**
      * Gets the operation property: Logged operation.
-     *
+     * 
      * @return the operation value.
      */
     String operation();
 
     /**
      * Gets the startDate property: Operation start datetime.
-     *
+     * 
      * @return the startDate value.
      */
     String startDate();
 
     /**
      * Gets the endDate property: Operation end datetime.
-     *
+     * 
      * @return the endDate value.
      */
     String endDate();
 
     /**
      * Gets the status property: Operation status.
-     *
+     * 
      * @return the status value.
      */
     String status();
 
     /**
      * Gets the error property: Operation error data.
-     *
+     * 
      * @return the error value.
      */
     String error();
 
     /**
      * Gets the details property: Operation error details.
-     *
+     * 
      * @return the details value.
      */
     String details();
 
     /**
      * Gets the inner com.azure.resourcemanager.azurestack.fluent.models.ProductLogInner object.
-     *
+     * 
      * @return the inner object.
      */
     ProductLogInner innerModel();

@@ -20,108 +20,82 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceRecommendationBaseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceRecommendationBaseInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"category\":\"Performance\",\"impact\":\"Low\",\"impactedField\":\"njbiksqrglssain\",\"impactedValue\":\"jwnzlljfmp\",\"lastUpdated\":\"2021-09-21T11:36:48Z\",\"metadata\":{\"yqduujit\":\"datamgxsab\",\"rwpdappdsbdkvwrw\":\"datajczdzevndh\"},\"recommendationTypeId\":\"eusnhutj\",\"shortDescription\":{\"problem\":\"mrldhu\",\"solution\":\"zzd\"},\"suppressionIds\":[\"7edaf309-156b-4fa8-84db-d97fe78c459e\",\"5b410fd8-362a-4c4a-8624-92464dd7bd45\",\"3852d285-8e67-49f3-8463-59bd01ee8d65\",\"84cbe077-afa8-46e3-bf17-3e31cbf738af\"],\"extendedProperties\":{\"geablgphuticndvk\":\"oc\",\"ftyxolniw\":\"ozwyiftyhxhuro\"},\"resourceMetadata\":{\"resourceId\":\"ukjfkgiawxklr\",\"source\":\"lwckbasyypnddhs\",\"action\":{\"qgoulznd\":\"dataacphejkoty\",\"wyqkgfgibm\":\"datai\",\"qsrxybzqqed\":\"datadgak\"},\"singular\":\"tbciqfouflmm\",\"plural\":\"zsm\"},\"description\":\"mglougpbkw\",\"label\":\"utduqktapspwgcu\",\"learnMoreLink\":\"tumkdosvqwhbm\",\"potentialBenefits\":\"bbjfddgmbmbexp\",\"actions\":[{\"rolfpfp\":\"dataq\"},{\"yjgzjaoyfhrtxiln\":\"datalgbquxig\",\"vlejuvfqa\":\"datarkujy\",\"xgjvtbv\":\"datarlyxwjkcprbnw\",\"uouq\":\"dataysszdnrujqguh\"},{\"itnwuizgazxufi\":\"datarwzwbng\",\"hr\":\"datauckyf\",\"zwdzuh\":\"dataidf\",\"wxmnteiwao\":\"dataymwisdkft\"}],\"remediation\":{\"pymzidnsezcxtbzs\":\"datamijcmmxdcufufs\"},\"exposedMetadataProperties\":{\"sne\":\"datac\"}},\"id\":\"mdwzjeiachboo\",\"name\":\"flnrosfqpteehzz\",\"type\":\"ypyqrimzinp\"}")
-                .toObject(ResourceRecommendationBaseInner.class);
-        Assertions.assertEquals(Category.PERFORMANCE, model.category());
+        ResourceRecommendationBaseInner model = BinaryData.fromString(
+            "{\"properties\":{\"category\":\"Cost\",\"impact\":\"Low\",\"impactedField\":\"hrc\",\"impactedValue\":\"nc\",\"lastUpdated\":\"2021-10-26T02:35:50Z\",\"metadata\":{\"coofsxlzev\":\"datafvm\",\"abcypmivk\":\"databmqj\"},\"recommendationTypeId\":\"zuvccfwnfnbacfio\",\"shortDescription\":{\"problem\":\"bxetqgtzxdpn\",\"solution\":\"qqwx\"},\"suppressionIds\":[\"37839f42-46dc-43e1-9db9-ca4fa26ae387\",\"3a7ecc4d-1550-44cd-80f0-5d2e3013b46e\",\"ca1cfab0-831f-429b-bc10-f401505cd32e\"],\"extendedProperties\":{\"njampm\":\"llnwsubi\"},\"resourceMetadata\":{\"resourceId\":\"zscxaqwo\",\"source\":\"hcbonqvpkvlr\",\"action\":{\"eipheoflokeyy\":\"dataea\",\"jp\":\"dataenjbdlwtgrhp\"},\"singular\":\"masxazjpqyegu\",\"plural\":\"hb\"},\"description\":\"hejjz\",\"label\":\"dudgwdslfhot\",\"learnMoreLink\":\"cynpwlbjnp\",\"potentialBenefits\":\"cftadeh\",\"actions\":[{\"uesnzwdejbavo\":\"datayfsoppu\",\"vudwx\":\"dataxzdmohctb\",\"gujjugwdkcglh\":\"datandnvo\",\"ofqweykhmenevfye\":\"datalazjdyggdtjixhbk\"},{\"yvdcsitynnaa\":\"datawhybcib\",\"eypvhezrkg\":\"datadectehfiqsc\",\"sle\":\"datahcjrefovgmk\"}],\"remediation\":{\"k\":\"dataxyqj\",\"jh\":\"dataattpngjcrcczsq\",\"ysou\":\"datamdajv\",\"canoaeupf\":\"dataq\"},\"exposedMetadataProperties\":{\"cma\":\"dataltrpmopj\",\"kthfui\":\"datau\",\"odpuozmyzydag\":\"dataaodsfcpkv\",\"hrdxwzywqsmbs\":\"datauaxbezyiuokkt\"}},\"id\":\"reximoryocfs\",\"name\":\"ksymd\",\"type\":\"ys\"}")
+            .toObject(ResourceRecommendationBaseInner.class);
+        Assertions.assertEquals(Category.COST, model.category());
         Assertions.assertEquals(Impact.LOW, model.impact());
-        Assertions.assertEquals("njbiksqrglssain", model.impactedField());
-        Assertions.assertEquals("jwnzlljfmp", model.impactedValue());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-21T11:36:48Z"), model.lastUpdated());
-        Assertions.assertEquals("eusnhutj", model.recommendationTypeId());
-        Assertions.assertEquals("mrldhu", model.shortDescription().problem());
-        Assertions.assertEquals("zzd", model.shortDescription().solution());
-        Assertions.assertEquals(UUID.fromString("7edaf309-156b-4fa8-84db-d97fe78c459e"), model.suppressionIds().get(0));
-        Assertions.assertEquals("oc", model.extendedProperties().get("geablgphuticndvk"));
-        Assertions.assertEquals("ukjfkgiawxklr", model.resourceMetadata().resourceId());
-        Assertions.assertEquals("lwckbasyypnddhs", model.resourceMetadata().source());
-        Assertions.assertEquals("tbciqfouflmm", model.resourceMetadata().singular());
-        Assertions.assertEquals("zsm", model.resourceMetadata().plural());
-        Assertions.assertEquals("mglougpbkw", model.description());
-        Assertions.assertEquals("utduqktapspwgcu", model.label());
-        Assertions.assertEquals("tumkdosvqwhbm", model.learnMoreLink());
-        Assertions.assertEquals("bbjfddgmbmbexp", model.potentialBenefits());
+        Assertions.assertEquals("hrc", model.impactedField());
+        Assertions.assertEquals("nc", model.impactedValue());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-26T02:35:50Z"), model.lastUpdated());
+        Assertions.assertEquals("zuvccfwnfnbacfio", model.recommendationTypeId());
+        Assertions.assertEquals("bxetqgtzxdpn", model.shortDescription().problem());
+        Assertions.assertEquals("qqwx", model.shortDescription().solution());
+        Assertions.assertEquals(UUID.fromString("37839f42-46dc-43e1-9db9-ca4fa26ae387"), model.suppressionIds().get(0));
+        Assertions.assertEquals("llnwsubi", model.extendedProperties().get("njampm"));
+        Assertions.assertEquals("zscxaqwo", model.resourceMetadata().resourceId());
+        Assertions.assertEquals("hcbonqvpkvlr", model.resourceMetadata().source());
+        Assertions.assertEquals("masxazjpqyegu", model.resourceMetadata().singular());
+        Assertions.assertEquals("hb", model.resourceMetadata().plural());
+        Assertions.assertEquals("hejjz", model.description());
+        Assertions.assertEquals("dudgwdslfhot", model.label());
+        Assertions.assertEquals("cynpwlbjnp", model.learnMoreLink());
+        Assertions.assertEquals("cftadeh", model.potentialBenefits());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceRecommendationBaseInner model =
-            new ResourceRecommendationBaseInner()
-                .withCategory(Category.PERFORMANCE)
-                .withImpact(Impact.LOW)
-                .withImpactedField("njbiksqrglssain")
-                .withImpactedValue("jwnzlljfmp")
-                .withLastUpdated(OffsetDateTime.parse("2021-09-21T11:36:48Z"))
-                .withMetadata(mapOf("yqduujit", "datamgxsab", "rwpdappdsbdkvwrw", "datajczdzevndh"))
-                .withRecommendationTypeId("eusnhutj")
-                .withShortDescription(new ShortDescription().withProblem("mrldhu").withSolution("zzd"))
-                .withSuppressionIds(
-                    Arrays
-                        .asList(
-                            UUID.fromString("7edaf309-156b-4fa8-84db-d97fe78c459e"),
-                            UUID.fromString("5b410fd8-362a-4c4a-8624-92464dd7bd45"),
-                            UUID.fromString("3852d285-8e67-49f3-8463-59bd01ee8d65"),
-                            UUID.fromString("84cbe077-afa8-46e3-bf17-3e31cbf738af")))
-                .withExtendedProperties(mapOf("geablgphuticndvk", "oc", "ftyxolniw", "ozwyiftyhxhuro"))
-                .withResourceMetadata(
-                    new ResourceMetadata()
-                        .withResourceId("ukjfkgiawxklr")
-                        .withSource("lwckbasyypnddhs")
-                        .withAction(
-                            mapOf("qgoulznd", "dataacphejkoty", "wyqkgfgibm", "datai", "qsrxybzqqed", "datadgak"))
-                        .withSingular("tbciqfouflmm")
-                        .withPlural("zsm"))
-                .withDescription("mglougpbkw")
-                .withLabel("utduqktapspwgcu")
-                .withLearnMoreLink("tumkdosvqwhbm")
-                .withPotentialBenefits("bbjfddgmbmbexp")
-                .withActions(
-                    Arrays
-                        .asList(
-                            mapOf("rolfpfp", "dataq"),
-                            mapOf(
-                                "yjgzjaoyfhrtxiln",
-                                "datalgbquxig",
-                                "vlejuvfqa",
-                                "datarkujy",
-                                "xgjvtbv",
-                                "datarlyxwjkcprbnw",
-                                "uouq",
-                                "dataysszdnrujqguh"),
-                            mapOf(
-                                "itnwuizgazxufi",
-                                "datarwzwbng",
-                                "hr",
-                                "datauckyf",
-                                "zwdzuh",
-                                "dataidf",
-                                "wxmnteiwao",
-                                "dataymwisdkft")))
-                .withRemediation(mapOf("pymzidnsezcxtbzs", "datamijcmmxdcufufs"))
-                .withExposedMetadataProperties(mapOf("sne", "datac"));
+        ResourceRecommendationBaseInner model = new ResourceRecommendationBaseInner().withCategory(Category.COST)
+            .withImpact(Impact.LOW)
+            .withImpactedField("hrc")
+            .withImpactedValue("nc")
+            .withLastUpdated(OffsetDateTime.parse("2021-10-26T02:35:50Z"))
+            .withMetadata(mapOf("coofsxlzev", "datafvm", "abcypmivk", "databmqj"))
+            .withRecommendationTypeId("zuvccfwnfnbacfio")
+            .withShortDescription(new ShortDescription().withProblem("bxetqgtzxdpn").withSolution("qqwx"))
+            .withSuppressionIds(Arrays.asList(UUID.fromString("37839f42-46dc-43e1-9db9-ca4fa26ae387"),
+                UUID.fromString("3a7ecc4d-1550-44cd-80f0-5d2e3013b46e"),
+                UUID.fromString("ca1cfab0-831f-429b-bc10-f401505cd32e")))
+            .withExtendedProperties(mapOf("njampm", "llnwsubi"))
+            .withResourceMetadata(new ResourceMetadata().withResourceId("zscxaqwo")
+                .withSource("hcbonqvpkvlr")
+                .withAction(mapOf("eipheoflokeyy", "dataea", "jp", "dataenjbdlwtgrhp"))
+                .withSingular("masxazjpqyegu")
+                .withPlural("hb"))
+            .withDescription("hejjz")
+            .withLabel("dudgwdslfhot")
+            .withLearnMoreLink("cynpwlbjnp")
+            .withPotentialBenefits("cftadeh")
+            .withActions(Arrays.asList(
+                mapOf("uesnzwdejbavo", "datayfsoppu", "vudwx", "dataxzdmohctb", "gujjugwdkcglh", "datandnvo",
+                    "ofqweykhmenevfye", "datalazjdyggdtjixhbk"),
+                mapOf("yvdcsitynnaa", "datawhybcib", "eypvhezrkg", "datadectehfiqsc", "sle", "datahcjrefovgmk")))
+            .withRemediation(
+                mapOf("k", "dataxyqj", "jh", "dataattpngjcrcczsq", "ysou", "datamdajv", "canoaeupf", "dataq"))
+            .withExposedMetadataProperties(mapOf("cma", "dataltrpmopj", "kthfui", "datau", "odpuozmyzydag",
+                "dataaodsfcpkv", "hrdxwzywqsmbs", "datauaxbezyiuokkt"));
         model = BinaryData.fromObject(model).toObject(ResourceRecommendationBaseInner.class);
-        Assertions.assertEquals(Category.PERFORMANCE, model.category());
+        Assertions.assertEquals(Category.COST, model.category());
         Assertions.assertEquals(Impact.LOW, model.impact());
-        Assertions.assertEquals("njbiksqrglssain", model.impactedField());
-        Assertions.assertEquals("jwnzlljfmp", model.impactedValue());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-21T11:36:48Z"), model.lastUpdated());
-        Assertions.assertEquals("eusnhutj", model.recommendationTypeId());
-        Assertions.assertEquals("mrldhu", model.shortDescription().problem());
-        Assertions.assertEquals("zzd", model.shortDescription().solution());
-        Assertions.assertEquals(UUID.fromString("7edaf309-156b-4fa8-84db-d97fe78c459e"), model.suppressionIds().get(0));
-        Assertions.assertEquals("oc", model.extendedProperties().get("geablgphuticndvk"));
-        Assertions.assertEquals("ukjfkgiawxklr", model.resourceMetadata().resourceId());
-        Assertions.assertEquals("lwckbasyypnddhs", model.resourceMetadata().source());
-        Assertions.assertEquals("tbciqfouflmm", model.resourceMetadata().singular());
-        Assertions.assertEquals("zsm", model.resourceMetadata().plural());
-        Assertions.assertEquals("mglougpbkw", model.description());
-        Assertions.assertEquals("utduqktapspwgcu", model.label());
-        Assertions.assertEquals("tumkdosvqwhbm", model.learnMoreLink());
-        Assertions.assertEquals("bbjfddgmbmbexp", model.potentialBenefits());
+        Assertions.assertEquals("hrc", model.impactedField());
+        Assertions.assertEquals("nc", model.impactedValue());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-26T02:35:50Z"), model.lastUpdated());
+        Assertions.assertEquals("zuvccfwnfnbacfio", model.recommendationTypeId());
+        Assertions.assertEquals("bxetqgtzxdpn", model.shortDescription().problem());
+        Assertions.assertEquals("qqwx", model.shortDescription().solution());
+        Assertions.assertEquals(UUID.fromString("37839f42-46dc-43e1-9db9-ca4fa26ae387"), model.suppressionIds().get(0));
+        Assertions.assertEquals("llnwsubi", model.extendedProperties().get("njampm"));
+        Assertions.assertEquals("zscxaqwo", model.resourceMetadata().resourceId());
+        Assertions.assertEquals("hcbonqvpkvlr", model.resourceMetadata().source());
+        Assertions.assertEquals("masxazjpqyegu", model.resourceMetadata().singular());
+        Assertions.assertEquals("hb", model.resourceMetadata().plural());
+        Assertions.assertEquals("hejjz", model.description());
+        Assertions.assertEquals("dudgwdslfhot", model.label());
+        Assertions.assertEquals("cynpwlbjnp", model.learnMoreLink());
+        Assertions.assertEquals("cftadeh", model.potentialBenefits());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

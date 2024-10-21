@@ -72,13 +72,13 @@ public class AzureSphereManagerTests extends TestProxyTestBase {
         Catalog catalog = null;
         try {
             String catalogName = "catalog" + randomPadding();
-            // @embedStart
+            // @embedmeStart
             catalog = azureSphereManager.catalogs()
                 .define(catalogName)
                 .withRegion(REGION_GLOBAL)
                 .withExistingResourceGroup(resourceGroupName)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             catalog.refresh();
             Assertions.assertEquals(catalogName, catalog.name());
             Assertions.assertEquals(catalogName, azureSphereManager.catalogs().getById(catalog.id()).name());

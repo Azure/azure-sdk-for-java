@@ -19,30 +19,25 @@ public final class ThreatIntelligenceIndicatorsOperationsImpl implements ThreatI
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    public ThreatIntelligenceIndicatorsOperationsImpl(
-        ThreatIntelligenceIndicatorsOperationsClient innerClient,
+    public ThreatIntelligenceIndicatorsOperationsImpl(ThreatIntelligenceIndicatorsOperationsClient innerClient,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ThreatIntelligenceInformation> list(String resourceGroupName, String workspaceName) {
-        PagedIterable<ThreatIntelligenceInformationInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new ThreatIntelligenceInformationImpl(inner1, this.manager()));
+        PagedIterable<ThreatIntelligenceInformationInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ThreatIntelligenceInformationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ThreatIntelligenceInformation> list(
-        String resourceGroupName,
-        String workspaceName,
-        String filter,
-        String orderby,
-        Integer top,
-        String skipToken,
-        Context context) {
-        PagedIterable<ThreatIntelligenceInformationInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, filter, orderby, top, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new ThreatIntelligenceInformationImpl(inner1, this.manager()));
+    public PagedIterable<ThreatIntelligenceInformation> list(String resourceGroupName, String workspaceName,
+        String filter, String orderby, Integer top, String skipToken, Context context) {
+        PagedIterable<ThreatIntelligenceInformationInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, filter, orderby, top, skipToken, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ThreatIntelligenceInformationImpl(inner1, this.manager()));
     }
 
     private ThreatIntelligenceIndicatorsOperationsClient serviceClient() {

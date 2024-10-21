@@ -183,6 +183,7 @@ extends:
                 - jackson_2.10
                 - jackson_2.11
                 - jackson_2.12
+                - jackson_2.13
                 - jackson_2.14
                 - jackson_2.15
                 - jackson_2.16

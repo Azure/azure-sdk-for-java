@@ -5,47 +5,45 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The FleetHubProfile configures the fleet hub.
  */
 @Fluent
-public final class FleetHubProfile {
+public final class FleetHubProfile implements JsonSerializable<FleetHubProfile> {
     /*
      * DNS prefix used to create the FQDN for the Fleet hub.
      */
-    @JsonProperty(value = "dnsPrefix")
     private String dnsPrefix;
 
     /*
      * The access profile for the Fleet hub API server.
      */
-    @JsonProperty(value = "apiServerAccessProfile")
     private ApiServerAccessProfile apiServerAccessProfile;
 
     /*
      * The agent profile for the Fleet hub.
      */
-    @JsonProperty(value = "agentProfile")
     private AgentProfile agentProfile;
 
     /*
      * The FQDN of the Fleet hub.
      */
-    @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
 
     /*
      * The Kubernetes version of the Fleet hub.
      */
-    @JsonProperty(value = "kubernetesVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String kubernetesVersion;
 
     /*
      * The Azure Portal FQDN of the Fleet hub.
      */
-    @JsonProperty(value = "portalFqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String portalFqdn;
 
     /**
@@ -153,5 +151,53 @@ public final class FleetHubProfile {
         if (agentProfile() != null) {
             agentProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dnsPrefix", this.dnsPrefix);
+        jsonWriter.writeJsonField("apiServerAccessProfile", this.apiServerAccessProfile);
+        jsonWriter.writeJsonField("agentProfile", this.agentProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FleetHubProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FleetHubProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FleetHubProfile.
+     */
+    public static FleetHubProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FleetHubProfile deserializedFleetHubProfile = new FleetHubProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dnsPrefix".equals(fieldName)) {
+                    deserializedFleetHubProfile.dnsPrefix = reader.getString();
+                } else if ("apiServerAccessProfile".equals(fieldName)) {
+                    deserializedFleetHubProfile.apiServerAccessProfile = ApiServerAccessProfile.fromJson(reader);
+                } else if ("agentProfile".equals(fieldName)) {
+                    deserializedFleetHubProfile.agentProfile = AgentProfile.fromJson(reader);
+                } else if ("fqdn".equals(fieldName)) {
+                    deserializedFleetHubProfile.fqdn = reader.getString();
+                } else if ("kubernetesVersion".equals(fieldName)) {
+                    deserializedFleetHubProfile.kubernetesVersion = reader.getString();
+                } else if ("portalFqdn".equals(fieldName)) {
+                    deserializedFleetHubProfile.portalFqdn = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFleetHubProfile;
+        });
     }
 }

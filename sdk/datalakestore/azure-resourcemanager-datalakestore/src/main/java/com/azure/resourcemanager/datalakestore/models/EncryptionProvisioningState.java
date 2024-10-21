@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.datalakestore.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The current state of encryption provisioning for this Data Lake Store account. */
+/**
+ * The current state of encryption provisioning for this Data Lake Store account.
+ */
 public enum EncryptionProvisioningState {
-    /** Enum value Creating. */
+    /**
+     * Enum value Creating.
+     */
     CREATING("Creating"),
 
-    /** Enum value Succeeded. */
+    /**
+     * Enum value Succeeded.
+     */
     SUCCEEDED("Succeeded");
 
-    /** The actual serialized value for a EncryptionProvisioningState instance. */
+    /**
+     * The actual serialized value for a EncryptionProvisioningState instance.
+     */
     private final String value;
 
     EncryptionProvisioningState(String value) {
@@ -24,11 +29,10 @@ public enum EncryptionProvisioningState {
 
     /**
      * Parses a serialized value to a EncryptionProvisioningState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed EncryptionProvisioningState object, or null if unable to parse.
      */
-    @JsonCreator
     public static EncryptionProvisioningState fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum EncryptionProvisioningState {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

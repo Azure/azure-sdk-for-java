@@ -20,7 +20,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.time.StopWatch;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -6,70 +6,39 @@ package com.azure.resourcemanager.attestation.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.attestation.AttestationManager;
 import com.azure.resourcemanager.attestation.models.AttestationProvider;
 import com.azure.resourcemanager.attestation.models.AttestationServiceStatus;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AttestationProvidersGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"trustModel\":\"avjcbpwx\",\"status\":\"NotReady\",\"attestUri\":\"knftguvriuh\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"xqtayriwwro\",\"name\":\"qbex\",\"type\":\"mcqibycnojv\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"qsgzvahapj\",\"name\":\"zhpvgqzcjrvxd\",\"type\":\"zlmwlxkvugfhz\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"vzunluthnnprnxi\",\"name\":\"eilpjzuaejxdu\",\"type\":\"tskzbbtdzumveek\"}]},\"location\":\"pwo\",\"tags\":{\"yofd\":\"kfpbs\",\"dttouwaboekqvkel\":\"luu\"},\"id\":\"smv\",\"name\":\"xwyjsflhhc\",\"type\":\"aln\"}";
 
-        String responseStr =
-            "{\"properties\":{\"trustModel\":\"de\",\"status\":\"Ready\",\"attestUri\":\"icwifsjtt\",\"privateEndpointConnections\":[]},\"location\":\"bishcbkhajdeyea\",\"tags\":{\"nowkgshw\":\"hagalpbuxwgipwh\"},\"id\":\"nkixzbinj\",\"name\":\"pu\",\"type\":\"tmryw\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AttestationManager manager = AttestationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        AttestationProvider response = manager.attestationProviders()
+            .getByResourceGroupWithResponse("gwyzm", "txon", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        AttestationManager manager =
-            AttestationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        AttestationProvider response =
-            manager
-                .attestationProviders()
-                .getByResourceGroupWithResponse("qzntypm", "bpizcdrqjsdpydn", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("bishcbkhajdeyea", response.location());
-        Assertions.assertEquals("hagalpbuxwgipwh", response.tags().get("nowkgshw"));
-        Assertions.assertEquals("de", response.trustModel());
-        Assertions.assertEquals(AttestationServiceStatus.READY, response.status());
-        Assertions.assertEquals("icwifsjtt", response.attestUri());
+        Assertions.assertEquals("pwo", response.location());
+        Assertions.assertEquals("kfpbs", response.tags().get("yofd"));
+        Assertions.assertEquals("avjcbpwx", response.trustModel());
+        Assertions.assertEquals(AttestationServiceStatus.NOT_READY, response.status());
+        Assertions.assertEquals("knftguvriuh", response.attestUri());
     }
 }

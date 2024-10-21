@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.datamigration.generated;
 
-/** Samples for Services GetByResourceGroup. */
+/**
+ * Samples for Services GetByResourceGroup.
+ */
 public final class ServicesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_Get.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_Get.json
      */
     /**
      * Sample code: Services_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void servicesCreateOrUpdate(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
-        manager
-            .services()
+        manager.services()
             .getByResourceGroupWithResponse("DmsSdkRg", "DmsSdkService", com.azure.core.util.Context.NONE);
     }
 }

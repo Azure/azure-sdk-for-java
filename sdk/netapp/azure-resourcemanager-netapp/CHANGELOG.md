@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.6.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,57 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.5.0 (2024-10-21)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-2024-07. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.SvmPeerCommandResponse` was added
+
+* `models.PeerClusterForVolumeMigrationRequest` was added
+
+* `models.ClusterPeerCommandResponse` was added
+
+* `models.RemotePath` was added
+
+#### `models.Volume` was modified
+
+* `peerExternalCluster(models.PeerClusterForVolumeMigrationRequest,com.azure.core.util.Context)` was added
+* `peerExternalCluster(models.PeerClusterForVolumeMigrationRequest)` was added
+* `authorizeExternalReplication(com.azure.core.util.Context)` was added
+* `authorizeExternalReplication()` was added
+* `performReplicationTransfer(com.azure.core.util.Context)` was added
+* `finalizeExternalReplication(com.azure.core.util.Context)` was added
+* `performReplicationTransfer()` was added
+* `finalizeExternalReplication()` was added
+* `effectiveNetworkFeatures()` was added
+
+#### `models.ReplicationObject` was modified
+
+* `remotePath()` was added
+* `withRemotePath(models.RemotePath)` was added
+
+#### `models.Volumes` was modified
+
+* `authorizeExternalReplication(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `authorizeExternalReplication(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `peerExternalCluster(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.PeerClusterForVolumeMigrationRequest)` was added
+* `finalizeExternalReplication(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `peerExternalCluster(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.PeerClusterForVolumeMigrationRequest,com.azure.core.util.Context)` was added
+* `finalizeExternalReplication(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `performReplicationTransfer(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `performReplicationTransfer(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.FilePathAvailabilityRequest` was modified
+
+* `availabilityZone()` was added
+* `withAvailabilityZone(java.lang.String)` was added
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `effectiveNetworkFeatures()` was added
 
 ## 1.4.0 (2024-08-19)
 

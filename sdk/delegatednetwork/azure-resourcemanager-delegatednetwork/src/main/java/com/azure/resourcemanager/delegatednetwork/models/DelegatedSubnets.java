@@ -6,32 +6,38 @@ package com.azure.resourcemanager.delegatednetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.delegatednetwork.fluent.models.DelegatedSubnetInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** An array of DelegatedSubnet resources. */
+/**
+ * An array of DelegatedSubnet resources.
+ */
 @Fluent
-public final class DelegatedSubnets {
+public final class DelegatedSubnets implements JsonSerializable<DelegatedSubnets> {
     /*
      * An array of DelegatedSubnet resources.
      */
-    @JsonProperty(value = "value", required = true)
     private List<DelegatedSubnetInner> value;
 
     /*
      * The URL to get the next set of DelegatedSubnet resources.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DelegatedSubnets class. */
+    /**
+     * Creates an instance of DelegatedSubnets class.
+     */
     public DelegatedSubnets() {
     }
 
     /**
      * Get the value property: An array of DelegatedSubnet resources.
-     *
+     * 
      * @return the value value.
      */
     public List<DelegatedSubnetInner> value() {
@@ -40,7 +46,7 @@ public final class DelegatedSubnets {
 
     /**
      * Set the value property: An array of DelegatedSubnet resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the DelegatedSubnets object itself.
      */
@@ -51,7 +57,7 @@ public final class DelegatedSubnets {
 
     /**
      * Get the nextLink property: The URL to get the next set of DelegatedSubnet resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,18 +66,58 @@ public final class DelegatedSubnets {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model DelegatedSubnets"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model DelegatedSubnets"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DelegatedSubnets.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DelegatedSubnets from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DelegatedSubnets if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DelegatedSubnets.
+     */
+    public static DelegatedSubnets fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DelegatedSubnets deserializedDelegatedSubnets = new DelegatedSubnets();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DelegatedSubnetInner> value
+                        = reader.readArray(reader1 -> DelegatedSubnetInner.fromJson(reader1));
+                    deserializedDelegatedSubnets.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDelegatedSubnets.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDelegatedSubnets;
+        });
+    }
 }

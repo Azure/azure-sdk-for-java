@@ -60,7 +60,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.63.3</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.64.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -78,13 +78,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.6.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+      <version>4.7.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.8.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+      <version>4.9.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>

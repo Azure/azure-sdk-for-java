@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class MonitorUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MonitorUpdateProperties model =
-            BinaryData.fromString("{\"monitoringStatus\":\"Disabled\"}").toObject(MonitorUpdateProperties.class);
-        Assertions.assertEquals(MonitoringStatus.DISABLED, model.monitoringStatus());
+        MonitorUpdateProperties model
+            = BinaryData.fromString("{\"monitoringStatus\":\"Enabled\"}").toObject(MonitorUpdateProperties.class);
+        Assertions.assertEquals(MonitoringStatus.ENABLED, model.monitoringStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonitorUpdateProperties model = new MonitorUpdateProperties().withMonitoringStatus(MonitoringStatus.DISABLED);
+        MonitorUpdateProperties model = new MonitorUpdateProperties().withMonitoringStatus(MonitoringStatus.ENABLED);
         model = BinaryData.fromObject(model).toObject(MonitorUpdateProperties.class);
-        Assertions.assertEquals(MonitoringStatus.DISABLED, model.monitoringStatus());
+        Assertions.assertEquals(MonitoringStatus.ENABLED, model.monitoringStatus());
     }
 }

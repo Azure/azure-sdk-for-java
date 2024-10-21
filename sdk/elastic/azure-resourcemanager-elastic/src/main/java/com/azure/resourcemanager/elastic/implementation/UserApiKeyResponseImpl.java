@@ -13,8 +13,8 @@ public final class UserApiKeyResponseImpl implements UserApiKeyResponse {
 
     private final com.azure.resourcemanager.elastic.ElasticManager serviceManager;
 
-    UserApiKeyResponseImpl(
-        UserApiKeyResponseInner innerObject, com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
+    UserApiKeyResponseImpl(UserApiKeyResponseInner innerObject,
+        com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

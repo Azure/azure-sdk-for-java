@@ -17,11 +17,13 @@ import com.azure.resourcemanager.logic.models.ListKeyVaultKeysDefinition;
 import com.azure.resourcemanager.logic.models.RegenerateActionParameter;
 import com.azure.resourcemanager.logic.models.TrackingEventsDefinition;
 
-/** An instance of this class provides access to all the operations defined in IntegrationAccountsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IntegrationAccountsClient.
+ */
 public interface IntegrationAccountsClient {
     /**
      * Gets a list of integration accounts by subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of integration accounts by subscription as paginated response with {@link PagedIterable}.
@@ -31,7 +33,7 @@ public interface IntegrationAccountsClient {
 
     /**
      * Gets a list of integration accounts by subscription.
-     *
+     * 
      * @param top The number of items to be included in the result.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -44,7 +46,7 @@ public interface IntegrationAccountsClient {
 
     /**
      * Gets a list of integration accounts by resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -56,7 +58,7 @@ public interface IntegrationAccountsClient {
 
     /**
      * Gets a list of integration accounts by resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param top The number of items to be included in the result.
      * @param context The context to associate with this operation.
@@ -70,7 +72,7 @@ public interface IntegrationAccountsClient {
 
     /**
      * Gets an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param context The context to associate with this operation.
@@ -80,12 +82,12 @@ public interface IntegrationAccountsClient {
      * @return an integration account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationAccountInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String integrationAccountName, Context context);
+    Response<IntegrationAccountInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String integrationAccountName, Context context);
 
     /**
      * Gets an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -98,7 +100,7 @@ public interface IntegrationAccountsClient {
 
     /**
      * Creates or updates an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param integrationAccount The integration account.
@@ -109,15 +111,12 @@ public interface IntegrationAccountsClient {
      * @return the integration account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationAccountInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        IntegrationAccountInner integrationAccount,
-        Context context);
+    Response<IntegrationAccountInner> createOrUpdateWithResponse(String resourceGroupName,
+        String integrationAccountName, IntegrationAccountInner integrationAccount, Context context);
 
     /**
      * Creates or updates an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param integrationAccount The integration account.
@@ -127,12 +126,12 @@ public interface IntegrationAccountsClient {
      * @return the integration account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationAccountInner createOrUpdate(
-        String resourceGroupName, String integrationAccountName, IntegrationAccountInner integrationAccount);
+    IntegrationAccountInner createOrUpdate(String resourceGroupName, String integrationAccountName,
+        IntegrationAccountInner integrationAccount);
 
     /**
      * Updates an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param integrationAccount The integration account.
@@ -143,15 +142,12 @@ public interface IntegrationAccountsClient {
      * @return the integration account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationAccountInner> updateWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        IntegrationAccountInner integrationAccount,
-        Context context);
+    Response<IntegrationAccountInner> updateWithResponse(String resourceGroupName, String integrationAccountName,
+        IntegrationAccountInner integrationAccount, Context context);
 
     /**
      * Updates an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param integrationAccount The integration account.
@@ -161,12 +157,12 @@ public interface IntegrationAccountsClient {
      * @return the integration account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationAccountInner update(
-        String resourceGroupName, String integrationAccountName, IntegrationAccountInner integrationAccount);
+    IntegrationAccountInner update(String resourceGroupName, String integrationAccountName,
+        IntegrationAccountInner integrationAccount);
 
     /**
      * Deletes an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param context The context to associate with this operation.
@@ -180,7 +176,7 @@ public interface IntegrationAccountsClient {
 
     /**
      * Deletes an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -192,7 +188,7 @@ public interface IntegrationAccountsClient {
 
     /**
      * Gets the integration account callback URL.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param parameters The callback URL parameters.
@@ -203,12 +199,12 @@ public interface IntegrationAccountsClient {
      * @return the integration account callback URL along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CallbackUrlInner> listCallbackUrlWithResponse(
-        String resourceGroupName, String integrationAccountName, GetCallbackUrlParameters parameters, Context context);
+    Response<CallbackUrlInner> listCallbackUrlWithResponse(String resourceGroupName, String integrationAccountName,
+        GetCallbackUrlParameters parameters, Context context);
 
     /**
      * Gets the integration account callback URL.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param parameters The callback URL parameters.
@@ -218,12 +214,12 @@ public interface IntegrationAccountsClient {
      * @return the integration account callback URL.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CallbackUrlInner listCallbackUrl(
-        String resourceGroupName, String integrationAccountName, GetCallbackUrlParameters parameters);
+    CallbackUrlInner listCallbackUrl(String resourceGroupName, String integrationAccountName,
+        GetCallbackUrlParameters parameters);
 
     /**
      * Gets the integration account's Key Vault keys.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param listKeyVaultKeys The key vault parameters.
@@ -233,12 +229,12 @@ public interface IntegrationAccountsClient {
      * @return the integration account's Key Vault keys as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<KeyVaultKeyInner> listKeyVaultKeys(
-        String resourceGroupName, String integrationAccountName, ListKeyVaultKeysDefinition listKeyVaultKeys);
+    PagedIterable<KeyVaultKeyInner> listKeyVaultKeys(String resourceGroupName, String integrationAccountName,
+        ListKeyVaultKeysDefinition listKeyVaultKeys);
 
     /**
      * Gets the integration account's Key Vault keys.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param listKeyVaultKeys The key vault parameters.
@@ -249,15 +245,12 @@ public interface IntegrationAccountsClient {
      * @return the integration account's Key Vault keys as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<KeyVaultKeyInner> listKeyVaultKeys(
-        String resourceGroupName,
-        String integrationAccountName,
-        ListKeyVaultKeysDefinition listKeyVaultKeys,
-        Context context);
+    PagedIterable<KeyVaultKeyInner> listKeyVaultKeys(String resourceGroupName, String integrationAccountName,
+        ListKeyVaultKeysDefinition listKeyVaultKeys, Context context);
 
     /**
      * Logs the integration account's tracking events.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param logTrackingEvents The callback URL parameters.
@@ -268,15 +261,12 @@ public interface IntegrationAccountsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> logTrackingEventsWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        TrackingEventsDefinition logTrackingEvents,
-        Context context);
+    Response<Void> logTrackingEventsWithResponse(String resourceGroupName, String integrationAccountName,
+        TrackingEventsDefinition logTrackingEvents, Context context);
 
     /**
      * Logs the integration account's tracking events.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param logTrackingEvents The callback URL parameters.
@@ -285,12 +275,12 @@ public interface IntegrationAccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void logTrackingEvents(
-        String resourceGroupName, String integrationAccountName, TrackingEventsDefinition logTrackingEvents);
+    void logTrackingEvents(String resourceGroupName, String integrationAccountName,
+        TrackingEventsDefinition logTrackingEvents);
 
     /**
      * Regenerates the integration account access key.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param regenerateAccessKey The access key type.
@@ -301,15 +291,12 @@ public interface IntegrationAccountsClient {
      * @return the integration account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationAccountInner> regenerateAccessKeyWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        RegenerateActionParameter regenerateAccessKey,
-        Context context);
+    Response<IntegrationAccountInner> regenerateAccessKeyWithResponse(String resourceGroupName,
+        String integrationAccountName, RegenerateActionParameter regenerateAccessKey, Context context);
 
     /**
      * Regenerates the integration account access key.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param regenerateAccessKey The access key type.
@@ -319,6 +306,6 @@ public interface IntegrationAccountsClient {
      * @return the integration account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationAccountInner regenerateAccessKey(
-        String resourceGroupName, String integrationAccountName, RegenerateActionParameter regenerateAccessKey);
+    IntegrationAccountInner regenerateAccessKey(String resourceGroupName, String integrationAccountName,
+        RegenerateActionParameter regenerateAccessKey);
 }

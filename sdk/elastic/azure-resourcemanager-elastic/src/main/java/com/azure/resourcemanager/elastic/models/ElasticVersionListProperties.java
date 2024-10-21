@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Elastic Version Properties. */
+/**
+ * Elastic Version Properties.
+ */
 @Fluent
-public final class ElasticVersionListProperties {
+public final class ElasticVersionListProperties implements JsonSerializable<ElasticVersionListProperties> {
     /*
      * Available elastic version of the given region
      */
-    @JsonProperty(value = "version")
     private String version;
 
-    /** Creates an instance of ElasticVersionListProperties class. */
+    /**
+     * Creates an instance of ElasticVersionListProperties class.
+     */
     public ElasticVersionListProperties() {
     }
 
     /**
      * Get the version property: Available elastic version of the given region.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -31,7 +38,7 @@ public final class ElasticVersionListProperties {
 
     /**
      * Set the version property: Available elastic version of the given region.
-     *
+     * 
      * @param version the version value to set.
      * @return the ElasticVersionListProperties object itself.
      */
@@ -42,9 +49,45 @@ public final class ElasticVersionListProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ElasticVersionListProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ElasticVersionListProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ElasticVersionListProperties.
+     */
+    public static ElasticVersionListProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ElasticVersionListProperties deserializedElasticVersionListProperties = new ElasticVersionListProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedElasticVersionListProperties.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedElasticVersionListProperties;
+        });
     }
 }

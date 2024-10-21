@@ -118,6 +118,7 @@
     <module>sdk/iotcentral</module>
     <module>sdk/iotfirmwaredefense</module>
     <module>sdk/iothub</module>
+    <module>sdk/iotoperations</module>
     <module>sdk/keyvault</module>
     <module>sdk/kubernetesconfiguration</module>
     <module>sdk/kusto</module>

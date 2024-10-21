@@ -9,31 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.tables.implementation.models.AccessPolicy;
-import com.azure.data.tables.implementation.models.CorsRule;
-import com.azure.data.tables.implementation.models.GeoReplication;
-import com.azure.data.tables.implementation.models.Logging;
-import com.azure.data.tables.implementation.models.Metrics;
-import com.azure.data.tables.implementation.models.RetentionPolicy;
-import com.azure.data.tables.implementation.models.SignedIdentifier;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
 import com.azure.data.tables.implementation.models.TableServiceJsonError;
 import com.azure.data.tables.implementation.models.TableServiceJsonErrorException;
 import com.azure.data.tables.implementation.models.TableServiceOdataError;
 import com.azure.data.tables.implementation.models.TableServiceOdataErrorMessage;
-import com.azure.data.tables.implementation.models.TableServiceStats;
-import com.azure.data.tables.models.TableAccessPolicy;
-import com.azure.data.tables.models.TableServiceCorsRule;
 import com.azure.data.tables.models.TableServiceError;
 import com.azure.data.tables.models.TableServiceException;
-import com.azure.data.tables.models.TableServiceGeoReplication;
-import com.azure.data.tables.models.TableServiceGeoReplicationStatus;
-import com.azure.data.tables.models.TableServiceLogging;
-import com.azure.data.tables.models.TableServiceMetrics;
-import com.azure.data.tables.models.TableServiceProperties;
-import com.azure.data.tables.models.TableServiceRetentionPolicy;
-import com.azure.data.tables.models.TableServiceStatistics;
-import com.azure.data.tables.models.TableSignedIdentifier;
 import com.azure.data.tables.models.TableTransactionFailedException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -51,7 +33,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import static com.azure.core.util.CoreUtils.getResultWithTimeout;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -342,148 +323,6 @@ public final class TableUtils {
             Duration.ofSeconds(THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS));
     }
 
-    public static TableServiceProperties toTableServiceProperties(
-        com.azure.data.tables.implementation.models.TableServiceProperties tableServiceProperties) {
-
-        if (tableServiceProperties == null) {
-            return null;
-        }
-
-        return new TableServiceProperties()
-            .setLogging(toTableServiceLogging(tableServiceProperties.getLogging()))
-            .setHourMetrics(toTableServiceMetrics(tableServiceProperties.getHourMetrics()))
-            .setMinuteMetrics(toTableServiceMetrics(tableServiceProperties.getMinuteMetrics()))
-            .setCorsRules(tableServiceProperties.getCors().stream().map(TableUtils::toTablesServiceCorsRule)
-                .collect(Collectors.toList()));
-    }
-
-    static TableServiceRetentionPolicy toTableServiceRetentionPolicy(RetentionPolicy retentionPolicy) {
-        if (retentionPolicy == null) {
-            return null;
-        }
-
-        return new TableServiceRetentionPolicy()
-            .setEnabled(retentionPolicy.isEnabled())
-            .setDaysToRetain(retentionPolicy.getDays());
-    }
-
-    static TableServiceMetrics toTableServiceMetrics(Metrics metrics) {
-        if (metrics == null) {
-            return null;
-        }
-
-        return new TableServiceMetrics()
-            .setVersion(metrics.getVersion())
-            .setEnabled(metrics.isEnabled())
-            .setIncludeApis(metrics.isIncludeAPIs())
-            .setRetentionPolicy(toTableServiceRetentionPolicy(metrics.getRetentionPolicy()));
-    }
-
-    static TableServiceCorsRule toTablesServiceCorsRule(CorsRule corsRule) {
-        if (corsRule == null) {
-            return null;
-        }
-
-        return new TableServiceCorsRule()
-            .setAllowedOrigins(corsRule.getAllowedOrigins())
-            .setAllowedMethods(corsRule.getAllowedMethods())
-            .setAllowedHeaders(corsRule.getAllowedHeaders())
-            .setExposedHeaders(corsRule.getExposedHeaders())
-            .setMaxAgeInSeconds(corsRule.getMaxAgeInSeconds());
-    }
-
-    static TableServiceLogging toTableServiceLogging(Logging logging) {
-        if (logging == null) {
-            return null;
-        }
-
-        return new TableServiceLogging()
-            .setAnalyticsVersion(logging.getVersion())
-            .setDeleteLogged(logging.isDelete())
-            .setReadLogged(logging.isRead())
-            .setWriteLogged(logging.isWrite())
-            .setRetentionPolicy(toTableServiceRetentionPolicy(logging.getRetentionPolicy()));
-    }
-
-    public static com.azure.data.tables.implementation.models.TableServiceProperties toImplTableServiceProperties(
-        TableServiceProperties tableServiceProperties) {
-
-        return new com.azure.data.tables.implementation.models.TableServiceProperties()
-            .setLogging(toLogging(tableServiceProperties.getLogging()))
-            .setHourMetrics(toMetrics(tableServiceProperties.getHourMetrics()))
-            .setMinuteMetrics(toMetrics(tableServiceProperties.getMinuteMetrics()))
-            .setCors(tableServiceProperties.getCorsRules() == null ? null
-                : tableServiceProperties.getCorsRules().stream()
-                .map(TableUtils::toCorsRule)
-                .collect(Collectors.toList()));
-    }
-
-    static Logging toLogging(TableServiceLogging tableServiceLogging) {
-        if (tableServiceLogging == null) {
-            return null;
-        }
-
-        return new Logging()
-            .setVersion(tableServiceLogging.getAnalyticsVersion())
-            .setDelete(tableServiceLogging.isDeleteLogged())
-            .setRead(tableServiceLogging.isReadLogged())
-            .setWrite(tableServiceLogging.isWriteLogged())
-            .setRetentionPolicy(toRetentionPolicy(tableServiceLogging.getRetentionPolicy()));
-    }
-
-    static RetentionPolicy toRetentionPolicy(TableServiceRetentionPolicy tableServiceRetentionPolicy) {
-        if (tableServiceRetentionPolicy == null) {
-            return null;
-        }
-
-        return new RetentionPolicy()
-            .setEnabled(tableServiceRetentionPolicy.isEnabled())
-            .setDays(tableServiceRetentionPolicy.getDaysToRetain());
-    }
-
-    static Metrics toMetrics(TableServiceMetrics tableServiceMetrics) {
-        if (tableServiceMetrics == null) {
-            return null;
-        }
-
-        return new Metrics()
-            .setVersion(tableServiceMetrics.getVersion())
-            .setEnabled(tableServiceMetrics.isEnabled())
-            .setIncludeAPIs(tableServiceMetrics.isIncludeApis())
-            .setRetentionPolicy(toRetentionPolicy(tableServiceMetrics.getTableServiceRetentionPolicy()));
-    }
-
-    static CorsRule toCorsRule(TableServiceCorsRule corsRule) {
-        if (corsRule == null) {
-            return null;
-        }
-
-        return new CorsRule()
-            .setAllowedOrigins(corsRule.getAllowedOrigins())
-            .setAllowedMethods(corsRule.getAllowedMethods())
-            .setAllowedHeaders(corsRule.getAllowedHeaders())
-            .setExposedHeaders(corsRule.getExposedHeaders())
-            .setMaxAgeInSeconds(corsRule.getMaxAgeInSeconds());
-    }
-
-    public static TableServiceStatistics toTableServiceStatistics(TableServiceStats tableServiceStats) {
-        if (tableServiceStats == null) {
-            return null;
-        }
-
-        return new TableServiceStatistics(toTableServiceGeoReplication(tableServiceStats.getGeoReplication()));
-    }
-
-    static TableServiceGeoReplication toTableServiceGeoReplication(GeoReplication geoReplication) {
-        if (geoReplication == null) {
-            return null;
-        }
-
-        return new TableServiceGeoReplication(
-            TableServiceGeoReplicationStatus.fromString(geoReplication.getStatus().toString()),
-            geoReplication.getLastSyncTime());
-    }
-
     // Single quotes in OData queries should be escaped by using two consecutive single quotes characters.
     // Source: http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part2-url-conventions.html#sec_URLSyntax.
     public static String escapeSingleQuotes(String input) {
@@ -492,47 +331,6 @@ public final class TableUtils {
         }
 
         return input.replace("'", "''");
-    }
-
-    public static TableSignedIdentifier toTableSignedIdentifier(SignedIdentifier signedIdentifier) {
-        if (signedIdentifier == null) {
-            return null;
-        }
-
-        return new TableSignedIdentifier(signedIdentifier.getId())
-            .setAccessPolicy(toTableAccessPolicy(signedIdentifier.getAccessPolicy()));
-    }
-
-    static TableAccessPolicy toTableAccessPolicy(AccessPolicy accessPolicy) {
-        if (accessPolicy == null) {
-            return null;
-        }
-
-        return new TableAccessPolicy()
-            .setExpiresOn(accessPolicy.getExpiry())
-            .setStartsOn(accessPolicy.getStart())
-            .setPermissions(accessPolicy.getPermission());
-    }
-
-    public static SignedIdentifier toSignedIdentifier(TableSignedIdentifier tableSignedIdentifier) {
-        if (tableSignedIdentifier == null) {
-            return null;
-        }
-
-        return new SignedIdentifier()
-            .setId(tableSignedIdentifier.getId())
-            .setAccessPolicy(toAccessPolicy(tableSignedIdentifier.getAccessPolicy()));
-    }
-
-    static AccessPolicy toAccessPolicy(TableAccessPolicy tableAccessPolicy) {
-        if (tableAccessPolicy == null) {
-            return null;
-        }
-
-        return new AccessPolicy()
-            .setExpiry(tableAccessPolicy.getExpiresOn())
-            .setStart(tableAccessPolicy.getStartsOn())
-            .setPermission(tableAccessPolicy.getPermissions());
     }
 
     public static Exception interpretException(Exception ex) {

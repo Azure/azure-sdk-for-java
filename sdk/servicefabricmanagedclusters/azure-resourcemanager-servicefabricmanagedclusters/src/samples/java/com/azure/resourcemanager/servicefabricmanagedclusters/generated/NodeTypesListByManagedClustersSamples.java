@@ -10,8 +10,8 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
 public final class NodeTypesListByManagedClustersSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/stable/2024-04-01/examples/
-     * NodeTypeListOperation_example.json
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * examples/NodeTypeListOperation_example.json
      */
     /**
      * Sample code: List node type of the specified managed cluster.
