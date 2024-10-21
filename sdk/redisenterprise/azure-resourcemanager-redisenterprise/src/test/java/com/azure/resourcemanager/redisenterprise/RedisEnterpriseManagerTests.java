@@ -21,15 +21,10 @@ import com.azure.resourcemanager.redisenterprise.models.Sku;
 import com.azure.resourcemanager.redisenterprise.models.SkuName;
 import com.azure.resourcemanager.redisenterprise.models.TlsVersion;
 import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.resources.models.Provider;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 public class RedisEnterpriseManagerTests extends TestProxyTestBase {
@@ -45,16 +40,15 @@ public class RedisEnterpriseManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        redisEnterpriseManager = RedisEnterpriseManager.configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile);
-
         resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
 
-        canRegisterProviders(Arrays.asList("Microsoft.Cache"));
+        redisEnterpriseManager = RedisEnterpriseManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -75,7 +69,6 @@ public class RedisEnterpriseManagerTests extends TestProxyTestBase {
 
     @Test
     @LiveOnly
-    @Disabled("RP register hangs forever")
     public void testCreate() {
         Cluster cluster = null;
         try {
@@ -104,29 +97,5 @@ public class RedisEnterpriseManagerTests extends TestProxyTestBase {
 
     private static String randomPadding() {
         return String.format("%05d", Math.abs(RANDOM.nextInt() % 100000));
-    }
-
-    /**
-     * Check and register service resources
-     *
-     * @param providerNamespaces the resource provider names
-     */
-    private void canRegisterProviders(List<String> providerNamespaces) {
-        providerNamespaces.forEach(providerNamespace -> {
-            Provider provider = resourceManager.providers().getByName(providerNamespace);
-            if (!"Registered".equalsIgnoreCase(provider.registrationState())
-                && !"Registering".equalsIgnoreCase(provider.registrationState())) {
-                provider = resourceManager.providers().register(providerNamespace);
-            }
-            while (isRegistering(provider)) {
-                ResourceManagerUtils.sleep(Duration.ofSeconds(5));
-                provider = resourceManager.providers().getByName(provider.namespace());
-            }
-        });
-    }
-
-    private static boolean isRegistering(Provider provider) {
-        return !"Registered".equalsIgnoreCase(provider.registrationState())
-            || "NotRegistered".equalsIgnoreCase(provider.registrationState()) || "Registering".equalsIgnoreCase(provider.registrationState());
     }
 }
