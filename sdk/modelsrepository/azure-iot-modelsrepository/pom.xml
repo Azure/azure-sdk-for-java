@@ -60,12 +60,6 @@
       <artifactId>azure-core-test</artifactId>
       <version>1.27.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-http-jdk-httpclient</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -94,48 +88,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <build>
-    <testResources>
-      <testResource>
-        <directory>src/samples/resources</directory>
-      </testResource>
-      <testResource>
-        <directory>src/test/resources</directory>
-      </testResource>
-    </testResources>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
-        <configuration>
-          <rules>
-            <bannedDependencies>
-              <includes>
-                <include>com.fasterxml.jackson.core:jackson-annotations:[2.17.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
-              </includes>
-            </bannedDependencies>
-          </rules>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
-  <profiles>
-    <profile>
-      <id>java12plus</id>
-      <activation>
-        <jdk>[12,)</jdk>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-http-jdk-httpclient</artifactId>
-          <version>1.0.0-beta.17</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
 </project>
