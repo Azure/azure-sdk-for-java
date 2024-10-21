@@ -23,6 +23,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.data.redis.connection.RedisConfiguration;
 import org.springframework.data.redis.connection.RedisSentinelConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnection;
@@ -43,6 +45,12 @@ import reactor.core.publisher.Mono;
 @EnableConfigurationProperties(RedisProperties.class)
 public class AzureLettucePasswordlessAutoConfiguration {
 
+    private final GenericApplicationContext applicationContext;
+
+    AzureLettucePasswordlessAutoConfiguration(GenericApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
+
     @Bean
     @ConfigurationProperties(prefix = "spring.data.redis.azure")
     AzureRedisPasswordlessProperties redisPasswordlessProperties() {
@@ -51,10 +59,11 @@ public class AzureLettucePasswordlessAutoConfiguration {
 
     @Bean(name = "azureRedisCredentials")
     @ConditionalOnMissingBean
+    @DependsOn("springTokenCredentialProviderContextProvider")
     AzureRedisCredentials azureRedisCredentials(RedisProperties redisProperties,
                                                 AzureRedisPasswordlessProperties azureRedisPasswordlessProperties,
                                                 AzureGlobalProperties azureGlobalProperties) {
-        return new AzureRedisCredentials(redisProperties.getUsername(),
+        return new AzureRedisCredentials(applicationContext, redisProperties.getUsername(),
             mergeAzureProperties(azureGlobalProperties, azureRedisPasswordlessProperties));
     }
 

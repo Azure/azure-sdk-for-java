@@ -36,7 +36,7 @@ import static com.azure.spring.cloud.service.implementation.identity.credential.
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnMissingBean(ConnectionFactory.class)
-class ServiceBusJmsConnectionFactoryConfiguration {
+class ServiceBusJmsConnectionFactoryConfiguration  {
 
     private static final Log logger = LogFactory.getLog(ServiceBusJmsConnectionFactoryConfiguration.class);
     private final GenericApplicationContext applicationContext;
@@ -83,6 +83,7 @@ class ServiceBusJmsConnectionFactoryConfiguration {
     @ConditionalOnProperty(prefix = "spring.jms.servicebus.pool", name = "enabled", havingValue = "false",
         matchIfMissing = true)
     class SimpleConnectionFactoryConfiguration {
+
 
         @Bean
         @ConditionalOnProperty(prefix = "spring.jms.cache", name = "enabled", havingValue = "false")
