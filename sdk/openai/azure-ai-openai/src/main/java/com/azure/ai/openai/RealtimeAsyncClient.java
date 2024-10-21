@@ -22,6 +22,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
@@ -34,6 +37,7 @@ import reactor.util.retry.Retry;
 import javax.xml.validation.SchemaFactoryLoader;
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -425,11 +429,11 @@ public final class RealtimeAsyncClient implements Closeable {
 
     public Mono<Void> sendMessage(RealtimeClientEvent message) {
         return checkStateBeforeSend().then(Mono.create(sink -> {
-//                        if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+//                        if (logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
 //                            try {
 //                                String json = JacksonAdapter.createDefaultSerializerAdapter()
 //                                    .serialize(message, SerializerEncoding.JSON);
-//                                logger.atVerbose().addKeyValue("message", json).log("Send message");
+//                                logger.atInfo().addKeyValue("message", json).log("Send message");
 //                            } catch (IOException e) {
 //                                sink.error(new UncheckedIOException("Failed to serialize message for VERBOSE logging", e));
 //                            }

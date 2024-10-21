@@ -44,6 +44,8 @@ import reactor.core.Disposables;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 
 public class LowLevelClient {
@@ -72,29 +74,23 @@ public class LowLevelClient {
 
         // We setup our user input sender
         disposables.add(requestUserInput.asFlux()
-                .<Void>flatMap(userInputRequest -> {
+                .flatMap(userInputRequest -> {
                     if (userInputRequest instanceof SessionUpdateRequest) {
                         return client.sendMessage(sessionUpdate());
                     } else if (userInputRequest instanceof SendAudioRequest) {
-                        // TODO: send the audio
-//                        return client.sendMessage();
-                        // no-op;
+                        return AudioSender.sendAudio(client, openResourceFile("arc-easy-q237-tts.wav"));
+                    } else if (userInputRequest instanceof EndSession) {
                         return Mono.empty();
                     } else {
-                        // no-op
-                        return Mono.empty();
+                        return Mono.error(new IllegalStateException("Unexpected message type"));
                     }
                 }).subscribe());
 
 
-        // This subscriber will keep our application until an EndSession request is sent
+        // This subscriber will keep our application running until an EndSession request is sent
         requestUserInput.asFlux()
                 .ofType(EndSession.class)
 //                .timeout(Duration.ofSeconds(5))
-                .doOnError(throwable -> {
-                    System.out.println("Error: " + throwable.getMessage());
-                    disposables.dispose();
-                })
                 .blockFirst();
 
         try {
@@ -136,7 +132,7 @@ public class LowLevelClient {
                 System.out.println("Session updated");
                 System.out.println("\tEvent ID: " + sessionUpdatedEvent.getSession().getId());
                 System.out.println("\tModel: " + sessionUpdatedEvent.getSession().getModel());
-                requestUserInput.emitNext(new EndSession(), Sinks.EmitFailureHandler.FAIL_FAST);
+                requestUserInput.emitNext(new SendAudioRequest(), Sinks.EmitFailureHandler.FAIL_FAST);
                 break;
             case "conversation.created":
                 RealtimeServerEventConversationCreated conversationCreatedEvent = (RealtimeServerEventConversationCreated) serverEvent;
@@ -247,4 +243,8 @@ public class LowLevelClient {
     private static final class SessionUpdateRequest extends UserInputRequest{}
     private static final class SendAudioRequest extends UserInputRequest{}
     private static final class EndSession extends UserInputRequest{}
+
+    private static Path openResourceFile(String fileName) {
+        return Paths.get("src", "test", "resources", fileName);
+    }
 }
