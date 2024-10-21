@@ -6,18 +6,20 @@ package com.azure.resourcemanager.elastic.models;
 
 import com.azure.resourcemanager.elastic.fluent.models.ElasticVersionListFormatInner;
 
-/** An immutable client-side representation of ElasticVersionListFormat. */
+/**
+ * An immutable client-side representation of ElasticVersionListFormat.
+ */
 public interface ElasticVersionListFormat {
     /**
      * Gets the properties property: Elastic Version Properties.
-     *
+     * 
      * @return the properties value.
      */
     ElasticVersionListProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.elastic.fluent.models.ElasticVersionListFormatInner object.
-     *
+     * 
      * @return the inner object.
      */
     ElasticVersionListFormatInner innerModel();
