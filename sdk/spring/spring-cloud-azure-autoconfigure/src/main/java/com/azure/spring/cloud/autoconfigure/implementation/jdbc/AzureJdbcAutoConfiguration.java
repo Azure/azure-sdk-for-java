@@ -33,11 +33,4 @@ public class AzureJdbcAutoConfiguration {
     JdbcPropertiesBeanPostProcessor jdbcConfigurationPropertiesBeanPostProcessor() {
         return new JdbcPropertiesBeanPostProcessor();
     }
-
-    @Bean
-    @ConditionalOnMissingBean
-    SpringTokenCredentialProviderContextProvider springTokenCredentialProviderContextProvider() {
-        return new SpringTokenCredentialProviderContextProvider();
-    }
-
 }
