@@ -16,10 +16,7 @@ class MappingsBuilderTest {
     @Test
     void testThatCosmosDbAttributesAreRetained() {
         Mappings mappings = new MappingsBuilder(SPAN).build();
-        Attributes attributes = Attributes.builder()
-            .put("db.one", "one")
-            .put("db.cosmosdb.two", "two")
-            .build();
+        Attributes attributes = Attributes.builder().put("db.one", "one").put("db.cosmosdb.two", "two").build();
 
         RemoteDependencyTelemetryBuilder telemetryBuilder = RemoteDependencyTelemetryBuilder.create();
 

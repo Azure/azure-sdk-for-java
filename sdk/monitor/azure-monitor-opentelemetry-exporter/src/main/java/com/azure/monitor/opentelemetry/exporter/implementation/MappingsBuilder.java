@@ -44,7 +44,8 @@ class MappingsBuilder {
                     });
                 }
                 // keep db.cosmosdb.* attributes
-                prefixMappings.put("db.cosmosdb.", (telemetryBuilder, key, value) -> telemetryBuilder.addProperty(key, String.valueOf(value)));
+                prefixMappings.put("db.cosmosdb.",
+                    (telemetryBuilder, key, value) -> telemetryBuilder.addProperty(key, String.valueOf(value)));
                 break;
 
             case METRIC:
