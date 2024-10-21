@@ -49,15 +49,11 @@ import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.LoadBalancerSkuType;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.TransportProtocol;
-import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.resources.models.Provider;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -67,7 +63,6 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
     private String resourceGroupName = "rg" + randomPadding();
     private ComputeFleetManager computeFleetManager = null;
     private NetworkManager networkManager = null;
-    private ResourceManager resourceManager;
     private boolean testEnv;
 
     @Override
@@ -75,23 +70,16 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        computeFleetManager = ComputeFleetManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile);
-
         networkManager = NetworkManager
             .configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile)
-            .withDefaultSubscription();
-
-        canRegisterProviders(Arrays.asList("Microsoft.AzureFleet"));
+        computeFleetManager = ComputeFleetManager
+                .configure()
+                .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+                .withPolicy(new ProviderRegistrationPolicy(networkManager.resourceManager()))
+                .authenticate(credential, profile);
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -99,7 +87,7 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
+            networkManager.resourceManager().resourceGroups()
                 .define(resourceGroupName)
                 .withRegion(REGION)
                 .create();
@@ -109,7 +97,7 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
     @Override
     protected void afterTest() {
         if (!testEnv) {
-            resourceManager.resourceGroups().beginDeleteByName(resourceGroupName);
+            networkManager.resourceManager().resourceGroups().beginDeleteByName(resourceGroupName);
         }
     }
 
@@ -263,19 +251,5 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
 
     private static String randomPadding() {
         return String.format("%05d", Math.abs(RANDOM.nextInt() % 100000));
-    }
-
-    private void canRegisterProviders(List<String> providerNamespaces) {
-        providerNamespaces.forEach(providerNamespace -> {
-            Provider provider = resourceManager.providers().getByName(providerNamespace);
-            if (!"Registered".equalsIgnoreCase(provider.registrationState())
-                && !"Registering".equalsIgnoreCase(provider.registrationState())) {
-                provider = resourceManager.providers().register(providerNamespace);
-            }
-            while (!"Registered".equalsIgnoreCase(provider.registrationState())) {
-                ResourceManagerUtils.sleep(Duration.ofSeconds(5));
-                provider = resourceManager.providers().getByName(provider.namespace());
-            }
-        });
     }
 }
