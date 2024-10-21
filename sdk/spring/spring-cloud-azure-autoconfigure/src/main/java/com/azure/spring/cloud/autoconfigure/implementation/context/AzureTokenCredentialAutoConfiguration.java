@@ -10,7 +10,9 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.AzureServiceConfigurationBase;
+import com.azure.spring.cloud.autoconfigure.implementation.context.condition.SpringTokenCredentialProviderContextCondition;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.jdbc.SpringTokenCredentialProviderContextProvider;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureHttpConfigurationProperties;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
@@ -36,6 +38,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration;
 import org.springframework.boot.task.TaskExecutorBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -223,6 +226,13 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
             .allowCoreThreadTimeOut(true)
             .threadNamePrefix(DEFAULT_CREDENTIAL_THREAD_NAME_PREFIX)
             .build();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @Conditional(SpringTokenCredentialProviderContextCondition.class)
+    SpringTokenCredentialProviderContextProvider springTokenCredentialProviderContextProvider() {
+        return new SpringTokenCredentialProviderContextProvider();
     }
 
     static class AzureServiceClientBuilderFactoryPostProcessor implements BeanPostProcessor, BeanFactoryAware {
