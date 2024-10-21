@@ -9,7 +9,7 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/spring/ci.cosmos.yml
+      - sdk/spring/tests.cosmos.yml
       - sdk/spring/azure-spring-data-cosmos/
       - eng/pipelines/templates/stages/cosmos-emulator-matrix.json
       - eng/pipelines/templates/stages/cosmos-sdk-client.yml
@@ -22,7 +22,7 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/spring/ci.cosmos.yml
+      - sdk/spring/tests.cosmos.yml
       - sdk/spring/azure-spring-data-cosmos/
       - eng/pipelines/templates/stages/cosmos-emulator-matrix.json
       - eng/pipelines/templates/stages/cosmos-sdk-client.yml
