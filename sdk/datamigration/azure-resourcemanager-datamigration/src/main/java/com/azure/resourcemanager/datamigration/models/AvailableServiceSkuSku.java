@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** SKU name, tier, etc. */
+/**
+ * SKU name, tier, etc.
+ */
 @Fluent
-public final class AvailableServiceSkuSku {
+public final class AvailableServiceSkuSku implements JsonSerializable<AvailableServiceSkuSku> {
     /*
      * The name of the SKU
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * SKU family
      */
-    @JsonProperty(value = "family")
     private String family;
 
     /*
      * SKU size
      */
-    @JsonProperty(value = "size")
     private String size;
 
     /*
      * The tier of the SKU, such as "Free", "Basic", "Standard", or "Premium"
      */
-    @JsonProperty(value = "tier")
     private String tier;
 
-    /** Creates an instance of AvailableServiceSkuSku class. */
+    /**
+     * Creates an instance of AvailableServiceSkuSku class.
+     */
     public AvailableServiceSkuSku() {
     }
 
     /**
      * Get the name property: The name of the SKU.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -49,7 +53,7 @@ public final class AvailableServiceSkuSku {
 
     /**
      * Set the name property: The name of the SKU.
-     *
+     * 
      * @param name the name value to set.
      * @return the AvailableServiceSkuSku object itself.
      */
@@ -60,7 +64,7 @@ public final class AvailableServiceSkuSku {
 
     /**
      * Get the family property: SKU family.
-     *
+     * 
      * @return the family value.
      */
     public String family() {
@@ -69,7 +73,7 @@ public final class AvailableServiceSkuSku {
 
     /**
      * Set the family property: SKU family.
-     *
+     * 
      * @param family the family value to set.
      * @return the AvailableServiceSkuSku object itself.
      */
@@ -80,7 +84,7 @@ public final class AvailableServiceSkuSku {
 
     /**
      * Get the size property: SKU size.
-     *
+     * 
      * @return the size value.
      */
     public String size() {
@@ -89,7 +93,7 @@ public final class AvailableServiceSkuSku {
 
     /**
      * Set the size property: SKU size.
-     *
+     * 
      * @param size the size value to set.
      * @return the AvailableServiceSkuSku object itself.
      */
@@ -100,7 +104,7 @@ public final class AvailableServiceSkuSku {
 
     /**
      * Get the tier property: The tier of the SKU, such as "Free", "Basic", "Standard", or "Premium".
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -109,7 +113,7 @@ public final class AvailableServiceSkuSku {
 
     /**
      * Set the tier property: The tier of the SKU, such as "Free", "Basic", "Standard", or "Premium".
-     *
+     * 
      * @param tier the tier value to set.
      * @return the AvailableServiceSkuSku object itself.
      */
@@ -120,9 +124,54 @@ public final class AvailableServiceSkuSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("family", this.family);
+        jsonWriter.writeStringField("size", this.size);
+        jsonWriter.writeStringField("tier", this.tier);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableServiceSkuSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableServiceSkuSku if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailableServiceSkuSku.
+     */
+    public static AvailableServiceSkuSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableServiceSkuSku deserializedAvailableServiceSkuSku = new AvailableServiceSkuSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAvailableServiceSkuSku.name = reader.getString();
+                } else if ("family".equals(fieldName)) {
+                    deserializedAvailableServiceSkuSku.family = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    deserializedAvailableServiceSkuSku.size = reader.getString();
+                } else if ("tier".equals(fieldName)) {
+                    deserializedAvailableServiceSkuSku.tier = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableServiceSkuSku;
+        });
     }
 }

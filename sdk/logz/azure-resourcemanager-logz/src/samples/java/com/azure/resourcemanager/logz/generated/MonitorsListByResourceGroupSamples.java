@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.logz.generated;
 
-/** Samples for Monitors ListByResourceGroup. */
+/**
+ * Samples for Monitors ListByResourceGroup.
+ */
 public final class MonitorsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/Monitors_ListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/Monitors_ListByResourceGroup.json
      */
     /**
      * Sample code: Monitors_ListByResourceGroup.
-     *
+     * 
      * @param manager Entry point to LogzManager.
      */
     public static void monitorsListByResourceGroup(com.azure.resourcemanager.logz.LogzManager manager) {

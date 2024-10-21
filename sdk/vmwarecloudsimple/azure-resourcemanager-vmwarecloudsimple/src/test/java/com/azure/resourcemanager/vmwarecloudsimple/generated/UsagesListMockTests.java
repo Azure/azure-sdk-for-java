@@ -6,67 +6,38 @@ package com.azure.resourcemanager.vmwarecloudsimple.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager;
 import com.azure.resourcemanager.vmwarecloudsimple.models.Usage;
 import com.azure.resourcemanager.vmwarecloudsimple.models.UsageCount;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class UsagesListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"currentValue\":1398700103,\"limit\":192287845,\"name\":{\"localizedValue\":\"mpzqjhhhq\",\"value\":\"w\"},\"unit\":\"BytesPerSecond\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"currentValue\":1523413680,\"limit\":1983301203,\"name\":{\"localizedValue\":\"snv\",\"value\":\"dmxzr\"},\"unit\":\"Count\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        VMwareCloudSimpleManager manager = VMwareCloudSimpleManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Usage> response = manager.usages().list("zv", "qxfx", com.azure.core.util.Context.NONE);
 
-        VMwareCloudSimpleManager manager =
-            VMwareCloudSimpleManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Usage> response = manager.usages().list("wpfaj", "jwltlwtjjgu", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals(1523413680, response.iterator().next().currentValue());
-        Assertions.assertEquals(1983301203, response.iterator().next().limit());
-        Assertions.assertEquals("snv", response.iterator().next().name().localizedValue());
-        Assertions.assertEquals("dmxzr", response.iterator().next().name().value());
-        Assertions.assertEquals(UsageCount.COUNT, response.iterator().next().unit());
+        Assertions.assertEquals(1398700103, response.iterator().next().currentValue());
+        Assertions.assertEquals(192287845, response.iterator().next().limit());
+        Assertions.assertEquals("mpzqjhhhq", response.iterator().next().name().localizedValue());
+        Assertions.assertEquals("w", response.iterator().next().name().value());
+        Assertions.assertEquals(UsageCount.BYTES_PER_SECOND, response.iterator().next().unit());
     }
 }

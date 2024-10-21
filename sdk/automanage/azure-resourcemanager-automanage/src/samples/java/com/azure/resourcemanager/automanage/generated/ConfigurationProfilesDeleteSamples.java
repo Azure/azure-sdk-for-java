@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.automanage.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ConfigurationProfiles Delete. */
+/**
+ * Samples for ConfigurationProfiles Delete.
+ */
 public final class ConfigurationProfilesDeleteSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/deleteConfigurationProfile.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * deleteConfigurationProfile.json
      */
     /**
      * Sample code: Delete a configuration profile.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void deleteAConfigurationProfile(com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager.configurationProfiles().deleteWithResponse("rg", "customConfigurationProfile", Context.NONE);
+        manager.configurationProfiles()
+            .deleteByResourceGroupWithResponse("rg", "customConfigurationProfile", com.azure.core.util.Context.NONE);
     }
 }

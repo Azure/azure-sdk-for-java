@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ShortDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ShortDescription model =
-            BinaryData
-                .fromString("{\"problem\":\"hzgpphrcgyncocpe\",\"solution\":\"vmmcoofs\"}")
-                .toObject(ShortDescription.class);
-        Assertions.assertEquals("hzgpphrcgyncocpe", model.problem());
-        Assertions.assertEquals("vmmcoofs", model.solution());
+        ShortDescription model
+            = BinaryData.fromString("{\"problem\":\"rbirphxe\",\"solution\":\"yva\"}").toObject(ShortDescription.class);
+        Assertions.assertEquals("rbirphxe", model.problem());
+        Assertions.assertEquals("yva", model.solution());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ShortDescription model = new ShortDescription().withProblem("hzgpphrcgyncocpe").withSolution("vmmcoofs");
+        ShortDescription model = new ShortDescription().withProblem("rbirphxe").withSolution("yva");
         model = BinaryData.fromObject(model).toObject(ShortDescription.class);
-        Assertions.assertEquals("hzgpphrcgyncocpe", model.problem());
-        Assertions.assertEquals("vmmcoofs", model.solution());
+        Assertions.assertEquals("rbirphxe", model.problem());
+        Assertions.assertEquals("yva", model.solution());
     }
 }

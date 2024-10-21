@@ -20,35 +20,29 @@ public final class EntityRelationsImpl implements EntityRelations {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    public EntityRelationsImpl(
-        EntityRelationsClient innerClient,
+    public EntityRelationsImpl(EntityRelationsClient innerClient,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Relation getRelation(String resourceGroupName, String workspaceName, String entityId, String relationName) {
-        RelationInner inner =
-            this.serviceClient().getRelation(resourceGroupName, workspaceName, entityId, relationName);
+    public Response<Relation> getRelationWithResponse(String resourceGroupName, String workspaceName, String entityId,
+        String relationName, Context context) {
+        Response<RelationInner> inner = this.serviceClient()
+            .getRelationWithResponse(resourceGroupName, workspaceName, entityId, relationName, context);
         if (inner != null) {
-            return new RelationImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RelationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<Relation> getRelationWithResponse(
-        String resourceGroupName, String workspaceName, String entityId, String relationName, Context context) {
-        Response<RelationInner> inner =
-            this
-                .serviceClient()
-                .getRelationWithResponse(resourceGroupName, workspaceName, entityId, relationName, context);
+    public Relation getRelation(String resourceGroupName, String workspaceName, String entityId, String relationName) {
+        RelationInner inner
+            = this.serviceClient().getRelation(resourceGroupName, workspaceName, entityId, relationName);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new RelationImpl(inner.getValue(), this.manager()));
+            return new RelationImpl(inner, this.manager());
         } else {
             return null;
         }

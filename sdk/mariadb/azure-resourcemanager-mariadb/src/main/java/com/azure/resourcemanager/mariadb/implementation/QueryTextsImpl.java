@@ -22,21 +22,18 @@ public final class QueryTextsImpl implements QueryTexts {
 
     private final com.azure.resourcemanager.mariadb.MariaDBManager serviceManager;
 
-    public QueryTextsImpl(
-        QueryTextsClient innerClient, com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
+    public QueryTextsImpl(QueryTextsClient innerClient,
+        com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<QueryText> getWithResponse(
-        String resourceGroupName, String serverName, String queryId, Context context) {
-        Response<QueryTextInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serverName, queryId, context);
+    public Response<QueryText> getWithResponse(String resourceGroupName, String serverName, String queryId,
+        Context context) {
+        Response<QueryTextInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serverName, queryId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new QueryTextImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -53,16 +50,16 @@ public final class QueryTextsImpl implements QueryTexts {
     }
 
     public PagedIterable<QueryText> listByServer(String resourceGroupName, String serverName, List<String> queryIds) {
-        PagedIterable<QueryTextInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName, queryIds);
-        return Utils.mapPage(inner, inner1 -> new QueryTextImpl(inner1, this.manager()));
+        PagedIterable<QueryTextInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, serverName, queryIds);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new QueryTextImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<QueryText> listByServer(
-        String resourceGroupName, String serverName, List<String> queryIds, Context context) {
-        PagedIterable<QueryTextInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName, queryIds, context);
-        return Utils.mapPage(inner, inner1 -> new QueryTextImpl(inner1, this.manager()));
+    public PagedIterable<QueryText> listByServer(String resourceGroupName, String serverName, List<String> queryIds,
+        Context context) {
+        PagedIterable<QueryTextInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, serverName, queryIds, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new QueryTextImpl(inner1, this.manager()));
     }
 
     private QueryTextsClient serviceClient() {

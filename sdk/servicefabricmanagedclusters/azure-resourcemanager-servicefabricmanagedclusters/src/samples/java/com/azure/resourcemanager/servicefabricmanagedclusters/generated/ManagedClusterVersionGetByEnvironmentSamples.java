@@ -12,8 +12,8 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedClus
 public final class ManagedClusterVersionGetByEnvironmentSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/stable/2024-04-01/examples/
-     * ManagedClusterVersionGetByEnvironment_example.json
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * examples/ManagedClusterVersionGetByEnvironment_example.json
      */
     /**
      * Sample code: Get cluster version by environment.

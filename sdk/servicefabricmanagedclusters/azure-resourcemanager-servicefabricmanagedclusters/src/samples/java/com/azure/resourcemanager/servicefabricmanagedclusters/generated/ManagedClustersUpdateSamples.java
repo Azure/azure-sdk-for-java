@@ -14,8 +14,8 @@ import java.util.Map;
 public final class ManagedClustersUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/stable/2024-04-01/examples/
-     * ManagedClusterPatchOperation_example.json
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * examples/ManagedClusterPatchOperation_example.json
      */
     /**
      * Sample code: Patch a managed cluster.

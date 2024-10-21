@@ -50,6 +50,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Scheduler;
@@ -1245,9 +1246,20 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             final Record senderAttachments = mock(Record.class);
             final Sender sender = mock(Sender.class);
             final AmqpSendLink amqpSendLink = mock(AmqpSendLink.class);
-            final SendLinkHandler sendLinkHandler = mock(SendLinkHandler.class);
             final Sinks.Many<EndpointState> sendLinkStateSink = Sinks.many().replay()
                 .latestOrDefault(EndpointState.UNINITIALIZED);
+
+            final SendLinkHandler sendLinkHandler = new SendLinkHandler("", "", "", "", null) {
+                @Override
+                public Flux<EndpointState> getEndpointStates() {
+                    return sendLinkStateSink.asFlux().distinctUntilChanged();
+                }
+
+                @Override
+                public void close() {
+                }
+            };
+
             return new MockSendLink(sender, senderAttachments, amqpSendLink, sendLinkHandler, sendLinkStateSink);
         }
 
@@ -1262,8 +1274,6 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             when(amqpSendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
             when(amqpSendLink.getEndpointStates())
                 .thenReturn(sendLinkStateSink.asFlux().distinctUntilChanged().map(state -> toAmqpEndpointState(state)));
-            when(sendLinkHandler.getEndpointStates()).thenReturn(sendLinkStateSink.asFlux().distinctUntilChanged());
-            doNothing().when(sendLinkHandler).close();
         }
 
         Sender getQpidSender() {
@@ -1308,7 +1318,6 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             Mockito.framework().clearInlineMock(sender);
             Mockito.framework().clearInlineMock(senderAttachments);
             Mockito.framework().clearInlineMock(amqpSendLink);
-            Mockito.framework().clearInlineMock(sendLinkHandler);
         }
     }
 }

@@ -6,43 +6,47 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The extended error info. */
+/**
+ * The extended error info.
+ */
 @Fluent
-public final class ExtendedErrorInfo {
+public final class ExtendedErrorInfo implements JsonSerializable<ExtendedErrorInfo> {
     /*
      * The error code.
      */
-    @JsonProperty(value = "code", required = true)
     private ErrorResponseCode code;
 
     /*
      * The error message.
      */
-    @JsonProperty(value = "message", required = true)
     private String message;
 
     /*
      * The error message details.
      */
-    @JsonProperty(value = "details")
     private List<ExtendedErrorInfo> details;
 
     /*
      * The inner error.
      */
-    @JsonProperty(value = "innerError")
     private Object innerError;
 
-    /** Creates an instance of ExtendedErrorInfo class. */
+    /**
+     * Creates an instance of ExtendedErrorInfo class.
+     */
     public ExtendedErrorInfo() {
     }
 
     /**
      * Get the code property: The error code.
-     *
+     * 
      * @return the code value.
      */
     public ErrorResponseCode code() {
@@ -51,7 +55,7 @@ public final class ExtendedErrorInfo {
 
     /**
      * Set the code property: The error code.
-     *
+     * 
      * @param code the code value to set.
      * @return the ExtendedErrorInfo object itself.
      */
@@ -62,7 +66,7 @@ public final class ExtendedErrorInfo {
 
     /**
      * Get the message property: The error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -71,7 +75,7 @@ public final class ExtendedErrorInfo {
 
     /**
      * Set the message property: The error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the ExtendedErrorInfo object itself.
      */
@@ -82,7 +86,7 @@ public final class ExtendedErrorInfo {
 
     /**
      * Get the details property: The error message details.
-     *
+     * 
      * @return the details value.
      */
     public List<ExtendedErrorInfo> details() {
@@ -91,7 +95,7 @@ public final class ExtendedErrorInfo {
 
     /**
      * Set the details property: The error message details.
-     *
+     * 
      * @param details the details value to set.
      * @return the ExtendedErrorInfo object itself.
      */
@@ -102,7 +106,7 @@ public final class ExtendedErrorInfo {
 
     /**
      * Get the innerError property: The inner error.
-     *
+     * 
      * @return the innerError value.
      */
     public Object innerError() {
@@ -111,7 +115,7 @@ public final class ExtendedErrorInfo {
 
     /**
      * Set the innerError property: The inner error.
-     *
+     * 
      * @param innerError the innerError value to set.
      * @return the ExtendedErrorInfo object itself.
      */
@@ -122,19 +126,17 @@ public final class ExtendedErrorInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (code() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property code in model ExtendedErrorInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property code in model ExtendedErrorInfo"));
         }
         if (message() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property message in model ExtendedErrorInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property message in model ExtendedErrorInfo"));
         }
         if (details() != null) {
             details().forEach(e -> e.validate());
@@ -142,4 +144,51 @@ public final class ExtendedErrorInfo {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ExtendedErrorInfo.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code == null ? null : this.code.toString());
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeUntypedField("innerError", this.innerError);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExtendedErrorInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExtendedErrorInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExtendedErrorInfo.
+     */
+    public static ExtendedErrorInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExtendedErrorInfo deserializedExtendedErrorInfo = new ExtendedErrorInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedExtendedErrorInfo.code = ErrorResponseCode.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedExtendedErrorInfo.message = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    List<ExtendedErrorInfo> details = reader.readArray(reader1 -> ExtendedErrorInfo.fromJson(reader1));
+                    deserializedExtendedErrorInfo.details = details;
+                } else if ("innerError".equals(fieldName)) {
+                    deserializedExtendedErrorInfo.innerError = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExtendedErrorInfo;
+        });
+    }
 }

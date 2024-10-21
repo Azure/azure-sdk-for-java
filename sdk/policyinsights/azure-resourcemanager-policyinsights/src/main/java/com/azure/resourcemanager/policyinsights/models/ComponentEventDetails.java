@@ -5,71 +5,71 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** Component event details. */
+/**
+ * Component event details.
+ */
 @Fluent
-public final class ComponentEventDetails {
+public final class ComponentEventDetails implements JsonSerializable<ComponentEventDetails> {
     /*
      * Component Id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Component type.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Component name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Timestamp for component policy event record.
      */
-    @JsonProperty(value = "timestamp")
     private OffsetDateTime timestamp;
 
     /*
      * Tenant ID for the policy event record.
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /*
      * Principal object ID for the user who initiated the resource component operation that triggered the policy event.
      */
-    @JsonProperty(value = "principalOid")
     private String principalOid;
 
     /*
      * Policy definition action, i.e. effect.
      */
-    @JsonProperty(value = "policyDefinitionAction")
     private String policyDefinitionAction;
 
     /*
      * Component event details.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of ComponentEventDetails class. */
+    /**
+     * Creates an instance of ComponentEventDetails class.
+     */
     public ComponentEventDetails() {
     }
 
     /**
      * Get the id property: Component Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -78,7 +78,7 @@ public final class ComponentEventDetails {
 
     /**
      * Set the id property: Component Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the ComponentEventDetails object itself.
      */
@@ -89,7 +89,7 @@ public final class ComponentEventDetails {
 
     /**
      * Get the type property: Component type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -98,7 +98,7 @@ public final class ComponentEventDetails {
 
     /**
      * Set the type property: Component type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ComponentEventDetails object itself.
      */
@@ -109,7 +109,7 @@ public final class ComponentEventDetails {
 
     /**
      * Get the name property: Component name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -118,7 +118,7 @@ public final class ComponentEventDetails {
 
     /**
      * Set the name property: Component name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ComponentEventDetails object itself.
      */
@@ -129,7 +129,7 @@ public final class ComponentEventDetails {
 
     /**
      * Get the timestamp property: Timestamp for component policy event record.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -138,7 +138,7 @@ public final class ComponentEventDetails {
 
     /**
      * Set the timestamp property: Timestamp for component policy event record.
-     *
+     * 
      * @param timestamp the timestamp value to set.
      * @return the ComponentEventDetails object itself.
      */
@@ -149,7 +149,7 @@ public final class ComponentEventDetails {
 
     /**
      * Get the tenantId property: Tenant ID for the policy event record.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -158,7 +158,7 @@ public final class ComponentEventDetails {
 
     /**
      * Set the tenantId property: Tenant ID for the policy event record.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the ComponentEventDetails object itself.
      */
@@ -170,7 +170,7 @@ public final class ComponentEventDetails {
     /**
      * Get the principalOid property: Principal object ID for the user who initiated the resource component operation
      * that triggered the policy event.
-     *
+     * 
      * @return the principalOid value.
      */
     public String principalOid() {
@@ -180,7 +180,7 @@ public final class ComponentEventDetails {
     /**
      * Set the principalOid property: Principal object ID for the user who initiated the resource component operation
      * that triggered the policy event.
-     *
+     * 
      * @param principalOid the principalOid value to set.
      * @return the ComponentEventDetails object itself.
      */
@@ -191,7 +191,7 @@ public final class ComponentEventDetails {
 
     /**
      * Get the policyDefinitionAction property: Policy definition action, i.e. effect.
-     *
+     * 
      * @return the policyDefinitionAction value.
      */
     public String policyDefinitionAction() {
@@ -200,7 +200,7 @@ public final class ComponentEventDetails {
 
     /**
      * Set the policyDefinitionAction property: Policy definition action, i.e. effect.
-     *
+     * 
      * @param policyDefinitionAction the policyDefinitionAction value to set.
      * @return the ComponentEventDetails object itself.
      */
@@ -211,17 +211,16 @@ public final class ComponentEventDetails {
 
     /**
      * Get the additionalProperties property: Component event details.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Component event details.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ComponentEventDetails object itself.
      */
@@ -230,19 +229,78 @@ public final class ComponentEventDetails {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("timestamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeStringField("principalOid", this.principalOid);
+        jsonWriter.writeStringField("policyDefinitionAction", this.policyDefinitionAction);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComponentEventDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComponentEventDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ComponentEventDetails.
+     */
+    public static ComponentEventDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComponentEventDetails deserializedComponentEventDetails = new ComponentEventDetails();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedComponentEventDetails.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedComponentEventDetails.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedComponentEventDetails.name = reader.getString();
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedComponentEventDetails.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedComponentEventDetails.tenantId = reader.getString();
+                } else if ("principalOid".equals(fieldName)) {
+                    deserializedComponentEventDetails.principalOid = reader.getString();
+                } else if ("policyDefinitionAction".equals(fieldName)) {
+                    deserializedComponentEventDetails.policyDefinitionAction = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedComponentEventDetails.additionalProperties = additionalProperties;
+
+            return deserializedComponentEventDetails;
+        });
     }
 }

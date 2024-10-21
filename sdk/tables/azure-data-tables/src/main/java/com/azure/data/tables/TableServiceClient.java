@@ -29,7 +29,6 @@ import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableQueryResponse;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
-import com.azure.data.tables.implementation.models.TableServiceStats;
 import com.azure.data.tables.implementation.models.TablesQueryHeaders;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableItem;
@@ -723,9 +722,7 @@ public final class TableServiceClient {
     }
 
     Response<TableServiceProperties> getPropertiesWithResponse(Context context) {
-        Response<com.azure.data.tables.implementation.models.TableServiceProperties> response =
-            this.implementation.getServices().getPropertiesWithResponse(null, null, context);
-        return new SimpleResponse<>(response, TableUtils.toTableServiceProperties(response.getValue()));
+        return this.implementation.getServices().getPropertiesWithResponse(null, null, context);
     }
 
     /**
@@ -818,9 +815,7 @@ public final class TableServiceClient {
     }
 
     Response<Void> setPropertiesWithResponse(TableServiceProperties tableServiceProperties, Context context) {
-        return new SimpleResponse<>(this.implementation.getServices()
-            .setPropertiesWithResponse(TableUtils.toImplTableServiceProperties(tableServiceProperties), null,
-                null, context), null);
+        return this.implementation.getServices().setPropertiesWithResponse(tableServiceProperties, null, null, context);
     }
 
     /**
@@ -884,9 +879,6 @@ public final class TableServiceClient {
 
 
     Response<TableServiceStatistics> getStatisticsWithResponse(Context context) {
-        Response<TableServiceStats> response = this.implementation.getServices().getStatisticsWithResponse(
-            null, null, context);
-        return new SimpleResponse<>(response, TableUtils.toTableServiceStatistics(response.getValue()));
+        return this.implementation.getServices().getStatisticsWithResponse(null, null, context);
     }
-
 }

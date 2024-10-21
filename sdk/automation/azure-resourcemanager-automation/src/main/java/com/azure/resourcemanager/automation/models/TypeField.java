@@ -6,25 +6,27 @@ package com.azure.resourcemanager.automation.models;
 
 import com.azure.resourcemanager.automation.fluent.models.TypeFieldInner;
 
-/** An immutable client-side representation of TypeField. */
+/**
+ * An immutable client-side representation of TypeField.
+ */
 public interface TypeField {
     /**
      * Gets the name property: Gets or sets the name of the field.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: Gets or sets the type of the field.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the inner com.azure.resourcemanager.automation.fluent.models.TypeFieldInner object.
-     *
+     * 
      * @return the inner object.
      */
     TypeFieldInner innerModel();

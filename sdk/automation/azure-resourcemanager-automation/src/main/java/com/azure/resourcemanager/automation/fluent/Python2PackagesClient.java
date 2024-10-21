@@ -13,11 +13,29 @@ import com.azure.resourcemanager.automation.fluent.models.ModuleInner;
 import com.azure.resourcemanager.automation.models.PythonPackageCreateParameters;
 import com.azure.resourcemanager.automation.models.PythonPackageUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in Python2PackagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in Python2PackagesClient.
+ */
 public interface Python2PackagesClient {
     /**
      * Delete the python 2 package by name.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param packageName The python package name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName, String packageName,
+        Context context);
+
+    /**
+     * Delete the python 2 package by name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param packageName The python package name.
@@ -29,8 +47,8 @@ public interface Python2PackagesClient {
     void delete(String resourceGroupName, String automationAccountName, String packageName);
 
     /**
-     * Delete the python 2 package by name.
-     *
+     * Retrieve the python 2 package identified by package name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param packageName The python package name.
@@ -38,15 +56,15 @@ public interface Python2PackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return definition of the module type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String packageName, Context context);
+    Response<ModuleInner> getWithResponse(String resourceGroupName, String automationAccountName, String packageName,
+        Context context);
 
     /**
      * Retrieve the python 2 package identified by package name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param packageName The python package name.
@@ -59,11 +77,12 @@ public interface Python2PackagesClient {
     ModuleInner get(String resourceGroupName, String automationAccountName, String packageName);
 
     /**
-     * Retrieve the python 2 package identified by package name.
-     *
+     * Create or Update the python 2 package identified by package name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @param packageName The python package name.
+     * @param packageName The name of python package.
+     * @param parameters The create or update parameters for python package.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -71,12 +90,12 @@ public interface Python2PackagesClient {
      * @return definition of the module type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ModuleInner> getWithResponse(
-        String resourceGroupName, String automationAccountName, String packageName, Context context);
+    Response<ModuleInner> createOrUpdateWithResponse(String resourceGroupName, String automationAccountName,
+        String packageName, PythonPackageCreateParameters parameters, Context context);
 
     /**
      * Create or Update the python 2 package identified by package name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param packageName The name of python package.
@@ -87,19 +106,16 @@ public interface Python2PackagesClient {
      * @return definition of the module type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ModuleInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String packageName,
+    ModuleInner createOrUpdate(String resourceGroupName, String automationAccountName, String packageName,
         PythonPackageCreateParameters parameters);
 
     /**
-     * Create or Update the python 2 package identified by package name.
-     *
+     * Update the python 2 package identified by package name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param packageName The name of python package.
-     * @param parameters The create or update parameters for python package.
+     * @param parameters The update parameters for python package.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,16 +123,12 @@ public interface Python2PackagesClient {
      * @return definition of the module type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ModuleInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String packageName,
-        PythonPackageCreateParameters parameters,
-        Context context);
+    Response<ModuleInner> updateWithResponse(String resourceGroupName, String automationAccountName, String packageName,
+        PythonPackageUpdateParameters parameters, Context context);
 
     /**
      * Update the python 2 package identified by package name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param packageName The name of python package.
@@ -127,36 +139,12 @@ public interface Python2PackagesClient {
      * @return definition of the module type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ModuleInner update(
-        String resourceGroupName,
-        String automationAccountName,
-        String packageName,
+    ModuleInner update(String resourceGroupName, String automationAccountName, String packageName,
         PythonPackageUpdateParameters parameters);
 
     /**
-     * Update the python 2 package identified by package name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param packageName The name of python package.
-     * @param parameters The update parameters for python package.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the module type along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ModuleInner> updateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String packageName,
-        PythonPackageUpdateParameters parameters,
-        Context context);
-
-    /**
      * Retrieve a list of python 2 packages.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -169,7 +157,7 @@ public interface Python2PackagesClient {
 
     /**
      * Retrieve a list of python 2 packages.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
@@ -179,6 +167,6 @@ public interface Python2PackagesClient {
      * @return the response model for the list module operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ModuleInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, Context context);
+    PagedIterable<ModuleInner> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        Context context);
 }

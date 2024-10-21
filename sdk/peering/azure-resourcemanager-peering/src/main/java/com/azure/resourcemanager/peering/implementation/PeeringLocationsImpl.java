@@ -21,21 +21,21 @@ public final class PeeringLocationsImpl implements PeeringLocations {
 
     private final com.azure.resourcemanager.peering.PeeringManager serviceManager;
 
-    public PeeringLocationsImpl(
-        PeeringLocationsClient innerClient, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
+    public PeeringLocationsImpl(PeeringLocationsClient innerClient,
+        com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<PeeringLocation> list(PeeringLocationsKind kind) {
         PagedIterable<PeeringLocationInner> inner = this.serviceClient().list(kind);
-        return Utils.mapPage(inner, inner1 -> new PeeringLocationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeeringLocationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PeeringLocation> list(
-        PeeringLocationsKind kind, PeeringLocationsDirectPeeringType directPeeringType, Context context) {
+    public PagedIterable<PeeringLocation> list(PeeringLocationsKind kind,
+        PeeringLocationsDirectPeeringType directPeeringType, Context context) {
         PagedIterable<PeeringLocationInner> inner = this.serviceClient().list(kind, directPeeringType, context);
-        return Utils.mapPage(inner, inner1 -> new PeeringLocationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeeringLocationImpl(inner1, this.manager()));
     }
 
     private PeeringLocationsClient serviceClient() {

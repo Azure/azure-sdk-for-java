@@ -4,39 +4,47 @@
 
 package com.azure.resourcemanager.extendedlocation.fluent.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Custom Locations operation. */
-@Fluent
-public final class CustomLocationOperationInner {
+/**
+ * Custom Locations operation.
+ */
+@Immutable
+public final class CustomLocationOperationInner implements JsonSerializable<CustomLocationOperationInner> {
     /*
      * Describes the properties of a Custom Locations Operation Value Display.
      */
-    @JsonProperty(value = "display")
     private CustomLocationOperationValueDisplay innerDisplay;
 
     /*
      * Is this Operation a data plane operation
      */
-    @JsonProperty(value = "isDataAction", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDataAction;
 
     /*
      * The name of the compute operation.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The origin of the compute operation.
      */
-    @JsonProperty(value = "origin", access = JsonProperty.Access.WRITE_ONLY)
     private String origin;
 
     /**
+     * Creates an instance of CustomLocationOperationInner class.
+     */
+    public CustomLocationOperationInner() {
+    }
+
+    /**
      * Get the innerDisplay property: Describes the properties of a Custom Locations Operation Value Display.
-     *
+     * 
      * @return the innerDisplay value.
      */
     private CustomLocationOperationValueDisplay innerDisplay() {
@@ -45,7 +53,7 @@ public final class CustomLocationOperationInner {
 
     /**
      * Get the isDataAction property: Is this Operation a data plane operation.
-     *
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -54,7 +62,7 @@ public final class CustomLocationOperationInner {
 
     /**
      * Get the name property: The name of the compute operation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +71,7 @@ public final class CustomLocationOperationInner {
 
     /**
      * Get the origin property: The origin of the compute operation.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -72,7 +80,7 @@ public final class CustomLocationOperationInner {
 
     /**
      * Get the description property: The description of the operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -81,7 +89,7 @@ public final class CustomLocationOperationInner {
 
     /**
      * Get the operation property: The display name of the compute operation.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -90,7 +98,7 @@ public final class CustomLocationOperationInner {
 
     /**
      * Get the provider property: The resource provider for the operation.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -99,7 +107,7 @@ public final class CustomLocationOperationInner {
 
     /**
      * Get the resource property: The display name of the resource the operation applies to.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -108,12 +116,55 @@ public final class CustomLocationOperationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerDisplay() != null) {
             innerDisplay().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("display", this.innerDisplay);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomLocationOperationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomLocationOperationInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomLocationOperationInner.
+     */
+    public static CustomLocationOperationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomLocationOperationInner deserializedCustomLocationOperationInner = new CustomLocationOperationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("display".equals(fieldName)) {
+                    deserializedCustomLocationOperationInner.innerDisplay
+                        = CustomLocationOperationValueDisplay.fromJson(reader);
+                } else if ("isDataAction".equals(fieldName)) {
+                    deserializedCustomLocationOperationInner.isDataAction = reader.getNullable(JsonReader::getBoolean);
+                } else if ("name".equals(fieldName)) {
+                    deserializedCustomLocationOperationInner.name = reader.getString();
+                } else if ("origin".equals(fieldName)) {
+                    deserializedCustomLocationOperationInner.origin = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomLocationOperationInner;
+        });
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.datalakestore.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -38,7 +39,9 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the DataLakeStoreAccountManagementClientImpl type. */
+/**
+ * Initializes a new instance of the DataLakeStoreAccountManagementClientImpl type.
+ */
 @ServiceClient(builder = DataLakeStoreAccountManagementClientBuilder.class)
 public final class DataLakeStoreAccountManagementClientImpl implements DataLakeStoreAccountManagementClient {
     /**
@@ -50,139 +53,161 @@ public final class DataLakeStoreAccountManagementClientImpl implements DataLakeS
     /**
      * Gets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
      * forms part of the URI for every service call.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The AccountsClient object to access its operations. */
+    /**
+     * The AccountsClient object to access its operations.
+     */
     private final AccountsClient accounts;
 
     /**
      * Gets the AccountsClient object to access its operations.
-     *
+     * 
      * @return the AccountsClient object.
      */
     public AccountsClient getAccounts() {
         return this.accounts;
     }
 
-    /** The FirewallRulesClient object to access its operations. */
+    /**
+     * The FirewallRulesClient object to access its operations.
+     */
     private final FirewallRulesClient firewallRules;
 
     /**
      * Gets the FirewallRulesClient object to access its operations.
-     *
+     * 
      * @return the FirewallRulesClient object.
      */
     public FirewallRulesClient getFirewallRules() {
         return this.firewallRules;
     }
 
-    /** The VirtualNetworkRulesClient object to access its operations. */
+    /**
+     * The VirtualNetworkRulesClient object to access its operations.
+     */
     private final VirtualNetworkRulesClient virtualNetworkRules;
 
     /**
      * Gets the VirtualNetworkRulesClient object to access its operations.
-     *
+     * 
      * @return the VirtualNetworkRulesClient object.
      */
     public VirtualNetworkRulesClient getVirtualNetworkRules() {
         return this.virtualNetworkRules;
     }
 
-    /** The TrustedIdProvidersClient object to access its operations. */
+    /**
+     * The TrustedIdProvidersClient object to access its operations.
+     */
     private final TrustedIdProvidersClient trustedIdProviders;
 
     /**
      * Gets the TrustedIdProvidersClient object to access its operations.
-     *
+     * 
      * @return the TrustedIdProvidersClient object.
      */
     public TrustedIdProvidersClient getTrustedIdProviders() {
         return this.trustedIdProviders;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The LocationsClient object to access its operations. */
+    /**
+     * The LocationsClient object to access its operations.
+     */
     private final LocationsClient locations;
 
     /**
      * Gets the LocationsClient object to access its operations.
-     *
+     * 
      * @return the LocationsClient object.
      */
     public LocationsClient getLocations() {
@@ -191,22 +216,17 @@ public final class DataLakeStoreAccountManagementClientImpl implements DataLakeS
 
     /**
      * Initializes an instance of DataLakeStoreAccountManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
      * @param subscriptionId Gets subscription credentials which uniquely identify Microsoft Azure subscription. The
-     *     subscription ID forms part of the URI for every service call.
+     * subscription ID forms part of the URI for every service call.
      * @param endpoint server parameter.
      */
-    DataLakeStoreAccountManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    DataLakeStoreAccountManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
@@ -223,7 +243,7 @@ public final class DataLakeStoreAccountManagementClientImpl implements DataLakeS
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -232,7 +252,7 @@ public final class DataLakeStoreAccountManagementClientImpl implements DataLakeS
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -242,7 +262,7 @@ public final class DataLakeStoreAccountManagementClientImpl implements DataLakeS
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -252,26 +272,15 @@ public final class DataLakeStoreAccountManagementClientImpl implements DataLakeS
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -284,19 +293,16 @@ public final class DataLakeStoreAccountManagementClientImpl implements DataLakeS
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -337,7 +343,7 @@ public final class DataLakeStoreAccountManagementClientImpl implements DataLakeS
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

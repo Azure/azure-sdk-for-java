@@ -5,39 +5,48 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Definition of the deleted automation account properties. */
+/**
+ * Definition of the deleted automation account properties.
+ */
 @Fluent
-public final class DeletedAutomationAccountProperties {
+public final class DeletedAutomationAccountProperties implements JsonSerializable<DeletedAutomationAccountProperties> {
     /*
      * Gets or sets the Automation Account Resource Id.
      */
-    @JsonProperty(value = "automationAccountResourceId")
     private String automationAccountResourceId;
 
     /*
      * Gets or sets the Automation Account Id.
      */
-    @JsonProperty(value = "automationAccountId")
     private String automationAccountId;
 
     /*
      * Gets or sets the location of the resource.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Gets the deletion time.
      */
-    @JsonProperty(value = "deletionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime deletionTime;
 
     /**
+     * Creates an instance of DeletedAutomationAccountProperties class.
+     */
+    public DeletedAutomationAccountProperties() {
+    }
+
+    /**
      * Get the automationAccountResourceId property: Gets or sets the Automation Account Resource Id.
-     *
+     * 
      * @return the automationAccountResourceId value.
      */
     public String automationAccountResourceId() {
@@ -46,7 +55,7 @@ public final class DeletedAutomationAccountProperties {
 
     /**
      * Set the automationAccountResourceId property: Gets or sets the Automation Account Resource Id.
-     *
+     * 
      * @param automationAccountResourceId the automationAccountResourceId value to set.
      * @return the DeletedAutomationAccountProperties object itself.
      */
@@ -57,7 +66,7 @@ public final class DeletedAutomationAccountProperties {
 
     /**
      * Get the automationAccountId property: Gets or sets the Automation Account Id.
-     *
+     * 
      * @return the automationAccountId value.
      */
     public String automationAccountId() {
@@ -66,7 +75,7 @@ public final class DeletedAutomationAccountProperties {
 
     /**
      * Set the automationAccountId property: Gets or sets the Automation Account Id.
-     *
+     * 
      * @param automationAccountId the automationAccountId value to set.
      * @return the DeletedAutomationAccountProperties object itself.
      */
@@ -77,7 +86,7 @@ public final class DeletedAutomationAccountProperties {
 
     /**
      * Get the location property: Gets or sets the location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -86,7 +95,7 @@ public final class DeletedAutomationAccountProperties {
 
     /**
      * Set the location property: Gets or sets the location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the DeletedAutomationAccountProperties object itself.
      */
@@ -97,7 +106,7 @@ public final class DeletedAutomationAccountProperties {
 
     /**
      * Get the deletionTime property: Gets the deletion time.
-     *
+     * 
      * @return the deletionTime value.
      */
     public OffsetDateTime deletionTime() {
@@ -106,9 +115,55 @@ public final class DeletedAutomationAccountProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("automationAccountResourceId", this.automationAccountResourceId);
+        jsonWriter.writeStringField("automationAccountId", this.automationAccountId);
+        jsonWriter.writeStringField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeletedAutomationAccountProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeletedAutomationAccountProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeletedAutomationAccountProperties.
+     */
+    public static DeletedAutomationAccountProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeletedAutomationAccountProperties deserializedDeletedAutomationAccountProperties
+                = new DeletedAutomationAccountProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("automationAccountResourceId".equals(fieldName)) {
+                    deserializedDeletedAutomationAccountProperties.automationAccountResourceId = reader.getString();
+                } else if ("automationAccountId".equals(fieldName)) {
+                    deserializedDeletedAutomationAccountProperties.automationAccountId = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDeletedAutomationAccountProperties.location = reader.getString();
+                } else if ("deletionTime".equals(fieldName)) {
+                    deserializedDeletedAutomationAccountProperties.deletionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeletedAutomationAccountProperties;
+        });
     }
 }

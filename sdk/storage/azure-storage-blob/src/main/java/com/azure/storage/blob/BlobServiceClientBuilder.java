@@ -96,6 +96,7 @@ public final class BlobServiceClientBuilder implements
     private Configuration configuration;
     private BlobServiceVersion version;
     private BlobAudience audience;
+    private boolean anonymousAccess;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link BlobServiceClient BlobServiceClients}
@@ -113,7 +114,44 @@ public final class BlobServiceClientBuilder implements
      * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public BlobServiceClient buildClient() {
-        return new BlobServiceClient(buildAsyncClient());
+        BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, LOGGER);
+
+        anonymousAccess = false;
+
+        if (Objects.nonNull(customerProvidedKey) && Objects.nonNull(encryptionScope)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Customer provided key and encryption "
+                + "scope cannot both be set"));
+        }
+
+        BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
+        HttpPipeline pipeline = constructPipeline();
+
+        boolean foundCredential = false;
+        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
+            if (pipeline.getPolicy(i) instanceof StorageSharedKeyCredentialPolicy) {
+                foundCredential = true;
+                break;
+            }
+            if (pipeline.getPolicy(i) instanceof BearerTokenAuthenticationPolicy) {
+                foundCredential = true;
+                break;
+            }
+            if (pipeline.getPolicy(i) instanceof AzureSasCredentialPolicy) {
+                foundCredential = true;
+                break;
+            }
+        }
+        anonymousAccess = !foundCredential;
+
+        return new BlobServiceClient(pipeline, endpoint, serviceVersion, accountName, customerProvidedKey,
+            encryptionScope, blobContainerEncryptionScope, anonymousAccess);
+    }
+
+    private HttpPipeline constructPipeline() {
+        return (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, coreRetryOptions, logOptions,
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
     }
 
     /**
@@ -126,7 +164,7 @@ public final class BlobServiceClientBuilder implements
     public BlobServiceAsyncClient buildAsyncClient() {
         BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, LOGGER);
 
-        boolean anonymousAccess = false;
+        anonymousAccess = false;
 
         if (Objects.nonNull(customerProvidedKey) && Objects.nonNull(encryptionScope)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Customer provided key and encryption "
@@ -134,10 +172,7 @@ public final class BlobServiceClientBuilder implements
         }
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-            endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
+        HttpPipeline pipeline = constructPipeline();
 
         boolean foundCredential = false;
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {

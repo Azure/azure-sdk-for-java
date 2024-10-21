@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.billingbenefits.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.billingbenefits.fluent.models.SavingsPlanOrderModelInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The SavingsPlanOrderModelList model. */
+/**
+ * The SavingsPlanOrderModelList model.
+ */
 @Fluent
-public final class SavingsPlanOrderModelList {
+public final class SavingsPlanOrderModelList implements JsonSerializable<SavingsPlanOrderModelList> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private List<SavingsPlanOrderModelInner> value;
 
     /*
      * Url to get the next page.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of SavingsPlanOrderModelList class. */
+    /**
+     * Creates an instance of SavingsPlanOrderModelList class.
+     */
     public SavingsPlanOrderModelList() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<SavingsPlanOrderModelInner> value() {
@@ -39,7 +45,7 @@ public final class SavingsPlanOrderModelList {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the SavingsPlanOrderModelList object itself.
      */
@@ -50,7 +56,7 @@ public final class SavingsPlanOrderModelList {
 
     /**
      * Get the nextLink property: Url to get the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class SavingsPlanOrderModelList {
 
     /**
      * Set the nextLink property: Url to get the next page.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SavingsPlanOrderModelList object itself.
      */
@@ -70,12 +76,53 @@ public final class SavingsPlanOrderModelList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SavingsPlanOrderModelList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SavingsPlanOrderModelList if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SavingsPlanOrderModelList.
+     */
+    public static SavingsPlanOrderModelList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SavingsPlanOrderModelList deserializedSavingsPlanOrderModelList = new SavingsPlanOrderModelList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SavingsPlanOrderModelInner> value
+                        = reader.readArray(reader1 -> SavingsPlanOrderModelInner.fromJson(reader1));
+                    deserializedSavingsPlanOrderModelList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSavingsPlanOrderModelList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSavingsPlanOrderModelList;
+        });
     }
 }

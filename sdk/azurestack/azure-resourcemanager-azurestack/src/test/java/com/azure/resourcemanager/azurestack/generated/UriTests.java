@@ -10,7 +10,7 @@ import com.azure.resourcemanager.azurestack.fluent.models.Uri;
 public final class UriTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Uri model = BinaryData.fromString("{\"uri\":\"qpjhvmda\"}").toObject(Uri.class);
+        Uri model = BinaryData.fromString("{\"uri\":\"zrnkcqvyxlwh\"}").toObject(Uri.class);
     }
 
     @org.junit.jupiter.api.Test

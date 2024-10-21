@@ -65,7 +65,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
             System.out.println("Creating a Linux VM");
 
             VirtualMachine linuxVM = azureResourceManager.virtualMachines().define(linuxVMName1)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(Region.US_WEST2)
                     .withNewResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIPAddressDynamic()
@@ -74,7 +74,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
                     .withRootUsername(userName)
                     .withSsh(sshPublicKey)
                     .withUnmanagedDisks()
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                    .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
                     .defineNewExtension("CustomScriptForLinux")
                         .withPublisher("Microsoft.OSTCExtensions")
                         .withType("CustomScriptForLinux")
@@ -122,7 +122,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
             System.out.println("Creating a Linux VM using captured image - " + capturedImageUri);
 
             VirtualMachine linuxVM2 = azureResourceManager.virtualMachines().define(linuxVMName2)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(Region.US_WEST2)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIPAddressDynamic()
@@ -130,7 +130,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
                     .withStoredLinuxImage(capturedImageUri) // Note: A Generalized Image can also be an uploaded VHD prepared from an on-premise generalized VM.
                     .withRootUsername(userName)
                     .withSsh(sshPublicKey)
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                    .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
                     .create();
 
             Utils.print(linuxVM2);
@@ -153,13 +153,13 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
                     + " of deleted VM");
 
             VirtualMachine linuxVM3 = azureResourceManager.virtualMachines().define(linuxVMName3)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(Region.US_WEST2)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIPAddressDynamic()
                     .withoutPrimaryPublicIPAddress()
                     .withSpecializedOSUnmanagedDisk(specializedVhd, OperatingSystemTypes.LINUX) // New user credentials cannot be specified
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))       // when attaching a specialized VHD
+                    .withSize(VirtualMachineSizeTypes.STANDARD_B1S)       // when attaching a specialized VHD
                     .create();
 
             Utils.print(linuxVM3);

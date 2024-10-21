@@ -12,29 +12,27 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationServiceEnvironmentSkuCapacityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationServiceEnvironmentSkuCapacity model =
-            BinaryData
-                .fromString(
-                    "{\"minimum\":1824653896,\"maximum\":1269284441,\"default\":1221518768,\"scaleType\":\"Manual\"}")
-                .toObject(IntegrationServiceEnvironmentSkuCapacity.class);
-        Assertions.assertEquals(1824653896, model.minimum());
-        Assertions.assertEquals(1269284441, model.maximum());
-        Assertions.assertEquals(1221518768, model.defaultProperty());
+        IntegrationServiceEnvironmentSkuCapacity model = BinaryData
+            .fromString(
+                "{\"minimum\":1015774661,\"maximum\":1629613096,\"default\":1558419130,\"scaleType\":\"Manual\"}")
+            .toObject(IntegrationServiceEnvironmentSkuCapacity.class);
+        Assertions.assertEquals(1015774661, model.minimum());
+        Assertions.assertEquals(1629613096, model.maximum());
+        Assertions.assertEquals(1558419130, model.defaultProperty());
         Assertions.assertEquals(IntegrationServiceEnvironmentSkuScaleType.MANUAL, model.scaleType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationServiceEnvironmentSkuCapacity model =
-            new IntegrationServiceEnvironmentSkuCapacity()
-                .withMinimum(1824653896)
-                .withMaximum(1269284441)
-                .withDefaultProperty(1221518768)
+        IntegrationServiceEnvironmentSkuCapacity model
+            = new IntegrationServiceEnvironmentSkuCapacity().withMinimum(1015774661)
+                .withMaximum(1629613096)
+                .withDefaultProperty(1558419130)
                 .withScaleType(IntegrationServiceEnvironmentSkuScaleType.MANUAL);
         model = BinaryData.fromObject(model).toObject(IntegrationServiceEnvironmentSkuCapacity.class);
-        Assertions.assertEquals(1824653896, model.minimum());
-        Assertions.assertEquals(1269284441, model.maximum());
-        Assertions.assertEquals(1221518768, model.defaultProperty());
+        Assertions.assertEquals(1015774661, model.minimum());
+        Assertions.assertEquals(1629613096, model.maximum());
+        Assertions.assertEquals(1558419130, model.defaultProperty());
         Assertions.assertEquals(IntegrationServiceEnvironmentSkuScaleType.MANUAL, model.scaleType());
     }
 }

@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.hybridkubernetes.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Contains the REP (rendezvous endpoint) and “Sender” access token. */
+/**
+ * Contains the REP (rendezvous endpoint) and “Sender” access token.
+ */
 @Immutable
-public final class HybridConnectionConfig {
+public final class HybridConnectionConfig implements JsonSerializable<HybridConnectionConfig> {
     /*
      * Timestamp when this token will be expired.
      */
-    @JsonProperty(value = "expirationTime", access = JsonProperty.Access.WRITE_ONLY)
     private Long expirationTime;
 
     /*
      * Name of the connection
      */
-    @JsonProperty(value = "hybridConnectionName", access = JsonProperty.Access.WRITE_ONLY)
     private String hybridConnectionName;
 
     /*
      * Name of the relay.
      */
-    @JsonProperty(value = "relay", access = JsonProperty.Access.WRITE_ONLY)
     private String relay;
 
     /*
      * Sender access token
      */
-    @JsonProperty(value = "token", access = JsonProperty.Access.WRITE_ONLY)
     private String token;
 
-    /** Creates an instance of HybridConnectionConfig class. */
+    /**
+     * Creates an instance of HybridConnectionConfig class.
+     */
     public HybridConnectionConfig() {
     }
 
     /**
      * Get the expirationTime property: Timestamp when this token will be expired.
-     *
+     * 
      * @return the expirationTime value.
      */
     public Long expirationTime() {
@@ -49,7 +53,7 @@ public final class HybridConnectionConfig {
 
     /**
      * Get the hybridConnectionName property: Name of the connection.
-     *
+     * 
      * @return the hybridConnectionName value.
      */
     public String hybridConnectionName() {
@@ -58,7 +62,7 @@ public final class HybridConnectionConfig {
 
     /**
      * Get the relay property: Name of the relay.
-     *
+     * 
      * @return the relay value.
      */
     public String relay() {
@@ -67,7 +71,7 @@ public final class HybridConnectionConfig {
 
     /**
      * Get the token property: Sender access token.
-     *
+     * 
      * @return the token value.
      */
     public String token() {
@@ -76,9 +80,50 @@ public final class HybridConnectionConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HybridConnectionConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HybridConnectionConfig if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HybridConnectionConfig.
+     */
+    public static HybridConnectionConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HybridConnectionConfig deserializedHybridConnectionConfig = new HybridConnectionConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("expirationTime".equals(fieldName)) {
+                    deserializedHybridConnectionConfig.expirationTime = reader.getNullable(JsonReader::getLong);
+                } else if ("hybridConnectionName".equals(fieldName)) {
+                    deserializedHybridConnectionConfig.hybridConnectionName = reader.getString();
+                } else if ("relay".equals(fieldName)) {
+                    deserializedHybridConnectionConfig.relay = reader.getString();
+                } else if ("token".equals(fieldName)) {
+                    deserializedHybridConnectionConfig.token = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHybridConnectionConfig;
+        });
     }
 }

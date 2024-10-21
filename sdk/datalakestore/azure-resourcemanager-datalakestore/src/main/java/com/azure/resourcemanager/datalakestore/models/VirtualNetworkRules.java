@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of VirtualNetworkRules. */
+/**
+ * Resource collection API of VirtualNetworkRules.
+ */
 public interface VirtualNetworkRules {
     /**
      * Lists the Data Lake Store virtual network rules within the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface VirtualNetworkRules {
 
     /**
      * Lists the Data Lake Store virtual network rules within the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface VirtualNetworkRules {
 
     /**
      * Gets the specified Data Lake Store virtual network rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to retrieve.
@@ -47,12 +49,12 @@ public interface VirtualNetworkRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Data Lake Store virtual network rule along with {@link Response}.
      */
-    Response<VirtualNetworkRule> getWithResponse(
-        String resourceGroupName, String accountName, String virtualNetworkRuleName, Context context);
+    Response<VirtualNetworkRule> getWithResponse(String resourceGroupName, String accountName,
+        String virtualNetworkRuleName, Context context);
 
     /**
      * Gets the specified Data Lake Store virtual network rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to retrieve.
@@ -65,7 +67,7 @@ public interface VirtualNetworkRules {
 
     /**
      * Deletes the specified virtual network rule from the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to delete.
@@ -75,12 +77,12 @@ public interface VirtualNetworkRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String virtualNetworkRuleName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String virtualNetworkRuleName,
+        Context context);
 
     /**
      * Deletes the specified virtual network rule from the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to delete.
@@ -92,7 +94,7 @@ public interface VirtualNetworkRules {
 
     /**
      * Gets the specified Data Lake Store virtual network rule.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -103,7 +105,7 @@ public interface VirtualNetworkRules {
 
     /**
      * Gets the specified Data Lake Store virtual network rule.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,7 +117,7 @@ public interface VirtualNetworkRules {
 
     /**
      * Deletes the specified virtual network rule from the specified Data Lake Store account.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -125,7 +127,7 @@ public interface VirtualNetworkRules {
 
     /**
      * Deletes the specified virtual network rule from the specified Data Lake Store account.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,7 +139,7 @@ public interface VirtualNetworkRules {
 
     /**
      * Begins definition for a new VirtualNetworkRule resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new VirtualNetworkRule definition.
      */

@@ -5,56 +5,61 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Extra Parameters specific to each Service Provider. */
+/**
+ * Extra Parameters specific to each Service Provider.
+ */
 @Immutable
-public final class ServiceProviderParameter {
+public final class ServiceProviderParameter implements JsonSerializable<ServiceProviderParameter> {
     /*
      * Name of the Service Provider
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Type of the Service Provider
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Display Name of the Service Provider
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * Description of the Service Provider
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
-     * Help Url for the  Service Provider
+     * Help Url for the Service Provider
      */
-    @JsonProperty(value = "helpUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String helpUrl;
 
     /*
      * Default Name for the Service Provider
      */
-    @JsonProperty(value = "default", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultProperty;
 
     /*
      * Meta data for the Service Provider
      */
-    @JsonProperty(value = "metadata", access = JsonProperty.Access.WRITE_ONLY)
     private ServiceProviderParameterMetadata metadata;
 
     /**
+     * Creates an instance of ServiceProviderParameter class.
+     */
+    public ServiceProviderParameter() {
+    }
+
+    /**
      * Get the name property: Name of the Service Provider.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +68,7 @@ public final class ServiceProviderParameter {
 
     /**
      * Get the type property: Type of the Service Provider.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -72,7 +77,7 @@ public final class ServiceProviderParameter {
 
     /**
      * Get the displayName property: Display Name of the Service Provider.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -81,7 +86,7 @@ public final class ServiceProviderParameter {
 
     /**
      * Get the description property: Description of the Service Provider.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -90,7 +95,7 @@ public final class ServiceProviderParameter {
 
     /**
      * Get the helpUrl property: Help Url for the Service Provider.
-     *
+     * 
      * @return the helpUrl value.
      */
     public String helpUrl() {
@@ -99,7 +104,7 @@ public final class ServiceProviderParameter {
 
     /**
      * Get the defaultProperty property: Default Name for the Service Provider.
-     *
+     * 
      * @return the defaultProperty value.
      */
     public String defaultProperty() {
@@ -108,7 +113,7 @@ public final class ServiceProviderParameter {
 
     /**
      * Get the metadata property: Meta data for the Service Provider.
-     *
+     * 
      * @return the metadata value.
      */
     public ServiceProviderParameterMetadata metadata() {
@@ -117,12 +122,59 @@ public final class ServiceProviderParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (metadata() != null) {
             metadata().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceProviderParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceProviderParameter if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceProviderParameter.
+     */
+    public static ServiceProviderParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceProviderParameter deserializedServiceProviderParameter = new ServiceProviderParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedServiceProviderParameter.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedServiceProviderParameter.type = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedServiceProviderParameter.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedServiceProviderParameter.description = reader.getString();
+                } else if ("helpUrl".equals(fieldName)) {
+                    deserializedServiceProviderParameter.helpUrl = reader.getString();
+                } else if ("default".equals(fieldName)) {
+                    deserializedServiceProviderParameter.defaultProperty = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedServiceProviderParameter.metadata = ServiceProviderParameterMetadata.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceProviderParameter;
+        });
     }
 }

@@ -22,8 +22,7 @@ public final class FileImportImpl implements FileImport, FileImport.Definition {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    FileImportImpl(
-        FileImportInner innerObject,
+    FileImportImpl(FileImportInner innerObject,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -123,22 +122,18 @@ public final class FileImportImpl implements FileImport, FileImport.Definition {
     }
 
     public FileImport create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFileImports()
-                .createWithResponse(resourceGroupName, workspaceName, fileImportId, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFileImports()
+            .createWithResponse(resourceGroupName, workspaceName, fileImportId, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public FileImport create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFileImports()
-                .createWithResponse(resourceGroupName, workspaceName, fileImportId, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFileImports()
+            .createWithResponse(resourceGroupName, workspaceName, fileImportId, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -149,22 +144,18 @@ public final class FileImportImpl implements FileImport, FileImport.Definition {
     }
 
     public FileImport refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFileImports()
-                .getWithResponse(resourceGroupName, workspaceName, fileImportId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFileImports()
+            .getWithResponse(resourceGroupName, workspaceName, fileImportId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public FileImport refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFileImports()
-                .getWithResponse(resourceGroupName, workspaceName, fileImportId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFileImports()
+            .getWithResponse(resourceGroupName, workspaceName, fileImportId, context)
+            .getValue();
         return this;
     }
 

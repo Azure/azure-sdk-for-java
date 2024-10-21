@@ -19,10 +19,10 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentType;
 import com.azure.health.insights.radiologyinsights.models.DocumentAdministrativeMetadata;
-import com.azure.health.insights.radiologyinsights.models.DocumentAuthor;
-import com.azure.health.insights.radiologyinsights.models.DocumentContent;
+import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentAuthor;
+import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentContent;
 import com.azure.health.insights.radiologyinsights.models.DocumentContentSourceType;
-import com.azure.health.insights.radiologyinsights.models.DocumentType;
+import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentContentType;
 import com.azure.health.insights.radiologyinsights.models.EncounterClass;
 import com.azure.health.insights.radiologyinsights.models.FhirR4CodeableConcept;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Coding;
@@ -222,7 +222,7 @@ public class SampleLimitedOrderDiscrepancyInferenceAsync {
         patientDocument.setClinicalType(ClinicalDocumentType.RADIOLOGY_REPORT);
         patientDocument.setLanguage("EN");
 
-        DocumentAuthor author = new DocumentAuthor();
+        ClinicalDocumentAuthor author = new ClinicalDocumentAuthor();
         author.setId("authorid1");
         author.setFullName("authorname1");
 
@@ -264,8 +264,8 @@ public class SampleLimitedOrderDiscrepancyInferenceAsync {
      * @return The patient document.
      */
     private static PatientDocument getPatientDocument() {
-        DocumentContent documentContent = new DocumentContent(DocumentContentSourceType.INLINE, DOC_CONTENT);
-        return new PatientDocument(DocumentType.NOTE, "docid1", documentContent);
+    	ClinicalDocumentContent documentContent = new ClinicalDocumentContent(DocumentContentSourceType.INLINE, DOC_CONTENT);
+        return new PatientDocument(ClinicalDocumentContentType.NOTE, "docid1", documentContent);
     }
 
     /**

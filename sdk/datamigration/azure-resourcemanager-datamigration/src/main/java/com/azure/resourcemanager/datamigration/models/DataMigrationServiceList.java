@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datamigration.fluent.models.DataMigrationServiceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** OData page of service objects. */
+/**
+ * OData page of service objects.
+ */
 @Fluent
-public final class DataMigrationServiceList {
+public final class DataMigrationServiceList implements JsonSerializable<DataMigrationServiceList> {
     /*
      * List of services
      */
-    @JsonProperty(value = "value")
     private List<DataMigrationServiceInner> value;
 
     /*
      * URL to load the next page of services
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of DataMigrationServiceList class. */
+    /**
+     * Creates an instance of DataMigrationServiceList class.
+     */
     public DataMigrationServiceList() {
     }
 
     /**
      * Get the value property: List of services.
-     *
+     * 
      * @return the value value.
      */
     public List<DataMigrationServiceInner> value() {
@@ -39,7 +45,7 @@ public final class DataMigrationServiceList {
 
     /**
      * Set the value property: List of services.
-     *
+     * 
      * @param value the value value to set.
      * @return the DataMigrationServiceList object itself.
      */
@@ -50,7 +56,7 @@ public final class DataMigrationServiceList {
 
     /**
      * Get the nextLink property: URL to load the next page of services.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class DataMigrationServiceList {
 
     /**
      * Set the nextLink property: URL to load the next page of services.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the DataMigrationServiceList object itself.
      */
@@ -70,12 +76,53 @@ public final class DataMigrationServiceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataMigrationServiceList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataMigrationServiceList if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataMigrationServiceList.
+     */
+    public static DataMigrationServiceList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataMigrationServiceList deserializedDataMigrationServiceList = new DataMigrationServiceList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DataMigrationServiceInner> value
+                        = reader.readArray(reader1 -> DataMigrationServiceInner.fromJson(reader1));
+                    deserializedDataMigrationServiceList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDataMigrationServiceList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataMigrationServiceList;
+        });
     }
 }

@@ -6,23 +6,27 @@ package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.FileSourceInfo;
 import com.azure.resourcemanager.databoxedge.models.RoleSinkInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** File trigger properties. */
+/**
+ * File trigger properties.
+ */
 @Fluent
-public final class FileTriggerProperties {
+public final class FileTriggerProperties implements JsonSerializable<FileTriggerProperties> {
     /*
      * File event source details.
      */
-    @JsonProperty(value = "sourceInfo", required = true)
     private FileSourceInfo sourceInfo;
 
     /*
      * Role sink info.
      */
-    @JsonProperty(value = "sinkInfo", required = true)
     private RoleSinkInfo sinkInfo;
 
     /*
@@ -30,16 +34,17 @@ public final class FileTriggerProperties {
      * trigger is intended for certain specific IoT modules in the device, the tag can be the name or the image URL of
      * the module.
      */
-    @JsonProperty(value = "customContextTag")
     private String customContextTag;
 
-    /** Creates an instance of FileTriggerProperties class. */
+    /**
+     * Creates an instance of FileTriggerProperties class.
+     */
     public FileTriggerProperties() {
     }
 
     /**
      * Get the sourceInfo property: File event source details.
-     *
+     * 
      * @return the sourceInfo value.
      */
     public FileSourceInfo sourceInfo() {
@@ -48,7 +53,7 @@ public final class FileTriggerProperties {
 
     /**
      * Set the sourceInfo property: File event source details.
-     *
+     * 
      * @param sourceInfo the sourceInfo value to set.
      * @return the FileTriggerProperties object itself.
      */
@@ -59,7 +64,7 @@ public final class FileTriggerProperties {
 
     /**
      * Get the sinkInfo property: Role sink info.
-     *
+     * 
      * @return the sinkInfo value.
      */
     public RoleSinkInfo sinkInfo() {
@@ -68,7 +73,7 @@ public final class FileTriggerProperties {
 
     /**
      * Set the sinkInfo property: Role sink info.
-     *
+     * 
      * @param sinkInfo the sinkInfo value to set.
      * @return the FileTriggerProperties object itself.
      */
@@ -81,7 +86,7 @@ public final class FileTriggerProperties {
      * Get the customContextTag property: A custom context tag typically used to correlate the trigger against its
      * usage. For example, if a periodic timer trigger is intended for certain specific IoT modules in the device, the
      * tag can be the name or the image URL of the module.
-     *
+     * 
      * @return the customContextTag value.
      */
     public String customContextTag() {
@@ -92,7 +97,7 @@ public final class FileTriggerProperties {
      * Set the customContextTag property: A custom context tag typically used to correlate the trigger against its
      * usage. For example, if a periodic timer trigger is intended for certain specific IoT modules in the device, the
      * tag can be the name or the image URL of the module.
-     *
+     * 
      * @param customContextTag the customContextTag value to set.
      * @return the FileTriggerProperties object itself.
      */
@@ -103,26 +108,67 @@ public final class FileTriggerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceInfo in model FileTriggerProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceInfo in model FileTriggerProperties"));
         } else {
             sourceInfo().validate();
         }
         if (sinkInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sinkInfo in model FileTriggerProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sinkInfo in model FileTriggerProperties"));
         } else {
             sinkInfo().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FileTriggerProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sourceInfo", this.sourceInfo);
+        jsonWriter.writeJsonField("sinkInfo", this.sinkInfo);
+        jsonWriter.writeStringField("customContextTag", this.customContextTag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileTriggerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileTriggerProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FileTriggerProperties.
+     */
+    public static FileTriggerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileTriggerProperties deserializedFileTriggerProperties = new FileTriggerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceInfo".equals(fieldName)) {
+                    deserializedFileTriggerProperties.sourceInfo = FileSourceInfo.fromJson(reader);
+                } else if ("sinkInfo".equals(fieldName)) {
+                    deserializedFileTriggerProperties.sinkInfo = RoleSinkInfo.fromJson(reader);
+                } else if ("customContextTag".equals(fieldName)) {
+                    deserializedFileTriggerProperties.customContextTag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileTriggerProperties;
+        });
+    }
 }

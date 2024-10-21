@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.automation.generated;
 
-/** Samples for Certificate CreateOrUpdate. */
+/**
+ * Samples for Certificate CreateOrUpdate.
+ */
 public final class CertificateCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdateCertificate.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * createOrUpdateCertificate.json
      */
     /**
      * Sample code: Create or update a certificate.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createOrUpdateACertificate(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .certificates()
+        manager.certificates()
             .define("testCert")
             .withExistingAutomationAccount("rg", "myAutomationAccount18")
             .withName("testCert")

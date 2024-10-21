@@ -10,6 +10,20 @@
 
 ### Other Changes
 
+## 7.17.5 (2024-10-16)
+
+### Bugs Fixed
+
+- Fixes the thread unsafe use of javax.crypto.Mac instance in ServiceBusSharedKeyCredential. ([42353](https://github.com/Azure/azure-sdk-for-java/pull/42353))
+- Fixed issue where `SubscriptionProperties.UserMetadata` was set to `null` when updating its value. ([#42332](https://github.com/Azure/azure-sdk-for-java/pull/42332))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.52.0` to `1.53.0`.
+- Upgraded `azure-core-amqp` from `2.9.9` to `2.9.10`.
+- Upgraded `azure-identity` from `1.13.3` to `1.14.0`.
+
 ## 7.17.4 (2024-09-27)
 
 ### Features Added

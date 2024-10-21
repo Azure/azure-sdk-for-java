@@ -15,8 +15,8 @@ public final class OperationImpl implements Operation {
 
     private final com.azure.resourcemanager.billingbenefits.BillingBenefitsManager serviceManager;
 
-    OperationImpl(
-        OperationInner innerObject, com.azure.resourcemanager.billingbenefits.BillingBenefitsManager serviceManager) {
+    OperationImpl(OperationInner innerObject,
+        com.azure.resourcemanager.billingbenefits.BillingBenefitsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

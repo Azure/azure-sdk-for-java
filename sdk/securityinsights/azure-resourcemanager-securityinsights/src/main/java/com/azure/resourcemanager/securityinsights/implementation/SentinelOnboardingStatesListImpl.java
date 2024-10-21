@@ -17,8 +17,7 @@ public final class SentinelOnboardingStatesListImpl implements SentinelOnboardin
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    SentinelOnboardingStatesListImpl(
-        SentinelOnboardingStatesListInner innerObject,
+    SentinelOnboardingStatesListImpl(SentinelOnboardingStatesListInner innerObject,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class SentinelOnboardingStatesListImpl implements SentinelOnboardin
     public List<SentinelOnboardingState> value() {
         List<SentinelOnboardingStateInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new SentinelOnboardingStateImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new SentinelOnboardingStateImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

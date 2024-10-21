@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PeerAsnPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeerAsnProperties model =
-            BinaryData
-                .fromString(
-                    "{\"peerAsn\":1686193188,\"peerContactDetail\":[{\"role\":\"Other\",\"email\":\"hix\",\"phone\":\"gdtopbobjogh\"}],\"peerName\":\"w\",\"validationState\":\"None\",\"errorMessage\":\"uhrzayvvt\"}")
-                .toObject(PeerAsnProperties.class);
+        PeerAsnProperties model = BinaryData.fromString(
+            "{\"peerAsn\":1686193188,\"peerContactDetail\":[{\"role\":\"Other\",\"email\":\"hix\",\"phone\":\"gdtopbobjogh\"}],\"peerName\":\"w\",\"validationState\":\"None\",\"errorMessage\":\"uhrzayvvt\"}")
+            .toObject(PeerAsnProperties.class);
         Assertions.assertEquals(1686193188, model.peerAsn());
         Assertions.assertEquals(Role.OTHER, model.peerContactDetail().get(0).role());
         Assertions.assertEquals("hix", model.peerContactDetail().get(0).email());
@@ -30,13 +28,11 @@ public final class PeerAsnPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeerAsnProperties model =
-            new PeerAsnProperties()
-                .withPeerAsn(1686193188)
-                .withPeerContactDetail(
-                    Arrays.asList(new ContactDetail().withRole(Role.OTHER).withEmail("hix").withPhone("gdtopbobjogh")))
-                .withPeerName("w")
-                .withValidationState(ValidationState.NONE);
+        PeerAsnProperties model = new PeerAsnProperties().withPeerAsn(1686193188)
+            .withPeerContactDetail(
+                Arrays.asList(new ContactDetail().withRole(Role.OTHER).withEmail("hix").withPhone("gdtopbobjogh")))
+            .withPeerName("w")
+            .withValidationState(ValidationState.NONE);
         model = BinaryData.fromObject(model).toObject(PeerAsnProperties.class);
         Assertions.assertEquals(1686193188, model.peerAsn());
         Assertions.assertEquals(Role.OTHER, model.peerContactDetail().get(0).role());

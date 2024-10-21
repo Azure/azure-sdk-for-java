@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.datamigration.generated;
 
-/** Samples for Services Stop. */
+/**
+ * Samples for Services Stop.
+ */
 public final class ServicesStopSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_Stop.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_Stop.
+     * json
      */
     /**
      * Sample code: Services_Stop.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void servicesStop(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {

@@ -9,7 +9,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class ImageBuilderManagerTests extends TestBase {
+public class ImageBuilderManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
     private static final Region REGION = Region.US_EAST;
     private String resourceGroupName = "rg" + randomPadding();
@@ -128,7 +128,7 @@ public class ImageBuilderManagerTests extends TestBase {
                         .withVersion("latest"))
                 .withBuildTimeoutInMinutes(0)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             imageTemplate.refresh();
             Assertions.assertEquals(imageTemplate.name(), templateName);
             Assertions.assertEquals(imageTemplate.name(), imageBuilderManager.virtualMachineImageTemplates().getById(imageTemplate.id()).name());

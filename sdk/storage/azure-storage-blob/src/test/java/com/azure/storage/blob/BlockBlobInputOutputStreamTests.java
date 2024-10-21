@@ -277,6 +277,17 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
         TestUtils.assertArraysEqual(randomBytes, convertInputStreamToByteArray(inputStream));
     }
 
+    @Test
+    public void inputStreamConsistentReadControlNullVersion() {
+        int length = Constants.KB;
+        byte[] randomBytes = getRandomByteArray(length);
+        bc.upload(new ByteArrayInputStream(randomBytes), length, true);
+
+        // Version ID set but not a versioned account
+        assertThrows(UnsupportedOperationException.class, () -> bc.openInputStream(new BlobInputStreamOptions()
+            .setConsistentReadControl(ConsistentReadControl.VERSION_ID)));
+    }
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void inputStreamConsistentReadControlETagUserProvidesVersionClientChoosesETag() {
@@ -341,7 +352,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
-    public void inputStreamConsistentReadControlVersionUserProvidesVersion() throws IOException {
+    public void inputStreamConsistentReadControlVersionUserProvidesVersion() {
         int length = Constants.KB;
         byte[] randomBytes = getRandomByteArray(length);
         BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(generateContainerName());
@@ -363,7 +374,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
-    public void inputStreamConsistentReadControlVersionUserProvidesVersionAndETag() throws IOException {
+    public void inputStreamConsistentReadControlVersionUserProvidesVersionAndETag() {
         int length = Constants.KB;
         byte[] randomBytes = getRandomByteArray(length);
         BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(generateContainerName());
@@ -385,7 +396,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
-    public void inputStreamConsistentReadControlVersionUserProvidesETagClientChoosesVersion() throws IOException {
+    public void inputStreamConsistentReadControlVersionUserProvidesETagClientChoosesVersion() {
         int length = Constants.KB;
         byte[] randomBytes = getRandomByteArray(length);
         BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(generateContainerName());

@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.azurestack.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Customer subscription properties. */
+/**
+ * Customer subscription properties.
+ */
 @Fluent
-public final class CustomerSubscriptionProperties {
+public final class CustomerSubscriptionProperties implements JsonSerializable<CustomerSubscriptionProperties> {
     /*
      * Tenant Id.
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
-    /** Creates an instance of CustomerSubscriptionProperties class. */
+    /**
+     * Creates an instance of CustomerSubscriptionProperties class.
+     */
     public CustomerSubscriptionProperties() {
     }
 
     /**
      * Get the tenantId property: Tenant Id.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -31,7 +38,7 @@ public final class CustomerSubscriptionProperties {
 
     /**
      * Set the tenantId property: Tenant Id.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the CustomerSubscriptionProperties object itself.
      */
@@ -42,9 +49,46 @@ public final class CustomerSubscriptionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomerSubscriptionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomerSubscriptionProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomerSubscriptionProperties.
+     */
+    public static CustomerSubscriptionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomerSubscriptionProperties deserializedCustomerSubscriptionProperties
+                = new CustomerSubscriptionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedCustomerSubscriptionProperties.tenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomerSubscriptionProperties;
+        });
     }
 }

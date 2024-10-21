@@ -6,54 +6,55 @@ package com.azure.resourcemanager.storagepool.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagepool.fluent.models.DiskPoolUpdateProperties;
 import com.azure.resourcemanager.storagepool.fluent.models.Sku;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Request payload for Update Disk Pool request. */
+/**
+ * Request payload for Update Disk Pool request.
+ */
 @Fluent
-public final class DiskPoolUpdate {
+public final class DiskPoolUpdate implements JsonSerializable<DiskPoolUpdate> {
     /*
      * Azure resource id. Indicates if this resource is managed by another Azure resource.
      */
-    @JsonProperty(value = "managedBy")
     private String managedBy;
 
     /*
      * List of Azure resource ids that manage this resource.
      */
-    @JsonProperty(value = "managedByExtended")
     private List<String> managedByExtended;
 
     /*
      * Properties for Disk Pool update request.
      */
-    @JsonProperty(value = "properties", required = true)
     private DiskPoolUpdateProperties innerProperties = new DiskPoolUpdateProperties();
 
     /*
      * Determines the SKU of the Disk Pool
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of DiskPoolUpdate class. */
+    /**
+     * Creates an instance of DiskPoolUpdate class.
+     */
     public DiskPoolUpdate() {
     }
 
     /**
      * Get the managedBy property: Azure resource id. Indicates if this resource is managed by another Azure resource.
-     *
+     * 
      * @return the managedBy value.
      */
     public String managedBy() {
@@ -62,7 +63,7 @@ public final class DiskPoolUpdate {
 
     /**
      * Set the managedBy property: Azure resource id. Indicates if this resource is managed by another Azure resource.
-     *
+     * 
      * @param managedBy the managedBy value to set.
      * @return the DiskPoolUpdate object itself.
      */
@@ -73,7 +74,7 @@ public final class DiskPoolUpdate {
 
     /**
      * Get the managedByExtended property: List of Azure resource ids that manage this resource.
-     *
+     * 
      * @return the managedByExtended value.
      */
     public List<String> managedByExtended() {
@@ -82,7 +83,7 @@ public final class DiskPoolUpdate {
 
     /**
      * Set the managedByExtended property: List of Azure resource ids that manage this resource.
-     *
+     * 
      * @param managedByExtended the managedByExtended value to set.
      * @return the DiskPoolUpdate object itself.
      */
@@ -93,7 +94,7 @@ public final class DiskPoolUpdate {
 
     /**
      * Get the innerProperties property: Properties for Disk Pool update request.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DiskPoolUpdateProperties innerProperties() {
@@ -102,7 +103,7 @@ public final class DiskPoolUpdate {
 
     /**
      * Get the sku property: Determines the SKU of the Disk Pool.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -111,7 +112,7 @@ public final class DiskPoolUpdate {
 
     /**
      * Set the sku property: Determines the SKU of the Disk Pool.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the DiskPoolUpdate object itself.
      */
@@ -122,7 +123,7 @@ public final class DiskPoolUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -131,7 +132,7 @@ public final class DiskPoolUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the DiskPoolUpdate object itself.
      */
@@ -142,7 +143,7 @@ public final class DiskPoolUpdate {
 
     /**
      * Get the disks property: List of Azure Managed Disks to attach to a Disk Pool.
-     *
+     * 
      * @return the disks value.
      */
     public List<Disk> disks() {
@@ -151,7 +152,7 @@ public final class DiskPoolUpdate {
 
     /**
      * Set the disks property: List of Azure Managed Disks to attach to a Disk Pool.
-     *
+     * 
      * @param disks the disks value to set.
      * @return the DiskPoolUpdate object itself.
      */
@@ -165,14 +166,13 @@ public final class DiskPoolUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model DiskPoolUpdate"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model DiskPoolUpdate"));
         } else {
             innerProperties().validate();
         }
@@ -182,4 +182,56 @@ public final class DiskPoolUpdate {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DiskPoolUpdate.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("managedBy", this.managedBy);
+        jsonWriter.writeArrayField("managedByExtended", this.managedByExtended,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiskPoolUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiskPoolUpdate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DiskPoolUpdate.
+     */
+    public static DiskPoolUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiskPoolUpdate deserializedDiskPoolUpdate = new DiskPoolUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedDiskPoolUpdate.innerProperties = DiskPoolUpdateProperties.fromJson(reader);
+                } else if ("managedBy".equals(fieldName)) {
+                    deserializedDiskPoolUpdate.managedBy = reader.getString();
+                } else if ("managedByExtended".equals(fieldName)) {
+                    List<String> managedByExtended = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDiskPoolUpdate.managedByExtended = managedByExtended;
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDiskPoolUpdate.sku = Sku.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDiskPoolUpdate.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiskPoolUpdate;
+        });
+    }
 }

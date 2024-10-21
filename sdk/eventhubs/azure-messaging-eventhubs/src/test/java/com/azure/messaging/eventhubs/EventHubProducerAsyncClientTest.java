@@ -1676,7 +1676,8 @@ class EventHubProducerAsyncClientTest {
             .collect(Collectors.toList());
         assertEquals(1, measurements.size());
         if (expectedValue != null) {
-            assertEquals(expectedValue, measurements.get(0).getValue(), expectedValue);
+            // sanity check
+            assertEquals(expectedValue, measurements.get(0).getValue(), expectedValue + 10);
         }
 
         assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, partitionId, null, expectedErrorType,

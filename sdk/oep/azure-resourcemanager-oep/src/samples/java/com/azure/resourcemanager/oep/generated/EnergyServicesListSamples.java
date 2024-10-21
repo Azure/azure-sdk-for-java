@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.oep.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for EnergyServices List. */
+/**
+ * Samples for EnergyServices List.
+ */
 public final class EnergyServicesListSamples {
     /*
-     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2021-06-01-preview/examples/OepResource_ListBySubscriptionId.json
+     * x-ms-original-file:
+     * specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2021-06-01-preview/examples/
+     * OepResource_ListBySubscriptionId.json
      */
     /**
      * Sample code: OepResource_ListBySubscriptionId.
-     *
+     * 
      * @param manager Entry point to OepManager.
      */
     public static void oepResourceListBySubscriptionId(com.azure.resourcemanager.oep.OepManager manager) {
-        manager.energyServices().list(Context.NONE);
+        manager.energyServices().list(com.azure.core.util.Context.NONE);
     }
 }

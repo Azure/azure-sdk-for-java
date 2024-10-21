@@ -20,10 +20,10 @@ import org.junit.jupiter.api.Test;
 
 import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentType;
 import com.azure.health.insights.radiologyinsights.models.DocumentAdministrativeMetadata;
-import com.azure.health.insights.radiologyinsights.models.DocumentAuthor;
-import com.azure.health.insights.radiologyinsights.models.DocumentContent;
+import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentAuthor;
+import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentContent;
 import com.azure.health.insights.radiologyinsights.models.DocumentContentSourceType;
-import com.azure.health.insights.radiologyinsights.models.DocumentType;
+import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentContentType;
 import com.azure.health.insights.radiologyinsights.models.EncounterClass;
 import com.azure.health.insights.radiologyinsights.models.FhirR4CodeableConcept;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Coding;
@@ -126,10 +126,10 @@ public class RadiologyInsightsInputDataTest {
         assertEquals("Http://hl7.org/fhir/ValueSet/cpt-all", coding.getSystem());
         assertNull(coding.getVersion());
         
-        List<DocumentAuthor> authors = patientDocument.getAuthors();
+        List<ClinicalDocumentAuthor> authors = patientDocument.getAuthors();
         assertEquals(1, authors.size());
         
-        DocumentAuthor documentAuthor = authors.get(0);
+        ClinicalDocumentAuthor documentAuthor = authors.get(0);
         assertEquals("authorname1", documentAuthor.getFullName());
         assertEquals("authorid1", documentAuthor.getId());
         
@@ -142,7 +142,7 @@ public class RadiologyInsightsInputDataTest {
         assertEquals("docid1", patientDocument.getId());
         assertEquals("EN", patientDocument.getLanguage());
         assertEquals(SpecialtyType.RADIOLOGY, patientDocument.getSpecialtyType());
-        assertEquals(DocumentType.NOTE, patientDocument.getType());
+        assertEquals(ClinicalDocumentContentType.NOTE, patientDocument.getType());
     }
     
     private String documentContent;
@@ -193,7 +193,7 @@ public class RadiologyInsightsInputDataTest {
         patientDocument.setClinicalType(ClinicalDocumentType.RADIOLOGY_REPORT);
         patientDocument.setLanguage("EN");
 
-        DocumentAuthor author = new DocumentAuthor();
+        ClinicalDocumentAuthor author = new ClinicalDocumentAuthor();
         author.setId("authorid1");
         author.setFullName("authorname1");
 
@@ -230,8 +230,8 @@ public class RadiologyInsightsInputDataTest {
     }
     
     private PatientDocument getPatientDocument() {
-        DocumentContent documentContent = new DocumentContent(DocumentContentSourceType.INLINE, this.getDocumentContent());
-        return new PatientDocument(DocumentType.NOTE, "docid1", documentContent);
+        ClinicalDocumentContent documentContent = new ClinicalDocumentContent(DocumentContentSourceType.INLINE, this.getDocumentContent());
+        return new PatientDocument(ClinicalDocumentContentType.NOTE, "docid1", documentContent);
     }
    
     private RadiologyInsightsModelConfiguration createRadiologyInsightsModelConfig() {

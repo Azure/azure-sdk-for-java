@@ -7,19 +7,22 @@ package com.azure.resourcemanager.customerinsights.generated;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Views CreateOrUpdate. */
+/**
+ * Samples for Views CreateOrUpdate.
+ */
 public final class ViewsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/ViewsCreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/
+     * ViewsCreateOrUpdate.json
      */
     /**
      * Sample code: Views_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to CustomerInsightsManager.
      */
     public static void viewsCreateOrUpdate(com.azure.resourcemanager.customerinsights.CustomerInsightsManager manager) {
-        manager
-            .views()
+        manager.views()
             .define("testView")
             .withExistingHub("TestHubRG", "sdkTestHub")
             .withUserId("testUser")
@@ -28,6 +31,7 @@ public final class ViewsCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

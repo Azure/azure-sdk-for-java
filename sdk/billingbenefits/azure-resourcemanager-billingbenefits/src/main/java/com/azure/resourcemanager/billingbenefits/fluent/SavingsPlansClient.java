@@ -15,11 +15,13 @@ import com.azure.resourcemanager.billingbenefits.models.SavingsPlanUpdateRequest
 import com.azure.resourcemanager.billingbenefits.models.SavingsPlanUpdateValidateRequest;
 import com.azure.resourcemanager.billingbenefits.models.SavingsPlansUpdateResponse;
 
-/** An instance of this class provides access to all the operations defined in SavingsPlansClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SavingsPlansClient.
+ */
 public interface SavingsPlansClient {
     /**
      * List savings plans in an order.
-     *
+     * 
      * @param savingsPlanOrderId Order ID of the savings plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -31,7 +33,7 @@ public interface SavingsPlansClient {
 
     /**
      * List savings plans in an order.
-     *
+     * 
      * @param savingsPlanOrderId Order ID of the savings plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -44,7 +46,7 @@ public interface SavingsPlansClient {
 
     /**
      * List savings plans.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
@@ -54,15 +56,15 @@ public interface SavingsPlansClient {
 
     /**
      * List savings plans.
-     *
+     * 
      * @param filter May be used to filter by reservation properties. The filter supports 'eq', 'or', and 'and'. It does
-     *     not currently support 'ne', 'gt', 'le', 'ge', or 'not'. Reservation properties include sku/name,
-     *     properties/{appliedScopeType, archived, displayName, displayProvisioningState, effectiveDateTime, expiryDate,
-     *     provisioningState, quantity, renew, reservedResourceType, term, userFriendlyAppliedScopeType,
-     *     userFriendlyRenewState}.
+     * not currently support 'ne', 'gt', 'le', 'ge', or 'not'. Reservation properties include sku/name,
+     * properties/{appliedScopeType, archived, displayName, displayProvisioningState, effectiveDateTime, expiryDate,
+     * provisioningState, quantity, renew, reservedResourceType, term, userFriendlyAppliedScopeType,
+     * userFriendlyRenewState}.
      * @param orderby May be used to sort order by reservation properties.
      * @param refreshSummary To indicate whether to refresh the roll up counts of the savings plans group by
-     *     provisioning states.
+     * provisioning states.
      * @param skiptoken The number of savings plans to skip from the list before returning results.
      * @param selectedState The selected provisioning state.
      * @param take To number of savings plans to return.
@@ -73,18 +75,12 @@ public interface SavingsPlansClient {
      * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SavingsPlanModelInner> listAll(
-        String filter,
-        String orderby,
-        String refreshSummary,
-        Float skiptoken,
-        String selectedState,
-        Float take,
-        Context context);
+    PagedIterable<SavingsPlanModelInner> listAll(String filter, String orderby, String refreshSummary, Float skiptoken,
+        String selectedState, Float take, Context context);
 
     /**
      * Get savings plan.
-     *
+     * 
      * @param savingsPlanOrderId Order ID of the savings plan.
      * @param savingsPlanId ID of the savings plan.
      * @param expand May be used to expand the detail information of some properties.
@@ -95,12 +91,12 @@ public interface SavingsPlansClient {
      * @return savings plan along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SavingsPlanModelInner> getWithResponse(
-        String savingsPlanOrderId, String savingsPlanId, String expand, Context context);
+    Response<SavingsPlanModelInner> getWithResponse(String savingsPlanOrderId, String savingsPlanId, String expand,
+        Context context);
 
     /**
      * Get savings plan.
-     *
+     * 
      * @param savingsPlanOrderId Order ID of the savings plan.
      * @param savingsPlanId ID of the savings plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -113,28 +109,32 @@ public interface SavingsPlansClient {
 
     /**
      * Update savings plan.
-     *
+     * 
      * @param savingsPlanOrderId Order ID of the savings plan.
      * @param savingsPlanId ID of the savings plan.
      * @param body Request body for patching a savings plan order alias.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     * status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return savings plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SavingsPlansUpdateResponse updateWithResponse(
-        String savingsPlanOrderId, String savingsPlanId, SavingsPlanUpdateRequest body, Context context);
+    SavingsPlansUpdateResponse updateWithResponse(String savingsPlanOrderId, String savingsPlanId,
+        SavingsPlanUpdateRequest body, Context context);
 
     /**
      * Update savings plan.
-     *
+     * 
      * @param savingsPlanOrderId Order ID of the savings plan.
      * @param savingsPlanId ID of the savings plan.
      * @param body Request body for patching a savings plan order alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     * status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return savings plan.
      */
@@ -143,7 +143,7 @@ public interface SavingsPlansClient {
 
     /**
      * Validate savings plan patch.
-     *
+     * 
      * @param savingsPlanOrderId Order ID of the savings plan.
      * @param savingsPlanId ID of the savings plan.
      * @param body Request body for validating a savings plan patch request.
@@ -154,12 +154,12 @@ public interface SavingsPlansClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SavingsPlanValidateResponseInner> validateUpdateWithResponse(
-        String savingsPlanOrderId, String savingsPlanId, SavingsPlanUpdateValidateRequest body, Context context);
+    Response<SavingsPlanValidateResponseInner> validateUpdateWithResponse(String savingsPlanOrderId,
+        String savingsPlanId, SavingsPlanUpdateValidateRequest body, Context context);
 
     /**
      * Validate savings plan patch.
-     *
+     * 
      * @param savingsPlanOrderId Order ID of the savings plan.
      * @param savingsPlanId ID of the savings plan.
      * @param body Request body for validating a savings plan patch request.
@@ -169,6 +169,6 @@ public interface SavingsPlansClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SavingsPlanValidateResponseInner validateUpdate(
-        String savingsPlanOrderId, String savingsPlanId, SavingsPlanUpdateValidateRequest body);
+    SavingsPlanValidateResponseInner validateUpdate(String savingsPlanOrderId, String savingsPlanId,
+        SavingsPlanUpdateValidateRequest body);
 }

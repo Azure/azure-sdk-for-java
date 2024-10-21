@@ -12,21 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagementAssociationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagementAssociationInner model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"fpikxwczb\",\"properties\":{\"applicationId\":\"cnpqxuhivyqniwby\"},\"id\":\"rkxvdum\",\"name\":\"grtfwvu\",\"type\":\"xgaudccs\"}")
-                .toObject(ManagementAssociationInner.class);
+        ManagementAssociationInner model = BinaryData.fromString(
+            "{\"location\":\"fpikxwczb\",\"properties\":{\"applicationId\":\"cnpqxuhivyqniwby\"},\"id\":\"rkxvdum\",\"name\":\"grtfwvu\",\"type\":\"xgaudccs\"}")
+            .toObject(ManagementAssociationInner.class);
         Assertions.assertEquals("fpikxwczb", model.location());
         Assertions.assertEquals("cnpqxuhivyqniwby", model.properties().applicationId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagementAssociationInner model =
-            new ManagementAssociationInner()
-                .withLocation("fpikxwczb")
-                .withProperties(new ManagementAssociationProperties().withApplicationId("cnpqxuhivyqniwby"));
+        ManagementAssociationInner model = new ManagementAssociationInner().withLocation("fpikxwczb")
+            .withProperties(new ManagementAssociationProperties().withApplicationId("cnpqxuhivyqniwby"));
         model = BinaryData.fromObject(model).toObject(ManagementAssociationInner.class);
         Assertions.assertEquals("fpikxwczb", model.location());
         Assertions.assertEquals("cnpqxuhivyqniwby", model.properties().applicationId());

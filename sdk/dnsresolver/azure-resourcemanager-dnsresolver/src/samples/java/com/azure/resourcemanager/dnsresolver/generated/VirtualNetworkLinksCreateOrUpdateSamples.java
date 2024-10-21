@@ -8,30 +8,32 @@ import com.azure.core.management.SubResource;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualNetworkLinks CreateOrUpdate. */
+/**
+ * Samples for VirtualNetworkLinks CreateOrUpdate.
+ */
 public final class VirtualNetworkLinksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkLink_Put.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkLink_Put.
+     * json
      */
     /**
      * Sample code: Upsert virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
     public static void upsertVirtualNetworkLinkToADNSForwardingRuleset(
         com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager
-            .virtualNetworkLinks()
+        manager.virtualNetworkLinks()
             .define("sampleVirtualNetworkLink")
             .withExistingDnsForwardingRuleset("sampleResourceGroup", "sampleDnsForwardingRuleset")
-            .withVirtualNetwork(
-                new SubResource()
-                    .withId(
-                        "/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"))
+            .withVirtualNetwork(new SubResource().withId(
+                "/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"))
             .withMetadata(mapOf("additionalProp1", "value1"))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
