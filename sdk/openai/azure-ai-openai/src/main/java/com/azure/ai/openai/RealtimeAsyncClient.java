@@ -83,19 +83,23 @@ public final class RealtimeAsyncClient implements Closeable {
         this.webSocketClient = webSocketClient == null ? new WebSocketClientNettyImpl() : webSocketClient;
         this.clientEndpointConfiguration = cec;
         this.applicationId = applicationId;
+
+        // The realtime service doesn't seem to provide the necessary information for reconnect/retry logic
+        // We would need, from what I've been able to gather:
+        //   - connectionId
+        //   - eventId as a monotonically increasing number
         this.sendMessageRetrySpec = Retry.from(signals -> {
             AtomicInteger retryCount = new AtomicInteger(0);
             return signals.concatMap(s -> {
                 Mono<Retry.RetrySignal> ret = Mono.error(s.failure());
-                // TODO jpalvarezl: replace `SendMessageFailedException` with the OpenAI Realtime type for this
-//                if (s.failure() instanceof SendMessageFailedException) {
-//                    if (((SendMessageFailedException) s.failure()).isTransient()) {
-//                        int retryAttempt = retryCount.incrementAndGet();
-//                        if (retryAttempt <= retryStrategy.getMaxRetries()) {
-//                            ret = Mono.delay(retryStrategy.calculateRetryDelay(retryAttempt)).then(Mono.just(s));
-//                        }
-//                    }
-//                }
+                if (s.failure() instanceof SendMessageFailedException) {
+                    if (((SendMessageFailedException) s.failure()).isTransient()) {
+                        int retryAttempt = retryCount.incrementAndGet();
+                        if (retryAttempt <= retryStrategy.getMaxRetries()) {
+                            ret = Mono.delay(retryStrategy.calculateRetryDelay(retryAttempt)).then(Mono.just(s));
+                        }
+                    }
+                }
                 return ret;
             });
         });
@@ -106,7 +110,15 @@ public final class RealtimeAsyncClient implements Closeable {
 
     @Override
     public void close() throws IOException {
+        if (this.isDisposed.getAndSet(true)) {
+            this.isClosedMono.asMono().block();
+        } else {
+            stop().then(Mono.fromRunnable(() -> {
+                this.clientState.changeState(RealtimeClientState.CLOSED);
 
+                isClosedMono.emitEmpty(emitFailureHandler("Unable to emit Close"));
+            })).block();
+        }
     }
 
 // --------------- Code gen stuff --------------------------------
@@ -411,7 +423,7 @@ public final class RealtimeAsyncClient implements Closeable {
         }
     }
 
-    private Mono<Void> sendMessage(RealtimeClientEvent message) {
+    public Mono<Void> sendMessage(RealtimeClientEvent message) {
         return checkStateBeforeSend().then(Mono.create(sink -> {
 //                        if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
 //                            try {

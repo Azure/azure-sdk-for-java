@@ -24,6 +24,8 @@ public class LowLevelClient {
         RealtimeServerEvent firstEvent = client.getServerEvents().blockFirst();
         System.out.println("First event: " + BinaryData.fromObject(firstEvent));
 
+
+
         client.stop().block();
 
         try {
