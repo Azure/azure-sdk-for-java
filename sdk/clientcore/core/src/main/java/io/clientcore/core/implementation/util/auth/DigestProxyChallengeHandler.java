@@ -3,24 +3,25 @@
 
 package io.clientcore.core.implementation.util.auth;
 
-import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponse;
+import io.clientcore.core.http.models.ProxyOptions;
+import io.clientcore.core.http.models.Response;
 import io.clientcore.core.util.auth.ChallengeHandler;
 import io.clientcore.core.util.binarydata.BinaryData;
 
 import java.security.SecureRandom;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
-import static io.clientcore.core.util.auth.AuthUtils.bytesToHexString;
+import static io.clientcore.core.util.auth.AuthUtils.DIGEST;
 import static io.clientcore.core.util.auth.AuthUtils.buildAuthorizationHeader;
+import static io.clientcore.core.util.auth.AuthUtils.bytesToHexString;
 import static io.clientcore.core.util.auth.AuthUtils.calculateHa1NoSess;
 import static io.clientcore.core.util.auth.AuthUtils.calculateHa1Sess;
 import static io.clientcore.core.util.auth.AuthUtils.calculateHa2AuthIntQop;
@@ -28,8 +29,8 @@ import static io.clientcore.core.util.auth.AuthUtils.calculateHa2AuthQopOrEmpty;
 import static io.clientcore.core.util.auth.AuthUtils.calculateResponseKnownQop;
 import static io.clientcore.core.util.auth.AuthUtils.calculateResponseUnknownQop;
 import static io.clientcore.core.util.auth.AuthUtils.calculateUserhash;
+import static io.clientcore.core.util.auth.AuthUtils.extractValue;
 import static io.clientcore.core.util.auth.AuthUtils.getDigestFunction;
-import static io.clientcore.core.util.auth.AuthUtils.getQop;
 import static io.clientcore.core.util.auth.AuthUtils.partitionByChallengeType;
 
 /**
@@ -40,7 +41,7 @@ import static io.clientcore.core.util.auth.AuthUtils.partitionByChallengeType;
  *
  * @see ChallengeHandler
  */
-public class DigestHandler implements ChallengeHandler {
+public class DigestProxyChallengeHandler implements ChallengeHandler {
     private static final String NONCE = "nonce";
     private static final String USERHASH = "userhash";
     private static final String OPAQUE = "opaque";
@@ -71,60 +72,43 @@ public class DigestHandler implements ChallengeHandler {
 
     private final String username;
     private final String password;
-    private String method;
-    private String uri;
-    private BinaryData entityBody;
+    private final ProxyOptions proxyOptions;
     private final Map<String, AtomicInteger> nonceTracker = new ConcurrentHashMap<>();
     private AtomicReference<ConcurrentHashMap<String, String>> lastChallenge;
     private final SecureRandom nonceGenerator = new SecureRandom();
-    private String userProvidedNonce;
+    private final Map<String, String> digestCache; // Cache for nonce, realm, etc.
 
     /**
-     * Creates an {@link DigestHandler} using the {@code username} and {@code password} to respond to
+     * Creates an {@link DigestProxyChallengeHandler} using the {@code username} and {@code password} to respond to
      * authentication challenges.
      *
      * @param username Username used to response to authorization challenges.
      * @param password Password used to respond to authorization challenges.
+     * @param proxyOptions Proxy options used for the proxy connection.
      * @throws NullPointerException If {@code username} or {@code password} are {@code null}.
      */
-    public DigestHandler(String username, String password) {
-        this.username = Objects.requireNonNull(username, "'username' cannot be null.");
-        this.password = Objects.requireNonNull(password, "'password' cannot be null.");
-
+    public DigestProxyChallengeHandler(String username, String password, ProxyOptions proxyOptions) {
+        this.username = username;
+        this.password = password;
+        this.proxyOptions = proxyOptions;
+        this.digestCache = new HashMap<>();
     }
 
     @Override
-    public void handleChallenge(HttpRequest request, HttpResponse<?> response, String cnonce, int nonceCount, AtomicReference<ConcurrentHashMap<String, String>> lastChallenge) {
-        this.method = request.getHttpMethod().name();
-        this.uri = request.getUri().toString();
-        this.entityBody = response.getBody();
-        this.userProvidedNonce = cnonce;
-        this.lastChallenge = lastChallenge;
-        String digestAuthHeader = createDigestAuthorizationHeader(response);
-        request.getHeaders().add(HttpHeaderName.AUTHORIZATION, digestAuthHeader);
-    }
-
-    private String createDigestAuthorizationHeader(HttpResponse<?> response) {
+    public void handleChallenge(HttpRequest request, Response<?> response) {
         String authHeader = null;
-        if (response.getHeaders()!= null && response.getHeaders().get(HttpHeaderName.WWW_AUTHENTICATE) != null) {
-            authHeader = response.getHeaders().get(HttpHeaderName.WWW_AUTHENTICATE).getValue();
+        if (response.getHeaders() != null && response.getHeaders().get(HttpHeaderName.PROXY_AUTHENTICATE) != null) {
+            authHeader = response.getHeaders().get(HttpHeaderName.PROXY_AUTHENTICATE).getValue();
+        }
+        if (!canHandle(response)) {
+            return;
         }
 
-        // Clear previous Authorization header
-        response.getRequest().getHeaders().set(HttpHeaderName.AUTHORIZATION, (String) null);
-
-        // Extract the nonce from the lastChallenge if it's already stored.
-        String nonce = lastChallenge != null ? lastChallenge.get().get(NONCE) : null;
-
-        // If there's no previous nonce, extract it from the current challenge.
-        if (nonce == null && authHeader != null) {
-            nonce = extractNonceFromHeader(authHeader);
-            if (lastChallenge == null) {
-                lastChallenge = new AtomicReference<>(new ConcurrentHashMap<>());
-            }
-            lastChallenge.get().put(NONCE, nonce);  // Update only the nonce in the lastChallenge.
+        if (authHeader.contains(NONCE)) {
+            updateDigestCache(authHeader);
         }
 
+        // Extract the algorithm if present
         Map<String, List<Map<String, String>>> challengesByType = partitionByChallengeType(response.getHeaders());
 
         for (String algorithm : ALGORITHM_PREFERENCE_ORDER) {
@@ -136,55 +120,62 @@ public class DigestHandler implements ChallengeHandler {
             if (digestFunction == null) {
                 continue;
             }
-            ConcurrentHashMap<String, String> challenge = new ConcurrentHashMap<>(challengesByType.get(algorithm).get(0));
-            // Ensure lastChallenge is initialized and update only if fields in lastChallenge are null while retaining existing values.
-            if (lastChallenge == null) {
-                lastChallenge = new AtomicReference<>(new ConcurrentHashMap<>(challenge));
-            } else {
-                challenge.forEach((key, value) -> {
-                    lastChallenge.get().putIfAbsent(key, value);
-                });
-            }
-            // Doubt: Should we not be sending lastChallenge here ?
-            return generateDigestAuthHeader(lastChallenge.get(), algorithm, digestFunction);
+
+            // Generate Digest Authorization header
+            String digestAuthHeader = generateDigestAuthHeader(
+                request.getHttpMethod().name(),
+                request.getUri().toString(),
+                algorithm,
+                digestFunction,
+                response.getBody()
+            );
+
+            request.getHeaders().set(HttpHeaderName.AUTHORIZATION, digestAuthHeader);
         }
-        return null;
     }
 
-    private String extractNonceFromHeader(String authHeader) {
-        if (authHeader == null || !authHeader.startsWith("Digest")) {
-            return null;
+    @Override
+    public boolean canHandle(Response<?> response) {
+        // Check if the 'Proxy-Authenticate' header contains 'Digest' scheme
+        String proxyAuthHeader = null;
+        if (response.getHeaders() != null && response.getHeaders().get(HttpHeaderName.PROXY_AUTHENTICATE) != null) {
+            proxyAuthHeader = response.getHeaders().get(HttpHeaderName.PROXY_AUTHENTICATE).getValue();
         }
-
-        String[] headerParts = authHeader.split(",");
-        for (String part : headerParts) {
-            String[] keyValue = part.trim().split("=", 2);
-            if (keyValue.length == 2 && keyValue[0].trim().equalsIgnoreCase("nonce")) {
-                return keyValue[1].replace("\"", "").trim();
-            }
-        }
-        return null;
+        return proxyAuthHeader != null && proxyAuthHeader.startsWith(DIGEST);
     }
 
-    private String generateDigestAuthHeader(Map<String, String> challenge, String algorithm, Function<byte[], byte[]> digestFunction) {
-        String realm = challenge.get(REALM);
-        String nonce = challenge.get(NONCE);
-        String qop = getQop(challenge.get(QOP));
-        String opaque = challenge.get(OPAQUE);
-        boolean hashUsername = Boolean.parseBoolean(challenge.get(USERHASH));
+    private void updateDigestCache(String authHeader) {
+        // Parse the authHeader and update the digest cache with necessary values like nonce, realm, etc.
+        String nonce = extractValue(authHeader, NONCE);
+        String realm = extractValue(authHeader, REALM);
+        String qop = extractValue(authHeader, QOP);
+        boolean hashUsername = Boolean.parseBoolean(extractValue(authHeader, USERHASH));
+        String opaque = extractValue(authHeader, OPAQUE);
 
-        String clientNonce = this.userProvidedNonce;
+        digestCache.put(NONCE, nonce);
+        digestCache.put(REALM, realm);
+        digestCache.put(QOP, qop);
+        digestCache.put(USERHASH, String.valueOf(hashUsername));
+        digestCache.put(OPAQUE, opaque);
+    }
+
+    private String generateDigestAuthHeader(String method, String uri, String algorithm, Function<byte[], byte[]> digestFunction, BinaryData body) {
+        String nonce = digestCache.get(NONCE);
+        String realm = digestCache.get(REALM);
+        String qop = digestCache.get(QOP);
+        String opaque = digestCache.get(OPAQUE);
+        boolean hashUsername = Boolean.parseBoolean(digestCache.get(USERHASH));
+        /*
+         * If the algorithm being used is <algorithm>-sess or QOP is 'auth' or 'auth-int' a client nonce will be needed
+         * to calculate the authorization header. If the QOP is set a nonce-count will need to retrieved.
+         */
         int nc = 0;
-
+        String clientNonce = null;
         if (AUTH.equals(qop) || AUTH_INT.equals(qop)) {
-            if (clientNonce == null) {
-                clientNonce = generateNonce();
-            }
-            nc = getNc(challenge);
+            clientNonce = generateCnonce();
+            nc = getOrUpdateNonceCount(nonce);
         } else if (algorithm.endsWith(SESS)) {
-            if (clientNonce == null) {
-                clientNonce = generateNonce();
-            }
+            clientNonce = generateCnonce();
         }
 
         String ha1 = algorithm.endsWith(SESS)
@@ -192,7 +183,7 @@ public class DigestHandler implements ChallengeHandler {
             : calculateHa1NoSess(digestFunction, username, realm, password);
 
         String ha2 = AUTH_INT.equals(qop)
-            ? calculateHa2AuthIntQop(digestFunction, method, uri, entityBody.toBytes())
+            ? calculateHa2AuthIntQop(digestFunction, method, uri, body.toBytes())
             : calculateHa2AuthQopOrEmpty(digestFunction, method, uri);
 
         String response = (AUTH.equals(qop) || AUTH_INT.equals(qop))
@@ -209,8 +200,8 @@ public class DigestHandler implements ChallengeHandler {
      * Retrieves the nonce count for the given challenge. If the nonce in the challenge has already been used this will
      * increment and return the nonce count tracking, otherwise this will begin a new nonce tracking and return 1.
      */
-    private int getNc(Map<String, String> challenge) {
-        return nonceTracker.compute(challenge.get(NONCE), (ignored, value) -> {
+    private int getOrUpdateNonceCount(String nonce) {
+        return nonceTracker.compute(nonce, (ignored, value) -> {
             if (value == null) {
                 return new AtomicInteger(1);
             }
@@ -223,7 +214,7 @@ public class DigestHandler implements ChallengeHandler {
     /*
      * Creates a unique and secure nonce.
      */
-    String generateNonce() {
+    private String generateCnonce() {
         byte[] nonce = new byte[16];
         nonceGenerator.nextBytes(nonce);
         return bytesToHexString(nonce);

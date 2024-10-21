@@ -3,6 +3,7 @@
 
 package io.clientcore.http.okhttp3.implementation;
 
+import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
@@ -20,7 +21,6 @@ import okhttp3.Route;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 /**
@@ -59,6 +59,7 @@ public final class ProxyAuthenticator implements Authenticator {
     private static final String CNONCE = "cnonce";
     private static final String NC = "nc";
     private static final String NEXT_NONCE = "nextnonce";
+    private static final String NONCE = "nonce";
 
     private static final ClientLogger LOGGER = new ClientLogger(ProxyAuthenticator.class);
 
@@ -110,9 +111,21 @@ public final class ProxyAuthenticator implements Authenticator {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.valueOf(PROXY_METHOD), PROXY_URI_PATH);
         HttpResponse<?> httpResponse = new HttpResponse<>(httpRequest, response.code(), OkHttpResponse.fromOkHttpHeaders(response.headers()), NO_BODY);
         String authorizationHeader;
+        // Replace nonce value in the PROXY_AUTHENTICATE header with the updated nonce
         ConcurrentHashMap<String, String> lastChallengeMap = proxyInterceptor.getLastChallenge();
+        String updatedNonce = lastChallengeMap.get(NONCE);
 
-        compositeChallengeHandler.handleChallenge(httpRequest, httpResponse, null, 0, new AtomicReference<>(lastChallengeMap));
+        if (updatedNonce != null) {
+            String proxyAuthenticateHeader = httpResponse.getHeaders().get(HttpHeaderName.PROXY_AUTHENTICATE).getValue();
+
+            if (proxyAuthenticateHeader != null) {
+                // Replace the old nonce with the updated nonce in the header
+                String updatedHeader = replaceNonceInHeader(proxyAuthenticateHeader, updatedNonce);
+                httpResponse.getHeaders().set(HttpHeaderName.PROXY_AUTHENTICATE, updatedHeader);
+            }
+        }
+
+        compositeChallengeHandler.handleChallenge(httpRequest, httpResponse);
         authorizationHeader = httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
 
         if (authorizationHeader != null) {
@@ -122,6 +135,37 @@ public final class ProxyAuthenticator implements Authenticator {
         }
 
         return requestBuilder.build();
+    }
+
+    /**
+     * Replaces the nonce value in the Proxy-Authenticate header with the new nonce.
+     *
+     * @param header The original Proxy-Authenticate header.
+     * @param newNonce The new nonce to replace the existing one.
+     * @return The updated Proxy-Authenticate header.
+     */
+    private String replaceNonceInHeader(String header, String newNonce) {
+        // Split the header into parts
+        String[] parts = header.split(","); // Assuming multiple values are comma-separated
+        StringBuilder updatedHeader = new StringBuilder();
+
+        for (String part : parts) {
+            String trimmedPart = part.trim();
+            // If the part contains "nonce=", replace it with the new nonce
+            if (trimmedPart.startsWith("nonce=")) {
+                updatedHeader.append("nonce=\"").append(newNonce).append("\"");
+            } else {
+                updatedHeader.append(trimmedPart); // Keep other parts unchanged
+            }
+            updatedHeader.append(", "); // Add a separator
+        }
+
+        // Remove the trailing ", " if present
+        if (updatedHeader.length() > 2) {
+            updatedHeader.setLength(updatedHeader.length() - 2);
+        }
+
+        return updatedHeader.toString();
     }
 
     /**

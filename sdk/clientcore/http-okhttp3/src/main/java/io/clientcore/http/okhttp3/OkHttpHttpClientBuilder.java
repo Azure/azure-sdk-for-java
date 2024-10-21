@@ -5,7 +5,7 @@ package io.clientcore.http.okhttp3;
 
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ProxyOptions;
-import io.clientcore.core.implementation.util.auth.DigestHandler;
+import io.clientcore.core.implementation.util.auth.DigestProxyChallengeHandler;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.SharedExecutorService;
 import io.clientcore.core.util.auth.ChallengeHandler;
@@ -356,9 +356,9 @@ public class OkHttpHttpClientBuilder {
                     buildProxyOptions.getNonProxyHosts()));
 
             if (buildProxyOptions.getUsername() != null) {
-                ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(ChallengeHandler.of(new DigestHandler(
+                ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(ChallengeHandler.of(new DigestProxyChallengeHandler(
                     buildProxyOptions.getUsername(),
-                    buildProxyOptions.getPassword())));
+                    buildProxyOptions.getPassword(), proxyOptions)));
 
                 httpClientBuilder = httpClientBuilder.proxyAuthenticator(proxyAuthenticator)
                     .addInterceptor(proxyAuthenticator.getProxyAuthenticationInfoInterceptor());

@@ -3,32 +3,35 @@
 
 package io.clientcore.core.util.auth;
 
-import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponse;
-import io.clientcore.core.implementation.util.auth.BasicHandler;
-import io.clientcore.core.implementation.util.auth.DigestHandler;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.implementation.util.auth.DigestChallengeHandler;
+import io.clientcore.core.implementation.util.auth.DigestProxyChallengeHandler;
+import io.clientcore.core.util.ClientLogger;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Class representing a challenge handler for authentication.
  */
 public interface ChallengeHandler {
+    ClientLogger LOGGER = new ClientLogger(ChallengeHandler.class);
 
     /**
      * Handles the authentication challenge based on the HTTP request and response.
-     *
      * @param request The HTTP request to be updated with authentication info.
      * @param response The HTTP response containing the authentication challenge.
-     * @param cnonce The client-generated nonce for the authentication.
-     * @param nonceCount The count of nonce usage for digest authentication.
-     * @param lastChallenge A reference to the last challenge map, which stores the state of the previous challenge.
      */
-    void handleChallenge(HttpRequest request, HttpResponse<?> response, String cnonce, int nonceCount, AtomicReference<ConcurrentHashMap<String, String>> lastChallenge);
+    void handleChallenge(HttpRequest request, Response<?> response);
+
+    /**
+     * Validate if this ChallengeHandler can handle the provided challenge
+     * by inspecting the 'Proxy-Authenticate' or 'WWW-Authenticate' headers.
+     * @param response The HTTP response containing the authentication challenge.
+     * @return boolean indicating if the challenge can be handled.
+     */
+    boolean canHandle(Response<?> response);
 
     /**
      * Factory method for creating composite handlers.
@@ -41,7 +44,7 @@ public interface ChallengeHandler {
     }
 
     /**
-     * static class to handle multiple challenge handlers in a composite way.
+     * A private static class to handle multiple challenge handlers in a composite way.
      */
     class CompositeChallengeHandler implements ChallengeHandler {
         private final List<ChallengeHandler> challengeHandlers;
@@ -50,32 +53,36 @@ public interface ChallengeHandler {
             this.challengeHandlers = challengeHandlers;
         }
 
-
         @Override
-        public void handleChallenge(HttpRequest request, HttpResponse<?> response, String cnonce, int nonceCount, AtomicReference<ConcurrentHashMap<String, String>> lastChallenge) {
-
-            String proxyAuthenticateHeader = response.getHeaders().getValue(HttpHeaderName.PROXY_AUTHENTICATE);
-
-            // Check if the response contains a 'Digest' challenge and prioritize that handler.
-            if (proxyAuthenticateHeader != null && proxyAuthenticateHeader.contains("Digest")) {
-                for (ChallengeHandler handler : challengeHandlers) {
-                    if (handler instanceof DigestHandler) {
-                        handler.handleChallenge(request, response, cnonce, nonceCount, lastChallenge);
-                        return;
-                    }
+        public boolean canHandle(Response<?> response) {
+            for (ChallengeHandler handler : challengeHandlers) {
+                if (handler.canHandle(response)) {
+                    return true;
                 }
             }
+            return false;
+        }
 
-            // If no Digest challenge is found, fall back to BasicHandler or any other available handlers.
+        @Override
+        public void handleChallenge(HttpRequest request, Response<?> response) {
+            // Check for DigestChallengeHandler or DigestProxyChallengeHandler first
             for (ChallengeHandler handler : challengeHandlers) {
-                if (handler instanceof BasicHandler) {
-                    handler.handleChallenge(request, response, cnonce, nonceCount, lastChallenge);
+                if (handler.canHandle(response)
+                    && (handler instanceof DigestChallengeHandler || handler instanceof DigestProxyChallengeHandler)) {
+                    handler.handleChallenge(request, response);
                     return;
                 }
             }
 
-            // If none of the handlers could process the challenge, throw an exception.
-            throw new UnsupportedOperationException("None of the challenge handlers could handle the challenge.");
+            // If no digest handler was able to handle, check for other handlers (e.g., Basic)
+            for (ChallengeHandler handler : challengeHandlers) {
+                if (handler.canHandle(response)) {
+                    handler.handleChallenge(request, response);
+                    return;
+                }
+            }
+
+            LOGGER.logThrowableAsError(new UnsupportedOperationException("None of the challenge handlers could handle the challenge."));
         }
     }
 }
