@@ -34,15 +34,18 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.VolumesClient;
+import com.azure.resourcemanager.netapp.fluent.models.ClusterPeerCommandResponseInner;
 import com.azure.resourcemanager.netapp.fluent.models.GetGroupIdListForLdapUserResponseInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationStatusInner;
+import com.azure.resourcemanager.netapp.fluent.models.SvmPeerCommandResponseInner;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeInner;
 import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
 import com.azure.resourcemanager.netapp.models.ListReplications;
+import com.azure.resourcemanager.netapp.models.PeerClusterForVolumeMigrationRequest;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
 import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
 import com.azure.resourcemanager.netapp.models.RelocateVolumeRequest;
@@ -270,6 +273,48 @@ public final class VolumesClientImpl implements VolumesClient {
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> reInitializeReplication(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/peerExternalCluster")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> peerExternalCluster(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") PeerClusterForVolumeMigrationRequest body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/authorizeExternalReplication")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> authorizeExternalReplication(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/finalizeExternalReplication")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> finalizeExternalReplication(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/performReplicationTransfer")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> performReplicationTransfer(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
@@ -5009,6 +5054,1127 @@ public final class VolumesClientImpl implements VolumesClient {
     public void reInitializeReplication(String resourceGroupName, String accountName, String poolName,
         String volumeName, Context context) {
         reInitializeReplicationAsync(resourceGroupName, accountName, poolName, volumeName, context).block();
+    }
+
+    /**
+     * Start Cluster peering
+     * 
+     * Starts peering the external cluster for this migration volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Cluster peer request object supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about cluster peering process along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> peerExternalClusterWithResponseAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName, PeerClusterForVolumeMigrationRequest body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.peerExternalCluster(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName,
+                this.client.getApiVersion(), body, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Start Cluster peering
+     * 
+     * Starts peering the external cluster for this migration volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Cluster peer request object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about cluster peering process along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> peerExternalClusterWithResponseAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName, PeerClusterForVolumeMigrationRequest body,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.peerExternalCluster(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, context);
+    }
+
+    /**
+     * Start Cluster peering
+     * 
+     * Starts peering the external cluster for this migration volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Cluster peer request object supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of information about cluster peering process.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ClusterPeerCommandResponseInner>, ClusterPeerCommandResponseInner>
+        beginPeerExternalClusterAsync(String resourceGroupName, String accountName, String poolName, String volumeName,
+            PeerClusterForVolumeMigrationRequest body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = peerExternalClusterWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, body);
+        return this.client.<ClusterPeerCommandResponseInner, ClusterPeerCommandResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ClusterPeerCommandResponseInner.class, ClusterPeerCommandResponseInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Start Cluster peering
+     * 
+     * Starts peering the external cluster for this migration volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Cluster peer request object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of information about cluster peering process.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ClusterPeerCommandResponseInner>, ClusterPeerCommandResponseInner>
+        beginPeerExternalClusterAsync(String resourceGroupName, String accountName, String poolName, String volumeName,
+            PeerClusterForVolumeMigrationRequest body, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = peerExternalClusterWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, body, context);
+        return this.client.<ClusterPeerCommandResponseInner, ClusterPeerCommandResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ClusterPeerCommandResponseInner.class, ClusterPeerCommandResponseInner.class,
+            context);
+    }
+
+    /**
+     * Start Cluster peering
+     * 
+     * Starts peering the external cluster for this migration volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Cluster peer request object supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of information about cluster peering process.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ClusterPeerCommandResponseInner>, ClusterPeerCommandResponseInner>
+        beginPeerExternalCluster(String resourceGroupName, String accountName, String poolName, String volumeName,
+            PeerClusterForVolumeMigrationRequest body) {
+        return this.beginPeerExternalClusterAsync(resourceGroupName, accountName, poolName, volumeName, body)
+            .getSyncPoller();
+    }
+
+    /**
+     * Start Cluster peering
+     * 
+     * Starts peering the external cluster for this migration volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Cluster peer request object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of information about cluster peering process.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ClusterPeerCommandResponseInner>, ClusterPeerCommandResponseInner>
+        beginPeerExternalCluster(String resourceGroupName, String accountName, String poolName, String volumeName,
+            PeerClusterForVolumeMigrationRequest body, Context context) {
+        return this.beginPeerExternalClusterAsync(resourceGroupName, accountName, poolName, volumeName, body, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Start Cluster peering
+     * 
+     * Starts peering the external cluster for this migration volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Cluster peer request object supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about cluster peering process on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ClusterPeerCommandResponseInner> peerExternalClusterAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, PeerClusterForVolumeMigrationRequest body) {
+        return beginPeerExternalClusterAsync(resourceGroupName, accountName, poolName, volumeName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Start Cluster peering
+     * 
+     * Starts peering the external cluster for this migration volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Cluster peer request object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about cluster peering process on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ClusterPeerCommandResponseInner> peerExternalClusterAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, PeerClusterForVolumeMigrationRequest body, Context context) {
+        return beginPeerExternalClusterAsync(resourceGroupName, accountName, poolName, volumeName, body, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Start Cluster peering
+     * 
+     * Starts peering the external cluster for this migration volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Cluster peer request object supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about cluster peering process.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ClusterPeerCommandResponseInner peerExternalCluster(String resourceGroupName, String accountName,
+        String poolName, String volumeName, PeerClusterForVolumeMigrationRequest body) {
+        return peerExternalClusterAsync(resourceGroupName, accountName, poolName, volumeName, body).block();
+    }
+
+    /**
+     * Start Cluster peering
+     * 
+     * Starts peering the external cluster for this migration volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Cluster peer request object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about cluster peering process.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ClusterPeerCommandResponseInner peerExternalCluster(String resourceGroupName, String accountName,
+        String poolName, String volumeName, PeerClusterForVolumeMigrationRequest body, Context context) {
+        return peerExternalClusterAsync(resourceGroupName, accountName, poolName, volumeName, body, context).block();
+    }
+
+    /**
+     * Start migration process
+     * 
+     * Starts SVM peering and returns a command to be run on the external ONTAP to accept it. Once the SVM have been
+     * peered a SnapMirror will be created.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about svm peering process along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> authorizeExternalReplicationWithResponseAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.authorizeExternalReplication(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName,
+                this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Start migration process
+     * 
+     * Starts SVM peering and returns a command to be run on the external ONTAP to accept it. Once the SVM have been
+     * peered a SnapMirror will be created.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about svm peering process along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> authorizeExternalReplicationWithResponseAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.authorizeExternalReplication(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Start migration process
+     * 
+     * Starts SVM peering and returns a command to be run on the external ONTAP to accept it. Once the SVM have been
+     * peered a SnapMirror will be created.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of information about svm peering process.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<SvmPeerCommandResponseInner>, SvmPeerCommandResponseInner>
+        beginAuthorizeExternalReplicationAsync(String resourceGroupName, String accountName, String poolName,
+            String volumeName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = authorizeExternalReplicationWithResponseAsync(resourceGroupName, accountName, poolName, volumeName);
+        return this.client.<SvmPeerCommandResponseInner, SvmPeerCommandResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SvmPeerCommandResponseInner.class, SvmPeerCommandResponseInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Start migration process
+     * 
+     * Starts SVM peering and returns a command to be run on the external ONTAP to accept it. Once the SVM have been
+     * peered a SnapMirror will be created.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of information about svm peering process.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<SvmPeerCommandResponseInner>, SvmPeerCommandResponseInner>
+        beginAuthorizeExternalReplicationAsync(String resourceGroupName, String accountName, String poolName,
+            String volumeName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = authorizeExternalReplicationWithResponseAsync(resourceGroupName,
+            accountName, poolName, volumeName, context);
+        return this.client.<SvmPeerCommandResponseInner, SvmPeerCommandResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SvmPeerCommandResponseInner.class, SvmPeerCommandResponseInner.class,
+            context);
+    }
+
+    /**
+     * Start migration process
+     * 
+     * Starts SVM peering and returns a command to be run on the external ONTAP to accept it. Once the SVM have been
+     * peered a SnapMirror will be created.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of information about svm peering process.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SvmPeerCommandResponseInner>, SvmPeerCommandResponseInner>
+        beginAuthorizeExternalReplication(String resourceGroupName, String accountName, String poolName,
+            String volumeName) {
+        return this.beginAuthorizeExternalReplicationAsync(resourceGroupName, accountName, poolName, volumeName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Start migration process
+     * 
+     * Starts SVM peering and returns a command to be run on the external ONTAP to accept it. Once the SVM have been
+     * peered a SnapMirror will be created.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of information about svm peering process.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SvmPeerCommandResponseInner>, SvmPeerCommandResponseInner>
+        beginAuthorizeExternalReplication(String resourceGroupName, String accountName, String poolName,
+            String volumeName, Context context) {
+        return this
+            .beginAuthorizeExternalReplicationAsync(resourceGroupName, accountName, poolName, volumeName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Start migration process
+     * 
+     * Starts SVM peering and returns a command to be run on the external ONTAP to accept it. Once the SVM have been
+     * peered a SnapMirror will be created.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about svm peering process on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SvmPeerCommandResponseInner> authorizeExternalReplicationAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName) {
+        return beginAuthorizeExternalReplicationAsync(resourceGroupName, accountName, poolName, volumeName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Start migration process
+     * 
+     * Starts SVM peering and returns a command to be run on the external ONTAP to accept it. Once the SVM have been
+     * peered a SnapMirror will be created.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about svm peering process on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SvmPeerCommandResponseInner> authorizeExternalReplicationAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName, Context context) {
+        return beginAuthorizeExternalReplicationAsync(resourceGroupName, accountName, poolName, volumeName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Start migration process
+     * 
+     * Starts SVM peering and returns a command to be run on the external ONTAP to accept it. Once the SVM have been
+     * peered a SnapMirror will be created.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about svm peering process.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SvmPeerCommandResponseInner authorizeExternalReplication(String resourceGroupName, String accountName,
+        String poolName, String volumeName) {
+        return authorizeExternalReplicationAsync(resourceGroupName, accountName, poolName, volumeName).block();
+    }
+
+    /**
+     * Start migration process
+     * 
+     * Starts SVM peering and returns a command to be run on the external ONTAP to accept it. Once the SVM have been
+     * peered a SnapMirror will be created.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about svm peering process.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SvmPeerCommandResponseInner authorizeExternalReplication(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context) {
+        return authorizeExternalReplicationAsync(resourceGroupName, accountName, poolName, volumeName, context).block();
+    }
+
+    /**
+     * Finalize migration process
+     * 
+     * Finalizes the migration of an external volume by releasing the replication and breaking the external cluster
+     * peering if no other migration is active.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> finalizeExternalReplicationWithResponseAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.finalizeExternalReplication(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName,
+                this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Finalize migration process
+     * 
+     * Finalizes the migration of an external volume by releasing the replication and breaking the external cluster
+     * peering if no other migration is active.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> finalizeExternalReplicationWithResponseAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.finalizeExternalReplication(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Finalize migration process
+     * 
+     * Finalizes the migration of an external volume by releasing the replication and breaking the external cluster
+     * peering if no other migration is active.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginFinalizeExternalReplicationAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = finalizeExternalReplicationWithResponseAsync(resourceGroupName, accountName, poolName, volumeName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Finalize migration process
+     * 
+     * Finalizes the migration of an external volume by releasing the replication and breaking the external cluster
+     * peering if no other migration is active.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginFinalizeExternalReplicationAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = finalizeExternalReplicationWithResponseAsync(resourceGroupName,
+            accountName, poolName, volumeName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Finalize migration process
+     * 
+     * Finalizes the migration of an external volume by releasing the replication and breaking the external cluster
+     * peering if no other migration is active.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginFinalizeExternalReplication(String resourceGroupName,
+        String accountName, String poolName, String volumeName) {
+        return this.beginFinalizeExternalReplicationAsync(resourceGroupName, accountName, poolName, volumeName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Finalize migration process
+     * 
+     * Finalizes the migration of an external volume by releasing the replication and breaking the external cluster
+     * peering if no other migration is active.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginFinalizeExternalReplication(String resourceGroupName,
+        String accountName, String poolName, String volumeName, Context context) {
+        return this.beginFinalizeExternalReplicationAsync(resourceGroupName, accountName, poolName, volumeName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Finalize migration process
+     * 
+     * Finalizes the migration of an external volume by releasing the replication and breaking the external cluster
+     * peering if no other migration is active.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> finalizeExternalReplicationAsync(String resourceGroupName, String accountName, String poolName,
+        String volumeName) {
+        return beginFinalizeExternalReplicationAsync(resourceGroupName, accountName, poolName, volumeName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Finalize migration process
+     * 
+     * Finalizes the migration of an external volume by releasing the replication and breaking the external cluster
+     * peering if no other migration is active.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> finalizeExternalReplicationAsync(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context) {
+        return beginFinalizeExternalReplicationAsync(resourceGroupName, accountName, poolName, volumeName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Finalize migration process
+     * 
+     * Finalizes the migration of an external volume by releasing the replication and breaking the external cluster
+     * peering if no other migration is active.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void finalizeExternalReplication(String resourceGroupName, String accountName, String poolName,
+        String volumeName) {
+        finalizeExternalReplicationAsync(resourceGroupName, accountName, poolName, volumeName).block();
+    }
+
+    /**
+     * Finalize migration process
+     * 
+     * Finalizes the migration of an external volume by releasing the replication and breaking the external cluster
+     * peering if no other migration is active.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void finalizeExternalReplication(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context) {
+        finalizeExternalReplicationAsync(resourceGroupName, accountName, poolName, volumeName, context).block();
+    }
+
+    /**
+     * Perform a replication transfer
+     * 
+     * Performs an adhoc replication transfer on a volume with volumeType Migration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> performReplicationTransferWithResponseAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.performReplicationTransfer(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName,
+                this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Perform a replication transfer
+     * 
+     * Performs an adhoc replication transfer on a volume with volumeType Migration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> performReplicationTransferWithResponseAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.performReplicationTransfer(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Perform a replication transfer
+     * 
+     * Performs an adhoc replication transfer on a volume with volumeType Migration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginPerformReplicationTransferAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = performReplicationTransferWithResponseAsync(resourceGroupName, accountName, poolName, volumeName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Perform a replication transfer
+     * 
+     * Performs an adhoc replication transfer on a volume with volumeType Migration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginPerformReplicationTransferAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = performReplicationTransferWithResponseAsync(resourceGroupName,
+            accountName, poolName, volumeName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Perform a replication transfer
+     * 
+     * Performs an adhoc replication transfer on a volume with volumeType Migration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginPerformReplicationTransfer(String resourceGroupName,
+        String accountName, String poolName, String volumeName) {
+        return this.beginPerformReplicationTransferAsync(resourceGroupName, accountName, poolName, volumeName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Perform a replication transfer
+     * 
+     * Performs an adhoc replication transfer on a volume with volumeType Migration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginPerformReplicationTransfer(String resourceGroupName,
+        String accountName, String poolName, String volumeName, Context context) {
+        return this.beginPerformReplicationTransferAsync(resourceGroupName, accountName, poolName, volumeName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Perform a replication transfer
+     * 
+     * Performs an adhoc replication transfer on a volume with volumeType Migration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> performReplicationTransferAsync(String resourceGroupName, String accountName, String poolName,
+        String volumeName) {
+        return beginPerformReplicationTransferAsync(resourceGroupName, accountName, poolName, volumeName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Perform a replication transfer
+     * 
+     * Performs an adhoc replication transfer on a volume with volumeType Migration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> performReplicationTransferAsync(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context) {
+        return beginPerformReplicationTransferAsync(resourceGroupName, accountName, poolName, volumeName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Perform a replication transfer
+     * 
+     * Performs an adhoc replication transfer on a volume with volumeType Migration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void performReplicationTransfer(String resourceGroupName, String accountName, String poolName,
+        String volumeName) {
+        performReplicationTransferAsync(resourceGroupName, accountName, poolName, volumeName).block();
+    }
+
+    /**
+     * Perform a replication transfer
+     * 
+     * Performs an adhoc replication transfer on a volume with volumeType Migration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void performReplicationTransfer(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context) {
+        performReplicationTransferAsync(resourceGroupName, accountName, poolName, volumeName, context).block();
     }
 
     /**

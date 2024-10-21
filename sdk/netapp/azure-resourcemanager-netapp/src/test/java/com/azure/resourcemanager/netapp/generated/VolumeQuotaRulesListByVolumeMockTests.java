@@ -23,7 +23,7 @@ public final class VolumeQuotaRulesListByVolumeMockTests {
     @Test
     public void testListByVolume() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"quotaSizeInKiBs\":5205856378267230772,\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"qpzoyhlfbcgwgcl\"},\"location\":\"oebqinjipn\",\"tags\":{\"zpofoiyjwpfilk\":\"ujqlafcbahh\",\"ogphuartvtiu\":\"kkholvdndvia\",\"ahmnxhkxjqirw\":\"yefchnm\"},\"id\":\"weooxffifhxwrs\",\"name\":\"ewmozqvbu\",\"type\":\"qmamhsycxhxzga\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"quotaSizeInKiBs\":412367250663296495,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"muowolbauiro\"},\"location\":\"ons\",\"tags\":{\"jinnix\":\"wpng\"},\"id\":\"awrtmjfjmyccxlz\",\"name\":\"coxovn\",\"type\":\"khenlus\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class VolumeQuotaRulesListByVolumeMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<VolumeQuotaRule> response = manager.volumeQuotaRules()
-            .listByVolume("gox", "jiuqhibtozi", "qw", "edmurrxxge", com.azure.core.util.Context.NONE);
+            .listByVolume("rpqaf", "fugsnnfhyetefy", "oc", "ctfjgtixr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("oebqinjipn", response.iterator().next().location());
-        Assertions.assertEquals("ujqlafcbahh", response.iterator().next().tags().get("zpofoiyjwpfilk"));
-        Assertions.assertEquals(5205856378267230772L, response.iterator().next().quotaSizeInKiBs());
-        Assertions.assertEquals(Type.DEFAULT_USER_QUOTA, response.iterator().next().quotaType());
-        Assertions.assertEquals("qpzoyhlfbcgwgcl", response.iterator().next().quotaTarget());
+        Assertions.assertEquals("ons", response.iterator().next().location());
+        Assertions.assertEquals("wpng", response.iterator().next().tags().get("jinnix"));
+        Assertions.assertEquals(412367250663296495L, response.iterator().next().quotaSizeInKiBs());
+        Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, response.iterator().next().quotaType());
+        Assertions.assertEquals("muowolbauiro", response.iterator().next().quotaTarget());
     }
 }
