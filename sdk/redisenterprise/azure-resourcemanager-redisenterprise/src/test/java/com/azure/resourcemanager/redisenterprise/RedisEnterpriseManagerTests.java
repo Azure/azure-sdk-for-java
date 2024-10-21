@@ -23,6 +23,7 @@ import com.azure.resourcemanager.redisenterprise.models.TlsVersion;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -69,6 +70,8 @@ public class RedisEnterpriseManagerTests extends TestProxyTestBase {
 
     @Test
     @LiveOnly
+    @Disabled("Waiting Azure Redis team to register Microsoft.Cache for TME subscription.")
+    // todo(xiaofei) enable when registration is done
     public void testCreate() {
         Cluster cluster = null;
         try {
