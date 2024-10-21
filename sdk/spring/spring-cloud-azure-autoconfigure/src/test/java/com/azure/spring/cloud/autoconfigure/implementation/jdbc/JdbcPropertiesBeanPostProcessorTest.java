@@ -42,7 +42,7 @@ class JdbcPropertiesBeanPostProcessorTest {
     public static final String PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=" + "passwordlessTokenCredential";
     private static final String POSTGRESQL_ASSUME_MIN_SERVER_VERSION = POSTGRESQL_PROPERTY_NAME_ASSUME_MIN_SERVER_VERSION + "="
         + POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION;
-
+    private static final String DEFAULT_PASSWORDLESS_PROPERTIES_SUFFIX = ".spring.datasource.azure";
     private MockEnvironment mockEnvironment;
 
     private ApplicationContext applicationContext;
@@ -103,7 +103,7 @@ class JdbcPropertiesBeanPostProcessorTest {
         String expectedJdbcUrl = enhanceJdbcUrl(
             DatabaseType.MYSQL,
             MYSQL_CONNECTION_STRING,
-            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING,
+            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING + DEFAULT_PASSWORDLESS_PROPERTIES_SUFFIX,
             MYSQL_USER_AGENT,
             AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName()
         );
@@ -153,7 +153,7 @@ class JdbcPropertiesBeanPostProcessorTest {
                 MYSQL_USER_AGENT,
                 AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName(),
                 US_AUTHORITY_HOST_STRING,
-                PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING
+                PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING + DEFAULT_PASSWORDLESS_PROPERTIES_SUFFIX
         );
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
@@ -170,7 +170,7 @@ class JdbcPropertiesBeanPostProcessorTest {
         String expectedJdbcUrl = enhanceJdbcUrl(
             DatabaseType.MYSQL,
             MYSQL_CONNECTION_STRING,
-            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING,
+            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING + DEFAULT_PASSWORDLESS_PROPERTIES_SUFFIX,
             MYSQL_USER_AGENT,
             AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName()
         );
@@ -193,7 +193,7 @@ class JdbcPropertiesBeanPostProcessorTest {
             DatabaseType.MYSQL,
             baseUrl + ",_extension_version:" + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH,
             AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName(),
-            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING
+            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING + DEFAULT_PASSWORDLESS_PROPERTIES_SUFFIX
         );
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
@@ -214,7 +214,7 @@ class JdbcPropertiesBeanPostProcessorTest {
             DatabaseType.MYSQL,
             baseUrl + ",_extension_version:" + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH,
             AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName(),
-            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING
+            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING + DEFAULT_PASSWORDLESS_PROPERTIES_SUFFIX
         );
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
     }
@@ -233,7 +233,7 @@ class JdbcPropertiesBeanPostProcessorTest {
             baseUrl,
             AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName(),
             APPLICATION_NAME.getName() + "=" + AzureSpringIdentifier.AZURE_SPRING_POSTGRESQL_OAUTH,
-            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING,
+            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING + DEFAULT_PASSWORDLESS_PROPERTIES_SUFFIX,
             POSTGRESQL_ASSUME_MIN_SERVER_VERSION
         );
 
@@ -255,7 +255,7 @@ class JdbcPropertiesBeanPostProcessorTest {
             DatabaseType.POSTGRESQL,
             baseUrl,
             AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName(),
-            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING,
+            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING + DEFAULT_PASSWORDLESS_PROPERTIES_SUFFIX,
             POSTGRESQL_ASSUME_MIN_SERVER_VERSION
         );
 

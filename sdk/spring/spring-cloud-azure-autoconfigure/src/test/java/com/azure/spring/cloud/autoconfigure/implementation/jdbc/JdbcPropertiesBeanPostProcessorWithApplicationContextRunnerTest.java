@@ -73,7 +73,7 @@ class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
                     String expectedJdbcUrl = enhanceJdbcUrl(
                         DatabaseType.MYSQL,
                         MYSQL_CONNECTION_STRING,
-                        PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING,
+                        PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING + ".spring.datasource.azure",
                         PUBLIC_AUTHORITY_HOST_STRING,
                         MYSQL_USER_AGENT,
                         AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName()
