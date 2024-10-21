@@ -70,10 +70,7 @@ public class UploadFromFile extends DataLakeScenarioBase<StorageStressOptions> {
                 Path uploadFilePath = generateFile(inputStream);
                 return Mono.using(
                     () -> downloadPath.resolve(UUID.randomUUID() + ".txt"),
-                    path -> asyncClient.uploadFromFileWithResponse(uploadFilePath.toString(),
-                            new ParallelTransferOptions()
-                                .setMaxConcurrency(parallelTransferOptions.getMaxConcurrency())
-                                .setMaxSingleUploadSizeLong(4 * 1024 * 1024L).setMaxConcurrency(1),
+                    path -> asyncClient.uploadFromFileWithResponse(uploadFilePath.toString(), parallelTransferOptions,
                             null, null, null)
                         .flatMap(ignored -> asyncNoFaultClient.readToFile(path.toString(), true)
                         )

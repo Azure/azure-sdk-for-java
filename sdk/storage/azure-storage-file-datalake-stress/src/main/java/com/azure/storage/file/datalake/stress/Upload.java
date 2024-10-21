@@ -49,9 +49,7 @@ public class Upload extends DataLakeScenarioBase<StorageStressOptions> {
         Flux<ByteBuffer> byteBufferFlux = new CrcInputStream(originalContent.getContentHead(), options.getSize())
             .convertStreamToByteBuffer();
         return asyncClient.uploadWithResponse(new FileParallelUploadOptions(byteBufferFlux)
-                .setParallelTransferOptions(new ParallelTransferOptions()
-                    .setMaxConcurrency(parallelTransferOptions.getMaxConcurrency())
-                    .setMaxSingleUploadSizeLong(4 * 1024 * 1024L)))
+                .setParallelTransferOptions(parallelTransferOptions))
             .then(originalContent.checkMatch(byteBufferFlux, span));
     }
 
