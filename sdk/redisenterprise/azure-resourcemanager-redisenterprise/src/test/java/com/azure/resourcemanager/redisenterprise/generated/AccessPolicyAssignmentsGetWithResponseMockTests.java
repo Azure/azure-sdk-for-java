@@ -10,18 +10,18 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager;
-import com.azure.resourcemanager.redisenterprise.models.OperationStatus;
+import com.azure.resourcemanager.redisenterprise.models.AccessPolicyAssignment;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class OperationsStatusGetWithResponseMockTests {
+public final class AccessPolicyAssignmentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"id\":\"ocukoklyax\",\"name\":\"onuq\",\"startTime\":\"fkbey\",\"endTime\":\"wrmjmwvvjektc\",\"status\":\"enhwlrs\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"accessPolicyName\":\"vlvqhjkbegi\",\"user\":{\"objectId\":\"nmxiebwwaloayqc\"}},\"id\":\"wrtz\",\"name\":\"uzgwyzmhtx\",\"type\":\"ngmtsavjcb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,14 +30,11 @@ public final class OperationsStatusGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        OperationStatus response = manager.operationsStatus()
-            .getWithResponse("ryavwhheunmmqh", "yxzk", com.azure.core.util.Context.NONE)
+        AccessPolicyAssignment response = manager.accessPolicyAssignments()
+            .getWithResponse("upjm", "hfxobbcswsrtj", "iplrbpbewtghfgb", "c", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ocukoklyax", response.id());
-        Assertions.assertEquals("onuq", response.name());
-        Assertions.assertEquals("fkbey", response.startTime());
-        Assertions.assertEquals("wrmjmwvvjektc", response.endTime());
-        Assertions.assertEquals("enhwlrs", response.status());
+        Assertions.assertEquals("vlvqhjkbegi", response.accessPolicyName());
+        Assertions.assertEquals("nmxiebwwaloayqc", response.user().objectId());
     }
 }
