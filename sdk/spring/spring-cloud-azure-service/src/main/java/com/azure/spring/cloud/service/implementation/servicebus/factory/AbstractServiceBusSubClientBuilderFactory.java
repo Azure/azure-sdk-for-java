@@ -76,6 +76,11 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
         }
     }
 
+    @Override
+    protected void configureCore(T builder) {
+        // skip to avoid overriding the parent builder's credentials.
+    }
+
     protected boolean isShareServiceBusClientBuilder() {
         return shareServiceBusClientBuilder;
     }
