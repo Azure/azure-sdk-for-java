@@ -116,10 +116,15 @@ public class RedisEnterpriseManagerTests extends TestProxyTestBase {
                 && !"Registering".equalsIgnoreCase(provider.registrationState())) {
                 provider = resourceManager.providers().register(providerNamespace);
             }
-            while (!"Registered".equalsIgnoreCase(provider.registrationState())) {
+            while (isRegistering(provider)) {
                 ResourceManagerUtils.sleep(Duration.ofSeconds(5));
                 provider = resourceManager.providers().getByName(provider.namespace());
             }
         });
+    }
+
+    private static boolean isRegistering(Provider provider) {
+        return !"Registered".equalsIgnoreCase(provider.registrationState())
+            || "NotRegistered".equalsIgnoreCase(provider.registrationState()) || "Registering".equalsIgnoreCase(provider.registrationState());
     }
 }
