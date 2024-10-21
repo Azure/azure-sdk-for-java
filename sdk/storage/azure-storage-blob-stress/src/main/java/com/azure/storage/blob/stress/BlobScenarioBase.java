@@ -14,7 +14,6 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.stress.TelemetryHelper;
 import com.azure.storage.stress.FaultInjectionProbabilities;
 import com.azure.storage.stress.FaultInjectingHttpPolicy;

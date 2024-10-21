@@ -50,9 +50,7 @@ public class Upload extends BlobScenarioBase<StorageStressOptions> {
 
         // Using the same Flux<ByteBuffer> that was used to upload the blob to check the content.
         return asyncClient.uploadWithResponse(new BlobParallelUploadOptions(byteBufferFlux)
-                .setParallelTransferOptions(new ParallelTransferOptions()
-                    .setMaxConcurrency(parallelTransferOptions.getMaxConcurrency())
-                    .setMaxSingleUploadSizeLong(4 * 1024 * 1024L)))
+                .setParallelTransferOptions(parallelTransferOptions))
             .then(originalContent.checkMatch(byteBufferFlux, span));
     }
 

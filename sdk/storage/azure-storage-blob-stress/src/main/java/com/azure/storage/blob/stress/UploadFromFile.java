@@ -75,9 +75,7 @@ public class UploadFromFile extends BlobScenarioBase<StorageStressOptions> {
                 return Mono.using(
                     () -> downloadPath.resolve(UUID.randomUUID() + ".txt"),
                     path -> asyncClient.uploadFromFileWithResponse(new BlobUploadFromFileOptions(uploadFilePath.toString())
-                            .setParallelTransferOptions(new ParallelTransferOptions()
-                                .setMaxConcurrency(parallelTransferOptions.getMaxConcurrency())
-                                .setMaxSingleUploadSizeLong(4 * 1024 * 1024L)))
+                            .setParallelTransferOptions(parallelTransferOptions))
                         .flatMap(ignored -> asyncNoFaultClient.downloadToFileWithResponse(
                             new BlobDownloadToFileOptions(path.toString()))
                         )
