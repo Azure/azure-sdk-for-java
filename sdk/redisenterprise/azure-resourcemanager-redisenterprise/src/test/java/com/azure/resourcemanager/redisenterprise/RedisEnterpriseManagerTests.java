@@ -24,6 +24,7 @@ import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.Provider;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -74,6 +75,7 @@ public class RedisEnterpriseManagerTests extends TestProxyTestBase {
 
     @Test
     @LiveOnly
+    @Disabled("RP register hangs forever")
     public void testCreate() {
         Cluster cluster = null;
         try {
