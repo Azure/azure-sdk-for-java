@@ -13,18 +13,18 @@ matrix:
       processorFailureRatio: 0
       messageSizeInBytes: 1024
     processorV2:
-        imageBuildDir: ..\..\..\
-        testDurationMin: 15
-        senderTestClass: EventSender
-        sendRate: 38500
-        sendBatchSize: 385
-        sendConcurrency: 15
-        receiverTestClass: EventProcessor
-        processorBatchSize: 128
-        processorInstancesCount: 1
-        processorFailureRatio: 0
-        messageSizeInBytes: 1024
-        useV2: true
+      imageBuildDir: ..\..\..\
+      testDurationMin: 15
+      senderTestClass: EventSender
+      sendRate: 38500
+      sendBatchSize: 385
+      sendConcurrency: 15
+      receiverTestClass: EventProcessor
+      processorBatchSize: 128
+      processorInstancesCount: 1
+      processorFailureRatio: 0
+      messageSizeInBytes: 1024
+      useV2: true
     forwarder:
       imageBuildDir: ..\..\..\
       testDurationMin: 15
