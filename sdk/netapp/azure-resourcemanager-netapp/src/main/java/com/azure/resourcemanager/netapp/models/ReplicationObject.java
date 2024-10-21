@@ -38,6 +38,11 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
     private String remoteVolumeResourceId;
 
     /*
+     * The full path to a volume that is to be migrated into ANF. Required for Migration volumes
+     */
+    private RemotePath remotePath;
+
+    /*
      * The remote region for the other end of the Volume Replication.
      */
     private String remoteVolumeRegion;
@@ -120,6 +125,28 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
     }
 
     /**
+     * Get the remotePath property: The full path to a volume that is to be migrated into ANF. Required for Migration
+     * volumes.
+     * 
+     * @return the remotePath value.
+     */
+    public RemotePath remotePath() {
+        return this.remotePath;
+    }
+
+    /**
+     * Set the remotePath property: The full path to a volume that is to be migrated into ANF. Required for Migration
+     * volumes.
+     * 
+     * @param remotePath the remotePath value to set.
+     * @return the ReplicationObject object itself.
+     */
+    public ReplicationObject withRemotePath(RemotePath remotePath) {
+        this.remotePath = remotePath;
+        return this;
+    }
+
+    /**
      * Get the remoteVolumeRegion property: The remote region for the other end of the Volume Replication.
      * 
      * @return the remoteVolumeRegion value.
@@ -150,6 +177,9 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
                 .log(new IllegalArgumentException(
                     "Missing required property remoteVolumeResourceId in model ReplicationObject"));
         }
+        if (remotePath() != null) {
+            remotePath().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ReplicationObject.class);
@@ -164,6 +194,7 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
         jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
         jsonWriter.writeStringField("replicationSchedule",
             this.replicationSchedule == null ? null : this.replicationSchedule.toString());
+        jsonWriter.writeJsonField("remotePath", this.remotePath);
         jsonWriter.writeStringField("remoteVolumeRegion", this.remoteVolumeRegion);
         return jsonWriter.writeEndObject();
     }
@@ -193,6 +224,8 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
                 } else if ("replicationSchedule".equals(fieldName)) {
                     deserializedReplicationObject.replicationSchedule
                         = ReplicationSchedule.fromString(reader.getString());
+                } else if ("remotePath".equals(fieldName)) {
+                    deserializedReplicationObject.remotePath = RemotePath.fromJson(reader);
                 } else if ("remoteVolumeRegion".equals(fieldName)) {
                     deserializedReplicationObject.remoteVolumeRegion = reader.getString();
                 } else {
