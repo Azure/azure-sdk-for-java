@@ -104,7 +104,6 @@ org.codehaus.woodstox:stax2-api;4.2.2
 org.conscrypt:conscrypt-openjdk-uber;2.5.2
 org.glassfish.tyrus:tyrus-client;1.16
 org.openjfx:javafx-graphics;17.0.6
-org.linguafranca.pwdb:KeePassJava2;2.1.4
 org.graalvm.buildtools:junit-platform-native;0.9.19
 org.graalvm.buildtools:native-maven-plugin;0.9.19
 org.graalvm.sdk:graal-sdk;22.0.0.2
