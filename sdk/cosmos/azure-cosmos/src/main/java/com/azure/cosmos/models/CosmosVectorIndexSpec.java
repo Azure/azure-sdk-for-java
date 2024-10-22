@@ -79,7 +79,8 @@ public final class CosmosVectorIndexSpec {
      *
      * @return quantizationByteSize the number of bytes used in product quantization of the vectors.
      *         A larger value may result in better recall for vector searches at the expense of latency.
-     *         This applies to index types DiskANN and quantizedFlat.
+     *         This applies to index types DiskANN and quantizedFlat. The allowed range for this parameter
+     *         is between 1 and 3.
      */
     public int getQuantizationByteSize() {
         if (this.quantizationByteSize == 0) {
@@ -91,9 +92,10 @@ public final class CosmosVectorIndexSpec {
     /**
      * Sets the quantization byte size
      *
-     * @param quantizationByteSize the number of bytes used in product quantization of the vectors.
-     *        A larger value may result in better recall for vector searches at the expense of latency.
-     *        This applies to index types DiskANN and quantizedFlat.
+     * @param quantizationByteSize the number of bytes used in product quantization of the vectors. A larger value may
+     *                             result in better recall for vector searches at the expense of latency. This applies
+     *                             to index types DiskANN and quantizedFlat. The allowed range for this parameter is
+     *                             between 1 and 3.
      * @return CosmosVectorIndexSpec
      */
     public CosmosVectorIndexSpec setQuantizationByteSize(int quantizationByteSize) {
@@ -106,7 +108,8 @@ public final class CosmosVectorIndexSpec {
      * Gets the indexing search list size
      *
      * @return indexingSearchListSize which represents the size of the candidate list of approximate neighbors stored
-     *         while building the DiskANN index as part of the optimization processes.
+     *         while building the DiskANN index as part of the optimization processes. The allowed range for this
+     *         parameter is between 25 and 500.
      */
     public int getIndexingSearchListSize() {
         if (this.indexingSearchListSize == 0) {
@@ -118,8 +121,10 @@ public final class CosmosVectorIndexSpec {
     /**
      * Sets the indexing search list size
      *
-     * @param indexingSearchListSize indexingSearchListSize which represents the size of the candidate list of approximate neighbors stored
-     *        while building the DiskANN index as part of the optimization processes.
+     * @param indexingSearchListSize indexingSearchListSize which represents the size of the candidate list of
+     *                               approximate neighbors stored while building the DiskANN index as part of
+     *                               the optimization processes. The allowed range for this parameter is between
+     *                               25 and 500.
      * @return CosmosVectorIndexSpec
      */
     public CosmosVectorIndexSpec setIndexingSearchListSize(int indexingSearchListSize) {
@@ -145,7 +150,7 @@ public final class CosmosVectorIndexSpec {
      * Sets the vector index shard key
      *
      * @param vectorIndexShardKey the list of string containing the shard keys used for partitioning the vector
-     *        indexes. This applies to index types DiskANN and quantizedFlat.
+     *                            indexes. This applies to index types DiskANN and quantizedFlat.
      * @return CosmosVectorIndexSpec
      */
     public CosmosVectorIndexSpec setVectorIndexShardKey(List<String> vectorIndexShardKey) {
