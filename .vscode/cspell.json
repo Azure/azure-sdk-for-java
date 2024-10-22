@@ -432,6 +432,7 @@
     "undelete",
     "unmanaged",
     "unmutated",
+    "vectorizer",
     "versionid",
     "vertx",
     "Vertx",
