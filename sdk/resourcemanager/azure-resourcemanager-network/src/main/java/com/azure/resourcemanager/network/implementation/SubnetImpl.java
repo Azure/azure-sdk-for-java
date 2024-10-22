@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.network.models.Delegation;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
@@ -31,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -60,6 +62,11 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
     @Override
     public String addressPrefix() {
         return this.innerModel().addressPrefix();
+    }
+
+    @Override
+    public List<String> addressPrefixes() {
+        return CoreUtils.isNullOrEmpty(this.innerModel().addressPrefixes()) ? Collections.emptyList() : new ArrayList<>(this.innerModel().addressPrefixes());
     }
 
     @Override
@@ -157,6 +164,15 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
     @Override
     public SubnetImpl withAddressPrefix(String cidr) {
         this.innerModel().withAddressPrefix(cidr);
+        this.innerModel().withAddressPrefixes(null);
+        return this;
+    }
+
+    @Override
+    public SubnetImpl withAddressPrefixes(Collection<String> addressPrefixes) {
+        Objects.requireNonNull(addressPrefixes);
+        this.innerModel().withAddressPrefixes(new ArrayList<>(addressPrefixes));
+        this.innerModel().withAddressPrefix(null);
         return this;
     }
 
@@ -265,27 +281,16 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
 
     @Override
     public Set<String> listAvailablePrivateIPAddresses() {
-        Set<String> ipAddresses = new TreeSet<>();
-
-        String cidr = this.addressPrefix();
-        if (cidr == null) {
-            return ipAddresses; // Should never happen, but just in case
-        }
-        String takenIPAddress = cidr.split("/")[0];
-
-        IpAddressAvailabilityResultInner result =
-            this
-                .parent()
-                .manager()
-                .serviceClient()
-                .getVirtualNetworks()
-                .checkIpAddressAvailability(this.parent().resourceGroupName(), this.parent().name(), takenIPAddress);
-        if (result == null || result.availableIpAddresses() == null) {
-            return ipAddresses;
+        if (!CoreUtils.isNullOrEmpty(this.addressPrefixes())) {
+            for (String cidr : this.addressPrefixes()) {
+                Set<String> ipAddressList = listAvailablePrivateIPAddresses(cidr);
+                if (!CoreUtils.isNullOrEmpty(ipAddressList)) {
+                    return ipAddressList;
+                }
+            }
         }
 
-        ipAddresses.addAll(result.availableIpAddresses());
-        return ipAddresses;
+        return listAvailablePrivateIPAddresses(this.addressPrefix());
     }
 
     @Override
@@ -343,5 +348,27 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
             this.innerModel().withNatGateway(new SubResource().withId(resourceId));
         }
         return this;
+    }
+
+    private Set<String> listAvailablePrivateIPAddresses(String cidr) {
+        Set<String> ipAddresses = new TreeSet<>();
+        if (cidr == null) {
+            return ipAddresses;
+        }
+        String takenIPAddress = cidr.split("/")[0];
+
+        IpAddressAvailabilityResultInner result =
+            this
+                .parent()
+                .manager()
+                .serviceClient()
+                .getVirtualNetworks()
+                .checkIpAddressAvailability(this.parent().resourceGroupName(), this.parent().name(), takenIPAddress);
+        if (result == null || result.availableIpAddresses() == null) {
+            return ipAddresses;
+        }
+
+        ipAddresses.addAll(result.availableIpAddresses());
+        return ipAddresses;
     }
 }

@@ -432,16 +432,61 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
     }
 
     @Test
+    public void canSetSubnetAddressPrefixes() {
+        String networkName = generateRandomResourceName("vnet", 10);
+        String subnetName = "subnet1";
+        // create withAddressPrefix
+        Network network = networkManager.networks()
+            .define(networkName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/20")
+            .withSubnet(subnetName, "10.0.0.0/29")
+            .create();
+
+        Subnet subnet = network.subnets().get(subnetName);
+        Assertions.assertNotNull(subnet.addressPrefix());
+        Assertions.assertEquals(0, subnet.addressPrefixes().size());
+
+        // update withAddressPrefixes
+        network.update().updateSubnet(subnetName)
+            .withAddressPrefixes(Arrays.asList("10.0.1.0/29"))
+            .parent()
+            .apply();
+
+        network.refresh();
+        subnet = network.subnets().get(subnetName);
+
+        Assertions.assertEquals(1, subnet.addressPrefixes().size());
+        Assertions.assertEquals("10.0.1.0/29", subnet.addressPrefixes().iterator().next());
+        Assertions.assertNull(subnet.addressPrefix());
+
+        // update withAddressPrefix
+        network.update().updateSubnet(subnetName)
+            .withAddressPrefix("10.0.0.0/29")
+            .parent()
+            .apply();
+
+        network.refresh();
+        subnet = network.subnets().get(subnetName);
+
+        Assertions.assertEquals("10.0.0.0/29", subnet.addressPrefix());
+        Assertions.assertEquals(0, subnet.addressPrefixes().size());
+    }
+
+    @Test
     public void canListSubnetAvailableIpAddresses() {
         String networkName = generateRandomResourceName("vnet", 10);
         String subnetName = "subnet1";
+        String subnet2Name = "subnet2";
         String nicName = generateRandomResourceName("nic", 10);
+        String nicName2 = generateRandomResourceName("nic", 10);
 
         Network network = networkManager.networks()
             .define(networkName)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
-            .withAddressSpace("10.0.0.0/24")
+            .withAddressSpace("10.0.0.0/20")
             .withSubnet(subnetName, "10.0.0.0/29")
             .create();
 
@@ -452,7 +497,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
         String availableIp = availableIps.iterator().next();
 
         // occupy the available ip address
-        NetworkInterface nic = networkManager.networkInterfaces()
+        networkManager.networkInterfaces()
             .define(nicName)
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgName)
@@ -462,6 +507,30 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             .create();
 
         availableIps = subnet.listAvailablePrivateIPAddresses();
+        Assertions.assertFalse(availableIps.contains(availableIp));
+
+        // address prefixes
+        network.update().defineSubnet(subnet2Name)
+            .withAddressPrefixes(Arrays.asList("10.0.1.0/29"))
+            .attach()
+            .apply();
+
+        Subnet subnet2 = network.subnets().get(subnet2Name);
+        availableIps = subnet2.listAvailablePrivateIPAddresses();
+        Assertions.assertTrue(availableIps.size() > 0);
+
+        // occupy the available ip address of the second subnet
+        availableIp = availableIps.iterator().next();
+        networkManager.networkInterfaces()
+            .define(nicName2)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withExistingPrimaryNetwork(network)
+            .withSubnet(subnet2Name)
+            .withPrimaryPrivateIPAddressStatic(availableIp)
+            .create();
+
+        availableIps = subnet2.listAvailablePrivateIPAddresses();
         Assertions.assertFalse(availableIps.contains(availableIp));
     }
 

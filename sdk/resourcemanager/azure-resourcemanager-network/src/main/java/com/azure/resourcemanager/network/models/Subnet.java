@@ -35,6 +35,13 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
     String addressPrefix();
 
     /**
+     * Address space prefixes, in CIDR notation, assigned to this subnet
+     *
+     * @return address space prefixes, in CIDR notation, assigned to this subnet
+     */
+    List<String> addressPrefixes();
+
+    /**
      * @return the network security group associated with this subnet, if any
      *     <p>Note that this method will result in a call to Azure each time it is invoked.
      */
@@ -84,6 +91,14 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withAddressPrefix(String cidr);
+
+            /**
+             * Specifies the IP address spaces of the subnet, within the address space of the network.
+             *
+             * @param addressPrefixes the IP address space prefixes using the CIDR notation
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withAddressPrefixes(Collection<String> addressPrefixes);
         }
 
         /**
@@ -248,6 +263,14 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
              * @return the next stage
              */
             Update withAddressPrefix(String cidr);
+
+            /**
+             * Specifies the IP address spaces of the subnet, within the address space of the network.
+             *
+             * @param addressPrefixes the IP address space prefixes using the CIDR notation
+             * @return the next stage
+             */
+            Update withAddressPrefixes(Collection<String> addressPrefixes);
         }
 
         /** The stage of the subnet update allowing to change the network security group to assign to the subnet. */
@@ -435,6 +458,14 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withAddressPrefix(String cidr);
+
+            /**
+             * Specifies the IP address spaces of the subnet, within the address space of the network.
+             *
+             * @param addressPrefixes the IP address space prefixes using the CIDR notation
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withAddressPrefixes(Collection<String> addressPrefixes);
         }
 
         /**
