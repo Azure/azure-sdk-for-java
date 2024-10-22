@@ -15,7 +15,6 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.ServiceVersion;
-import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
@@ -31,12 +30,11 @@ import com.azure.data.tables.implementation.TransactionalBatchImpl;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
-import com.azure.data.tables.implementation.models.SignedIdentifier;
-import com.azure.data.tables.implementation.models.SignedIdentifierWrapper;
 import com.azure.data.tables.implementation.models.TableEntityQueryResponse;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
 import com.azure.data.tables.implementation.models.TableServiceJsonError;
+import com.azure.data.tables.implementation.models.TableSignedIdentifierWrapper;
 import com.azure.data.tables.implementation.models.TablesGetAccessPolicyHeaders;
 import com.azure.data.tables.implementation.models.TablesQueryEntitiesHeaders;
 import com.azure.data.tables.implementation.models.TablesQueryEntityWithPartitionAndRowKeyHeaders;
@@ -72,11 +70,10 @@ import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static com.azure.core.util.CoreUtils.getResultWithTimeout;
 import static com.azure.data.tables.implementation.TableUtils.callIterableWithOptionalTimeout;
 import static com.azure.data.tables.implementation.TableUtils.callWithOptionalTimeout;
-import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
 import static com.azure.data.tables.implementation.TableUtils.mapThrowableToTableServiceException;
+import static com.azure.data.tables.implementation.TableUtils.requestWithOptionalTimeout;
 import static com.azure.data.tables.implementation.TableUtils.toTableServiceError;
 
 /**
@@ -523,9 +520,7 @@ public final class TableClient {
             .deleteWithResponse(tableName, null, context), null);
 
         try {
-            return hasTimeout(timeout)
-                ? getResultWithTimeout(SharedExecutorService.getInstance().submit(callable::get), timeout)
-                : callable.get();
+            return requestWithOptionalTimeout(callable, timeout);
         } catch (InterruptedException | ExecutionException | TimeoutException ex) {
             throw logger.logExceptionAsError(new RuntimeException(ex));
         } catch (RuntimeException ex) {
@@ -963,9 +958,7 @@ public final class TableClient {
             null, null, null, context);
 
         try {
-            return hasTimeout(timeout)
-                ? getResultWithTimeout(SharedExecutorService.getInstance().submit(callable::get), timeout)
-                : callable.get();
+            return requestWithOptionalTimeout(callable, timeout);
         } catch (InterruptedException | ExecutionException | TimeoutException ex) {
             throw logger.logExceptionAsError(new RuntimeException(ex));
         } catch (RuntimeException ex) {
@@ -1290,12 +1283,10 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableAccessPolicies> getAccessPoliciesWithResponse(Duration timeout, Context context) {
         Supplier<Response<TableAccessPolicies>> callable = () -> {
-            ResponseBase<TablesGetAccessPolicyHeaders, SignedIdentifierWrapper> response =
+            ResponseBase<TablesGetAccessPolicyHeaders, TableSignedIdentifierWrapper> response =
                 tablesImplementation.getTables().getAccessPolicyWithResponse(tableName, null, null, context);
             return new SimpleResponse<>(response,
-                new TableAccessPolicies(response.getValue() == null ? null : response.getValue().items().stream()
-                    .map(TableUtils::toTableSignedIdentifier)
-                    .collect(Collectors.toList())));
+                new TableAccessPolicies(response.getValue() == null ? null : response.getValue().items()));
         };
 
         return callWithOptionalTimeout(callable, timeout, logger);
@@ -1383,41 +1374,28 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
                                                         Duration timeout, Context context) {
-        List<SignedIdentifier> signedIdentifiers = null;
-
         if (tableSignedIdentifiers != null) {
-            signedIdentifiers = tableSignedIdentifiers.stream()
-                .map(tableSignedIdentifier -> {
-                    SignedIdentifier signedIdentifier = TableUtils.toSignedIdentifier(tableSignedIdentifier);
-
-                    if (signedIdentifier != null) {
-                        if (signedIdentifier.getAccessPolicy() != null
-                            && signedIdentifier.getAccessPolicy().getStart() != null) {
-
-                            signedIdentifier.getAccessPolicy()
-                                .setStart(signedIdentifier.getAccessPolicy()
-                                    .getStart().truncatedTo(ChronoUnit.SECONDS));
-                        }
-
-                        if (signedIdentifier.getAccessPolicy() != null
-                            && signedIdentifier.getAccessPolicy().getExpiry() != null) {
-
-                            signedIdentifier.getAccessPolicy()
-                                .setExpiry(signedIdentifier.getAccessPolicy()
-                                    .getExpiry().truncatedTo(ChronoUnit.SECONDS));
-                        }
+            for (TableSignedIdentifier signedIdentifier : tableSignedIdentifiers) {
+                if (signedIdentifier != null && signedIdentifier.getAccessPolicy() != null) {
+                    if (signedIdentifier.getAccessPolicy().getStartsOn() != null) {
+                        signedIdentifier.getAccessPolicy()
+                            .setStartsOn(signedIdentifier.getAccessPolicy()
+                                .getStartsOn().truncatedTo(ChronoUnit.SECONDS));
                     }
 
-                    return signedIdentifier;
-                })
-                .collect(Collectors.toList());
+                    if (signedIdentifier.getAccessPolicy().getExpiresOn() != null) {
+                        signedIdentifier.getAccessPolicy()
+                            .setExpiresOn(signedIdentifier.getAccessPolicy()
+                                .getExpiresOn().truncatedTo(ChronoUnit.SECONDS));
+                    }
+                }
+            }
         }
 
-        List<SignedIdentifier> finalSignedIdentifiers = signedIdentifiers;
         Supplier<Response<Void>> callable = () -> {
             ResponseBase<TablesSetAccessPolicyHeaders, Void> response = tablesImplementation.getTables()
                 .setAccessPolicyWithResponse(tableName, null, null,
-                    finalSignedIdentifiers, context);
+                    tableSignedIdentifiers, context);
             return new SimpleResponse<>(response, response.getValue());
         };
 
@@ -1671,9 +1649,7 @@ public final class TableClient {
         };
 
         try {
-            return hasTimeout(timeout)
-                ? getResultWithTimeout(SharedExecutorService.getInstance().submit(callable::get), timeout)
-                : callable.get();
+            return requestWithOptionalTimeout(callable, timeout);
         } catch (InterruptedException | ExecutionException | TimeoutException ex) {
             throw logger.logExceptionAsError(new RuntimeException(ex));
         } catch (RuntimeException ex) {

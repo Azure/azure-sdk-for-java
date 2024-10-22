@@ -14,7 +14,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
@@ -30,7 +29,6 @@ import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableQueryResponse;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
-import com.azure.data.tables.implementation.models.TableServiceStats;
 import com.azure.data.tables.implementation.models.TablesQueryHeaders;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableItem;
@@ -47,10 +45,9 @@ import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static com.azure.core.util.CoreUtils.getResultWithTimeout;
 import static com.azure.data.tables.implementation.TableUtils.callIterableWithOptionalTimeout;
 import static com.azure.data.tables.implementation.TableUtils.callWithOptionalTimeout;
-import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
+import static com.azure.data.tables.implementation.TableUtils.requestWithOptionalTimeout;
 
 /**
  *
@@ -541,9 +538,7 @@ public final class TableServiceClient {
     public Response<Void> deleteTableWithResponse(String tableName, Duration timeout, Context context) {
         Supplier<Response<Void>> callable = () -> deleteTableWithResponse(tableName, context);
         try {
-            return hasTimeout(timeout)
-                ? getResultWithTimeout(SharedExecutorService.getInstance().submit(callable::get), timeout)
-                : callable.get();
+            return requestWithOptionalTimeout(callable, timeout);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             throw logger.logExceptionAsError(new RuntimeException(e));
         } catch (RuntimeException e) {
@@ -722,9 +717,7 @@ public final class TableServiceClient {
     }
 
     Response<TableServiceProperties> getPropertiesWithResponse(Context context) {
-        Response<com.azure.data.tables.implementation.models.TableServiceProperties> response =
-            this.implementation.getServices().getPropertiesWithResponse(null, null, context);
-        return new SimpleResponse<>(response, TableUtils.toTableServiceProperties(response.getValue()));
+        return this.implementation.getServices().getPropertiesWithResponse(null, null, context);
     }
 
     /**
@@ -817,9 +810,7 @@ public final class TableServiceClient {
     }
 
     Response<Void> setPropertiesWithResponse(TableServiceProperties tableServiceProperties, Context context) {
-        return new SimpleResponse<>(this.implementation.getServices()
-            .setPropertiesWithResponse(TableUtils.toImplTableServiceProperties(tableServiceProperties), null,
-                null, context), null);
+        return this.implementation.getServices().setPropertiesWithResponse(tableServiceProperties, null, null, context);
     }
 
     /**
@@ -883,9 +874,6 @@ public final class TableServiceClient {
 
 
     Response<TableServiceStatistics> getStatisticsWithResponse(Context context) {
-        Response<TableServiceStats> response = this.implementation.getServices().getStatisticsWithResponse(
-            null, null, context);
-        return new SimpleResponse<>(response, TableUtils.toTableServiceStatistics(response.getValue()));
+        return this.implementation.getServices().getStatisticsWithResponse(null, null, context);
     }
-
 }

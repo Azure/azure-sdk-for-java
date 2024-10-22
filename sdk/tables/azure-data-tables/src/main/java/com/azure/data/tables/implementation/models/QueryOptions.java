@@ -22,7 +22,8 @@ public final class QueryOptions {
     private Integer top;
 
     /*
-     * Select expression using OData notation. Limits the columns on each record to just those requested, e.g. "$select=PolicyAssignmentId, ResourceId".
+     * Select expression using OData notation. Limits the columns on each record to just those requested, e.g.
+     * "$select=PolicyAssignmentId, ResourceId".
      */
     private String select;
 

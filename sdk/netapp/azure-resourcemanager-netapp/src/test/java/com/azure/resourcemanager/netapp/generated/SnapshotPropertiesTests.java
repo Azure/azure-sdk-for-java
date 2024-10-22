@@ -12,7 +12,7 @@ public final class SnapshotPropertiesTests {
     public void testDeserialize() throws Exception {
         SnapshotProperties model = BinaryData
             .fromString(
-                "{\"snapshotId\":\"nzgmwznmabik\",\"created\":\"2021-01-03T11:48:42Z\",\"provisioningState\":\"gj\"}")
+                "{\"snapshotId\":\"gxqquezik\",\"created\":\"2021-09-18T11:22:34Z\",\"provisioningState\":\"xkalla\"}")
             .toObject(SnapshotProperties.class);
     }
 

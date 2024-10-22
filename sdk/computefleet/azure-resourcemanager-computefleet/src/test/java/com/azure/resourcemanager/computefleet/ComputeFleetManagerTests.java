@@ -49,15 +49,11 @@ import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.LoadBalancerSkuType;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.TransportProtocol;
-import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.resources.models.Provider;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -67,7 +63,6 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
     private String resourceGroupName = "rg" + randomPadding();
     private ComputeFleetManager computeFleetManager = null;
     private NetworkManager networkManager = null;
-    private ResourceManager resourceManager;
     private boolean testEnv;
 
     @Override
@@ -75,23 +70,14 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        computeFleetManager = ComputeFleetManager
-            .configure()
+        networkManager = NetworkManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        networkManager = NetworkManager
-            .configure()
+        computeFleetManager = ComputeFleetManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withPolicy(new ProviderRegistrationPolicy(networkManager.resourceManager()))
             .authenticate(credential, profile);
-
-        resourceManager = ResourceManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile)
-            .withDefaultSubscription();
-
-        canRegisterProviders(Arrays.asList("Microsoft.AzureFleet"));
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -99,17 +85,14 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            networkManager.resourceManager().resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
     @Override
     protected void afterTest() {
         if (!testEnv) {
-            resourceManager.resourceGroups().beginDeleteByName(resourceGroupName);
+            networkManager.resourceManager().resourceGroups().beginDeleteByName(resourceGroupName);
         }
     }
 
@@ -153,107 +136,67 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
                 .define(fleetName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
-                .withProperties(
-                    new FleetProperties()
-                        .withSpotPriorityProfile(
-                            new SpotPriorityProfile()
-                                .withMaintain(false)
-                                .withCapacity(1)
-                                .withEvictionPolicy(EvictionPolicy.DELETE)
-                                .withAllocationStrategy(SpotAllocationStrategy.LOWEST_PRICE)
-                        )
-                        .withVmSizesProfile(
-                            Arrays.asList(
-                                new VmSizeProfile().withName("Standard_D4s_v3")
-                            )
-                        )
-                        .withComputeProfile(
-                            new ComputeProfile()
-                                .withBaseVirtualMachineProfile(
-                                    new BaseVirtualMachineProfile()
-                                        .withStorageProfile(
-                                            new VirtualMachineScaleSetStorageProfile()
-                                                .withImageReference(
-                                                    new ImageReference()
-                                                        .withPublisher("canonical")
-                                                        .withOffer("ubuntu-24_04-lts")
-                                                        .withSku("server")
-                                                        .withVersion("latest")
-                                                )
-                                                .withOsDisk(
-                                                    new VirtualMachineScaleSetOSDisk()
-                                                        .withManagedDisk(
-                                                            new VirtualMachineScaleSetManagedDiskParameters()
-                                                                .withStorageAccountType(StorageAccountTypes.PREMIUM_LRS)
-                                                        )
-                                                        .withOsType(OperatingSystemTypes.LINUX)
-                                                        .withDiskSizeGB(30)
-                                                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
-                                                        .withDeleteOption(DiskDeleteOptionTypes.DELETE)
-                                                        .withCaching(CachingTypes.READ_WRITE)
-                                                )
-                                                .withDiskControllerType(DiskControllerTypes.SCSI)
-                                        )
-                                        .withOsProfile(
-                                            new VirtualMachineScaleSetOSProfile()
-                                                .withComputerNamePrefix(randomPadding())
-                                                .withAdminUsername(adminUser)
-                                                .withAdminPassword(adminPwd)
-                                                .withLinuxConfiguration(
-                                                    new LinuxConfiguration().withDisablePasswordAuthentication(false)
-                                                )
-                                        )
-                                        .withNetworkProfile(
-                                            new VirtualMachineScaleSetNetworkProfile()
-                                                .withNetworkInterfaceConfigurations(
-                                                    Arrays.asList(
-                                                        new VirtualMachineScaleSetNetworkConfiguration()
-                                                            .withName(vmName)
-                                                            .withProperties(
-                                                                new VirtualMachineScaleSetNetworkConfigurationProperties()
-                                                                    .withPrimary(true)
-                                                                    .withEnableAcceleratedNetworking(false)
-                                                                    .withDeleteOption(DeleteOptions.DELETE)
-                                                                    .withIpConfigurations(
-                                                                        Arrays.asList(
-                                                                            new VirtualMachineScaleSetIPConfiguration()
-                                                                                .withName(vmName)
-                                                                                .withProperties(
-                                                                                    new VirtualMachineScaleSetIPConfigurationProperties()
-                                                                                        .withPrimary(true)
-                                                                                        .withSubnet(
-                                                                                            new ApiEntityReference()
-                                                                                                .withId(network.subnets().get("default").id())
-                                                                                        )
-                                                                                        .withLoadBalancerBackendAddressPools(
-                                                                                            loadBalancer.loadBalancingRules()
-                                                                                                .get(loadBalancerName + "-lbrule")
-                                                                                                .innerModel().backendAddressPools()
-                                                                                        )
-                                                                                )
-                                                                        )
-                                                                    )
-                                                            )
-                                                    )
-                                                )
-                                                .withNetworkApiVersion(NetworkApiVersion.fromString("2024-03-01"))
-                                        )
-                                )
-                                .withComputeApiVersion("2024-03-01")
-                                .withPlatformFaultDomainCount(1)
-                        )
-                        .withRegularPriorityProfile(new RegularPriorityProfile()
-                            .withAllocationStrategy(RegularPriorityAllocationStrategy.LOWEST_PRICE)
-                            .withMinCapacity(1)
-                            .withCapacity(2)
-                        )
-                )
+                .withProperties(new FleetProperties()
+                    .withSpotPriorityProfile(new SpotPriorityProfile().withMaintain(false)
+                        .withCapacity(1)
+                        .withEvictionPolicy(EvictionPolicy.DELETE)
+                        .withAllocationStrategy(SpotAllocationStrategy.LOWEST_PRICE))
+                    .withVmSizesProfile(Arrays.asList(new VmSizeProfile().withName("Standard_D4s_v3")))
+                    .withComputeProfile(new ComputeProfile()
+                        .withBaseVirtualMachineProfile(new BaseVirtualMachineProfile()
+                            .withStorageProfile(new VirtualMachineScaleSetStorageProfile()
+                                .withImageReference(new ImageReference().withPublisher("canonical")
+                                    .withOffer("ubuntu-24_04-lts")
+                                    .withSku("server")
+                                    .withVersion("latest"))
+                                .withOsDisk(new VirtualMachineScaleSetOSDisk()
+                                    .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters()
+                                        .withStorageAccountType(StorageAccountTypes.PREMIUM_LRS))
+                                    .withOsType(OperatingSystemTypes.LINUX)
+                                    .withDiskSizeGB(30)
+                                    .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                                    .withDeleteOption(DiskDeleteOptionTypes.DELETE)
+                                    .withCaching(CachingTypes.READ_WRITE))
+                                .withDiskControllerType(DiskControllerTypes.SCSI))
+                            .withOsProfile(new VirtualMachineScaleSetOSProfile().withComputerNamePrefix(randomPadding())
+                                .withAdminUsername(adminUser)
+                                .withAdminPassword(adminPwd)
+                                .withLinuxConfiguration(
+                                    new LinuxConfiguration().withDisablePasswordAuthentication(false)))
+                            .withNetworkProfile(
+                                new VirtualMachineScaleSetNetworkProfile()
+                                    .withNetworkInterfaceConfigurations(
+                                        Arrays.asList(new VirtualMachineScaleSetNetworkConfiguration().withName(vmName)
+                                            .withProperties(new VirtualMachineScaleSetNetworkConfigurationProperties()
+                                                .withPrimary(true)
+                                                .withEnableAcceleratedNetworking(false)
+                                                .withDeleteOption(DeleteOptions.DELETE)
+                                                .withIpConfigurations(Arrays
+                                                    .asList(new VirtualMachineScaleSetIPConfiguration().withName(vmName)
+                                                        .withProperties(
+                                                            new VirtualMachineScaleSetIPConfigurationProperties()
+                                                                .withPrimary(true)
+                                                                .withSubnet(new ApiEntityReference()
+                                                                    .withId(network.subnets().get("default").id()))
+                                                                .withLoadBalancerBackendAddressPools(
+                                                                    loadBalancer.loadBalancingRules()
+                                                                        .get(loadBalancerName + "-lbrule")
+                                                                        .innerModel()
+                                                                        .backendAddressPools())))))))
+                                    .withNetworkApiVersion(NetworkApiVersion.fromString("2024-03-01"))))
+                        .withComputeApiVersion("2024-03-01")
+                        .withPlatformFaultDomainCount(1))
+                    .withRegularPriorityProfile(new RegularPriorityProfile()
+                        .withAllocationStrategy(RegularPriorityAllocationStrategy.LOWEST_PRICE)
+                        .withMinCapacity(1)
+                        .withCapacity(2)))
                 .create();
             // @embedmeEnd
             fleet.refresh();
             Assertions.assertEquals(fleetName, fleet.name());
             Assertions.assertEquals(fleetName, computeFleetManager.fleets().getById(fleet.id()).name());
-            Assertions.assertTrue(computeFleetManager.fleets().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
+            Assertions.assertTrue(
+                computeFleetManager.fleets().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
         } finally {
             if (fleet != null) {
                 computeFleetManager.fleets().deleteById(fleet.id());
@@ -263,19 +206,5 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
 
     private static String randomPadding() {
         return String.format("%05d", Math.abs(RANDOM.nextInt() % 100000));
-    }
-
-    private void canRegisterProviders(List<String> providerNamespaces) {
-        providerNamespaces.forEach(providerNamespace -> {
-            Provider provider = resourceManager.providers().getByName(providerNamespace);
-            if (!"Registered".equalsIgnoreCase(provider.registrationState())
-                && !"Registering".equalsIgnoreCase(provider.registrationState())) {
-                provider = resourceManager.providers().register(providerNamespace);
-            }
-            while (!"Registered".equalsIgnoreCase(provider.registrationState())) {
-                ResourceManagerUtils.sleep(Duration.ofSeconds(5));
-                provider = resourceManager.providers().getByName(provider.namespace());
-            }
-        });
     }
 }
