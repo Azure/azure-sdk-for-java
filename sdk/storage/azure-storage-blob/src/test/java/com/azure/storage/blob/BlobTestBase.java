@@ -257,6 +257,12 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
+    protected static List<String> convertNulls(String lease, String match) {
+        String newLease = "null".equals(lease) ? null : lease;
+        String newMatch = "null".equals(match) ? null : match;
+        return Arrays.asList(newLease, newMatch);
+    }
+
     protected Mono<String> setupBlobMatchCondition(BlobAsyncClientBase bac, String match) {
         if (Objects.equals(match, RECEIVED_ETAG)) {
             return bac.getProperties().map(BlobProperties::getETag);

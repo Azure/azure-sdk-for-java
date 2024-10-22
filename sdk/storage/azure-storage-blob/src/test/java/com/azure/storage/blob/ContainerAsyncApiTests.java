@@ -375,11 +375,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     public void setMetadataAC(OffsetDateTime modified, String leaseID) {
         Mono<Response<Void>> response = setupContainerLeaseConditionAsync(ccAsync, leaseID)
             .flatMap(r -> {
-                if ("null".equals(r)) {
-                    r = null;
-                }
+                List<String> list = convertNulls(null, r);
                 BlobRequestConditions cac = new BlobRequestConditions()
-                    .setLeaseId(r)
+                    .setLeaseId(list.get(0))
                     .setIfModifiedSince(modified);
 
                 return ccAsync.setMetadataWithResponse(null, cac);
@@ -498,11 +496,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     public void setAccessPolicyAC(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
         Mono<Response<Void>> response = setupContainerLeaseConditionAsync(ccAsync, leaseID)
             .flatMap(r -> {
-                if ("null".equals(r)) {
-                    r = null;
-                }
+                List<String> list = convertNulls(null, r);
                 BlobRequestConditions cac = new BlobRequestConditions()
-                    .setLeaseId(r)
+                    .setLeaseId(list.get(0))
                     .setIfModifiedSince(modified)
                     .setIfUnmodifiedSince(unmodified);
 
@@ -599,11 +595,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     public void deleteAC(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
         Mono<Response<Void>> response = setupContainerLeaseConditionAsync(ccAsync, leaseID)
             .flatMap(r -> {
-                if ("null".equals(r)) {
-                    r = null;
-                }
+                List<String> list = convertNulls(r, null);
                 BlobRequestConditions cac = new BlobRequestConditions()
-                    .setLeaseId(r)
+                    .setLeaseId(list.get(0))
                     .setIfModifiedSince(modified)
                     .setIfUnmodifiedSince(unmodified);
 
@@ -670,11 +664,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     public void deleteIfExistsAC(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
         Mono<Response<Boolean>> response = setupContainerLeaseConditionAsync(ccAsync, leaseID)
             .flatMap(r -> {
-                if ("null".equals(r)) {
-                    r = null;
-                }
+                List<String> list = convertNulls(r, null);
                 BlobRequestConditions cac = new BlobRequestConditions()
-                    .setLeaseId(r)
+                    .setLeaseId(list.get(0))
                     .setIfModifiedSince(modified)
                     .setIfUnmodifiedSince(unmodified);
 
