@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
@@ -18,14 +17,18 @@ public class JsonNodeStorePayloadTests {
         //    "content": "\xff\n\t\x07"  # Invalid UTF-8 byte, newline, tab, and BEL
         //}
         String invalidHexString = "7b226964223a20226578616d706c655f6964222c2022636f6e74656e74223a2022ff0a0907227d";
-        System.setProperty("COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT", "IGNORE");
-        System.setProperty("COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER", "IGNORE");
+        System.setProperty("COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT", "REPLACE");
+        System.setProperty("COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER", "REPLACE");
 
-        byte[] bytes = hexStringToByteArray(invalidHexString);
-        ByteBuf byteBuf = Unpooled.wrappedBuffer(bytes);
-        JsonNodeStorePayload jsonNodeStorePayload = new JsonNodeStorePayload(new ByteBufInputStream(byteBuf), bytes.length);
-        JsonNode jsonNode = jsonNodeStorePayload.getPayload();
-        System.out.println(jsonNode);
+        try {
+            byte[] bytes = hexStringToByteArray(invalidHexString);
+            ByteBuf byteBuf = Unpooled.wrappedBuffer(bytes);
+            JsonNodeStorePayload jsonNodeStorePayload = new JsonNodeStorePayload(new ByteBufInputStream(byteBuf), bytes.length);
+            jsonNodeStorePayload.getPayload().toString();
+        } finally {
+            System.clearProperty("COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT");
+            System.clearProperty("COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER");
+        }
     }
 
     private static byte[] hexStringToByteArray(String hex) {
