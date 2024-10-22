@@ -7,6 +7,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.RetryAnalyzer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
@@ -24,10 +25,13 @@ import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyBuilder;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
+import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
@@ -37,10 +41,12 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -94,6 +100,15 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             { 400, false },
             { 11000, true },
             { 11000, false },
+        };
+    }
+
+    @DataProvider(name = "queryChangeFeedWithHierarchicalPartitionKeyDataProvider")
+    public static Object[][] queryChangeFeedWithHierarchicalPartitionKeyDataProvider() {
+        return new Object[][]{
+            { "Redmond", null, -1 },
+            { "Redmond", "98052", -1 },
+            { "Redmond", "98052", 1 },
         };
     }
 
@@ -884,6 +899,66 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 .blockLast();
 
             assertThat(totalQueryCount.get()).isEqualTo(5);
+        } finally {
+            safeDeleteCollection(this.createdAsyncDatabase.getContainer(testContainerId));
+        }
+    }
+
+    // These tests cover a gap that was identified in querying changefeed using hpk
+    @Test(groups = { "emulator" }, dataProvider = "queryChangeFeedWithHierarchicalPartitionKeyDataProvider", timeOut = TIMEOUT)
+    public void queryChangeFeedWithHierarchicalPartitionKey(String pk1, String pk2, int pk3) {
+        String testContainerId = UUID.randomUUID().toString();
+
+        try {
+            PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
+            partitionKeyDefinition.setKind(PartitionKind.MULTI_HASH);
+            partitionKeyDefinition.setVersion(PartitionKeyDefinitionVersion.V2);
+            ArrayList<String> paths = new ArrayList<>();
+            paths.add("/city");
+            paths.add("/zipcode");
+            paths.add("/areaCode"); // expecting int value type
+            partitionKeyDefinition.setPaths(paths);
+
+            PartitionKeyBuilder partialPartitionKeyBuilder = new PartitionKeyBuilder();
+            if (pk1 != null) {
+                partialPartitionKeyBuilder.add(pk1);
+            }
+            if (pk2 != null) {
+                partialPartitionKeyBuilder.add(pk2);
+            }
+            if (pk3 != -1) {
+                partialPartitionKeyBuilder.add(pk3);
+            }
+
+            PartitionKey partialPartitionKey = partialPartitionKeyBuilder.build();
+            CosmosChangeFeedRequestOptions changeFeedRequestOptions = CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(
+                FeedRange.forLogicalPartition(partialPartitionKey)
+            );
+
+            CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, partitionKeyDefinition);
+            CosmosAsyncContainer testContainer =
+                createCollection(
+                    this.createdAsyncDatabase,
+                    containerProperties,
+                    new CosmosContainerRequestOptions(),
+                    400);
+
+            CosmosMultiHashTest.CityItem cityItem = new CosmosMultiHashTest.CityItem(UUID.randomUUID().toString(), "Redmond", "98052", 1);
+            testContainer.createItem(cityItem).block();
+
+            var responseIterator = testContainer
+                .queryChangeFeed(changeFeedRequestOptions, CosmosMultiHashTest.CityItem.class) // this call should not fail with partial partition key in request options
+                .byPage()
+                .toIterable()
+                .iterator();
+
+            // some basic validation
+            int totalResults = 0;
+            while (responseIterator.hasNext()) {
+                FeedResponse<CosmosMultiHashTest.CityItem> response = responseIterator.next();
+                totalResults += response.getResults().size();
+            }
+            assertThat(totalResults).isEqualTo(1);
         } finally {
             safeDeleteCollection(this.createdAsyncDatabase.getContainer(testContainerId));
         }

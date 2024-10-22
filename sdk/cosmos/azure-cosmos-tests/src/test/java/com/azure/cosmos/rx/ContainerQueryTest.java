@@ -6,17 +6,26 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosMultiHashTest;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyBuilder;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
+import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
@@ -34,7 +43,16 @@ public class ContainerQueryTest extends TestSuiteBase {
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase createdDatabase;
 
-   @Factory(dataProvider = "clientBuilders")
+    @DataProvider(name = "queryContainerWithHierarchicalPartitionKeyDataProvider")
+    public static Object[][] queryContainerWithHierarchicalPartitionKeyDataProvider() {
+        return new Object[][]{
+            { "Redmond", null, -1 },
+            { "Redmond", "98052", -1 },
+            { "Redmond", "98052", 1 },
+        };
+    }
+
+    @Factory(dataProvider = "clientBuilders")
     public ContainerQueryTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
         this.subscriberValidationTimeout = TIMEOUT;
@@ -108,6 +126,61 @@ public class ContainerQueryTest extends TestSuiteBase {
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
         validateQuerySuccess(queryObservable.byPage(), validator);
+    }
+
+    // Currently no known issue with query and hpk but adding this to detect regressions just in case, since a fix was added
+    // for queryChangeFeed with hpk
+    @Test(groups = { "query" }, dataProvider = "queryContainerWithHierarchicalPartitionKeyDataProvider", timeOut = TIMEOUT)
+    public void queryContainerWithHierarchicalPartitionKey(String pk1, String pk2, int pk3) {
+        String testContainerId = UUID.randomUUID().toString();
+        try {
+            PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
+            partitionKeyDefinition.setKind(PartitionKind.MULTI_HASH);
+            partitionKeyDefinition.setVersion(PartitionKeyDefinitionVersion.V2);
+            ArrayList<String> paths = new ArrayList<>();
+            paths.add("/city");
+            paths.add("/zipcode");
+            paths.add("/areaCode"); // expecting int value type
+            partitionKeyDefinition.setPaths(paths);
+
+            String query = "SELECT * from c";
+
+            PartitionKeyBuilder partialPartitionKeyBuilder = new PartitionKeyBuilder();
+            if (pk1 != null) {
+                partialPartitionKeyBuilder.add(pk1);
+            }
+            if (pk2 != null) {
+                partialPartitionKeyBuilder.add(pk2);
+            }
+            if (pk3 != -1) {
+                partialPartitionKeyBuilder.add(pk3);
+            }
+
+            PartitionKey partialPartitionKey = partialPartitionKeyBuilder.build();
+            CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
+            queryRequestOptions.setFeedRange(FeedRange.forLogicalPartition(partialPartitionKey));
+
+            // create the container with hpk
+            CosmosContainerProperties testContainerProperties = new CosmosContainerProperties(testContainerId, partitionKeyDefinition);
+            CosmosAsyncContainer testContainer = createCollection(client, databaseId, testContainerProperties);
+
+            CosmosMultiHashTest.CityItem cityItem = new CosmosMultiHashTest.CityItem(UUID.randomUUID().toString(), "Redmond", "98052", 1);
+            testContainer.createItem(cityItem).block();
+
+            List<CosmosMultiHashTest.CityItem> results = testContainer
+                .queryItems(query, queryRequestOptions, CosmosMultiHashTest.CityItem.class) // this call should not fail with partial partition key in request options
+                .collectList()
+                .block();
+
+            // some basic validation
+            assertThat(results).isNotNull();
+            assertThat(results.size()).isEqualTo(1);
+            assertThat(results.get(0).getCity()).isEqualTo("Redmond");
+            assertThat(results.get(0).getZipcode()).isEqualTo("98052");
+            assertThat(results.get(0).getAreaCode()).isEqualTo(1);
+        } finally {
+            safeDeleteCollection(this.createdDatabase.getContainer(testContainerId));
+        }
     }
 
     @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)

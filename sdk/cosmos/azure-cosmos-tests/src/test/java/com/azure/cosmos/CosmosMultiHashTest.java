@@ -610,7 +610,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         asyncClient.close();
     }
 
-    private static class CityItem {
+    public static class CityItem {
         private String id;
         private String city;
         private String zipcode;
