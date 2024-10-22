@@ -12,20 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class LinuxVMGuestPatchAutomaticByPlatformSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinuxVMGuestPatchAutomaticByPlatformSettings model = BinaryData
-            .fromString("{\"rebootSetting\":\"IfRequired\",\"bypassPlatformSafetyChecksOnUserSchedule\":true}")
-            .toObject(LinuxVMGuestPatchAutomaticByPlatformSettings.class);
-        Assertions.assertEquals(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.IF_REQUIRED, model.rebootSetting());
-        Assertions.assertEquals(true, model.bypassPlatformSafetyChecksOnUserSchedule());
+        LinuxVMGuestPatchAutomaticByPlatformSettings model
+            = BinaryData.fromString("{\"rebootSetting\":\"Always\",\"bypassPlatformSafetyChecksOnUserSchedule\":false}")
+                .toObject(LinuxVMGuestPatchAutomaticByPlatformSettings.class);
+        Assertions.assertEquals(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS, model.rebootSetting());
+        Assertions.assertEquals(false, model.bypassPlatformSafetyChecksOnUserSchedule());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LinuxVMGuestPatchAutomaticByPlatformSettings model = new LinuxVMGuestPatchAutomaticByPlatformSettings()
-            .withRebootSetting(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.IF_REQUIRED)
-            .withBypassPlatformSafetyChecksOnUserSchedule(true);
+            .withRebootSetting(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS)
+            .withBypassPlatformSafetyChecksOnUserSchedule(false);
         model = BinaryData.fromObject(model).toObject(LinuxVMGuestPatchAutomaticByPlatformSettings.class);
-        Assertions.assertEquals(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.IF_REQUIRED, model.rebootSetting());
-        Assertions.assertEquals(true, model.bypassPlatformSafetyChecksOnUserSchedule());
+        Assertions.assertEquals(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS, model.rebootSetting());
+        Assertions.assertEquals(false, model.bypassPlatformSafetyChecksOnUserSchedule());
     }
 }

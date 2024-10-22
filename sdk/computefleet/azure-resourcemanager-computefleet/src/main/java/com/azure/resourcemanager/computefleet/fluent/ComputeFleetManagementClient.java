@@ -8,9 +8,9 @@ import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
 /**
- * The interface for AzureFleetClient class.
+ * The interface for ComputeFleetManagementClient class.
  */
-public interface AzureFleetClient {
+public interface ComputeFleetManagementClient {
     /**
      * Gets Service host.
      * 

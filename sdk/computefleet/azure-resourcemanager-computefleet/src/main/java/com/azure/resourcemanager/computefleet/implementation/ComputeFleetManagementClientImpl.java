@@ -23,7 +23,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.computefleet.fluent.AzureFleetClient;
+import com.azure.resourcemanager.computefleet.fluent.ComputeFleetManagementClient;
 import com.azure.resourcemanager.computefleet.fluent.FleetsClient;
 import com.azure.resourcemanager.computefleet.fluent.OperationsClient;
 import java.io.IOException;
@@ -36,10 +36,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the AzureFleetClientImpl type.
+ * Initializes a new instance of the ComputeFleetManagementClientImpl type.
  */
-@ServiceClient(builder = AzureFleetClientBuilder.class)
-public final class AzureFleetClientImpl implements AzureFleetClient {
+@ServiceClient(builder = ComputeFleetManagementClientBuilder.class)
+public final class ComputeFleetManagementClientImpl implements ComputeFleetManagementClient {
     /**
      * Service host.
      */
@@ -153,7 +153,7 @@ public final class AzureFleetClientImpl implements AzureFleetClient {
     }
 
     /**
-     * Initializes an instance of AzureFleetClient client.
+     * Initializes an instance of ComputeFleetManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -162,14 +162,14 @@ public final class AzureFleetClientImpl implements AzureFleetClient {
      * @param endpoint Service host.
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      */
-    AzureFleetClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
-        AzureEnvironment environment, String endpoint, String subscriptionId) {
+    ComputeFleetManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String endpoint, String subscriptionId) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-05-01-preview";
+        this.apiVersion = "2024-11-01";
         this.operations = new OperationsClientImpl(this);
         this.fleets = new FleetsClientImpl(this);
     }
@@ -300,5 +300,5 @@ public final class AzureFleetClientImpl implements AzureFleetClient {
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(AzureFleetClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ComputeFleetManagementClientImpl.class);
 }

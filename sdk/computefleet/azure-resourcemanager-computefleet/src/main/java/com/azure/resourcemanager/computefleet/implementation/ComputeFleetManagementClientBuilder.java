@@ -15,10 +15,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /**
- * A builder for creating a new instance of the AzureFleetClientImpl type.
+ * A builder for creating a new instance of the ComputeFleetManagementClientImpl type.
  */
-@ServiceClientBuilder(serviceClients = { AzureFleetClientImpl.class })
-public final class AzureFleetClientBuilder {
+@ServiceClientBuilder(serviceClients = { ComputeFleetManagementClientImpl.class })
+public final class ComputeFleetManagementClientBuilder {
     /*
      * Service host
      */
@@ -28,9 +28,9 @@ public final class AzureFleetClientBuilder {
      * Sets Service host.
      * 
      * @param endpoint the endpoint value.
-     * @return the AzureFleetClientBuilder.
+     * @return the ComputeFleetManagementClientBuilder.
      */
-    public AzureFleetClientBuilder endpoint(String endpoint) {
+    public ComputeFleetManagementClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -44,9 +44,9 @@ public final class AzureFleetClientBuilder {
      * Sets The ID of the target subscription. The value must be an UUID.
      * 
      * @param subscriptionId the subscriptionId value.
-     * @return the AzureFleetClientBuilder.
+     * @return the ComputeFleetManagementClientBuilder.
      */
-    public AzureFleetClientBuilder subscriptionId(String subscriptionId) {
+    public ComputeFleetManagementClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -60,9 +60,9 @@ public final class AzureFleetClientBuilder {
      * Sets The environment to connect to.
      * 
      * @param environment the environment value.
-     * @return the AzureFleetClientBuilder.
+     * @return the ComputeFleetManagementClientBuilder.
      */
-    public AzureFleetClientBuilder environment(AzureEnvironment environment) {
+    public ComputeFleetManagementClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -76,9 +76,9 @@ public final class AzureFleetClientBuilder {
      * Sets The HTTP pipeline to send requests through.
      * 
      * @param pipeline the pipeline value.
-     * @return the AzureFleetClientBuilder.
+     * @return the ComputeFleetManagementClientBuilder.
      */
-    public AzureFleetClientBuilder pipeline(HttpPipeline pipeline) {
+    public ComputeFleetManagementClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -92,9 +92,9 @@ public final class AzureFleetClientBuilder {
      * Sets The default poll interval for long-running operation.
      * 
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the AzureFleetClientBuilder.
+     * @return the ComputeFleetManagementClientBuilder.
      */
-    public AzureFleetClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+    public ComputeFleetManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -108,19 +108,19 @@ public final class AzureFleetClientBuilder {
      * Sets The serializer to serialize an object into a string.
      * 
      * @param serializerAdapter the serializerAdapter value.
-     * @return the AzureFleetClientBuilder.
+     * @return the ComputeFleetManagementClientBuilder.
      */
-    public AzureFleetClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public ComputeFleetManagementClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of AzureFleetClientImpl with the provided parameters.
+     * Builds an instance of ComputeFleetManagementClientImpl with the provided parameters.
      * 
-     * @return an instance of AzureFleetClientImpl.
+     * @return an instance of ComputeFleetManagementClientImpl.
      */
-    public AzureFleetClientImpl buildClient() {
+    public ComputeFleetManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline = (pipeline != null)
@@ -131,8 +131,8 @@ public final class AzureFleetClientBuilder {
         SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
-        AzureFleetClientImpl client = new AzureFleetClientImpl(localPipeline, localSerializerAdapter,
-            localDefaultPollInterval, localEnvironment, localEndpoint, this.subscriptionId);
+        ComputeFleetManagementClientImpl client = new ComputeFleetManagementClientImpl(localPipeline,
+            localSerializerAdapter, localDefaultPollInterval, localEnvironment, localEndpoint, this.subscriptionId);
         return client;
     }
 }
