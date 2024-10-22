@@ -375,7 +375,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     public void setMetadataAC(OffsetDateTime modified, String leaseID) {
         Mono<Response<Void>> response = setupContainerLeaseConditionAsync(ccAsync, leaseID)
             .flatMap(r -> {
-                List<String> list = convertNulls(null, r);
+                List<String> list = convertNulls(r, null);
                 BlobRequestConditions cac = new BlobRequestConditions()
                     .setLeaseId(list.get(0))
                     .setIfModifiedSince(modified);
@@ -496,7 +496,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     public void setAccessPolicyAC(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
         Mono<Response<Void>> response = setupContainerLeaseConditionAsync(ccAsync, leaseID)
             .flatMap(r -> {
-                List<String> list = convertNulls(null, r);
+                List<String> list = convertNulls(r, null);
                 BlobRequestConditions cac = new BlobRequestConditions()
                     .setLeaseId(list.get(0))
                     .setIfModifiedSince(modified)

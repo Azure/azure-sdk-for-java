@@ -735,7 +735,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
                     BlobRequestConditions smac = new BlobRequestConditions()
                         .setIfModifiedSince(sourceIfModifiedSince)
                         .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
-                        .setIfMatch(list.get(0))
+                        .setIfMatch(list.get(1))
                         .setIfNoneMatch(sourceIfNoneMatch);
                     String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
                         new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
@@ -1708,7 +1708,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
                     PageBlobCopyIncrementalRequestConditions mac = new PageBlobCopyIncrementalRequestConditions()
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
-                        .setIfMatch(list.get(0))
+                        .setIfMatch(list.get(1))
                         .setIfNoneMatch(noneMatch)
                         .setTagsConditions(tags);
                     return bc2.copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(

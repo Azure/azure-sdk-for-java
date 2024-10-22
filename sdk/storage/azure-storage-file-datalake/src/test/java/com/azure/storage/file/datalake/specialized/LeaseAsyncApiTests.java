@@ -191,7 +191,7 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
                         .setIfMatch(list.get(1))
                         .setIfNoneMatch(noneMatch);
                     return createLeaseAsyncClient(fc, list.get(0)).renewLeaseWithResponse(mac);
-            });
+                });
 
         assertAsyncResponseStatusCode(response, 200);
     }

@@ -194,12 +194,12 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
             .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match), BlobTestBase::convertNulls))
                 .flatMap(list -> {
                     BlobRequestConditions bac = new BlobRequestConditions()
-                    .setLeaseId(list.get(0))
-                    .setIfMatch(list.get(1))
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified)
-                    .setTagsConditions(tags);
+                        .setLeaseId(list.get(0))
+                        .setIfMatch(list.get(1))
+                        .setIfNoneMatch(noneMatch)
+                        .setIfModifiedSince(modified)
+                        .setIfUnmodifiedSince(unmodified)
+                        .setTagsConditions(tags);
                     return bc.createWithResponse(null, null, bac);
                 });
 
@@ -453,10 +453,10 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
 
         Mono<Response<AppendBlobItem>> response = bc.setTags(t)
             .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match), BlobTestBase::convertNulls))
-            	.flatMap(list -> {
+                .flatMap(list -> {
                     AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
                         .setLeaseId(list.get(0))
-                            .setIfMatch(list.get(1))
+                        .setIfMatch(list.get(1))
                         .setIfNoneMatch(noneMatch)
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
