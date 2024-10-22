@@ -2,7 +2,7 @@ trigger: none
 pr: none
 
 variables:
-  - template: ../../eng/pipelines/templates/variables/globals.yml
+  - template: /eng/pipelines/templates/variables/globals.yml
 
 stages:
   - stage: "spring_monitor_tests"
