@@ -7,7 +7,6 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.RetryAnalyzer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
@@ -41,12 +40,10 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
-import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -67,6 +64,7 @@ import java.util.Base64;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -946,7 +944,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             CosmosMultiHashTest.CityItem cityItem = new CosmosMultiHashTest.CityItem(UUID.randomUUID().toString(), "Redmond", "98052", 1);
             testContainer.createItem(cityItem).block();
 
-            var responseIterator = testContainer
+            Iterator<FeedResponse<CosmosMultiHashTest. CityItem>> responseIterator = testContainer
                 .queryChangeFeed(changeFeedRequestOptions, CosmosMultiHashTest.CityItem.class) // this call should not fail with partial partition key in request options
                 .byPage()
                 .toIterable()
