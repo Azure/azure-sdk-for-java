@@ -5,17 +5,19 @@ jobs:
       MaxParallel: 2
 
       TestTask:
-        task: Maven@4
+        task: AzurePowerShell@5
         displayName: 'Run Smoke Test Samples'
         inputs:
-          mavenPomFile: $(PomFile)
-          goals: 'test'
-          options: '$(DefaultOptions) -Dtest=**/*Example.java,**/*Sample.java'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaTestVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
+          azureSubscription: azure-sdk-tests-public
+          azurePowerShellVersion: LatestVersion
+          pwsh: true
+          ScriptType: InlineScript
+          Inline: |
+            mvn --% -f $(PomFile) $(DefaultOptions) -Dtest=**/*Example.java,**/*Sample.java' test
+            exit $LASTEXITCODE
         env:
+          # Enable samples tests that use DefaultAzureCredential to load the federated pipeline credential
+          AZURE_POD_IDENTITY_AUTHORITY_HOST: 'FakeAuthorityHost'
           AZURE_LOG_LEVEL: 2
 
       Matrix:
