@@ -567,12 +567,12 @@
 
 - Added support for strongly-typed HTTP header objects to be deserialized lazily on a per-field basis rather than all
   at once during construction.
-- Added `Context` support for `DefaultPollingStrategy`, `OperationResourcPollingStrategy` and `LocationPollingStrategy`.  
+- Added `Context` support for `DefaultPollingStrategy`, `OperationResourcePollingStrategy` and `LocationPollingStrategy`.  
 
 ### Other Changes
 
 - Reduced usage of reflection when sending requests and receiving responses in `RestProxy`.
-- Improved handling for catching and rethrowing exceptions to reduce wrapping exceptions and to not wrap `Error`s.
+- Improved handling for catching and re-throwing exceptions to reduce wrapping exceptions and to not wrap `Error`s.
 
 #### Dependency Updates
 
@@ -848,7 +848,7 @@
 - Added `ProxyOptions.fromConfiguration(Configuration, boolean)` which allows for configuring if the returned proxy
   is resolved.
 - Added a default `JsonSerializer` implementation which is optionally used when creating a `JsonSerializer` with
-  `JsonSerializerProviders` by passing the flag `useDefaultIfAbset`.
+  `JsonSerializerProviders` by passing the flag `useDefaultIfAbsent`.
 - Added the ability to configure HTTP logging level without making code changes by configuring environment property
   `AZURE_HTTP_LOG_DETAIL_LEVEL`.
 - Added constructor overloads to `PagedFlux` which allows for the paging implements to consume the `byPage` page size value.
@@ -1059,7 +1059,7 @@
 - Logging exception at warning level, and append stack trace if log level is verbose.
 - Fixed HttpLoggingPolicy to take null HttpLogOptions.
 - Changed the User agent format.
-- Hide the secrets from evnironment variable.
+- Hide the secrets from environment variable.
 - UserAgentPolicy is using the value stored in the policy no matter what is stored in the passed request. Also, removed the service version from User agent format.
 - Added Iterable<T> overload for IterableStream<T>.
 - Reduce Prefetch Limit for PagedIterable and IterableStream.
