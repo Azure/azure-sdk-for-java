@@ -51,8 +51,7 @@ class QueryPlanRetriever {
                                                                QueryFeature.Top.name() + ", " +
                                                                QueryFeature.DCount.name() + ", " +
                                                                QueryFeature.NonValueAggregate.name() + ", " +
-                                                               QueryFeature.NonStreamingOrderBy.name() + ", " +
-                                                               QueryFeature.HybridSearch.name();
+                                                               QueryFeature.NonStreamingOrderBy.name();
 
     private static final String OLD_SUPPORTED_QUERY_FEATURES = QueryFeature.Aggregate.name() + ", " +
                                                                 QueryFeature.CompositeAggregate.name() + ", " +

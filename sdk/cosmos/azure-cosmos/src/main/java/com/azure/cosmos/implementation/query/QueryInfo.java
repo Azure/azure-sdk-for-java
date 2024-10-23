@@ -37,7 +37,6 @@ public final class QueryInfo extends JsonSerializable {
     private QueryPlanDiagnosticsContext queryPlanDiagnosticsContext;
     private DCountInfo dCountInfo;
     private boolean nonStreamingOrderBy;
-    private HybridSearchQueryInfo hybridSearchQueryInfo;
 
     public QueryInfo() {
     }
@@ -241,15 +240,6 @@ public final class QueryInfo extends JsonSerializable {
         public RequestTimeline getRequestTimeline() {
             return requestTimeline;
         }
-    }
-
-    public boolean hasHybridSearchQueryInfo() {
-        return this.getHybridSearchQueryInfo() != null;
-    }
-
-    public HybridSearchQueryInfo getHybridSearchQueryInfo() {
-        return hybridSearchQueryInfo != null ?
-            this.hybridSearchQueryInfo : (this.hybridSearchQueryInfo = super.getObject("hybridSearchQueryInfo", HybridSearchQueryInfo.class));
     }
 
     @Override
