@@ -12,6 +12,7 @@ import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.javadoc.description.JavadocDescription;
+import com.github.javaparser.javadoc.description.JavadocSnippet;
 import org.slf4j.Logger;
 
 public class MessagesSdkCustomization extends Customization {
@@ -30,11 +31,14 @@ public class MessagesSdkCustomization extends Customization {
         updateModelClassModifierToAbstract(modelsPackage, "MessageTemplateItem");
         customizeMessageTemplateLocation(modelsPackage);
         customizeMessageTemplateItemModel(modelsPackage);
-        AddDeprecateAnnotationToClass(modelsPackage, "MediaNotificationContent");
 
         PackageCustomization channelsModelsPackage = libraryCustomization.getPackage(
             "com.azure.communication.messages.models.channels");
         updateWhatsAppMessageTemplateItemWithBinaryDataContent(channelsModelsPackage);
+
+        AddDeprecateAnnotationToMediaNotificationContent(modelsPackage);
+
+        AddDeprecateAnnotationForImageV0CommunicationKind(modelsPackage);
     }
 
     private void updateModelClassModifierToAbstract(PackageCustomization modelsPackage, String className) {
@@ -202,7 +206,38 @@ public class MessagesSdkCustomization extends Customization {
         });
     }
 
-    private void AddDeprecateAnnotationToClass(PackageCustomization modelsPackage, String className) {
-        modelsPackage.getClass(className).addAnnotation("Deprecated");
+    private void AddDeprecateAnnotationToMediaNotificationContent(PackageCustomization modelsPackage) {
+        modelsPackage.getClass("MediaNotificationContent").customizeAst(ast -> {
+            ast.getClassByName("MediaNotificationContent").ifPresent(clazz -> {
+                clazz.addAnnotation(Deprecated.class);
+
+                // Remove the @deprecated comment as it cause special character and fails in style check
+                clazz.getJavadoc().ifPresent(doc -> {
+                    String description = doc.getDescription().getElements().get(0).toText()
+                        .replace("&#064;deprecated", "@deprecated");
+                    doc.getDescription().getElements().set(0, new JavadocSnippet(description));
+                    clazz.setJavadocComment(doc.toComment());
+                });
+            });
+        });
+    }
+
+    private  void AddDeprecateAnnotationForImageV0CommunicationKind(PackageCustomization modelsPackage) {
+        modelsPackage.getClass("CommunicationMessageKind").customizeAst(ast -> {
+            ast.getClassByName("CommunicationMessageKind")
+                .flatMap(clazz -> clazz.getFieldByName("IMAGE_V0"))
+                .ifPresent(f -> {
+                    f.addAnnotation(Deprecated.class);
+                    f.getJavadocComment().ifPresent(comment -> {
+                        /*
+                            Reducing size comment by replacing with @deprecated since it doesn't fit single line
+                             and fails in style check
+                         */
+                        String content = comment.getContent()
+                            .replace("Image message type.", "@deprecated");
+                        f.setJavadocComment(content);
+                    });
+                });
+        });
     }
 }
