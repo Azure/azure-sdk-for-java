@@ -18,11 +18,11 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(AzureAuthenticationTemplate.class)
-public class SpringTokenCredentialProviderContextProviderAutoConfiguration {
+class SpringTokenCredentialProviderContextProviderAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    static SpringTokenCredentialProviderContextProvider springTokenCredentialProviderContextProvider() {
+    SpringTokenCredentialProviderContextProvider springTokenCredentialProviderContextProvider() {
         return new SpringTokenCredentialProviderContextProvider();
     }
 }

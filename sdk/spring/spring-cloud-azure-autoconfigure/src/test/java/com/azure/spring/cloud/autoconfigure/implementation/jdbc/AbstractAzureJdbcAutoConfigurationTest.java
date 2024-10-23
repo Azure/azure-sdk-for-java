@@ -7,13 +7,16 @@ import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureTokenCredentialAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.implementation.context.SpringTokenCredentialProviderContextProviderAutoConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,7 +35,19 @@ abstract class AbstractAzureJdbcAutoConfigurationTest {
             AzureTokenCredentialAutoConfiguration.class,
             AzureGlobalPropertiesAutoConfiguration.class,
             DataSourceAutoConfiguration.class,
-            SpringTokenCredentialProviderContextProviderAutoConfiguration.class));
+            TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class));
+
+    @Configuration(proxyBeanMethods = false)
+    @ConditionalOnClass(AzureAuthenticationTemplate.class)
+    static
+    class TestSpringTokenCredentialProviderContextProviderAutoConfiguration {
+
+        @Bean
+        @ConditionalOnMissingBean
+        SpringTokenCredentialProviderContextProvider springTokenCredentialProviderContextProvider() {
+            return new SpringTokenCredentialProviderContextProvider();
+        }
+    }
 
     @Test
     void testEnhanceUrlDefaultCredential() {
