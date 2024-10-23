@@ -279,7 +279,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
                 lsn);
         feedRangeLSNContext.handleLSNFromContinuation(this.currentToken);
         ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor()
-            .hasMoreChangesToProcess(response, !feedRangeLSNContext.hasCompleted);
+            .setHasMoreChangesToProcess(response, !feedRangeLSNContext.hasCompleted);
 
         // find next token which can fetch more
         Range<String> initialToken = this.currentToken.getRange();

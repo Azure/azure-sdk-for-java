@@ -177,12 +177,10 @@ private case class ChangeFeedPartitionReader
     }
 
     options.setCustomItemSerializer(itemDeserializer)
-    this.partition.endLsn match {
-      case Some(endLsn) =>
-        ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor
-              .setEndLSN(options, endLsn)
+    this.partition.endLsn.foreach { endLsn =>
+      ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor
+      .setEndLSN(options, endLsn)
     }
-
   }
 
   private val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(readSchema)
@@ -250,7 +248,7 @@ private case class ChangeFeedPartitionReader
         assert(node.lsn != "", "Change feed responses must have non empty _lsn.")
         val nextLsn = SparkBridgeImplementationInternal.toLsn(node.lsn)
 
-        nextLsn <= endLsn
+        nextLsn <= endLsn || this.iterator.hasMoreChangesToProcess.get()
     }
   }
 

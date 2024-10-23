@@ -29,7 +29,6 @@ import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
@@ -82,7 +81,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.net.URI;
 import java.time.Duration;
@@ -91,7 +89,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -1088,7 +1085,8 @@ public class ImplementationBridgeHelpers {
             <TNew, T> FeedResponse<TNew> convertGenericType(FeedResponse<T> feedResponse, Function<T, TNew> conversion);
             <T> FeedResponse<T> createFeedResponse(
                 List<T> results, Map<String, String> headers, CosmosDiagnostics diagnostics);
-            <T> FeedResponse<T> hasMoreChangesToProcess(FeedResponse<T> feedResponse, boolean hasMoreChangesToProcess);
+            <T> FeedResponse<T> setHasMoreChangesToProcess(FeedResponse<T> feedResponse, boolean hasMoreChangesToProcess);
+            <T> boolean getHasMoreChangesToProcess(FeedResponse<T> feedResponse);
         }
     }
 

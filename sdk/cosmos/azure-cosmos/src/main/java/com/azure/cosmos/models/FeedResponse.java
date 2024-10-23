@@ -642,9 +642,14 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
                 }
 
                 @Override
-                public <T> FeedResponse<T> hasMoreChangesToProcess(FeedResponse<T> feedResponse, boolean hasMoreChangesToProcess) {
+                public <T> FeedResponse<T> setHasMoreChangesToProcess(FeedResponse<T> feedResponse, boolean hasMoreChangesToProcess) {
                     feedResponse.hasMoreChangesToProcess = hasMoreChangesToProcess;
                     return feedResponse;
+                }
+
+                @Override
+                public <T> boolean getHasMoreChangesToProcess(FeedResponse<T> feedResponse) {
+                    return feedResponse.hasMoreChangesToProcess;
                 }
             });
     }
