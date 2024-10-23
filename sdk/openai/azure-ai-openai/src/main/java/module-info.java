@@ -6,20 +6,10 @@ module com.azure.ai.openai {
     requires transitive com.azure.core;
     requires transitive com.azure.json;
 
-    requires io.netty.common;
-    requires io.netty.buffer;
-    requires io.netty.transport;
-    requires io.netty.handler;
-    requires io.netty.codec;
-    requires io.netty.codec.http;
-
     exports com.azure.ai.openai;
     exports com.azure.ai.openai.models;
-    exports com.azure.ai.openai.models.realtime;
 
     opens com.azure.ai.openai.models to com.azure.core;
-    opens com.azure.ai.openai.models.realtime to com.azure.core;
     opens com.azure.ai.openai.implementation.models to com.azure.core;
     opens com.azure.ai.openai.implementation to com.azure.core;
-    exports com.azure.ai.openai.implementation;
 }
