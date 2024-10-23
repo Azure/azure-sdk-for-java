@@ -31,7 +31,13 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
     /** @return number of network interface IP configurations associated with this subnet */
     int networkInterfaceIPConfigurationCount();
 
-    /** @return the address space prefix, in CIDR notation, assigned to this subnet */
+    /**
+     * Gets the address space prefix(or one of the prefixes, if this subnet has multiple ones), in CIDR notation, assigned to this subnet.
+     * <p>Use {@link Subnet#addressPrefixes()} if this subnet has multiple prefixes.</p>
+     *
+     * @return the address space prefix(or one of the prefixes, if this subnet has multiple ones), in CIDR notation, assigned to this subnet
+     * @see Subnet#addressPrefixes
+     */
     String addressPrefix();
 
     /**
