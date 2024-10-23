@@ -282,7 +282,8 @@ public class VertxHttpClientBuilder {
      * @return String array of proxy host strings without sanitation.
      */
     private String[] removeNonProxyHostsSanitation(String nonProxyHosts) {
-        String nonProxyHostsSanitationRemoved = NON_PROXY_HOST_REMOVE_SANITIZATION.matcher(nonProxyHosts).replaceAll("");
+        String nonProxyHostsSanitationRemoved
+            = NON_PROXY_HOST_REMOVE_SANITIZATION.matcher(nonProxyHosts).replaceAll("");
 
         nonProxyHostsSanitationRemoved
             = NON_PROXY_HOST_DOT_STAR.matcher(nonProxyHostsSanitationRemoved).replaceAll("*");
