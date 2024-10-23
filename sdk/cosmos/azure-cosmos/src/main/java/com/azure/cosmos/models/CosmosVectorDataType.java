@@ -22,6 +22,11 @@ public enum CosmosVectorDataType {
     UINT8("uint8"),
 
     /**
+     * Represents a float16 data type.
+     */
+    FLOAT16("float16"),
+
+    /**
      * Represents a float32 data type.
      */
     FLOAT32("float32");
