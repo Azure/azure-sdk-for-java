@@ -47,7 +47,7 @@ public class ScenarioOptions {
     @Value("${IDLE_DURATION_MINUTES:0}")
     private int idleDurationInMinutes;
 
-    @Value("${USE_V2_STACK:false}")
+    @Value("${USE_V2:false}")
     private boolean useV2Stack;
 
     public String getTestClass() {
