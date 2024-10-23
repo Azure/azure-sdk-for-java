@@ -10,7 +10,7 @@ jobs:
           pwsh: true
           ScriptType: InlineScript
           Inline: |
-            mvn --% -f $(PomFile) $(DefaultOptions) -Dexec.mainClass="com.azure.smoketest.App" exec:java
+            mvn --% -f $(PomFile) $(DefaultOptions) -Dexec.mainClass=com.azure.smoketest.App exec:java
             exit $LASTEXITCODE
         env:
           # Enable samples tests that use DefaultAzureCredential to load the federated pipeline credential
