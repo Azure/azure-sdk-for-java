@@ -1,0 +1,31 @@
+{
+  "flavor": "azure", 
+  "CrossLanguageDefinitionId": {
+    "com.azure.health.insights.cancerprofiling.CancerProfilingAsyncClient": "ClientForAzureHealthInsights.CancerProfilingClient",
+    "com.azure.health.insights.cancerprofiling.CancerProfilingAsyncClient.beginInferCancerProfile": "ClientForAzureHealthInsights.CancerProfilingClient.inferCancerProfile",
+    "com.azure.health.insights.cancerprofiling.CancerProfilingAsyncClient.beginInferCancerProfileWithModel": "ClientForAzureHealthInsights.CancerProfilingClient.inferCancerProfile",
+    "com.azure.health.insights.cancerprofiling.CancerProfilingClient": "ClientForAzureHealthInsights.CancerProfilingClient",
+    "com.azure.health.insights.cancerprofiling.CancerProfilingClient.beginInferCancerProfile": "ClientForAzureHealthInsights.CancerProfilingClient.inferCancerProfile",
+    "com.azure.health.insights.cancerprofiling.CancerProfilingClient.beginInferCancerProfileWithModel": "ClientForAzureHealthInsights.CancerProfilingClient.inferCancerProfile",
+    "com.azure.health.insights.cancerprofiling.CancerProfilingClientBuilder": "ClientForAzureHealthInsights.CancerProfilingClient",
+    "com.azure.health.insights.cancerprofiling.models.ClinicalCodedElement": "AzureHealthInsights.ClinicalCodedElement",
+    "com.azure.health.insights.cancerprofiling.models.ClinicalDocumentType": "AzureHealthInsights.ClinicalDocumentType",
+    "com.azure.health.insights.cancerprofiling.models.ClinicalNoteEvidence": "AzureHealthInsights.ClinicalNoteEvidence",
+    "com.azure.health.insights.cancerprofiling.models.DocumentContent": "AzureHealthInsights.DocumentContent",
+    "com.azure.health.insights.cancerprofiling.models.DocumentContentSourceType": "AzureHealthInsights.DocumentContentSourceType",
+    "com.azure.health.insights.cancerprofiling.models.DocumentType": "AzureHealthInsights.DocumentType",
+    "com.azure.health.insights.cancerprofiling.models.InferenceEvidence": "AzureHealthInsights.InferenceEvidence",
+    "com.azure.health.insights.cancerprofiling.models.JobStatus": "AzureHealthInsights.JobStatus",
+    "com.azure.health.insights.cancerprofiling.models.OncoPhenotypeData": "AzureHealthInsights.OncoPhenotypeData",
+    "com.azure.health.insights.cancerprofiling.models.OncoPhenotypeInference": "AzureHealthInsights.OncoPhenotypeInference",
+    "com.azure.health.insights.cancerprofiling.models.OncoPhenotypeInferenceType": "AzureHealthInsights.OncoPhenotypeInferenceType",
+    "com.azure.health.insights.cancerprofiling.models.OncoPhenotypeModelConfiguration": "AzureHealthInsights.OncoPhenotypeModelConfiguration",
+    "com.azure.health.insights.cancerprofiling.models.OncoPhenotypePatientResult": "AzureHealthInsights.OncoPhenotypePatientResult",
+    "com.azure.health.insights.cancerprofiling.models.OncoPhenotypeResult": "AzureHealthInsights.OncoPhenotypeResult",
+    "com.azure.health.insights.cancerprofiling.models.OncoPhenotypeResults": "AzureHealthInsights.OncoPhenotypeResults",
+    "com.azure.health.insights.cancerprofiling.models.PatientDocument": "AzureHealthInsights.PatientDocument",
+    "com.azure.health.insights.cancerprofiling.models.PatientInfo": "AzureHealthInsights.PatientInfo",
+    "com.azure.health.insights.cancerprofiling.models.PatientInfoSex": "AzureHealthInsights.PatientInfoSex",
+    "com.azure.health.insights.cancerprofiling.models.PatientRecord": "AzureHealthInsights.PatientRecord"
+  }
+}
