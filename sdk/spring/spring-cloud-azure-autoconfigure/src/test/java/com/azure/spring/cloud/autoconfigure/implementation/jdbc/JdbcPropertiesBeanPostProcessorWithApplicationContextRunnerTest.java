@@ -7,7 +7,6 @@ import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import com.azure.identity.extensions.jdbc.mysql.AzureMysqlAuthenticationPlugin;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureTokenCredentialAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.implementation.context.SpringTokenCredentialProviderContextProviderAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
 import com.azure.spring.cloud.autoconfigure.implementation.passwordless.properties.AzureJdbcPasswordlessProperties;
@@ -32,12 +31,13 @@ class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
     public static final String PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=" + "passwordlessTokenCredential";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+        .withBean("springTokenCredentialProviderContextProvider", SpringTokenCredentialProviderContextProvider.class,
+            SpringTokenCredentialProviderContextProvider::new)
         .withConfiguration(AutoConfigurations.of(AzureJdbcAutoConfiguration.class,
             DataSourceProperties.class,
             AzureJdbcPasswordlessProperties.class,
             AzureGlobalPropertiesAutoConfiguration.class,
-            AzureTokenCredentialAutoConfiguration.class,
-            SpringTokenCredentialProviderContextProviderAutoConfiguration.class));
+            AzureTokenCredentialAutoConfiguration.class));
 
     @Test
     void mySqlAuthPluginNotOnClassPath() {
