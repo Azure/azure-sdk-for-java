@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.circuitBreaker.LocationSpecificHealthContext;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
@@ -191,7 +191,7 @@ public class ClientSideRequestStatistics {
 
             if (locationEndPoint != null) {
                 storeResponseStatistics.regionName =
-                    globalEndpointManager.getRegionName(locationEndPoint, request.getOperationType());
+                    globalEndpointManager.getRegionName(locationEndPoint, request.getOperationType(), request.isPerPartitionAutomaticFailoverEnabledAndWriteRequest);
                 this.regionsContacted.add(storeResponseStatistics.regionName);
                 this.locationEndpointsContacted.add(locationEndPoint);
                 this.regionsContactedWithContext.add(new RegionWithContext(storeResponseStatistics.regionName, locationEndPoint));
@@ -228,7 +228,7 @@ public class ClientSideRequestStatistics {
 
             if (locationEndPoint != null) {
 
-                String regionName = globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType());
+                String regionName = globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType(), rxDocumentServiceRequest.isPerPartitionAutomaticFailoverEnabledAndWriteRequest);
 
                 this.regionsContacted.add(regionName);
                 this.locationEndpointsContacted.add(locationEndPoint);

@@ -88,6 +88,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     private volatile boolean nonIdempotentWriteRetriesEnabled = false;
 
     private volatile boolean hasFeedRangeFilteringBeenApplied = false;
+    public boolean isPerPartitionAutomaticFailoverEnabledAndWriteRequest;
 
     public boolean isReadOnlyRequest() {
         return this.operationType.isReadOnlyOperation();
@@ -1103,6 +1104,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.isFeed = this.isFeed;
         rxDocumentServiceRequest.resourceId = this.resourceId;
         rxDocumentServiceRequest.hasFeedRangeFilteringBeenApplied = this.hasFeedRangeFilteringBeenApplied;
+        rxDocumentServiceRequest.isPerPartitionAutomaticFailoverEnabledAndWriteRequest = this.isPerPartitionAutomaticFailoverEnabledAndWriteRequest;
         return rxDocumentServiceRequest;
     }
 

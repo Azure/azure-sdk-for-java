@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.circuitBreaker.PartitionLevelCircuitBreakerConfig;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
@@ -202,8 +202,6 @@ public class Configs {
     public static final String PREVENT_INVALID_ID_CHARS = "COSMOS.PREVENT_INVALID_ID_CHARS";
     public static final String PREVENT_INVALID_ID_CHARS_VARIABLE = "COSMOS_PREVENT_INVALID_ID_CHARS";
     public static final boolean DEFAULT_PREVENT_INVALID_ID_CHARS = false;
-
-
     // Metrics
     // Samples:
     //            System.setProperty(
@@ -248,6 +246,8 @@ public class Configs {
     private static final boolean DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = false;
     private static final String PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN";
 
+    private static final boolean DEFAULT_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED = false;
+    private static final String IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED = "COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED";
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -659,6 +659,15 @@ public class Configs {
                     String.valueOf(DEFAULT_SHOULD_LOG_INCORRECTLY_MAPPED_SESSION_TOKEN)));
 
         return Boolean.parseBoolean(shouldSystemExit);
+    }
+
+    public static String isPerPartitionAutomaticFailoverEnabled() {
+
+        return System.getProperty(
+            IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED)),
+                StringUtils.EMPTY));
     }
 
     public static boolean shouldOptInDefaultCircuitBreakerConfig() {
