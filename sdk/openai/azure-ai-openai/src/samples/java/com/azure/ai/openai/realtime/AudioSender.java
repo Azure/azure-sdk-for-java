@@ -36,14 +36,17 @@ public class AudioSender {
             return Mono.error(e);
         }
 
+        // UklGRn ... dXV1Q==
+
         for (int i = 0; i < audioBytes.length; i += BYTES_PER_CHUNK) {
             int end = Math.min(audioBytes.length, i + BYTES_PER_CHUNK);
             byte[] chunk = new byte[end - i];
             System.arraycopy(audioBytes, i, chunk, 0, end - i);
-            byte[] base64Audio = Base64.getEncoder().encode(chunk);
-            client.sendMessage(new RealtimeClientEventInputAudioBufferAppend(base64Audio))
+//            byte[] base64Audio = Base64.getEncoder().encode(chunk);
+            client.sendMessage(new RealtimeClientEventInputAudioBufferAppend(chunk))
                     .block();
         }
+
         return Mono.empty();
     }
 

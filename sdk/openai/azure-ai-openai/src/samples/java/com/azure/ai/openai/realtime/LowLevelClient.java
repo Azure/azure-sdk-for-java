@@ -2,6 +2,7 @@ package com.azure.ai.openai.realtime;
 
 import com.azure.ai.openai.RealtimeAsyncClient;
 import com.azure.ai.openai.RealtimeClientBuilder;
+import com.azure.ai.openai.models.realtime.RealtimeAudioFormat;
 import com.azure.ai.openai.models.realtime.RealtimeAudioInputTranscriptionModel;
 import com.azure.ai.openai.models.realtime.RealtimeAudioInputTranscriptionSettings;
 import com.azure.ai.openai.models.realtime.RealtimeClientEventSessionUpdate;
@@ -78,7 +79,7 @@ public class LowLevelClient {
                     if (userInputRequest instanceof SessionUpdateRequest) {
                         return client.sendMessage(sessionUpdate());
                     } else if (userInputRequest instanceof SendAudioRequest) {
-                        return AudioSender.sendAudio(client, openResourceFile("arc-easy-q237-tts.wav"));
+                        return AudioSender.sendAudio(client, openResourceFile("audio_weather_alaw.wav"));
                     } else if (userInputRequest instanceof EndSession) {
                         return Mono.empty();
                     } else {
@@ -109,6 +110,7 @@ public class LowLevelClient {
                                 new RealtimeAudioInputTranscriptionSettings()
                                         .setModel(RealtimeAudioInputTranscriptionModel.WHISPER_1)
                         )
+                        .setInputAudioFormat(RealtimeAudioFormat.G711_ALAW)
                         .setTurnDetection(new RealtimeServerVadTurnDetection()));
     }
 
@@ -148,7 +150,9 @@ public class LowLevelClient {
                 break;
             case "input_audio_buffer.speech_started":
                 RealtimeServerEventInputAudioBufferSpeechStarted inputAudioBufferSpeechStarted = (RealtimeServerEventInputAudioBufferSpeechStarted) serverEvent;
-                // Handle input_audio_buffer.speech_started event
+                System.out.println("Speech started");
+                System.out.println("\tEvent ID: " + inputAudioBufferSpeechStarted.getEventId());
+                System.out.println("\tStart Time: " + inputAudioBufferSpeechStarted.getAudioStartMs());
                 break;
             case "input_audio_buffer.speech_stopped":
                 RealtimeServerEventInputAudioBufferSpeechStopped inputAudioBufferSpeechStopped = (RealtimeServerEventInputAudioBufferSpeechStopped) serverEvent;
@@ -160,7 +164,7 @@ public class LowLevelClient {
                 break;
             case "conversation.item.input_audio_transcription.completed":
                 RealtimeServerEventConversationItemInputAudioTranscriptionCompleted conversationItemInputAudioTranscriptionCompleted = (RealtimeServerEventConversationItemInputAudioTranscriptionCompleted) serverEvent;
-                // Handle conversation.item.input_audio_transcription.completed event
+                System.out.println("Transcription: " + conversationItemInputAudioTranscriptionCompleted.getTranscript());
                 break;
             case "conversation.item.input_audio_transcription.failed":
                 RealtimeServerEventConversationItemInputAudioTranscriptionFailed conversationItemInputAudioTranscriptionFailed = (RealtimeServerEventConversationItemInputAudioTranscriptionFailed) serverEvent;
@@ -180,6 +184,8 @@ public class LowLevelClient {
                 break;
             case "response.done":
                 RealtimeServerEventResponseDone responseDone = (RealtimeServerEventResponseDone) serverEvent;
+                System.out.println("Response done received");
+//                requestUserInput.emitNext(new EndSession(), Sinks.EmitFailureHandler.FAIL_FAST);
                 // Handle response.done event
                 break;
             case "response.output_item.added":
@@ -216,10 +222,12 @@ public class LowLevelClient {
                 break;
             case "response.audio.delta":
                 RealtimeServerEventResponseAudioDelta responseAudioDelta = (RealtimeServerEventResponseAudioDelta) serverEvent;
+                System.out.println("Audio delta received");
                 // Handle response.audio.delta event
                 break;
             case "response.audio.done":
                 RealtimeServerEventResponseAudioDone responseAudioDone = (RealtimeServerEventResponseAudioDone) serverEvent;
+                System.out.println("Audio done received");
                 // Handle response.audio.done event
                 break;
             case "response.function_call_arguments.delta":

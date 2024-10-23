@@ -78,6 +78,10 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
             TextWebSocketFrame textFrame = (TextWebSocketFrame) frame;
             loggerReference.get().atVerbose().addKeyValue("text", textFrame.text()).log("Received TextWebSocketFrame");
             Object wpsMessage = messageDecoder.decode(textFrame.text());
+            // TODO jpalvarez, accumulate fragments while !frame.isFinalFragment()
+            // RFC 6455, Section 5.4 https://www.rfc-editor.org/rfc/rfc6455.html#section-5.4
+            // only TextFrames can be fragmented
+            // frame.isFinalFragment();
             messageHandler.accept(wpsMessage);
         } else if (frame instanceof PingWebSocketFrame) {
             // Ping, reply Pong

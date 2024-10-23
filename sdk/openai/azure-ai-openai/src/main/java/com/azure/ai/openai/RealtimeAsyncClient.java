@@ -429,15 +429,15 @@ public final class RealtimeAsyncClient implements Closeable {
 
     public Mono<Void> sendMessage(RealtimeClientEvent message) {
         return checkStateBeforeSend().then(Mono.create(sink -> {
-//                        if (logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
-//                            try {
-//                                String json = JacksonAdapter.createDefaultSerializerAdapter()
-//                                    .serialize(message, SerializerEncoding.JSON);
-//                                logger.atInfo().addKeyValue("message", json).log("Send message");
-//                            } catch (IOException e) {
-//                                sink.error(new UncheckedIOException("Failed to serialize message for VERBOSE logging", e));
-//                            }
-//                        }
+                        if (logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
+                            try {
+                                String json = JacksonAdapter.createDefaultSerializerAdapter()
+                                    .serialize(message, SerializerEncoding.JSON);
+                                logger.atInfo().addKeyValue("message", json).log("Send message");
+                            } catch (IOException e) {
+                                sink.error(new UncheckedIOException("Failed to serialize message for VERBOSE logging", e));
+                            }
+                        }
 
             webSocketSession.sendObjectAsync(message, sendResult -> {
                 if (sendResult.isOK()) {
