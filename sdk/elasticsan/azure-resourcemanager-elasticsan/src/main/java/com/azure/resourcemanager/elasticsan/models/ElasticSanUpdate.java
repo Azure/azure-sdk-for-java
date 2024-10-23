@@ -135,6 +135,29 @@ public final class ElasticSanUpdate implements JsonSerializable<ElasticSanUpdate
     }
 
     /**
+     * Get the autoScaleProperties property: Auto Scale Properties for Elastic San Appliance.
+     * 
+     * @return the autoScaleProperties value.
+     */
+    public AutoScaleProperties autoScaleProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().autoScaleProperties();
+    }
+
+    /**
+     * Set the autoScaleProperties property: Auto Scale Properties for Elastic San Appliance.
+     * 
+     * @param autoScaleProperties the autoScaleProperties value to set.
+     * @return the ElasticSanUpdate object itself.
+     */
+    public ElasticSanUpdate withAutoScaleProperties(AutoScaleProperties autoScaleProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticSanUpdateProperties();
+        }
+        this.innerProperties().withAutoScaleProperties(autoScaleProperties);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

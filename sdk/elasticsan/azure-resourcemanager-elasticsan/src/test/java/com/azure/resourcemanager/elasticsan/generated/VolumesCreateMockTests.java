@@ -24,7 +24,7 @@ public final class VolumesCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"volumeId\":\"cslfaoqzpiyylha\",\"creationData\":{\"createSource\":\"Disk\",\"sourceId\":\"ccsphkaivwi\"},\"sizeGiB\":6296560984353845801,\"storageTarget\":{\"targetIqn\":\"wuggwolu\",\"targetPortalHostname\":\"zbwemh\",\"targetPortalPort\":200585156,\"provisioningState\":\"Succeeded\",\"status\":\"Unknown\"},\"managedBy\":{\"resourceId\":\"wmsweypqwd\"},\"provisioningState\":\"Succeeded\"},\"id\":\"cccnxqhuexmktt\",\"name\":\"stvlzywemhzrnc\",\"type\":\"dtclusiypb\"}";
+            = "{\"properties\":{\"volumeId\":\"msweypqwdxggicc\",\"creationData\":{\"createSource\":\"DiskSnapshot\",\"sourceId\":\"uexmkttlst\"},\"sizeGiB\":7893862569434986458,\"storageTarget\":{\"targetIqn\":\"emhzrncsdtc\",\"targetPortalHostname\":\"siypbs\",\"targetPortalPort\":1861224364,\"provisioningState\":\"Succeeded\",\"status\":\"Invalid\"},\"managedBy\":{\"resourceId\":\"eadcygqukyhejhz\"},\"provisioningState\":\"Succeeded\"},\"id\":\"fpel\",\"name\":\"lppvksrpq\",\"type\":\"ujzra\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,17 +34,17 @@ public final class VolumesCreateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Volume response = manager.volumes()
-            .define("tdlmkkzevd")
-            .withExistingVolumegroup("yznkby", "utwpfhp", "gmhrskdsnfdsdoak")
-            .withSizeGiB(549663298591756993L)
+            .define("bminrfdwoyuhhzi")
+            .withExistingVolumegroup("qmoa", "ufgmjzrwrdg", "twaenuuzko")
+            .withSizeGiB(2003517513510777740L)
             .withCreationData(
-                new SourceCreationData().withCreateSource(VolumeCreateOption.DISK_SNAPSHOT).withSourceId("ngqqmoakuf"))
-            .withManagedBy(new ManagedByInfo().withResourceId("oyuhhziui"))
+                new SourceCreationData().withCreateSource(VolumeCreateOption.VOLUME_SNAPSHOT).withSourceId("hoftr"))
+            .withManagedBy(new ManagedByInfo().withResourceId("hka"))
             .create();
 
-        Assertions.assertEquals(VolumeCreateOption.DISK, response.creationData().createSource());
-        Assertions.assertEquals("ccsphkaivwi", response.creationData().sourceId());
-        Assertions.assertEquals(6296560984353845801L, response.sizeGiB());
-        Assertions.assertEquals("wmsweypqwd", response.managedBy().resourceId());
+        Assertions.assertEquals(VolumeCreateOption.DISK_SNAPSHOT, response.creationData().createSource());
+        Assertions.assertEquals("uexmkttlst", response.creationData().sourceId());
+        Assertions.assertEquals(7893862569434986458L, response.sizeGiB());
+        Assertions.assertEquals("eadcygqukyhejhz", response.managedBy().resourceId());
     }
 }
