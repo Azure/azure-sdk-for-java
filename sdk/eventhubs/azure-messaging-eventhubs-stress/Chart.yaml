@@ -2,7 +2,7 @@ apiVersion: v2
 name: java-eventhubs
 description: stress test for azure event hubs client in java
 version: 0.1.1
-appVersion: v0.1
+appVersion: v0.2
 annotations:
   stressTest: 'true'  # enable auto-discovery of this test via `find-all-stress-packages.ps1`
   namespace: 'java-eh' # kubernetes namespace that stress test package will be installed

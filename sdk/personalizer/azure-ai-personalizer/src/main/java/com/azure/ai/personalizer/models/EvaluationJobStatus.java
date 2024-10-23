@@ -5,46 +5,69 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EvaluationJobStatus. */
+/**
+ * The status of the job processing the evaluation.
+ */
 public final class EvaluationJobStatus extends ExpandableStringEnum<EvaluationJobStatus> {
-    /** Static value completed for EvaluationJobStatus. */
+    /**
+     * Static value completed for EvaluationJobStatus.
+     */
     public static final EvaluationJobStatus COMPLETED = fromString("completed");
 
-    /** Static value pending for EvaluationJobStatus. */
+    /**
+     * Static value pending for EvaluationJobStatus.
+     */
     public static final EvaluationJobStatus PENDING = fromString("pending");
 
-    /** Static value failed for EvaluationJobStatus. */
+    /**
+     * Static value failed for EvaluationJobStatus.
+     */
     public static final EvaluationJobStatus FAILED = fromString("failed");
 
-    /** Static value notSubmitted for EvaluationJobStatus. */
+    /**
+     * Static value notSubmitted for EvaluationJobStatus.
+     */
     public static final EvaluationJobStatus NOT_SUBMITTED = fromString("notSubmitted");
 
-    /** Static value timeout for EvaluationJobStatus. */
+    /**
+     * Static value timeout for EvaluationJobStatus.
+     */
     public static final EvaluationJobStatus TIMEOUT = fromString("timeout");
 
-    /** Static value optimalPolicyApplied for EvaluationJobStatus. */
+    /**
+     * Static value optimalPolicyApplied for EvaluationJobStatus.
+     */
     public static final EvaluationJobStatus OPTIMAL_POLICY_APPLIED = fromString("optimalPolicyApplied");
 
-    /** Static value onlinePolicyRetained for EvaluationJobStatus. */
+    /**
+     * Static value onlinePolicyRetained for EvaluationJobStatus.
+     */
     public static final EvaluationJobStatus ONLINE_POLICY_RETAINED = fromString("onlinePolicyRetained");
 
     /**
+     * Creates a new instance of EvaluationJobStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EvaluationJobStatus() {
+    }
+
+    /**
      * Creates or finds a EvaluationJobStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EvaluationJobStatus.
      */
-    @JsonCreator
     public static EvaluationJobStatus fromString(String name) {
         return fromString(name, EvaluationJobStatus.class);
     }
 
     /**
      * Gets known EvaluationJobStatus values.
-     *
+     * 
      * @return known EvaluationJobStatus values.
      */
     public static Collection<EvaluationJobStatus> values() {

@@ -40,8 +40,8 @@ public class MessageTemplateClientTest extends CommunicationMessagesTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void shouldReturnWhatsTemplateListWithTokenCredentialClient(HttpClient httpClient) {
-        messageTemplateClient = buildMessageTemplateClientWithTokenCredential(httpClient);
+    public void shouldReturnWhatsTemplateListInSinglePage(HttpClient httpClient) {
+        messageTemplateClient = buildMessageTemplateClient(httpClient);
 
         messageTemplateClient.listTemplates(CHANNEL_REGISTRATION_ID)
             .stream()

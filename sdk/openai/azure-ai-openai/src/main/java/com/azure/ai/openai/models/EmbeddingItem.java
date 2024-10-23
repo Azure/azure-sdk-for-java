@@ -140,4 +140,20 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
      * List of embeddings value in base64 format for the input prompt.
      */
     private String embeddingBase64;
+
+    /*
+     * The object type which is always 'embedding'.
+     */
+    @Generated
+    private final String object = "embedding";
+
+    /**
+     * Get the object property: The object type which is always 'embedding'.
+     *
+     * @return the object value.
+     */
+    @Generated
+    public String getObject() {
+        return this.object;
+    }
 }
