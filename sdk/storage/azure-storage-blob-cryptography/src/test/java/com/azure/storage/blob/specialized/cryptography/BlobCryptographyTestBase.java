@@ -62,6 +62,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -259,10 +260,16 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
             : match;
     }
 
-    protected String setupBlobMatchCondition(EncryptedBlobAsyncClient ebbac, String match) {
+    protected Mono<String> setupBlobMatchCondition(EncryptedBlobAsyncClient ebbac, String match) {
         return RECEIVED_ETAG.equals(match)
-            ? ebbac.getPropertiesWithResponse(null).block().getHeaders().getValue(HttpHeaderName.ETAG)
-            : match;
+            ? ebbac.getProperties().map(BlobProperties::getETag)
+            : Mono.justOrEmpty(match).defaultIfEmpty("null");
+    }
+
+    protected static List<String> convertNulls(String lease, String match) {
+        String newLease = "null".equals(lease) ? null : lease;
+        String newMatch = "null".equals(match) ? null : match;
+        return Arrays.asList(newLease, newMatch);
     }
 
     /**
@@ -285,17 +292,21 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
         return RECEIVED_LEASE_ID.equals(leaseID) ? responseLeaseId : leaseID;
     }
 
-    protected String setupBlobLeaseCondition(BlobAsyncClient bac, String leaseID) {
-        String responseLeaseId = null;
+    protected Mono<String> setupBlobLeaseCondition(BlobAsyncClient bac, String leaseID) {
+        Mono<String> responseLeaseId = null;
         if (RECEIVED_LEASE_ID.equals(leaseID) || GARBAGE_LEASE_ID.equals(leaseID)) {
             responseLeaseId = new BlobLeaseClientBuilder()
                 .blobAsyncClient(bac)
                 .buildAsyncClient()
-                .acquireLease(-1)
-                .block();
+                .acquireLease(-1);
         }
 
-        return RECEIVED_LEASE_ID.equals(leaseID) ? responseLeaseId : leaseID;
+        if (responseLeaseId == null) {
+            return Mono.justOrEmpty(leaseID).defaultIfEmpty("null");
+        }
+
+        return responseLeaseId.map(returnedLeaseId -> RECEIVED_LEASE_ID.equals(leaseID)
+            ? returnedLeaseId : (leaseID == null ? "null" : leaseID));
     }
 
     protected static BlobLeaseClient createLeaseClient(BlobClient blobClient) {
