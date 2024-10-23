@@ -4,35 +4,79 @@
 
 package com.azure.media.videoanalyzer.edge.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of the remote device adapter target. */
-@Fluent
-public final class RemoteDeviceAdapterTarget {
+/**
+ * Properties of the remote device adapter target.
+ */
+@Immutable
+public final class RemoteDeviceAdapterTarget implements JsonSerializable<RemoteDeviceAdapterTarget> {
     /*
      * Hostname or IP address of the remote device.
      */
-    @JsonProperty(value = "host", required = true)
-    private String host;
+    private final String host;
 
     /**
      * Creates an instance of RemoteDeviceAdapterTarget class.
-     *
+     * 
      * @param host the host value to set.
      */
-    @JsonCreator
-    public RemoteDeviceAdapterTarget(@JsonProperty(value = "host", required = true) String host) {
+    public RemoteDeviceAdapterTarget(String host) {
         this.host = host;
     }
 
     /**
      * Get the host property: Hostname or IP address of the remote device.
-     *
+     * 
      * @return the host value.
      */
     public String getHost() {
         return this.host;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("host", this.host);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RemoteDeviceAdapterTarget from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RemoteDeviceAdapterTarget if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RemoteDeviceAdapterTarget.
+     */
+    public static RemoteDeviceAdapterTarget fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean hostFound = false;
+            String host = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("host".equals(fieldName)) {
+                    host = reader.getString();
+                    hostFound = true;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (hostFound) {
+                return new RemoteDeviceAdapterTarget(host);
+            }
+            throw new IllegalStateException("Missing required property: host");
+        });
     }
 }
