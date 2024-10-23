@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.ShouldRetryResult;
@@ -269,12 +270,23 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     }
 
     @Override
-    public <T> boolean hasFetchedAllChangesAvailableNow(FeedResponse<T> response) {
-        FeedRangeLSNContext feedRangeLSNContext =
-            this.updateFeedRangeEndLSNIfAbsent(
-                this.currentToken.getRange(),
-                response.getSessionToken());
+    public <T> boolean hasFetchedAllChanges(FeedResponse<T> response, long endLSN) {
+        FeedRangeLSNContext feedRangeLSNContext;
+        if (endLSN != -1) {
+            feedRangeLSNContext =
+                this.updateFeedRangeEndLSNIfAbsent(
+                    this.currentToken.getRange(),
+                    endLSN);
+        } else {
+            feedRangeLSNContext =
+                this.updateFeedRangeEndLSNIfAbsent(
+                    this.currentToken.getRange(),
+                    response.getSessionToken());
+
+        }
         feedRangeLSNContext.handleLSNFromContinuation(this.currentToken);
+        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor()
+            .hasMoreChangesToProcess(response, !feedRangeLSNContext.hasCompleted);
 
         // find next token which can fetch more
         Range<String> initialToken = this.currentToken.getRange();
@@ -282,9 +294,9 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
             this.moveToNextToken();
         } while (
             !this.currentToken.getRange().equals(initialToken) &&
-                this.hasFetchAllChangesAvailableNowForFeedRange(this.currentToken.getRange()));
+                this.hasFetchedAllChangesForFeedRange(this.currentToken.getRange()));
 
-        return this.hasFetchAllChangesAvailableNowForFeedRange(this.currentToken.getRange());
+        return this.hasFetchedAllChangesForFeedRange(this.currentToken.getRange());
     }
 
     @Override
@@ -351,7 +363,20 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
             });
     }
 
-    private boolean hasFetchAllChangesAvailableNowForFeedRange(Range<String> range) {
+    private FeedRangeLSNContext updateFeedRangeEndLSNIfAbsent(
+        Range<String> targetedRange,
+        long endLSN) {
+        return this.feedRangeLSNContextMap.computeIfAbsent(
+            targetedRange,
+            (range) -> {
+                return new FeedRangeLSNContext(
+                    targetedRange,
+                    endLSN
+                );
+            });
+    }
+
+    private boolean hasFetchedAllChangesForFeedRange(Range<String> range) {
         return this.feedRangeLSNContextMap.containsKey(range) &&
             this.feedRangeLSNContextMap.get(range).hasCompleted;
     }

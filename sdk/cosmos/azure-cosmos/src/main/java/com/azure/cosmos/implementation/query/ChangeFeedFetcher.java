@@ -43,6 +43,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
     private final Supplier<RxDocumentServiceRequest> createRequestFunc;
     private final Supplier<DocumentClientRetryPolicy> feedRangeContinuationRetryPolicySupplier;
     private final boolean completeAfterAllCurrentChangesRetrieved;
+    private final long endLSN;
 
     public ChangeFeedFetcher(
         RxDocumentClientImpl client,
@@ -54,6 +55,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         int maxItemCount,
         boolean isSplitHandlingDisabled,
         boolean completeAfterAllCurrentChangesRetrieved,
+        long endLSN,
         OperationContextAndListenerTuple operationContext,
         GlobalEndpointManager globalEndpointManager,
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
@@ -79,6 +81,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                 isSplitHandlingDisabled);
         this.createRequestFunc = createRequestFunc;
         this.completeAfterAllCurrentChangesRetrieved = completeAfterAllCurrentChangesRetrieved;
+        this.endLSN = endLSN;
     }
 
     @Override
@@ -115,10 +118,10 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                        FeedRangeContinuation continuationSnapshot =
                            this.changeFeedState.getContinuation();
 
-                       if (this.completeAfterAllCurrentChangesRetrieved) {
+                       if (this.completeAfterAllCurrentChangesRetrieved || this.endLSN != -1) {
                            if (continuationSnapshot != null) {
                                //track the end-LSN available now for each sub-feedRange and then find the next sub-feedRange to fetch more changes
-                               boolean shouldComplete = continuationSnapshot.hasFetchedAllChangesAvailableNow(r);
+                               boolean shouldComplete = continuationSnapshot.hasFetchedAllChanges(r, this.endLSN);
                                if (shouldComplete) {
                                    this.disableShouldFetchMore();
                                    return Mono.just(r);
