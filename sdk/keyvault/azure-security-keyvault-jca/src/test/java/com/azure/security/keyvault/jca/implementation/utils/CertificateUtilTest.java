@@ -18,6 +18,7 @@ import java.security.NoSuchProviderException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 
+import static com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.getCertificateNameFromCertificateItemId;
 import static com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.loadX509CertificateFromFile;
 import static com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.loadX509CertificatesFromFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -78,5 +79,12 @@ public class CertificateUtilTest {
         InputStream inputStream = new FileInputStream(file);
         Certificate[] certificates = loadX509CertificatesFromFile(inputStream);
         assertEquals(expectedCertificateNumber, certificates.length);
+    }
+
+    @Test
+    public void getCertificateNameFromCertificateItemIdTest() {
+        assertEquals("mycert", getCertificateNameFromCertificateItemId("https://test.vault.azure.net/certificates/mycert"));
+        assertEquals("mycert", getCertificateNameFromCertificateItemId("https://test-certificates.vault.azure.net/certificates/mycert"));
+        assertEquals("mycert", getCertificateNameFromCertificateItemId("https://mycertificates.vault.azure.net/certificates/mycert"));
     }
 }
