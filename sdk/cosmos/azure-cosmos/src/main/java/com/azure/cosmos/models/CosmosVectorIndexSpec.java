@@ -6,6 +6,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Vector Indexes spec for Azure CosmosDB service.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public final class CosmosVectorIndexSpec {
 
     private final JsonSerializable jsonSerializable;
@@ -104,15 +106,12 @@ public final class CosmosVectorIndexSpec {
     }
 
     private Boolean validateIndexType(boolean isIndexingSearchListSize) {
-        if (this.jsonSerializable.getString(Constants.Properties.VECTOR_INDEX_TYPE).equals(CosmosVectorIndexType.DISK_ANN.toString()) ||
-            this.jsonSerializable.getString(Constants.Properties.VECTOR_INDEX_TYPE).equals(CosmosVectorIndexType.DISK_ANN.toString())) {
-            return true;
+        String vectorIndexType = this.jsonSerializable.getString(Constants.Properties.VECTOR_INDEX_TYPE);
+        if (!isIndexingSearchListSize) {
+            return vectorIndexType.equals(CosmosVectorIndexType.QUANTIZED_FLAT.toString()) ||
+                vectorIndexType.equals(CosmosVectorIndexType.DISK_ANN.toString());
         }
-
-        if (isIndexingSearchListSize && this.jsonSerializable.getString(Constants.Properties.VECTOR_INDEX_TYPE).equals(CosmosVectorIndexType.DISK_ANN.toString())) {
-            return true;
-        }
-        return false;
+        return vectorIndexType.equals(CosmosVectorIndexType.DISK_ANN.toString());
     }
 
     /**
@@ -125,8 +124,10 @@ public final class CosmosVectorIndexSpec {
      * @return CosmosVectorIndexSpec
      */
     public CosmosVectorIndexSpec setQuantizationByteSize(Integer quantizationByteSize) {
-        this.quantizationByteSize = quantizationByteSize;
-        this.jsonSerializable.set(Constants.Properties.VECTOR_QUANTIZATION_BYTE_SIZE, this.quantizationByteSize, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        if (validateIndexType(false) && quantizationByteSize != null) {
+            this.quantizationByteSize = quantizationByteSize;
+            this.jsonSerializable.set(Constants.Properties.VECTOR_QUANTIZATION_BYTE_SIZE, this.quantizationByteSize, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        }
         return this;
     }
 
@@ -157,9 +158,11 @@ public final class CosmosVectorIndexSpec {
      *                               25 and 500.
      * @return CosmosVectorIndexSpec
      */
-    public CosmosVectorIndexSpec setIndexingSearchListSize(int indexingSearchListSize) {
-        this.indexingSearchListSize = indexingSearchListSize;
-        this.jsonSerializable.set(Constants.Properties.VECTOR_INDEXING_SEARCH_LIST_SIZE, this.indexingSearchListSize, CosmosItemSerializer.DEFAULT_SERIALIZER);
+    public CosmosVectorIndexSpec setIndexingSearchListSize(Integer indexingSearchListSize) {
+        if (validateIndexType(true) && indexingSearchListSize != null) {
+            this.indexingSearchListSize = indexingSearchListSize;
+            this.jsonSerializable.set(Constants.Properties.VECTOR_INDEXING_SEARCH_LIST_SIZE, this.indexingSearchListSize, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        }
         return this;
     }
 
@@ -188,8 +191,10 @@ public final class CosmosVectorIndexSpec {
      * @return CosmosVectorIndexSpec
      */
     public CosmosVectorIndexSpec setVectorIndexShardKey(List<String> vectorIndexShardKey) {
-        this.vectorIndexShardKey = vectorIndexShardKey;
-        this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_SHARD_KEY, this.indexingSearchListSize, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        if (validateIndexType(true) && vectorIndexShardKey != null) {
+            this.vectorIndexShardKey = vectorIndexShardKey;
+            this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_SHARD_KEY, this.vectorIndexShardKey, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        }
         return this;
     }
 
