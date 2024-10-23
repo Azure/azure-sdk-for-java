@@ -39,6 +39,7 @@ import com.azure.ai.openai.realtime.models.RealtimeServerEventSessionCreated;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventSessionUpdated;
 import com.azure.ai.openai.realtime.models.RealtimeServerVadTurnDetection;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import reactor.core.Disposable;
@@ -57,10 +58,17 @@ public class LowLevelClient {
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
         String deploymentOrModelId = Configuration.getGlobalConfiguration().get("MODEL_OR_DEPLOYMENT_NAME");
 
+        String openAIKey = Configuration.getGlobalConfiguration().get("OPENAI_KEY");
+        String openAIModel = Configuration.getGlobalConfiguration().get("OPENAI_MODEL");
+
         RealtimeAsyncClient client = new RealtimeClientBuilder()
-                .endpoint(endpoint)
-                .deploymentOrModelName(deploymentOrModelId)
-                .credential(new AzureKeyCredential(azureOpenaiKey))
+                // Azure
+//                .endpoint(endpoint)
+//                .deploymentOrModelName(deploymentOrModelId)
+//                .credential(new AzureKeyCredential(azureOpenaiKey))
+                // non-Azure
+                .credential(new KeyCredential(openAIKey))
+                .deploymentOrModelName(openAIModel)
                 .buildAsyncClient();
 
         // We create our user input requester as a reactor.Sink

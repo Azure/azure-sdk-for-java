@@ -112,7 +112,7 @@ public class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientB
 
         // TODO jpalvarezl: account for TokenCredential too
         return useNonAzureOpenAIService() ?
-            ClientEndpointConfiguration.createNonAzureClientEndpointConfiguration(endpoint, userAgent, deploymentOrModelName, keyCredential) :
+            ClientEndpointConfiguration.createNonAzureClientEndpointConfiguration(OPENAI_BASE_URL, userAgent, deploymentOrModelName, keyCredential) :
             ClientEndpointConfiguration.createAzureClientEndpointConfiguration(endpoint, userAgent, deploymentOrModelName, OpenAIServiceVersion.V2024_10_01_PREVIEW, keyCredential);
     }
 
