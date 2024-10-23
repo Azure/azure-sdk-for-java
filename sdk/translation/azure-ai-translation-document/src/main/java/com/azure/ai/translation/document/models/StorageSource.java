@@ -5,7 +5,6 @@ package com.azure.ai.translation.document.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -36,7 +35,6 @@ public final class StorageSource extends ExpandableStringEnum<StorageSource> {
      * @return the corresponding StorageSource.
      */
     @Generated
-    @JsonCreator
     public static StorageSource fromString(String name) {
         return fromString(name, StorageSource.class);
     }
