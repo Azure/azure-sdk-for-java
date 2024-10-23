@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -18,8 +19,8 @@ public final class CosmosVectorIndexSpec {
 
     private final JsonSerializable jsonSerializable;
     private String type;
-    private int quantizationByteSize;
-    private int indexingSearchListSize;
+    private Integer quantizationByteSize;
+    private Integer indexingSearchListSize;
     private List<String> vectorIndexShardKey;
 
     /**
@@ -71,6 +72,15 @@ public final class CosmosVectorIndexSpec {
         checkNotNull(type, "cosmosVectorIndexType cannot be null");
         this.type = type;
         this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_TYPE, this.type, CosmosItemSerializer.DEFAULT_SERIALIZER);
+
+        // Reset restricted properties if the type is not DiskANN or QuantizedFlat
+        if (!type.equals(CosmosVectorIndexType.DISK_ANN.toString()) && !type.equals(CosmosVectorIndexType.QUANTIZED_FLAT.toString())) {
+            this.quantizationByteSize = null;
+            this.vectorIndexShardKey = null;
+        }
+        if (!type.equals(CosmosVectorIndexType.DISK_ANN.toString())) {
+            this.indexingSearchListSize = null;
+        }
         return this;
     }
 
@@ -78,15 +88,31 @@ public final class CosmosVectorIndexSpec {
      * Gets the quantization byte size
      *
      * @return quantizationByteSize the number of bytes used in product quantization of the vectors.
-     *         A larger value may result in better recall for vector searches at the expense of latency.
-     *         This applies to index types DiskANN and quantizedFlat. The allowed range for this parameter
-     *         is between 1 and 3.
+     * A larger value may result in better recall for vector searches at the expense of latency.
+     * This applies to index types DiskANN and quantizedFlat. The allowed range for this parameter
+     * is between 1 and 3.
      */
-    public int getQuantizationByteSize() {
-        if (this.quantizationByteSize == 0) {
+    public Integer getQuantizationByteSize() {
+        if (this.quantizationByteSize == null && validateIndexType(false)) {
             this.quantizationByteSize = this.jsonSerializable.getInt(Constants.Properties.VECTOR_QUANTIZATION_BYTE_SIZE);
+
+            if (this.quantizationByteSize <= 0) {
+                this.quantizationByteSize = null;
+            }
         }
         return this.quantizationByteSize;
+    }
+
+    private Boolean validateIndexType(boolean isIndexingSearchListSize) {
+        if (this.jsonSerializable.getString(Constants.Properties.VECTOR_INDEX_TYPE).equals(CosmosVectorIndexType.DISK_ANN.toString()) ||
+            this.jsonSerializable.getString(Constants.Properties.VECTOR_INDEX_TYPE).equals(CosmosVectorIndexType.DISK_ANN.toString())) {
+            return true;
+        }
+
+        if (isIndexingSearchListSize && this.jsonSerializable.getString(Constants.Properties.VECTOR_INDEX_TYPE).equals(CosmosVectorIndexType.DISK_ANN.toString())) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -98,7 +124,7 @@ public final class CosmosVectorIndexSpec {
      *                             between 1 and 3.
      * @return CosmosVectorIndexSpec
      */
-    public CosmosVectorIndexSpec setQuantizationByteSize(int quantizationByteSize) {
+    public CosmosVectorIndexSpec setQuantizationByteSize(Integer quantizationByteSize) {
         this.quantizationByteSize = quantizationByteSize;
         this.jsonSerializable.set(Constants.Properties.VECTOR_QUANTIZATION_BYTE_SIZE, this.quantizationByteSize, CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
@@ -108,12 +134,16 @@ public final class CosmosVectorIndexSpec {
      * Gets the indexing search list size
      *
      * @return indexingSearchListSize which represents the size of the candidate list of approximate neighbors stored
-     *         while building the DiskANN index as part of the optimization processes. The allowed range for this
-     *         parameter is between 25 and 500.
+     * while building the DiskANN index as part of the optimization processes. The allowed range for this
+     * parameter is between 25 and 500.
      */
-    public int getIndexingSearchListSize() {
-        if (this.indexingSearchListSize == 0) {
+    public Integer getIndexingSearchListSize() {
+        if (this.indexingSearchListSize == null && validateIndexType(true)) {
             this.indexingSearchListSize = this.jsonSerializable.getInt(Constants.Properties.VECTOR_INDEXING_SEARCH_LIST_SIZE);
+
+            if (this.indexingSearchListSize <= 0) {
+                this.indexingSearchListSize = null;
+            }
         }
         return this.indexingSearchListSize;
     }
@@ -137,11 +167,15 @@ public final class CosmosVectorIndexSpec {
      * Gets the vector index shard key
      *
      * @return vectorIndexShardKey the list of string containing the shard keys used for partitioning the vector
-     *         indexes. This applies to index types DiskANN and quantizedFlat.
+     * indexes. This applies to index types DiskANN and quantizedFlat.
      */
     public List<String> getVectorIndexShardKey() {
-        if (this.vectorIndexShardKey == null) {
+        if (this.vectorIndexShardKey == null && validateIndexType(false)) {
             this.vectorIndexShardKey = this.jsonSerializable.getList(Constants.Properties.VECTOR_INDEX_SHARD_KEY, String.class);
+
+            if (this.vectorIndexShardKey == null) {
+                this.vectorIndexShardKey = new ArrayList<>();
+            }
         }
         return this.vectorIndexShardKey;
     }

@@ -204,12 +204,10 @@ public class VectorIndexTest extends TestSuiteBase {
         IncludedPath includedPath2 = new IncludedPath("/description/?");
         indexingPolicy.setIncludedPaths(ImmutableList.of(includedPath1, includedPath2));
 
-        List<CosmosVectorIndexSpec> vectorIndexes = populateVectorIndexes();
-        vectorIndexes.get(2).setPath("/vector2");
+        List<CosmosVectorIndexSpec> vectorIndexes = populateVectorIndexesSimilarPath();
         indexingPolicy.setVectorIndexes(vectorIndexes);
 
-        List<CosmosVectorEmbedding> embeddings = populateEmbeddings();
-        embeddings.get(2).setPath("/vector2");
+        List<CosmosVectorEmbedding> embeddings = populateEmbeddingsSimilarPaths();
         CosmosVectorEmbeddingPolicy cosmosVectorEmbeddingPolicy = new CosmosVectorEmbeddingPolicy();
         cosmosVectorEmbeddingPolicy.setCosmosVectorEmbeddings(embeddings);
 
@@ -317,16 +315,37 @@ public class VectorIndexTest extends TestSuiteBase {
         CosmosVectorIndexSpec cosmosVectorIndexSpec2 = new CosmosVectorIndexSpec();
         cosmosVectorIndexSpec2.setPath("/vector2");
         cosmosVectorIndexSpec2.setType(CosmosVectorIndexType.QUANTIZED_FLAT.toString());
-        cosmosVectorIndexSpec2.setQuantizationByteSize(8);
+        cosmosVectorIndexSpec2.setQuantizationByteSize(2);
         cosmosVectorIndexSpec2.setVectorIndexShardKey(List.of("/Country/City"));
 
         CosmosVectorIndexSpec cosmosVectorIndexSpec3 = new CosmosVectorIndexSpec();
         cosmosVectorIndexSpec3.setPath("/vector3");
         cosmosVectorIndexSpec3.setType(CosmosVectorIndexType.DISK_ANN.toString());
-        cosmosVectorIndexSpec3.setQuantizationByteSize(8);
-        cosmosVectorIndexSpec3.setIndexingSearchListSize(5);
+        cosmosVectorIndexSpec3.setQuantizationByteSize(2);
+        cosmosVectorIndexSpec3.setIndexingSearchListSize(30);
         cosmosVectorIndexSpec3.setVectorIndexShardKey(List.of("/Country/City"));
 
+        return Arrays.asList( cosmosVectorIndexSpec2, cosmosVectorIndexSpec3);
+    }
+
+    private List<CosmosVectorIndexSpec> populateVectorIndexesSimilarPath() {
+
+        CosmosVectorIndexSpec cosmosVectorIndexSpec1 = new CosmosVectorIndexSpec();
+        cosmosVectorIndexSpec1.setPath("/vector1");
+        cosmosVectorIndexSpec1.setType(CosmosVectorIndexType.FLAT.toString());
+
+        CosmosVectorIndexSpec cosmosVectorIndexSpec2 = new CosmosVectorIndexSpec();
+        cosmosVectorIndexSpec2.setPath("/vector2");
+        cosmosVectorIndexSpec2.setType(CosmosVectorIndexType.QUANTIZED_FLAT.toString());
+        cosmosVectorIndexSpec2.setQuantizationByteSize(2);
+        cosmosVectorIndexSpec2.setVectorIndexShardKey(List.of("/Country/City"));
+
+        CosmosVectorIndexSpec cosmosVectorIndexSpec3 = new CosmosVectorIndexSpec();
+        cosmosVectorIndexSpec3.setPath("/vector2");
+        cosmosVectorIndexSpec3.setType(CosmosVectorIndexType.DISK_ANN.toString());
+        cosmosVectorIndexSpec3.setQuantizationByteSize(2);
+        cosmosVectorIndexSpec3.setIndexingSearchListSize(30);
+        cosmosVectorIndexSpec3.setVectorIndexShardKey(List.of("/Country/City"));
         return Arrays.asList(cosmosVectorIndexSpec1, cosmosVectorIndexSpec2, cosmosVectorIndexSpec3);
     }
 
@@ -345,6 +364,27 @@ public class VectorIndexTest extends TestSuiteBase {
 
         CosmosVectorEmbedding embedding3 = new CosmosVectorEmbedding();
         embedding3.setPath("/vector3");
+        embedding3.setDataType(CosmosVectorDataType.UINT8);
+        embedding3.setDimensions(3);
+        embedding3.setDistanceFunction(CosmosVectorDistanceFunction.EUCLIDEAN);
+        return Arrays.asList(embedding1, embedding2, embedding3);
+    }
+
+    private List<CosmosVectorEmbedding> populateEmbeddingsSimilarPaths() {
+        CosmosVectorEmbedding embedding1 = new CosmosVectorEmbedding();
+        embedding1.setPath("/vector1");
+        embedding1.setDataType(CosmosVectorDataType.INT8);
+        embedding1.setDimensions(3);
+        embedding1.setDistanceFunction(CosmosVectorDistanceFunction.COSINE);
+
+        CosmosVectorEmbedding embedding2 = new CosmosVectorEmbedding();
+        embedding2.setPath("/vector2");
+        embedding2.setDataType(CosmosVectorDataType.FLOAT32);
+        embedding2.setDimensions(3);
+        embedding2.setDistanceFunction(CosmosVectorDistanceFunction.DOT_PRODUCT);
+
+        CosmosVectorEmbedding embedding3 = new CosmosVectorEmbedding();
+        embedding3.setPath("/vector2");
         embedding3.setDataType(CosmosVectorDataType.UINT8);
         embedding3.setDimensions(3);
         embedding3.setDistanceFunction(CosmosVectorDistanceFunction.EUCLIDEAN);
