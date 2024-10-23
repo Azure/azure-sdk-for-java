@@ -208,7 +208,7 @@ com.azure:identity-test-container;1.0.0-beta.1;1.0.0-beta.1
 com.azure:identity-test-function;1.0.0-beta.1;1.0.0-beta.1
 com.azure:identity-test-vm;1.0.0-beta.1;1.0.0-beta.1
 com.azure:identity-test-webapp;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-ai-vision-face;1.0.0-beta.1;1.0.0-beta.2
+com.azure:azure-ai-vision-face;1.0.0-beta.2;1.0.0-beta.3
 com.azure.spring:azure-monitor-spring-native;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:azure-monitor-spring-native-test;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:spring-cloud-azure-appconfiguration-config-web;5.17.0;5.18.0-beta.1
