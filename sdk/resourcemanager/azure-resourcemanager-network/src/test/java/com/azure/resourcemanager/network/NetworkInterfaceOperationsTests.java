@@ -440,7 +440,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             .define(networkName)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
-            .withAddressSpace("10.0.0.0/28")
+            .withAddressSpace("10.0.0.0/24")
             .withSubnet(subnetName, "10.0.0.0/29")
             .create();
 
@@ -450,15 +450,15 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
 
         // update withAddressPrefixes
         network.update().updateSubnet(subnetName)
-            .withAddressPrefixes(Arrays.asList("10.0.0.8/29"))
+            .withAddressPrefixes(Arrays.asList("10.0.0.8/29", "10.0.0.16/29"))
             .parent()
             .apply();
 
         network.refresh();
         subnet = network.subnets().get(subnetName);
 
-        Assertions.assertEquals(1, subnet.addressPrefixes().size());
-        Assertions.assertEquals("10.0.0.8/29", subnet.addressPrefixes().iterator().next());
+        Assertions.assertEquals(2, subnet.addressPrefixes().size());
+        Assertions.assertTrue(subnet.addressPrefixes().contains("10.0.0.8/29"));
         Assertions.assertNotNull(subnet.addressPrefix());
 
         // update withAddressPrefix
@@ -484,7 +484,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             .define(networkName)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
-            .withAddressSpace("10.0.0.0/28")
+            .withAddressSpace("10.0.0.0/24")
             .withSubnet(subnetName, "10.0.0.0/29")
             .create();
 
@@ -509,7 +509,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
 
         // define a new subnet with address prefixes
         network.update().defineSubnet(subnet2Name)
-            .withAddressPrefixes(Arrays.asList("10.0.0.8/29"))
+            .withAddressPrefixes(Arrays.asList("10.0.0.8/29", "10.0.0.16/29"))
             .attach()
             .apply();
 
@@ -520,6 +520,23 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
         Assertions.assertTrue(subnet.listAvailablePrivateIPAddresses().isEmpty());
 
         Subnet subnet2 = network.subnets().get(subnet2Name);
+        availableIps = subnet2.listAvailablePrivateIPAddresses();
+        Assertions.assertFalse(availableIps.isEmpty());
+        Assertions.assertEquals(2, subnet2.addressPrefixes().size());
+
+        // occupy first addressPrefix
+        for (String ip : availableIps) {
+            networkManager.networkInterfaces()
+                .define(generateRandomResourceName("nic", 10))
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .withExistingPrimaryNetwork(network)
+                .withSubnet(subnet2Name)
+                .withPrimaryPrivateIPAddressStatic(ip)
+                .create();
+        }
+
+        // second addressPrefix still has available ips
         availableIps = subnet2.listAvailablePrivateIPAddresses();
         Assertions.assertFalse(availableIps.isEmpty());
 

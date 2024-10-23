@@ -35,7 +35,7 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
     String addressPrefix();
 
     /**
-     * Address space prefixes, in CIDR notation, assigned to this subnet
+     * Gets address space prefixes, in CIDR notation, assigned to this subnet
      *
      * @return address space prefixes, in CIDR notation, assigned to this subnet
      */
