@@ -1323,7 +1323,11 @@
         "urllistofbytes",
         "urllistoflistofbytes",
         "urlmapofbytes",
-        "inproc"
+        "inproc",
+        "otel",
+        "tmpdir",
+        "aarch",
+        "CNCF"
       ]
     }
   ],
