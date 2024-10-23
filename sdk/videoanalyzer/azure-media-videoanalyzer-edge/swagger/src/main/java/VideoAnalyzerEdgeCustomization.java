@@ -20,7 +20,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Customization class for Blob Storage.
+ * Customization class for Video Analyzer Edge.
  */
 public class VideoAnalyzerEdgeCustomization extends Customization {
     @Override
