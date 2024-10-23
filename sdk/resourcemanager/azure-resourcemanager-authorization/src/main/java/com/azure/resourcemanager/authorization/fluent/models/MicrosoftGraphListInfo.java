@@ -5,47 +5,49 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** listInfo. */
+/**
+ * listInfo.
+ */
 @Fluent
-public final class MicrosoftGraphListInfo {
+public final class MicrosoftGraphListInfo implements JsonSerializable<MicrosoftGraphListInfo> {
     /*
      * If true, indicates that content types are enabled for this list.
      */
-    @JsonProperty(value = "contentTypesEnabled")
     private Boolean contentTypesEnabled;
 
     /*
      * If true, indicates that the list is not normally visible in the SharePoint user experience.
      */
-    @JsonProperty(value = "hidden")
     private Boolean hidden;
 
     /*
      * An enumerated value that represents the base list template used in creating the list. Possible values include
      * documentLibrary, genericList, task, survey, announcements, contacts, and more.
      */
-    @JsonProperty(value = "template")
     private String template;
 
     /*
      * listInfo
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphListInfo class. */
+    /**
+     * Creates an instance of MicrosoftGraphListInfo class.
+     */
     public MicrosoftGraphListInfo() {
     }
 
     /**
      * Get the contentTypesEnabled property: If true, indicates that content types are enabled for this list.
-     *
+     * 
      * @return the contentTypesEnabled value.
      */
     public Boolean contentTypesEnabled() {
@@ -54,7 +56,7 @@ public final class MicrosoftGraphListInfo {
 
     /**
      * Set the contentTypesEnabled property: If true, indicates that content types are enabled for this list.
-     *
+     * 
      * @param contentTypesEnabled the contentTypesEnabled value to set.
      * @return the MicrosoftGraphListInfo object itself.
      */
@@ -66,7 +68,7 @@ public final class MicrosoftGraphListInfo {
     /**
      * Get the hidden property: If true, indicates that the list is not normally visible in the SharePoint user
      * experience.
-     *
+     * 
      * @return the hidden value.
      */
     public Boolean hidden() {
@@ -76,7 +78,7 @@ public final class MicrosoftGraphListInfo {
     /**
      * Set the hidden property: If true, indicates that the list is not normally visible in the SharePoint user
      * experience.
-     *
+     * 
      * @param hidden the hidden value to set.
      * @return the MicrosoftGraphListInfo object itself.
      */
@@ -88,7 +90,7 @@ public final class MicrosoftGraphListInfo {
     /**
      * Get the template property: An enumerated value that represents the base list template used in creating the list.
      * Possible values include documentLibrary, genericList, task, survey, announcements, contacts, and more.
-     *
+     * 
      * @return the template value.
      */
     public String template() {
@@ -98,7 +100,7 @@ public final class MicrosoftGraphListInfo {
     /**
      * Set the template property: An enumerated value that represents the base list template used in creating the list.
      * Possible values include documentLibrary, genericList, task, survey, announcements, contacts, and more.
-     *
+     * 
      * @param template the template value to set.
      * @return the MicrosoftGraphListInfo object itself.
      */
@@ -109,17 +111,16 @@ public final class MicrosoftGraphListInfo {
 
     /**
      * Get the additionalProperties property: listInfo.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: listInfo.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphListInfo object itself.
      */
@@ -128,19 +129,64 @@ public final class MicrosoftGraphListInfo {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("contentTypesEnabled", this.contentTypesEnabled);
+        jsonWriter.writeBooleanField("hidden", this.hidden);
+        jsonWriter.writeStringField("template", this.template);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphListInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphListInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphListInfo.
+     */
+    public static MicrosoftGraphListInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphListInfo deserializedMicrosoftGraphListInfo = new MicrosoftGraphListInfo();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contentTypesEnabled".equals(fieldName)) {
+                    deserializedMicrosoftGraphListInfo.contentTypesEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("hidden".equals(fieldName)) {
+                    deserializedMicrosoftGraphListInfo.hidden = reader.getNullable(JsonReader::getBoolean);
+                } else if ("template".equals(fieldName)) {
+                    deserializedMicrosoftGraphListInfo.template = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphListInfo.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphListInfo;
+        });
     }
 }

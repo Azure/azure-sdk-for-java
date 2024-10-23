@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Query parameters for triggers.
  */
 @Fluent
-public final class TriggerFilterParameters {
+public final class TriggerFilterParameters implements JsonSerializable<TriggerFilterParameters> {
     /*
      * The continuation token for getting the next page of results. Null for first page.
      */
-    @JsonProperty(value = "continuationToken")
     private String continuationToken;
 
     /*
      * The name of the parent TumblingWindowTrigger to get the child rerun triggers
      */
-    @JsonProperty(value = "parentTriggerName")
     private String parentTriggerName;
 
     /**
@@ -78,5 +80,44 @@ public final class TriggerFilterParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("continuationToken", this.continuationToken);
+        jsonWriter.writeStringField("parentTriggerName", this.parentTriggerName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TriggerFilterParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TriggerFilterParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TriggerFilterParameters.
+     */
+    public static TriggerFilterParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TriggerFilterParameters deserializedTriggerFilterParameters = new TriggerFilterParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("continuationToken".equals(fieldName)) {
+                    deserializedTriggerFilterParameters.continuationToken = reader.getString();
+                } else if ("parentTriggerName".equals(fieldName)) {
+                    deserializedTriggerFilterParameters.parentTriggerName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTriggerFilterParameters;
+        });
     }
 }

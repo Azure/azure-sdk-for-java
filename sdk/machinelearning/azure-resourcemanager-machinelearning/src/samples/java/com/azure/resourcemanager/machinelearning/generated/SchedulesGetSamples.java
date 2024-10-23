@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-/** Samples for Schedules Get. */
+/**
+ * Samples for Schedules Get.
+ */
 public final class SchedulesGetSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Schedule/get.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Schedule/get.json
      */
     /**
      * Sample code: Get Schedule.
-     *
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getSchedule(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {

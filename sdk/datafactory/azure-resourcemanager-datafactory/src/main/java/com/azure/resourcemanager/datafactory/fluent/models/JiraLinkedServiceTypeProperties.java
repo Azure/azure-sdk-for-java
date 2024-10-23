@@ -6,63 +6,59 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Jira Service linked service properties.
  */
 @Fluent
-public final class JiraLinkedServiceTypeProperties {
+public final class JiraLinkedServiceTypeProperties implements JsonSerializable<JiraLinkedServiceTypeProperties> {
     /*
      * The IP address or host name of the Jira service. (e.g. jira.example.com)
      */
-    @JsonProperty(value = "host", required = true)
     private Object host;
 
     /*
      * The TCP port that the Jira server uses to listen for client connections. The default value is 443 if connecting
      * through HTTPS, or 8080 if connecting through HTTP.
      */
-    @JsonProperty(value = "port")
     private Object port;
 
     /*
      * The user name that you use to access Jira Service.
      */
-    @JsonProperty(value = "username", required = true)
     private Object username;
 
     /*
      * The password corresponding to the user name that you provided in the username field.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
      * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
-    @JsonProperty(value = "useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
      * Specifies whether to require the host name in the server's certificate to match the host name of the server when
      * connecting over SSL. The default value is true.
      */
-    @JsonProperty(value = "useHostVerification")
     private Object useHostVerification;
 
     /*
      * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
      */
-    @JsonProperty(value = "usePeerVerification")
     private Object usePeerVerification;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -263,4 +259,63 @@ public final class JiraLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JiraLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("host", this.host);
+        jsonWriter.writeUntypedField("username", this.username);
+        jsonWriter.writeUntypedField("port", this.port);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+        jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
+        jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JiraLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JiraLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JiraLinkedServiceTypeProperties.
+     */
+    public static JiraLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JiraLinkedServiceTypeProperties deserializedJiraLinkedServiceTypeProperties
+                = new JiraLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("host".equals(fieldName)) {
+                    deserializedJiraLinkedServiceTypeProperties.host = reader.readUntyped();
+                } else if ("username".equals(fieldName)) {
+                    deserializedJiraLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("port".equals(fieldName)) {
+                    deserializedJiraLinkedServiceTypeProperties.port = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedJiraLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("useEncryptedEndpoints".equals(fieldName)) {
+                    deserializedJiraLinkedServiceTypeProperties.useEncryptedEndpoints = reader.readUntyped();
+                } else if ("useHostVerification".equals(fieldName)) {
+                    deserializedJiraLinkedServiceTypeProperties.useHostVerification = reader.readUntyped();
+                } else if ("usePeerVerification".equals(fieldName)) {
+                    deserializedJiraLinkedServiceTypeProperties.usePeerVerification = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedJiraLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJiraLinkedServiceTypeProperties;
+        });
+    }
 }

@@ -14,13 +14,15 @@ import com.azure.resourcemanager.operationsmanagement.fluent.models.SolutionInne
 import com.azure.resourcemanager.operationsmanagement.fluent.models.SolutionPropertiesListInner;
 import com.azure.resourcemanager.operationsmanagement.models.SolutionPatch;
 
-/** An instance of this class provides access to all the operations defined in SolutionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SolutionsClient.
+ */
 public interface SolutionsClient {
     /**
      * Create/Update Solution.
-     *
-     * <p>Creates or updates the Solution.
-     *
+     * 
+     * Creates or updates the Solution.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to create OMS Solution.
@@ -30,14 +32,14 @@ public interface SolutionsClient {
      * @return the {@link SyncPoller} for polling of the container for solution.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SolutionInner>, SolutionInner> beginCreateOrUpdate(
-        String resourceGroupName, String solutionName, SolutionInner parameters);
+    SyncPoller<PollResult<SolutionInner>, SolutionInner> beginCreateOrUpdate(String resourceGroupName,
+        String solutionName, SolutionInner parameters);
 
     /**
      * Create/Update Solution.
-     *
-     * <p>Creates or updates the Solution.
-     *
+     * 
+     * Creates or updates the Solution.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to create OMS Solution.
@@ -48,14 +50,14 @@ public interface SolutionsClient {
      * @return the {@link SyncPoller} for polling of the container for solution.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SolutionInner>, SolutionInner> beginCreateOrUpdate(
-        String resourceGroupName, String solutionName, SolutionInner parameters, Context context);
+    SyncPoller<PollResult<SolutionInner>, SolutionInner> beginCreateOrUpdate(String resourceGroupName,
+        String solutionName, SolutionInner parameters, Context context);
 
     /**
      * Create/Update Solution.
-     *
-     * <p>Creates or updates the Solution.
-     *
+     * 
+     * Creates or updates the Solution.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to create OMS Solution.
@@ -69,9 +71,9 @@ public interface SolutionsClient {
 
     /**
      * Create/Update Solution.
-     *
-     * <p>Creates or updates the Solution.
-     *
+     * 
+     * Creates or updates the Solution.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to create OMS Solution.
@@ -82,14 +84,14 @@ public interface SolutionsClient {
      * @return the container for solution.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SolutionInner createOrUpdate(
-        String resourceGroupName, String solutionName, SolutionInner parameters, Context context);
+    SolutionInner createOrUpdate(String resourceGroupName, String solutionName, SolutionInner parameters,
+        Context context);
 
     /**
      * Patch a Solution.
-     *
-     * <p>Patch a Solution. Only updating tags supported.
-     *
+     * 
+     * Patch a Solution. Only updating tags supported.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to patch a Solution.
@@ -99,14 +101,14 @@ public interface SolutionsClient {
      * @return the {@link SyncPoller} for polling of the container for solution.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SolutionInner>, SolutionInner> beginUpdate(
-        String resourceGroupName, String solutionName, SolutionPatch parameters);
+    SyncPoller<PollResult<SolutionInner>, SolutionInner> beginUpdate(String resourceGroupName, String solutionName,
+        SolutionPatch parameters);
 
     /**
      * Patch a Solution.
-     *
-     * <p>Patch a Solution. Only updating tags supported.
-     *
+     * 
+     * Patch a Solution. Only updating tags supported.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to patch a Solution.
@@ -117,14 +119,14 @@ public interface SolutionsClient {
      * @return the {@link SyncPoller} for polling of the container for solution.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SolutionInner>, SolutionInner> beginUpdate(
-        String resourceGroupName, String solutionName, SolutionPatch parameters, Context context);
+    SyncPoller<PollResult<SolutionInner>, SolutionInner> beginUpdate(String resourceGroupName, String solutionName,
+        SolutionPatch parameters, Context context);
 
     /**
      * Patch a Solution.
-     *
-     * <p>Patch a Solution. Only updating tags supported.
-     *
+     * 
+     * Patch a Solution. Only updating tags supported.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to patch a Solution.
@@ -138,9 +140,9 @@ public interface SolutionsClient {
 
     /**
      * Patch a Solution.
-     *
-     * <p>Patch a Solution. Only updating tags supported.
-     *
+     * 
+     * Patch a Solution. Only updating tags supported.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to patch a Solution.
@@ -155,9 +157,9 @@ public interface SolutionsClient {
 
     /**
      * Deletes the solution
-     *
-     * <p>Deletes the solution in the subscription.
-     *
+     * 
+     * Deletes the solution in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -170,9 +172,9 @@ public interface SolutionsClient {
 
     /**
      * Deletes the solution
-     *
-     * <p>Deletes the solution in the subscription.
-     *
+     * 
+     * Deletes the solution in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param context The context to associate with this operation.
@@ -186,9 +188,9 @@ public interface SolutionsClient {
 
     /**
      * Deletes the solution
-     *
-     * <p>Deletes the solution in the subscription.
-     *
+     * 
+     * Deletes the solution in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -200,9 +202,9 @@ public interface SolutionsClient {
 
     /**
      * Deletes the solution
-     *
-     * <p>Deletes the solution in the subscription.
-     *
+     * 
+     * Deletes the solution in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param context The context to associate with this operation.
@@ -215,9 +217,9 @@ public interface SolutionsClient {
 
     /**
      * Retrieve solution.
-     *
-     * <p>Retrieves the user solution.
-     *
+     * 
+     * Retrieves the user solution.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param context The context to associate with this operation.
@@ -227,14 +229,14 @@ public interface SolutionsClient {
      * @return the container for solution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SolutionInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String solutionName, Context context);
+    Response<SolutionInner> getByResourceGroupWithResponse(String resourceGroupName, String solutionName,
+        Context context);
 
     /**
      * Retrieve solution.
-     *
-     * <p>Retrieves the user solution.
-     *
+     * 
+     * Retrieves the user solution.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -247,9 +249,9 @@ public interface SolutionsClient {
 
     /**
      * Retrieves the solution list for the subscription
-     *
-     * <p>Retrieves the solution list. It will retrieve both first party and third party solutions.
-     *
+     * 
+     * Retrieves the solution list. It will retrieve both first party and third party solutions.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -262,9 +264,9 @@ public interface SolutionsClient {
 
     /**
      * Retrieves the solution list for the subscription
-     *
-     * <p>Retrieves the solution list. It will retrieve both first party and third party solutions.
-     *
+     * 
+     * Retrieves the solution list. It will retrieve both first party and third party solutions.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -276,9 +278,9 @@ public interface SolutionsClient {
 
     /**
      * Retrieves the solution list for the subscription
-     *
-     * <p>Retrieves the solution list. It will retrieve both first party and third party solutions.
-     *
+     * 
+     * Retrieves the solution list. It will retrieve both first party and third party solutions.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -290,9 +292,9 @@ public interface SolutionsClient {
 
     /**
      * Retrieves the solution list for the subscription
-     *
-     * <p>Retrieves the solution list. It will retrieve both first party and third party solutions.
-     *
+     * 
+     * Retrieves the solution list. It will retrieve both first party and third party solutions.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of solution response.

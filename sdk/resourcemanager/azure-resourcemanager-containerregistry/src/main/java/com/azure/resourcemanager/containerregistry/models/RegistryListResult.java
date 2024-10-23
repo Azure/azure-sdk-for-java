@@ -5,26 +5,28 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.fluent.models.RegistryInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The result of a request to list container registries.
  */
 @Fluent
-public final class RegistryListResult {
+public final class RegistryListResult implements JsonSerializable<RegistryListResult> {
     /*
-     * The list of container registries. Since this list may be incomplete, the nextLink field should be used to
-     * request the next list of container registries.
+     * The list of container registries. Since this list may be incomplete, the nextLink field should be used to request
+     * the next list of container registries.
      */
-    @JsonProperty(value = "value")
     private List<RegistryInner> value;
 
     /*
      * The URI that can be used to request the next list of container registries.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -84,5 +86,45 @@ public final class RegistryListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegistryListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegistryListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RegistryListResult.
+     */
+    public static RegistryListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegistryListResult deserializedRegistryListResult = new RegistryListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<RegistryInner> value = reader.readArray(reader1 -> RegistryInner.fromJson(reader1));
+                    deserializedRegistryListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedRegistryListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegistryListResult;
+        });
     }
 }

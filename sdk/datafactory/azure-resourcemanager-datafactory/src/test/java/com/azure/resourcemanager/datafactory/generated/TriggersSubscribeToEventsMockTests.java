@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public final class TriggersSubscribeToEventsMockTests {
     @Test
     public void testSubscribeToEvents() throws Exception {
-        String responseStr = "{\"triggerName\":\"ujfc\",\"status\":\"Provisioning\"}";
+        String responseStr = "{\"triggerName\":\"fjwtyvvkn\",\"status\":\"Unknown\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -28,8 +28,8 @@ public final class TriggersSubscribeToEventsMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        TriggerSubscriptionOperationStatus response
-            = manager.triggers().subscribeToEvents("z", "rkwgsq", "srpcxwthklj", com.azure.core.util.Context.NONE);
+        TriggerSubscriptionOperationStatus response = manager.triggers()
+            .subscribeToEvents("wtwjzzyi", "bbkly", "elvhxutctakkdjus", com.azure.core.util.Context.NONE);
 
     }
 }

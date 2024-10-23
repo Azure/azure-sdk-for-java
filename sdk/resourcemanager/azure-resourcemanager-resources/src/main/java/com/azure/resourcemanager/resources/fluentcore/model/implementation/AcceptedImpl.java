@@ -23,11 +23,14 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.rest.ActivationResponse;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -296,8 +299,7 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
         }
     }
 
-    private static class ResourceWithProvisioningState {
-        @JsonProperty(value = "properties")
+    private static class ResourceWithProvisioningState implements JsonSerializable<ResourceWithProvisioningState> {
         private Properties properties;
 
         private String getProvisioningState() {
@@ -308,9 +310,58 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
             }
         }
 
-        private static class Properties {
-            @JsonProperty(value = "provisioningState")
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            return jsonWriter
+                .writeStartObject()
+                .writeJsonField("properties", properties)
+                .writeEndObject();
+        }
+
+        public static ResourceWithProvisioningState fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                ResourceWithProvisioningState resourceWithProvisioningState = new ResourceWithProvisioningState();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if ("properties".equals(fieldName)) {
+                        resourceWithProvisioningState.properties = reader.readObject(Properties::fromJson);
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+                return resourceWithProvisioningState;
+            });
+        }
+
+        private static class Properties implements JsonSerializable<Properties> {
             private String provisioningState;
+
+            @Override
+            public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+                return jsonWriter
+                    .writeStartObject()
+                    .writeStringField("provisioningState", provisioningState)
+                    .writeEndObject();
+            }
+
+            public static Properties fromJson(JsonReader jsonReader) throws IOException {
+                return jsonReader.readObject(reader -> {
+                    Properties result = new Properties();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("provisioningState".equals(fieldName)) {
+                            result.provisioningState = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    return result;
+                });
+            }
         }
     }
 

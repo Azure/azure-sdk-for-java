@@ -1,0 +1,57 @@
+[
+    {
+        "FeatureFlagName": "PastTimeWindow",
+        "Inputs": {},
+        "IsEnabled": {
+            "Result": "false"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Time Window filter where both Start and End have already passed."
+    },
+    {
+        "FeatureFlagName": "FutureTimeWindow",
+        "Inputs": {},
+        "IsEnabled": {
+            "Result": "false"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Time Window filter where neither Start nor End have happened."
+    },
+    {
+        "FeatureFlagName": "PresentTimeWindow",
+        "Inputs": {},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Time Window filter where Start has happened but End hasn't happened."
+    },
+    {
+        "FeatureFlagName": "StartedTimeWindow",
+        "Inputs": {},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Time Window filter with a Start that has passed."
+    },
+    {
+        "FeatureFlagName": "WillEndTimeWindow",
+        "Inputs": {},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Time Window filter where the End hasn't passed."
+    }
+]

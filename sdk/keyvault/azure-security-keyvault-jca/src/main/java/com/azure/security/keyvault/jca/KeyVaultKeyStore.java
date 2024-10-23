@@ -94,7 +94,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     private final boolean refreshCertificatesWhenHaveUnTrustCertificate;
 
     /**
-     * Store the path where the well know certificate is placed
+     * Store the path where the well-known certificate is placed
      */
     final String wellKnowPath = Optional.ofNullable(System.getProperty("azure.cert-path.well-known"))
         .orElse("/etc/certs/well-known/");
@@ -279,16 +279,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public String engineGetCertificateAlias(Certificate cert) {
         String alias = null;
-
         if (cert != null) {
             List<String> aliasList = getAllAliases();
-
             for (String candidateAlias : aliasList) {
                 Certificate certificate = engineGetCertificate(candidateAlias);
-
                 if (certificate.equals(cert)) {
                     alias = candidateAlias;
-
                     break;
                 }
             }
@@ -311,15 +307,18 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      */
     @Override
     public Certificate[] engineGetCertificateChain(String alias) {
-        Certificate[] chain = null;
-        Certificate certificate = engineGetCertificate(alias);
-
-        if (certificate != null) {
-            chain = new Certificate[1];
-            chain[0] = certificate;
+        Certificate[] certificates = allCertificates.stream()
+            .map(AzureCertificates::getCertificateChains)
+            .filter(Objects::nonNull)
+            .filter(a -> a.containsKey(alias))
+            .findFirst()
+            .map(m -> m.get(alias))
+            .orElse(null);
+        if (refreshCertificatesWhenHaveUnTrustCertificate && certificates == null) {
+            keyVaultCertificates.refreshCertificates();
+            return keyVaultCertificates.getCertificateChains().get(alias);
         }
-
-        return chain;
+        return certificates;
     }
 
     /**
@@ -450,10 +449,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     public void engineSetCertificateEntry(String alias, Certificate certificate) {
         if (getAllAliases().contains(alias)) {
             LOGGER.log(WARNING, "Cannot overwrite own certificate");
-
             return;
         }
-
         classpathCertificates.setCertificateEntry(alias, certificate);
     }
 

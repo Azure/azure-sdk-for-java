@@ -19,20 +19,20 @@ public final class FluidRelayOperationsImpl implements FluidRelayOperations {
 
     private final com.azure.resourcemanager.fluidrelay.FluidRelayManager serviceManager;
 
-    public FluidRelayOperationsImpl(
-        FluidRelayOperationsClient innerClient, com.azure.resourcemanager.fluidrelay.FluidRelayManager serviceManager) {
+    public FluidRelayOperationsImpl(FluidRelayOperationsClient innerClient,
+        com.azure.resourcemanager.fluidrelay.FluidRelayManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<OperationResult> list() {
         PagedIterable<OperationResultInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new OperationResultImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationResultImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OperationResult> list(Context context) {
         PagedIterable<OperationResultInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new OperationResultImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationResultImpl(inner1, this.manager()));
     }
 
     private FluidRelayOperationsClient serviceClient() {

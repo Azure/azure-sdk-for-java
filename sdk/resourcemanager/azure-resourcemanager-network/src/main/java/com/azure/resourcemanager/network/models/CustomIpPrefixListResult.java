@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.CustomIpPrefixInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Response for ListCustomIpPrefixes API service call.
  */
 @Fluent
-public final class CustomIpPrefixListResult {
+public final class CustomIpPrefixListResult implements JsonSerializable<CustomIpPrefixListResult> {
     /*
      * A list of Custom IP prefixes that exists in a resource group.
      */
-    @JsonProperty(value = "value")
     private List<CustomIpPrefixInner> value;
 
     /*
      * The URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -81,5 +83,46 @@ public final class CustomIpPrefixListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomIpPrefixListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomIpPrefixListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomIpPrefixListResult.
+     */
+    public static CustomIpPrefixListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomIpPrefixListResult deserializedCustomIpPrefixListResult = new CustomIpPrefixListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<CustomIpPrefixInner> value
+                        = reader.readArray(reader1 -> CustomIpPrefixInner.fromJson(reader1));
+                    deserializedCustomIpPrefixListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedCustomIpPrefixListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomIpPrefixListResult;
+        });
     }
 }

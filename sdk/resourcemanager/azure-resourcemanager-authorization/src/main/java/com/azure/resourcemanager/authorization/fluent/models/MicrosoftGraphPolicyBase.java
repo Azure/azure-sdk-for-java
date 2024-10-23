@@ -5,18 +5,20 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * policyBase
- *
- * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * 
+ * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
 @Fluent
@@ -24,28 +26,28 @@ public class MicrosoftGraphPolicyBase extends MicrosoftGraphDirectoryObjectInner
     /*
      * Description for this policy.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Display name for this policy.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
      * entity types.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphPolicyBase class. */
+    /**
+     * Creates an instance of MicrosoftGraphPolicyBase class.
+     */
     public MicrosoftGraphPolicyBase() {
     }
 
     /**
      * Get the description property: Description for this policy.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -54,7 +56,7 @@ public class MicrosoftGraphPolicyBase extends MicrosoftGraphDirectoryObjectInner
 
     /**
      * Set the description property: Description for this policy.
-     *
+     * 
      * @param description the description value to set.
      * @return the MicrosoftGraphPolicyBase object itself.
      */
@@ -65,7 +67,7 @@ public class MicrosoftGraphPolicyBase extends MicrosoftGraphDirectoryObjectInner
 
     /**
      * Get the displayName property: Display name for this policy.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -74,7 +76,7 @@ public class MicrosoftGraphPolicyBase extends MicrosoftGraphDirectoryObjectInner
 
     /**
      * Set the displayName property: Display name for this policy.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphPolicyBase object itself.
      */
@@ -86,10 +88,9 @@ public class MicrosoftGraphPolicyBase extends MicrosoftGraphDirectoryObjectInner
     /**
      * Get the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
      * the base type for many other directory entity types.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -97,7 +98,7 @@ public class MicrosoftGraphPolicyBase extends MicrosoftGraphDirectoryObjectInner
     /**
      * Set the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
      * the base type for many other directory entity types.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphPolicyBase object itself.
      */
@@ -106,22 +107,18 @@ public class MicrosoftGraphPolicyBase extends MicrosoftGraphDirectoryObjectInner
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphPolicyBase withDeletedDateTime(OffsetDateTime deletedDateTime) {
         super.withDeletedDateTime(deletedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphPolicyBase withId(String id) {
         super.withId(id);
@@ -130,11 +127,69 @@ public class MicrosoftGraphPolicyBase extends MicrosoftGraphDirectoryObjectInner
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("deletedDateTime",
+            deletedDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(deletedDateTime()));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphPolicyBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphPolicyBase if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphPolicyBase.
+     */
+    public static MicrosoftGraphPolicyBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphPolicyBase deserializedMicrosoftGraphPolicyBase = new MicrosoftGraphPolicyBase();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphPolicyBase.withId(reader.getString());
+                } else if ("deletedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphPolicyBase.withDeletedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("description".equals(fieldName)) {
+                    deserializedMicrosoftGraphPolicyBase.description = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphPolicyBase.displayName = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphPolicyBase.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphPolicyBase;
+        });
     }
 }

@@ -6,46 +6,50 @@ package com.azure.resourcemanager.operationsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Solution properties supported by the OperationsManagement resource provider. */
+/**
+ * Solution properties supported by the OperationsManagement resource provider.
+ */
 @Fluent
-public final class SolutionProperties {
+public final class SolutionProperties implements JsonSerializable<SolutionProperties> {
     /*
      * The azure resourceId for the workspace where the solution will be deployed/enabled.
      */
-    @JsonProperty(value = "workspaceResourceId", required = true)
     private String workspaceResourceId;
 
     /*
      * The provisioning state for the solution.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The azure resources that will be contained within the solutions. They will be locked and gets deleted
      * automatically when the solution is deleted.
      */
-    @JsonProperty(value = "containedResources")
     private List<String> containedResources;
 
     /*
      * The resources that will be referenced from this solution. Deleting any of those solution out of band will break
      * the solution.
      */
-    @JsonProperty(value = "referencedResources")
     private List<String> referencedResources;
 
-    /** Creates an instance of SolutionProperties class. */
+    /**
+     * Creates an instance of SolutionProperties class.
+     */
     public SolutionProperties() {
     }
 
     /**
      * Get the workspaceResourceId property: The azure resourceId for the workspace where the solution will be
      * deployed/enabled.
-     *
+     * 
      * @return the workspaceResourceId value.
      */
     public String workspaceResourceId() {
@@ -55,7 +59,7 @@ public final class SolutionProperties {
     /**
      * Set the workspaceResourceId property: The azure resourceId for the workspace where the solution will be
      * deployed/enabled.
-     *
+     * 
      * @param workspaceResourceId the workspaceResourceId value to set.
      * @return the SolutionProperties object itself.
      */
@@ -66,7 +70,7 @@ public final class SolutionProperties {
 
     /**
      * Get the provisioningState property: The provisioning state for the solution.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -76,7 +80,7 @@ public final class SolutionProperties {
     /**
      * Get the containedResources property: The azure resources that will be contained within the solutions. They will
      * be locked and gets deleted automatically when the solution is deleted.
-     *
+     * 
      * @return the containedResources value.
      */
     public List<String> containedResources() {
@@ -86,7 +90,7 @@ public final class SolutionProperties {
     /**
      * Set the containedResources property: The azure resources that will be contained within the solutions. They will
      * be locked and gets deleted automatically when the solution is deleted.
-     *
+     * 
      * @param containedResources the containedResources value to set.
      * @return the SolutionProperties object itself.
      */
@@ -98,7 +102,7 @@ public final class SolutionProperties {
     /**
      * Get the referencedResources property: The resources that will be referenced from this solution. Deleting any of
      * those solution out of band will break the solution.
-     *
+     * 
      * @return the referencedResources value.
      */
     public List<String> referencedResources() {
@@ -108,7 +112,7 @@ public final class SolutionProperties {
     /**
      * Set the referencedResources property: The resources that will be referenced from this solution. Deleting any of
      * those solution out of band will break the solution.
-     *
+     * 
      * @param referencedResources the referencedResources value to set.
      * @return the SolutionProperties object itself.
      */
@@ -119,17 +123,65 @@ public final class SolutionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (workspaceResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property workspaceResourceId in model SolutionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property workspaceResourceId in model SolutionProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SolutionProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("workspaceResourceId", this.workspaceResourceId);
+        jsonWriter.writeArrayField("containedResources", this.containedResources,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("referencedResources", this.referencedResources,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SolutionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SolutionProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SolutionProperties.
+     */
+    public static SolutionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SolutionProperties deserializedSolutionProperties = new SolutionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("workspaceResourceId".equals(fieldName)) {
+                    deserializedSolutionProperties.workspaceResourceId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSolutionProperties.provisioningState = reader.getString();
+                } else if ("containedResources".equals(fieldName)) {
+                    List<String> containedResources = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSolutionProperties.containedResources = containedResources;
+                } else if ("referencedResources".equals(fieldName)) {
+                    List<String> referencedResources = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSolutionProperties.referencedResources = referencedResources;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSolutionProperties;
+        });
+    }
 }

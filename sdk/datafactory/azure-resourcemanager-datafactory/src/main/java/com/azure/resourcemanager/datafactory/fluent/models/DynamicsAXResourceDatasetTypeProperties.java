@@ -6,17 +6,21 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Dynamics AX OData resource dataset properties.
  */
 @Fluent
-public final class DynamicsAXResourceDatasetTypeProperties {
+public final class DynamicsAXResourceDatasetTypeProperties
+    implements JsonSerializable<DynamicsAXResourceDatasetTypeProperties> {
     /*
      * The path of the Dynamics AX OData entity. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "path", required = true)
     private Object path;
 
     /**
@@ -61,4 +65,42 @@ public final class DynamicsAXResourceDatasetTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DynamicsAXResourceDatasetTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("path", this.path);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DynamicsAXResourceDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DynamicsAXResourceDatasetTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DynamicsAXResourceDatasetTypeProperties.
+     */
+    public static DynamicsAXResourceDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DynamicsAXResourceDatasetTypeProperties deserializedDynamicsAXResourceDatasetTypeProperties
+                = new DynamicsAXResourceDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("path".equals(fieldName)) {
+                    deserializedDynamicsAXResourceDatasetTypeProperties.path = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDynamicsAXResourceDatasetTypeProperties;
+        });
+    }
 }

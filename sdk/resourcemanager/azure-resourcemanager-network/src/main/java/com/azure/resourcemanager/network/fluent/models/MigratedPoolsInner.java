@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The response for a migrateToIpBased API.
  */
 @Fluent
-public final class MigratedPoolsInner {
+public final class MigratedPoolsInner implements JsonSerializable<MigratedPoolsInner> {
     /*
      * A list of pools migrated from Nic based to IP based pool
      */
-    @JsonProperty(value = "migratedPools")
     private List<String> migratedPools;
 
     /**
@@ -51,5 +54,43 @@ public final class MigratedPoolsInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("migratedPools", this.migratedPools,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigratedPoolsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigratedPoolsInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigratedPoolsInner.
+     */
+    public static MigratedPoolsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigratedPoolsInner deserializedMigratedPoolsInner = new MigratedPoolsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("migratedPools".equals(fieldName)) {
+                    List<String> migratedPools = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMigratedPoolsInner.migratedPools = migratedPools;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigratedPoolsInner;
+        });
     }
 }

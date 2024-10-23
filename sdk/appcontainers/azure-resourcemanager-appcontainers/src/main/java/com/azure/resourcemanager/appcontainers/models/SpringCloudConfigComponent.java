@@ -65,6 +65,15 @@ public final class SpringCloudConfigComponent extends JavaComponentProperties {
      * {@inheritDoc}
      */
     @Override
+    public SpringCloudConfigComponent withScale(JavaComponentPropertiesScale scale) {
+        super.withScale(scale);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public SpringCloudConfigComponent withServiceBinds(List<JavaComponentServiceBind> serviceBinds) {
         super.withServiceBinds(serviceBinds);
         return this;
@@ -77,7 +86,15 @@ public final class SpringCloudConfigComponent extends JavaComponentProperties {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (configurations() != null) {
+            configurations().forEach(e -> e.validate());
+        }
+        if (scale() != null) {
+            scale().validate();
+        }
+        if (serviceBinds() != null) {
+            serviceBinds().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -87,6 +104,7 @@ public final class SpringCloudConfigComponent extends JavaComponentProperties {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("configurations", configurations(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("scale", scale());
         jsonWriter.writeArrayField("serviceBinds", serviceBinds(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("componentType", this.componentType == null ? null : this.componentType.toString());
         return jsonWriter.writeEndObject();
@@ -114,6 +132,8 @@ public final class SpringCloudConfigComponent extends JavaComponentProperties {
                     List<JavaComponentConfigurationProperty> configurations
                         = reader.readArray(reader1 -> JavaComponentConfigurationProperty.fromJson(reader1));
                     deserializedSpringCloudConfigComponent.withConfigurations(configurations);
+                } else if ("scale".equals(fieldName)) {
+                    deserializedSpringCloudConfigComponent.withScale(JavaComponentPropertiesScale.fromJson(reader));
                 } else if ("serviceBinds".equals(fieldName)) {
                     List<JavaComponentServiceBind> serviceBinds
                         = reader.readArray(reader1 -> JavaComponentServiceBind.fromJson(reader1));

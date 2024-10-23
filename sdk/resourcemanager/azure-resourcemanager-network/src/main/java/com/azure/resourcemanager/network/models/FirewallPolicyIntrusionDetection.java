@@ -5,31 +5,32 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Configuration for intrusion detection mode and rules.
  */
 @Fluent
-public final class FirewallPolicyIntrusionDetection {
+public final class FirewallPolicyIntrusionDetection implements JsonSerializable<FirewallPolicyIntrusionDetection> {
     /*
      * Intrusion detection general state. When attached to a parent policy, the firewall's effective IDPS mode is the
      * stricter mode of the two.
      */
-    @JsonProperty(value = "mode")
     private FirewallPolicyIntrusionDetectionStateType mode;
 
     /*
      * IDPS profile name. When attached to a parent policy, the firewall's effective profile is the profile name of the
      * parent policy.
      */
-    @JsonProperty(value = "profile")
     private FirewallPolicyIntrusionDetectionProfileType profile;
 
     /*
      * Intrusion detection configuration properties.
      */
-    @JsonProperty(value = "configuration")
     private FirewallPolicyIntrusionDetectionConfiguration configuration;
 
     /**
@@ -112,5 +113,51 @@ public final class FirewallPolicyIntrusionDetection {
         if (configuration() != null) {
             configuration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeStringField("profile", this.profile == null ? null : this.profile.toString());
+        jsonWriter.writeJsonField("configuration", this.configuration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirewallPolicyIntrusionDetection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirewallPolicyIntrusionDetection if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FirewallPolicyIntrusionDetection.
+     */
+    public static FirewallPolicyIntrusionDetection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirewallPolicyIntrusionDetection deserializedFirewallPolicyIntrusionDetection
+                = new FirewallPolicyIntrusionDetection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mode".equals(fieldName)) {
+                    deserializedFirewallPolicyIntrusionDetection.mode
+                        = FirewallPolicyIntrusionDetectionStateType.fromString(reader.getString());
+                } else if ("profile".equals(fieldName)) {
+                    deserializedFirewallPolicyIntrusionDetection.profile
+                        = FirewallPolicyIntrusionDetectionProfileType.fromString(reader.getString());
+                } else if ("configuration".equals(fieldName)) {
+                    deserializedFirewallPolicyIntrusionDetection.configuration
+                        = FirewallPolicyIntrusionDetectionConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirewallPolicyIntrusionDetection;
+        });
     }
 }

@@ -11,13 +11,14 @@ public final class FileServerLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileServerLocation model = BinaryData.fromString(
-            "{\"type\":\"FileServerLocation\",\"folderPath\":\"databbcngkeg\",\"fileName\":\"datay\",\"\":{\"zox\":\"databfetwily\"}}")
+            "{\"type\":\"FileServerLocation\",\"folderPath\":\"datapxmib\",\"fileName\":\"datanupoyryefqmwovyz\",\"\":{\"kutnjillukkrehy\":\"datanomfpbjceegvyiez\",\"xfaryrvj\":\"datatmjoduifvu\"}}")
             .toObject(FileServerLocation.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileServerLocation model = new FileServerLocation().withFolderPath("databbcngkeg").withFileName("datay");
+        FileServerLocation model
+            = new FileServerLocation().withFolderPath("datapxmib").withFileName("datanupoyryefqmwovyz");
         model = BinaryData.fromObject(model).toObject(FileServerLocation.class);
     }
 }

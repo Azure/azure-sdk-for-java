@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Extension Properties.
  */
 @Fluent
-public final class CloudServiceExtensionProperties {
+public final class CloudServiceExtensionProperties implements JsonSerializable<CloudServiceExtensionProperties> {
     /*
      * The name of the extension handler publisher.
      */
-    @JsonProperty(value = "publisher")
     private String publisher;
 
     /*
      * Specifies the type of the extension.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
@@ -33,34 +35,29 @@ public final class CloudServiceExtensionProperties {
      * the specific extension version is selected. If a version is specified, an auto-upgrade is performed on the role
      * instance.
      */
-    @JsonProperty(value = "typeHandlerVersion")
     private String typeHandlerVersion;
 
     /*
      * Explicitly specify whether platform can automatically upgrade typeHandlerVersion to higher minor versions when
      * they become available.
      */
-    @JsonProperty(value = "autoUpgradeMinorVersion")
     private Boolean autoUpgradeMinorVersion;
 
     /*
      * Public settings for the extension. For JSON extensions, this is the JSON settings for the extension. For XML
      * Extension (like RDP), this is the XML setting for the extension.
      */
-    @JsonProperty(value = "settings")
     private Object settings;
 
     /*
      * Protected settings for the extension which are encrypted before sent to the role instance.
      */
-    @JsonProperty(value = "protectedSettings")
     private Object protectedSettings;
 
     /*
      * Protected settings for the extension, referenced using KeyVault which are encrypted before sent to the role
      * instance.
      */
-    @JsonProperty(value = "protectedSettingsFromKeyVault")
     private CloudServiceVaultAndSecretReference protectedSettingsFromKeyVault;
 
     /*
@@ -72,20 +69,17 @@ public final class CloudServiceExtensionProperties {
      * instance with the same sequence-number, and
      * it is up to handler implementation whether to re-run it or not
      */
-    @JsonProperty(value = "forceUpdateTag")
     private String forceUpdateTag;
 
     /*
      * The provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Optional list of roles to apply this extension. If property is not specified or '*' is specified, extension is
      * applied to all roles in the cloud service.
      */
-    @JsonProperty(value = "rolesAppliedTo")
     private List<String> rolesAppliedTo;
 
     /**
@@ -325,5 +319,72 @@ public final class CloudServiceExtensionProperties {
         if (protectedSettingsFromKeyVault() != null) {
             protectedSettingsFromKeyVault().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("typeHandlerVersion", this.typeHandlerVersion);
+        jsonWriter.writeBooleanField("autoUpgradeMinorVersion", this.autoUpgradeMinorVersion);
+        jsonWriter.writeUntypedField("settings", this.settings);
+        jsonWriter.writeUntypedField("protectedSettings", this.protectedSettings);
+        jsonWriter.writeJsonField("protectedSettingsFromKeyVault", this.protectedSettingsFromKeyVault);
+        jsonWriter.writeStringField("forceUpdateTag", this.forceUpdateTag);
+        jsonWriter.writeArrayField("rolesAppliedTo", this.rolesAppliedTo,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudServiceExtensionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudServiceExtensionProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CloudServiceExtensionProperties.
+     */
+    public static CloudServiceExtensionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudServiceExtensionProperties deserializedCloudServiceExtensionProperties
+                = new CloudServiceExtensionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publisher".equals(fieldName)) {
+                    deserializedCloudServiceExtensionProperties.publisher = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCloudServiceExtensionProperties.type = reader.getString();
+                } else if ("typeHandlerVersion".equals(fieldName)) {
+                    deserializedCloudServiceExtensionProperties.typeHandlerVersion = reader.getString();
+                } else if ("autoUpgradeMinorVersion".equals(fieldName)) {
+                    deserializedCloudServiceExtensionProperties.autoUpgradeMinorVersion
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("settings".equals(fieldName)) {
+                    deserializedCloudServiceExtensionProperties.settings = reader.readUntyped();
+                } else if ("protectedSettings".equals(fieldName)) {
+                    deserializedCloudServiceExtensionProperties.protectedSettings = reader.readUntyped();
+                } else if ("protectedSettingsFromKeyVault".equals(fieldName)) {
+                    deserializedCloudServiceExtensionProperties.protectedSettingsFromKeyVault
+                        = CloudServiceVaultAndSecretReference.fromJson(reader);
+                } else if ("forceUpdateTag".equals(fieldName)) {
+                    deserializedCloudServiceExtensionProperties.forceUpdateTag = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedCloudServiceExtensionProperties.provisioningState = reader.getString();
+                } else if ("rolesAppliedTo".equals(fieldName)) {
+                    List<String> rolesAppliedTo = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCloudServiceExtensionProperties.rolesAppliedTo = rolesAppliedTo;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudServiceExtensionProperties;
+        });
     }
 }

@@ -5,179 +5,155 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Sysctl settings for Linux agent nodes.
  */
 @Fluent
-public final class SysctlConfig {
+public final class SysctlConfig implements JsonSerializable<SysctlConfig> {
     /*
      * Sysctl setting net.core.somaxconn.
      */
-    @JsonProperty(value = "netCoreSomaxconn")
     private Integer netCoreSomaxconn;
 
     /*
      * Sysctl setting net.core.netdev_max_backlog.
      */
-    @JsonProperty(value = "netCoreNetdevMaxBacklog")
     private Integer netCoreNetdevMaxBacklog;
 
     /*
      * Sysctl setting net.core.rmem_default.
      */
-    @JsonProperty(value = "netCoreRmemDefault")
     private Integer netCoreRmemDefault;
 
     /*
      * Sysctl setting net.core.rmem_max.
      */
-    @JsonProperty(value = "netCoreRmemMax")
     private Integer netCoreRmemMax;
 
     /*
      * Sysctl setting net.core.wmem_default.
      */
-    @JsonProperty(value = "netCoreWmemDefault")
     private Integer netCoreWmemDefault;
 
     /*
      * Sysctl setting net.core.wmem_max.
      */
-    @JsonProperty(value = "netCoreWmemMax")
     private Integer netCoreWmemMax;
 
     /*
      * Sysctl setting net.core.optmem_max.
      */
-    @JsonProperty(value = "netCoreOptmemMax")
     private Integer netCoreOptmemMax;
 
     /*
      * Sysctl setting net.ipv4.tcp_max_syn_backlog.
      */
-    @JsonProperty(value = "netIpv4TcpMaxSynBacklog")
     private Integer netIpv4TcpMaxSynBacklog;
 
     /*
      * Sysctl setting net.ipv4.tcp_max_tw_buckets.
      */
-    @JsonProperty(value = "netIpv4TcpMaxTwBuckets")
     private Integer netIpv4TcpMaxTwBuckets;
 
     /*
      * Sysctl setting net.ipv4.tcp_fin_timeout.
      */
-    @JsonProperty(value = "netIpv4TcpFinTimeout")
     private Integer netIpv4TcpFinTimeout;
 
     /*
      * Sysctl setting net.ipv4.tcp_keepalive_time.
      */
-    @JsonProperty(value = "netIpv4TcpKeepaliveTime")
     private Integer netIpv4TcpKeepaliveTime;
 
     /*
      * Sysctl setting net.ipv4.tcp_keepalive_probes.
      */
-    @JsonProperty(value = "netIpv4TcpKeepaliveProbes")
     private Integer netIpv4TcpKeepaliveProbes;
 
     /*
      * Sysctl setting net.ipv4.tcp_keepalive_intvl.
      */
-    @JsonProperty(value = "netIpv4TcpkeepaliveIntvl")
     private Integer netIpv4TcpkeepaliveIntvl;
 
     /*
      * Sysctl setting net.ipv4.tcp_tw_reuse.
      */
-    @JsonProperty(value = "netIpv4TcpTwReuse")
     private Boolean netIpv4TcpTwReuse;
 
     /*
      * Sysctl setting net.ipv4.ip_local_port_range.
      */
-    @JsonProperty(value = "netIpv4IpLocalPortRange")
     private String netIpv4IpLocalPortRange;
 
     /*
      * Sysctl setting net.ipv4.neigh.default.gc_thresh1.
      */
-    @JsonProperty(value = "netIpv4NeighDefaultGcThresh1")
     private Integer netIpv4NeighDefaultGcThresh1;
 
     /*
      * Sysctl setting net.ipv4.neigh.default.gc_thresh2.
      */
-    @JsonProperty(value = "netIpv4NeighDefaultGcThresh2")
     private Integer netIpv4NeighDefaultGcThresh2;
 
     /*
      * Sysctl setting net.ipv4.neigh.default.gc_thresh3.
      */
-    @JsonProperty(value = "netIpv4NeighDefaultGcThresh3")
     private Integer netIpv4NeighDefaultGcThresh3;
 
     /*
      * Sysctl setting net.netfilter.nf_conntrack_max.
      */
-    @JsonProperty(value = "netNetfilterNfConntrackMax")
     private Integer netNetfilterNfConntrackMax;
 
     /*
      * Sysctl setting net.netfilter.nf_conntrack_buckets.
      */
-    @JsonProperty(value = "netNetfilterNfConntrackBuckets")
     private Integer netNetfilterNfConntrackBuckets;
 
     /*
      * Sysctl setting fs.inotify.max_user_watches.
      */
-    @JsonProperty(value = "fsInotifyMaxUserWatches")
     private Integer fsInotifyMaxUserWatches;
 
     /*
      * Sysctl setting fs.file-max.
      */
-    @JsonProperty(value = "fsFileMax")
     private Integer fsFileMax;
 
     /*
      * Sysctl setting fs.aio-max-nr.
      */
-    @JsonProperty(value = "fsAioMaxNr")
     private Integer fsAioMaxNr;
 
     /*
      * Sysctl setting fs.nr_open.
      */
-    @JsonProperty(value = "fsNrOpen")
     private Integer fsNrOpen;
 
     /*
      * Sysctl setting kernel.threads-max.
      */
-    @JsonProperty(value = "kernelThreadsMax")
     private Integer kernelThreadsMax;
 
     /*
      * Sysctl setting vm.max_map_count.
      */
-    @JsonProperty(value = "vmMaxMapCount")
     private Integer vmMaxMapCount;
 
     /*
      * Sysctl setting vm.swappiness.
      */
-    @JsonProperty(value = "vmSwappiness")
     private Integer vmSwappiness;
 
     /*
      * Sysctl setting vm.vfs_cache_pressure.
      */
-    @JsonProperty(value = "vmVfsCachePressure")
     private Integer vmVfsCachePressure;
 
     /**
@@ -752,5 +728,122 @@ public final class SysctlConfig {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("netCoreSomaxconn", this.netCoreSomaxconn);
+        jsonWriter.writeNumberField("netCoreNetdevMaxBacklog", this.netCoreNetdevMaxBacklog);
+        jsonWriter.writeNumberField("netCoreRmemDefault", this.netCoreRmemDefault);
+        jsonWriter.writeNumberField("netCoreRmemMax", this.netCoreRmemMax);
+        jsonWriter.writeNumberField("netCoreWmemDefault", this.netCoreWmemDefault);
+        jsonWriter.writeNumberField("netCoreWmemMax", this.netCoreWmemMax);
+        jsonWriter.writeNumberField("netCoreOptmemMax", this.netCoreOptmemMax);
+        jsonWriter.writeNumberField("netIpv4TcpMaxSynBacklog", this.netIpv4TcpMaxSynBacklog);
+        jsonWriter.writeNumberField("netIpv4TcpMaxTwBuckets", this.netIpv4TcpMaxTwBuckets);
+        jsonWriter.writeNumberField("netIpv4TcpFinTimeout", this.netIpv4TcpFinTimeout);
+        jsonWriter.writeNumberField("netIpv4TcpKeepaliveTime", this.netIpv4TcpKeepaliveTime);
+        jsonWriter.writeNumberField("netIpv4TcpKeepaliveProbes", this.netIpv4TcpKeepaliveProbes);
+        jsonWriter.writeNumberField("netIpv4TcpkeepaliveIntvl", this.netIpv4TcpkeepaliveIntvl);
+        jsonWriter.writeBooleanField("netIpv4TcpTwReuse", this.netIpv4TcpTwReuse);
+        jsonWriter.writeStringField("netIpv4IpLocalPortRange", this.netIpv4IpLocalPortRange);
+        jsonWriter.writeNumberField("netIpv4NeighDefaultGcThresh1", this.netIpv4NeighDefaultGcThresh1);
+        jsonWriter.writeNumberField("netIpv4NeighDefaultGcThresh2", this.netIpv4NeighDefaultGcThresh2);
+        jsonWriter.writeNumberField("netIpv4NeighDefaultGcThresh3", this.netIpv4NeighDefaultGcThresh3);
+        jsonWriter.writeNumberField("netNetfilterNfConntrackMax", this.netNetfilterNfConntrackMax);
+        jsonWriter.writeNumberField("netNetfilterNfConntrackBuckets", this.netNetfilterNfConntrackBuckets);
+        jsonWriter.writeNumberField("fsInotifyMaxUserWatches", this.fsInotifyMaxUserWatches);
+        jsonWriter.writeNumberField("fsFileMax", this.fsFileMax);
+        jsonWriter.writeNumberField("fsAioMaxNr", this.fsAioMaxNr);
+        jsonWriter.writeNumberField("fsNrOpen", this.fsNrOpen);
+        jsonWriter.writeNumberField("kernelThreadsMax", this.kernelThreadsMax);
+        jsonWriter.writeNumberField("vmMaxMapCount", this.vmMaxMapCount);
+        jsonWriter.writeNumberField("vmSwappiness", this.vmSwappiness);
+        jsonWriter.writeNumberField("vmVfsCachePressure", this.vmVfsCachePressure);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SysctlConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SysctlConfig if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SysctlConfig.
+     */
+    public static SysctlConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SysctlConfig deserializedSysctlConfig = new SysctlConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("netCoreSomaxconn".equals(fieldName)) {
+                    deserializedSysctlConfig.netCoreSomaxconn = reader.getNullable(JsonReader::getInt);
+                } else if ("netCoreNetdevMaxBacklog".equals(fieldName)) {
+                    deserializedSysctlConfig.netCoreNetdevMaxBacklog = reader.getNullable(JsonReader::getInt);
+                } else if ("netCoreRmemDefault".equals(fieldName)) {
+                    deserializedSysctlConfig.netCoreRmemDefault = reader.getNullable(JsonReader::getInt);
+                } else if ("netCoreRmemMax".equals(fieldName)) {
+                    deserializedSysctlConfig.netCoreRmemMax = reader.getNullable(JsonReader::getInt);
+                } else if ("netCoreWmemDefault".equals(fieldName)) {
+                    deserializedSysctlConfig.netCoreWmemDefault = reader.getNullable(JsonReader::getInt);
+                } else if ("netCoreWmemMax".equals(fieldName)) {
+                    deserializedSysctlConfig.netCoreWmemMax = reader.getNullable(JsonReader::getInt);
+                } else if ("netCoreOptmemMax".equals(fieldName)) {
+                    deserializedSysctlConfig.netCoreOptmemMax = reader.getNullable(JsonReader::getInt);
+                } else if ("netIpv4TcpMaxSynBacklog".equals(fieldName)) {
+                    deserializedSysctlConfig.netIpv4TcpMaxSynBacklog = reader.getNullable(JsonReader::getInt);
+                } else if ("netIpv4TcpMaxTwBuckets".equals(fieldName)) {
+                    deserializedSysctlConfig.netIpv4TcpMaxTwBuckets = reader.getNullable(JsonReader::getInt);
+                } else if ("netIpv4TcpFinTimeout".equals(fieldName)) {
+                    deserializedSysctlConfig.netIpv4TcpFinTimeout = reader.getNullable(JsonReader::getInt);
+                } else if ("netIpv4TcpKeepaliveTime".equals(fieldName)) {
+                    deserializedSysctlConfig.netIpv4TcpKeepaliveTime = reader.getNullable(JsonReader::getInt);
+                } else if ("netIpv4TcpKeepaliveProbes".equals(fieldName)) {
+                    deserializedSysctlConfig.netIpv4TcpKeepaliveProbes = reader.getNullable(JsonReader::getInt);
+                } else if ("netIpv4TcpkeepaliveIntvl".equals(fieldName)) {
+                    deserializedSysctlConfig.netIpv4TcpkeepaliveIntvl = reader.getNullable(JsonReader::getInt);
+                } else if ("netIpv4TcpTwReuse".equals(fieldName)) {
+                    deserializedSysctlConfig.netIpv4TcpTwReuse = reader.getNullable(JsonReader::getBoolean);
+                } else if ("netIpv4IpLocalPortRange".equals(fieldName)) {
+                    deserializedSysctlConfig.netIpv4IpLocalPortRange = reader.getString();
+                } else if ("netIpv4NeighDefaultGcThresh1".equals(fieldName)) {
+                    deserializedSysctlConfig.netIpv4NeighDefaultGcThresh1 = reader.getNullable(JsonReader::getInt);
+                } else if ("netIpv4NeighDefaultGcThresh2".equals(fieldName)) {
+                    deserializedSysctlConfig.netIpv4NeighDefaultGcThresh2 = reader.getNullable(JsonReader::getInt);
+                } else if ("netIpv4NeighDefaultGcThresh3".equals(fieldName)) {
+                    deserializedSysctlConfig.netIpv4NeighDefaultGcThresh3 = reader.getNullable(JsonReader::getInt);
+                } else if ("netNetfilterNfConntrackMax".equals(fieldName)) {
+                    deserializedSysctlConfig.netNetfilterNfConntrackMax = reader.getNullable(JsonReader::getInt);
+                } else if ("netNetfilterNfConntrackBuckets".equals(fieldName)) {
+                    deserializedSysctlConfig.netNetfilterNfConntrackBuckets = reader.getNullable(JsonReader::getInt);
+                } else if ("fsInotifyMaxUserWatches".equals(fieldName)) {
+                    deserializedSysctlConfig.fsInotifyMaxUserWatches = reader.getNullable(JsonReader::getInt);
+                } else if ("fsFileMax".equals(fieldName)) {
+                    deserializedSysctlConfig.fsFileMax = reader.getNullable(JsonReader::getInt);
+                } else if ("fsAioMaxNr".equals(fieldName)) {
+                    deserializedSysctlConfig.fsAioMaxNr = reader.getNullable(JsonReader::getInt);
+                } else if ("fsNrOpen".equals(fieldName)) {
+                    deserializedSysctlConfig.fsNrOpen = reader.getNullable(JsonReader::getInt);
+                } else if ("kernelThreadsMax".equals(fieldName)) {
+                    deserializedSysctlConfig.kernelThreadsMax = reader.getNullable(JsonReader::getInt);
+                } else if ("vmMaxMapCount".equals(fieldName)) {
+                    deserializedSysctlConfig.vmMaxMapCount = reader.getNullable(JsonReader::getInt);
+                } else if ("vmSwappiness".equals(fieldName)) {
+                    deserializedSysctlConfig.vmSwappiness = reader.getNullable(JsonReader::getInt);
+                } else if ("vmVfsCachePressure".equals(fieldName)) {
+                    deserializedSysctlConfig.vmVfsCachePressure = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSysctlConfig;
+        });
     }
 }

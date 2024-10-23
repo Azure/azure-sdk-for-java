@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public final class ManagedEnvironmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
      * ManagedEnvironments_CustomInfrastructureResourceGroup_Create.json
      */
     /**
@@ -60,6 +60,7 @@ public final class ManagedEnvironmentsCreateOrUpdateSamples {
                 .withCertificatePassword("fakeTokenPlaceholder"))
             .withWorkloadProfiles(Arrays.asList(
                 new WorkloadProfile().withName("My-GP-01")
+                    .withEnableFips(true)
                     .withWorkloadProfileType("GeneralPurpose")
                     .withMinimumCount(3)
                     .withMaximumCount(12),
@@ -77,7 +78,7 @@ public final class ManagedEnvironmentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
      * ManagedEnvironments_CreateOrUpdate.json
      */
     /**
@@ -116,15 +117,18 @@ public final class ManagedEnvironmentsCreateOrUpdateSamples {
                                 .withInsecure(true)
                                 .withHeaders(Arrays
                                     .asList(new Header().withKey("fakeTokenPlaceholder").withValue("xxxxxxxxxxx"))))))
-                    .withTracesConfiguration(new TracesConfiguration().withDestinations(Arrays.asList("appInsights")))
+                    .withTracesConfiguration(
+                        new TracesConfiguration().withIncludeDapr(true).withDestinations(Arrays.asList("appInsights")))
                     .withLogsConfiguration(new LogsConfiguration().withDestinations(Arrays.asList("appInsights")))
-                    .withMetricsConfiguration(new MetricsConfiguration().withDestinations(Arrays.asList("dataDog"))))
+                    .withMetricsConfiguration(
+                        new MetricsConfiguration().withIncludeKeda(true).withDestinations(Arrays.asList("dataDog"))))
             .withZoneRedundant(true)
             .withCustomDomainConfiguration(new CustomDomainConfiguration().withDnsSuffix("www.my-name.com")
                 .withCertificateValue("Y2VydA==".getBytes())
                 .withCertificatePassword("fakeTokenPlaceholder"))
             .withWorkloadProfiles(Arrays.asList(
                 new WorkloadProfile().withName("My-GP-01")
+                    .withEnableFips(true)
                     .withWorkloadProfileType("GeneralPurpose")
                     .withMinimumCount(3)
                     .withMaximumCount(12),

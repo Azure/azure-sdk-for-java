@@ -13,7 +13,9 @@ import java.io.IOException;
  */
 public final class DeploymentsCalculateTemplateHashSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/CalculateTemplateHash.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/CalculateTemplateHash.
+     * json
      */
     /**
      * Sample code: Calculate template hash.

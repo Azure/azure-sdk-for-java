@@ -5,75 +5,77 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties for a Connection Setting Item. */
+/**
+ * Properties for a Connection Setting Item.
+ */
 @Fluent
-public final class ConnectionSettingProperties {
+public final class ConnectionSettingProperties implements JsonSerializable<ConnectionSettingProperties> {
     /*
-     * Id associated with the Connection Setting.
+     * Id of the Connection Setting.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
-     * Name associated with the Connection Setting.
+     * Name of the Connection Setting.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Client Id associated with the Connection Setting.
      */
-    @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
      * Setting Id set by the service for the Connection Setting.
      */
-    @JsonProperty(value = "settingId", access = JsonProperty.Access.WRITE_ONLY)
     private String settingId;
 
     /*
      * Client Secret associated with the Connection Setting
      */
-    @JsonProperty(value = "clientSecret")
     private String clientSecret;
 
     /*
      * Scopes associated with the Connection Setting
      */
-    @JsonProperty(value = "scopes")
     private String scopes;
 
     /*
      * Service Provider Id associated with the Connection Setting
      */
-    @JsonProperty(value = "serviceProviderId")
     private String serviceProviderId;
 
     /*
      * Service Provider Display Name associated with the Connection Setting
      */
-    @JsonProperty(value = "serviceProviderDisplayName")
     private String serviceProviderDisplayName;
 
     /*
      * Service Provider Parameters associated with the Connection Setting
      */
-    @JsonProperty(value = "parameters")
     private List<ConnectionSettingParameter> parameters;
 
     /*
      * Provisioning state of the resource
      */
-    @JsonProperty(value = "provisioningState")
     private String provisioningState;
 
     /**
-     * Get the id property: Id associated with the Connection Setting.
-     *
+     * Creates an instance of ConnectionSettingProperties class.
+     */
+    public ConnectionSettingProperties() {
+    }
+
+    /**
+     * Get the id property: Id of the Connection Setting.
+     * 
      * @return the id value.
      */
     public String id() {
@@ -81,8 +83,8 @@ public final class ConnectionSettingProperties {
     }
 
     /**
-     * Set the id property: Id associated with the Connection Setting.
-     *
+     * Set the id property: Id of the Connection Setting.
+     * 
      * @param id the id value to set.
      * @return the ConnectionSettingProperties object itself.
      */
@@ -92,8 +94,8 @@ public final class ConnectionSettingProperties {
     }
 
     /**
-     * Get the name property: Name associated with the Connection Setting.
-     *
+     * Get the name property: Name of the Connection Setting.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -101,8 +103,8 @@ public final class ConnectionSettingProperties {
     }
 
     /**
-     * Set the name property: Name associated with the Connection Setting.
-     *
+     * Set the name property: Name of the Connection Setting.
+     * 
      * @param name the name value to set.
      * @return the ConnectionSettingProperties object itself.
      */
@@ -113,7 +115,7 @@ public final class ConnectionSettingProperties {
 
     /**
      * Get the clientId property: Client Id associated with the Connection Setting.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -122,7 +124,7 @@ public final class ConnectionSettingProperties {
 
     /**
      * Set the clientId property: Client Id associated with the Connection Setting.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the ConnectionSettingProperties object itself.
      */
@@ -133,7 +135,7 @@ public final class ConnectionSettingProperties {
 
     /**
      * Get the settingId property: Setting Id set by the service for the Connection Setting.
-     *
+     * 
      * @return the settingId value.
      */
     public String settingId() {
@@ -142,7 +144,7 @@ public final class ConnectionSettingProperties {
 
     /**
      * Get the clientSecret property: Client Secret associated with the Connection Setting.
-     *
+     * 
      * @return the clientSecret value.
      */
     public String clientSecret() {
@@ -151,7 +153,7 @@ public final class ConnectionSettingProperties {
 
     /**
      * Set the clientSecret property: Client Secret associated with the Connection Setting.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the ConnectionSettingProperties object itself.
      */
@@ -162,7 +164,7 @@ public final class ConnectionSettingProperties {
 
     /**
      * Get the scopes property: Scopes associated with the Connection Setting.
-     *
+     * 
      * @return the scopes value.
      */
     public String scopes() {
@@ -171,7 +173,7 @@ public final class ConnectionSettingProperties {
 
     /**
      * Set the scopes property: Scopes associated with the Connection Setting.
-     *
+     * 
      * @param scopes the scopes value to set.
      * @return the ConnectionSettingProperties object itself.
      */
@@ -182,7 +184,7 @@ public final class ConnectionSettingProperties {
 
     /**
      * Get the serviceProviderId property: Service Provider Id associated with the Connection Setting.
-     *
+     * 
      * @return the serviceProviderId value.
      */
     public String serviceProviderId() {
@@ -191,7 +193,7 @@ public final class ConnectionSettingProperties {
 
     /**
      * Set the serviceProviderId property: Service Provider Id associated with the Connection Setting.
-     *
+     * 
      * @param serviceProviderId the serviceProviderId value to set.
      * @return the ConnectionSettingProperties object itself.
      */
@@ -203,7 +205,7 @@ public final class ConnectionSettingProperties {
     /**
      * Get the serviceProviderDisplayName property: Service Provider Display Name associated with the Connection
      * Setting.
-     *
+     * 
      * @return the serviceProviderDisplayName value.
      */
     public String serviceProviderDisplayName() {
@@ -213,7 +215,7 @@ public final class ConnectionSettingProperties {
     /**
      * Set the serviceProviderDisplayName property: Service Provider Display Name associated with the Connection
      * Setting.
-     *
+     * 
      * @param serviceProviderDisplayName the serviceProviderDisplayName value to set.
      * @return the ConnectionSettingProperties object itself.
      */
@@ -224,7 +226,7 @@ public final class ConnectionSettingProperties {
 
     /**
      * Get the parameters property: Service Provider Parameters associated with the Connection Setting.
-     *
+     * 
      * @return the parameters value.
      */
     public List<ConnectionSettingParameter> parameters() {
@@ -233,7 +235,7 @@ public final class ConnectionSettingProperties {
 
     /**
      * Set the parameters property: Service Provider Parameters associated with the Connection Setting.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the ConnectionSettingProperties object itself.
      */
@@ -244,7 +246,7 @@ public final class ConnectionSettingProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -253,7 +255,7 @@ public final class ConnectionSettingProperties {
 
     /**
      * Set the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the ConnectionSettingProperties object itself.
      */
@@ -264,12 +266,76 @@ public final class ConnectionSettingProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (parameters() != null) {
             parameters().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeStringField("clientSecret", this.clientSecret);
+        jsonWriter.writeStringField("scopes", this.scopes);
+        jsonWriter.writeStringField("serviceProviderId", this.serviceProviderId);
+        jsonWriter.writeStringField("serviceProviderDisplayName", this.serviceProviderDisplayName);
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("provisioningState", this.provisioningState);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionSettingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionSettingProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectionSettingProperties.
+     */
+    public static ConnectionSettingProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionSettingProperties deserializedConnectionSettingProperties = new ConnectionSettingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedConnectionSettingProperties.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedConnectionSettingProperties.name = reader.getString();
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedConnectionSettingProperties.clientId = reader.getString();
+                } else if ("settingId".equals(fieldName)) {
+                    deserializedConnectionSettingProperties.settingId = reader.getString();
+                } else if ("clientSecret".equals(fieldName)) {
+                    deserializedConnectionSettingProperties.clientSecret = reader.getString();
+                } else if ("scopes".equals(fieldName)) {
+                    deserializedConnectionSettingProperties.scopes = reader.getString();
+                } else if ("serviceProviderId".equals(fieldName)) {
+                    deserializedConnectionSettingProperties.serviceProviderId = reader.getString();
+                } else if ("serviceProviderDisplayName".equals(fieldName)) {
+                    deserializedConnectionSettingProperties.serviceProviderDisplayName = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    List<ConnectionSettingParameter> parameters
+                        = reader.readArray(reader1 -> ConnectionSettingParameter.fromJson(reader1));
+                    deserializedConnectionSettingProperties.parameters = parameters;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedConnectionSettingProperties.provisioningState = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionSettingProperties;
+        });
     }
 }

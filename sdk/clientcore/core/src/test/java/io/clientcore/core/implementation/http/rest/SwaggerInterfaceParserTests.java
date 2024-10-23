@@ -49,7 +49,7 @@ public class SwaggerInterfaceParserTests {
 
     @ServiceInterface(name = "myService", host = "https://azure.com")
     interface TestInterface4 {
-        @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path", expectedStatusCodes = {200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = {200})
         void testMethod4();
     }
 

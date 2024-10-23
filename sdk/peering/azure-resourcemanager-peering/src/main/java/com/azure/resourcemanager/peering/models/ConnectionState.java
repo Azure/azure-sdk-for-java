@@ -5,38 +5,55 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The state of the connection. */
+/**
+ * The state of the connection.
+ */
 public final class ConnectionState extends ExpandableStringEnum<ConnectionState> {
-    /** Static value None for ConnectionState. */
+    /**
+     * Static value None for ConnectionState.
+     */
     public static final ConnectionState NONE = fromString("None");
 
-    /** Static value PendingApproval for ConnectionState. */
+    /**
+     * Static value PendingApproval for ConnectionState.
+     */
     public static final ConnectionState PENDING_APPROVAL = fromString("PendingApproval");
 
-    /** Static value Approved for ConnectionState. */
+    /**
+     * Static value Approved for ConnectionState.
+     */
     public static final ConnectionState APPROVED = fromString("Approved");
 
-    /** Static value ProvisioningStarted for ConnectionState. */
+    /**
+     * Static value ProvisioningStarted for ConnectionState.
+     */
     public static final ConnectionState PROVISIONING_STARTED = fromString("ProvisioningStarted");
 
-    /** Static value ProvisioningFailed for ConnectionState. */
+    /**
+     * Static value ProvisioningFailed for ConnectionState.
+     */
     public static final ConnectionState PROVISIONING_FAILED = fromString("ProvisioningFailed");
 
-    /** Static value ProvisioningCompleted for ConnectionState. */
+    /**
+     * Static value ProvisioningCompleted for ConnectionState.
+     */
     public static final ConnectionState PROVISIONING_COMPLETED = fromString("ProvisioningCompleted");
 
-    /** Static value Validating for ConnectionState. */
+    /**
+     * Static value Validating for ConnectionState.
+     */
     public static final ConnectionState VALIDATING = fromString("Validating");
 
-    /** Static value Active for ConnectionState. */
+    /**
+     * Static value Active for ConnectionState.
+     */
     public static final ConnectionState ACTIVE = fromString("Active");
 
     /**
      * Creates a new instance of ConnectionState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,18 +62,17 @@ public final class ConnectionState extends ExpandableStringEnum<ConnectionState>
 
     /**
      * Creates or finds a ConnectionState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ConnectionState.
      */
-    @JsonCreator
     public static ConnectionState fromString(String name) {
         return fromString(name, ConnectionState.class);
     }
 
     /**
      * Gets known ConnectionState values.
-     *
+     * 
      * @return known ConnectionState values.
      */
     public static Collection<ConnectionState> values() {

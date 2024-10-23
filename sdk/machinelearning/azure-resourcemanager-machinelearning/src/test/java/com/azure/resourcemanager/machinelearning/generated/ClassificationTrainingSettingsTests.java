@@ -16,54 +16,51 @@ import org.junit.jupiter.api.Assertions;
 public final class ClassificationTrainingSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClassificationTrainingSettings model =
-            BinaryData
-                .fromString(
-                    "{\"allowedTrainingAlgorithms\":[\"LinearSVM\",\"KNN\"],\"blockedTrainingAlgorithms\":[\"LogisticRegression\"],\"enableDnnTraining\":false,\"enableModelExplainability\":true,\"enableOnnxCompatibleModels\":false,\"enableStackEnsemble\":true,\"enableVoteEnsemble\":false,\"ensembleModelDownloadTimeout\":\"PT171H27M12S\",\"stackEnsembleSettings\":{\"stackMetaLearnerKWargs\":\"dataeseyqr\",\"stackMetaLearnerTrainPercentage\":0.8015922020078059,\"stackMetaLearnerType\":\"LightGBMClassifier\"}}")
-                .toObject(ClassificationTrainingSettings.class);
-        Assertions.assertEquals(false, model.enableDnnTraining());
-        Assertions.assertEquals(true, model.enableModelExplainability());
+        ClassificationTrainingSettings model = BinaryData.fromString(
+            "{\"allowedTrainingAlgorithms\":[\"ExtremeRandomTrees\",\"DecisionTree\",\"KNN\",\"SVM\"],\"blockedTrainingAlgorithms\":[\"SGD\",\"LogisticRegression\",\"XGBoostClassifier\",\"LinearSVM\"],\"enableOnnxCompatibleModels\":false,\"stackEnsembleSettings\":{\"stackMetaLearnerType\":\"LightGBMRegressor\",\"stackMetaLearnerTrainPercentage\":99.81987601096077,\"stackMetaLearnerKWargs\":\"dataqcnrrfijhggabqb\"},\"enableStackEnsemble\":false,\"enableVoteEnsemble\":true,\"ensembleModelDownloadTimeout\":\"PT110H9M4S\",\"enableModelExplainability\":true,\"enableDnnTraining\":false}")
+            .toObject(ClassificationTrainingSettings.class);
         Assertions.assertEquals(false, model.enableOnnxCompatibleModels());
-        Assertions.assertEquals(true, model.enableStackEnsemble());
-        Assertions.assertEquals(false, model.enableVoteEnsemble());
-        Assertions.assertEquals(Duration.parse("PT171H27M12S"), model.ensembleModelDownloadTimeout());
-        Assertions.assertEquals(0.8015922020078059D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
-        Assertions
-            .assertEquals(
-                StackMetaLearnerType.LIGHT_GBMCLASSIFIER, model.stackEnsembleSettings().stackMetaLearnerType());
-        Assertions.assertEquals(ClassificationModels.LINEAR_SVM, model.allowedTrainingAlgorithms().get(0));
-        Assertions.assertEquals(ClassificationModels.LOGISTIC_REGRESSION, model.blockedTrainingAlgorithms().get(0));
+        Assertions.assertEquals(StackMetaLearnerType.LIGHT_GBMREGRESSOR,
+            model.stackEnsembleSettings().stackMetaLearnerType());
+        Assertions.assertEquals(99.81987601096077D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
+        Assertions.assertEquals(false, model.enableStackEnsemble());
+        Assertions.assertEquals(true, model.enableVoteEnsemble());
+        Assertions.assertEquals(Duration.parse("PT110H9M4S"), model.ensembleModelDownloadTimeout());
+        Assertions.assertEquals(true, model.enableModelExplainability());
+        Assertions.assertEquals(false, model.enableDnnTraining());
+        Assertions.assertEquals(ClassificationModels.EXTREME_RANDOM_TREES, model.allowedTrainingAlgorithms().get(0));
+        Assertions.assertEquals(ClassificationModels.SGD, model.blockedTrainingAlgorithms().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClassificationTrainingSettings model =
-            new ClassificationTrainingSettings()
-                .withEnableDnnTraining(false)
-                .withEnableModelExplainability(true)
-                .withEnableOnnxCompatibleModels(false)
-                .withEnableStackEnsemble(true)
-                .withEnableVoteEnsemble(false)
-                .withEnsembleModelDownloadTimeout(Duration.parse("PT171H27M12S"))
+        ClassificationTrainingSettings model
+            = new ClassificationTrainingSettings().withEnableOnnxCompatibleModels(false)
                 .withStackEnsembleSettings(
-                    new StackEnsembleSettings()
-                        .withStackMetaLearnerKWargs("dataeseyqr")
-                        .withStackMetaLearnerTrainPercentage(0.8015922020078059D)
-                        .withStackMetaLearnerType(StackMetaLearnerType.LIGHT_GBMCLASSIFIER))
-                .withAllowedTrainingAlgorithms(Arrays.asList(ClassificationModels.LINEAR_SVM, ClassificationModels.KNN))
-                .withBlockedTrainingAlgorithms(Arrays.asList(ClassificationModels.LOGISTIC_REGRESSION));
+                    new StackEnsembleSettings().withStackMetaLearnerType(StackMetaLearnerType.LIGHT_GBMREGRESSOR)
+                        .withStackMetaLearnerTrainPercentage(99.81987601096077D)
+                        .withStackMetaLearnerKWargs("dataqcnrrfijhggabqb"))
+                .withEnableStackEnsemble(false)
+                .withEnableVoteEnsemble(true)
+                .withEnsembleModelDownloadTimeout(Duration.parse("PT110H9M4S"))
+                .withEnableModelExplainability(true)
+                .withEnableDnnTraining(false)
+                .withAllowedTrainingAlgorithms(Arrays.asList(ClassificationModels.EXTREME_RANDOM_TREES,
+                    ClassificationModels.DECISION_TREE, ClassificationModels.KNN, ClassificationModels.SVM))
+                .withBlockedTrainingAlgorithms(
+                    Arrays.asList(ClassificationModels.SGD, ClassificationModels.LOGISTIC_REGRESSION,
+                        ClassificationModels.XGBOOST_CLASSIFIER, ClassificationModels.LINEAR_SVM));
         model = BinaryData.fromObject(model).toObject(ClassificationTrainingSettings.class);
-        Assertions.assertEquals(false, model.enableDnnTraining());
-        Assertions.assertEquals(true, model.enableModelExplainability());
         Assertions.assertEquals(false, model.enableOnnxCompatibleModels());
-        Assertions.assertEquals(true, model.enableStackEnsemble());
-        Assertions.assertEquals(false, model.enableVoteEnsemble());
-        Assertions.assertEquals(Duration.parse("PT171H27M12S"), model.ensembleModelDownloadTimeout());
-        Assertions.assertEquals(0.8015922020078059D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
-        Assertions
-            .assertEquals(
-                StackMetaLearnerType.LIGHT_GBMCLASSIFIER, model.stackEnsembleSettings().stackMetaLearnerType());
-        Assertions.assertEquals(ClassificationModels.LINEAR_SVM, model.allowedTrainingAlgorithms().get(0));
-        Assertions.assertEquals(ClassificationModels.LOGISTIC_REGRESSION, model.blockedTrainingAlgorithms().get(0));
+        Assertions.assertEquals(StackMetaLearnerType.LIGHT_GBMREGRESSOR,
+            model.stackEnsembleSettings().stackMetaLearnerType());
+        Assertions.assertEquals(99.81987601096077D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
+        Assertions.assertEquals(false, model.enableStackEnsemble());
+        Assertions.assertEquals(true, model.enableVoteEnsemble());
+        Assertions.assertEquals(Duration.parse("PT110H9M4S"), model.ensembleModelDownloadTimeout());
+        Assertions.assertEquals(true, model.enableModelExplainability());
+        Assertions.assertEquals(false, model.enableDnnTraining());
+        Assertions.assertEquals(ClassificationModels.EXTREME_RANDOM_TREES, model.allowedTrainingAlgorithms().get(0));
+        Assertions.assertEquals(ClassificationModels.SGD, model.blockedTrainingAlgorithms().get(0));
     }
 }

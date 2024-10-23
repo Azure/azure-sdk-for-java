@@ -2,7 +2,7 @@ jobs:
   - template: ./smoke-test-job.yml
     parameters:
       TestTask:
-        task: Maven@3
+        task: Maven@4
         displayName: 'Run Smoke Tests'
         inputs:
           mavenPomFile: $(PomFile)

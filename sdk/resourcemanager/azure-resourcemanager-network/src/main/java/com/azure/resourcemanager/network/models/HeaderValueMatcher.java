@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An optional field under "Rewrite Action". It lets you capture and modify the value(s) of a specific header when
@@ -13,25 +17,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * visit https://aka.ms/appgwheadercrud.
  */
 @Fluent
-public final class HeaderValueMatcher {
+public final class HeaderValueMatcher implements JsonSerializable<HeaderValueMatcher> {
     /*
      * The pattern, either fixed string or regular expression, that evaluates if a header value should be selected for
      * rewrite.
      */
-    @JsonProperty(value = "pattern")
     private String pattern;
 
     /*
      * Setting this parameter to truth value with force the pattern to do a case in-sensitive comparison.
      */
-    @JsonProperty(value = "ignoreCase")
     private Boolean ignoreCase;
 
     /*
      * Setting this value as truth will force to check the negation of the condition given by the user in the pattern
      * field.
      */
-    @JsonProperty(value = "negate")
     private Boolean negate;
 
     /**
@@ -112,5 +113,47 @@ public final class HeaderValueMatcher {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("pattern", this.pattern);
+        jsonWriter.writeBooleanField("ignoreCase", this.ignoreCase);
+        jsonWriter.writeBooleanField("negate", this.negate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HeaderValueMatcher from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HeaderValueMatcher if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HeaderValueMatcher.
+     */
+    public static HeaderValueMatcher fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HeaderValueMatcher deserializedHeaderValueMatcher = new HeaderValueMatcher();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("pattern".equals(fieldName)) {
+                    deserializedHeaderValueMatcher.pattern = reader.getString();
+                } else if ("ignoreCase".equals(fieldName)) {
+                    deserializedHeaderValueMatcher.ignoreCase = reader.getNullable(JsonReader::getBoolean);
+                } else if ("negate".equals(fieldName)) {
+                    deserializedHeaderValueMatcher.negate = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHeaderValueMatcher;
+        });
     }
 }

@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.CapacityReservationGroupProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +21,6 @@ public final class CapacityReservationGroupUpdate extends UpdateResource {
     /*
      * capacity reservation group Properties.
      */
-    @JsonProperty(value = "properties")
     private CapacityReservationGroupProperties innerProperties;
 
     /**
@@ -79,7 +81,7 @@ public final class CapacityReservationGroupUpdate extends UpdateResource {
      * Get the sharingProfile property: Specifies the settings to enable sharing across subscriptions for the capacity
      * reservation group resource. Pls. keep in mind the capacity reservation group resource generally can be shared
      * across subscriptions belonging to a single azure AAD tenant or cross AAD tenant if there is a trust relationship
-     * established between the AAD tenants. **Note:** Minimum api-version: 2024-03-01. Please refer to
+     * established between the AAD tenants. **Note:** Minimum api-version: 2023-09-01. Please refer to
      * https://aka.ms/computereservationsharing for more details.
      * 
      * @return the sharingProfile value.
@@ -92,7 +94,7 @@ public final class CapacityReservationGroupUpdate extends UpdateResource {
      * Set the sharingProfile property: Specifies the settings to enable sharing across subscriptions for the capacity
      * reservation group resource. Pls. keep in mind the capacity reservation group resource generally can be shared
      * across subscriptions belonging to a single azure AAD tenant or cross AAD tenant if there is a trust relationship
-     * established between the AAD tenants. **Note:** Minimum api-version: 2024-03-01. Please refer to
+     * established between the AAD tenants. **Note:** Minimum api-version: 2023-09-01. Please refer to
      * https://aka.ms/computereservationsharing for more details.
      * 
      * @param sharingProfile the sharingProfile value to set.
@@ -117,5 +119,47 @@ public final class CapacityReservationGroupUpdate extends UpdateResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CapacityReservationGroupUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CapacityReservationGroupUpdate if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CapacityReservationGroupUpdate.
+     */
+    public static CapacityReservationGroupUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CapacityReservationGroupUpdate deserializedCapacityReservationGroupUpdate
+                = new CapacityReservationGroupUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCapacityReservationGroupUpdate.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCapacityReservationGroupUpdate.innerProperties
+                        = CapacityReservationGroupProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCapacityReservationGroupUpdate;
+        });
     }
 }

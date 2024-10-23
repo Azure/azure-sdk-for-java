@@ -12,17 +12,18 @@ public final class ContainerRegistryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContainerRegistry model
-            = BinaryData.fromString("{\"containerRegistryServer\":\"x\",\"identityResourceId\":\"it\"}")
+            = BinaryData.fromString("{\"containerRegistryServer\":\"fcnj\",\"identityResourceId\":\"k\"}")
                 .toObject(ContainerRegistry.class);
-        Assertions.assertEquals("x", model.containerRegistryServer());
-        Assertions.assertEquals("it", model.identityResourceId());
+        Assertions.assertEquals("fcnj", model.containerRegistryServer());
+        Assertions.assertEquals("k", model.identityResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContainerRegistry model = new ContainerRegistry().withContainerRegistryServer("x").withIdentityResourceId("it");
+        ContainerRegistry model
+            = new ContainerRegistry().withContainerRegistryServer("fcnj").withIdentityResourceId("k");
         model = BinaryData.fromObject(model).toObject(ContainerRegistry.class);
-        Assertions.assertEquals("x", model.containerRegistryServer());
-        Assertions.assertEquals("it", model.identityResourceId());
+        Assertions.assertEquals("fcnj", model.containerRegistryServer());
+        Assertions.assertEquals("k", model.identityResourceId());
     }
 }

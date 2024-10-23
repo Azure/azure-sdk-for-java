@@ -6,35 +6,35 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specification for using a Virtual Network.
  */
 @Fluent
-public final class VirtualNetworkProfile {
+public final class VirtualNetworkProfile implements JsonSerializable<VirtualNetworkProfile> {
     /*
      * Resource id of the Virtual Network.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * Name of the Virtual Network (read-only).
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Resource type of the Virtual Network (read-only).
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Subnet within the Virtual Network.
      */
-    @JsonProperty(value = "subnet")
     private String subnet;
 
     /**
@@ -114,4 +114,48 @@ public final class VirtualNetworkProfile {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("subnet", this.subnet);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualNetworkProfile.
+     */
+    public static VirtualNetworkProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkProfile deserializedVirtualNetworkProfile = new VirtualNetworkProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVirtualNetworkProfile.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualNetworkProfile.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualNetworkProfile.type = reader.getString();
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedVirtualNetworkProfile.subnet = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkProfile;
+        });
+    }
 }

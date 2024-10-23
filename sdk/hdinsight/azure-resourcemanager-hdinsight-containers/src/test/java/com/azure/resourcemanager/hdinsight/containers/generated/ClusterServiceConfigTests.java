@@ -17,33 +17,43 @@ public final class ClusterServiceConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterServiceConfig model = BinaryData.fromString(
-            "{\"component\":\"rsa\",\"files\":[{\"fileName\":\"wkuofoskghsauu\",\"content\":\"jmvxie\",\"encoding\":\"Base64\",\"path\":\"idyjrrfbyaosvexc\",\"values\":{\"vleggzfbuhfmvfax\":\"pclhocohslk\"}},{\"fileName\":\"ffeii\",\"content\":\"lvmezyvshxmzsbbz\",\"encoding\":\"Base64\",\"path\":\"grxwbu\",\"values\":{\"enkouknvudw\":\"xxjnspydptk\"}}]}")
+            "{\"component\":\"xobbcswsrt\",\"files\":[{\"fileName\":\"iplrbpbewtghfgb\",\"content\":\"gw\",\"encoding\":\"None\",\"path\":\"v\",\"values\":{\"mxiebw\":\"kbegibt\",\"gwyzm\":\"aloayqcgwrtzju\",\"mtsavjcbpwxqp\":\"txon\",\"yvxqtayriwwroy\":\"rknftguvriuhprwm\"}},{\"fileName\":\"bexrmcq\",\"content\":\"ycnojvknmefqsg\",\"encoding\":\"Base64\",\"path\":\"apj\",\"values\":{\"lxkvu\":\"pvgqzcjrvxdjzlm\",\"n\":\"fhzovawjvzunluth\"}},{\"fileName\":\"rnxipei\",\"content\":\"jzuaejxdultskzbb\",\"encoding\":\"None\",\"path\":\"mv\",\"values\":{\"zuhkfpbsjyof\":\"gpw\",\"us\":\"xl\"}}]}")
             .toObject(ClusterServiceConfig.class);
-        Assertions.assertEquals("rsa", model.component());
-        Assertions.assertEquals("wkuofoskghsauu", model.files().get(0).fileName());
-        Assertions.assertEquals("jmvxie", model.files().get(0).content());
-        Assertions.assertEquals(ContentEncoding.BASE64, model.files().get(0).encoding());
-        Assertions.assertEquals("idyjrrfbyaosvexc", model.files().get(0).path());
-        Assertions.assertEquals("pclhocohslk", model.files().get(0).values().get("vleggzfbuhfmvfax"));
+        Assertions.assertEquals("xobbcswsrt", model.component());
+        Assertions.assertEquals("iplrbpbewtghfgb", model.files().get(0).fileName());
+        Assertions.assertEquals("gw", model.files().get(0).content());
+        Assertions.assertEquals(ContentEncoding.NONE, model.files().get(0).encoding());
+        Assertions.assertEquals("v", model.files().get(0).path());
+        Assertions.assertEquals("kbegibt", model.files().get(0).values().get("mxiebw"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterServiceConfig model = new ClusterServiceConfig().withComponent("rsa")
+        ClusterServiceConfig model = new ClusterServiceConfig().withComponent("xobbcswsrt")
             .withFiles(Arrays.asList(
-                new ClusterConfigFile().withFileName("wkuofoskghsauu").withContent("jmvxie")
-                    .withEncoding(ContentEncoding.BASE64).withPath("idyjrrfbyaosvexc")
-                    .withValues(mapOf("vleggzfbuhfmvfax", "pclhocohslk")),
-                new ClusterConfigFile().withFileName("ffeii").withContent("lvmezyvshxmzsbbz")
-                    .withEncoding(ContentEncoding.BASE64).withPath("grxwbu")
-                    .withValues(mapOf("enkouknvudw", "xxjnspydptk"))));
+                new ClusterConfigFile().withFileName("iplrbpbewtghfgb")
+                    .withContent("gw")
+                    .withEncoding(ContentEncoding.NONE)
+                    .withPath("v")
+                    .withValues(mapOf("mxiebw", "kbegibt", "gwyzm", "aloayqcgwrtzju", "mtsavjcbpwxqp", "txon",
+                        "yvxqtayriwwroy", "rknftguvriuhprwm")),
+                new ClusterConfigFile().withFileName("bexrmcq")
+                    .withContent("ycnojvknmefqsg")
+                    .withEncoding(ContentEncoding.BASE64)
+                    .withPath("apj")
+                    .withValues(mapOf("lxkvu", "pvgqzcjrvxdjzlm", "n", "fhzovawjvzunluth")),
+                new ClusterConfigFile().withFileName("rnxipei")
+                    .withContent("jzuaejxdultskzbb")
+                    .withEncoding(ContentEncoding.NONE)
+                    .withPath("mv")
+                    .withValues(mapOf("zuhkfpbsjyof", "gpw", "us", "xl"))));
         model = BinaryData.fromObject(model).toObject(ClusterServiceConfig.class);
-        Assertions.assertEquals("rsa", model.component());
-        Assertions.assertEquals("wkuofoskghsauu", model.files().get(0).fileName());
-        Assertions.assertEquals("jmvxie", model.files().get(0).content());
-        Assertions.assertEquals(ContentEncoding.BASE64, model.files().get(0).encoding());
-        Assertions.assertEquals("idyjrrfbyaosvexc", model.files().get(0).path());
-        Assertions.assertEquals("pclhocohslk", model.files().get(0).values().get("vleggzfbuhfmvfax"));
+        Assertions.assertEquals("xobbcswsrt", model.component());
+        Assertions.assertEquals("iplrbpbewtghfgb", model.files().get(0).fileName());
+        Assertions.assertEquals("gw", model.files().get(0).content());
+        Assertions.assertEquals(ContentEncoding.NONE, model.files().get(0).encoding());
+        Assertions.assertEquals("v", model.files().get(0).path());
+        Assertions.assertEquals("kbegibt", model.files().get(0).values().get("mxiebw"));
     }
 
     // Use "Map.of" if available

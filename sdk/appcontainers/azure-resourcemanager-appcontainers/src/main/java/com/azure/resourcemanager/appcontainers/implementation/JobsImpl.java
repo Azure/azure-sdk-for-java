@@ -20,8 +20,8 @@ import com.azure.resourcemanager.appcontainers.models.Diagnostics;
 import com.azure.resourcemanager.appcontainers.models.Job;
 import com.azure.resourcemanager.appcontainers.models.JobExecutionBase;
 import com.azure.resourcemanager.appcontainers.models.JobExecutionTemplate;
-import com.azure.resourcemanager.appcontainers.models.Jobs;
 import com.azure.resourcemanager.appcontainers.models.JobSecretsCollection;
+import com.azure.resourcemanager.appcontainers.models.Jobs;
 
 public final class JobsImpl implements Jobs {
     private static final ClientLogger LOGGER = new ClientLogger(JobsImpl.class);
@@ -67,8 +67,10 @@ public final class JobsImpl implements Jobs {
         }
     }
 
-    public Response<Job> proxyGetWithResponse(String resourceGroupName, String jobName, Context context) {
-        Response<JobInner> inner = this.serviceClient().proxyGetWithResponse(resourceGroupName, jobName, context);
+    public Response<Job> proxyGetWithResponse(String resourceGroupName, String jobName, String apiName,
+        Context context) {
+        Response<JobInner> inner
+            = this.serviceClient().proxyGetWithResponse(resourceGroupName, jobName, apiName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new JobImpl(inner.getValue(), this.manager()));
@@ -77,8 +79,8 @@ public final class JobsImpl implements Jobs {
         }
     }
 
-    public Job proxyGet(String resourceGroupName, String jobName) {
-        JobInner inner = this.serviceClient().proxyGet(resourceGroupName, jobName);
+    public Job proxyGet(String resourceGroupName, String jobName, String apiName) {
+        JobInner inner = this.serviceClient().proxyGet(resourceGroupName, jobName, apiName);
         if (inner != null) {
             return new JobImpl(inner, this.manager());
         } else {
@@ -196,6 +198,42 @@ public final class JobsImpl implements Jobs {
         JobSecretsCollectionInner inner = this.serviceClient().listSecrets(resourceGroupName, jobName);
         if (inner != null) {
             return new JobSecretsCollectionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Job resume(String resourceGroupName, String jobName) {
+        JobInner inner = this.serviceClient().resume(resourceGroupName, jobName);
+        if (inner != null) {
+            return new JobImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Job resume(String resourceGroupName, String jobName, Context context) {
+        JobInner inner = this.serviceClient().resume(resourceGroupName, jobName, context);
+        if (inner != null) {
+            return new JobImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Job suspend(String resourceGroupName, String jobName) {
+        JobInner inner = this.serviceClient().suspend(resourceGroupName, jobName);
+        if (inner != null) {
+            return new JobImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Job suspend(String resourceGroupName, String jobName, Context context) {
+        JobInner inner = this.serviceClient().suspend(resourceGroupName, jobName, context);
+        if (inner != null) {
+            return new JobImpl(inner, this.manager());
         } else {
             return null;
         }

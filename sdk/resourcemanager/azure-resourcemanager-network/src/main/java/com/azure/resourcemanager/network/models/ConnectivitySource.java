@@ -6,23 +6,25 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Parameters that define the source of the connection.
  */
 @Fluent
-public final class ConnectivitySource {
+public final class ConnectivitySource implements JsonSerializable<ConnectivitySource> {
     /*
      * The ID of the resource from which a connectivity check will be initiated.
      */
-    @JsonProperty(value = "resourceId", required = true)
     private String resourceId;
 
     /*
      * The source port from which a connectivity check will be performed.
      */
-    @JsonProperty(value = "port")
     private Integer port;
 
     /**
@@ -84,4 +86,44 @@ public final class ConnectivitySource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectivitySource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeNumberField("port", this.port);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectivitySource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectivitySource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectivitySource.
+     */
+    public static ConnectivitySource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectivitySource deserializedConnectivitySource = new ConnectivitySource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedConnectivitySource.resourceId = reader.getString();
+                } else if ("port".equals(fieldName)) {
+                    deserializedConnectivitySource.port = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectivitySource;
+        });
+    }
 }

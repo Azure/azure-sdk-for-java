@@ -9,7 +9,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.resourcemanager.frontdoor.fluent.models.FrontendEndpointInner;
@@ -36,7 +36,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 
-public class FrontDoorTests extends TestBase {
+public class FrontDoorTests extends TestProxyTestBase {
 
     private static final Region REGION = Region.US_EAST2;
 

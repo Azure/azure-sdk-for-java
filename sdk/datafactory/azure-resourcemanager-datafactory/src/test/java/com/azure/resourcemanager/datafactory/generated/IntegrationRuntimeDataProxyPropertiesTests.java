@@ -14,34 +14,34 @@ public final class IntegrationRuntimeDataProxyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntegrationRuntimeDataProxyProperties model = BinaryData.fromString(
-            "{\"connectVia\":{\"type\":\"LinkedServiceReference\",\"referenceName\":\"zo\"},\"stagingLinkedService\":{\"type\":\"LinkedServiceReference\",\"referenceName\":\"gxuupc\"},\"path\":\"gqnaidvss\"}")
+            "{\"connectVia\":{\"type\":\"IntegrationRuntimeReference\",\"referenceName\":\"v\"},\"stagingLinkedService\":{\"type\":\"LinkedServiceReference\",\"referenceName\":\"wvxcai\"},\"path\":\"icbogsfo\"}")
             .toObject(IntegrationRuntimeDataProxyProperties.class);
-        Assertions.assertEquals(IntegrationRuntimeEntityReferenceType.LINKED_SERVICE_REFERENCE,
+        Assertions.assertEquals(IntegrationRuntimeEntityReferenceType.INTEGRATION_RUNTIME_REFERENCE,
             model.connectVia().type());
-        Assertions.assertEquals("zo", model.connectVia().referenceName());
+        Assertions.assertEquals("v", model.connectVia().referenceName());
         Assertions.assertEquals(IntegrationRuntimeEntityReferenceType.LINKED_SERVICE_REFERENCE,
             model.stagingLinkedService().type());
-        Assertions.assertEquals("gxuupc", model.stagingLinkedService().referenceName());
-        Assertions.assertEquals("gqnaidvss", model.path());
+        Assertions.assertEquals("wvxcai", model.stagingLinkedService().referenceName());
+        Assertions.assertEquals("icbogsfo", model.path());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IntegrationRuntimeDataProxyProperties model = new IntegrationRuntimeDataProxyProperties()
             .withConnectVia(
-                new EntityReference().withType(IntegrationRuntimeEntityReferenceType.LINKED_SERVICE_REFERENCE)
-                    .withReferenceName("zo"))
+                new EntityReference().withType(IntegrationRuntimeEntityReferenceType.INTEGRATION_RUNTIME_REFERENCE)
+                    .withReferenceName("v"))
             .withStagingLinkedService(
                 new EntityReference().withType(IntegrationRuntimeEntityReferenceType.LINKED_SERVICE_REFERENCE)
-                    .withReferenceName("gxuupc"))
-            .withPath("gqnaidvss");
+                    .withReferenceName("wvxcai"))
+            .withPath("icbogsfo");
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeDataProxyProperties.class);
-        Assertions.assertEquals(IntegrationRuntimeEntityReferenceType.LINKED_SERVICE_REFERENCE,
+        Assertions.assertEquals(IntegrationRuntimeEntityReferenceType.INTEGRATION_RUNTIME_REFERENCE,
             model.connectVia().type());
-        Assertions.assertEquals("zo", model.connectVia().referenceName());
+        Assertions.assertEquals("v", model.connectVia().referenceName());
         Assertions.assertEquals(IntegrationRuntimeEntityReferenceType.LINKED_SERVICE_REFERENCE,
             model.stagingLinkedService().type());
-        Assertions.assertEquals("gxuupc", model.stagingLinkedService().referenceName());
-        Assertions.assertEquals("gqnaidvss", model.path());
+        Assertions.assertEquals("wvxcai", model.stagingLinkedService().referenceName());
+        Assertions.assertEquals("icbogsfo", model.path());
     }
 }

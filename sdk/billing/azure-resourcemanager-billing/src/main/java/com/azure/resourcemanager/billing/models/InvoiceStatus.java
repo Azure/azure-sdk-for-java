@@ -5,26 +5,45 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The current status of the invoice. */
+/**
+ * The current status of the invoice.
+ */
 public final class InvoiceStatus extends ExpandableStringEnum<InvoiceStatus> {
-    /** Static value Due for InvoiceStatus. */
+    /**
+     * Static value Other for InvoiceStatus.
+     */
+    public static final InvoiceStatus OTHER = fromString("Other");
+
+    /**
+     * Static value Due for InvoiceStatus.
+     */
     public static final InvoiceStatus DUE = fromString("Due");
 
-    /** Static value OverDue for InvoiceStatus. */
+    /**
+     * Static value OverDue for InvoiceStatus.
+     */
     public static final InvoiceStatus OVER_DUE = fromString("OverDue");
 
-    /** Static value Paid for InvoiceStatus. */
+    /**
+     * Static value Paid for InvoiceStatus.
+     */
     public static final InvoiceStatus PAID = fromString("Paid");
 
-    /** Static value Void for InvoiceStatus. */
+    /**
+     * Static value Void for InvoiceStatus.
+     */
     public static final InvoiceStatus VOID = fromString("Void");
 
     /**
+     * Static value Locked for InvoiceStatus.
+     */
+    public static final InvoiceStatus LOCKED = fromString("Locked");
+
+    /**
      * Creates a new instance of InvoiceStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +52,17 @@ public final class InvoiceStatus extends ExpandableStringEnum<InvoiceStatus> {
 
     /**
      * Creates or finds a InvoiceStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding InvoiceStatus.
      */
-    @JsonCreator
     public static InvoiceStatus fromString(String name) {
         return fromString(name, InvoiceStatus.class);
     }
 
     /**
      * Gets known InvoiceStatus values.
-     *
+     * 
      * @return known InvoiceStatus values.
      */
     public static Collection<InvoiceStatus> values() {

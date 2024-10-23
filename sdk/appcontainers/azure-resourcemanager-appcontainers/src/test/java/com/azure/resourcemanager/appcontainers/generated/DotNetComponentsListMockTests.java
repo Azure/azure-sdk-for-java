@@ -23,7 +23,7 @@ public final class DotNetComponentsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"componentType\":\"AspireDashboard\",\"provisioningState\":\"Succeeded\",\"configurations\":[{\"propertyName\":\"ypffmnoiicsudyh\",\"value\":\"jjtalxrdsj\"}],\"serviceBinds\":[{\"name\":\"uqwg\",\"serviceId\":\"xxhdodpjwybl\"},{\"name\":\"bdmvsby\",\"serviceId\":\"aelqpvekmkwjf\"},{\"name\":\"tlo\",\"serviceId\":\"dusxurs\"},{\"name\":\"v\",\"serviceId\":\"cjkcoqwczsyiqri\"}]},\"id\":\"wihvaangqtnh\",\"name\":\"rfdmfdvbbaexx\",\"type\":\"fwtgdfkkauigvmua\"}]}";
+            = "{\"value\":[{\"properties\":{\"componentType\":\"AspireDashboard\",\"provisioningState\":\"Failed\",\"configurations\":[{\"propertyName\":\"i\",\"value\":\"vfph\"},{\"propertyName\":\"zxplgtpvdvatlz\",\"value\":\"schnzrsbkkzov\"}],\"serviceBinds\":[{\"name\":\"nfmf\",\"serviceId\":\"xafofuworimmo\"},{\"name\":\"wdehk\",\"serviceId\":\"vh\"}]},\"id\":\"ovanyrva\",\"name\":\"rtgelg\",\"type\":\"ewikfyaqandmym\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class DotNetComponentsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DotNetComponent> response
-            = manager.dotNetComponents().list("glskakddi", "ahzllrqmtlpb", com.azure.core.util.Context.NONE);
+            = manager.dotNetComponents().list("zmec", "yrzwim", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(DotNetComponentType.ASPIRE_DASHBOARD, response.iterator().next().componentType());
-        Assertions.assertEquals("ypffmnoiicsudyh", response.iterator().next().configurations().get(0).propertyName());
-        Assertions.assertEquals("jjtalxrdsj", response.iterator().next().configurations().get(0).value());
-        Assertions.assertEquals("uqwg", response.iterator().next().serviceBinds().get(0).name());
-        Assertions.assertEquals("xxhdodpjwybl", response.iterator().next().serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("i", response.iterator().next().configurations().get(0).propertyName());
+        Assertions.assertEquals("vfph", response.iterator().next().configurations().get(0).value());
+        Assertions.assertEquals("nfmf", response.iterator().next().serviceBinds().get(0).name());
+        Assertions.assertEquals("xafofuworimmo", response.iterator().next().serviceBinds().get(0).serviceId());
     }
 }

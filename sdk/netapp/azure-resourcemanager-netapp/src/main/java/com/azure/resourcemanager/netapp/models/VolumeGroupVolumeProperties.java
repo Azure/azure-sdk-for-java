@@ -42,14 +42,14 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     private VolumeProperties innerProperties = new VolumeProperties();
 
     /*
-     * Fully qualified resource Id for the resource.
-     */
-    private String id;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of VolumeGroupVolumeProperties class.
@@ -127,16 +127,6 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Get the type property: The type of the resource.
      * 
      * @return the type value.
@@ -144,6 +134,16 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -203,8 +203,9 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
 
     /**
      * Get the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for
-     * LargeVolume on exceptional basis. Specified in bytes.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * expressed in bytes as multiples of 1 GiB.
      * 
      * @return the usageThreshold value.
      */
@@ -214,8 +215,9 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
 
     /**
      * Set the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for
-     * LargeVolume on exceptional basis. Specified in bytes.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * expressed in bytes as multiples of 1 GiB.
      * 
      * @param usageThreshold the usageThreshold value to set.
      * @return the VolumeGroupVolumeProperties object itself.
@@ -389,7 +391,8 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     }
 
     /**
-     * Get the networkFeatures property: Network features available to the volume, or current state of update.
+     * Get the networkFeatures property: The original value of the network features type available to the volume at the
+     * time it was created.
      * 
      * @return the networkFeatures value.
      */
@@ -398,7 +401,8 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     }
 
     /**
-     * Set the networkFeatures property: Network features available to the volume, or current state of update.
+     * Set the networkFeatures property: The original value of the network features type available to the volume at the
+     * time it was created.
      * 
      * @param networkFeatures the networkFeatures value to set.
      * @return the VolumeGroupVolumeProperties object itself.
@@ -409,6 +413,16 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
         }
         this.innerProperties().withNetworkFeatures(networkFeatures);
         return this;
+    }
+
+    /**
+     * Get the effectiveNetworkFeatures property: The effective value of the network features type available to the
+     * volume, or current effective state of update.
+     * 
+     * @return the effectiveNetworkFeatures value.
+     */
+    public NetworkFeatures effectiveNetworkFeatures() {
+        return this.innerProperties() == null ? null : this.innerProperties().effectiveNetworkFeatures();
     }
 
     /**
@@ -1286,8 +1300,6 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedVolumeGroupVolumeProperties.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedVolumeGroupVolumeProperties.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedVolumeGroupVolumeProperties.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {

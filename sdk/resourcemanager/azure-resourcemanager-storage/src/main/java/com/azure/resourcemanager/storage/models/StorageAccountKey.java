@@ -5,36 +5,37 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * An access key for the storage account.
  */
 @Immutable
-public final class StorageAccountKey {
+public final class StorageAccountKey implements JsonSerializable<StorageAccountKey> {
     /*
      * Name of the key.
      */
-    @JsonProperty(value = "keyName", access = JsonProperty.Access.WRITE_ONLY)
     private String keyName;
 
     /*
      * Base 64-encoded value of the key.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
     /*
      * Permissions for the key -- read-only or full permissions.
      */
-    @JsonProperty(value = "permissions", access = JsonProperty.Access.WRITE_ONLY)
     private KeyPermission permissions;
 
     /*
      * Creation time of the key, in round trip date format.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /**
@@ -85,5 +86,47 @@ public final class StorageAccountKey {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccountKey from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccountKey if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageAccountKey.
+     */
+    public static StorageAccountKey fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountKey deserializedStorageAccountKey = new StorageAccountKey();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyName".equals(fieldName)) {
+                    deserializedStorageAccountKey.keyName = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedStorageAccountKey.value = reader.getString();
+                } else if ("permissions".equals(fieldName)) {
+                    deserializedStorageAccountKey.permissions = KeyPermission.fromString(reader.getString());
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedStorageAccountKey.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccountKey;
+        });
     }
 }

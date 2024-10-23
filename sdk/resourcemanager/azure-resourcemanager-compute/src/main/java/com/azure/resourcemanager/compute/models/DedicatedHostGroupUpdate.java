@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.DedicatedHostGroupProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +22,6 @@ public final class DedicatedHostGroupUpdate extends UpdateResource {
     /*
      * Dedicated Host Group Properties.
      */
-    @JsonProperty(value = "properties")
     private DedicatedHostGroupProperties innerProperties;
 
     /*
@@ -27,7 +29,6 @@ public final class DedicatedHostGroupUpdate extends UpdateResource {
      * creation. If not provided, the group supports all zones in the region. If provided, enforces each host in the
      * group to be in the same zone.
      */
-    @JsonProperty(value = "zones")
     private List<String> zones;
 
     /**
@@ -186,5 +187,50 @@ public final class DedicatedHostGroupUpdate extends UpdateResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedHostGroupUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedHostGroupUpdate if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DedicatedHostGroupUpdate.
+     */
+    public static DedicatedHostGroupUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedHostGroupUpdate deserializedDedicatedHostGroupUpdate = new DedicatedHostGroupUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDedicatedHostGroupUpdate.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDedicatedHostGroupUpdate.innerProperties
+                        = DedicatedHostGroupProperties.fromJson(reader);
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDedicatedHostGroupUpdate.zones = zones;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedHostGroupUpdate;
+        });
     }
 }

@@ -22,8 +22,11 @@ public final class RegistriesRegenerateCredentialSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void registryRegenerateCredential(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getRegistries().regenerateCredentialWithResponse(
-            "myResourceGroup", "myRegistry", new RegenerateCredentialParameters().withName(PasswordName.PASSWORD),
-            com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getRegistries()
+            .regenerateCredentialWithResponse("myResourceGroup", "myRegistry",
+                new RegenerateCredentialParameters().withName(PasswordName.PASSWORD), com.azure.core.util.Context.NONE);
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class ServiceRegistryProvisioningState extends ExpandableStringEnum
      * @param name a name to look for.
      * @return the corresponding ServiceRegistryProvisioningState.
      */
-    @JsonCreator
     public static ServiceRegistryProvisioningState fromString(String name) {
         return fromString(name, ServiceRegistryProvisioningState.class);
     }

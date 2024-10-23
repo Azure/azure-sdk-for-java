@@ -23,11 +23,15 @@ public final class BindingsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void bindingsUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getBindings().update("myResourceGroup", "myservice", "myapp",
-            "mybinding",
-            new BindingResourceInner().withProperties(new BindingResourceProperties().withKey("fakeTokenPlaceholder")
-                .withBindingParameters(mapOf("apiType", "SQL", "databaseName", "db1"))),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getBindings()
+            .update("myResourceGroup", "myservice", "myapp", "mybinding",
+                new BindingResourceInner()
+                    .withProperties(new BindingResourceProperties().withKey("fakeTokenPlaceholder")
+                        .withBindingParameters(mapOf("apiType", "SQL", "databaseName", "db1"))),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

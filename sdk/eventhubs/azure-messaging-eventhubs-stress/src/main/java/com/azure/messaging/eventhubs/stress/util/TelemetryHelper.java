@@ -8,7 +8,7 @@ import com.azure.core.util.logging.LoggingEventBuilder;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
+import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporter;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
@@ -96,9 +96,7 @@ public class TelemetryHelper {
         }
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        new AzureMonitorExporterBuilder()
-            .connectionString(applicationInsightsConnectionString)
-            .install(sdkBuilder);
+        AzureMonitorExporter.customize(sdkBuilder, applicationInsightsConnectionString);
 
         String instanceId = System.getenv("CONTAINER_NAME");
         OpenTelemetry otel = sdkBuilder
@@ -236,6 +234,7 @@ public class TelemetryHelper {
         span.setAttribute(AttributeKey.stringKey("eventHubName"), options.getEventHubsEventHubName());
         span.setAttribute(AttributeKey.stringKey("consumerGroupName"), options.getEventHubsConsumerGroup());
         span.setAttribute(AttributeKey.longKey("messageSize"), options.getMessageSize());
+        span.setAttribute(AttributeKey.booleanKey("useV2"), options.useV2Stack());
         span.setAttribute(AttributeKey.stringKey("hostname"), System.getenv().get("HOSTNAME"));
         span.setAttribute(AttributeKey.stringKey("jreVersion"), System.getProperty("java.version"));
         span.setAttribute(AttributeKey.stringKey("jreVendor"), System.getProperty("java.vendor"));

@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Action type.
  */
@@ -96,7 +93,6 @@ public enum CertificateOrderActionType {
      * @param value the serialized value to parse.
      * @return the parsed CertificateOrderActionType object, or null if unable to parse.
      */
-    @JsonCreator
     public static CertificateOrderActionType fromString(String value) {
         if (value == null) {
             return null;
@@ -113,7 +109,6 @@ public enum CertificateOrderActionType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

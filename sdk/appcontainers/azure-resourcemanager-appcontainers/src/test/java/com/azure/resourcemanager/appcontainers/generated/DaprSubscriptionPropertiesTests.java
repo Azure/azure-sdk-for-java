@@ -18,46 +18,49 @@ public final class DaprSubscriptionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DaprSubscriptionProperties model = BinaryData.fromString(
-            "{\"pubsubName\":\"r\",\"topic\":\"ixldzyyfy\",\"deadLetterTopic\":\"qsix\",\"routes\":{\"rules\":[{\"match\":\"jivyqlkjuv\",\"path\":\"bmslzoyov\"}],\"default\":\"dbpqvybefgvm\"},\"scopes\":[\"kcvtl\",\"bse\",\"kvcuartrhunl\"],\"metadata\":{\"jreuykbbmn\":\"ykycndzfqi\",\"xoe\":\"aglt\",\"fwmyymv\":\"onql\",\"fckdvez\":\"dbpb\"},\"bulkSubscribe\":{\"enabled\":true,\"maxMessagesCount\":1245592437,\"maxAwaitDurationMs\":701964979}}")
+            "{\"pubsubName\":\"osbz\",\"topic\":\"hg\",\"deadLetterTopic\":\"kb\",\"routes\":{\"rules\":[{\"match\":\"lgjyyxpvels\",\"path\":\"rqz\"},{\"match\":\"xoqeintxwalj\",\"path\":\"zoblq\"},{\"match\":\"afrqulhm\",\"path\":\"qb\"},{\"match\":\"vafjrqpjiyrqj\",\"path\":\"gaxwmzwdfkbnrzo\"}],\"default\":\"dltb\"},\"scopes\":[\"qjf\",\"xxsaetgz\",\"gvpyigdaqqilzdc\"],\"metadata\":{\"gucaif\":\"joedx\"},\"bulkSubscribe\":{\"enabled\":false,\"maxMessagesCount\":505810781,\"maxAwaitDurationMs\":558514412}}")
             .toObject(DaprSubscriptionProperties.class);
-        Assertions.assertEquals("r", model.pubsubName());
-        Assertions.assertEquals("ixldzyyfy", model.topic());
-        Assertions.assertEquals("qsix", model.deadLetterTopic());
-        Assertions.assertEquals("jivyqlkjuv", model.routes().rules().get(0).match());
-        Assertions.assertEquals("bmslzoyov", model.routes().rules().get(0).path());
-        Assertions.assertEquals("dbpqvybefgvm", model.routes().defaultProperty());
-        Assertions.assertEquals("kcvtl", model.scopes().get(0));
-        Assertions.assertEquals("ykycndzfqi", model.metadata().get("jreuykbbmn"));
-        Assertions.assertEquals(true, model.bulkSubscribe().enabled());
-        Assertions.assertEquals(1245592437, model.bulkSubscribe().maxMessagesCount());
-        Assertions.assertEquals(701964979, model.bulkSubscribe().maxAwaitDurationMs());
+        Assertions.assertEquals("osbz", model.pubsubName());
+        Assertions.assertEquals("hg", model.topic());
+        Assertions.assertEquals("kb", model.deadLetterTopic());
+        Assertions.assertEquals("lgjyyxpvels", model.routes().rules().get(0).match());
+        Assertions.assertEquals("rqz", model.routes().rules().get(0).path());
+        Assertions.assertEquals("dltb", model.routes().defaultProperty());
+        Assertions.assertEquals("qjf", model.scopes().get(0));
+        Assertions.assertEquals("joedx", model.metadata().get("gucaif"));
+        Assertions.assertEquals(false, model.bulkSubscribe().enabled());
+        Assertions.assertEquals(505810781, model.bulkSubscribe().maxMessagesCount());
+        Assertions.assertEquals(558514412, model.bulkSubscribe().maxAwaitDurationMs());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DaprSubscriptionProperties model = new DaprSubscriptionProperties().withPubsubName("r")
-            .withTopic("ixldzyyfy")
-            .withDeadLetterTopic("qsix")
+        DaprSubscriptionProperties model = new DaprSubscriptionProperties().withPubsubName("osbz")
+            .withTopic("hg")
+            .withDeadLetterTopic("kb")
             .withRoutes(new DaprSubscriptionRoutes()
-                .withRules(Arrays.asList(new DaprSubscriptionRouteRule().withMatch("jivyqlkjuv").withPath("bmslzoyov")))
-                .withDefaultProperty("dbpqvybefgvm"))
-            .withScopes(Arrays.asList("kcvtl", "bse", "kvcuartrhunl"))
-            .withMetadata(mapOf("jreuykbbmn", "ykycndzfqi", "xoe", "aglt", "fwmyymv", "onql", "fckdvez", "dbpb"))
-            .withBulkSubscribe(new DaprSubscriptionBulkSubscribeOptions().withEnabled(true)
-                .withMaxMessagesCount(1245592437)
-                .withMaxAwaitDurationMs(701964979));
+                .withRules(Arrays.asList(new DaprSubscriptionRouteRule().withMatch("lgjyyxpvels").withPath("rqz"),
+                    new DaprSubscriptionRouteRule().withMatch("xoqeintxwalj").withPath("zoblq"),
+                    new DaprSubscriptionRouteRule().withMatch("afrqulhm").withPath("qb"),
+                    new DaprSubscriptionRouteRule().withMatch("vafjrqpjiyrqj").withPath("gaxwmzwdfkbnrzo")))
+                .withDefaultProperty("dltb"))
+            .withScopes(Arrays.asList("qjf", "xxsaetgz", "gvpyigdaqqilzdc"))
+            .withMetadata(mapOf("gucaif", "joedx"))
+            .withBulkSubscribe(new DaprSubscriptionBulkSubscribeOptions().withEnabled(false)
+                .withMaxMessagesCount(505810781)
+                .withMaxAwaitDurationMs(558514412));
         model = BinaryData.fromObject(model).toObject(DaprSubscriptionProperties.class);
-        Assertions.assertEquals("r", model.pubsubName());
-        Assertions.assertEquals("ixldzyyfy", model.topic());
-        Assertions.assertEquals("qsix", model.deadLetterTopic());
-        Assertions.assertEquals("jivyqlkjuv", model.routes().rules().get(0).match());
-        Assertions.assertEquals("bmslzoyov", model.routes().rules().get(0).path());
-        Assertions.assertEquals("dbpqvybefgvm", model.routes().defaultProperty());
-        Assertions.assertEquals("kcvtl", model.scopes().get(0));
-        Assertions.assertEquals("ykycndzfqi", model.metadata().get("jreuykbbmn"));
-        Assertions.assertEquals(true, model.bulkSubscribe().enabled());
-        Assertions.assertEquals(1245592437, model.bulkSubscribe().maxMessagesCount());
-        Assertions.assertEquals(701964979, model.bulkSubscribe().maxAwaitDurationMs());
+        Assertions.assertEquals("osbz", model.pubsubName());
+        Assertions.assertEquals("hg", model.topic());
+        Assertions.assertEquals("kb", model.deadLetterTopic());
+        Assertions.assertEquals("lgjyyxpvels", model.routes().rules().get(0).match());
+        Assertions.assertEquals("rqz", model.routes().rules().get(0).path());
+        Assertions.assertEquals("dltb", model.routes().defaultProperty());
+        Assertions.assertEquals("qjf", model.scopes().get(0));
+        Assertions.assertEquals("joedx", model.metadata().get("gucaif"));
+        Assertions.assertEquals(false, model.bulkSubscribe().enabled());
+        Assertions.assertEquals(505810781, model.bulkSubscribe().maxMessagesCount());
+        Assertions.assertEquals(558514412, model.bulkSubscribe().maxAwaitDurationMs());
     }
 
     // Use "Map.of" if available

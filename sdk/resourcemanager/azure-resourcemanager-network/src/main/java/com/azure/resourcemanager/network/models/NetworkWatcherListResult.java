@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.NetworkWatcherInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Response for ListNetworkWatchers API service call.
  */
 @Fluent
-public final class NetworkWatcherListResult {
+public final class NetworkWatcherListResult implements JsonSerializable<NetworkWatcherListResult> {
     /*
      * List of network watcher resources.
      */
-    @JsonProperty(value = "value")
     private List<NetworkWatcherInner> value;
 
     /**
@@ -55,5 +58,43 @@ public final class NetworkWatcherListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkWatcherListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkWatcherListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkWatcherListResult.
+     */
+    public static NetworkWatcherListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkWatcherListResult deserializedNetworkWatcherListResult = new NetworkWatcherListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<NetworkWatcherInner> value
+                        = reader.readArray(reader1 -> NetworkWatcherInner.fromJson(reader1));
+                    deserializedNetworkWatcherListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkWatcherListResult;
+        });
     }
 }

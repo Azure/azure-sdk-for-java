@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.PrivateAccessVirtualNetwork;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * PrivateAccess resource specific properties.
  */
 @Fluent
-public final class PrivateAccessProperties {
+public final class PrivateAccessProperties implements JsonSerializable<PrivateAccessProperties> {
     /*
      * Whether private access is enabled or not.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * The Virtual Networks (and subnets) allowed to access the site privately.
      */
-    @JsonProperty(value = "virtualNetworks")
     private List<PrivateAccessVirtualNetwork> virtualNetworks;
 
     /**
@@ -81,5 +83,47 @@ public final class PrivateAccessProperties {
         if (virtualNetworks() != null) {
             virtualNetworks().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeArrayField("virtualNetworks", this.virtualNetworks,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateAccessProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateAccessProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateAccessProperties.
+     */
+    public static PrivateAccessProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateAccessProperties deserializedPrivateAccessProperties = new PrivateAccessProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedPrivateAccessProperties.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("virtualNetworks".equals(fieldName)) {
+                    List<PrivateAccessVirtualNetwork> virtualNetworks
+                        = reader.readArray(reader1 -> PrivateAccessVirtualNetwork.fromJson(reader1));
+                    deserializedPrivateAccessProperties.virtualNetworks = virtualNetworks;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateAccessProperties;
+        });
     }
 }

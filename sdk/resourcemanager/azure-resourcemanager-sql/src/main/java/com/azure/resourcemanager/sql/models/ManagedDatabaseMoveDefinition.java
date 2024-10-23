@@ -6,24 +6,31 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Contains the information necessary to perform a managed database move. */
+/**
+ * Contains the information necessary to perform a managed database move.
+ */
 @Fluent
-public final class ManagedDatabaseMoveDefinition {
+public final class ManagedDatabaseMoveDefinition implements JsonSerializable<ManagedDatabaseMoveDefinition> {
     /*
      * The destination managed database ID
      */
-    @JsonProperty(value = "destinationManagedDatabaseId", required = true)
     private String destinationManagedDatabaseId;
 
-    /** Creates an instance of ManagedDatabaseMoveDefinition class. */
+    /**
+     * Creates an instance of ManagedDatabaseMoveDefinition class.
+     */
     public ManagedDatabaseMoveDefinition() {
     }
 
     /**
      * Get the destinationManagedDatabaseId property: The destination managed database ID.
-     *
+     * 
      * @return the destinationManagedDatabaseId value.
      */
     public String destinationManagedDatabaseId() {
@@ -32,7 +39,7 @@ public final class ManagedDatabaseMoveDefinition {
 
     /**
      * Set the destinationManagedDatabaseId property: The destination managed database ID.
-     *
+     * 
      * @param destinationManagedDatabaseId the destinationManagedDatabaseId value to set.
      * @return the ManagedDatabaseMoveDefinition object itself.
      */
@@ -43,18 +50,54 @@ public final class ManagedDatabaseMoveDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (destinationManagedDatabaseId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property destinationManagedDatabaseId in model"
-                            + " ManagedDatabaseMoveDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property destinationManagedDatabaseId in model ManagedDatabaseMoveDefinition"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedDatabaseMoveDefinition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("destinationManagedDatabaseId", this.destinationManagedDatabaseId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedDatabaseMoveDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedDatabaseMoveDefinition if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedDatabaseMoveDefinition.
+     */
+    public static ManagedDatabaseMoveDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedDatabaseMoveDefinition deserializedManagedDatabaseMoveDefinition
+                = new ManagedDatabaseMoveDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("destinationManagedDatabaseId".equals(fieldName)) {
+                    deserializedManagedDatabaseMoveDefinition.destinationManagedDatabaseId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedDatabaseMoveDefinition;
+        });
+    }
 }

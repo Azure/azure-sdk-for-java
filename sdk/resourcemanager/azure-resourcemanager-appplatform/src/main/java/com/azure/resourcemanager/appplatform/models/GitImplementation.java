@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class GitImplementation extends ExpandableStringEnum<GitImplementat
      * @param name a name to look for.
      * @return the corresponding GitImplementation.
      */
-    @JsonCreator
     public static GitImplementation fromString(String name) {
         return fromString(name, GitImplementation.class);
     }

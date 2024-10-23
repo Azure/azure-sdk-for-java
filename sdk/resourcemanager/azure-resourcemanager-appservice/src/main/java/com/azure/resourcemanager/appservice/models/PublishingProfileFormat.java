@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -45,7 +44,6 @@ public final class PublishingProfileFormat extends ExpandableStringEnum<Publishi
      * @param name a name to look for.
      * @return the corresponding PublishingProfileFormat.
      */
-    @JsonCreator
     public static PublishingProfileFormat fromString(String name) {
         return fromString(name, PublishingProfileFormat.class);
     }

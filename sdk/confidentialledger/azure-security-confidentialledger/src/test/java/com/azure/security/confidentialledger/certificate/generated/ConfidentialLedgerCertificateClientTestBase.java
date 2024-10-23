@@ -5,7 +5,6 @@
 package com.azure.security.confidentialledger.certificate.generated;
 
 import com.azure.core.credential.AccessToken;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
@@ -33,7 +32,7 @@ class ConfidentialLedgerCertificateClientTestBase extends TestProxyTestBase {
                 new ConfidentialLedgerCertificateClientBuilder()
                         .certificateEndpoint(
                             ConfidentialLedgerEnvironment.getConfidentialLedgerIdentityUrl())
-                        .httpClient(HttpClient.createDefault())
+                        .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (getTestMode() == TestMode.PLAYBACK) {

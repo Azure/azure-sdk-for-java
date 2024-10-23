@@ -6,18 +6,22 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Customer Certificate used for https.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("CustomerCertificate")
 @Fluent
 public final class CustomerCertificateParameters extends SecretParameters {
+    /*
+     * The type of the secret resource.
+     */
+    private SecretType type = SecretType.CUSTOMER_CERTIFICATE;
+
     /*
      * Resource reference to the Azure Key Vault certificate. Expected to be in format of
      * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}
@@ -25,49 +29,41 @@ public final class CustomerCertificateParameters extends SecretParameters {
      * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}
      * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
      */
-    @JsonProperty(value = "secretSource", required = true)
     private ResourceReference secretSource;
 
     /*
      * Version of the secret to be used
      */
-    @JsonProperty(value = "secretVersion")
     private String secretVersion;
 
     /*
      * Whether to use the latest version for the certificate
      */
-    @JsonProperty(value = "useLatestVersion")
     private Boolean useLatestVersion;
 
     /*
      * Subject name in the certificate.
      */
-    @JsonProperty(value = "subject", access = JsonProperty.Access.WRITE_ONLY)
     private String subject;
 
     /*
      * Certificate expiration date.
      */
-    @JsonProperty(value = "expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private String expirationDate;
 
     /*
      * Certificate issuing authority.
      */
-    @JsonProperty(value = "certificateAuthority", access = JsonProperty.Access.WRITE_ONLY)
     private String certificateAuthority;
 
     /*
      * The list of SANs.
      */
-    @JsonProperty(value = "subjectAlternativeNames")
     private List<String> subjectAlternativeNames;
 
     /*
      * Certificate thumbprint.
      */
-    @JsonProperty(value = "thumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbprint;
 
     /**
@@ -77,8 +73,17 @@ public final class CustomerCertificateParameters extends SecretParameters {
     }
 
     /**
-     * Get the secretSource property: Resource reference to the Azure Key Vault certificate. Expected to be in format
-     * of
+     * Get the type property: The type of the secret resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public SecretType type() {
+        return this.type;
+    }
+
+    /**
+     * Get the secretSource property: Resource reference to the Azure Key Vault certificate. Expected to be in format of
      * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
      * 
      * @return the secretSource value.
@@ -88,8 +93,7 @@ public final class CustomerCertificateParameters extends SecretParameters {
     }
 
     /**
-     * Set the secretSource property: Resource reference to the Azure Key Vault certificate. Expected to be in format
-     * of
+     * Set the secretSource property: Resource reference to the Azure Key Vault certificate. Expected to be in format of
      * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
      * 
      * @param secretSource the secretSource value to set.
@@ -205,12 +209,74 @@ public final class CustomerCertificateParameters extends SecretParameters {
     public void validate() {
         super.validate();
         if (secretSource() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property secretSource in model CustomerCertificateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property secretSource in model CustomerCertificateParameters"));
         } else {
             secretSource().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomerCertificateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("secretSource", this.secretSource);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("secretVersion", this.secretVersion);
+        jsonWriter.writeBooleanField("useLatestVersion", this.useLatestVersion);
+        jsonWriter.writeArrayField("subjectAlternativeNames", this.subjectAlternativeNames,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomerCertificateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomerCertificateParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomerCertificateParameters.
+     */
+    public static CustomerCertificateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomerCertificateParameters deserializedCustomerCertificateParameters
+                = new CustomerCertificateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("secretSource".equals(fieldName)) {
+                    deserializedCustomerCertificateParameters.secretSource = ResourceReference.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedCustomerCertificateParameters.type = SecretType.fromString(reader.getString());
+                } else if ("secretVersion".equals(fieldName)) {
+                    deserializedCustomerCertificateParameters.secretVersion = reader.getString();
+                } else if ("useLatestVersion".equals(fieldName)) {
+                    deserializedCustomerCertificateParameters.useLatestVersion
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("subject".equals(fieldName)) {
+                    deserializedCustomerCertificateParameters.subject = reader.getString();
+                } else if ("expirationDate".equals(fieldName)) {
+                    deserializedCustomerCertificateParameters.expirationDate = reader.getString();
+                } else if ("certificateAuthority".equals(fieldName)) {
+                    deserializedCustomerCertificateParameters.certificateAuthority = reader.getString();
+                } else if ("subjectAlternativeNames".equals(fieldName)) {
+                    List<String> subjectAlternativeNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCustomerCertificateParameters.subjectAlternativeNames = subjectAlternativeNames;
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedCustomerCertificateParameters.thumbprint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomerCertificateParameters;
+        });
+    }
 }

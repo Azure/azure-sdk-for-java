@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Ssis environment reference.
  */
 @Fluent
-public final class SsisEnvironmentReference {
+public final class SsisEnvironmentReference implements JsonSerializable<SsisEnvironmentReference> {
     /*
      * Environment reference id.
      */
-    @JsonProperty(value = "id")
     private Long id;
 
     /*
      * Environment folder name.
      */
-    @JsonProperty(value = "environmentFolderName")
     private String environmentFolderName;
 
     /*
      * Environment name.
      */
-    @JsonProperty(value = "environmentName")
     private String environmentName;
 
     /*
      * Reference type
      */
-    @JsonProperty(value = "referenceType")
     private String referenceType;
 
     /**
@@ -128,5 +128,50 @@ public final class SsisEnvironmentReference {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("id", this.id);
+        jsonWriter.writeStringField("environmentFolderName", this.environmentFolderName);
+        jsonWriter.writeStringField("environmentName", this.environmentName);
+        jsonWriter.writeStringField("referenceType", this.referenceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsisEnvironmentReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsisEnvironmentReference if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SsisEnvironmentReference.
+     */
+    public static SsisEnvironmentReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SsisEnvironmentReference deserializedSsisEnvironmentReference = new SsisEnvironmentReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSsisEnvironmentReference.id = reader.getNullable(JsonReader::getLong);
+                } else if ("environmentFolderName".equals(fieldName)) {
+                    deserializedSsisEnvironmentReference.environmentFolderName = reader.getString();
+                } else if ("environmentName".equals(fieldName)) {
+                    deserializedSsisEnvironmentReference.environmentName = reader.getString();
+                } else if ("referenceType".equals(fieldName)) {
+                    deserializedSsisEnvironmentReference.referenceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSsisEnvironmentReference;
+        });
     }
 }

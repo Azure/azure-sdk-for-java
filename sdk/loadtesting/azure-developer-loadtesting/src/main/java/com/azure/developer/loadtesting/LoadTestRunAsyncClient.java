@@ -19,18 +19,15 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.developer.loadtesting.implementation.LoadTestRunsImpl;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.Duration;
 import reactor.core.publisher.Mono;
+
+import java.time.Duration;
 
 /**
  * Initializes a new instance of the asynchronous LoadTestingClient type.
  */
 @ServiceClient(builder = LoadTestRunClientBuilder.class, isAsync = true)
 public final class LoadTestRunAsyncClient {
-
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
     @Generated
     private final LoadTestRunsImpl serviceClient;
 
@@ -134,16 +131,15 @@ public final class LoadTestRunAsyncClient {
         return new PollerFlux<>(Duration.ofSeconds(5),
             (context) -> createOrUpdateTestRunWithResponse(testRunId, body, testRunRequestOptions)
                 .flatMap(FluxUtil::toMono),
-            (context) -> {
-                Mono<BinaryData> testRunMono
-                    = getTestRunWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono);
-                return testRunMono.flatMap(testRunBinary -> PollingUtils
-                    .getPollResponseMono(() -> PollingUtils.getTestRunStatus(testRunBinary, OBJECT_MAPPER)));
-            },
+            (context) -> getTestRunWithResponse(testRunId, defaultRequestOptions)
+                .flatMap(FluxUtil::toMono)
+                .flatMap(testRunBinary ->
+                    PollingUtils.getPollResponseMono(() -> PollingUtils.getTestRunStatus(testRunBinary))),
             (activationResponse, context) -> stopTestRunWithResponse(testRunId, defaultRequestOptions)
                 .flatMap(FluxUtil::toMono),
             (context) -> getTestRunWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono));
     }
+
 
     /**
      * Associate an app component (collection of azure resources) to a test run.

@@ -5,89 +5,83 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** mailFolder. */
+/**
+ * mailFolder.
+ */
 @Fluent
 public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
     /*
      * The number of immediate child mailFolders in the current mailFolder.
      */
-    @JsonProperty(value = "childFolderCount")
     private Integer childFolderCount;
 
     /*
      * The mailFolder's display name.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The unique identifier for the mailFolder's parent mailFolder.
      */
-    @JsonProperty(value = "parentFolderId")
     private String parentFolderId;
 
     /*
      * The number of items in the mailFolder.
      */
-    @JsonProperty(value = "totalItemCount")
     private Integer totalItemCount;
 
     /*
      * The number of items in the mailFolder marked as unread.
      */
-    @JsonProperty(value = "unreadItemCount")
     private Integer unreadItemCount;
 
     /*
      * The collection of child folders in the mailFolder.
      */
-    @JsonProperty(value = "childFolders")
     private List<MicrosoftGraphMailFolder> childFolders;
 
     /*
      * The collection of rules that apply to the user's Inbox folder.
      */
-    @JsonProperty(value = "messageRules")
     private List<MicrosoftGraphMessageRule> messageRules;
 
     /*
      * The collection of messages in the mailFolder.
      */
-    @JsonProperty(value = "messages")
     private List<MicrosoftGraphMessage> messages;
 
     /*
      * The collection of multi-value extended properties defined for the mailFolder. Read-only. Nullable.
      */
-    @JsonProperty(value = "multiValueExtendedProperties")
     private List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties;
 
     /*
      * The collection of single-value extended properties defined for the mailFolder. Read-only. Nullable.
      */
-    @JsonProperty(value = "singleValueExtendedProperties")
     private List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties;
 
     /*
      * mailFolder
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphMailFolder class. */
+    /**
+     * Creates an instance of MicrosoftGraphMailFolder class.
+     */
     public MicrosoftGraphMailFolder() {
     }
 
     /**
      * Get the childFolderCount property: The number of immediate child mailFolders in the current mailFolder.
-     *
+     * 
      * @return the childFolderCount value.
      */
     public Integer childFolderCount() {
@@ -96,7 +90,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
 
     /**
      * Set the childFolderCount property: The number of immediate child mailFolders in the current mailFolder.
-     *
+     * 
      * @param childFolderCount the childFolderCount value to set.
      * @return the MicrosoftGraphMailFolder object itself.
      */
@@ -107,7 +101,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
 
     /**
      * Get the displayName property: The mailFolder's display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -116,7 +110,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
 
     /**
      * Set the displayName property: The mailFolder's display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphMailFolder object itself.
      */
@@ -127,7 +121,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
 
     /**
      * Get the parentFolderId property: The unique identifier for the mailFolder's parent mailFolder.
-     *
+     * 
      * @return the parentFolderId value.
      */
     public String parentFolderId() {
@@ -136,7 +130,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
 
     /**
      * Set the parentFolderId property: The unique identifier for the mailFolder's parent mailFolder.
-     *
+     * 
      * @param parentFolderId the parentFolderId value to set.
      * @return the MicrosoftGraphMailFolder object itself.
      */
@@ -147,7 +141,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
 
     /**
      * Get the totalItemCount property: The number of items in the mailFolder.
-     *
+     * 
      * @return the totalItemCount value.
      */
     public Integer totalItemCount() {
@@ -156,7 +150,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
 
     /**
      * Set the totalItemCount property: The number of items in the mailFolder.
-     *
+     * 
      * @param totalItemCount the totalItemCount value to set.
      * @return the MicrosoftGraphMailFolder object itself.
      */
@@ -167,7 +161,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
 
     /**
      * Get the unreadItemCount property: The number of items in the mailFolder marked as unread.
-     *
+     * 
      * @return the unreadItemCount value.
      */
     public Integer unreadItemCount() {
@@ -176,7 +170,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
 
     /**
      * Set the unreadItemCount property: The number of items in the mailFolder marked as unread.
-     *
+     * 
      * @param unreadItemCount the unreadItemCount value to set.
      * @return the MicrosoftGraphMailFolder object itself.
      */
@@ -187,7 +181,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
 
     /**
      * Get the childFolders property: The collection of child folders in the mailFolder.
-     *
+     * 
      * @return the childFolders value.
      */
     public List<MicrosoftGraphMailFolder> childFolders() {
@@ -196,7 +190,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
 
     /**
      * Set the childFolders property: The collection of child folders in the mailFolder.
-     *
+     * 
      * @param childFolders the childFolders value to set.
      * @return the MicrosoftGraphMailFolder object itself.
      */
@@ -207,7 +201,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
 
     /**
      * Get the messageRules property: The collection of rules that apply to the user's Inbox folder.
-     *
+     * 
      * @return the messageRules value.
      */
     public List<MicrosoftGraphMessageRule> messageRules() {
@@ -216,7 +210,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
 
     /**
      * Set the messageRules property: The collection of rules that apply to the user's Inbox folder.
-     *
+     * 
      * @param messageRules the messageRules value to set.
      * @return the MicrosoftGraphMailFolder object itself.
      */
@@ -227,7 +221,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
 
     /**
      * Get the messages property: The collection of messages in the mailFolder.
-     *
+     * 
      * @return the messages value.
      */
     public List<MicrosoftGraphMessage> messages() {
@@ -236,7 +230,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
 
     /**
      * Set the messages property: The collection of messages in the mailFolder.
-     *
+     * 
      * @param messages the messages value to set.
      * @return the MicrosoftGraphMailFolder object itself.
      */
@@ -248,7 +242,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
     /**
      * Get the multiValueExtendedProperties property: The collection of multi-value extended properties defined for the
      * mailFolder. Read-only. Nullable.
-     *
+     * 
      * @return the multiValueExtendedProperties value.
      */
     public List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties() {
@@ -258,7 +252,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
     /**
      * Set the multiValueExtendedProperties property: The collection of multi-value extended properties defined for the
      * mailFolder. Read-only. Nullable.
-     *
+     * 
      * @param multiValueExtendedProperties the multiValueExtendedProperties value to set.
      * @return the MicrosoftGraphMailFolder object itself.
      */
@@ -271,7 +265,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
     /**
      * Get the singleValueExtendedProperties property: The collection of single-value extended properties defined for
      * the mailFolder. Read-only. Nullable.
-     *
+     * 
      * @return the singleValueExtendedProperties value.
      */
     public List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties() {
@@ -281,7 +275,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
     /**
      * Set the singleValueExtendedProperties property: The collection of single-value extended properties defined for
      * the mailFolder. Read-only. Nullable.
-     *
+     * 
      * @param singleValueExtendedProperties the singleValueExtendedProperties value to set.
      * @return the MicrosoftGraphMailFolder object itself.
      */
@@ -293,17 +287,16 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: mailFolder.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: mailFolder.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphMailFolder object itself.
      */
@@ -312,15 +305,9 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphMailFolder withId(String id) {
         super.withId(id);
@@ -329,7 +316,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -350,5 +337,94 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
         if (singleValueExtendedProperties() != null) {
             singleValueExtendedProperties().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeNumberField("childFolderCount", this.childFolderCount);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("parentFolderId", this.parentFolderId);
+        jsonWriter.writeNumberField("totalItemCount", this.totalItemCount);
+        jsonWriter.writeNumberField("unreadItemCount", this.unreadItemCount);
+        jsonWriter.writeArrayField("childFolders", this.childFolders, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("messageRules", this.messageRules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("messages", this.messages, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("multiValueExtendedProperties", this.multiValueExtendedProperties,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("singleValueExtendedProperties", this.singleValueExtendedProperties,
+            (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphMailFolder from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphMailFolder if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphMailFolder.
+     */
+    public static MicrosoftGraphMailFolder fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphMailFolder deserializedMicrosoftGraphMailFolder = new MicrosoftGraphMailFolder();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphMailFolder.withId(reader.getString());
+                } else if ("childFolderCount".equals(fieldName)) {
+                    deserializedMicrosoftGraphMailFolder.childFolderCount = reader.getNullable(JsonReader::getInt);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphMailFolder.displayName = reader.getString();
+                } else if ("parentFolderId".equals(fieldName)) {
+                    deserializedMicrosoftGraphMailFolder.parentFolderId = reader.getString();
+                } else if ("totalItemCount".equals(fieldName)) {
+                    deserializedMicrosoftGraphMailFolder.totalItemCount = reader.getNullable(JsonReader::getInt);
+                } else if ("unreadItemCount".equals(fieldName)) {
+                    deserializedMicrosoftGraphMailFolder.unreadItemCount = reader.getNullable(JsonReader::getInt);
+                } else if ("childFolders".equals(fieldName)) {
+                    List<MicrosoftGraphMailFolder> childFolders
+                        = reader.readArray(reader1 -> MicrosoftGraphMailFolder.fromJson(reader1));
+                    deserializedMicrosoftGraphMailFolder.childFolders = childFolders;
+                } else if ("messageRules".equals(fieldName)) {
+                    List<MicrosoftGraphMessageRule> messageRules
+                        = reader.readArray(reader1 -> MicrosoftGraphMessageRule.fromJson(reader1));
+                    deserializedMicrosoftGraphMailFolder.messageRules = messageRules;
+                } else if ("messages".equals(fieldName)) {
+                    List<MicrosoftGraphMessage> messages
+                        = reader.readArray(reader1 -> MicrosoftGraphMessage.fromJson(reader1));
+                    deserializedMicrosoftGraphMailFolder.messages = messages;
+                } else if ("multiValueExtendedProperties".equals(fieldName)) {
+                    List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties
+                        = reader.readArray(reader1 -> MicrosoftGraphMultiValueLegacyExtendedProperty.fromJson(reader1));
+                    deserializedMicrosoftGraphMailFolder.multiValueExtendedProperties = multiValueExtendedProperties;
+                } else if ("singleValueExtendedProperties".equals(fieldName)) {
+                    List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties = reader
+                        .readArray(reader1 -> MicrosoftGraphSingleValueLegacyExtendedProperty.fromJson(reader1));
+                    deserializedMicrosoftGraphMailFolder.singleValueExtendedProperties = singleValueExtendedProperties;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphMailFolder.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphMailFolder;
+        });
     }
 }

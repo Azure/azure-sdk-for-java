@@ -9,28 +9,25 @@ import com.azure.resourcemanager.dnsresolver.models.VirtualNetworkLinkPatch;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VirtualNetworkLinkPatchTests {
-    @Test
-    public void testDeserialize() {
-        VirtualNetworkLinkPatch model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"metadata\":{\"r\":\"rbpizc\",\"dpydn\":\"j\",\"sjttgzfbish\":\"yhxdeoejzicwi\"}}}")
-                .toObject(VirtualNetworkLinkPatch.class);
-        Assertions.assertEquals("rbpizc", model.metadata().get("r"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        VirtualNetworkLinkPatch model = BinaryData.fromString(
+            "{\"properties\":{\"metadata\":{\"zf\":\"onuq\",\"vjektcxsenh\":\"beypewrmjmw\",\"rzpwvlqdqgbiq\":\"lrsf\",\"vf\":\"lihkaetcktvfc\"}}}")
+            .toObject(VirtualNetworkLinkPatch.class);
+        Assertions.assertEquals("onuq", model.metadata().get("zf"));
     }
 
-    @Test
-    public void testSerialize() {
-        VirtualNetworkLinkPatch model =
-            new VirtualNetworkLinkPatch()
-                .withMetadata(mapOf("r", "rbpizc", "dpydn", "j", "sjttgzfbish", "yhxdeoejzicwi"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        VirtualNetworkLinkPatch model = new VirtualNetworkLinkPatch().withMetadata(
+            mapOf("zf", "onuq", "vjektcxsenh", "beypewrmjmw", "rzpwvlqdqgbiq", "lrsf", "vf", "lihkaetcktvfc"));
         model = BinaryData.fromObject(model).toObject(VirtualNetworkLinkPatch.class);
-        Assertions.assertEquals("rbpizc", model.metadata().get("r"));
+        Assertions.assertEquals("onuq", model.metadata().get("zf"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

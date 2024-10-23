@@ -5,40 +5,49 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.EncryptionProperties;
 import com.azure.resourcemanager.automation.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The parameters supplied to the create or update account properties. */
+/**
+ * The parameters supplied to the create or update account properties.
+ */
 @Fluent
-public final class AutomationAccountCreateOrUpdateProperties {
+public final class AutomationAccountCreateOrUpdateProperties
+    implements JsonSerializable<AutomationAccountCreateOrUpdateProperties> {
     /*
      * Gets or sets account SKU.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * Set the encryption properties for the automation account
      */
-    @JsonProperty(value = "encryption")
     private EncryptionProperties encryption;
 
     /*
      * Indicates whether traffic on the non-ARM endpoint (Webhook/Agent) is allowed from the public internet
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private Boolean publicNetworkAccess;
 
     /*
      * Indicates whether requests using non-AAD authentication are blocked
      */
-    @JsonProperty(value = "disableLocalAuth")
     private Boolean disableLocalAuth;
 
     /**
+     * Creates an instance of AutomationAccountCreateOrUpdateProperties class.
+     */
+    public AutomationAccountCreateOrUpdateProperties() {
+    }
+
+    /**
      * Get the sku property: Gets or sets account SKU.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -47,7 +56,7 @@ public final class AutomationAccountCreateOrUpdateProperties {
 
     /**
      * Set the sku property: Gets or sets account SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the AutomationAccountCreateOrUpdateProperties object itself.
      */
@@ -58,7 +67,7 @@ public final class AutomationAccountCreateOrUpdateProperties {
 
     /**
      * Get the encryption property: Set the encryption properties for the automation account.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionProperties encryption() {
@@ -67,7 +76,7 @@ public final class AutomationAccountCreateOrUpdateProperties {
 
     /**
      * Set the encryption property: Set the encryption properties for the automation account.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the AutomationAccountCreateOrUpdateProperties object itself.
      */
@@ -79,7 +88,7 @@ public final class AutomationAccountCreateOrUpdateProperties {
     /**
      * Get the publicNetworkAccess property: Indicates whether traffic on the non-ARM endpoint (Webhook/Agent) is
      * allowed from the public internet.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public Boolean publicNetworkAccess() {
@@ -89,7 +98,7 @@ public final class AutomationAccountCreateOrUpdateProperties {
     /**
      * Set the publicNetworkAccess property: Indicates whether traffic on the non-ARM endpoint (Webhook/Agent) is
      * allowed from the public internet.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the AutomationAccountCreateOrUpdateProperties object itself.
      */
@@ -100,7 +109,7 @@ public final class AutomationAccountCreateOrUpdateProperties {
 
     /**
      * Get the disableLocalAuth property: Indicates whether requests using non-AAD authentication are blocked.
-     *
+     * 
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
@@ -109,7 +118,7 @@ public final class AutomationAccountCreateOrUpdateProperties {
 
     /**
      * Set the disableLocalAuth property: Indicates whether requests using non-AAD authentication are blocked.
-     *
+     * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the AutomationAccountCreateOrUpdateProperties object itself.
      */
@@ -120,7 +129,7 @@ public final class AutomationAccountCreateOrUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -130,5 +139,54 @@ public final class AutomationAccountCreateOrUpdateProperties {
         if (encryption() != null) {
             encryption().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeBooleanField("publicNetworkAccess", this.publicNetworkAccess);
+        jsonWriter.writeBooleanField("disableLocalAuth", this.disableLocalAuth);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomationAccountCreateOrUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomationAccountCreateOrUpdateProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutomationAccountCreateOrUpdateProperties.
+     */
+    public static AutomationAccountCreateOrUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomationAccountCreateOrUpdateProperties deserializedAutomationAccountCreateOrUpdateProperties
+                = new AutomationAccountCreateOrUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedAutomationAccountCreateOrUpdateProperties.sku = Sku.fromJson(reader);
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedAutomationAccountCreateOrUpdateProperties.encryption
+                        = EncryptionProperties.fromJson(reader);
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedAutomationAccountCreateOrUpdateProperties.publicNetworkAccess
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("disableLocalAuth".equals(fieldName)) {
+                    deserializedAutomationAccountCreateOrUpdateProperties.disableLocalAuth
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomationAccountCreateOrUpdateProperties;
+        });
     }
 }

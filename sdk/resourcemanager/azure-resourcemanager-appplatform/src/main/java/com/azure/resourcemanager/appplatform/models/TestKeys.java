@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Test keys payload.
  */
 @Fluent
-public final class TestKeys {
+public final class TestKeys implements JsonSerializable<TestKeys> {
     /*
      * Primary key
      */
-    @JsonProperty(value = "primaryKey")
     private String primaryKey;
 
     /*
      * Secondary key
      */
-    @JsonProperty(value = "secondaryKey")
     private String secondaryKey;
 
     /*
      * Primary test endpoint
      */
-    @JsonProperty(value = "primaryTestEndpoint")
     private String primaryTestEndpoint;
 
     /*
      * Secondary test endpoint
      */
-    @JsonProperty(value = "secondaryTestEndpoint")
     private String secondaryTestEndpoint;
 
     /*
      * Indicates whether the test endpoint feature enabled or not
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /**
@@ -154,5 +153,53 @@ public final class TestKeys {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("primaryKey", this.primaryKey);
+        jsonWriter.writeStringField("secondaryKey", this.secondaryKey);
+        jsonWriter.writeStringField("primaryTestEndpoint", this.primaryTestEndpoint);
+        jsonWriter.writeStringField("secondaryTestEndpoint", this.secondaryTestEndpoint);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TestKeys from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TestKeys if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the TestKeys.
+     */
+    public static TestKeys fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TestKeys deserializedTestKeys = new TestKeys();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryKey".equals(fieldName)) {
+                    deserializedTestKeys.primaryKey = reader.getString();
+                } else if ("secondaryKey".equals(fieldName)) {
+                    deserializedTestKeys.secondaryKey = reader.getString();
+                } else if ("primaryTestEndpoint".equals(fieldName)) {
+                    deserializedTestKeys.primaryTestEndpoint = reader.getString();
+                } else if ("secondaryTestEndpoint".equals(fieldName)) {
+                    deserializedTestKeys.secondaryTestEndpoint = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedTestKeys.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTestKeys;
+        });
     }
 }

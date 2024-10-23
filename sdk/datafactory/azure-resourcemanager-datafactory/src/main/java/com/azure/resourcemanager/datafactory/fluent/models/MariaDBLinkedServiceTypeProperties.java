@@ -5,62 +5,58 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * MariaDB server linked service properties.
  */
 @Fluent
-public final class MariaDBLinkedServiceTypeProperties {
+public final class MariaDBLinkedServiceTypeProperties implements JsonSerializable<MariaDBLinkedServiceTypeProperties> {
     /*
      * The version of the MariaDB driver. Type: string. V1 or empty for legacy driver, V2 for new driver. V1 can support
      * connection string and property bag, V2 can only support connection string.
      */
-    @JsonProperty(value = "driverVersion")
     private Object driverVersion;
 
     /*
      * An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "connectionString")
     private Object connectionString;
 
     /*
      * Server name for connection. Type: string.
      */
-    @JsonProperty(value = "server")
     private Object server;
 
     /*
      * The port for the connection. Type: integer.
      */
-    @JsonProperty(value = "port")
     private Object port;
 
     /*
      * Username for authentication. Type: string.
      */
-    @JsonProperty(value = "username")
     private Object username;
 
     /*
      * Database name for connection. Type: string.
      */
-    @JsonProperty(value = "database")
     private Object database;
 
     /*
      * The Azure key vault secret reference of password in connection string.
      */
-    @JsonProperty(value = "password")
     private AzureKeyVaultSecretReference password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -244,5 +240,64 @@ public final class MariaDBLinkedServiceTypeProperties {
         if (password() != null) {
             password().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("driverVersion", this.driverVersion);
+        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        jsonWriter.writeUntypedField("server", this.server);
+        jsonWriter.writeUntypedField("port", this.port);
+        jsonWriter.writeUntypedField("username", this.username);
+        jsonWriter.writeUntypedField("database", this.database);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MariaDBLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MariaDBLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MariaDBLinkedServiceTypeProperties.
+     */
+    public static MariaDBLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MariaDBLinkedServiceTypeProperties deserializedMariaDBLinkedServiceTypeProperties
+                = new MariaDBLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("driverVersion".equals(fieldName)) {
+                    deserializedMariaDBLinkedServiceTypeProperties.driverVersion = reader.readUntyped();
+                } else if ("connectionString".equals(fieldName)) {
+                    deserializedMariaDBLinkedServiceTypeProperties.connectionString = reader.readUntyped();
+                } else if ("server".equals(fieldName)) {
+                    deserializedMariaDBLinkedServiceTypeProperties.server = reader.readUntyped();
+                } else if ("port".equals(fieldName)) {
+                    deserializedMariaDBLinkedServiceTypeProperties.port = reader.readUntyped();
+                } else if ("username".equals(fieldName)) {
+                    deserializedMariaDBLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("database".equals(fieldName)) {
+                    deserializedMariaDBLinkedServiceTypeProperties.database = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedMariaDBLinkedServiceTypeProperties.password
+                        = AzureKeyVaultSecretReference.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedMariaDBLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMariaDBLinkedServiceTypeProperties;
+        });
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class LeaseStatus extends ExpandableStringEnum<LeaseStatus> {
      * @param name a name to look for.
      * @return the corresponding LeaseStatus.
      */
-    @JsonCreator
     public static LeaseStatus fromString(String name) {
         return fromString(name, LeaseStatus.class);
     }

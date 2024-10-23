@@ -6,42 +6,46 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An operation for Azure Container Instance service. */
+/**
+ * An operation for Azure Container Instance service.
+ */
 @Fluent
-public final class Operation {
+public final class Operation implements JsonSerializable<Operation> {
     /*
      * The name of the operation.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The display information of the operation.
      */
-    @JsonProperty(value = "display", required = true)
     private OperationDisplay display;
 
     /*
      * The additional properties.
      */
-    @JsonProperty(value = "properties")
     private Object properties;
 
     /*
      * The intended executor of the operation.
      */
-    @JsonProperty(value = "origin")
     private ContainerInstanceOperationsOrigin origin;
 
-    /** Creates an instance of Operation class. */
+    /**
+     * Creates an instance of Operation class.
+     */
     public Operation() {
     }
 
     /**
      * Get the name property: The name of the operation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -50,7 +54,7 @@ public final class Operation {
 
     /**
      * Set the name property: The name of the operation.
-     *
+     * 
      * @param name the name value to set.
      * @return the Operation object itself.
      */
@@ -61,7 +65,7 @@ public final class Operation {
 
     /**
      * Get the display property: The display information of the operation.
-     *
+     * 
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -70,7 +74,7 @@ public final class Operation {
 
     /**
      * Set the display property: The display information of the operation.
-     *
+     * 
      * @param display the display value to set.
      * @return the Operation object itself.
      */
@@ -81,7 +85,7 @@ public final class Operation {
 
     /**
      * Get the properties property: The additional properties.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -90,7 +94,7 @@ public final class Operation {
 
     /**
      * Set the properties property: The additional properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the Operation object itself.
      */
@@ -101,7 +105,7 @@ public final class Operation {
 
     /**
      * Get the origin property: The intended executor of the operation.
-     *
+     * 
      * @return the origin value.
      */
     public ContainerInstanceOperationsOrigin origin() {
@@ -110,7 +114,7 @@ public final class Operation {
 
     /**
      * Set the origin property: The intended executor of the operation.
-     *
+     * 
      * @param origin the origin value to set.
      * @return the Operation object itself.
      */
@@ -121,22 +125,67 @@ public final class Operation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Operation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model Operation"));
         }
         if (display() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property display in model Operation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property display in model Operation"));
         } else {
             display().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Operation.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("display", this.display);
+        jsonWriter.writeUntypedField("properties", this.properties);
+        jsonWriter.writeStringField("origin", this.origin == null ? null : this.origin.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Operation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Operation if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Operation.
+     */
+    public static Operation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Operation deserializedOperation = new Operation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOperation.name = reader.getString();
+                } else if ("display".equals(fieldName)) {
+                    deserializedOperation.display = OperationDisplay.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOperation.properties = reader.readUntyped();
+                } else if ("origin".equals(fieldName)) {
+                    deserializedOperation.origin = ContainerInstanceOperationsOrigin.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperation;
+        });
+    }
 }

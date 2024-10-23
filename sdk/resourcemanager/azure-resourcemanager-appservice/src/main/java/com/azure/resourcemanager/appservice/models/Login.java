@@ -5,51 +5,50 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The configuration settings of the login flow of users using App Service Authentication/Authorization.
  */
 @Fluent
-public final class Login {
+public final class Login implements JsonSerializable<Login> {
     /*
      * The routes that specify the endpoints used for login and logout requests.
      */
-    @JsonProperty(value = "routes")
     private LoginRoutes routes;
 
     /*
      * The configuration settings of the token store.
      */
-    @JsonProperty(value = "tokenStore")
     private TokenStore tokenStore;
 
     /*
-     * <code>true</code> if the fragments from the request are preserved after the login request is made; otherwise, <code>false</code>.
+     * <code>true</code> if the fragments from the request are preserved after the login request is made; otherwise,
+     * <code>false</code>.
      */
-    @JsonProperty(value = "preserveUrlFragmentsForLogins")
     private Boolean preserveUrlFragmentsForLogins;
 
     /*
-     * External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query string part of the URL is ignored.
+     * External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query
+     * string part of the URL is ignored.
      * This is an advanced setting typically only needed by Windows Store application backends.
      * Note that URLs within the current domain are always implicitly allowed.
      */
-    @JsonProperty(value = "allowedExternalRedirectUrls")
     private List<String> allowedExternalRedirectUrls;
 
     /*
      * The configuration settings of the session cookie's expiration.
      */
-    @JsonProperty(value = "cookieExpiration")
     private CookieExpiration cookieExpiration;
 
     /*
      * The configuration settings of the nonce used in the login flow.
      */
-    @JsonProperty(value = "nonce")
     private Nonce nonce;
 
     /**
@@ -60,7 +59,7 @@ public final class Login {
 
     /**
      * Get the routes property: The routes that specify the endpoints used for login and logout requests.
-     *
+     * 
      * @return the routes value.
      */
     public LoginRoutes routes() {
@@ -69,7 +68,7 @@ public final class Login {
 
     /**
      * Set the routes property: The routes that specify the endpoints used for login and logout requests.
-     *
+     * 
      * @param routes the routes value to set.
      * @return the Login object itself.
      */
@@ -80,7 +79,7 @@ public final class Login {
 
     /**
      * Get the tokenStore property: The configuration settings of the token store.
-     *
+     * 
      * @return the tokenStore value.
      */
     public TokenStore tokenStore() {
@@ -89,7 +88,7 @@ public final class Login {
 
     /**
      * Set the tokenStore property: The configuration settings of the token store.
-     *
+     * 
      * @param tokenStore the tokenStore value to set.
      * @return the Login object itself.
      */
@@ -101,7 +100,7 @@ public final class Login {
     /**
      * Get the preserveUrlFragmentsForLogins property: &lt;code&gt;true&lt;/code&gt; if the fragments from the request
      * are preserved after the login request is made; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the preserveUrlFragmentsForLogins value.
      */
     public Boolean preserveUrlFragmentsForLogins() {
@@ -111,7 +110,7 @@ public final class Login {
     /**
      * Set the preserveUrlFragmentsForLogins property: &lt;code&gt;true&lt;/code&gt; if the fragments from the request
      * are preserved after the login request is made; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param preserveUrlFragmentsForLogins the preserveUrlFragmentsForLogins value to set.
      * @return the Login object itself.
      */
@@ -125,7 +124,7 @@ public final class Login {
      * logging out of the app. Note that the query string part of the URL is ignored.
      * This is an advanced setting typically only needed by Windows Store application backends.
      * Note that URLs within the current domain are always implicitly allowed.
-     *
+     * 
      * @return the allowedExternalRedirectUrls value.
      */
     public List<String> allowedExternalRedirectUrls() {
@@ -137,7 +136,7 @@ public final class Login {
      * logging out of the app. Note that the query string part of the URL is ignored.
      * This is an advanced setting typically only needed by Windows Store application backends.
      * Note that URLs within the current domain are always implicitly allowed.
-     *
+     * 
      * @param allowedExternalRedirectUrls the allowedExternalRedirectUrls value to set.
      * @return the Login object itself.
      */
@@ -148,7 +147,7 @@ public final class Login {
 
     /**
      * Get the cookieExpiration property: The configuration settings of the session cookie's expiration.
-     *
+     * 
      * @return the cookieExpiration value.
      */
     public CookieExpiration cookieExpiration() {
@@ -157,7 +156,7 @@ public final class Login {
 
     /**
      * Set the cookieExpiration property: The configuration settings of the session cookie's expiration.
-     *
+     * 
      * @param cookieExpiration the cookieExpiration value to set.
      * @return the Login object itself.
      */
@@ -168,7 +167,7 @@ public final class Login {
 
     /**
      * Get the nonce property: The configuration settings of the nonce used in the login flow.
-     *
+     * 
      * @return the nonce value.
      */
     public Nonce nonce() {
@@ -177,7 +176,7 @@ public final class Login {
 
     /**
      * Set the nonce property: The configuration settings of the nonce used in the login flow.
-     *
+     * 
      * @param nonce the nonce value to set.
      * @return the Login object itself.
      */
@@ -188,7 +187,7 @@ public final class Login {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -204,5 +203,58 @@ public final class Login {
         if (nonce() != null) {
             nonce().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("routes", this.routes);
+        jsonWriter.writeJsonField("tokenStore", this.tokenStore);
+        jsonWriter.writeBooleanField("preserveUrlFragmentsForLogins", this.preserveUrlFragmentsForLogins);
+        jsonWriter.writeArrayField("allowedExternalRedirectUrls", this.allowedExternalRedirectUrls,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("cookieExpiration", this.cookieExpiration);
+        jsonWriter.writeJsonField("nonce", this.nonce);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Login from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Login if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Login.
+     */
+    public static Login fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Login deserializedLogin = new Login();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("routes".equals(fieldName)) {
+                    deserializedLogin.routes = LoginRoutes.fromJson(reader);
+                } else if ("tokenStore".equals(fieldName)) {
+                    deserializedLogin.tokenStore = TokenStore.fromJson(reader);
+                } else if ("preserveUrlFragmentsForLogins".equals(fieldName)) {
+                    deserializedLogin.preserveUrlFragmentsForLogins = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowedExternalRedirectUrls".equals(fieldName)) {
+                    List<String> allowedExternalRedirectUrls = reader.readArray(reader1 -> reader1.getString());
+                    deserializedLogin.allowedExternalRedirectUrls = allowedExternalRedirectUrls;
+                } else if ("cookieExpiration".equals(fieldName)) {
+                    deserializedLogin.cookieExpiration = CookieExpiration.fromJson(reader);
+                } else if ("nonce".equals(fieldName)) {
+                    deserializedLogin.nonce = Nonce.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogin;
+        });
     }
 }

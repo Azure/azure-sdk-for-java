@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.generated;
 
 import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,11 +13,12 @@ import java.util.Map;
  */
 public final class WebAppsUpdateApplicationSettingsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateAppSettings.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateAppSettings.json
      */
     /**
      * Sample code: Update App Settings.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateAppSettings(com.azure.resourcemanager.AzureResourceManager azure) {

@@ -6,26 +6,37 @@ package com.azure.resourcemanager.dnsresolver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Reference to DNS forwarding ruleset and associated virtual network link. */
+/**
+ * Reference to DNS forwarding ruleset and associated virtual network link.
+ */
 @Fluent
-public final class VirtualNetworkDnsForwardingRulesetInner {
+public final class VirtualNetworkDnsForwardingRulesetInner
+    implements JsonSerializable<VirtualNetworkDnsForwardingRulesetInner> {
     /*
      * DNS Forwarding Ruleset Resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Properties of the virtual network link sub-resource reference.
      */
-    @JsonProperty(value = "properties")
     private VirtualNetworkLinkSubResourceProperties innerProperties;
 
     /**
+     * Creates an instance of VirtualNetworkDnsForwardingRulesetInner class.
+     */
+    public VirtualNetworkDnsForwardingRulesetInner() {
+    }
+
+    /**
      * Get the id property: DNS Forwarding Ruleset Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -34,7 +45,7 @@ public final class VirtualNetworkDnsForwardingRulesetInner {
 
     /**
      * Set the id property: DNS Forwarding Ruleset Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the VirtualNetworkDnsForwardingRulesetInner object itself.
      */
@@ -45,7 +56,7 @@ public final class VirtualNetworkDnsForwardingRulesetInner {
 
     /**
      * Get the innerProperties property: Properties of the virtual network link sub-resource reference.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualNetworkLinkSubResourceProperties innerProperties() {
@@ -54,7 +65,7 @@ public final class VirtualNetworkDnsForwardingRulesetInner {
 
     /**
      * Get the virtualNetworkLink property: The reference to the virtual network link.
-     *
+     * 
      * @return the virtualNetworkLink value.
      */
     public SubResource virtualNetworkLink() {
@@ -63,7 +74,7 @@ public final class VirtualNetworkDnsForwardingRulesetInner {
 
     /**
      * Set the virtualNetworkLink property: The reference to the virtual network link.
-     *
+     * 
      * @param virtualNetworkLink the virtualNetworkLink value to set.
      * @return the VirtualNetworkDnsForwardingRulesetInner object itself.
      */
@@ -77,12 +88,53 @@ public final class VirtualNetworkDnsForwardingRulesetInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkDnsForwardingRulesetInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkDnsForwardingRulesetInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkDnsForwardingRulesetInner.
+     */
+    public static VirtualNetworkDnsForwardingRulesetInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkDnsForwardingRulesetInner deserializedVirtualNetworkDnsForwardingRulesetInner
+                = new VirtualNetworkDnsForwardingRulesetInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVirtualNetworkDnsForwardingRulesetInner.id = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualNetworkDnsForwardingRulesetInner.innerProperties
+                        = VirtualNetworkLinkSubResourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkDnsForwardingRulesetInner;
+        });
     }
 }

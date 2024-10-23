@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class LogicAppsDeployWorkflowArtifactsSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
      * LogicApps_PostDeployWorkflowArtifacts.json
      */
     /**
@@ -39,7 +39,7 @@ public final class LogicAppsDeployWorkflowArtifactsSamples {
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
      * LogicApps_DeleteDeployWorkflowArtifacts.json
      */
     /**

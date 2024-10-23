@@ -7,13 +7,10 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
-import com.azure.identity.implementation.IntelliJAuthMethodDetails;
-import com.azure.identity.implementation.IntelliJCacheAccessor;
 import com.azure.identity.implementation.MsalToken;
 import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.LoggingUtil;
@@ -59,8 +56,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * <!-- src_embed com.azure.identity.credential.intellijcredential.construct -->
  * <pre>
- * TokenCredential intelliJCredential = new IntelliJCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential intelliJCredential = new IntelliJCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.intellijcredential.construct -->
  *
@@ -83,22 +79,6 @@ public class IntelliJCredential implements TokenCredential {
 
         IdentityClientOptions options =
                 identityClientOptions == null ? new IdentityClientOptions() : identityClientOptions;
-
-        IntelliJCacheAccessor accessor =
-                new IntelliJCacheAccessor(options.getIntelliJKeePassDatabasePath());
-
-        IntelliJAuthMethodDetails authMethodDetails;
-        try {
-            authMethodDetails = accessor.getAuthDetailsIfAvailable();
-        } catch (Exception e) {
-            authMethodDetails = null;
-        }
-
-        if (CoreUtils.isNullOrEmpty(options.getAuthorityHost())) {
-            String azureEnv = authMethodDetails != null ? authMethodDetails.getAzureEnv() : "";
-            String cloudInstance = accessor.getAzureAuthHost(azureEnv);
-            options.setAuthorityHost(cloudInstance);
-        }
 
         String tenant = tenantId;
 

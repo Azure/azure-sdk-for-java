@@ -6,40 +6,48 @@ package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.AwsS3DataConnectorDataTypes;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Amazon Web Services S3 data connector properties. */
+/**
+ * Amazon Web Services S3 data connector properties.
+ */
 @Fluent
-public final class AwsS3DataConnectorProperties {
+public final class AwsS3DataConnectorProperties implements JsonSerializable<AwsS3DataConnectorProperties> {
     /*
      * The logs destination table name in LogAnalytics.
      */
-    @JsonProperty(value = "destinationTable", required = true)
     private String destinationTable;
 
     /*
      * The AWS sqs urls for the connector.
      */
-    @JsonProperty(value = "sqsUrls", required = true)
     private List<String> sqsUrls;
 
     /*
      * The Aws Role Arn that is used to access the Aws account.
      */
-    @JsonProperty(value = "roleArn", required = true)
     private String roleArn;
 
     /*
      * The available data types for the connector.
      */
-    @JsonProperty(value = "dataTypes", required = true)
     private AwsS3DataConnectorDataTypes dataTypes;
 
     /**
+     * Creates an instance of AwsS3DataConnectorProperties class.
+     */
+    public AwsS3DataConnectorProperties() {
+    }
+
+    /**
      * Get the destinationTable property: The logs destination table name in LogAnalytics.
-     *
+     * 
      * @return the destinationTable value.
      */
     public String destinationTable() {
@@ -48,7 +56,7 @@ public final class AwsS3DataConnectorProperties {
 
     /**
      * Set the destinationTable property: The logs destination table name in LogAnalytics.
-     *
+     * 
      * @param destinationTable the destinationTable value to set.
      * @return the AwsS3DataConnectorProperties object itself.
      */
@@ -59,7 +67,7 @@ public final class AwsS3DataConnectorProperties {
 
     /**
      * Get the sqsUrls property: The AWS sqs urls for the connector.
-     *
+     * 
      * @return the sqsUrls value.
      */
     public List<String> sqsUrls() {
@@ -68,7 +76,7 @@ public final class AwsS3DataConnectorProperties {
 
     /**
      * Set the sqsUrls property: The AWS sqs urls for the connector.
-     *
+     * 
      * @param sqsUrls the sqsUrls value to set.
      * @return the AwsS3DataConnectorProperties object itself.
      */
@@ -79,7 +87,7 @@ public final class AwsS3DataConnectorProperties {
 
     /**
      * Get the roleArn property: The Aws Role Arn that is used to access the Aws account.
-     *
+     * 
      * @return the roleArn value.
      */
     public String roleArn() {
@@ -88,7 +96,7 @@ public final class AwsS3DataConnectorProperties {
 
     /**
      * Set the roleArn property: The Aws Role Arn that is used to access the Aws account.
-     *
+     * 
      * @param roleArn the roleArn value to set.
      * @return the AwsS3DataConnectorProperties object itself.
      */
@@ -99,7 +107,7 @@ public final class AwsS3DataConnectorProperties {
 
     /**
      * Get the dataTypes property: The available data types for the connector.
-     *
+     * 
      * @return the dataTypes value.
      */
     public AwsS3DataConnectorDataTypes dataTypes() {
@@ -108,7 +116,7 @@ public final class AwsS3DataConnectorProperties {
 
     /**
      * Set the dataTypes property: The available data types for the connector.
-     *
+     * 
      * @param dataTypes the dataTypes value to set.
      * @return the AwsS3DataConnectorProperties object itself.
      */
@@ -119,37 +127,80 @@ public final class AwsS3DataConnectorProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (destinationTable() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property destinationTable in model AwsS3DataConnectorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property destinationTable in model AwsS3DataConnectorProperties"));
         }
         if (sqsUrls() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sqsUrls in model AwsS3DataConnectorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sqsUrls in model AwsS3DataConnectorProperties"));
         }
         if (roleArn() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property roleArn in model AwsS3DataConnectorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property roleArn in model AwsS3DataConnectorProperties"));
         }
         if (dataTypes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataTypes in model AwsS3DataConnectorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataTypes in model AwsS3DataConnectorProperties"));
         } else {
             dataTypes().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AwsS3DataConnectorProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("destinationTable", this.destinationTable);
+        jsonWriter.writeArrayField("sqsUrls", this.sqsUrls, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("roleArn", this.roleArn);
+        jsonWriter.writeJsonField("dataTypes", this.dataTypes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AwsS3DataConnectorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AwsS3DataConnectorProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AwsS3DataConnectorProperties.
+     */
+    public static AwsS3DataConnectorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AwsS3DataConnectorProperties deserializedAwsS3DataConnectorProperties = new AwsS3DataConnectorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("destinationTable".equals(fieldName)) {
+                    deserializedAwsS3DataConnectorProperties.destinationTable = reader.getString();
+                } else if ("sqsUrls".equals(fieldName)) {
+                    List<String> sqsUrls = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAwsS3DataConnectorProperties.sqsUrls = sqsUrls;
+                } else if ("roleArn".equals(fieldName)) {
+                    deserializedAwsS3DataConnectorProperties.roleArn = reader.getString();
+                } else if ("dataTypes".equals(fieldName)) {
+                    deserializedAwsS3DataConnectorProperties.dataTypes = AwsS3DataConnectorDataTypes.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAwsS3DataConnectorProperties;
+        });
+    }
 }

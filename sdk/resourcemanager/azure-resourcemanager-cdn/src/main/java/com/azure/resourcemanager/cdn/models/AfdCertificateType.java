@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,7 +42,6 @@ public final class AfdCertificateType extends ExpandableStringEnum<AfdCertificat
      * @param name a name to look for.
      * @return the corresponding AfdCertificateType.
      */
-    @JsonCreator
     public static AfdCertificateType fromString(String name) {
         return fromString(name, AfdCertificateType.class);
     }

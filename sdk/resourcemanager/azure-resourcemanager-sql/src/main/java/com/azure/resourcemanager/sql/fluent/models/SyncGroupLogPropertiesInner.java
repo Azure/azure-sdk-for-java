@@ -5,57 +5,60 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.SyncGroupLogType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/** Properties of an Azure SQL Database sync group log. */
+/**
+ * Properties of an Azure SQL Database sync group log.
+ */
 @Immutable
-public final class SyncGroupLogPropertiesInner {
+public final class SyncGroupLogPropertiesInner implements JsonSerializable<SyncGroupLogPropertiesInner> {
     /*
      * Timestamp of the sync group log.
      */
-    @JsonProperty(value = "timestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timestamp;
 
     /*
      * Type of the sync group log.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private SyncGroupLogType type;
 
     /*
      * Source of the sync group log.
      */
-    @JsonProperty(value = "source", access = JsonProperty.Access.WRITE_ONLY)
     private String source;
 
     /*
      * Details of the sync group log.
      */
-    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private String details;
 
     /*
      * TracingId of the sync group log.
      */
-    @JsonProperty(value = "tracingId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID tracingId;
 
     /*
      * OperationStatus of the sync group log.
      */
-    @JsonProperty(value = "operationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String operationStatus;
 
-    /** Creates an instance of SyncGroupLogPropertiesInner class. */
+    /**
+     * Creates an instance of SyncGroupLogPropertiesInner class.
+     */
     public SyncGroupLogPropertiesInner() {
     }
 
     /**
      * Get the timestamp property: Timestamp of the sync group log.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -64,7 +67,7 @@ public final class SyncGroupLogPropertiesInner {
 
     /**
      * Get the type property: Type of the sync group log.
-     *
+     * 
      * @return the type value.
      */
     public SyncGroupLogType type() {
@@ -73,7 +76,7 @@ public final class SyncGroupLogPropertiesInner {
 
     /**
      * Get the source property: Source of the sync group log.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -82,7 +85,7 @@ public final class SyncGroupLogPropertiesInner {
 
     /**
      * Get the details property: Details of the sync group log.
-     *
+     * 
      * @return the details value.
      */
     public String details() {
@@ -91,7 +94,7 @@ public final class SyncGroupLogPropertiesInner {
 
     /**
      * Get the tracingId property: TracingId of the sync group log.
-     *
+     * 
      * @return the tracingId value.
      */
     public UUID tracingId() {
@@ -100,7 +103,7 @@ public final class SyncGroupLogPropertiesInner {
 
     /**
      * Get the operationStatus property: OperationStatus of the sync group log.
-     *
+     * 
      * @return the operationStatus value.
      */
     public String operationStatus() {
@@ -109,9 +112,56 @@ public final class SyncGroupLogPropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SyncGroupLogPropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SyncGroupLogPropertiesInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SyncGroupLogPropertiesInner.
+     */
+    public static SyncGroupLogPropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SyncGroupLogPropertiesInner deserializedSyncGroupLogPropertiesInner = new SyncGroupLogPropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timestamp".equals(fieldName)) {
+                    deserializedSyncGroupLogPropertiesInner.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("type".equals(fieldName)) {
+                    deserializedSyncGroupLogPropertiesInner.type = SyncGroupLogType.fromString(reader.getString());
+                } else if ("source".equals(fieldName)) {
+                    deserializedSyncGroupLogPropertiesInner.source = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    deserializedSyncGroupLogPropertiesInner.details = reader.getString();
+                } else if ("tracingId".equals(fieldName)) {
+                    deserializedSyncGroupLogPropertiesInner.tracingId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("operationStatus".equals(fieldName)) {
+                    deserializedSyncGroupLogPropertiesInner.operationStatus = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSyncGroupLogPropertiesInner;
+        });
     }
 }

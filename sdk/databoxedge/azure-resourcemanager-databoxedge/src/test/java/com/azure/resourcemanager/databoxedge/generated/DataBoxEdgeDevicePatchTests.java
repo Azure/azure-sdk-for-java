@@ -13,21 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class DataBoxEdgeDevicePatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataBoxEdgeDevicePatch model =
-            BinaryData
-                .fromString("{\"tags\":{\"dlwtgrhpdj\":\"okeyyienj\",\"zj\":\"jumasx\"}}")
-                .toObject(DataBoxEdgeDevicePatch.class);
-        Assertions.assertEquals("okeyyienj", model.tags().get("dlwtgrhpdj"));
+        DataBoxEdgeDevicePatch model = BinaryData.fromString("{\"tags\":{\"hctbqvudwxdn\":\"jbavorxzdm\"}}")
+            .toObject(DataBoxEdgeDevicePatch.class);
+        Assertions.assertEquals("jbavorxzdm", model.tags().get("hctbqvudwxdn"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataBoxEdgeDevicePatch model =
-            new DataBoxEdgeDevicePatch().withTags(mapOf("dlwtgrhpdj", "okeyyienj", "zj", "jumasx"));
+        DataBoxEdgeDevicePatch model = new DataBoxEdgeDevicePatch().withTags(mapOf("hctbqvudwxdn", "jbavorxzdm"));
         model = BinaryData.fromObject(model).toObject(DataBoxEdgeDevicePatch.class);
-        Assertions.assertEquals("okeyyienj", model.tags().get("dlwtgrhpdj"));
+        Assertions.assertEquals("jbavorxzdm", model.tags().get("hctbqvudwxdn"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

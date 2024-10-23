@@ -5,54 +5,55 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** numberColumn. */
+/**
+ * numberColumn.
+ */
 @Fluent
-public final class MicrosoftGraphNumberColumn {
+public final class MicrosoftGraphNumberColumn implements JsonSerializable<MicrosoftGraphNumberColumn> {
     /*
      * How many decimal places to display. See below for information about the possible values.
      */
-    @JsonProperty(value = "decimalPlaces")
     private String decimalPlaces;
 
     /*
      * How the value should be presented in the UX. Must be one of number or percentage. If unspecified, treated as
      * number.
      */
-    @JsonProperty(value = "displayAs")
     private String displayAs;
 
     /*
      * The maximum permitted value.
      */
-    @JsonProperty(value = "maximum")
     private Double maximum;
 
     /*
      * The minimum permitted value.
      */
-    @JsonProperty(value = "minimum")
     private Double minimum;
 
     /*
      * numberColumn
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphNumberColumn class. */
+    /**
+     * Creates an instance of MicrosoftGraphNumberColumn class.
+     */
     public MicrosoftGraphNumberColumn() {
     }
 
     /**
      * Get the decimalPlaces property: How many decimal places to display. See below for information about the possible
      * values.
-     *
+     * 
      * @return the decimalPlaces value.
      */
     public String decimalPlaces() {
@@ -62,7 +63,7 @@ public final class MicrosoftGraphNumberColumn {
     /**
      * Set the decimalPlaces property: How many decimal places to display. See below for information about the possible
      * values.
-     *
+     * 
      * @param decimalPlaces the decimalPlaces value to set.
      * @return the MicrosoftGraphNumberColumn object itself.
      */
@@ -74,7 +75,7 @@ public final class MicrosoftGraphNumberColumn {
     /**
      * Get the displayAs property: How the value should be presented in the UX. Must be one of number or percentage. If
      * unspecified, treated as number.
-     *
+     * 
      * @return the displayAs value.
      */
     public String displayAs() {
@@ -84,7 +85,7 @@ public final class MicrosoftGraphNumberColumn {
     /**
      * Set the displayAs property: How the value should be presented in the UX. Must be one of number or percentage. If
      * unspecified, treated as number.
-     *
+     * 
      * @param displayAs the displayAs value to set.
      * @return the MicrosoftGraphNumberColumn object itself.
      */
@@ -95,7 +96,7 @@ public final class MicrosoftGraphNumberColumn {
 
     /**
      * Get the maximum property: The maximum permitted value.
-     *
+     * 
      * @return the maximum value.
      */
     public Double maximum() {
@@ -104,7 +105,7 @@ public final class MicrosoftGraphNumberColumn {
 
     /**
      * Set the maximum property: The maximum permitted value.
-     *
+     * 
      * @param maximum the maximum value to set.
      * @return the MicrosoftGraphNumberColumn object itself.
      */
@@ -115,7 +116,7 @@ public final class MicrosoftGraphNumberColumn {
 
     /**
      * Get the minimum property: The minimum permitted value.
-     *
+     * 
      * @return the minimum value.
      */
     public Double minimum() {
@@ -124,7 +125,7 @@ public final class MicrosoftGraphNumberColumn {
 
     /**
      * Set the minimum property: The minimum permitted value.
-     *
+     * 
      * @param minimum the minimum value to set.
      * @return the MicrosoftGraphNumberColumn object itself.
      */
@@ -135,17 +136,16 @@ public final class MicrosoftGraphNumberColumn {
 
     /**
      * Get the additionalProperties property: numberColumn.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: numberColumn.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphNumberColumn object itself.
      */
@@ -154,19 +154,67 @@ public final class MicrosoftGraphNumberColumn {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("decimalPlaces", this.decimalPlaces);
+        jsonWriter.writeStringField("displayAs", this.displayAs);
+        jsonWriter.writeNumberField("maximum", this.maximum);
+        jsonWriter.writeNumberField("minimum", this.minimum);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphNumberColumn from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphNumberColumn if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphNumberColumn.
+     */
+    public static MicrosoftGraphNumberColumn fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphNumberColumn deserializedMicrosoftGraphNumberColumn = new MicrosoftGraphNumberColumn();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("decimalPlaces".equals(fieldName)) {
+                    deserializedMicrosoftGraphNumberColumn.decimalPlaces = reader.getString();
+                } else if ("displayAs".equals(fieldName)) {
+                    deserializedMicrosoftGraphNumberColumn.displayAs = reader.getString();
+                } else if ("maximum".equals(fieldName)) {
+                    deserializedMicrosoftGraphNumberColumn.maximum = reader.getNullable(JsonReader::getDouble);
+                } else if ("minimum".equals(fieldName)) {
+                    deserializedMicrosoftGraphNumberColumn.minimum = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphNumberColumn.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphNumberColumn;
+        });
     }
 }

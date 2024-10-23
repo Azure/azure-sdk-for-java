@@ -15,57 +15,48 @@ import org.junit.jupiter.api.Assertions;
 public final class ModelVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ModelVersionInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"flavors\":{\"ckknhxkizvy\":{\"data\":{}},\"rzvul\":{\"data\":{}},\"aaeranokqgukk\":{\"data\":{}},\"nvbroylaxx\":{\"data\":{}}},\"jobName\":\"cdisd\",\"modelType\":\"fj\",\"modelUri\":\"svgjrwhryvy\",\"isAnonymous\":false,\"isArchived\":false,\"description\":\"xgccknfnw\",\"properties\":{\"dxihc\":\"mvpdvjdhttzaef\",\"bg\":\"rphkmcrjdqnsdfz\",\"euutlwxezwzh\":\"gkylkdghr\"},\"tags\":{\"ehgpp\":\"bwnhhtql\",\"csheafidltugsr\":\"pifhpfeoajvgcxtx\"}},\"id\":\"mks\",\"name\":\"jhoiftxfkfweg\",\"type\":\"rhptilluc\"}")
-                .toObject(ModelVersionInner.class);
-        Assertions.assertEquals("xgccknfnw", model.properties().description());
-        Assertions.assertEquals("mvpdvjdhttzaef", model.properties().properties().get("dxihc"));
-        Assertions.assertEquals("bwnhhtql", model.properties().tags().get("ehgpp"));
-        Assertions.assertEquals(false, model.properties().isAnonymous());
+        ModelVersionInner model = BinaryData.fromString(
+            "{\"properties\":{\"flavors\":{\"zcyjtot\":{\"data\":{\"ftpmdtzfjltfv\":\"lgorb\"}}},\"modelType\":\"opv\",\"modelUri\":\"dbzqgqqihed\",\"jobName\":\"qwthmky\",\"provisioningState\":\"Deleting\",\"stage\":\"sihsgqcwdhohsd\",\"isArchived\":false,\"isAnonymous\":false,\"description\":\"ufcohdxbz\",\"tags\":{\"qxeysko\":\"muapcvhdbevw\",\"z\":\"qzinkfkbg\",\"vkzqk\":\"owxeqocljmy\"},\"properties\":{\"zrxcczurt\":\"okbzef\",\"pqxbkwvzgnzvdf\":\"e\"}},\"id\":\"d\",\"name\":\"xzmqpnodawop\",\"type\":\"hewjptmcgsbost\"}")
+            .toObject(ModelVersionInner.class);
+        Assertions.assertEquals("ufcohdxbz", model.properties().description());
+        Assertions.assertEquals("muapcvhdbevw", model.properties().tags().get("qxeysko"));
+        Assertions.assertEquals("okbzef", model.properties().properties().get("zrxcczurt"));
         Assertions.assertEquals(false, model.properties().isArchived());
-        Assertions.assertEquals("cdisd", model.properties().jobName());
-        Assertions.assertEquals("fj", model.properties().modelType());
-        Assertions.assertEquals("svgjrwhryvy", model.properties().modelUri());
+        Assertions.assertEquals(false, model.properties().isAnonymous());
+        Assertions.assertEquals("lgorb", model.properties().flavors().get("zcyjtot").data().get("ftpmdtzfjltfv"));
+        Assertions.assertEquals("opv", model.properties().modelType());
+        Assertions.assertEquals("dbzqgqqihed", model.properties().modelUri());
+        Assertions.assertEquals("qwthmky", model.properties().jobName());
+        Assertions.assertEquals("sihsgqcwdhohsd", model.properties().stage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ModelVersionInner model =
-            new ModelVersionInner()
-                .withProperties(
-                    new ModelVersionProperties()
-                        .withDescription("xgccknfnw")
-                        .withProperties(
-                            mapOf("dxihc", "mvpdvjdhttzaef", "bg", "rphkmcrjdqnsdfz", "euutlwxezwzh", "gkylkdghr"))
-                        .withTags(mapOf("ehgpp", "bwnhhtql", "csheafidltugsr", "pifhpfeoajvgcxtx"))
-                        .withIsAnonymous(false)
-                        .withIsArchived(false)
-                        .withFlavors(
-                            mapOf(
-                                "ckknhxkizvy",
-                                new FlavorData().withData(mapOf()),
-                                "rzvul",
-                                new FlavorData().withData(mapOf()),
-                                "aaeranokqgukk",
-                                new FlavorData().withData(mapOf()),
-                                "nvbroylaxx",
-                                new FlavorData().withData(mapOf())))
-                        .withJobName("cdisd")
-                        .withModelType("fj")
-                        .withModelUri("svgjrwhryvy"));
+        ModelVersionInner model
+            = new ModelVersionInner().withProperties(new ModelVersionProperties().withDescription("ufcohdxbz")
+                .withTags(mapOf("qxeysko", "muapcvhdbevw", "z", "qzinkfkbg", "vkzqk", "owxeqocljmy"))
+                .withProperties(mapOf("zrxcczurt", "okbzef", "pqxbkwvzgnzvdf", "e"))
+                .withIsArchived(false)
+                .withIsAnonymous(false)
+                .withFlavors(mapOf("zcyjtot", new FlavorData().withData(mapOf("ftpmdtzfjltfv", "lgorb"))))
+                .withModelType("opv")
+                .withModelUri("dbzqgqqihed")
+                .withJobName("qwthmky")
+                .withStage("sihsgqcwdhohsd"));
         model = BinaryData.fromObject(model).toObject(ModelVersionInner.class);
-        Assertions.assertEquals("xgccknfnw", model.properties().description());
-        Assertions.assertEquals("mvpdvjdhttzaef", model.properties().properties().get("dxihc"));
-        Assertions.assertEquals("bwnhhtql", model.properties().tags().get("ehgpp"));
-        Assertions.assertEquals(false, model.properties().isAnonymous());
+        Assertions.assertEquals("ufcohdxbz", model.properties().description());
+        Assertions.assertEquals("muapcvhdbevw", model.properties().tags().get("qxeysko"));
+        Assertions.assertEquals("okbzef", model.properties().properties().get("zrxcczurt"));
         Assertions.assertEquals(false, model.properties().isArchived());
-        Assertions.assertEquals("cdisd", model.properties().jobName());
-        Assertions.assertEquals("fj", model.properties().modelType());
-        Assertions.assertEquals("svgjrwhryvy", model.properties().modelUri());
+        Assertions.assertEquals(false, model.properties().isAnonymous());
+        Assertions.assertEquals("lgorb", model.properties().flavors().get("zcyjtot").data().get("ftpmdtzfjltfv"));
+        Assertions.assertEquals("opv", model.properties().modelType());
+        Assertions.assertEquals("dbzqgqqihed", model.properties().modelUri());
+        Assertions.assertEquals("qwthmky", model.properties().jobName());
+        Assertions.assertEquals("sihsgqcwdhohsd", model.properties().stage());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

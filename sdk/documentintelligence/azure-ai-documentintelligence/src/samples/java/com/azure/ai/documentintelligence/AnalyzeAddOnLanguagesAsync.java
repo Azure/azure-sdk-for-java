@@ -50,6 +50,7 @@ public class AnalyzeAddOnLanguagesAsync {
                 Arrays.asList(DocumentAnalysisFeature.LANGUAGES),
                 null,
                 null,
+                null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =

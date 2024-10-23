@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Sets the CORS rules. You can include up to five CorsRule elements in the request.
  */
 @Fluent
-public final class CorsRules {
+public final class CorsRules implements JsonSerializable<CorsRules> {
     /*
      * The List of CORS rules. You can include up to five CorsRule elements in the request.
      */
-    @JsonProperty(value = "corsRules")
     private List<CorsRule> corsRules;
 
     /**
@@ -54,5 +57,42 @@ public final class CorsRules {
         if (corsRules() != null) {
             corsRules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("corsRules", this.corsRules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CorsRules from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CorsRules if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the CorsRules.
+     */
+    public static CorsRules fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CorsRules deserializedCorsRules = new CorsRules();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("corsRules".equals(fieldName)) {
+                    List<CorsRule> corsRules = reader.readArray(reader1 -> CorsRule.fromJson(reader1));
+                    deserializedCorsRules.corsRules = corsRules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCorsRules;
+        });
     }
 }

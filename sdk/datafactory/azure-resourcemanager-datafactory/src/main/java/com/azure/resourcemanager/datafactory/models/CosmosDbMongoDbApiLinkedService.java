@@ -6,36 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.CosmosDbMongoDbApiLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Linked service for CosmosDB (MongoDB API) data source.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = CosmosDbMongoDbApiLinkedService.class,
-    visible = true)
-@JsonTypeName("CosmosDbMongoDbApi")
 @Fluent
 public final class CosmosDbMongoDbApiLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "CosmosDbMongoDbApi";
 
     /*
      * CosmosDB (MongoDB API) linked service properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private CosmosDbMongoDbApiLinkedServiceTypeProperties innerTypeProperties
         = new CosmosDbMongoDbApiLinkedServiceTypeProperties();
 
@@ -62,6 +54,15 @@ public final class CosmosDbMongoDbApiLinkedService extends LinkedService {
      */
     private CosmosDbMongoDbApiLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CosmosDbMongoDbApiLinkedService withVersion(String version) {
+        super.withVersion(version);
+        return this;
     }
 
     /**
@@ -193,4 +194,76 @@ public final class CosmosDbMongoDbApiLinkedService extends LinkedService {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CosmosDbMongoDbApiLinkedService.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeJsonField("connectVia", connectVia());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CosmosDbMongoDbApiLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CosmosDbMongoDbApiLinkedService if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CosmosDbMongoDbApiLinkedService.
+     */
+    public static CosmosDbMongoDbApiLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CosmosDbMongoDbApiLinkedService deserializedCosmosDbMongoDbApiLinkedService
+                = new CosmosDbMongoDbApiLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiLinkedService.withVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiLinkedService
+                        .withConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiLinkedService.withDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedCosmosDbMongoDbApiLinkedService.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedCosmosDbMongoDbApiLinkedService.withAnnotations(annotations);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiLinkedService.innerTypeProperties
+                        = CosmosDbMongoDbApiLinkedServiceTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiLinkedService.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedCosmosDbMongoDbApiLinkedService.withAdditionalProperties(additionalProperties);
+
+            return deserializedCosmosDbMongoDbApiLinkedService;
+        });
+    }
 }

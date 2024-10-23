@@ -5,52 +5,53 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** audioConferencing. */
+/**
+ * audioConferencing.
+ */
 @Fluent
-public final class MicrosoftGraphAudioConferencing {
+public final class MicrosoftGraphAudioConferencing implements JsonSerializable<MicrosoftGraphAudioConferencing> {
     /*
      * The conferenceId property.
      */
-    @JsonProperty(value = "conferenceId")
     private String conferenceId;
 
     /*
      * A URL to the externally-accessible web page that contains dial-in information.
      */
-    @JsonProperty(value = "dialinUrl")
     private String dialinUrl;
 
     /*
      * The toll-free number that connects to the Audio Conference Provider.
      */
-    @JsonProperty(value = "tollFreeNumber")
     private String tollFreeNumber;
 
     /*
      * The toll number that connects to the Audio Conference Provider.
      */
-    @JsonProperty(value = "tollNumber")
     private String tollNumber;
 
     /*
      * audioConferencing
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphAudioConferencing class. */
+    /**
+     * Creates an instance of MicrosoftGraphAudioConferencing class.
+     */
     public MicrosoftGraphAudioConferencing() {
     }
 
     /**
      * Get the conferenceId property: The conferenceId property.
-     *
+     * 
      * @return the conferenceId value.
      */
     public String conferenceId() {
@@ -59,7 +60,7 @@ public final class MicrosoftGraphAudioConferencing {
 
     /**
      * Set the conferenceId property: The conferenceId property.
-     *
+     * 
      * @param conferenceId the conferenceId value to set.
      * @return the MicrosoftGraphAudioConferencing object itself.
      */
@@ -70,7 +71,7 @@ public final class MicrosoftGraphAudioConferencing {
 
     /**
      * Get the dialinUrl property: A URL to the externally-accessible web page that contains dial-in information.
-     *
+     * 
      * @return the dialinUrl value.
      */
     public String dialinUrl() {
@@ -79,7 +80,7 @@ public final class MicrosoftGraphAudioConferencing {
 
     /**
      * Set the dialinUrl property: A URL to the externally-accessible web page that contains dial-in information.
-     *
+     * 
      * @param dialinUrl the dialinUrl value to set.
      * @return the MicrosoftGraphAudioConferencing object itself.
      */
@@ -90,7 +91,7 @@ public final class MicrosoftGraphAudioConferencing {
 
     /**
      * Get the tollFreeNumber property: The toll-free number that connects to the Audio Conference Provider.
-     *
+     * 
      * @return the tollFreeNumber value.
      */
     public String tollFreeNumber() {
@@ -99,7 +100,7 @@ public final class MicrosoftGraphAudioConferencing {
 
     /**
      * Set the tollFreeNumber property: The toll-free number that connects to the Audio Conference Provider.
-     *
+     * 
      * @param tollFreeNumber the tollFreeNumber value to set.
      * @return the MicrosoftGraphAudioConferencing object itself.
      */
@@ -110,7 +111,7 @@ public final class MicrosoftGraphAudioConferencing {
 
     /**
      * Get the tollNumber property: The toll number that connects to the Audio Conference Provider.
-     *
+     * 
      * @return the tollNumber value.
      */
     public String tollNumber() {
@@ -119,7 +120,7 @@ public final class MicrosoftGraphAudioConferencing {
 
     /**
      * Set the tollNumber property: The toll number that connects to the Audio Conference Provider.
-     *
+     * 
      * @param tollNumber the tollNumber value to set.
      * @return the MicrosoftGraphAudioConferencing object itself.
      */
@@ -130,17 +131,16 @@ public final class MicrosoftGraphAudioConferencing {
 
     /**
      * Get the additionalProperties property: audioConferencing.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: audioConferencing.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphAudioConferencing object itself.
      */
@@ -149,19 +149,68 @@ public final class MicrosoftGraphAudioConferencing {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("conferenceId", this.conferenceId);
+        jsonWriter.writeStringField("dialinUrl", this.dialinUrl);
+        jsonWriter.writeStringField("tollFreeNumber", this.tollFreeNumber);
+        jsonWriter.writeStringField("tollNumber", this.tollNumber);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphAudioConferencing from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphAudioConferencing if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphAudioConferencing.
+     */
+    public static MicrosoftGraphAudioConferencing fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphAudioConferencing deserializedMicrosoftGraphAudioConferencing
+                = new MicrosoftGraphAudioConferencing();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("conferenceId".equals(fieldName)) {
+                    deserializedMicrosoftGraphAudioConferencing.conferenceId = reader.getString();
+                } else if ("dialinUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphAudioConferencing.dialinUrl = reader.getString();
+                } else if ("tollFreeNumber".equals(fieldName)) {
+                    deserializedMicrosoftGraphAudioConferencing.tollFreeNumber = reader.getString();
+                } else if ("tollNumber".equals(fieldName)) {
+                    deserializedMicrosoftGraphAudioConferencing.tollNumber = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphAudioConferencing.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphAudioConferencing;
+        });
     }
 }

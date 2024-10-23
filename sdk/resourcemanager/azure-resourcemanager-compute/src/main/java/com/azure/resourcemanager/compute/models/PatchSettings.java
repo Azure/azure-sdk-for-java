@@ -5,13 +5,17 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies settings related to VM Guest Patching on Windows.
  */
 @Fluent
-public final class PatchSettings {
+public final class PatchSettings implements JsonSerializable<PatchSettings> {
     /*
      * Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines associated to virtual machine
      * scale set with OrchestrationMode as Flexible.<br /><br /> Possible values are:<br /><br /> **Manual** - You
@@ -22,14 +26,12 @@ public final class PatchSettings {
      * machine will automatically updated by the platform. The properties provisionVMAgent and
      * WindowsConfiguration.enableAutomaticUpdates must be true
      */
-    @JsonProperty(value = "patchMode")
     private WindowsVMGuestPatchMode patchMode;
 
     /*
      * Enables customers to patch their Azure VMs without requiring a reboot. For enableHotpatching, the
      * 'provisionVMAgent' must be set to true and 'patchMode' must be set to 'AutomaticByPlatform'.
      */
-    @JsonProperty(value = "enableHotpatching")
     private Boolean enableHotpatching;
 
     /*
@@ -38,13 +40,11 @@ public final class PatchSettings {
      * **AutomaticByPlatform** - The platform will trigger periodic patch assessments. The property provisionVMAgent
      * must be true.
      */
-    @JsonProperty(value = "assessmentMode")
     private WindowsPatchAssessmentMode assessmentMode;
 
     /*
      * Specifies additional settings for patch mode AutomaticByPlatform in VM Guest Patching on Windows.
      */
-    @JsonProperty(value = "automaticByPlatformSettings")
     private WindowsVMGuestPatchAutomaticByPlatformSettings automaticByPlatformSettings;
 
     /**
@@ -169,5 +169,53 @@ public final class PatchSettings {
         if (automaticByPlatformSettings() != null) {
             automaticByPlatformSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("patchMode", this.patchMode == null ? null : this.patchMode.toString());
+        jsonWriter.writeBooleanField("enableHotpatching", this.enableHotpatching);
+        jsonWriter.writeStringField("assessmentMode",
+            this.assessmentMode == null ? null : this.assessmentMode.toString());
+        jsonWriter.writeJsonField("automaticByPlatformSettings", this.automaticByPlatformSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PatchSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PatchSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PatchSettings.
+     */
+    public static PatchSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PatchSettings deserializedPatchSettings = new PatchSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("patchMode".equals(fieldName)) {
+                    deserializedPatchSettings.patchMode = WindowsVMGuestPatchMode.fromString(reader.getString());
+                } else if ("enableHotpatching".equals(fieldName)) {
+                    deserializedPatchSettings.enableHotpatching = reader.getNullable(JsonReader::getBoolean);
+                } else if ("assessmentMode".equals(fieldName)) {
+                    deserializedPatchSettings.assessmentMode
+                        = WindowsPatchAssessmentMode.fromString(reader.getString());
+                } else if ("automaticByPlatformSettings".equals(fieldName)) {
+                    deserializedPatchSettings.automaticByPlatformSettings
+                        = WindowsVMGuestPatchAutomaticByPlatformSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPatchSettings;
+        });
     }
 }

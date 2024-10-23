@@ -5,84 +5,76 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Defines contents of a web application firewall global configuration.
  */
 @Fluent
-public final class PolicySettings {
+public final class PolicySettings implements JsonSerializable<PolicySettings> {
     /*
      * The state of the policy.
      */
-    @JsonProperty(value = "state")
     private WebApplicationFirewallEnabledState state;
 
     /*
      * The mode of the policy.
      */
-    @JsonProperty(value = "mode")
     private WebApplicationFirewallMode mode;
 
     /*
      * Whether to allow WAF to check request Body.
      */
-    @JsonProperty(value = "requestBodyCheck")
     private Boolean requestBodyCheck;
 
     /*
      * Max inspection limit in KB for request body inspection for WAF.
      */
-    @JsonProperty(value = "requestBodyInspectLimitInKB")
     private Integer requestBodyInspectLimitInKB;
 
     /*
      * Whether allow WAF to enforce request body limits.
      */
-    @JsonProperty(value = "requestBodyEnforcement")
     private Boolean requestBodyEnforcement;
 
     /*
      * Maximum request body size in Kb for WAF.
      */
-    @JsonProperty(value = "maxRequestBodySizeInKb")
     private Integer maxRequestBodySizeInKb;
 
     /*
      * Whether allow WAF to enforce file upload limits.
      */
-    @JsonProperty(value = "fileUploadEnforcement")
     private Boolean fileUploadEnforcement;
 
     /*
      * Maximum file upload size in Mb for WAF.
      */
-    @JsonProperty(value = "fileUploadLimitInMb")
     private Integer fileUploadLimitInMb;
 
     /*
      * If the action type is block, customer can override the response status code.
      */
-    @JsonProperty(value = "customBlockResponseStatusCode")
     private Integer customBlockResponseStatusCode;
 
     /*
      * If the action type is block, customer can override the response body. The body must be specified in base64
      * encoding.
      */
-    @JsonProperty(value = "customBlockResponseBody")
     private String customBlockResponseBody;
 
     /*
      * To scrub sensitive log fields
      */
-    @JsonProperty(value = "logScrubbing")
     private PolicySettingsLogScrubbing logScrubbing;
 
     /*
      * Web Application Firewall JavaScript Challenge Cookie Expiration time in minutes.
      */
-    @JsonProperty(value = "jsChallengeCookieExpirationInMins")
     private Integer jsChallengeCookieExpirationInMins;
 
     /**
@@ -346,5 +338,76 @@ public final class PolicySettings {
         if (logScrubbing() != null) {
             logScrubbing().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeBooleanField("requestBodyCheck", this.requestBodyCheck);
+        jsonWriter.writeNumberField("requestBodyInspectLimitInKB", this.requestBodyInspectLimitInKB);
+        jsonWriter.writeBooleanField("requestBodyEnforcement", this.requestBodyEnforcement);
+        jsonWriter.writeNumberField("maxRequestBodySizeInKb", this.maxRequestBodySizeInKb);
+        jsonWriter.writeBooleanField("fileUploadEnforcement", this.fileUploadEnforcement);
+        jsonWriter.writeNumberField("fileUploadLimitInMb", this.fileUploadLimitInMb);
+        jsonWriter.writeNumberField("customBlockResponseStatusCode", this.customBlockResponseStatusCode);
+        jsonWriter.writeStringField("customBlockResponseBody", this.customBlockResponseBody);
+        jsonWriter.writeJsonField("logScrubbing", this.logScrubbing);
+        jsonWriter.writeNumberField("jsChallengeCookieExpirationInMins", this.jsChallengeCookieExpirationInMins);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicySettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicySettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicySettings.
+     */
+    public static PolicySettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicySettings deserializedPolicySettings = new PolicySettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedPolicySettings.state
+                        = WebApplicationFirewallEnabledState.fromString(reader.getString());
+                } else if ("mode".equals(fieldName)) {
+                    deserializedPolicySettings.mode = WebApplicationFirewallMode.fromString(reader.getString());
+                } else if ("requestBodyCheck".equals(fieldName)) {
+                    deserializedPolicySettings.requestBodyCheck = reader.getNullable(JsonReader::getBoolean);
+                } else if ("requestBodyInspectLimitInKB".equals(fieldName)) {
+                    deserializedPolicySettings.requestBodyInspectLimitInKB = reader.getNullable(JsonReader::getInt);
+                } else if ("requestBodyEnforcement".equals(fieldName)) {
+                    deserializedPolicySettings.requestBodyEnforcement = reader.getNullable(JsonReader::getBoolean);
+                } else if ("maxRequestBodySizeInKb".equals(fieldName)) {
+                    deserializedPolicySettings.maxRequestBodySizeInKb = reader.getNullable(JsonReader::getInt);
+                } else if ("fileUploadEnforcement".equals(fieldName)) {
+                    deserializedPolicySettings.fileUploadEnforcement = reader.getNullable(JsonReader::getBoolean);
+                } else if ("fileUploadLimitInMb".equals(fieldName)) {
+                    deserializedPolicySettings.fileUploadLimitInMb = reader.getNullable(JsonReader::getInt);
+                } else if ("customBlockResponseStatusCode".equals(fieldName)) {
+                    deserializedPolicySettings.customBlockResponseStatusCode = reader.getNullable(JsonReader::getInt);
+                } else if ("customBlockResponseBody".equals(fieldName)) {
+                    deserializedPolicySettings.customBlockResponseBody = reader.getString();
+                } else if ("logScrubbing".equals(fieldName)) {
+                    deserializedPolicySettings.logScrubbing = PolicySettingsLogScrubbing.fromJson(reader);
+                } else if ("jsChallengeCookieExpirationInMins".equals(fieldName)) {
+                    deserializedPolicySettings.jsChallengeCookieExpirationInMins
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicySettings;
+        });
     }
 }

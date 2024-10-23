@@ -6,62 +6,51 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information used to connect to an Azure Storage Container using Blobfuse.
  */
 @Fluent
-public final class AzureBlobFileSystemConfiguration {
+public final class AzureBlobFileSystemConfiguration implements JsonSerializable<AzureBlobFileSystemConfiguration> {
     /*
      * The Azure Storage Account name.
      */
-    @JsonProperty(value = "accountName", required = true)
     private String accountName;
 
     /*
      * The Azure Blob Storage Container name.
      */
-    @JsonProperty(value = "containerName", required = true)
     private String containerName;
 
     /*
-     * The Azure Storage Account key.
-     * 
      * This property is mutually exclusive with both sasKey and identity; exactly one must be specified.
      */
-    @JsonProperty(value = "accountKey")
     private String accountKey;
 
     /*
-     * The Azure Storage SAS token.
-     * 
      * This property is mutually exclusive with both accountKey and identity; exactly one must be specified.
      */
-    @JsonProperty(value = "sasKey")
     private String sasKey;
 
     /*
-     * Additional command line options to pass to the mount command.
-     * 
      * These are 'net use' options in Windows and 'mount' options in Linux.
      */
-    @JsonProperty(value = "blobfuseOptions")
     private String blobfuseOptions;
 
     /*
-     * The relative path on the compute node where the file system will be mounted
-     * 
      * All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR
      * environment variable.
      */
-    @JsonProperty(value = "relativeMountPath", required = true)
     private String relativeMountPath;
 
     /*
      * This property is mutually exclusive with both accountKey and sasKey; exactly one must be specified.
      */
-    @JsonProperty(value = "identityReference")
     private ComputeNodeIdentityReference identityReference;
 
     /**
@@ -111,9 +100,8 @@ public final class AzureBlobFileSystemConfiguration {
     }
 
     /**
-     * Get the accountKey property: The Azure Storage Account key.
-     * 
-     * This property is mutually exclusive with both sasKey and identity; exactly one must be specified.
+     * Get the accountKey property: This property is mutually exclusive with both sasKey and identity; exactly one must
+     * be specified.
      * 
      * @return the accountKey value.
      */
@@ -122,9 +110,8 @@ public final class AzureBlobFileSystemConfiguration {
     }
 
     /**
-     * Set the accountKey property: The Azure Storage Account key.
-     * 
-     * This property is mutually exclusive with both sasKey and identity; exactly one must be specified.
+     * Set the accountKey property: This property is mutually exclusive with both sasKey and identity; exactly one must
+     * be specified.
      * 
      * @param accountKey the accountKey value to set.
      * @return the AzureBlobFileSystemConfiguration object itself.
@@ -135,9 +122,8 @@ public final class AzureBlobFileSystemConfiguration {
     }
 
     /**
-     * Get the sasKey property: The Azure Storage SAS token.
-     * 
-     * This property is mutually exclusive with both accountKey and identity; exactly one must be specified.
+     * Get the sasKey property: This property is mutually exclusive with both accountKey and identity; exactly one must
+     * be specified.
      * 
      * @return the sasKey value.
      */
@@ -146,9 +132,8 @@ public final class AzureBlobFileSystemConfiguration {
     }
 
     /**
-     * Set the sasKey property: The Azure Storage SAS token.
-     * 
-     * This property is mutually exclusive with both accountKey and identity; exactly one must be specified.
+     * Set the sasKey property: This property is mutually exclusive with both accountKey and identity; exactly one must
+     * be specified.
      * 
      * @param sasKey the sasKey value to set.
      * @return the AzureBlobFileSystemConfiguration object itself.
@@ -159,9 +144,7 @@ public final class AzureBlobFileSystemConfiguration {
     }
 
     /**
-     * Get the blobfuseOptions property: Additional command line options to pass to the mount command.
-     * 
-     * These are 'net use' options in Windows and 'mount' options in Linux.
+     * Get the blobfuseOptions property: These are 'net use' options in Windows and 'mount' options in Linux.
      * 
      * @return the blobfuseOptions value.
      */
@@ -170,9 +153,7 @@ public final class AzureBlobFileSystemConfiguration {
     }
 
     /**
-     * Set the blobfuseOptions property: Additional command line options to pass to the mount command.
-     * 
-     * These are 'net use' options in Windows and 'mount' options in Linux.
+     * Set the blobfuseOptions property: These are 'net use' options in Windows and 'mount' options in Linux.
      * 
      * @param blobfuseOptions the blobfuseOptions value to set.
      * @return the AzureBlobFileSystemConfiguration object itself.
@@ -183,10 +164,8 @@ public final class AzureBlobFileSystemConfiguration {
     }
 
     /**
-     * Get the relativeMountPath property: The relative path on the compute node where the file system will be mounted
-     * 
-     * All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR
-     * environment variable.
+     * Get the relativeMountPath property: All file systems are mounted relative to the Batch mounts directory,
+     * accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment variable.
      * 
      * @return the relativeMountPath value.
      */
@@ -195,10 +174,8 @@ public final class AzureBlobFileSystemConfiguration {
     }
 
     /**
-     * Set the relativeMountPath property: The relative path on the compute node where the file system will be mounted
-     * 
-     * All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR
-     * environment variable.
+     * Set the relativeMountPath property: All file systems are mounted relative to the Batch mounts directory,
+     * accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment variable.
      * 
      * @param relativeMountPath the relativeMountPath value to set.
      * @return the AzureBlobFileSystemConfiguration object itself.
@@ -237,16 +214,19 @@ public final class AzureBlobFileSystemConfiguration {
      */
     public void validate() {
         if (accountName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property accountName in model AzureBlobFileSystemConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property accountName in model AzureBlobFileSystemConfiguration"));
         }
         if (containerName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property containerName in model AzureBlobFileSystemConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property containerName in model AzureBlobFileSystemConfiguration"));
         }
         if (relativeMountPath() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property relativeMountPath in model AzureBlobFileSystemConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property relativeMountPath in model AzureBlobFileSystemConfiguration"));
         }
         if (identityReference() != null) {
             identityReference().validate();
@@ -254,4 +234,61 @@ public final class AzureBlobFileSystemConfiguration {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureBlobFileSystemConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accountName", this.accountName);
+        jsonWriter.writeStringField("containerName", this.containerName);
+        jsonWriter.writeStringField("relativeMountPath", this.relativeMountPath);
+        jsonWriter.writeStringField("accountKey", this.accountKey);
+        jsonWriter.writeStringField("sasKey", this.sasKey);
+        jsonWriter.writeStringField("blobfuseOptions", this.blobfuseOptions);
+        jsonWriter.writeJsonField("identityReference", this.identityReference);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBlobFileSystemConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBlobFileSystemConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureBlobFileSystemConfiguration.
+     */
+    public static AzureBlobFileSystemConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBlobFileSystemConfiguration deserializedAzureBlobFileSystemConfiguration
+                = new AzureBlobFileSystemConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountName".equals(fieldName)) {
+                    deserializedAzureBlobFileSystemConfiguration.accountName = reader.getString();
+                } else if ("containerName".equals(fieldName)) {
+                    deserializedAzureBlobFileSystemConfiguration.containerName = reader.getString();
+                } else if ("relativeMountPath".equals(fieldName)) {
+                    deserializedAzureBlobFileSystemConfiguration.relativeMountPath = reader.getString();
+                } else if ("accountKey".equals(fieldName)) {
+                    deserializedAzureBlobFileSystemConfiguration.accountKey = reader.getString();
+                } else if ("sasKey".equals(fieldName)) {
+                    deserializedAzureBlobFileSystemConfiguration.sasKey = reader.getString();
+                } else if ("blobfuseOptions".equals(fieldName)) {
+                    deserializedAzureBlobFileSystemConfiguration.blobfuseOptions = reader.getString();
+                } else if ("identityReference".equals(fieldName)) {
+                    deserializedAzureBlobFileSystemConfiguration.identityReference
+                        = ComputeNodeIdentityReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureBlobFileSystemConfiguration;
+        });
+    }
 }

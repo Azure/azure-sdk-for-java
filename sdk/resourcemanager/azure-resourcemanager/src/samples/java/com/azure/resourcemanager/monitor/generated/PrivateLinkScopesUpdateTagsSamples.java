@@ -23,9 +23,13 @@ public final class PrivateLinkScopesUpdateTagsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void privateLinkScopeUpdateTagsOnly(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getPrivateLinkScopes().updateTagsWithResponse(
-            "my-resource-group", "my-privatelinkscope",
-            new TagsResource().withTags(mapOf("Tag1", "Value1", "Tag2", "Value2")), com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getPrivateLinkScopes()
+            .updateTagsWithResponse("my-resource-group", "my-privatelinkscope",
+                new TagsResource().withTags(mapOf("Tag1", "Value1", "Tag2", "Value2")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

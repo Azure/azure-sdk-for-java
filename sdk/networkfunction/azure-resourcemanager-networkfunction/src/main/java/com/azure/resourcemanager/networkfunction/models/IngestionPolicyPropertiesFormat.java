@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.networkfunction.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Ingestion Policy properties. */
+/**
+ * Ingestion Policy properties.
+ */
 @Fluent
-public final class IngestionPolicyPropertiesFormat {
+public final class IngestionPolicyPropertiesFormat implements JsonSerializable<IngestionPolicyPropertiesFormat> {
     /*
      * The ingestion type.
      */
-    @JsonProperty(value = "ingestionType")
     private IngestionType ingestionType;
 
     /*
      * Ingestion Sources.
      */
-    @JsonProperty(value = "ingestionSources")
     private List<IngestionSourcesPropertiesFormat> ingestionSources;
 
-    /** Creates an instance of IngestionPolicyPropertiesFormat class. */
+    /**
+     * Creates an instance of IngestionPolicyPropertiesFormat class.
+     */
     public IngestionPolicyPropertiesFormat() {
     }
 
     /**
      * Get the ingestionType property: The ingestion type.
-     *
+     * 
      * @return the ingestionType value.
      */
     public IngestionType ingestionType() {
@@ -38,7 +44,7 @@ public final class IngestionPolicyPropertiesFormat {
 
     /**
      * Set the ingestionType property: The ingestion type.
-     *
+     * 
      * @param ingestionType the ingestionType value to set.
      * @return the IngestionPolicyPropertiesFormat object itself.
      */
@@ -49,7 +55,7 @@ public final class IngestionPolicyPropertiesFormat {
 
     /**
      * Get the ingestionSources property: Ingestion Sources.
-     *
+     * 
      * @return the ingestionSources value.
      */
     public List<IngestionSourcesPropertiesFormat> ingestionSources() {
@@ -58,24 +64,68 @@ public final class IngestionPolicyPropertiesFormat {
 
     /**
      * Set the ingestionSources property: Ingestion Sources.
-     *
+     * 
      * @param ingestionSources the ingestionSources value to set.
      * @return the IngestionPolicyPropertiesFormat object itself.
      */
-    public IngestionPolicyPropertiesFormat withIngestionSources(
-        List<IngestionSourcesPropertiesFormat> ingestionSources) {
+    public IngestionPolicyPropertiesFormat
+        withIngestionSources(List<IngestionSourcesPropertiesFormat> ingestionSources) {
         this.ingestionSources = ingestionSources;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ingestionSources() != null) {
             ingestionSources().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ingestionType", this.ingestionType == null ? null : this.ingestionType.toString());
+        jsonWriter.writeArrayField("ingestionSources", this.ingestionSources,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IngestionPolicyPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IngestionPolicyPropertiesFormat if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IngestionPolicyPropertiesFormat.
+     */
+    public static IngestionPolicyPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IngestionPolicyPropertiesFormat deserializedIngestionPolicyPropertiesFormat
+                = new IngestionPolicyPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ingestionType".equals(fieldName)) {
+                    deserializedIngestionPolicyPropertiesFormat.ingestionType
+                        = IngestionType.fromString(reader.getString());
+                } else if ("ingestionSources".equals(fieldName)) {
+                    List<IngestionSourcesPropertiesFormat> ingestionSources
+                        = reader.readArray(reader1 -> IngestionSourcesPropertiesFormat.fromJson(reader1));
+                    deserializedIngestionPolicyPropertiesFormat.ingestionSources = ingestionSources;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIngestionPolicyPropertiesFormat;
+        });
     }
 }

@@ -13,6 +13,7 @@ import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.JavaComponent;
 import com.azure.resourcemanager.appcontainers.models.JavaComponentConfigurationProperty;
 import com.azure.resourcemanager.appcontainers.models.JavaComponentProperties;
+import com.azure.resourcemanager.appcontainers.models.JavaComponentPropertiesScale;
 import com.azure.resourcemanager.appcontainers.models.JavaComponentServiceBind;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -25,7 +26,7 @@ public final class JavaComponentsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"Succeeded\",\"configurations\":[{\"propertyName\":\"zzfopu\",\"value\":\"qusvwlujopwnib\"}],\"serviceBinds\":[{\"name\":\"zt\",\"serviceId\":\"qumqvfmwcaddt\"},{\"name\":\"txegtvgwyurbelfn\",\"serviceId\":\"ryizwbxgde\"}]},\"id\":\"layunomirhpfabe\",\"name\":\"qlamwmgewayxfl\",\"type\":\"bcpjstbhem\"}";
+            = "{\"properties\":{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"Succeeded\",\"configurations\":[{\"propertyName\":\"urkep\",\"value\":\"ehqqylm\"},{\"propertyName\":\"twjwdsdlzm\",\"value\":\"erxxxoteehkhowgo\"},{\"propertyName\":\"vhxowpcbapnpxra\",\"value\":\"wbmpspfeylqloc\"},{\"propertyName\":\"ujexayglxrk\",\"value\":\"nmzpas\"}],\"scale\":{\"minReplicas\":890793558,\"maxReplicas\":402195294},\"serviceBinds\":[{\"name\":\"fpieidzlvs\",\"serviceId\":\"ywjopac\"}]},\"id\":\"hydv\",\"name\":\"kmfngpmillxgjs\",\"type\":\"izwgsoriobijeiyd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,20 +36,24 @@ public final class JavaComponentsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         JavaComponent response = manager.javaComponents()
-            .define("zx")
-            .withExistingManagedEnvironment("glaqjsg", "zstuj")
+            .define("mcxqqxmyzklao")
+            .withExistingManagedEnvironment("xlu", "kft")
             .withProperties(new JavaComponentProperties()
-                .withConfigurations(Arrays.asList(
-                    new JavaComponentConfigurationProperty().withPropertyName("lduyehiiittugyuq").withValue("lda")))
-                .withServiceBinds(
-                    Arrays.asList(new JavaComponentServiceBind().withName("qa").withServiceId("sozjvxdzciggbnv"),
-                        new JavaComponentServiceBind().withName("o").withServiceId("alzyxwhoeamo"),
-                        new JavaComponentServiceBind().withName("bdoeysf").withServiceId("imtwuuhau"))))
+                .withConfigurations(Arrays
+                    .asList(new JavaComponentConfigurationProperty().withPropertyName("mzrqraz").withValue("ivznllas"),
+                        new JavaComponentConfigurationProperty().withPropertyName("skhj").withValue("pvbaih")))
+                .withScale(new JavaComponentPropertiesScale().withMinReplicas(1962293618).withMaxReplicas(2110088551))
+                .withServiceBinds(Arrays.asList(
+                    new JavaComponentServiceBind().withName("ywbqgroigbsfsgs").withServiceId("nwldfmhljq"),
+                    new JavaComponentServiceBind().withName("spmrjct").withServiceId("ldsxebuhsxrz"),
+                    new JavaComponentServiceBind().withName("gsdaluyckh").withServiceId("rbhseuerbgpxebjl"))))
             .create();
 
-        Assertions.assertEquals("zzfopu", response.properties().configurations().get(0).propertyName());
-        Assertions.assertEquals("qusvwlujopwnib", response.properties().configurations().get(0).value());
-        Assertions.assertEquals("zt", response.properties().serviceBinds().get(0).name());
-        Assertions.assertEquals("qumqvfmwcaddt", response.properties().serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("urkep", response.properties().configurations().get(0).propertyName());
+        Assertions.assertEquals("ehqqylm", response.properties().configurations().get(0).value());
+        Assertions.assertEquals(890793558, response.properties().scale().minReplicas());
+        Assertions.assertEquals(402195294, response.properties().scale().maxReplicas());
+        Assertions.assertEquals("fpieidzlvs", response.properties().serviceBinds().get(0).name());
+        Assertions.assertEquals("ywjopac", response.properties().serviceBinds().get(0).serviceId());
     }
 }

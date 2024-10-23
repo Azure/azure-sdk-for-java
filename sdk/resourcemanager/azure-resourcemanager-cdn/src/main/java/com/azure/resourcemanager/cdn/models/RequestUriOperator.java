@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -77,7 +76,6 @@ public final class RequestUriOperator extends ExpandableStringEnum<RequestUriOpe
      * @param name a name to look for.
      * @return the corresponding RequestUriOperator.
      */
-    @JsonCreator
     public static RequestUriOperator fromString(String name) {
         return fromString(name, RequestUriOperator.class);
     }

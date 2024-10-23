@@ -5,32 +5,33 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.models.TrustedAccessRoleRule;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Trusted access role definition.
  */
 @Immutable
-public final class TrustedAccessRoleInner {
+public final class TrustedAccessRoleInner implements JsonSerializable<TrustedAccessRoleInner> {
     /*
      * Resource type of Azure resource
      */
-    @JsonProperty(value = "sourceResourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceResourceType;
 
     /*
      * Name of role, name is unique under a source resource type
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * List of rules for the role. This maps to 'rules' property of [Kubernetes Cluster
      * Role](https://kubernetes.io/docs/reference/kubernetes-api/authorization-resources/cluster-role-v1/#ClusterRole).
      */
-    @JsonProperty(value = "rules", access = JsonProperty.Access.WRITE_ONLY)
     private List<TrustedAccessRoleRule> rules;
 
     /**
@@ -76,5 +77,46 @@ public final class TrustedAccessRoleInner {
         if (rules() != null) {
             rules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrustedAccessRoleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrustedAccessRoleInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TrustedAccessRoleInner.
+     */
+    public static TrustedAccessRoleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrustedAccessRoleInner deserializedTrustedAccessRoleInner = new TrustedAccessRoleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceResourceType".equals(fieldName)) {
+                    deserializedTrustedAccessRoleInner.sourceResourceType = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedTrustedAccessRoleInner.name = reader.getString();
+                } else if ("rules".equals(fieldName)) {
+                    List<TrustedAccessRoleRule> rules
+                        = reader.readArray(reader1 -> TrustedAccessRoleRule.fromJson(reader1));
+                    deserializedTrustedAccessRoleInner.rules = rules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrustedAccessRoleInner;
+        });
     }
 }

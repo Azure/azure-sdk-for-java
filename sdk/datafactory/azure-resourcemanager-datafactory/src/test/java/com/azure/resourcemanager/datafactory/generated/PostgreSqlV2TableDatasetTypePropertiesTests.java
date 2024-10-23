@@ -11,14 +11,14 @@ public final class PostgreSqlV2TableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PostgreSqlV2TableDatasetTypeProperties model
-            = BinaryData.fromString("{\"table\":\"dataswxmfurqm\",\"schema\":\"datawwp\"}")
+            = BinaryData.fromString("{\"table\":\"datavic\",\"schema\":\"dataaptk\"}")
                 .toObject(PostgreSqlV2TableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PostgreSqlV2TableDatasetTypeProperties model
-            = new PostgreSqlV2TableDatasetTypeProperties().withTable("dataswxmfurqm").withSchema("datawwp");
+            = new PostgreSqlV2TableDatasetTypeProperties().withTable("datavic").withSchema("dataaptk");
         model = BinaryData.fromObject(model).toObject(PostgreSqlV2TableDatasetTypeProperties.class);
     }
 }

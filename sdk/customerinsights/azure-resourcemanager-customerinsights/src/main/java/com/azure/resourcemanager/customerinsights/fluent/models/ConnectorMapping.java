@@ -5,114 +5,108 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.ConnectorMappingProperties;
 import com.azure.resourcemanager.customerinsights.models.ConnectorMappingStates;
 import com.azure.resourcemanager.customerinsights.models.ConnectorTypes;
 import com.azure.resourcemanager.customerinsights.models.EntityTypes;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The connector mapping definition. */
+/**
+ * The connector mapping definition.
+ */
 @Fluent
-public final class ConnectorMapping {
+public final class ConnectorMapping implements JsonSerializable<ConnectorMapping> {
     /*
      * The connector name.
      */
-    @JsonProperty(value = "connectorName", access = JsonProperty.Access.WRITE_ONLY)
     private String connectorName;
 
     /*
      * Type of connector.
      */
-    @JsonProperty(value = "connectorType")
     private ConnectorTypes connectorType;
 
     /*
      * The created time.
      */
-    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime created;
 
     /*
      * The last modified time.
      */
-    @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModified;
 
     /*
      * Defines which entity type the file should map to.
      */
-    @JsonProperty(value = "entityType", required = true)
     private EntityTypes entityType;
 
     /*
      * The mapping entity name.
      */
-    @JsonProperty(value = "entityTypeName", required = true)
     private String entityTypeName;
 
     /*
      * The connector mapping name
      */
-    @JsonProperty(value = "connectorMappingName", access = JsonProperty.Access.WRITE_ONLY)
     private String connectorMappingName;
 
     /*
      * Display name for the connector mapping.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The description of the connector mapping.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The DataFormat ID.
      */
-    @JsonProperty(value = "dataFormatId", access = JsonProperty.Access.WRITE_ONLY)
     private String dataFormatId;
 
     /*
      * The properties of the mapping.
      */
-    @JsonProperty(value = "mappingProperties", required = true)
     private ConnectorMappingProperties mappingProperties;
 
     /*
      * The next run time based on customer's settings.
      */
-    @JsonProperty(value = "nextRunTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime nextRunTime;
 
     /*
      * The RunId.
      */
-    @JsonProperty(value = "runId", access = JsonProperty.Access.WRITE_ONLY)
     private String runId;
 
     /*
      * State of connector mapping.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private ConnectorMappingStates state;
 
     /*
      * The hub name.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
-    /** Creates an instance of ConnectorMapping class. */
+    /**
+     * Creates an instance of ConnectorMapping class.
+     */
     public ConnectorMapping() {
     }
 
     /**
      * Get the connectorName property: The connector name.
-     *
+     * 
      * @return the connectorName value.
      */
     public String connectorName() {
@@ -121,7 +115,7 @@ public final class ConnectorMapping {
 
     /**
      * Get the connectorType property: Type of connector.
-     *
+     * 
      * @return the connectorType value.
      */
     public ConnectorTypes connectorType() {
@@ -130,7 +124,7 @@ public final class ConnectorMapping {
 
     /**
      * Set the connectorType property: Type of connector.
-     *
+     * 
      * @param connectorType the connectorType value to set.
      * @return the ConnectorMapping object itself.
      */
@@ -141,7 +135,7 @@ public final class ConnectorMapping {
 
     /**
      * Get the created property: The created time.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -150,7 +144,7 @@ public final class ConnectorMapping {
 
     /**
      * Get the lastModified property: The last modified time.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime lastModified() {
@@ -159,7 +153,7 @@ public final class ConnectorMapping {
 
     /**
      * Get the entityType property: Defines which entity type the file should map to.
-     *
+     * 
      * @return the entityType value.
      */
     public EntityTypes entityType() {
@@ -168,7 +162,7 @@ public final class ConnectorMapping {
 
     /**
      * Set the entityType property: Defines which entity type the file should map to.
-     *
+     * 
      * @param entityType the entityType value to set.
      * @return the ConnectorMapping object itself.
      */
@@ -179,7 +173,7 @@ public final class ConnectorMapping {
 
     /**
      * Get the entityTypeName property: The mapping entity name.
-     *
+     * 
      * @return the entityTypeName value.
      */
     public String entityTypeName() {
@@ -188,7 +182,7 @@ public final class ConnectorMapping {
 
     /**
      * Set the entityTypeName property: The mapping entity name.
-     *
+     * 
      * @param entityTypeName the entityTypeName value to set.
      * @return the ConnectorMapping object itself.
      */
@@ -199,7 +193,7 @@ public final class ConnectorMapping {
 
     /**
      * Get the connectorMappingName property: The connector mapping name.
-     *
+     * 
      * @return the connectorMappingName value.
      */
     public String connectorMappingName() {
@@ -208,7 +202,7 @@ public final class ConnectorMapping {
 
     /**
      * Get the displayName property: Display name for the connector mapping.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -217,7 +211,7 @@ public final class ConnectorMapping {
 
     /**
      * Set the displayName property: Display name for the connector mapping.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ConnectorMapping object itself.
      */
@@ -228,7 +222,7 @@ public final class ConnectorMapping {
 
     /**
      * Get the description property: The description of the connector mapping.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -237,7 +231,7 @@ public final class ConnectorMapping {
 
     /**
      * Set the description property: The description of the connector mapping.
-     *
+     * 
      * @param description the description value to set.
      * @return the ConnectorMapping object itself.
      */
@@ -248,7 +242,7 @@ public final class ConnectorMapping {
 
     /**
      * Get the dataFormatId property: The DataFormat ID.
-     *
+     * 
      * @return the dataFormatId value.
      */
     public String dataFormatId() {
@@ -257,7 +251,7 @@ public final class ConnectorMapping {
 
     /**
      * Get the mappingProperties property: The properties of the mapping.
-     *
+     * 
      * @return the mappingProperties value.
      */
     public ConnectorMappingProperties mappingProperties() {
@@ -266,7 +260,7 @@ public final class ConnectorMapping {
 
     /**
      * Set the mappingProperties property: The properties of the mapping.
-     *
+     * 
      * @param mappingProperties the mappingProperties value to set.
      * @return the ConnectorMapping object itself.
      */
@@ -277,7 +271,7 @@ public final class ConnectorMapping {
 
     /**
      * Get the nextRunTime property: The next run time based on customer's settings.
-     *
+     * 
      * @return the nextRunTime value.
      */
     public OffsetDateTime nextRunTime() {
@@ -286,7 +280,7 @@ public final class ConnectorMapping {
 
     /**
      * Get the runId property: The RunId.
-     *
+     * 
      * @return the runId value.
      */
     public String runId() {
@@ -295,7 +289,7 @@ public final class ConnectorMapping {
 
     /**
      * Get the state property: State of connector mapping.
-     *
+     * 
      * @return the state value.
      */
     public ConnectorMappingStates state() {
@@ -304,7 +298,7 @@ public final class ConnectorMapping {
 
     /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -313,29 +307,100 @@ public final class ConnectorMapping {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (entityType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property entityType in model ConnectorMapping"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property entityType in model ConnectorMapping"));
         }
         if (entityTypeName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property entityTypeName in model ConnectorMapping"));
         }
         if (mappingProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property mappingProperties in model ConnectorMapping"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property mappingProperties in model ConnectorMapping"));
         } else {
             mappingProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectorMapping.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("entityType", this.entityType == null ? null : this.entityType.toString());
+        jsonWriter.writeStringField("entityTypeName", this.entityTypeName);
+        jsonWriter.writeJsonField("mappingProperties", this.mappingProperties);
+        jsonWriter.writeStringField("connectorType", this.connectorType == null ? null : this.connectorType.toString());
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectorMapping from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectorMapping if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectorMapping.
+     */
+    public static ConnectorMapping fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectorMapping deserializedConnectorMapping = new ConnectorMapping();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("entityType".equals(fieldName)) {
+                    deserializedConnectorMapping.entityType = EntityTypes.fromString(reader.getString());
+                } else if ("entityTypeName".equals(fieldName)) {
+                    deserializedConnectorMapping.entityTypeName = reader.getString();
+                } else if ("mappingProperties".equals(fieldName)) {
+                    deserializedConnectorMapping.mappingProperties = ConnectorMappingProperties.fromJson(reader);
+                } else if ("connectorName".equals(fieldName)) {
+                    deserializedConnectorMapping.connectorName = reader.getString();
+                } else if ("connectorType".equals(fieldName)) {
+                    deserializedConnectorMapping.connectorType = ConnectorTypes.fromString(reader.getString());
+                } else if ("created".equals(fieldName)) {
+                    deserializedConnectorMapping.created = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModified".equals(fieldName)) {
+                    deserializedConnectorMapping.lastModified = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("connectorMappingName".equals(fieldName)) {
+                    deserializedConnectorMapping.connectorMappingName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedConnectorMapping.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedConnectorMapping.description = reader.getString();
+                } else if ("dataFormatId".equals(fieldName)) {
+                    deserializedConnectorMapping.dataFormatId = reader.getString();
+                } else if ("nextRunTime".equals(fieldName)) {
+                    deserializedConnectorMapping.nextRunTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("runId".equals(fieldName)) {
+                    deserializedConnectorMapping.runId = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedConnectorMapping.state = ConnectorMappingStates.fromString(reader.getString());
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedConnectorMapping.tenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectorMapping;
+        });
+    }
 }

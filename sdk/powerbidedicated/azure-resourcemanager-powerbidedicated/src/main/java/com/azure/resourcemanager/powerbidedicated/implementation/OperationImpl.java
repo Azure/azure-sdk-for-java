@@ -14,8 +14,8 @@ public final class OperationImpl implements Operation {
 
     private final com.azure.resourcemanager.powerbidedicated.PowerBIDedicatedManager serviceManager;
 
-    OperationImpl(
-        OperationInner innerObject, com.azure.resourcemanager.powerbidedicated.PowerBIDedicatedManager serviceManager) {
+    OperationImpl(OperationInner innerObject,
+        com.azure.resourcemanager.powerbidedicated.PowerBIDedicatedManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

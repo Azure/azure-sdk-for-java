@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datalakestore.fluent.models.UpdateVirtualNetworkRuleProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The parameters used to update a virtual network rule. */
+/**
+ * The parameters used to update a virtual network rule.
+ */
 @Fluent
-public final class UpdateVirtualNetworkRuleParameters {
+public final class UpdateVirtualNetworkRuleParameters implements JsonSerializable<UpdateVirtualNetworkRuleParameters> {
     /*
      * The virtual network rule properties to use when updating a virtual network rule.
      */
-    @JsonProperty(value = "properties")
     private UpdateVirtualNetworkRuleProperties innerProperties;
 
-    /** Creates an instance of UpdateVirtualNetworkRuleParameters class. */
+    /**
+     * Creates an instance of UpdateVirtualNetworkRuleParameters class.
+     */
     public UpdateVirtualNetworkRuleParameters() {
     }
 
     /**
      * Get the innerProperties property: The virtual network rule properties to use when updating a virtual network
      * rule.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UpdateVirtualNetworkRuleProperties innerProperties() {
@@ -33,7 +40,7 @@ public final class UpdateVirtualNetworkRuleParameters {
 
     /**
      * Get the subnetId property: The resource identifier for the subnet.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -42,7 +49,7 @@ public final class UpdateVirtualNetworkRuleParameters {
 
     /**
      * Set the subnetId property: The resource identifier for the subnet.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the UpdateVirtualNetworkRuleParameters object itself.
      */
@@ -56,12 +63,50 @@ public final class UpdateVirtualNetworkRuleParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateVirtualNetworkRuleParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateVirtualNetworkRuleParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateVirtualNetworkRuleParameters.
+     */
+    public static UpdateVirtualNetworkRuleParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateVirtualNetworkRuleParameters deserializedUpdateVirtualNetworkRuleParameters
+                = new UpdateVirtualNetworkRuleParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedUpdateVirtualNetworkRuleParameters.innerProperties
+                        = UpdateVirtualNetworkRuleProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateVirtualNetworkRuleParameters;
+        });
     }
 }

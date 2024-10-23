@@ -9,11 +9,15 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
+import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareInfo;
+import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareRootSquash;
@@ -27,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.LocalDateTime;
@@ -107,6 +112,18 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             });
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void createShareOAuth() {
+        ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareAsyncClient shareClient = oAuthServiceClient.getShareAsyncClient(shareName);
+
+        StepVerifier.create(shareClient.createWithResponse(null, (Integer) null))
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201))
+            .verifyComplete();
+    }
+
     @ParameterizedTest
     @MethodSource("createShareWithArgsSupplier")
     public void createShareWithArgs(Map<String, String> metadata, Integer quota) {
@@ -135,6 +152,20 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         return Stream.of(
             Arguments.of(Collections.singletonMap("", "value"), 1, 400, ShareErrorCode.EMPTY_METADATA_KEY),
             Arguments.of(Collections.singletonMap("metadata!", "value"), 1, 400, ShareErrorCode.INVALID_METADATA));
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
+    @Test
+    public void createShareAccessTierPremium() {
+        ShareAsyncClient client = premiumFileServiceAsyncClient.getShareAsyncClient(generateShareName());
+        ShareCreateOptions options = new ShareCreateOptions().setAccessTier(ShareAccessTier.PREMIUM);
+
+        StepVerifier.create(client.createWithResponse(options).then(client.getProperties()))
+            .assertNext(r -> assertEquals(ShareAccessTier.PREMIUM.toString(), r.getAccessTier()))
+            .verifyComplete();
+
+        //cleanup
+        client.delete().block();
     }
 
     @Test
@@ -196,6 +227,9 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         assertNotNull(secondResponse);
         FileShareTestHelper.assertResponseStatusCode(initialResponse, 201);
         FileShareTestHelper.assertResponseStatusCode(secondResponse, 409);
+
+        //cleanup
+        client.delete().block();
     }
 
     @ParameterizedTest
@@ -229,6 +263,17 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     public void deleteShare() {
         primaryShareAsyncClient.create().block();
         StepVerifier.create(primaryShareAsyncClient.deleteWithResponse())
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201));
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void deleteShareOAuth() {
+        ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareAsyncClient shareClient = oAuthServiceClient.getShareAsyncClient(shareName);
+
+        StepVerifier.create(primaryShareAsyncClient.create().then(shareClient.deleteWithResponse()))
             .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201));
     }
 
@@ -267,6 +312,22 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         }).verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void getPropertiesOAuth() {
+        ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareAsyncClient shareClient = oAuthServiceClient.getShareAsyncClient(shareName);
+
+        StepVerifier.create(primaryShareAsyncClient.createWithResponse(testMetadata, 1).then(shareClient.getPropertiesWithResponse()))
+            .assertNext(it -> {
+                FileShareTestHelper.assertResponseStatusCode(it, 200);
+                assertEquals(testMetadata, it.getValue().getMetadata());
+                assertEquals(it.getValue().getQuota(), 1);
+            })
+            .verifyComplete();
+    }
+
     @Test
     public void getPropertiesError() {
         StepVerifier.create(primaryShareAsyncClient.getProperties()).verifyErrorSatisfies(it ->
@@ -293,6 +354,9 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             assertEquals(enabledProtocol.toString(), it.getValue().getProtocols().toString());
             assertEquals(rootSquash, it.getValue().getRootSquash());
         }).verifyComplete();
+
+        //cleanup
+        premiumShare.delete().block();
     }
 
     @PlaybackOnly
@@ -311,7 +375,38 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             premiumShareClient.setProperties(new ShareSetPropertiesOptions().setRootSquash(rootSquash)).block();
             StepVerifier.create(premiumShareClient.getProperties()).assertNext(it ->
                 assertEquals(rootSquash, it.getRootSquash())).verifyComplete();
+
+            //cleanup
+            premiumShareClient.delete().block();
         }
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void setPropertiesOAuth() {
+        ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareAsyncClient shareClient = oAuthServiceClient.getShareAsyncClient(shareName);
+
+        StepVerifier.create(primaryShareAsyncClient.createWithResponse(new ShareCreateOptions()
+            .setAccessTier(ShareAccessTier.HOT))
+            .then(shareClient.setPropertiesWithResponse(new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.COOL))))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
+    @Test
+    public void setPropertiesAccessTierPremium() {
+        ShareAsyncClient client = premiumFileServiceAsyncClient.getShareAsyncClient(generateShareName());
+        ShareSetPropertiesOptions options = new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.PREMIUM);
+
+        StepVerifier.create(client.create().then(client.setProperties(options)).then(client.getProperties()))
+            .assertNext(r -> assertEquals(ShareAccessTier.PREMIUM.toString(), r.getAccessTier()))
+            .verifyComplete();
+
+        //cleanup
+        client.delete().block();
     }
 
     @Test
@@ -341,6 +436,26 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 200)).verifyComplete();
         StepVerifier.create(primaryShareAsyncClient.getProperties()).assertNext(it ->
             assertEquals(metadataAfterSet, it.getMetadata())).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void setMetadataOAuth() {
+        ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareAsyncClient shareClient = oAuthServiceClient.getShareAsyncClient(shareName);
+
+        Map<String, String> metadataAfterSet = Collections.singletonMap("afterset", "value");
+        StepVerifier.create(primaryShareAsyncClient.createWithResponse(testMetadata, null)
+            .then(shareClient.getProperties()))
+            .assertNext(it -> assertEquals(testMetadata, it.getMetadata()))
+            .verifyComplete();
+        StepVerifier.create(shareClient.setMetadataWithResponse(metadataAfterSet))
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 200))
+            .verifyComplete();
+        StepVerifier.create(shareClient.getProperties()).assertNext(it ->
+            assertEquals(metadataAfterSet, it.getMetadata()))
+            .verifyComplete();
     }
 
     @Test
@@ -439,6 +554,9 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         FileShareTestHelper.assertResponseStatusCode(initialResponse, 201);
         assertNotNull(secondResponse);
         FileShareTestHelper.assertResponseStatusCode(secondResponse, 409);
+
+        //cleanup
+        client.delete().block();
     }
 
     @Test
@@ -694,6 +812,27 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 200)).verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePermissionFormatSupplier")
+    public void createAndGetPermissionFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
+        String permission = FileShareTestHelper.getPermissionFromFormat(filePermissionFormat);
+
+        ShareFilePermission filePermission = new ShareFilePermission().setPermission(permission)
+            .setPermissionFormat(filePermissionFormat);
+
+        Mono<String> response =  primaryShareAsyncClient.create()
+            .then(primaryShareAsyncClient.createPermission(filePermission))
+            .flatMap(r -> primaryShareAsyncClient.getPermission(r, filePermissionFormat));
+
+        StepVerifier.create(response)
+            .assertNext(r -> {
+                assertEquals(r, permission);
+            })
+            .verifyComplete();
+
+    }
+
     @Test
     public void createPermissionError() {
         primaryShareAsyncClient.create().block();
@@ -820,6 +959,9 @@ public class ShareAsyncApiTests extends FileShareTestBase {
                 }
             })
             .verifyComplete();
+
+        //cleanup
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
     }
 
     private static Stream<Arguments> createEnableSnapshotVirtualDirectoryAccessSupplier() {
@@ -854,6 +996,110 @@ public class ShareAsyncApiTests extends FileShareTestBase {
                 }
             })
             .verifyComplete();
+
+        //cleanup
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void createSharePaidBursting() {
+        ShareCreateOptions options = new ShareCreateOptions()
+            .setPaidBurstingEnabled(true)
+            .setPaidBurstingMaxIops(5000L)
+            .setPaidBurstingMaxBandwidthMibps(1000L);
+
+        Mono<ShareProperties> response = premiumFileServiceAsyncClient.getShareAsyncClient(shareName).createWithResponse(options)
+                .then(premiumFileServiceAsyncClient.getShareAsyncClient(shareName).getProperties());
+
+        StepVerifier.create(response)
+            .assertNext(r -> {
+                assertTrue(r.isPaidBurstingEnabled());
+                assertEquals(5000L, r.getPaidBurstingMaxIops());
+                assertEquals(1000L, r.getPaidBurstingMaxBandwidthMibps());
+            })
+            .verifyComplete();
+
+        //cleanup
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void createSharePaidBurstingInvalidOptions() {
+        ShareCreateOptions options = new ShareCreateOptions()
+            .setPaidBurstingEnabled(false)
+            .setPaidBurstingMaxIops(5000L)
+            .setPaidBurstingMaxBandwidthMibps(1000L);
+
+        StepVerifier.create(premiumFileServiceAsyncClient.getShareAsyncClient(shareName).createWithResponse(options))
+            .verifyErrorSatisfies(it -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 400,
+                ShareErrorCode.fromString("InvalidHeaderValue")));
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void setPropertiesSharePaidBursting() {
+        ShareSetPropertiesOptions options = new ShareSetPropertiesOptions()
+            .setPaidBurstingEnabled(true)
+            .setPaidBurstingMaxIops(5000L)
+            .setPaidBurstingMaxBandwidthMibps(1000L);
+
+        Mono<ShareProperties> response = premiumFileServiceAsyncClient.getShareAsyncClient(shareName).createWithResponse(null)
+            .then(premiumFileServiceAsyncClient.getShareAsyncClient(shareName).setProperties(options))
+            .then(premiumFileServiceAsyncClient.getShareAsyncClient(shareName).getProperties());
+
+        StepVerifier.create(response)
+            .assertNext(r -> {
+                assertTrue(r.isPaidBurstingEnabled());
+                assertEquals(5000L, r.getPaidBurstingMaxIops());
+                assertEquals(1000L, r.getPaidBurstingMaxBandwidthMibps());
+            })
+            .verifyComplete();
+
+        //cleanup
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
+    }
+
+    @PlaybackOnly
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-01-05")
+    @Test
+    public void createShareProvisionedV2() {
+        ShareCreateOptions options = new ShareCreateOptions()
+            .setProvisionedMaxIops(501L)
+            .setProvisionedMaxBandwidthMibps(126L);
+
+        StepVerifier.create(primaryFileServiceAsyncClient.getShareAsyncClient(shareName).createWithResponse(options))
+            .assertNext(r -> {
+                assertEquals("501", r.getHeaders().get(X_MS_SHARE_PROVISIONED_IOPS).getValue());
+                assertEquals("126", r.getHeaders().get(X_MS_SHARE_PROVISIONED_BANDWIDTH_MIBPS).getValue());
+            })
+            .verifyComplete();
+    }
+
+    @PlaybackOnly
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-01-05")
+    @Test
+    public void setAndGetPropertiesShareProvisionedV2() {
+        ShareAsyncClient ac = primaryFileServiceAsyncClient.getShareAsyncClient(shareName);
+
+        ShareSetPropertiesOptions options = new ShareSetPropertiesOptions()
+            .setProvisionedMaxIops(501L)
+            .setProvisionedMaxBandwidthMibps(126L);
+
+        Mono<ShareProperties> response = ac.create()
+            .then(ac.setProperties(options))
+            .then(ac.getProperties());
+
+        StepVerifier.create(response)
+            .assertNext(r -> {
+                assertEquals(501, r.getProvisionedIops());
+                assertEquals(126, r.getProvisionedBandwidthMiBps());
+                assertNotNull(r.getIncludedBurstIops());
+                assertNotNull(r.getMaxBurstCreditsForIops());
+                assertNotNull(r.getNextAllowedProvisionedIopsDowngradeTime());
+                assertNotNull(r.getNextAllowedProvisionedBandwidthDowngradeTime());
+            })
+            .verifyComplete();
+    }
 }

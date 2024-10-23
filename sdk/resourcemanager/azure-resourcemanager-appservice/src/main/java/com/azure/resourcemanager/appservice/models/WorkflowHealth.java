@@ -6,23 +6,25 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Represents the workflow health.
  */
 @Fluent
-public final class WorkflowHealth {
+public final class WorkflowHealth implements JsonSerializable<WorkflowHealth> {
     /*
      * Gets or sets the workflow health state.
      */
-    @JsonProperty(value = "state", required = true)
     private WorkflowHealthState state;
 
     /*
      * Gets or sets the workflow error.
      */
-    @JsonProperty(value = "error")
     private ErrorEntity error;
 
     /**
@@ -87,4 +89,44 @@ public final class WorkflowHealth {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WorkflowHealth.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowHealth from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowHealth if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkflowHealth.
+     */
+    public static WorkflowHealth fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowHealth deserializedWorkflowHealth = new WorkflowHealth();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedWorkflowHealth.state = WorkflowHealthState.fromString(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    deserializedWorkflowHealth.error = ErrorEntity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowHealth;
+        });
+    }
 }

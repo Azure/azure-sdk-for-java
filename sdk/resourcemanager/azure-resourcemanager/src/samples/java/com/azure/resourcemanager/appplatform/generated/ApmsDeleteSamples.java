@@ -18,7 +18,10 @@ public final class ApmsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void apmsDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getApms().delete("myResourceGroup", "myservice",
-            "myappinsights", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getApms()
+            .delete("myResourceGroup", "myservice", "myappinsights", com.azure.core.util.Context.NONE);
     }
 }

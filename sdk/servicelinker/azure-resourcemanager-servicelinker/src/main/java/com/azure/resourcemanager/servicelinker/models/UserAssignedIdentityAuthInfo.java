@@ -5,30 +5,66 @@
 package com.azure.resourcemanager.servicelinker.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
-/** The authentication info when authType is userAssignedIdentity. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authType")
-@JsonTypeName("userAssignedIdentity")
+/**
+ * The authentication info when authType is userAssignedIdentity.
+ */
 @Fluent
 public final class UserAssignedIdentityAuthInfo extends AuthInfoBase {
     /*
+     * The authentication type.
+     */
+    private AuthType authType = AuthType.USER_ASSIGNED_IDENTITY;
+
+    /*
      * Client Id for userAssignedIdentity.
      */
-    @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
      * Subscription id for userAssignedIdentity.
      */
-    @JsonProperty(value = "subscriptionId")
     private String subscriptionId;
+
+    /*
+     * Indicates whether to clean up previous operation when Linker is updating or deleting
+     */
+    private DeleteOrUpdateBehavior deleteOrUpdateBehavior;
+
+    /*
+     * Optional, this value specifies the Azure role to be assigned
+     */
+    private List<String> roles;
+
+    /*
+     * Username created in the database which is mapped to a user in AAD.
+     */
+    private String username;
+
+    /**
+     * Creates an instance of UserAssignedIdentityAuthInfo class.
+     */
+    public UserAssignedIdentityAuthInfo() {
+    }
+
+    /**
+     * Get the authType property: The authentication type.
+     * 
+     * @return the authType value.
+     */
+    @Override
+    public AuthType authType() {
+        return this.authType;
+    }
 
     /**
      * Get the clientId property: Client Id for userAssignedIdentity.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -37,7 +73,7 @@ public final class UserAssignedIdentityAuthInfo extends AuthInfoBase {
 
     /**
      * Set the clientId property: Client Id for userAssignedIdentity.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the UserAssignedIdentityAuthInfo object itself.
      */
@@ -48,7 +84,7 @@ public final class UserAssignedIdentityAuthInfo extends AuthInfoBase {
 
     /**
      * Get the subscriptionId property: Subscription id for userAssignedIdentity.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -57,7 +93,7 @@ public final class UserAssignedIdentityAuthInfo extends AuthInfoBase {
 
     /**
      * Set the subscriptionId property: Subscription id for userAssignedIdentity.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the UserAssignedIdentityAuthInfo object itself.
      */
@@ -67,12 +103,139 @@ public final class UserAssignedIdentityAuthInfo extends AuthInfoBase {
     }
 
     /**
+     * Get the deleteOrUpdateBehavior property: Indicates whether to clean up previous operation when Linker is updating
+     * or deleting.
+     * 
+     * @return the deleteOrUpdateBehavior value.
+     */
+    public DeleteOrUpdateBehavior deleteOrUpdateBehavior() {
+        return this.deleteOrUpdateBehavior;
+    }
+
+    /**
+     * Set the deleteOrUpdateBehavior property: Indicates whether to clean up previous operation when Linker is updating
+     * or deleting.
+     * 
+     * @param deleteOrUpdateBehavior the deleteOrUpdateBehavior value to set.
+     * @return the UserAssignedIdentityAuthInfo object itself.
+     */
+    public UserAssignedIdentityAuthInfo withDeleteOrUpdateBehavior(DeleteOrUpdateBehavior deleteOrUpdateBehavior) {
+        this.deleteOrUpdateBehavior = deleteOrUpdateBehavior;
+        return this;
+    }
+
+    /**
+     * Get the roles property: Optional, this value specifies the Azure role to be assigned.
+     * 
+     * @return the roles value.
+     */
+    public List<String> roles() {
+        return this.roles;
+    }
+
+    /**
+     * Set the roles property: Optional, this value specifies the Azure role to be assigned.
+     * 
+     * @param roles the roles value to set.
+     * @return the UserAssignedIdentityAuthInfo object itself.
+     */
+    public UserAssignedIdentityAuthInfo withRoles(List<String> roles) {
+        this.roles = roles;
+        return this;
+    }
+
+    /**
+     * Get the username property: Username created in the database which is mapped to a user in AAD.
+     * 
+     * @return the username value.
+     */
+    public String username() {
+        return this.username;
+    }
+
+    /**
+     * Set the username property: Username created in the database which is mapped to a user in AAD.
+     * 
+     * @param username the username value to set.
+     * @return the UserAssignedIdentityAuthInfo object itself.
+     */
+    public UserAssignedIdentityAuthInfo withUsername(String username) {
+        this.username = username;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserAssignedIdentityAuthInfo withAuthMode(AuthMode authMode) {
+        super.withAuthMode(authMode);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authMode", authMode() == null ? null : authMode().toString());
+        jsonWriter.writeStringField("authType", this.authType == null ? null : this.authType.toString());
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeStringField("deleteOrUpdateBehavior",
+            this.deleteOrUpdateBehavior == null ? null : this.deleteOrUpdateBehavior.toString());
+        jsonWriter.writeArrayField("roles", this.roles, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("userName", this.username);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserAssignedIdentityAuthInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserAssignedIdentityAuthInfo if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserAssignedIdentityAuthInfo.
+     */
+    public static UserAssignedIdentityAuthInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserAssignedIdentityAuthInfo deserializedUserAssignedIdentityAuthInfo = new UserAssignedIdentityAuthInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authMode".equals(fieldName)) {
+                    deserializedUserAssignedIdentityAuthInfo.withAuthMode(AuthMode.fromString(reader.getString()));
+                } else if ("authType".equals(fieldName)) {
+                    deserializedUserAssignedIdentityAuthInfo.authType = AuthType.fromString(reader.getString());
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedUserAssignedIdentityAuthInfo.clientId = reader.getString();
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedUserAssignedIdentityAuthInfo.subscriptionId = reader.getString();
+                } else if ("deleteOrUpdateBehavior".equals(fieldName)) {
+                    deserializedUserAssignedIdentityAuthInfo.deleteOrUpdateBehavior
+                        = DeleteOrUpdateBehavior.fromString(reader.getString());
+                } else if ("roles".equals(fieldName)) {
+                    List<String> roles = reader.readArray(reader1 -> reader1.getString());
+                    deserializedUserAssignedIdentityAuthInfo.roles = roles;
+                } else if ("userName".equals(fieldName)) {
+                    deserializedUserAssignedIdentityAuthInfo.username = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserAssignedIdentityAuthInfo;
+        });
     }
 }

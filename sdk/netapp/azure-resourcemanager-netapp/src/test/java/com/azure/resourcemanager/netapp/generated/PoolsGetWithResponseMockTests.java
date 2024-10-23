@@ -24,7 +24,7 @@ public final class PoolsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"cpwpg\",\"properties\":{\"poolId\":\"rc\",\"size\":6730804470286938055,\"serviceLevel\":\"Premium\",\"provisioningState\":\"xfrk\",\"totalThroughputMibps\":83.817444,\"utilizedThroughputMibps\":0.6317258,\"qosType\":\"Manual\",\"coolAccess\":true,\"encryptionType\":\"Single\"},\"location\":\"pdnqqskawaoqvmmb\",\"tags\":{\"qlkzme\":\"fr\"},\"id\":\"nitgvkxlz\",\"name\":\"qdrfegcealzxwhc\",\"type\":\"nsymoyqhlwigd\"}";
+            = "{\"etag\":\"sckdlp\",\"properties\":{\"poolId\":\"zrcxfailcfxwmdbo\",\"size\":4613659030130397911,\"serviceLevel\":\"StandardZRS\",\"provisioningState\":\"ft\",\"totalThroughputMibps\":23.867107,\"utilizedThroughputMibps\":97.3454,\"qosType\":\"Auto\",\"coolAccess\":false,\"encryptionType\":\"Double\"},\"location\":\"cc\",\"tags\":{\"lj\":\"hxkizvytnrzv\"},\"id\":\"aaeranokqgukk\",\"name\":\"qnvb\",\"type\":\"oylaxxul\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,14 +34,14 @@ public final class PoolsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CapacityPool response
-            = manager.pools().getWithResponse("wivkxo", "zunbixx", "ti", com.azure.core.util.Context.NONE).getValue();
+            = manager.pools().getWithResponse("vodhtn", "irudh", "m", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("pdnqqskawaoqvmmb", response.location());
-        Assertions.assertEquals("fr", response.tags().get("qlkzme"));
-        Assertions.assertEquals(6730804470286938055L, response.size());
-        Assertions.assertEquals(ServiceLevel.PREMIUM, response.serviceLevel());
-        Assertions.assertEquals(QosType.MANUAL, response.qosType());
-        Assertions.assertEquals(true, response.coolAccess());
-        Assertions.assertEquals(EncryptionType.SINGLE, response.encryptionType());
+        Assertions.assertEquals("cc", response.location());
+        Assertions.assertEquals("hxkizvytnrzv", response.tags().get("lj"));
+        Assertions.assertEquals(4613659030130397911L, response.size());
+        Assertions.assertEquals(ServiceLevel.STANDARD_ZRS, response.serviceLevel());
+        Assertions.assertEquals(QosType.AUTO, response.qosType());
+        Assertions.assertEquals(false, response.coolAccess());
+        Assertions.assertEquals(EncryptionType.DOUBLE, response.encryptionType());
     }
 }

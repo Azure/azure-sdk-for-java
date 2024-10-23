@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.storage.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The trigger type of the storage task assignment execution.
  */
@@ -36,7 +33,6 @@ public enum TriggerType {
      * @param value the serialized value to parse.
      * @return the parsed TriggerType object, or null if unable to parse.
      */
-    @JsonCreator
     public static TriggerType fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum TriggerType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

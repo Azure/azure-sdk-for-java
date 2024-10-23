@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class ExpandTypesForListVMs extends ExpandableStringEnum<ExpandType
      * @param name a name to look for.
      * @return the corresponding ExpandTypesForListVMs.
      */
-    @JsonCreator
     public static ExpandTypesForListVMs fromString(String name) {
         return fromString(name, ExpandTypesForListVMs.class);
     }

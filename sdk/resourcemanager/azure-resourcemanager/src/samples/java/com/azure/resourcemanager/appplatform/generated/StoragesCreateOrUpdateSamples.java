@@ -21,7 +21,10 @@ public final class StoragesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void storagesCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getStorages()
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getStorages()
             .createOrUpdate("myResourceGroup", "myservice", "mystorage", new StorageResourceInner().withProperties(
                 new StorageAccount().withAccountName("storage-account-name").withAccountKey("fakeTokenPlaceholder")),
                 com.azure.core.util.Context.NONE);

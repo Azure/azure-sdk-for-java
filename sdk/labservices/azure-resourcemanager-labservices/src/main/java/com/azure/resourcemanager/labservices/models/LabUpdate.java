@@ -5,29 +5,41 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.labservices.fluent.models.LabUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The lab resource for updates. */
+/**
+ * The lab resource for updates.
+ */
 @Fluent
 public final class LabUpdate extends TrackedResourceUpdate {
     /*
      * Lab resource properties
      */
-    @JsonProperty(value = "properties")
     private LabUpdateProperties innerProperties;
 
     /**
+     * Creates an instance of LabUpdate class.
+     */
+    public LabUpdate() {
+    }
+
+    /**
      * Get the innerProperties property: Lab resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LabUpdateProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LabUpdate withTags(List<String> tags) {
         super.withTags(tags);
@@ -37,7 +49,7 @@ public final class LabUpdate extends TrackedResourceUpdate {
     /**
      * Get the autoShutdownProfile property: The resource auto shutdown configuration for the lab. This controls whether
      * actions are taken on resources that are sitting idle.
-     *
+     * 
      * @return the autoShutdownProfile value.
      */
     public AutoShutdownProfile autoShutdownProfile() {
@@ -47,7 +59,7 @@ public final class LabUpdate extends TrackedResourceUpdate {
     /**
      * Set the autoShutdownProfile property: The resource auto shutdown configuration for the lab. This controls whether
      * actions are taken on resources that are sitting idle.
-     *
+     * 
      * @param autoShutdownProfile the autoShutdownProfile value to set.
      * @return the LabUpdate object itself.
      */
@@ -62,7 +74,7 @@ public final class LabUpdate extends TrackedResourceUpdate {
     /**
      * Get the connectionProfile property: The connection profile for the lab. This controls settings such as web access
      * to lab resources or whether RDP or SSH ports are open.
-     *
+     * 
      * @return the connectionProfile value.
      */
     public ConnectionProfile connectionProfile() {
@@ -72,7 +84,7 @@ public final class LabUpdate extends TrackedResourceUpdate {
     /**
      * Set the connectionProfile property: The connection profile for the lab. This controls settings such as web access
      * to lab resources or whether RDP or SSH ports are open.
-     *
+     * 
      * @param connectionProfile the connectionProfile value to set.
      * @return the LabUpdate object itself.
      */
@@ -86,7 +98,7 @@ public final class LabUpdate extends TrackedResourceUpdate {
 
     /**
      * Get the virtualMachineProfile property: The profile used for creating lab virtual machines.
-     *
+     * 
      * @return the virtualMachineProfile value.
      */
     public VirtualMachineProfile virtualMachineProfile() {
@@ -95,7 +107,7 @@ public final class LabUpdate extends TrackedResourceUpdate {
 
     /**
      * Set the virtualMachineProfile property: The profile used for creating lab virtual machines.
-     *
+     * 
      * @param virtualMachineProfile the virtualMachineProfile value to set.
      * @return the LabUpdate object itself.
      */
@@ -109,7 +121,7 @@ public final class LabUpdate extends TrackedResourceUpdate {
 
     /**
      * Get the securityProfile property: The lab security profile.
-     *
+     * 
      * @return the securityProfile value.
      */
     public SecurityProfile securityProfile() {
@@ -118,7 +130,7 @@ public final class LabUpdate extends TrackedResourceUpdate {
 
     /**
      * Set the securityProfile property: The lab security profile.
-     *
+     * 
      * @param securityProfile the securityProfile value to set.
      * @return the LabUpdate object itself.
      */
@@ -132,7 +144,7 @@ public final class LabUpdate extends TrackedResourceUpdate {
 
     /**
      * Get the rosterProfile property: The lab user list management profile.
-     *
+     * 
      * @return the rosterProfile value.
      */
     public RosterProfile rosterProfile() {
@@ -141,7 +153,7 @@ public final class LabUpdate extends TrackedResourceUpdate {
 
     /**
      * Set the rosterProfile property: The lab user list management profile.
-     *
+     * 
      * @param rosterProfile the rosterProfile value to set.
      * @return the LabUpdate object itself.
      */
@@ -157,7 +169,7 @@ public final class LabUpdate extends TrackedResourceUpdate {
      * Get the labPlanId property: The ID of the lab plan. Used during resource creation to provide defaults and acts as
      * a permission container when creating a lab via labs.azure.com. Setting a labPlanId on an existing lab provides
      * organization..
-     *
+     * 
      * @return the labPlanId value.
      */
     public String labPlanId() {
@@ -168,7 +180,7 @@ public final class LabUpdate extends TrackedResourceUpdate {
      * Set the labPlanId property: The ID of the lab plan. Used during resource creation to provide defaults and acts as
      * a permission container when creating a lab via labs.azure.com. Setting a labPlanId on an existing lab provides
      * organization..
-     *
+     * 
      * @param labPlanId the labPlanId value to set.
      * @return the LabUpdate object itself.
      */
@@ -182,7 +194,7 @@ public final class LabUpdate extends TrackedResourceUpdate {
 
     /**
      * Get the title property: The title of the lab.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -191,7 +203,7 @@ public final class LabUpdate extends TrackedResourceUpdate {
 
     /**
      * Set the title property: The title of the lab.
-     *
+     * 
      * @param title the title value to set.
      * @return the LabUpdate object itself.
      */
@@ -205,7 +217,7 @@ public final class LabUpdate extends TrackedResourceUpdate {
 
     /**
      * Get the description property: The description of the lab.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -214,7 +226,7 @@ public final class LabUpdate extends TrackedResourceUpdate {
 
     /**
      * Set the description property: The description of the lab.
-     *
+     * 
      * @param description the description value to set.
      * @return the LabUpdate object itself.
      */
@@ -228,14 +240,53 @@ public final class LabUpdate extends TrackedResourceUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabUpdate if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the LabUpdate.
+     */
+    public static LabUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabUpdate deserializedLabUpdate = new LabUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    List<String> tags = reader.readArray(reader1 -> reader1.getString());
+                    deserializedLabUpdate.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLabUpdate.innerProperties = LabUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabUpdate;
+        });
     }
 }

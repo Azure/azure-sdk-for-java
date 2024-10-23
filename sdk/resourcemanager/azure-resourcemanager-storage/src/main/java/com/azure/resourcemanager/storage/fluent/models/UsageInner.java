@@ -5,37 +5,37 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.UsageName;
 import com.azure.resourcemanager.storage.models.UsageUnit;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Describes Storage Resource Usage.
  */
 @Immutable
-public final class UsageInner {
+public final class UsageInner implements JsonSerializable<UsageInner> {
     /*
      * Gets the unit of measurement.
      */
-    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private UsageUnit unit;
 
     /*
      * Gets the current count of the allocated resources in the subscription.
      */
-    @JsonProperty(value = "currentValue", access = JsonProperty.Access.WRITE_ONLY)
     private Integer currentValue;
 
     /*
      * Gets the maximum count of the resources that can be allocated in the subscription.
      */
-    @JsonProperty(value = "limit", access = JsonProperty.Access.WRITE_ONLY)
     private Integer limit;
 
     /*
      * Gets the name of the type of usage.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private UsageName name;
 
     /**
@@ -89,5 +89,46 @@ public final class UsageInner {
         if (name() != null) {
             name().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UsageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UsageInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the UsageInner.
+     */
+    public static UsageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UsageInner deserializedUsageInner = new UsageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("unit".equals(fieldName)) {
+                    deserializedUsageInner.unit = UsageUnit.fromString(reader.getString());
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedUsageInner.currentValue = reader.getNullable(JsonReader::getInt);
+                } else if ("limit".equals(fieldName)) {
+                    deserializedUsageInner.limit = reader.getNullable(JsonReader::getInt);
+                } else if ("name".equals(fieldName)) {
+                    deserializedUsageInner.name = UsageName.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUsageInner;
+        });
     }
 }

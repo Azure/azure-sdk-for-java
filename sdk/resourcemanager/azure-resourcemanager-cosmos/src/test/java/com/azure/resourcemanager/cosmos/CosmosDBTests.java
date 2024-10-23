@@ -86,8 +86,8 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
                 .withNewResourceGroup(rgName)
                 .withDataModelSql()
                 .withEventualConsistency()
-                .withWriteReplication(Region.US_EAST)
-                .withReadReplication(Region.US_WEST3)
+                .withWriteReplication(Region.US_EAST2)
+                .withReadReplication(Region.US_WEST2)
                 .withMultipleWriteLocationsEnabled(true)
                 .withTag("tag1", "value1")
                 .create();
@@ -192,8 +192,8 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
                 .withNewResourceGroup(rgName)
                 .withDataModelMongoDB()
                 .withEventualConsistency()
-                .withWriteReplication(Region.US_EAST)
-                .withReadReplication(Region.US_WEST3)
+                .withWriteReplication(Region.US_EAST2)
+                .withReadReplication(Region.US_WEST2)
                 .withTag("tag1", "value1")
                 .create();
 
@@ -216,7 +216,7 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
                 .withNewResourceGroup(rgName)
                 .withDataModelCassandra()
                 .withEventualConsistency()
-                .withWriteReplication(Region.US_EAST)
+                .withWriteReplication(Region.US_EAST2)
                 .withReadReplication(Region.US_WEST)
                 .withTag("tag1", "value1")
                 .create();
@@ -268,7 +268,7 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
                 .withNewResourceGroup(rgName)
                 .withDataModelAzureTable()
                 .withEventualConsistency()
-                .withWriteReplication(Region.US_EAST)
+                .withWriteReplication(Region.US_EAST2)
                 .withReadReplication(Region.US_WEST)
                 .withTag("tag1", "value1")
                 .create();
@@ -293,7 +293,7 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
                 .withNewResourceGroup(rgName)
                 .withDataModelAzureTable()
                 .withEventualConsistency()
-                .withWriteReplication(Region.US_EAST)
+                .withWriteReplication(Region.US_EAST2)
                 .withReadReplication(Region.US_WEST)
                 .withTag("tag1", "value1")
                 .disablePublicNetworkAccess()
@@ -314,7 +314,7 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
                 .withNewResourceGroup(rgName)
                 .withDataModelAzureTable()
                 .withEventualConsistency()
-                .withWriteReplication(Region.US_EAST)
+                .withWriteReplication(Region.US_EAST2)
                 .withReadReplication(Region.US_WEST)
                 .withTag("tag1", "value1")
                 .create();

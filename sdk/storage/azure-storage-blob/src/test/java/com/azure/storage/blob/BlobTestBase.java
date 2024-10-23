@@ -61,7 +61,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -106,6 +105,8 @@ public class BlobTestBase extends TestProxyTestBase {
     protected static final HttpHeaderName X_MS_COPY_ID = HttpHeaderName.fromString("x-ms-copy-id");
 
     protected static final HttpHeaderName X_MS_ENCRYPTION_SCOPE = HttpHeaderName.fromString("x-ms-encryption-scope");
+    protected static final HttpHeaderName X_MS_BLOB_SEALED = HttpHeaderName.fromString("x-ms-blob-sealed");
+
 
     /*
     Note that this value is only used to check if we are depending on the received etag. This value will not actually
@@ -122,8 +123,6 @@ public class BlobTestBase extends TestProxyTestBase {
     protected static final String RECEIVED_LEASE_ID = "received";
 
     protected static final String GARBAGE_LEASE_ID = CoreUtils.randomUuid().toString();
-
-    private static final Pattern URL_SANITIZER = Pattern.compile("(?<=http://|https://)([^/?]+)");
 
     protected BlobServiceClient primaryBlobServiceClient;
     protected BlobServiceAsyncClient primaryBlobServiceAsyncClient;
@@ -258,11 +257,11 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
-    protected String setupBlobMatchCondition(BlobAsyncClientBase bac, String match) {
+    protected Mono<String> setupBlobMatchCondition(BlobAsyncClientBase bac, String match) {
         if (Objects.equals(match, RECEIVED_ETAG)) {
-            return Objects.requireNonNull(bac.getProperties().block()).getETag();
+            return bac.getProperties().map(BlobProperties::getETag);
         } else {
-            return match;
+            return Mono.justOrEmpty(match).defaultIfEmpty("null");
         }
     }
 
@@ -290,21 +289,23 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
-    protected String setupBlobLeaseCondition(BlobAsyncClientBase bac, String leaseID) {
-        String responseLeaseId = null;
+    protected Mono<String> setupBlobLeaseCondition(BlobAsyncClientBase bac, String leaseID) {
+        Mono<String> responseLeaseId = null;
         if (Objects.equals(leaseID, RECEIVED_LEASE_ID) || Objects.equals(leaseID, GARBAGE_LEASE_ID)) {
             responseLeaseId = new BlobLeaseClientBuilder()
                 .blobAsyncClient(bac)
                 .buildAsyncClient()
-                .acquireLease(-1)
-                .block();
+                .acquireLease(-1);
         }
-        if (Objects.equals(leaseID, RECEIVED_LEASE_ID)) {
-            return responseLeaseId;
-        } else {
-            return leaseID;
+
+        if (responseLeaseId == null) {
+            return Mono.justOrEmpty(leaseID).defaultIfEmpty("null");
         }
+
+        return responseLeaseId.map(returnedLeaseId -> Objects.equals(RECEIVED_LEASE_ID, leaseID)
+            ? returnedLeaseId : (leaseID == null ? "null" : leaseID));
     }
+
 
     protected String setupContainerLeaseCondition(BlobContainerClient cu, String leaseID) {
         if (Objects.equals(leaseID, RECEIVED_LEASE_ID)) {
@@ -314,11 +315,11 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
-    protected String setupContainerAsyncLeaseCondition(BlobContainerAsyncClient cu, String leaseID) {
+    protected Mono<String> setupContainerLeaseConditionAsync(BlobContainerAsyncClient cu, String leaseID) {
         if (Objects.equals(leaseID, RECEIVED_LEASE_ID)) {
-            return createLeaseAsyncClient(cu).acquireLease(-1).block();
+            return createLeaseAsyncClient(cu).acquireLease(-1);
         } else {
-            return leaseID;
+            return Mono.justOrEmpty(leaseID).defaultIfEmpty("null");
         }
     }
 
@@ -476,7 +477,8 @@ public class BlobTestBase extends TestProxyTestBase {
      * case, most of our instrumentation (e.g. CI pipelines) will timeout and fail anyway, so we don't want to wait that
      * long. The value is going to be a best guess and should be played with to allow test passes to succeed
      * <p>
-     * https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-blob-service-operations
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-blob-service-operations">
+     * Timeouts</a>
      *
      * @param perRequestDataSize The amount of data expected to go out in each request. Will be used to calculate a
      * timeout value--about 20s/MB. Won't be less than 1 minute.
@@ -815,14 +817,6 @@ public class BlobTestBase extends TestProxyTestBase {
         );
     }
 
-    protected static String redactUrl(String url) {
-        if (url == null) {
-            return null;
-        }
-
-        return URL_SANITIZER.matcher(url).replaceAll("REDACTED");
-    }
-
     protected HttpClient getHttpClient() {
         return StorageCommonTestUtils.getHttpClient(interceptorManager);
     }
@@ -865,9 +859,13 @@ public class BlobTestBase extends TestProxyTestBase {
         sleepIfRunningAgainstService(30 * 1000);
     }
 
-    protected void setAccessPolicySleepAsync(BlobContainerAsyncClient cc, PublicAccessType access,
-                                        List<BlobSignedIdentifier> identifiers) {
-        cc.setAccessPolicy(access, identifiers).block();
-        sleepIfRunningAgainstService(30 * 1000);
+    protected Mono<?> setAccessPolicySleepAsync(BlobContainerAsyncClient cc, PublicAccessType access,
+                                                List<BlobSignedIdentifier> identifiers) {
+        Mono<?> setPolicyMono = cc.setAccessPolicy(access, identifiers);
+        if (!interceptorManager.isPlaybackMode()) {
+            setPolicyMono = setPolicyMono.then(Mono.delay(Duration.ofSeconds(30)));
+        }
+
+        return setPolicyMono;
     }
 }

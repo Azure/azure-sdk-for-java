@@ -14,6 +14,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
+import com.azure.data.appconfiguration.models.SettingLabelSelector;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotFields;
@@ -34,6 +35,8 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     private String key2 = "key2";
     private String value1 = "val1";
     private String value2 = "val2";
+
+    ConfigurationClient client = createSyncConfigurationClient();
 
     /**
      * Generates code sample for creating a {@link ConfigurationClient}
@@ -568,6 +571,46 @@ public final class ConfigurationClientJavaDocCodeSnippets {
                     snapshotResult.getName(), snapshotResult.getCreatedAt(), snapshotResult.getStatus());
             });
         // END: com.azure.data.appconfiguration.configurationclient.listSnapshotsMaxOverload
+    }
+
+    /**
+     * Code snippets for {@link ConfigurationClient#listLabels()}
+     */
+    public void listAllLabels() {
+        // BEGIN: com.azure.data.appconfiguration.configurationclient.listAllLabels
+        client.listLabels()
+            .forEach(label -> {
+                System.out.println("label name = " + label.getName());
+            });
+        // END: com.azure.data.appconfiguration.configurationclient.listAllLabels
+    }
+
+    /**
+     * Code snippets for {@link ConfigurationClient#listLabels(SettingLabelSelector)}
+     */
+    public void listLabels() {
+        // BEGIN: com.azure.data.appconfiguration.configurationclient.listLabels
+        String labelNameFilter = "{labelNamePrefix}*";
+        client.listLabels(new SettingLabelSelector().setNameFilter(labelNameFilter))
+                .forEach(label -> {
+                    System.out.println("label name = " + label.getName());
+                });
+        // END: com.azure.data.appconfiguration.configurationclient.listLabels
+    }
+
+    /**
+     * Code snippets for {@link ConfigurationClient#listLabels(SettingLabelSelector, Context)}
+     */
+    public void listLabelsMaxOverload() {
+        // BEGIN: com.azure.data.appconfiguration.configurationclient.listLabelsMaxOverload
+        String labelNameFilter = "{labelNamePrefix}*";
+        Context ctx = new Context(key2, value2);
+
+        client.listLabels(new SettingLabelSelector().setNameFilter(labelNameFilter), ctx)
+                .forEach(label -> {
+                    System.out.println("label name = " + label.getName());
+                });
+        // END: com.azure.data.appconfiguration.configurationclient.listLabelsMaxOverload
     }
 
     /**

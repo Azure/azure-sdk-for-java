@@ -6,36 +6,41 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The environment variable to set within the container instance. */
+/**
+ * The environment variable to set within the container instance.
+ */
 @Fluent
-public final class EnvironmentVariable {
+public final class EnvironmentVariable implements JsonSerializable<EnvironmentVariable> {
     /*
      * The name of the environment variable.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The value of the environment variable.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * The value of the secure environment variable.
      */
-    @JsonProperty(value = "secureValue")
     private String secureValue;
 
-    /** Creates an instance of EnvironmentVariable class. */
+    /**
+     * Creates an instance of EnvironmentVariable class.
+     */
     public EnvironmentVariable() {
     }
 
     /**
      * Get the name property: The name of the environment variable.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +49,7 @@ public final class EnvironmentVariable {
 
     /**
      * Set the name property: The name of the environment variable.
-     *
+     * 
      * @param name the name value to set.
      * @return the EnvironmentVariable object itself.
      */
@@ -55,7 +60,7 @@ public final class EnvironmentVariable {
 
     /**
      * Get the value property: The value of the environment variable.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -64,7 +69,7 @@ public final class EnvironmentVariable {
 
     /**
      * Set the value property: The value of the environment variable.
-     *
+     * 
      * @param value the value value to set.
      * @return the EnvironmentVariable object itself.
      */
@@ -75,7 +80,7 @@ public final class EnvironmentVariable {
 
     /**
      * Get the secureValue property: The value of the secure environment variable.
-     *
+     * 
      * @return the secureValue value.
      */
     public String secureValue() {
@@ -84,7 +89,7 @@ public final class EnvironmentVariable {
 
     /**
      * Set the secureValue property: The value of the secure environment variable.
-     *
+     * 
      * @param secureValue the secureValue value to set.
      * @return the EnvironmentVariable object itself.
      */
@@ -95,16 +100,58 @@ public final class EnvironmentVariable {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model EnvironmentVariable"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model EnvironmentVariable"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EnvironmentVariable.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("secureValue", this.secureValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnvironmentVariable from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnvironmentVariable if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EnvironmentVariable.
+     */
+    public static EnvironmentVariable fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnvironmentVariable deserializedEnvironmentVariable = new EnvironmentVariable();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedEnvironmentVariable.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedEnvironmentVariable.value = reader.getString();
+                } else if ("secureValue".equals(fieldName)) {
+                    deserializedEnvironmentVariable.secureValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnvironmentVariable;
+        });
+    }
 }

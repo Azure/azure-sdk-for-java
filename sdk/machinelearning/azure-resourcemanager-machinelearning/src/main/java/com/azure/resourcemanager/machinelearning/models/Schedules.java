@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Schedules. */
+/**
+ * Resource collection API of Schedules.
+ */
 public interface Schedules {
     /**
      * List schedules in specified workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface Schedules {
 
     /**
      * List schedules in specified workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param skip Continuation token for pagination.
@@ -35,16 +37,12 @@ public interface Schedules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of Schedule entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Schedule> list(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        ScheduleListViewType listViewType,
-        Context context);
+    PagedIterable<Schedule> list(String resourceGroupName, String workspaceName, String skip,
+        ScheduleListViewType listViewType, Context context);
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Schedule name.
@@ -56,7 +54,7 @@ public interface Schedules {
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Schedule name.
@@ -69,7 +67,7 @@ public interface Schedules {
 
     /**
      * Get schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Schedule name.
@@ -83,7 +81,7 @@ public interface Schedules {
 
     /**
      * Get schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Schedule name.
@@ -96,7 +94,7 @@ public interface Schedules {
 
     /**
      * Get schedule.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,7 +105,7 @@ public interface Schedules {
 
     /**
      * Get schedule.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -119,7 +117,7 @@ public interface Schedules {
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -129,7 +127,7 @@ public interface Schedules {
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -140,7 +138,7 @@ public interface Schedules {
 
     /**
      * Begins definition for a new Schedule resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Schedule definition.
      */

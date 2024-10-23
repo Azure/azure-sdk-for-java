@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class ScrubbingRuleEntryMatchVariable extends ExpandableStringEnum<
      * @param name a name to look for.
      * @return the corresponding ScrubbingRuleEntryMatchVariable.
      */
-    @JsonCreator
     public static ScrubbingRuleEntryMatchVariable fromString(String name) {
         return fromString(name, ScrubbingRuleEntryMatchVariable.class);
     }

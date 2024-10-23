@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Network access control rules for the endpoints.
@@ -35,5 +39,44 @@ public final class DataCollectionEndpointNetworkAcls extends NetworkRuleSet {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publicNetworkAccess",
+            publicNetworkAccess() == null ? null : publicNetworkAccess().toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataCollectionEndpointNetworkAcls from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataCollectionEndpointNetworkAcls if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataCollectionEndpointNetworkAcls.
+     */
+    public static DataCollectionEndpointNetworkAcls fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataCollectionEndpointNetworkAcls deserializedDataCollectionEndpointNetworkAcls
+                = new DataCollectionEndpointNetworkAcls();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedDataCollectionEndpointNetworkAcls
+                        .withPublicNetworkAccess(KnownPublicNetworkAccessOptions.fromString(reader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataCollectionEndpointNetworkAcls;
+        });
     }
 }

@@ -5,87 +5,84 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** permission. */
+/**
+ * permission.
+ */
 @Fluent
 public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
     /*
      * A format of yyyy-MM-ddTHH:mm:ssZ of DateTimeOffset indicates the expiration time of the permission.
      * DateTime.MinValue indicates there is no expiration set for this permission. Optional.
      */
-    @JsonProperty(value = "expirationDateTime")
     private OffsetDateTime expirationDateTime;
 
     /*
      * identitySet
      */
-    @JsonProperty(value = "grantedTo")
     private MicrosoftGraphIdentitySet grantedTo;
 
     /*
      * For link type permissions, the details of the users to whom permission was granted. Read-only.
      */
-    @JsonProperty(value = "grantedToIdentities")
     private List<MicrosoftGraphIdentitySet> grantedToIdentities;
 
     /*
-     * This indicates whether password is set for this permission, it's only showing in response. Optional and
-     * Read-only and for OneDrive Personal only.
+     * This indicates whether password is set for this permission, it's only showing in response. Optional and Read-only
+     * and for OneDrive Personal only.
      */
-    @JsonProperty(value = "hasPassword")
     private Boolean hasPassword;
 
     /*
      * itemReference
      */
-    @JsonProperty(value = "inheritedFrom")
     private MicrosoftGraphItemReference inheritedFrom;
 
     /*
      * sharingInvitation
      */
-    @JsonProperty(value = "invitation")
     private MicrosoftGraphSharingInvitation invitation;
 
     /*
      * sharingLink
      */
-    @JsonProperty(value = "link")
     private MicrosoftGraphSharingLink link;
 
     /*
      * The type of permission, e.g. read. See below for the full list of roles. Read-only.
      */
-    @JsonProperty(value = "roles")
     private List<String> roles;
 
     /*
      * A unique token that can be used to access this shared item via the **shares** API. Read-only.
      */
-    @JsonProperty(value = "shareId")
     private String shareId;
 
     /*
      * permission
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphPermission class. */
+    /**
+     * Creates an instance of MicrosoftGraphPermission class.
+     */
     public MicrosoftGraphPermission() {
     }
 
     /**
      * Get the expirationDateTime property: A format of yyyy-MM-ddTHH:mm:ssZ of DateTimeOffset indicates the expiration
      * time of the permission. DateTime.MinValue indicates there is no expiration set for this permission. Optional.
-     *
+     * 
      * @return the expirationDateTime value.
      */
     public OffsetDateTime expirationDateTime() {
@@ -95,7 +92,7 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
     /**
      * Set the expirationDateTime property: A format of yyyy-MM-ddTHH:mm:ssZ of DateTimeOffset indicates the expiration
      * time of the permission. DateTime.MinValue indicates there is no expiration set for this permission. Optional.
-     *
+     * 
      * @param expirationDateTime the expirationDateTime value to set.
      * @return the MicrosoftGraphPermission object itself.
      */
@@ -106,7 +103,7 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
 
     /**
      * Get the grantedTo property: identitySet.
-     *
+     * 
      * @return the grantedTo value.
      */
     public MicrosoftGraphIdentitySet grantedTo() {
@@ -115,7 +112,7 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
 
     /**
      * Set the grantedTo property: identitySet.
-     *
+     * 
      * @param grantedTo the grantedTo value to set.
      * @return the MicrosoftGraphPermission object itself.
      */
@@ -127,7 +124,7 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
     /**
      * Get the grantedToIdentities property: For link type permissions, the details of the users to whom permission was
      * granted. Read-only.
-     *
+     * 
      * @return the grantedToIdentities value.
      */
     public List<MicrosoftGraphIdentitySet> grantedToIdentities() {
@@ -137,7 +134,7 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
     /**
      * Set the grantedToIdentities property: For link type permissions, the details of the users to whom permission was
      * granted. Read-only.
-     *
+     * 
      * @param grantedToIdentities the grantedToIdentities value to set.
      * @return the MicrosoftGraphPermission object itself.
      */
@@ -149,7 +146,7 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
     /**
      * Get the hasPassword property: This indicates whether password is set for this permission, it's only showing in
      * response. Optional and Read-only and for OneDrive Personal only.
-     *
+     * 
      * @return the hasPassword value.
      */
     public Boolean hasPassword() {
@@ -159,7 +156,7 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
     /**
      * Set the hasPassword property: This indicates whether password is set for this permission, it's only showing in
      * response. Optional and Read-only and for OneDrive Personal only.
-     *
+     * 
      * @param hasPassword the hasPassword value to set.
      * @return the MicrosoftGraphPermission object itself.
      */
@@ -170,7 +167,7 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
 
     /**
      * Get the inheritedFrom property: itemReference.
-     *
+     * 
      * @return the inheritedFrom value.
      */
     public MicrosoftGraphItemReference inheritedFrom() {
@@ -179,7 +176,7 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
 
     /**
      * Set the inheritedFrom property: itemReference.
-     *
+     * 
      * @param inheritedFrom the inheritedFrom value to set.
      * @return the MicrosoftGraphPermission object itself.
      */
@@ -190,7 +187,7 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
 
     /**
      * Get the invitation property: sharingInvitation.
-     *
+     * 
      * @return the invitation value.
      */
     public MicrosoftGraphSharingInvitation invitation() {
@@ -199,7 +196,7 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
 
     /**
      * Set the invitation property: sharingInvitation.
-     *
+     * 
      * @param invitation the invitation value to set.
      * @return the MicrosoftGraphPermission object itself.
      */
@@ -210,7 +207,7 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
 
     /**
      * Get the link property: sharingLink.
-     *
+     * 
      * @return the link value.
      */
     public MicrosoftGraphSharingLink link() {
@@ -219,7 +216,7 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
 
     /**
      * Set the link property: sharingLink.
-     *
+     * 
      * @param link the link value to set.
      * @return the MicrosoftGraphPermission object itself.
      */
@@ -230,7 +227,7 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
 
     /**
      * Get the roles property: The type of permission, e.g. read. See below for the full list of roles. Read-only.
-     *
+     * 
      * @return the roles value.
      */
     public List<String> roles() {
@@ -239,7 +236,7 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
 
     /**
      * Set the roles property: The type of permission, e.g. read. See below for the full list of roles. Read-only.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the MicrosoftGraphPermission object itself.
      */
@@ -251,7 +248,7 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
     /**
      * Get the shareId property: A unique token that can be used to access this shared item via the **shares** API.
      * Read-only.
-     *
+     * 
      * @return the shareId value.
      */
     public String shareId() {
@@ -261,7 +258,7 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
     /**
      * Set the shareId property: A unique token that can be used to access this shared item via the **shares** API.
      * Read-only.
-     *
+     * 
      * @param shareId the shareId value to set.
      * @return the MicrosoftGraphPermission object itself.
      */
@@ -272,17 +269,16 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: permission.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: permission.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphPermission object itself.
      */
@@ -291,15 +287,9 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphPermission withId(String id) {
         super.withId(id);
@@ -308,7 +298,7 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -329,5 +319,87 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
         if (link() != null) {
             link().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("expirationDateTime",
+            this.expirationDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
+        jsonWriter.writeJsonField("grantedTo", this.grantedTo);
+        jsonWriter.writeArrayField("grantedToIdentities", this.grantedToIdentities,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("hasPassword", this.hasPassword);
+        jsonWriter.writeJsonField("inheritedFrom", this.inheritedFrom);
+        jsonWriter.writeJsonField("invitation", this.invitation);
+        jsonWriter.writeJsonField("link", this.link);
+        jsonWriter.writeArrayField("roles", this.roles, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("shareId", this.shareId);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphPermission from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphPermission if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphPermission.
+     */
+    public static MicrosoftGraphPermission fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphPermission deserializedMicrosoftGraphPermission = new MicrosoftGraphPermission();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphPermission.withId(reader.getString());
+                } else if ("expirationDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphPermission.expirationDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("grantedTo".equals(fieldName)) {
+                    deserializedMicrosoftGraphPermission.grantedTo = MicrosoftGraphIdentitySet.fromJson(reader);
+                } else if ("grantedToIdentities".equals(fieldName)) {
+                    List<MicrosoftGraphIdentitySet> grantedToIdentities
+                        = reader.readArray(reader1 -> MicrosoftGraphIdentitySet.fromJson(reader1));
+                    deserializedMicrosoftGraphPermission.grantedToIdentities = grantedToIdentities;
+                } else if ("hasPassword".equals(fieldName)) {
+                    deserializedMicrosoftGraphPermission.hasPassword = reader.getNullable(JsonReader::getBoolean);
+                } else if ("inheritedFrom".equals(fieldName)) {
+                    deserializedMicrosoftGraphPermission.inheritedFrom = MicrosoftGraphItemReference.fromJson(reader);
+                } else if ("invitation".equals(fieldName)) {
+                    deserializedMicrosoftGraphPermission.invitation = MicrosoftGraphSharingInvitation.fromJson(reader);
+                } else if ("link".equals(fieldName)) {
+                    deserializedMicrosoftGraphPermission.link = MicrosoftGraphSharingLink.fromJson(reader);
+                } else if ("roles".equals(fieldName)) {
+                    List<String> roles = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphPermission.roles = roles;
+                } else if ("shareId".equals(fieldName)) {
+                    deserializedMicrosoftGraphPermission.shareId = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphPermission.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphPermission;
+        });
     }
 }

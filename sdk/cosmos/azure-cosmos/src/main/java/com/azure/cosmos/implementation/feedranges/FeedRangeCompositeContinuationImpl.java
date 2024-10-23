@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
@@ -28,8 +29,11 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -40,9 +44,15 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(FeedRangeCompositeContinuationImpl.class);
+    private static final String PK_RANGE_ID_SEPARATOR = ":";
+    private static final String SEGMENT_SEPARATOR = "#";
+
     private final Queue<CompositeContinuationToken> compositeContinuationTokens;
     private CompositeContinuationToken currentToken;
     private String initialNoResultsRange;
+    private final AtomicLong continuousNotModifiedSinceInitialNoResultsRangeCaptured = new AtomicLong(0);
+    private final Map<Range<String>, FeedRangeLSNContext> feedRangeLSNContextMap = new ConcurrentHashMap<>();
+
 
     public FeedRangeCompositeContinuationImpl(
         String containerRid,
@@ -131,6 +141,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         this.compositeContinuationTokens = new LinkedList<>();
     }
 
+    @Override
     public Queue<CompositeContinuationToken> getCompositeContinuationTokens() {
         return compositeContinuationTokens;
     }
@@ -176,7 +187,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     }
 
     @Override
-    public void replaceContinuation(final String continuationToken) {
+    public void replaceContinuation(final String continuationToken, boolean shouldMoveToNextTokenOnETagReplace) {
         final CompositeContinuationToken continuationTokenSnapshot = this.currentToken;
 
         if (continuationTokenSnapshot == null) {
@@ -184,7 +195,10 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         }
 
         continuationTokenSnapshot.setToken(continuationToken);
-        this.moveToNextToken();
+
+        if (shouldMoveToNextTokenOnETagReplace) {
+            this.moveToNextToken();
+        }
     }
 
     @Override
@@ -209,24 +223,68 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
         if (!ModelBridgeInternal.<T>noChanges(response)) {
             this.initialNoResultsRange = null;
+            this.continuousNotModifiedSinceInitialNoResultsRangeCaptured.set(0);
         } else if (this.compositeContinuationTokens.size() > 1) {
-            final String eTag = this.currentToken.getToken();
             if (this.initialNoResultsRange == null) {
 
                 this.initialNoResultsRange = this.currentToken.getRange().getMin();
-                this.replaceContinuation(eTag);
+                this.continuousNotModifiedSinceInitialNoResultsRangeCaptured.set(0);
+
+                // Done already in ChangeFeedFetcher.applyServerContinuation
+                // this.replaceContinuation(eTag);
+
                 this.moveToNextToken();
+
                 return ShouldRetryResult.RETRY_NOW;
             }
 
             if (!this.initialNoResultsRange.equalsIgnoreCase(this.currentToken.getRange().getMin())) {
-                this.replaceContinuation(eTag);
+                this.continuousNotModifiedSinceInitialNoResultsRangeCaptured.incrementAndGet();
+
+                // Done already in ChangeFeedFetcher.applyServerContinuation
+                // this.replaceContinuation(eTag);
+
                 this.moveToNextToken();
-                return ShouldRetryResult.RETRY_NOW;
+
+                long consecutiveNotModifiedResponsesSnapshot =
+                    this.continuousNotModifiedSinceInitialNoResultsRangeCaptured.get();
+                if (consecutiveNotModifiedResponsesSnapshot > 4L * (this.compositeContinuationTokens.size() + 1)) {
+
+                    // This is just a defense in-depth - if we see subsequent 304s all the time, avoid similar hangs
+                    // just bail out - the threshold allows for two-level splits of all sub-ranges which is
+                    // safe enough - with more than two-level splits we have other design gaps (service, not SDK)
+                    // due to problems identifying child  ranges anyway.
+                    LOGGER.warn(
+                        "Preempting change feed query early due to {} consecutive 304.",
+                        consecutiveNotModifiedResponsesSnapshot);
+
+                    return ShouldRetryResult.NO_RETRY;
+                } else {
+                    return ShouldRetryResult.RETRY_NOW;
+                }
             }
         }
 
         return ShouldRetryResult.NO_RETRY;
+    }
+
+    @Override
+    public <T> boolean hasFetchedAllChangesAvailableNow(FeedResponse<T> response) {
+        FeedRangeLSNContext feedRangeLSNContext =
+            this.updateFeedRangeEndLSNIfAbsent(
+                this.currentToken.getRange(),
+                response.getSessionToken());
+        feedRangeLSNContext.handleLSNFromContinuation(this.currentToken);
+
+        // find next token which can fetch more
+        Range<String> initialToken = this.currentToken.getRange();
+        do {
+            this.moveToNextToken();
+        } while (
+            !this.currentToken.getRange().equals(initialToken) &&
+                this.hasFetchAllChangesAvailableNowForFeedRange(this.currentToken.getRange()));
+
+        return this.hasFetchAllChangesAvailableNowForFeedRange(this.currentToken.getRange());
     }
 
     @Override
@@ -265,6 +323,37 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
             }
             return Mono.just(ShouldRetryResult.RETRY_NOW);
         });
+    }
+
+    private Long getLatestLsnFromSessionToken(String sessionToken) {
+        String parsedSessionToken = sessionToken.substring(
+            sessionToken.indexOf(PK_RANGE_ID_SEPARATOR));
+        String[] segments = StringUtils.split(parsedSessionToken, SEGMENT_SEPARATOR);
+        String latestLsn = segments[0];
+        if (segments.length >= 2) {
+            // default to Global LSN
+            latestLsn = segments[1];
+        }
+
+        return Long.parseLong(latestLsn);
+    }
+
+    private FeedRangeLSNContext updateFeedRangeEndLSNIfAbsent(
+        Range<String> targetedRange,
+        String sessionToken) {
+        return this.feedRangeLSNContextMap.computeIfAbsent(
+            targetedRange,
+            (range) -> {
+                return new FeedRangeLSNContext(
+                    targetedRange,
+                    this.getLatestLsnFromSessionToken(sessionToken)
+                );
+            });
+    }
+
+    private boolean hasFetchAllChangesAvailableNowForFeedRange(Range<String> range) {
+        return this.feedRangeLSNContextMap.containsKey(range) &&
+            this.feedRangeLSNContextMap.get(range).hasCompleted;
     }
 
     /**
@@ -491,6 +580,34 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         @Override
         public int compare(PartitionKeyRange o1, PartitionKeyRange o2) {
             return o1.getMinInclusive().compareTo(o2.getMinInclusive());
+        }
+    }
+
+    final static class FeedRangeLSNContext {
+        private Range<String> range;
+        private Long endLSN;
+        private boolean hasCompleted;
+
+        public FeedRangeLSNContext(Range<String> range, Long endLSN) {
+            this.range = range;
+            this.endLSN = endLSN;
+            this.hasCompleted = false;
+        }
+
+        public void handleLSNFromContinuation(CompositeContinuationToken compositeContinuationToken) {
+            if (!compositeContinuationToken.getRange().equals(this.range)) {
+                throw new IllegalStateException(
+                    "Range in FeedRangeAvailableNowContext is different than the range in the continuationToken");
+            }
+
+            String lsnFromContinuationToken = compositeContinuationToken.getToken();
+            if (lsnFromContinuationToken.startsWith("\"")) {
+                lsnFromContinuationToken = lsnFromContinuationToken.substring(1, lsnFromContinuationToken.length() - 1);
+            }
+
+            if (Long.parseLong(lsnFromContinuationToken) >= endLSN) {
+                this.hasCompleted = true;
+            }
         }
     }
 }

@@ -578,11 +578,15 @@ public class PathsHelper {
     }
 
     public static String getCollectionPath(String resourceFullName) {
+
         if (resourceFullName != null) {
             String trimmedResourceFullName = Utils.trimBeginningAndEndingSlashes(resourceFullName);
-            int index = indexOfNth(trimmedResourceFullName, '/', 4);
-            if (index > 0)
+            int index = indexOfNth(trimmedResourceFullName.toString(), '/', 4);
+            if (index > 0) {
                 return trimmedResourceFullName.substring(0, index);
+            } else {
+                return trimmedResourceFullName;
+            }
         }
 
         return resourceFullName;

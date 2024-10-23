@@ -5,36 +5,37 @@
 package com.azure.resourcemanager.privatedns.generated;
 
 import com.azure.resourcemanager.privatedns.fluent.models.VirtualNetworkLinkInner;
+import com.azure.resourcemanager.privatedns.models.ResolutionPolicy;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualNetworkLinks Update. */
+/**
+ * Samples for VirtualNetworkLinks Update.
+ */
 public final class VirtualNetworkLinksUpdateSamples {
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/VirtualNetworkLinkPatch.json
+     * x-ms-original-file:
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/VirtualNetworkLinkPatch.
+     * json
      */
     /**
      * Sample code: PATCH Private DNS Zone Virtual Network Link.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void pATCHPrivateDNSZoneVirtualNetworkLink(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .privateDnsZones()
+        azure.privateDnsZones()
             .manager()
             .serviceClient()
             .getVirtualNetworkLinks()
-            .update(
-                "resourceGroup1",
-                "privatezone1.com",
-                "virtualNetworkLink1",
-                new VirtualNetworkLinkInner()
-                    .withTags(mapOf("key2", "fakeTokenPlaceholder"))
-                    .withRegistrationEnabled(true),
-                null,
-                com.azure.core.util.Context.NONE);
+            .update("resourceGroup1", "privatelink.contoso.com", "virtualNetworkLink1",
+                new VirtualNetworkLinkInner().withTags(mapOf("key2", "fakeTokenPlaceholder"))
+                    .withRegistrationEnabled(true)
+                    .withResolutionPolicy(ResolutionPolicy.NX_DOMAIN_REDIRECT),
+                null, com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

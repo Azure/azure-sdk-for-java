@@ -7,11 +7,13 @@ package com.azure.resourcemanager.logic.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of WorkflowRunOperations. */
+/**
+ * Resource collection API of WorkflowRunOperations.
+ */
 public interface WorkflowRunOperations {
     /**
      * Gets an operation for a run.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -22,12 +24,12 @@ public interface WorkflowRunOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an operation for a run along with {@link Response}.
      */
-    Response<WorkflowRun> getWithResponse(
-        String resourceGroupName, String workflowName, String runName, String operationId, Context context);
+    Response<WorkflowRun> getWithResponse(String resourceGroupName, String workflowName, String runName,
+        String operationId, Context context);
 
     /**
      * Gets an operation for a run.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.

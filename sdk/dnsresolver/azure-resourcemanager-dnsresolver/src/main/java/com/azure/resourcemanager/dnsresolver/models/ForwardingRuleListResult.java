@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.dnsresolver.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dnsresolver.fluent.models.ForwardingRuleInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response to an enumeration operation on forwarding rules within a DNS forwarding ruleset. */
+/**
+ * The response to an enumeration operation on forwarding rules within a DNS forwarding ruleset.
+ */
 @Fluent
-public final class ForwardingRuleListResult {
+public final class ForwardingRuleListResult implements JsonSerializable<ForwardingRuleListResult> {
     /*
      * Enumeration of the forwarding rules.
      */
-    @JsonProperty(value = "value")
     private List<ForwardingRuleInner> value;
 
     /*
      * The continuation token for the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
+     * Creates an instance of ForwardingRuleListResult class.
+     */
+    public ForwardingRuleListResult() {
+    }
+
+    /**
      * Get the value property: Enumeration of the forwarding rules.
-     *
+     * 
      * @return the value value.
      */
     public List<ForwardingRuleInner> value() {
@@ -35,7 +45,7 @@ public final class ForwardingRuleListResult {
 
     /**
      * Set the value property: Enumeration of the forwarding rules.
-     *
+     * 
      * @param value the value value to set.
      * @return the ForwardingRuleListResult object itself.
      */
@@ -46,7 +56,7 @@ public final class ForwardingRuleListResult {
 
     /**
      * Get the nextLink property: The continuation token for the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,12 +65,52 @@ public final class ForwardingRuleListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ForwardingRuleListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ForwardingRuleListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ForwardingRuleListResult.
+     */
+    public static ForwardingRuleListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ForwardingRuleListResult deserializedForwardingRuleListResult = new ForwardingRuleListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ForwardingRuleInner> value
+                        = reader.readArray(reader1 -> ForwardingRuleInner.fromJson(reader1));
+                    deserializedForwardingRuleListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedForwardingRuleListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedForwardingRuleListResult;
+        });
     }
 }

@@ -147,6 +147,7 @@ public final class Completions implements JsonSerializable<Completions> {
         jsonWriter.writeJsonField("usage", this.usage);
         jsonWriter.writeArrayField("prompt_filter_results", this.promptFilterResults,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("system_fingerprint", this.systemFingerprint);
         return jsonWriter.writeEndObject();
     }
 
@@ -167,6 +168,7 @@ public final class Completions implements JsonSerializable<Completions> {
             List<Choice> choices = null;
             CompletionsUsage usage = null;
             List<ContentFilterResultsForPrompt> promptFilterResults = null;
+            String systemFingerprint = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -180,13 +182,39 @@ public final class Completions implements JsonSerializable<Completions> {
                     usage = CompletionsUsage.fromJson(reader);
                 } else if ("prompt_filter_results".equals(fieldName)) {
                     promptFilterResults = reader.readArray(reader1 -> ContentFilterResultsForPrompt.fromJson(reader1));
+                } else if ("system_fingerprint".equals(fieldName)) {
+                    systemFingerprint = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             Completions deserializedCompletions = new Completions(id, createdAt, choices, usage);
             deserializedCompletions.promptFilterResults = promptFilterResults;
+            deserializedCompletions.systemFingerprint = systemFingerprint;
             return deserializedCompletions;
         });
+    }
+
+    /*
+     * This fingerprint represents the backend configuration that the model runs with.
+     * 
+     * Can be used in conjunction with the `seed` request parameter to understand when backend changes have been made
+     * that might impact determinism.
+     */
+    @Generated
+    private String systemFingerprint;
+
+    /**
+     * Get the systemFingerprint property: This fingerprint represents the backend configuration that the model runs
+     * with.
+     *
+     * Can be used in conjunction with the `seed` request parameter to understand when backend changes have been made
+     * that might impact determinism.
+     *
+     * @return the systemFingerprint value.
+     */
+    @Generated
+    public String getSystemFingerprint() {
+        return this.systemFingerprint;
     }
 }

@@ -6,23 +6,25 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The source image from which the Image Version is going to be created.
  */
 @Fluent
-public final class UserArtifactSource {
+public final class UserArtifactSource implements JsonSerializable<UserArtifactSource> {
     /*
      * Required. The mediaLink of the artifact, must be a readable storage page blob.
      */
-    @JsonProperty(value = "mediaLink", required = true)
     private String mediaLink;
 
     /*
      * Optional. The defaultConfigurationLink of the artifact, must be a readable storage page blob.
      */
-    @JsonProperty(value = "defaultConfigurationLink")
     private String defaultConfigurationLink;
 
     /**
@@ -86,4 +88,44 @@ public final class UserArtifactSource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UserArtifactSource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mediaLink", this.mediaLink);
+        jsonWriter.writeStringField("defaultConfigurationLink", this.defaultConfigurationLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserArtifactSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserArtifactSource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserArtifactSource.
+     */
+    public static UserArtifactSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserArtifactSource deserializedUserArtifactSource = new UserArtifactSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mediaLink".equals(fieldName)) {
+                    deserializedUserArtifactSource.mediaLink = reader.getString();
+                } else if ("defaultConfigurationLink".equals(fieldName)) {
+                    deserializedUserArtifactSource.defaultConfigurationLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserArtifactSource;
+        });
+    }
 }

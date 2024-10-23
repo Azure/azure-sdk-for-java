@@ -11,19 +11,19 @@ public final class GoogleAdWordsSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoogleAdWordsSource model = BinaryData.fromString(
-            "{\"type\":\"GoogleAdWordsSource\",\"query\":\"datasclpnbidnlodk\",\"queryTimeout\":\"dataqnkptixa\",\"additionalColumns\":\"datay\",\"sourceRetryCount\":\"dataaevry\",\"sourceRetryWait\":\"datagccpzmh\",\"maxConcurrentConnections\":\"datalqtzgtpsbym\",\"disableMetricsCollection\":\"datactorqzbq\",\"\":{\"ahbynlbwcnnfp\":\"datafqqrarolc\",\"lehgeeygsojtza\":\"datagstdifbyfj\",\"dsjhx\":\"dataliigrtvqv\"}}")
+            "{\"type\":\"GoogleAdWordsSource\",\"query\":\"datalymmhzvnetecfy\",\"queryTimeout\":\"datafkcwfpoaflgkzgzx\",\"additionalColumns\":\"datavvfkqbgkssygdv\",\"sourceRetryCount\":\"databbd\",\"sourceRetryWait\":\"datal\",\"maxConcurrentConnections\":\"datapwpsxygrniq\",\"disableMetricsCollection\":\"datapsebaz\",\"\":{\"imtu\":\"datarjroqgnsfzrra\"}}")
             .toObject(GoogleAdWordsSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GoogleAdWordsSource model = new GoogleAdWordsSource().withSourceRetryCount("dataaevry")
-            .withSourceRetryWait("datagccpzmh")
-            .withMaxConcurrentConnections("datalqtzgtpsbym")
-            .withDisableMetricsCollection("datactorqzbq")
-            .withQueryTimeout("dataqnkptixa")
-            .withAdditionalColumns("datay")
-            .withQuery("datasclpnbidnlodk");
+        GoogleAdWordsSource model = new GoogleAdWordsSource().withSourceRetryCount("databbd")
+            .withSourceRetryWait("datal")
+            .withMaxConcurrentConnections("datapwpsxygrniq")
+            .withDisableMetricsCollection("datapsebaz")
+            .withQueryTimeout("datafkcwfpoaflgkzgzx")
+            .withAdditionalColumns("datavvfkqbgkssygdv")
+            .withQuery("datalymmhzvnetecfy");
         model = BinaryData.fromObject(model).toObject(GoogleAdWordsSource.class);
     }
 }

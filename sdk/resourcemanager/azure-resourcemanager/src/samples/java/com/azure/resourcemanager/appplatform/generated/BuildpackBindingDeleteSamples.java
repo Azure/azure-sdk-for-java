@@ -18,7 +18,11 @@ public final class BuildpackBindingDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void buildpackBindingDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getBuildpackBindings().delete("myResourceGroup", "myservice",
-            "default", "default", "myBuildpackBinding", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getBuildpackBindings()
+            .delete("myResourceGroup", "myservice", "default", "default", "myBuildpackBinding",
+                com.azure.core.util.Context.NONE);
     }
 }

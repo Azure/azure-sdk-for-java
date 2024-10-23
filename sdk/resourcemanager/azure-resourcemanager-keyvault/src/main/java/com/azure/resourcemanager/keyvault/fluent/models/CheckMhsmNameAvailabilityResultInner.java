@@ -5,40 +5,46 @@
 package com.azure.resourcemanager.keyvault.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.keyvault.models.Reason;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The CheckMhsmNameAvailability operation response. */
+/**
+ * The CheckMhsmNameAvailability operation response.
+ */
 @Immutable
-public final class CheckMhsmNameAvailabilityResultInner {
+public final class CheckMhsmNameAvailabilityResultInner
+    implements JsonSerializable<CheckMhsmNameAvailabilityResultInner> {
     /*
      * A boolean value that indicates whether the name is available for you to use. If true, the name is available. If
      * false, the name has already been taken or is invalid and cannot be used.
      */
-    @JsonProperty(value = "nameAvailable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean nameAvailable;
 
     /*
      * The reason that a managed hsm name could not be used. The reason element is only returned if NameAvailable is
      * false.
      */
-    @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
     private Reason reason;
 
     /*
      * An error message explaining the Reason value in more detail.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of CheckMhsmNameAvailabilityResultInner class. */
+    /**
+     * Creates an instance of CheckMhsmNameAvailabilityResultInner class.
+     */
     public CheckMhsmNameAvailabilityResultInner() {
     }
 
     /**
      * Get the nameAvailable property: A boolean value that indicates whether the name is available for you to use. If
      * true, the name is available. If false, the name has already been taken or is invalid and cannot be used.
-     *
+     * 
      * @return the nameAvailable value.
      */
     public Boolean nameAvailable() {
@@ -48,7 +54,7 @@ public final class CheckMhsmNameAvailabilityResultInner {
     /**
      * Get the reason property: The reason that a managed hsm name could not be used. The reason element is only
      * returned if NameAvailable is false.
-     *
+     * 
      * @return the reason value.
      */
     public Reason reason() {
@@ -57,7 +63,7 @@ public final class CheckMhsmNameAvailabilityResultInner {
 
     /**
      * Get the message property: An error message explaining the Reason value in more detail.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -66,9 +72,50 @@ public final class CheckMhsmNameAvailabilityResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckMhsmNameAvailabilityResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckMhsmNameAvailabilityResultInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CheckMhsmNameAvailabilityResultInner.
+     */
+    public static CheckMhsmNameAvailabilityResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckMhsmNameAvailabilityResultInner deserializedCheckMhsmNameAvailabilityResultInner
+                = new CheckMhsmNameAvailabilityResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nameAvailable".equals(fieldName)) {
+                    deserializedCheckMhsmNameAvailabilityResultInner.nameAvailable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reason".equals(fieldName)) {
+                    deserializedCheckMhsmNameAvailabilityResultInner.reason = Reason.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedCheckMhsmNameAvailabilityResultInner.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckMhsmNameAvailabilityResultInner;
+        });
     }
 }

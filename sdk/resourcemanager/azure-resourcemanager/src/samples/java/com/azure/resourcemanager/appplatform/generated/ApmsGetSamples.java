@@ -18,7 +18,10 @@ public final class ApmsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void apmsGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getApms().getWithResponse("myResourceGroup", "myservice",
-            "myappinsights", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getApms()
+            .getWithResponse("myResourceGroup", "myservice", "myappinsights", com.azure.core.util.Context.NONE);
     }
 }

@@ -6,35 +6,45 @@ package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.SoftwareUpdateConfigurationCollectionItemProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Software update configuration collection item properties. */
+/**
+ * Software update configuration collection item properties.
+ */
 @Fluent
-public final class SoftwareUpdateConfigurationCollectionItem {
+public final class SoftwareUpdateConfigurationCollectionItem
+    implements JsonSerializable<SoftwareUpdateConfigurationCollectionItem> {
     /*
      * Name of the software update configuration.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Resource Id of the software update configuration
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Software update configuration properties.
      */
-    @JsonProperty(value = "properties", required = true)
-    private SoftwareUpdateConfigurationCollectionItemProperties innerProperties =
-        new SoftwareUpdateConfigurationCollectionItemProperties();
+    private SoftwareUpdateConfigurationCollectionItemProperties innerProperties
+        = new SoftwareUpdateConfigurationCollectionItemProperties();
+
+    /**
+     * Creates an instance of SoftwareUpdateConfigurationCollectionItem class.
+     */
+    public SoftwareUpdateConfigurationCollectionItem() {
+    }
 
     /**
      * Get the name property: Name of the software update configuration.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +53,7 @@ public final class SoftwareUpdateConfigurationCollectionItem {
 
     /**
      * Get the id property: Resource Id of the software update configuration.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -52,7 +62,7 @@ public final class SoftwareUpdateConfigurationCollectionItem {
 
     /**
      * Get the innerProperties property: Software update configuration properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SoftwareUpdateConfigurationCollectionItemProperties innerProperties() {
@@ -61,7 +71,7 @@ public final class SoftwareUpdateConfigurationCollectionItem {
 
     /**
      * Get the updateConfiguration property: Update specific properties of the software update configuration.
-     *
+     * 
      * @return the updateConfiguration value.
      */
     public UpdateConfiguration updateConfiguration() {
@@ -70,7 +80,7 @@ public final class SoftwareUpdateConfigurationCollectionItem {
 
     /**
      * Set the updateConfiguration property: Update specific properties of the software update configuration.
-     *
+     * 
      * @param updateConfiguration the updateConfiguration value to set.
      * @return the SoftwareUpdateConfigurationCollectionItem object itself.
      */
@@ -84,7 +94,7 @@ public final class SoftwareUpdateConfigurationCollectionItem {
 
     /**
      * Get the tasks property: Pre and Post Tasks defined.
-     *
+     * 
      * @return the tasks value.
      */
     public SoftwareUpdateConfigurationTasks tasks() {
@@ -93,7 +103,7 @@ public final class SoftwareUpdateConfigurationCollectionItem {
 
     /**
      * Set the tasks property: Pre and Post Tasks defined.
-     *
+     * 
      * @param tasks the tasks value to set.
      * @return the SoftwareUpdateConfigurationCollectionItem object itself.
      */
@@ -108,7 +118,7 @@ public final class SoftwareUpdateConfigurationCollectionItem {
     /**
      * Get the frequency property: execution frequency of the schedule associated with the software update
      * configuration.
-     *
+     * 
      * @return the frequency value.
      */
     public ScheduleFrequency frequency() {
@@ -118,7 +128,7 @@ public final class SoftwareUpdateConfigurationCollectionItem {
     /**
      * Set the frequency property: execution frequency of the schedule associated with the software update
      * configuration.
-     *
+     * 
      * @param frequency the frequency value to set.
      * @return the SoftwareUpdateConfigurationCollectionItem object itself.
      */
@@ -132,7 +142,7 @@ public final class SoftwareUpdateConfigurationCollectionItem {
 
     /**
      * Get the startTime property: the start time of the update.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -141,7 +151,7 @@ public final class SoftwareUpdateConfigurationCollectionItem {
 
     /**
      * Set the startTime property: the start time of the update.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the SoftwareUpdateConfigurationCollectionItem object itself.
      */
@@ -156,7 +166,7 @@ public final class SoftwareUpdateConfigurationCollectionItem {
     /**
      * Get the creationTime property: Creation time of the software update configuration, which only appears in the
      * response.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -166,7 +176,7 @@ public final class SoftwareUpdateConfigurationCollectionItem {
     /**
      * Get the lastModifiedTime property: Last time software update configuration was modified, which only appears in
      * the response.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -176,7 +186,7 @@ public final class SoftwareUpdateConfigurationCollectionItem {
     /**
      * Get the provisioningState property: Provisioning state for the software update configuration, which only appears
      * in the response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -185,7 +195,7 @@ public final class SoftwareUpdateConfigurationCollectionItem {
 
     /**
      * Get the nextRun property: ext run time of the update.
-     *
+     * 
      * @return the nextRun value.
      */
     public OffsetDateTime nextRun() {
@@ -194,7 +204,7 @@ public final class SoftwareUpdateConfigurationCollectionItem {
 
     /**
      * Set the nextRun property: ext run time of the update.
-     *
+     * 
      * @param nextRun the nextRun value to set.
      * @return the SoftwareUpdateConfigurationCollectionItem object itself.
      */
@@ -208,20 +218,61 @@ public final class SoftwareUpdateConfigurationCollectionItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model"
-                            + " SoftwareUpdateConfigurationCollectionItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model SoftwareUpdateConfigurationCollectionItem"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SoftwareUpdateConfigurationCollectionItem.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SoftwareUpdateConfigurationCollectionItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SoftwareUpdateConfigurationCollectionItem if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SoftwareUpdateConfigurationCollectionItem.
+     */
+    public static SoftwareUpdateConfigurationCollectionItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SoftwareUpdateConfigurationCollectionItem deserializedSoftwareUpdateConfigurationCollectionItem
+                = new SoftwareUpdateConfigurationCollectionItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationCollectionItem.innerProperties
+                        = SoftwareUpdateConfigurationCollectionItemProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationCollectionItem.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationCollectionItem.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSoftwareUpdateConfigurationCollectionItem;
+        });
+    }
 }

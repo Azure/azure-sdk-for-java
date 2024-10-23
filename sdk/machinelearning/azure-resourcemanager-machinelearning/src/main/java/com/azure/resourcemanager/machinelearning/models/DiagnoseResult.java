@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Result of Diagnose. */
+/**
+ * Result of Diagnose.
+ */
 @Immutable
-public final class DiagnoseResult {
+public final class DiagnoseResult implements JsonSerializable<DiagnoseResult> {
     /*
      * Code for workspace setup error
      */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /*
      * Level of workspace setup error
      */
-    @JsonProperty(value = "level", access = JsonProperty.Access.WRITE_ONLY)
     private DiagnoseResultLevel level;
 
     /*
      * Message of workspace setup error
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of DiagnoseResult class. */
+    /**
+     * Creates an instance of DiagnoseResult class.
+     */
     public DiagnoseResult() {
     }
 
     /**
      * Get the code property: Code for workspace setup error.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -43,7 +48,7 @@ public final class DiagnoseResult {
 
     /**
      * Get the level property: Level of workspace setup error.
-     *
+     * 
      * @return the level value.
      */
     public DiagnoseResultLevel level() {
@@ -52,7 +57,7 @@ public final class DiagnoseResult {
 
     /**
      * Get the message property: Message of workspace setup error.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -61,9 +66,48 @@ public final class DiagnoseResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiagnoseResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiagnoseResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiagnoseResult.
+     */
+    public static DiagnoseResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiagnoseResult deserializedDiagnoseResult = new DiagnoseResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedDiagnoseResult.code = reader.getString();
+                } else if ("level".equals(fieldName)) {
+                    deserializedDiagnoseResult.level = DiagnoseResultLevel.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedDiagnoseResult.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiagnoseResult;
+        });
     }
 }

@@ -6,47 +6,40 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The Kafka cluster profile.
  */
 @Fluent
-public final class KafkaProfile {
+public final class KafkaProfile implements JsonSerializable<KafkaProfile> {
     /*
      * Expose Kafka cluster in KRaft mode.
      */
-    @JsonProperty(value = "enableKRaft")
     private Boolean enableKRaft;
 
     /*
      * Expose worker nodes as public endpoints.
      */
-    @JsonProperty(value = "enablePublicEndpoints")
     private Boolean enablePublicEndpoints;
 
     /*
      * Fully qualified path of Azure Storage container used for Tiered Storage.
      */
-    @JsonProperty(value = "remoteStorageUri")
     private String remoteStorageUri;
 
     /*
      * Kafka disk storage profile.
      */
-    @JsonProperty(value = "diskStorage", required = true)
     private DiskStorageProfile diskStorage;
-
-    /*
-     * Identity of the internal service components inside the Kafka cluster.
-     */
-    @JsonProperty(value = "clusterIdentity", access = JsonProperty.Access.WRITE_ONLY)
-    private IdentityProfile clusterIdentity;
 
     /*
      * Kafka bootstrap server and brokers related connectivity endpoints.
      */
-    @JsonProperty(value = "connectivityEndpoints", access = JsonProperty.Access.WRITE_ONLY)
     private KafkaConnectivityEndpoints connectivityEndpoints;
 
     /**
@@ -136,15 +129,6 @@ public final class KafkaProfile {
     }
 
     /**
-     * Get the clusterIdentity property: Identity of the internal service components inside the Kafka cluster.
-     * 
-     * @return the clusterIdentity value.
-     */
-    public IdentityProfile clusterIdentity() {
-        return this.clusterIdentity;
-    }
-
-    /**
      * Get the connectivityEndpoints property: Kafka bootstrap server and brokers related connectivity endpoints.
      * 
      * @return the connectivityEndpoints value.
@@ -160,13 +144,10 @@ public final class KafkaProfile {
      */
     public void validate() {
         if (diskStorage() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property diskStorage in model KafkaProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property diskStorage in model KafkaProfile"));
         } else {
             diskStorage().validate();
-        }
-        if (clusterIdentity() != null) {
-            clusterIdentity().validate();
         }
         if (connectivityEndpoints() != null) {
             connectivityEndpoints().validate();
@@ -174,4 +155,52 @@ public final class KafkaProfile {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(KafkaProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("diskStorage", this.diskStorage);
+        jsonWriter.writeBooleanField("enableKRaft", this.enableKRaft);
+        jsonWriter.writeBooleanField("enablePublicEndpoints", this.enablePublicEndpoints);
+        jsonWriter.writeStringField("remoteStorageUri", this.remoteStorageUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KafkaProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KafkaProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KafkaProfile.
+     */
+    public static KafkaProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KafkaProfile deserializedKafkaProfile = new KafkaProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskStorage".equals(fieldName)) {
+                    deserializedKafkaProfile.diskStorage = DiskStorageProfile.fromJson(reader);
+                } else if ("enableKRaft".equals(fieldName)) {
+                    deserializedKafkaProfile.enableKRaft = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enablePublicEndpoints".equals(fieldName)) {
+                    deserializedKafkaProfile.enablePublicEndpoints = reader.getNullable(JsonReader::getBoolean);
+                } else if ("remoteStorageUri".equals(fieldName)) {
+                    deserializedKafkaProfile.remoteStorageUri = reader.getString();
+                } else if ("connectivityEndpoints".equals(fieldName)) {
+                    deserializedKafkaProfile.connectivityEndpoints = KafkaConnectivityEndpoints.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKafkaProfile;
+        });
+    }
 }

@@ -6,6 +6,10 @@ package com.azure.resourcemanager.containerinstance.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerinstance.models.ConfidentialComputeProperties;
 import com.azure.resourcemanager.containerinstance.models.Container;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupDiagnostics;
@@ -22,28 +26,27 @@ import com.azure.resourcemanager.containerinstance.models.InitContainerDefinitio
 import com.azure.resourcemanager.containerinstance.models.IpAddress;
 import com.azure.resourcemanager.containerinstance.models.OperatingSystemTypes;
 import com.azure.resourcemanager.containerinstance.models.Volume;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The container group properties. */
+/**
+ * The container group properties.
+ */
 @Fluent
-public final class ContainerGroupProperties {
+public final class ContainerGroupProperties implements JsonSerializable<ContainerGroupProperties> {
     /*
      * The provisioning state of the container group. This only appears in the response.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The containers within the container group.
      */
-    @JsonProperty(value = "containers", required = true)
     private List<Container> containers;
 
     /*
      * The image registry credentials by which the container group is created from.
      */
-    @JsonProperty(value = "imageRegistryCredentials")
     private List<ImageRegistryCredential> imageRegistryCredentials;
 
     /*
@@ -51,97 +54,84 @@ public final class ContainerGroupProperties {
      * - `Always` Always restart
      * - `OnFailure` Restart on failure
      * - `Never` Never restart
-     *
      */
-    @JsonProperty(value = "restartPolicy")
     private ContainerGroupRestartPolicy restartPolicy;
 
     /*
      * The IP address type of the container group.
      */
-    @JsonProperty(value = "ipAddress")
     private IpAddress ipAddress;
 
     /*
      * The operating system type required by the containers in the container group.
      */
-    @JsonProperty(value = "osType", required = true)
     private OperatingSystemTypes osType;
 
     /*
      * The list of volumes that can be mounted by containers in this container group.
      */
-    @JsonProperty(value = "volumes")
     private List<Volume> volumes;
 
     /*
      * The instance view of the container group. Only valid in response.
      */
-    @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private ContainerGroupPropertiesInstanceView instanceView;
 
     /*
      * The diagnostic information for a container group.
      */
-    @JsonProperty(value = "diagnostics")
     private ContainerGroupDiagnostics diagnostics;
 
     /*
      * The subnet resource IDs for a container group.
      */
-    @JsonProperty(value = "subnetIds")
     private List<ContainerGroupSubnetId> subnetIds;
 
     /*
      * The DNS config information for a container group.
      */
-    @JsonProperty(value = "dnsConfig")
     private DnsConfiguration dnsConfig;
 
     /*
      * The SKU for a container group.
      */
-    @JsonProperty(value = "sku")
     private ContainerGroupSku sku;
 
     /*
      * The encryption properties for a container group.
      */
-    @JsonProperty(value = "encryptionProperties")
     private EncryptionProperties encryptionProperties;
 
     /*
      * The init containers for a container group.
      */
-    @JsonProperty(value = "initContainers")
     private List<InitContainerDefinition> initContainers;
 
     /*
      * extensions used by virtual kubelet
      */
-    @JsonProperty(value = "extensions")
     private List<DeploymentExtensionSpec> extensions;
 
     /*
      * The properties for confidential container group
      */
-    @JsonProperty(value = "confidentialComputeProperties")
     private ConfidentialComputeProperties confidentialComputeProperties;
 
     /*
      * The priority of the container group.
      */
-    @JsonProperty(value = "priority")
     private ContainerGroupPriority priority;
 
-    /** Creates an instance of ContainerGroupProperties class. */
+    /**
+     * Creates an instance of ContainerGroupProperties class.
+     */
     public ContainerGroupProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the container group. This only appears in the
      * response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -150,7 +140,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Get the containers property: The containers within the container group.
-     *
+     * 
      * @return the containers value.
      */
     public List<Container> containers() {
@@ -159,7 +149,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Set the containers property: The containers within the container group.
-     *
+     * 
      * @param containers the containers value to set.
      * @return the ContainerGroupProperties object itself.
      */
@@ -171,7 +161,7 @@ public final class ContainerGroupProperties {
     /**
      * Get the imageRegistryCredentials property: The image registry credentials by which the container group is created
      * from.
-     *
+     * 
      * @return the imageRegistryCredentials value.
      */
     public List<ImageRegistryCredential> imageRegistryCredentials() {
@@ -181,20 +171,22 @@ public final class ContainerGroupProperties {
     /**
      * Set the imageRegistryCredentials property: The image registry credentials by which the container group is created
      * from.
-     *
+     * 
      * @param imageRegistryCredentials the imageRegistryCredentials value to set.
      * @return the ContainerGroupProperties object itself.
      */
-    public ContainerGroupProperties withImageRegistryCredentials(
-        List<ImageRegistryCredential> imageRegistryCredentials) {
+    public ContainerGroupProperties
+        withImageRegistryCredentials(List<ImageRegistryCredential> imageRegistryCredentials) {
         this.imageRegistryCredentials = imageRegistryCredentials;
         return this;
     }
 
     /**
-     * Get the restartPolicy property: Restart policy for all containers within the container group. - `Always` Always
-     * restart - `OnFailure` Restart on failure - `Never` Never restart.
-     *
+     * Get the restartPolicy property: Restart policy for all containers within the container group.
+     * - `Always` Always restart
+     * - `OnFailure` Restart on failure
+     * - `Never` Never restart.
+     * 
      * @return the restartPolicy value.
      */
     public ContainerGroupRestartPolicy restartPolicy() {
@@ -202,9 +194,11 @@ public final class ContainerGroupProperties {
     }
 
     /**
-     * Set the restartPolicy property: Restart policy for all containers within the container group. - `Always` Always
-     * restart - `OnFailure` Restart on failure - `Never` Never restart.
-     *
+     * Set the restartPolicy property: Restart policy for all containers within the container group.
+     * - `Always` Always restart
+     * - `OnFailure` Restart on failure
+     * - `Never` Never restart.
+     * 
      * @param restartPolicy the restartPolicy value to set.
      * @return the ContainerGroupProperties object itself.
      */
@@ -215,7 +209,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Get the ipAddress property: The IP address type of the container group.
-     *
+     * 
      * @return the ipAddress value.
      */
     public IpAddress ipAddress() {
@@ -224,7 +218,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Set the ipAddress property: The IP address type of the container group.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the ContainerGroupProperties object itself.
      */
@@ -235,7 +229,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Get the osType property: The operating system type required by the containers in the container group.
-     *
+     * 
      * @return the osType value.
      */
     public OperatingSystemTypes osType() {
@@ -244,7 +238,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Set the osType property: The operating system type required by the containers in the container group.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the ContainerGroupProperties object itself.
      */
@@ -255,7 +249,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Get the volumes property: The list of volumes that can be mounted by containers in this container group.
-     *
+     * 
      * @return the volumes value.
      */
     public List<Volume> volumes() {
@@ -264,7 +258,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Set the volumes property: The list of volumes that can be mounted by containers in this container group.
-     *
+     * 
      * @param volumes the volumes value to set.
      * @return the ContainerGroupProperties object itself.
      */
@@ -275,7 +269,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Get the instanceView property: The instance view of the container group. Only valid in response.
-     *
+     * 
      * @return the instanceView value.
      */
     public ContainerGroupPropertiesInstanceView instanceView() {
@@ -284,7 +278,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Get the diagnostics property: The diagnostic information for a container group.
-     *
+     * 
      * @return the diagnostics value.
      */
     public ContainerGroupDiagnostics diagnostics() {
@@ -293,7 +287,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Set the diagnostics property: The diagnostic information for a container group.
-     *
+     * 
      * @param diagnostics the diagnostics value to set.
      * @return the ContainerGroupProperties object itself.
      */
@@ -304,7 +298,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Get the subnetIds property: The subnet resource IDs for a container group.
-     *
+     * 
      * @return the subnetIds value.
      */
     public List<ContainerGroupSubnetId> subnetIds() {
@@ -313,7 +307,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Set the subnetIds property: The subnet resource IDs for a container group.
-     *
+     * 
      * @param subnetIds the subnetIds value to set.
      * @return the ContainerGroupProperties object itself.
      */
@@ -324,7 +318,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Get the dnsConfig property: The DNS config information for a container group.
-     *
+     * 
      * @return the dnsConfig value.
      */
     public DnsConfiguration dnsConfig() {
@@ -333,7 +327,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Set the dnsConfig property: The DNS config information for a container group.
-     *
+     * 
      * @param dnsConfig the dnsConfig value to set.
      * @return the ContainerGroupProperties object itself.
      */
@@ -344,7 +338,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Get the sku property: The SKU for a container group.
-     *
+     * 
      * @return the sku value.
      */
     public ContainerGroupSku sku() {
@@ -353,7 +347,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Set the sku property: The SKU for a container group.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ContainerGroupProperties object itself.
      */
@@ -364,7 +358,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Get the encryptionProperties property: The encryption properties for a container group.
-     *
+     * 
      * @return the encryptionProperties value.
      */
     public EncryptionProperties encryptionProperties() {
@@ -373,7 +367,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Set the encryptionProperties property: The encryption properties for a container group.
-     *
+     * 
      * @param encryptionProperties the encryptionProperties value to set.
      * @return the ContainerGroupProperties object itself.
      */
@@ -384,7 +378,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Get the initContainers property: The init containers for a container group.
-     *
+     * 
      * @return the initContainers value.
      */
     public List<InitContainerDefinition> initContainers() {
@@ -393,7 +387,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Set the initContainers property: The init containers for a container group.
-     *
+     * 
      * @param initContainers the initContainers value to set.
      * @return the ContainerGroupProperties object itself.
      */
@@ -404,7 +398,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Get the extensions property: extensions used by virtual kubelet.
-     *
+     * 
      * @return the extensions value.
      */
     public List<DeploymentExtensionSpec> extensions() {
@@ -413,7 +407,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Set the extensions property: extensions used by virtual kubelet.
-     *
+     * 
      * @param extensions the extensions value to set.
      * @return the ContainerGroupProperties object itself.
      */
@@ -424,7 +418,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Get the confidentialComputeProperties property: The properties for confidential container group.
-     *
+     * 
      * @return the confidentialComputeProperties value.
      */
     public ConfidentialComputeProperties confidentialComputeProperties() {
@@ -433,19 +427,19 @@ public final class ContainerGroupProperties {
 
     /**
      * Set the confidentialComputeProperties property: The properties for confidential container group.
-     *
+     * 
      * @param confidentialComputeProperties the confidentialComputeProperties value to set.
      * @return the ContainerGroupProperties object itself.
      */
-    public ContainerGroupProperties withConfidentialComputeProperties(
-        ConfidentialComputeProperties confidentialComputeProperties) {
+    public ContainerGroupProperties
+        withConfidentialComputeProperties(ConfidentialComputeProperties confidentialComputeProperties) {
         this.confidentialComputeProperties = confidentialComputeProperties;
         return this;
     }
 
     /**
      * Get the priority property: The priority of the container group.
-     *
+     * 
      * @return the priority value.
      */
     public ContainerGroupPriority priority() {
@@ -454,7 +448,7 @@ public final class ContainerGroupProperties {
 
     /**
      * Set the priority property: The priority of the container group.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the ContainerGroupProperties object itself.
      */
@@ -465,15 +459,14 @@ public final class ContainerGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (containers() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property containers in model ContainerGroupProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property containers in model ContainerGroupProperties"));
         } else {
             containers().forEach(e -> e.validate());
         }
@@ -484,8 +477,8 @@ public final class ContainerGroupProperties {
             ipAddress().validate();
         }
         if (osType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property osType in model ContainerGroupProperties"));
         }
         if (volumes() != null) {
@@ -518,4 +511,103 @@ public final class ContainerGroupProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ContainerGroupProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("containers", this.containers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
+        jsonWriter.writeArrayField("imageRegistryCredentials", this.imageRegistryCredentials,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("restartPolicy", this.restartPolicy == null ? null : this.restartPolicy.toString());
+        jsonWriter.writeJsonField("ipAddress", this.ipAddress);
+        jsonWriter.writeArrayField("volumes", this.volumes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("diagnostics", this.diagnostics);
+        jsonWriter.writeArrayField("subnetIds", this.subnetIds, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("dnsConfig", this.dnsConfig);
+        jsonWriter.writeStringField("sku", this.sku == null ? null : this.sku.toString());
+        jsonWriter.writeJsonField("encryptionProperties", this.encryptionProperties);
+        jsonWriter.writeArrayField("initContainers", this.initContainers,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("confidentialComputeProperties", this.confidentialComputeProperties);
+        jsonWriter.writeStringField("priority", this.priority == null ? null : this.priority.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerGroupProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContainerGroupProperties.
+     */
+    public static ContainerGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerGroupProperties deserializedContainerGroupProperties = new ContainerGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("containers".equals(fieldName)) {
+                    List<Container> containers = reader.readArray(reader1 -> Container.fromJson(reader1));
+                    deserializedContainerGroupProperties.containers = containers;
+                } else if ("osType".equals(fieldName)) {
+                    deserializedContainerGroupProperties.osType = OperatingSystemTypes.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedContainerGroupProperties.provisioningState = reader.getString();
+                } else if ("imageRegistryCredentials".equals(fieldName)) {
+                    List<ImageRegistryCredential> imageRegistryCredentials
+                        = reader.readArray(reader1 -> ImageRegistryCredential.fromJson(reader1));
+                    deserializedContainerGroupProperties.imageRegistryCredentials = imageRegistryCredentials;
+                } else if ("restartPolicy".equals(fieldName)) {
+                    deserializedContainerGroupProperties.restartPolicy
+                        = ContainerGroupRestartPolicy.fromString(reader.getString());
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedContainerGroupProperties.ipAddress = IpAddress.fromJson(reader);
+                } else if ("volumes".equals(fieldName)) {
+                    List<Volume> volumes = reader.readArray(reader1 -> Volume.fromJson(reader1));
+                    deserializedContainerGroupProperties.volumes = volumes;
+                } else if ("instanceView".equals(fieldName)) {
+                    deserializedContainerGroupProperties.instanceView
+                        = ContainerGroupPropertiesInstanceView.fromJson(reader);
+                } else if ("diagnostics".equals(fieldName)) {
+                    deserializedContainerGroupProperties.diagnostics = ContainerGroupDiagnostics.fromJson(reader);
+                } else if ("subnetIds".equals(fieldName)) {
+                    List<ContainerGroupSubnetId> subnetIds
+                        = reader.readArray(reader1 -> ContainerGroupSubnetId.fromJson(reader1));
+                    deserializedContainerGroupProperties.subnetIds = subnetIds;
+                } else if ("dnsConfig".equals(fieldName)) {
+                    deserializedContainerGroupProperties.dnsConfig = DnsConfiguration.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedContainerGroupProperties.sku = ContainerGroupSku.fromString(reader.getString());
+                } else if ("encryptionProperties".equals(fieldName)) {
+                    deserializedContainerGroupProperties.encryptionProperties = EncryptionProperties.fromJson(reader);
+                } else if ("initContainers".equals(fieldName)) {
+                    List<InitContainerDefinition> initContainers
+                        = reader.readArray(reader1 -> InitContainerDefinition.fromJson(reader1));
+                    deserializedContainerGroupProperties.initContainers = initContainers;
+                } else if ("extensions".equals(fieldName)) {
+                    List<DeploymentExtensionSpec> extensions
+                        = reader.readArray(reader1 -> DeploymentExtensionSpec.fromJson(reader1));
+                    deserializedContainerGroupProperties.extensions = extensions;
+                } else if ("confidentialComputeProperties".equals(fieldName)) {
+                    deserializedContainerGroupProperties.confidentialComputeProperties
+                        = ConfidentialComputeProperties.fromJson(reader);
+                } else if ("priority".equals(fieldName)) {
+                    deserializedContainerGroupProperties.priority
+                        = ContainerGroupPriority.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerGroupProperties;
+        });
+    }
 }

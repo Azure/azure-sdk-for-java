@@ -6,32 +6,66 @@ package com.azure.resourcemanager.billing.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.billing.fluent.models.BillingSubscriptionProperties;
-import com.azure.resourcemanager.billing.models.BillingSubscriptionStatusType;
+import com.azure.resourcemanager.billing.models.AutoRenew;
+import com.azure.resourcemanager.billing.models.Beneficiary;
+import com.azure.resourcemanager.billing.models.SystemOverrides;
 import org.junit.jupiter.api.Assertions;
 
 public final class BillingSubscriptionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BillingSubscriptionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"qwwncw\",\"subscriptionId\":\"0b14bc39-5e00-4eb5-b288-987d4dfc4e21\",\"subscriptionBillingStatus\":\"Deleted\",\"lastMonthCharges\":{\"currency\":\"trmgucnapkte\",\"value\":45.423527},\"monthToDateCharges\":{\"currency\":\"pt\",\"value\":32.62289},\"billingProfileId\":\"pfqbuaceopzf\",\"billingProfileDisplayName\":\"hhuao\",\"costCenter\":\"pcqeqx\",\"customerId\":\"z\",\"customerDisplayName\":\"hzxct\",\"invoiceSectionId\":\"gbkdmoizpos\",\"invoiceSectionDisplayName\":\"grcfb\",\"reseller\":{\"resellerId\":\"mfqjhhkxbp\",\"description\":\"ymjhxxjyngudivkr\"},\"skuId\":\"wbxqzvszjfau\",\"skuDescription\":\"fdxxivetvtcqaqtd\",\"suspensionReasons\":[\"cbxvwvxyslqbh\",\"fxoblytkb\",\"mpew\"]}")
-                .toObject(BillingSubscriptionProperties.class);
-        Assertions.assertEquals(BillingSubscriptionStatusType.DELETED, model.subscriptionBillingStatus());
-        Assertions.assertEquals("pcqeqx", model.costCenter());
-        Assertions.assertEquals("wbxqzvszjfau", model.skuId());
+        BillingSubscriptionProperties model = BinaryData.fromString(
+            "{\"autoRenew\":\"Off\",\"beneficiaryTenantId\":\"bsnmfpph\",\"beneficiary\":{\"tenantId\":\"evy\",\"objectId\":\"hsgz\"},\"billingFrequency\":\"zbgomfgbeg\",\"billingProfileId\":\"gleohi\",\"billingPolicies\":{\"nkrrf\":\"nlu\",\"mq\":\"eeebtijvacv\",\"nw\":\"bqqxlaj\"},\"billingProfileDisplayName\":\"cevehjkuyxoafg\",\"billingProfileName\":\"qltfaey\",\"consumptionCostCenter\":\"nm\",\"customerId\":\"vxirpghriypo\",\"customerDisplayName\":\"yhlqhykprlpyznu\",\"customerName\":\"qdsmexiit\",\"displayName\":\"uxtyasiibmi\",\"enrollmentAccountId\":\"nnust\",\"enrollmentAccountDisplayName\":\"ljhnmgixhcmav\",\"enrollmentAccountSubscriptionDetails\":{\"enrollmentAccountStartDate\":\"2021-07-19T19:21:37Z\",\"subscriptionEnrollmentAccountStatus\":\"Deleted\"},\"invoiceSectionId\":\"rhc\",\"invoiceSectionDisplayName\":\"yprotwyp\",\"invoiceSectionName\":\"d\",\"lastMonthCharges\":{\"currency\":\"hu\",\"value\":76.08653},\"monthToDateCharges\":{\"currency\":\"avlg\",\"value\":48.83463},\"nextBillingCycleDetails\":{\"billingFrequency\":\"tp\"},\"offerId\":\"tzfjltf\",\"productCategory\":\"zcyjtot\",\"productType\":\"opv\",\"productTypeId\":\"dbzqgqqihed\",\"purchaseDate\":\"2021-03-24T17:03:11Z\",\"quantity\":7800866401900488866,\"reseller\":{\"resellerId\":\"yibcy\",\"description\":\"hsgqc\"},\"renewalTermDetails\":{\"billingFrequency\":\"ohsdtmcd\",\"productId\":\"ufcohdxbz\",\"productTypeId\":\"cmuapcvhd\",\"skuId\":\"v\",\"termDuration\":\"qxeysko\",\"quantity\":8223110297990231719,\"termEndDate\":\"2021-07-17T19:35:55Z\"},\"skuId\":\"kbg\",\"skuDescription\":\"bowxe\",\"systemOverrides\":{\"cancellation\":\"Allowed\",\"cancellationAllowedEndDate\":\"2021-07-29T08:56:21Z\"},\"resourceUri\":\"gvkzqkjjeokbze\",\"termDuration\":\"zrxcczurt\",\"termStartDate\":\"2021-07-07T15:21:44Z\",\"termEndDate\":\"2020-12-31T21:39:53Z\",\"provisioningTenantId\":\"bkwvzg\",\"status\":\"Disabled\",\"operationStatus\":\"Other\",\"provisioningState\":\"ConfirmedBilling\",\"subscriptionId\":\"ixz\",\"suspensionReasons\":[\"noda\",\"opqhewjptmc\",\"sbostzel\"],\"suspensionReasonDetails\":[{\"effectiveDate\":\"2021-10-16T17:09:06Z\",\"reason\":\"SpendingLimitReached\"}]}")
+            .toObject(BillingSubscriptionProperties.class);
+        Assertions.assertEquals(AutoRenew.OFF, model.autoRenew());
+        Assertions.assertEquals("bsnmfpph", model.beneficiaryTenantId());
+        Assertions.assertEquals("evy", model.beneficiary().tenantId());
+        Assertions.assertEquals("hsgz", model.beneficiary().objectId());
+        Assertions.assertEquals("zbgomfgbeg", model.billingFrequency());
+        Assertions.assertEquals("gleohi", model.billingProfileId());
+        Assertions.assertEquals("nm", model.consumptionCostCenter());
+        Assertions.assertEquals("vxirpghriypo", model.customerId());
+        Assertions.assertEquals("uxtyasiibmi", model.displayName());
+        Assertions.assertEquals("rhc", model.invoiceSectionId());
+        Assertions.assertEquals("dbzqgqqihed", model.productTypeId());
+        Assertions.assertEquals(7800866401900488866L, model.quantity());
+        Assertions.assertEquals("kbg", model.skuId());
+        Assertions.assertEquals("zrxcczurt", model.termDuration());
+        Assertions.assertEquals("bkwvzg", model.provisioningTenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BillingSubscriptionProperties model =
-            new BillingSubscriptionProperties()
-                .withSubscriptionBillingStatus(BillingSubscriptionStatusType.DELETED)
-                .withCostCenter("pcqeqx")
-                .withSkuId("wbxqzvszjfau");
+        BillingSubscriptionProperties model = new BillingSubscriptionProperties().withAutoRenew(AutoRenew.OFF)
+            .withBeneficiaryTenantId("bsnmfpph")
+            .withBeneficiary(new Beneficiary().withTenantId("evy").withObjectId("hsgz"))
+            .withBillingFrequency("zbgomfgbeg")
+            .withBillingProfileId("gleohi")
+            .withConsumptionCostCenter("nm")
+            .withCustomerId("vxirpghriypo")
+            .withDisplayName("uxtyasiibmi")
+            .withInvoiceSectionId("rhc")
+            .withProductTypeId("dbzqgqqihed")
+            .withQuantity(7800866401900488866L)
+            .withSkuId("kbg")
+            .withSystemOverrides(new SystemOverrides())
+            .withTermDuration("zrxcczurt")
+            .withProvisioningTenantId("bkwvzg");
         model = BinaryData.fromObject(model).toObject(BillingSubscriptionProperties.class);
-        Assertions.assertEquals(BillingSubscriptionStatusType.DELETED, model.subscriptionBillingStatus());
-        Assertions.assertEquals("pcqeqx", model.costCenter());
-        Assertions.assertEquals("wbxqzvszjfau", model.skuId());
+        Assertions.assertEquals(AutoRenew.OFF, model.autoRenew());
+        Assertions.assertEquals("bsnmfpph", model.beneficiaryTenantId());
+        Assertions.assertEquals("evy", model.beneficiary().tenantId());
+        Assertions.assertEquals("hsgz", model.beneficiary().objectId());
+        Assertions.assertEquals("zbgomfgbeg", model.billingFrequency());
+        Assertions.assertEquals("gleohi", model.billingProfileId());
+        Assertions.assertEquals("nm", model.consumptionCostCenter());
+        Assertions.assertEquals("vxirpghriypo", model.customerId());
+        Assertions.assertEquals("uxtyasiibmi", model.displayName());
+        Assertions.assertEquals("rhc", model.invoiceSectionId());
+        Assertions.assertEquals("dbzqgqqihed", model.productTypeId());
+        Assertions.assertEquals(7800866401900488866L, model.quantity());
+        Assertions.assertEquals("kbg", model.skuId());
+        Assertions.assertEquals("zrxcczurt", model.termDuration());
+        Assertions.assertEquals("bkwvzg", model.provisioningTenantId());
     }
 }

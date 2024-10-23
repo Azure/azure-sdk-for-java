@@ -18,7 +18,7 @@ import java.io.IOException;
 @Fluent
 public final class PoolPatchProperties implements JsonSerializable<PoolPatchProperties> {
     /*
-     * Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
+     * Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiple of
      * 1099511627776).
      */
     private Long size;
@@ -41,7 +41,7 @@ public final class PoolPatchProperties implements JsonSerializable<PoolPatchProp
 
     /**
      * Get the size property: Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be
-     * multiply of 1099511627776).
+     * multiple of 1099511627776).
      * 
      * @return the size value.
      */
@@ -51,7 +51,7 @@ public final class PoolPatchProperties implements JsonSerializable<PoolPatchProp
 
     /**
      * Set the size property: Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be
-     * multiply of 1099511627776).
+     * multiple of 1099511627776).
      * 
      * @param size the size value to set.
      * @return the PoolPatchProperties object itself.

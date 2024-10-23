@@ -5,38 +5,38 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.InboundNatPool;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of the load balancer.
  */
 @Fluent
-public final class LoadBalancerPropertiesFormat {
+public final class LoadBalancerPropertiesFormat implements JsonSerializable<LoadBalancerPropertiesFormat> {
     /*
      * Object representing the frontend IPs to be used for the load balancer.
      */
-    @JsonProperty(value = "frontendIPConfigurations")
     private List<FrontendIpConfigurationInner> frontendIpConfigurations;
 
     /*
      * Collection of backend address pools used by a load balancer.
      */
-    @JsonProperty(value = "backendAddressPools")
     private List<BackendAddressPoolInner> backendAddressPools;
 
     /*
      * Object collection representing the load balancing rules Gets the provisioning.
      */
-    @JsonProperty(value = "loadBalancingRules")
     private List<LoadBalancingRuleInner> loadBalancingRules;
 
     /*
      * Collection of probe objects used in the load balancer.
      */
-    @JsonProperty(value = "probes")
     private List<ProbeInner> probes;
 
     /*
@@ -45,7 +45,6 @@ public final class LoadBalancerPropertiesFormat {
      * sets. NICs that are associated with individual virtual machines cannot reference an Inbound NAT pool. They have
      * to reference individual inbound NAT rules.
      */
-    @JsonProperty(value = "inboundNatRules")
     private List<InboundNatRuleInner> inboundNatRules;
 
     /*
@@ -56,25 +55,21 @@ public final class LoadBalancerPropertiesFormat {
      * individual virtual machines cannot reference an inbound NAT pool. They have to reference individual inbound NAT
      * rules.
      */
-    @JsonProperty(value = "inboundNatPools")
     private List<InboundNatPool> inboundNatPools;
 
     /*
      * The outbound rules.
      */
-    @JsonProperty(value = "outboundRules")
     private List<OutboundRuleInner> outboundRules;
 
     /*
      * The resource GUID property of the load balancer resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /*
      * The provisioning state of the load balancer resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -287,5 +282,82 @@ public final class LoadBalancerPropertiesFormat {
         if (outboundRules() != null) {
             outboundRules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("frontendIPConfigurations", this.frontendIpConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("backendAddressPools", this.backendAddressPools,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("loadBalancingRules", this.loadBalancingRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("probes", this.probes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("inboundNatRules", this.inboundNatRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("inboundNatPools", this.inboundNatPools,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outboundRules", this.outboundRules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LoadBalancerPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LoadBalancerPropertiesFormat if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LoadBalancerPropertiesFormat.
+     */
+    public static LoadBalancerPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LoadBalancerPropertiesFormat deserializedLoadBalancerPropertiesFormat = new LoadBalancerPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("frontendIPConfigurations".equals(fieldName)) {
+                    List<FrontendIpConfigurationInner> frontendIpConfigurations
+                        = reader.readArray(reader1 -> FrontendIpConfigurationInner.fromJson(reader1));
+                    deserializedLoadBalancerPropertiesFormat.frontendIpConfigurations = frontendIpConfigurations;
+                } else if ("backendAddressPools".equals(fieldName)) {
+                    List<BackendAddressPoolInner> backendAddressPools
+                        = reader.readArray(reader1 -> BackendAddressPoolInner.fromJson(reader1));
+                    deserializedLoadBalancerPropertiesFormat.backendAddressPools = backendAddressPools;
+                } else if ("loadBalancingRules".equals(fieldName)) {
+                    List<LoadBalancingRuleInner> loadBalancingRules
+                        = reader.readArray(reader1 -> LoadBalancingRuleInner.fromJson(reader1));
+                    deserializedLoadBalancerPropertiesFormat.loadBalancingRules = loadBalancingRules;
+                } else if ("probes".equals(fieldName)) {
+                    List<ProbeInner> probes = reader.readArray(reader1 -> ProbeInner.fromJson(reader1));
+                    deserializedLoadBalancerPropertiesFormat.probes = probes;
+                } else if ("inboundNatRules".equals(fieldName)) {
+                    List<InboundNatRuleInner> inboundNatRules
+                        = reader.readArray(reader1 -> InboundNatRuleInner.fromJson(reader1));
+                    deserializedLoadBalancerPropertiesFormat.inboundNatRules = inboundNatRules;
+                } else if ("inboundNatPools".equals(fieldName)) {
+                    List<InboundNatPool> inboundNatPools
+                        = reader.readArray(reader1 -> InboundNatPool.fromJson(reader1));
+                    deserializedLoadBalancerPropertiesFormat.inboundNatPools = inboundNatPools;
+                } else if ("outboundRules".equals(fieldName)) {
+                    List<OutboundRuleInner> outboundRules
+                        = reader.readArray(reader1 -> OutboundRuleInner.fromJson(reader1));
+                    deserializedLoadBalancerPropertiesFormat.outboundRules = outboundRules;
+                } else if ("resourceGuid".equals(fieldName)) {
+                    deserializedLoadBalancerPropertiesFormat.resourceGuid = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedLoadBalancerPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLoadBalancerPropertiesFormat;
+        });
     }
 }

@@ -12,13 +12,13 @@ public final class LogicAppInnerTests {
     public void testDeserialize() throws Exception {
         LogicAppInner model = BinaryData
             .fromString(
-                "{\"properties\":\"datad\",\"id\":\"llgryfqiuasigr\",\"name\":\"wsocnequygdjbo\",\"type\":\"grmtqjk\"}")
+                "{\"properties\":\"dataaqylkjztji\",\"id\":\"zjcg\",\"name\":\"xitp\",\"type\":\"inzcpdltkrlgj\"}")
             .toObject(LogicAppInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogicAppInner model = new LogicAppInner().withProperties("datad");
+        LogicAppInner model = new LogicAppInner().withProperties("dataaqylkjztji");
         model = BinaryData.fromObject(model).toObject(LogicAppInner.class);
     }
 }

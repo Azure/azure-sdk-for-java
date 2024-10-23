@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicebus.fluent.models.SBSubscriptionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response to the List Subscriptions operation. */
+/**
+ * The response to the List Subscriptions operation.
+ */
 @Fluent
-public final class SBSubscriptionListResult {
+public final class SBSubscriptionListResult implements JsonSerializable<SBSubscriptionListResult> {
     /*
      * Result of the List Subscriptions operation.
      */
-    @JsonProperty(value = "value")
     private List<SBSubscriptionInner> value;
 
     /*
      * Link to the next set of results. Not empty if Value contains incomplete list of subscriptions.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of SBSubscriptionListResult class.
+     */
+    public SBSubscriptionListResult() {
+    }
+
+    /**
      * Get the value property: Result of the List Subscriptions operation.
-     *
+     * 
      * @return the value value.
      */
     public List<SBSubscriptionInner> value() {
@@ -35,7 +45,7 @@ public final class SBSubscriptionListResult {
 
     /**
      * Set the value property: Result of the List Subscriptions operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the SBSubscriptionListResult object itself.
      */
@@ -47,7 +57,7 @@ public final class SBSubscriptionListResult {
     /**
      * Get the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
      * subscriptions.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -57,7 +67,7 @@ public final class SBSubscriptionListResult {
     /**
      * Set the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
      * subscriptions.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SBSubscriptionListResult object itself.
      */
@@ -68,12 +78,53 @@ public final class SBSubscriptionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SBSubscriptionListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SBSubscriptionListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SBSubscriptionListResult.
+     */
+    public static SBSubscriptionListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SBSubscriptionListResult deserializedSBSubscriptionListResult = new SBSubscriptionListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SBSubscriptionInner> value
+                        = reader.readArray(reader1 -> SBSubscriptionInner.fromJson(reader1));
+                    deserializedSBSubscriptionListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSBSubscriptionListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSBSubscriptionListResult;
+        });
     }
 }

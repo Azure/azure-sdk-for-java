@@ -12,18 +12,18 @@ public final class SessionContainerResourcesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SessionContainerResources model
-            = BinaryData.fromString("{\"cpu\":22.35631256315147,\"memory\":\"clamgglvlmfejdoq\"}")
+            = BinaryData.fromString("{\"cpu\":23.363409382810364,\"memory\":\"bjuyrsrziuctixg\"}")
                 .toObject(SessionContainerResources.class);
-        Assertions.assertEquals(22.35631256315147D, model.cpu());
-        Assertions.assertEquals("clamgglvlmfejdoq", model.memory());
+        Assertions.assertEquals(23.363409382810364D, model.cpu());
+        Assertions.assertEquals("bjuyrsrziuctixg", model.memory());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SessionContainerResources model
-            = new SessionContainerResources().withCpu(22.35631256315147D).withMemory("clamgglvlmfejdoq");
+            = new SessionContainerResources().withCpu(23.363409382810364D).withMemory("bjuyrsrziuctixg");
         model = BinaryData.fromObject(model).toObject(SessionContainerResources.class);
-        Assertions.assertEquals(22.35631256315147D, model.cpu());
-        Assertions.assertEquals("clamgglvlmfejdoq", model.memory());
+        Assertions.assertEquals(23.363409382810364D, model.cpu());
+        Assertions.assertEquals("bjuyrsrziuctixg", model.memory());
     }
 }

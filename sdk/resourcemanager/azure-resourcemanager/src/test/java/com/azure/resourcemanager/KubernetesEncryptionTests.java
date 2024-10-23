@@ -14,11 +14,11 @@ public class KubernetesEncryptionTests extends DiskEncryptionTestBase {
 
     @Test
     public void canCreateClusterWithDiskEncryption() {
-        final String clientId = this.clientIdFromFile();
+        final String userPrincipalName = this.azureCliSignedInUser().userPrincipalName();
 
         // create vault and key
         final String vaultName = generateRandomResourceName("kv", 8);
-        VaultAndKey vaultAndKey = createVaultAndKey(vaultName, clientId);
+        VaultAndKey vaultAndKey = createVaultAndKey(vaultName, userPrincipalName);
 
         // create disk encryption set
         DiskEncryptionSet diskEncryptionSet = createDiskEncryptionSet("des1",

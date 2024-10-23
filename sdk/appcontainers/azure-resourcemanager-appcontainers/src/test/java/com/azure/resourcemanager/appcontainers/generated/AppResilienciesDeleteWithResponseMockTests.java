@@ -28,7 +28,7 @@ public final class AppResilienciesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.appResiliencies()
-            .deleteWithResponse("uyvpirf", "jpnqnoowsbeden", "exkxbhx", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("odlikcdrdaasax", "obsmf", "wiyjvzuko", com.azure.core.util.Context.NONE);
 
     }
 }

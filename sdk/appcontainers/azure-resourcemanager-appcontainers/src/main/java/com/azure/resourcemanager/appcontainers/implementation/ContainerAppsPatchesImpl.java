@@ -11,8 +11,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsPatchesClient;
 import com.azure.resourcemanager.appcontainers.fluent.models.ContainerAppsPatchResourceInner;
-import com.azure.resourcemanager.appcontainers.models.ContainerAppsPatches;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppsPatchResource;
+import com.azure.resourcemanager.appcontainers.models.ContainerAppsPatches;
 import com.azure.resourcemanager.appcontainers.models.PatchSkipConfig;
 
 public final class ContainerAppsPatchesImpl implements ContainerAppsPatches {

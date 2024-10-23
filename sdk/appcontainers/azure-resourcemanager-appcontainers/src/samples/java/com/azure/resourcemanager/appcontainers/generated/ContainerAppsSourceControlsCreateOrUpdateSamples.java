@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class ContainerAppsSourceControlsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
      * SourceControls_CreateOrUpdate.json
      */
     /**
@@ -39,11 +39,13 @@ public final class ContainerAppsSourceControlsCreateOrUpdateSamples {
                     .withTenantId("<tenantid>")
                     .withKind("feaderated"))
                 .withContextPath("./")
+                .withDockerfilePath("./Dockerfile")
                 .withGithubPersonalAccessToken("fakeTokenPlaceholder")
                 .withImage("image/tag")
                 .withBuildEnvironmentVariables(
                     Arrays.asList(new EnvironmentVariable().withName("foo1").withValue("bar1"),
                         new EnvironmentVariable().withName("foo2").withValue("bar2"))))
+            .withXMsGithubAuxiliary("githubaccesstoken")
             .create();
     }
 }

@@ -22,8 +22,7 @@ public final class EntityQueryTemplatesImpl implements EntityQueryTemplates {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    public EntityQueryTemplatesImpl(
-        EntityQueryTemplatesClient innerClient,
+    public EntityQueryTemplatesImpl(EntityQueryTemplatesClient innerClient,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -31,36 +30,33 @@ public final class EntityQueryTemplatesImpl implements EntityQueryTemplates {
 
     public PagedIterable<EntityQueryTemplate> list(String resourceGroupName, String workspaceName) {
         PagedIterable<EntityQueryTemplateInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new EntityQueryTemplateImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EntityQueryTemplateImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<EntityQueryTemplate> list(
-        String resourceGroupName, String workspaceName, Constant88 kind, Context context) {
-        PagedIterable<EntityQueryTemplateInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, kind, context);
-        return Utils.mapPage(inner, inner1 -> new EntityQueryTemplateImpl(inner1, this.manager()));
+    public PagedIterable<EntityQueryTemplate> list(String resourceGroupName, String workspaceName, Constant88 kind,
+        Context context) {
+        PagedIterable<EntityQueryTemplateInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, kind, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EntityQueryTemplateImpl(inner1, this.manager()));
     }
 
-    public EntityQueryTemplate get(String resourceGroupName, String workspaceName, String entityQueryTemplateId) {
-        EntityQueryTemplateInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, entityQueryTemplateId);
+    public Response<EntityQueryTemplate> getWithResponse(String resourceGroupName, String workspaceName,
+        String entityQueryTemplateId, Context context) {
+        Response<EntityQueryTemplateInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, entityQueryTemplateId, context);
         if (inner != null) {
-            return new EntityQueryTemplateImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EntityQueryTemplateImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<EntityQueryTemplate> getWithResponse(
-        String resourceGroupName, String workspaceName, String entityQueryTemplateId, Context context) {
-        Response<EntityQueryTemplateInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, entityQueryTemplateId, context);
+    public EntityQueryTemplate get(String resourceGroupName, String workspaceName, String entityQueryTemplateId) {
+        EntityQueryTemplateInner inner
+            = this.serviceClient().get(resourceGroupName, workspaceName, entityQueryTemplateId);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new EntityQueryTemplateImpl(inner.getValue(), this.manager()));
+            return new EntityQueryTemplateImpl(inner, this.manager());
         } else {
             return null;
         }

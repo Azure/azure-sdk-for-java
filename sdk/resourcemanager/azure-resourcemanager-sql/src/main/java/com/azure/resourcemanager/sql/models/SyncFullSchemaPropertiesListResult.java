@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.fluent.models.SyncFullSchemaPropertiesInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of sync schema properties. */
+/**
+ * A list of sync schema properties.
+ */
 @Immutable
-public final class SyncFullSchemaPropertiesListResult {
+public final class SyncFullSchemaPropertiesListResult implements JsonSerializable<SyncFullSchemaPropertiesListResult> {
     /*
      * Array of results.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SyncFullSchemaPropertiesInner> value;
 
     /*
      * Link to retrieve next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SyncFullSchemaPropertiesListResult class. */
+    /**
+     * Creates an instance of SyncFullSchemaPropertiesListResult class.
+     */
     public SyncFullSchemaPropertiesListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<SyncFullSchemaPropertiesInner> value() {
@@ -39,7 +45,7 @@ public final class SyncFullSchemaPropertiesListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,52 @@ public final class SyncFullSchemaPropertiesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SyncFullSchemaPropertiesListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SyncFullSchemaPropertiesListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SyncFullSchemaPropertiesListResult.
+     */
+    public static SyncFullSchemaPropertiesListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SyncFullSchemaPropertiesListResult deserializedSyncFullSchemaPropertiesListResult
+                = new SyncFullSchemaPropertiesListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SyncFullSchemaPropertiesInner> value
+                        = reader.readArray(reader1 -> SyncFullSchemaPropertiesInner.fromJson(reader1));
+                    deserializedSyncFullSchemaPropertiesListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSyncFullSchemaPropertiesListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSyncFullSchemaPropertiesListResult;
+        });
     }
 }

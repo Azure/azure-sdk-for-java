@@ -17,8 +17,7 @@ public final class BillingResponseListResultImpl implements BillingResponseListR
 
     private final com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager;
 
-    BillingResponseListResultImpl(
-        BillingResponseListResultInner innerObject,
+    BillingResponseListResultImpl(BillingResponseListResultInner innerObject,
         com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

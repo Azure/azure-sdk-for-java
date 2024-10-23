@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -20,7 +18,7 @@ public final class NetworkRuleIpAction extends ExpandableStringEnum<NetworkRuleI
 
     /**
      * Creates a new instance of NetworkRuleIpAction value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -29,18 +27,17 @@ public final class NetworkRuleIpAction extends ExpandableStringEnum<NetworkRuleI
 
     /**
      * Creates or finds a NetworkRuleIpAction from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkRuleIpAction.
      */
-    @JsonCreator
     public static NetworkRuleIpAction fromString(String name) {
         return fromString(name, NetworkRuleIpAction.class);
     }
 
     /**
      * Gets known NetworkRuleIpAction values.
-     *
+     * 
      * @return known NetworkRuleIpAction values.
      */
     public static Collection<NetworkRuleIpAction> values() {

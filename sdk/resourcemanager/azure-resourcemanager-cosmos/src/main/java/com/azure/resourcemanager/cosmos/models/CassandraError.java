@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The CassandraError model.
  */
 @Fluent
-public final class CassandraError {
+public final class CassandraError implements JsonSerializable<CassandraError> {
     /*
      * The code of error that occurred.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * The message of the error.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * The target resource of the error.
      */
-    @JsonProperty(value = "target")
     private String target;
 
     /*
      * Additional information about the error.
      */
-    @JsonProperty(value = "additionalErrorInfo")
     private String additionalErrorInfo;
 
     /**
@@ -128,5 +128,50 @@ public final class CassandraError {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("target", this.target);
+        jsonWriter.writeStringField("additionalErrorInfo", this.additionalErrorInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CassandraError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CassandraError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CassandraError.
+     */
+    public static CassandraError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CassandraError deserializedCassandraError = new CassandraError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedCassandraError.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedCassandraError.message = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    deserializedCassandraError.target = reader.getString();
+                } else if ("additionalErrorInfo".equals(fieldName)) {
+                    deserializedCassandraError.additionalErrorInfo = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCassandraError;
+        });
     }
 }

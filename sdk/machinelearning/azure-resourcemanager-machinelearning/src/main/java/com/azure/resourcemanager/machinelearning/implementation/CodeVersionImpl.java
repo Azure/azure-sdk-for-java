@@ -4,11 +4,15 @@
 
 package com.azure.resourcemanager.machinelearning.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.fluent.models.CodeVersionInner;
 import com.azure.resourcemanager.machinelearning.models.CodeVersion;
 import com.azure.resourcemanager.machinelearning.models.CodeVersionProperties;
+import com.azure.resourcemanager.machinelearning.models.DestinationAsset;
+import com.azure.resourcemanager.machinelearning.models.PendingUploadRequestDto;
+import com.azure.resourcemanager.machinelearning.models.PendingUploadResponseDto;
 
 public final class CodeVersionImpl implements CodeVersion, CodeVersion.Definition, CodeVersion.Update {
     private CodeVersionInner innerObject;
@@ -63,23 +67,19 @@ public final class CodeVersionImpl implements CodeVersion, CodeVersion.Definitio
     }
 
     public CodeVersion create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCodeVersions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, name, version, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCodeVersions()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public CodeVersion create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCodeVersions()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCodeVersions()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -94,54 +94,65 @@ public final class CodeVersionImpl implements CodeVersion, CodeVersion.Definitio
     }
 
     public CodeVersion apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCodeVersions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, name, version, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCodeVersions()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public CodeVersion apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCodeVersions()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCodeVersions()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    CodeVersionImpl(
-        CodeVersionInner innerObject, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
+    CodeVersionImpl(CodeVersionInner innerObject,
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "codes");
-        this.version = Utils.getValueFromIdByName(innerObject.id(), "versions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "codes");
+        this.version = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "versions");
     }
 
     public CodeVersion refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCodeVersions()
-                .getWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCodeVersions()
+            .getWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CodeVersion refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCodeVersions()
-                .getWithResponse(resourceGroupName, workspaceName, name, version, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCodeVersions()
+            .getWithResponse(resourceGroupName, workspaceName, name, version, context)
+            .getValue();
         return this;
+    }
+
+    public void publish(DestinationAsset body) {
+        serviceManager.codeVersions().publish(resourceGroupName, workspaceName, name, version, body);
+    }
+
+    public void publish(DestinationAsset body, Context context) {
+        serviceManager.codeVersions().publish(resourceGroupName, workspaceName, name, version, body, context);
+    }
+
+    public Response<PendingUploadResponseDto> createOrGetStartPendingUploadWithResponse(PendingUploadRequestDto body,
+        Context context) {
+        return serviceManager.codeVersions()
+            .createOrGetStartPendingUploadWithResponse(resourceGroupName, workspaceName, name, version, body, context);
+    }
+
+    public PendingUploadResponseDto createOrGetStartPendingUpload(PendingUploadRequestDto body) {
+        return serviceManager.codeVersions()
+            .createOrGetStartPendingUpload(resourceGroupName, workspaceName, name, version, body);
     }
 
     public CodeVersionImpl withProperties(CodeVersionProperties properties) {

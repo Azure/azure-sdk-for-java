@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Domain registration status.
  */
@@ -131,7 +128,6 @@ public enum DomainStatus {
      * @param value the serialized value to parse.
      * @return the parsed DomainStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static DomainStatus fromString(String value) {
         if (value == null) {
             return null;
@@ -148,7 +144,6 @@ public enum DomainStatus {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

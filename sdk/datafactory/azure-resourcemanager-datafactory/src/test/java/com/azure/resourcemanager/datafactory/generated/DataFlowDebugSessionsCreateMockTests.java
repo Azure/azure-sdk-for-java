@@ -25,7 +25,7 @@ import reactor.core.publisher.Mono;
 public final class DataFlowDebugSessionsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
-        String responseStr = "{\"status\":\"mcjpjrxvsgg\",\"sessionId\":\"brkrfvlqwije\"}";
+        String responseStr = "{\"status\":\"dqoqpqyjebg\",\"sessionId\":\"uazwkzedifwdrrgz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,17 +35,17 @@ public final class DataFlowDebugSessionsCreateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CreateDataFlowDebugSessionResponse response = manager.dataFlowDebugSessions()
-            .create("yortbresx", "cpbtvgiokz",
-                new CreateDataFlowDebugSessionRequest().withComputeType("pvswd")
-                    .withCoreCount(377588877)
-                    .withTimeToLive(1834160720)
-                    .withIntegrationRuntime(new IntegrationRuntimeDebugResource().withName("hqxhtcohrhwxv")
-                        .withProperties(new IntegrationRuntime().withDescription("ussgjmubg")
+            .create("zhdrvkzzvh", "ogjoocnseo",
+                new CreateDataFlowDebugSessionRequest().withComputeType("ktqrvzaabeiqo")
+                    .withCoreCount(1236480850)
+                    .withTimeToLive(195534639)
+                    .withIntegrationRuntime(new IntegrationRuntimeDebugResource().withName("fgswpqunvxtvmb")
+                        .withProperties(new IntegrationRuntime().withDescription("xvqdlwuzkzkhb")
                             .withAdditionalProperties(mapOf("type", "IntegrationRuntime")))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mcjpjrxvsgg", response.status());
-        Assertions.assertEquals("brkrfvlqwije", response.sessionId());
+        Assertions.assertEquals("dqoqpqyjebg", response.status());
+        Assertions.assertEquals("uazwkzedifwdrrgz", response.sessionId());
     }
 
     // Use "Map.of" if available

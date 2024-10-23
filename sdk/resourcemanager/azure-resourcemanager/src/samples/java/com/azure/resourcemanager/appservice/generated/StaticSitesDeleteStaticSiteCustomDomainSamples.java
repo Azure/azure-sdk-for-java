@@ -9,7 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class StaticSitesDeleteStaticSiteCustomDomainSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/DeleteStaticSiteCustomDomain.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/DeleteStaticSiteCustomDomain.json
      */
     /**
      * Sample code: Delete a custom domain for a static site.

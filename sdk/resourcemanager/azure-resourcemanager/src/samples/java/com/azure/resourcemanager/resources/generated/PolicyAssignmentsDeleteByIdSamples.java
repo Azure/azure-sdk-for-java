@@ -9,7 +9,8 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicyAssignmentsDeleteByIdSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/deletePolicyAssignmentById.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * deletePolicyAssignmentById.json
      */
     /**
      * Sample code: Delete a policy assignment by ID.

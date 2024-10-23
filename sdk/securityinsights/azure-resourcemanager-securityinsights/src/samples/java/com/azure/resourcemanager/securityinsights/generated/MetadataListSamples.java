@@ -4,32 +4,36 @@
 
 package com.azure.resourcemanager.securityinsights.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Metadata List. */
+/**
+ * Samples for Metadata List.
+ */
 public final class MetadataListSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/metadata/GetAllMetadata.json
+     * x-ms-original-file:
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/
+     * metadata/GetAllMetadata.json
      */
     /**
      * Sample code: Get all metadata.
-     *
+     * 
      * @param manager Entry point to SecurityInsightsManager.
      */
     public static void getAllMetadata(com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
-        manager.metadatas().list("myRg", "myWorkspace", null, null, null, null, Context.NONE);
+        manager.metadatas().list("myRg", "myWorkspace", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/metadata/GetAllMetadataOData.json
+     * x-ms-original-file:
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/
+     * metadata/GetAllMetadataOData.json
      */
     /**
      * Sample code: Get all metadata with OData filter/orderby/skip/top.
-     *
+     * 
      * @param manager Entry point to SecurityInsightsManager.
      */
     public static void getAllMetadataWithODataFilterOrderbySkipTop(
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
-        manager.metadatas().list("myRg", "myWorkspace", null, null, null, null, Context.NONE);
+        manager.metadatas().list("myRg", "myWorkspace", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }

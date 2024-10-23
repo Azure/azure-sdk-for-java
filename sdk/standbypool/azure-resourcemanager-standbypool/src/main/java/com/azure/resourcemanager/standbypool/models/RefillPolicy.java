@@ -12,7 +12,7 @@ import java.util.Collection;
  */
 public final class RefillPolicy extends ExpandableStringEnum<RefillPolicy> {
     /**
-     * Static value always for RefillPolicy.
+     * A refill policy that standby pool is automatically refilled to maintain maxReadyCapacity.
      */
     public static final RefillPolicy ALWAYS = fromString("always");
 

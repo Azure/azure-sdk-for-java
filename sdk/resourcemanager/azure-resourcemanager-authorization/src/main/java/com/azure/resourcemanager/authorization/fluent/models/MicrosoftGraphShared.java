@@ -5,53 +5,56 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** shared. */
+/**
+ * shared.
+ */
 @Fluent
-public final class MicrosoftGraphShared {
+public final class MicrosoftGraphShared implements JsonSerializable<MicrosoftGraphShared> {
     /*
      * identitySet
      */
-    @JsonProperty(value = "owner")
     private MicrosoftGraphIdentitySet owner;
 
     /*
      * Indicates the scope of how the item is shared: anonymous, organization, or users. Read-only.
      */
-    @JsonProperty(value = "scope")
     private String scope;
 
     /*
      * identitySet
      */
-    @JsonProperty(value = "sharedBy")
     private MicrosoftGraphIdentitySet sharedBy;
 
     /*
      * The UTC date and time when the item was shared. Read-only.
      */
-    @JsonProperty(value = "sharedDateTime")
     private OffsetDateTime sharedDateTime;
 
     /*
      * shared
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphShared class. */
+    /**
+     * Creates an instance of MicrosoftGraphShared class.
+     */
     public MicrosoftGraphShared() {
     }
 
     /**
      * Get the owner property: identitySet.
-     *
+     * 
      * @return the owner value.
      */
     public MicrosoftGraphIdentitySet owner() {
@@ -60,7 +63,7 @@ public final class MicrosoftGraphShared {
 
     /**
      * Set the owner property: identitySet.
-     *
+     * 
      * @param owner the owner value to set.
      * @return the MicrosoftGraphShared object itself.
      */
@@ -72,7 +75,7 @@ public final class MicrosoftGraphShared {
     /**
      * Get the scope property: Indicates the scope of how the item is shared: anonymous, organization, or users.
      * Read-only.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -82,7 +85,7 @@ public final class MicrosoftGraphShared {
     /**
      * Set the scope property: Indicates the scope of how the item is shared: anonymous, organization, or users.
      * Read-only.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the MicrosoftGraphShared object itself.
      */
@@ -93,7 +96,7 @@ public final class MicrosoftGraphShared {
 
     /**
      * Get the sharedBy property: identitySet.
-     *
+     * 
      * @return the sharedBy value.
      */
     public MicrosoftGraphIdentitySet sharedBy() {
@@ -102,7 +105,7 @@ public final class MicrosoftGraphShared {
 
     /**
      * Set the sharedBy property: identitySet.
-     *
+     * 
      * @param sharedBy the sharedBy value to set.
      * @return the MicrosoftGraphShared object itself.
      */
@@ -113,7 +116,7 @@ public final class MicrosoftGraphShared {
 
     /**
      * Get the sharedDateTime property: The UTC date and time when the item was shared. Read-only.
-     *
+     * 
      * @return the sharedDateTime value.
      */
     public OffsetDateTime sharedDateTime() {
@@ -122,7 +125,7 @@ public final class MicrosoftGraphShared {
 
     /**
      * Set the sharedDateTime property: The UTC date and time when the item was shared. Read-only.
-     *
+     * 
      * @param sharedDateTime the sharedDateTime value to set.
      * @return the MicrosoftGraphShared object itself.
      */
@@ -133,17 +136,16 @@ public final class MicrosoftGraphShared {
 
     /**
      * Get the additionalProperties property: shared.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: shared.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphShared object itself.
      */
@@ -152,17 +154,9 @@ public final class MicrosoftGraphShared {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -172,5 +166,63 @@ public final class MicrosoftGraphShared {
         if (sharedBy() != null) {
             sharedBy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("owner", this.owner);
+        jsonWriter.writeStringField("scope", this.scope);
+        jsonWriter.writeJsonField("sharedBy", this.sharedBy);
+        jsonWriter.writeStringField("sharedDateTime",
+            this.sharedDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.sharedDateTime));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphShared from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphShared if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphShared.
+     */
+    public static MicrosoftGraphShared fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphShared deserializedMicrosoftGraphShared = new MicrosoftGraphShared();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("owner".equals(fieldName)) {
+                    deserializedMicrosoftGraphShared.owner = MicrosoftGraphIdentitySet.fromJson(reader);
+                } else if ("scope".equals(fieldName)) {
+                    deserializedMicrosoftGraphShared.scope = reader.getString();
+                } else if ("sharedBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphShared.sharedBy = MicrosoftGraphIdentitySet.fromJson(reader);
+                } else if ("sharedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphShared.sharedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphShared.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphShared;
+        });
     }
 }

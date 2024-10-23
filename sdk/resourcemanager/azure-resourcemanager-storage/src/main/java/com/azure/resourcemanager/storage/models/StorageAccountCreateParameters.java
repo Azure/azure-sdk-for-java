@@ -6,26 +6,27 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountPropertiesCreateParameters;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * The parameters used when creating a storage account.
  */
 @Fluent
-public final class StorageAccountCreateParameters {
+public final class StorageAccountCreateParameters implements JsonSerializable<StorageAccountCreateParameters> {
     /*
      * Required. Gets or sets the SKU name.
      */
-    @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
     /*
      * Required. Indicates the type of storage account.
      */
-    @JsonProperty(value = "kind", required = true)
     private Kind kind;
 
     /*
@@ -33,14 +34,12 @@ public final class StorageAccountCreateParameters {
      * Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is
      * created, but if an identical geo region is specified on update, the request will succeed.
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
      * Optional. Set the extended location of the resource. If not set, the storage account will be created in Azure
      * main region. Otherwise it will be created in the specified extended location
      */
-    @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
     /*
@@ -49,20 +48,16 @@ public final class StorageAccountCreateParameters {
      * must have a key with a length no greater than 128 characters and a value with a length no greater than 256
      * characters.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The identity of the resource.
      */
-    @JsonProperty(value = "identity")
     private Identity identity;
 
     /*
      * The parameters used to create the storage account.
      */
-    @JsonProperty(value = "properties")
     private StorageAccountPropertiesCreateParameters innerProperties;
 
     /**
@@ -849,4 +844,62 @@ public final class StorageAccountCreateParameters {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageAccountCreateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccountCreateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccountCreateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageAccountCreateParameters.
+     */
+    public static StorageAccountCreateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountCreateParameters deserializedStorageAccountCreateParameters
+                = new StorageAccountCreateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedStorageAccountCreateParameters.sku = Sku.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedStorageAccountCreateParameters.kind = Kind.fromString(reader.getString());
+                } else if ("location".equals(fieldName)) {
+                    deserializedStorageAccountCreateParameters.location = reader.getString();
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedStorageAccountCreateParameters.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedStorageAccountCreateParameters.tags = tags;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedStorageAccountCreateParameters.identity = Identity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStorageAccountCreateParameters.innerProperties
+                        = StorageAccountPropertiesCreateParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccountCreateParameters;
+        });
+    }
 }

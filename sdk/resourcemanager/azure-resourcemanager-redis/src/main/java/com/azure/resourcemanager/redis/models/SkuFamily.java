@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class SkuFamily extends ExpandableStringEnum<SkuFamily> {
      * @param name a name to look for.
      * @return the corresponding SkuFamily.
      */
-    @JsonCreator
     public static SkuFamily fromString(String name) {
         return fromString(name, SkuFamily.class);
     }

@@ -61,7 +61,12 @@ public final class StatelessAgentProfile extends AgentProfile {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (resourcePredictions() != null) {
+            resourcePredictions().validate();
+        }
+        if (resourcePredictionsProfile() != null) {
+            resourcePredictionsProfile().validate();
+        }
     }
 
     /**

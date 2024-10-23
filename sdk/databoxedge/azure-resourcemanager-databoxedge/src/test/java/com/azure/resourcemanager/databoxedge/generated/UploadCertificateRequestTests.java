@@ -12,22 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class UploadCertificateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UploadCertificateRequest model =
-            BinaryData
-                .fromString("{\"properties\":{\"authenticationType\":\"Invalid\",\"certificate\":\"bwoenwashrt\"}}")
-                .toObject(UploadCertificateRequest.class);
-        Assertions.assertEquals(AuthenticationType.INVALID, model.authenticationType());
-        Assertions.assertEquals("bwoenwashrt", model.certificate());
+        UploadCertificateRequest model = BinaryData
+            .fromString("{\"properties\":{\"authenticationType\":\"AzureActiveDirectory\",\"certificate\":\"g\"}}")
+            .toObject(UploadCertificateRequest.class);
+        Assertions.assertEquals(AuthenticationType.AZURE_ACTIVE_DIRECTORY, model.authenticationType());
+        Assertions.assertEquals("g", model.certificate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UploadCertificateRequest model =
-            new UploadCertificateRequest()
-                .withAuthenticationType(AuthenticationType.INVALID)
-                .withCertificate("bwoenwashrt");
+        UploadCertificateRequest model
+            = new UploadCertificateRequest().withAuthenticationType(AuthenticationType.AZURE_ACTIVE_DIRECTORY)
+                .withCertificate("g");
         model = BinaryData.fromObject(model).toObject(UploadCertificateRequest.class);
-        Assertions.assertEquals(AuthenticationType.INVALID, model.authenticationType());
-        Assertions.assertEquals("bwoenwashrt", model.certificate());
+        Assertions.assertEquals(AuthenticationType.AZURE_ACTIVE_DIRECTORY, model.authenticationType());
+        Assertions.assertEquals("g", model.certificate());
     }
 }

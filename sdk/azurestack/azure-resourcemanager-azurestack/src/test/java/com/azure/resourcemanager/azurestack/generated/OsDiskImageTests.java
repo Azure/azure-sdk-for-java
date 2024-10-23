@@ -10,9 +10,8 @@ import com.azure.resourcemanager.azurestack.models.OsDiskImage;
 public final class OsDiskImageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OsDiskImage model =
-            BinaryData
-                .fromString("{\"operatingSystem\":\"None\",\"sourceBlobSasUri\":\"okktwhrdxw\"}")
+        OsDiskImage model
+            = BinaryData.fromString("{\"operatingSystem\":\"Windows\",\"sourceBlobSasUri\":\"wlrsffrzpwv\"}")
                 .toObject(OsDiskImage.class);
     }
 

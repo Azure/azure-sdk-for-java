@@ -24,11 +24,16 @@ public final class ConfigServersUpdatePatchSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void configServersUpdatePatch(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getConfigServers().updatePatch("myResourceGroup", "myservice",
-            new ConfigServerResourceInner().withProperties(
-                new ConfigServerProperties().withConfigServer(new ConfigServerSettings().withGitProperty(
-                    new ConfigServerGitProperty().withUri("https://github.com/fake-user/fake-repository.git")
-                        .withLabel("master").withSearchPaths(Arrays.asList("/"))))),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getConfigServers()
+            .updatePatch("myResourceGroup", "myservice",
+                new ConfigServerResourceInner().withProperties(
+                    new ConfigServerProperties().withConfigServer(new ConfigServerSettings().withGitProperty(
+                        new ConfigServerGitProperty().withUri("https://github.com/fake-user/fake-repository.git")
+                            .withLabel("master")
+                            .withSearchPaths(Arrays.asList("/"))))),
+                com.azure.core.util.Context.NONE);
     }
 }

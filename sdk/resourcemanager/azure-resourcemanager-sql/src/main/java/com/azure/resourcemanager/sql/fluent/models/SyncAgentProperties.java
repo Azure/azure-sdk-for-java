@@ -5,62 +5,64 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.SyncAgentState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Properties of an Azure SQL Database sync agent. */
+/**
+ * Properties of an Azure SQL Database sync agent.
+ */
 @Fluent
-public final class SyncAgentProperties {
+public final class SyncAgentProperties implements JsonSerializable<SyncAgentProperties> {
     /*
      * Name of the sync agent.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * ARM resource id of the sync database in the sync agent.
      */
-    @JsonProperty(value = "syncDatabaseId")
     private String syncDatabaseId;
 
     /*
      * Last alive time of the sync agent.
      */
-    @JsonProperty(value = "lastAliveTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastAliveTime;
 
     /*
      * State of the sync agent.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private SyncAgentState state;
 
     /*
      * If the sync agent version is up to date.
      */
-    @JsonProperty(value = "isUpToDate", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isUpToDate;
 
     /*
      * Expiration time of the sync agent version.
      */
-    @JsonProperty(value = "expiryTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expiryTime;
 
     /*
      * Version of the sync agent.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
-    /** Creates an instance of SyncAgentProperties class. */
+    /**
+     * Creates an instance of SyncAgentProperties class.
+     */
     public SyncAgentProperties() {
     }
 
     /**
      * Get the name property: Name of the sync agent.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -69,7 +71,7 @@ public final class SyncAgentProperties {
 
     /**
      * Get the syncDatabaseId property: ARM resource id of the sync database in the sync agent.
-     *
+     * 
      * @return the syncDatabaseId value.
      */
     public String syncDatabaseId() {
@@ -78,7 +80,7 @@ public final class SyncAgentProperties {
 
     /**
      * Set the syncDatabaseId property: ARM resource id of the sync database in the sync agent.
-     *
+     * 
      * @param syncDatabaseId the syncDatabaseId value to set.
      * @return the SyncAgentProperties object itself.
      */
@@ -89,7 +91,7 @@ public final class SyncAgentProperties {
 
     /**
      * Get the lastAliveTime property: Last alive time of the sync agent.
-     *
+     * 
      * @return the lastAliveTime value.
      */
     public OffsetDateTime lastAliveTime() {
@@ -98,7 +100,7 @@ public final class SyncAgentProperties {
 
     /**
      * Get the state property: State of the sync agent.
-     *
+     * 
      * @return the state value.
      */
     public SyncAgentState state() {
@@ -107,7 +109,7 @@ public final class SyncAgentProperties {
 
     /**
      * Get the isUpToDate property: If the sync agent version is up to date.
-     *
+     * 
      * @return the isUpToDate value.
      */
     public Boolean isUpToDate() {
@@ -116,7 +118,7 @@ public final class SyncAgentProperties {
 
     /**
      * Get the expiryTime property: Expiration time of the sync agent version.
-     *
+     * 
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
@@ -125,7 +127,7 @@ public final class SyncAgentProperties {
 
     /**
      * Get the version property: Version of the sync agent.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -134,9 +136,59 @@ public final class SyncAgentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("syncDatabaseId", this.syncDatabaseId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SyncAgentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SyncAgentProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SyncAgentProperties.
+     */
+    public static SyncAgentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SyncAgentProperties deserializedSyncAgentProperties = new SyncAgentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSyncAgentProperties.name = reader.getString();
+                } else if ("syncDatabaseId".equals(fieldName)) {
+                    deserializedSyncAgentProperties.syncDatabaseId = reader.getString();
+                } else if ("lastAliveTime".equals(fieldName)) {
+                    deserializedSyncAgentProperties.lastAliveTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("state".equals(fieldName)) {
+                    deserializedSyncAgentProperties.state = SyncAgentState.fromString(reader.getString());
+                } else if ("isUpToDate".equals(fieldName)) {
+                    deserializedSyncAgentProperties.isUpToDate = reader.getNullable(JsonReader::getBoolean);
+                } else if ("expiryTime".equals(fieldName)) {
+                    deserializedSyncAgentProperties.expiryTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("version".equals(fieldName)) {
+                    deserializedSyncAgentProperties.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSyncAgentProperties;
+        });
     }
 }

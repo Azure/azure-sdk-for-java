@@ -6,49 +6,48 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties of Frontend IP configuration of an application gateway.
  */
 @Fluent
-public final class ApplicationGatewayFrontendIpConfigurationPropertiesFormat {
+public final class ApplicationGatewayFrontendIpConfigurationPropertiesFormat
+    implements JsonSerializable<ApplicationGatewayFrontendIpConfigurationPropertiesFormat> {
     /*
      * PrivateIPAddress of the network interface IP Configuration.
      */
-    @JsonProperty(value = "privateIPAddress")
     private String privateIpAddress;
 
     /*
      * The private IP address allocation method.
      */
-    @JsonProperty(value = "privateIPAllocationMethod")
     private IpAllocationMethod privateIpAllocationMethod;
 
     /*
      * Reference to the subnet resource.
      */
-    @JsonProperty(value = "subnet")
     private SubResource subnet;
 
     /*
      * Reference to the PublicIP resource.
      */
-    @JsonProperty(value = "publicIPAddress")
     private SubResource publicIpAddress;
 
     /*
      * Reference to the application gateway private link configuration.
      */
-    @JsonProperty(value = "privateLinkConfiguration")
     private SubResource privateLinkConfiguration;
 
     /*
      * The provisioning state of the frontend IP configuration resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -174,5 +173,65 @@ public final class ApplicationGatewayFrontendIpConfigurationPropertiesFormat {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("privateIPAddress", this.privateIpAddress);
+        jsonWriter.writeStringField("privateIPAllocationMethod",
+            this.privateIpAllocationMethod == null ? null : this.privateIpAllocationMethod.toString());
+        jsonWriter.writeJsonField("subnet", this.subnet);
+        jsonWriter.writeJsonField("publicIPAddress", this.publicIpAddress);
+        jsonWriter.writeJsonField("privateLinkConfiguration", this.privateLinkConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayFrontendIpConfigurationPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayFrontendIpConfigurationPropertiesFormat if the JsonReader was pointing
+     * to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * ApplicationGatewayFrontendIpConfigurationPropertiesFormat.
+     */
+    public static ApplicationGatewayFrontendIpConfigurationPropertiesFormat fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayFrontendIpConfigurationPropertiesFormat deserializedApplicationGatewayFrontendIpConfigurationPropertiesFormat
+                = new ApplicationGatewayFrontendIpConfigurationPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("privateIPAddress".equals(fieldName)) {
+                    deserializedApplicationGatewayFrontendIpConfigurationPropertiesFormat.privateIpAddress
+                        = reader.getString();
+                } else if ("privateIPAllocationMethod".equals(fieldName)) {
+                    deserializedApplicationGatewayFrontendIpConfigurationPropertiesFormat.privateIpAllocationMethod
+                        = IpAllocationMethod.fromString(reader.getString());
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedApplicationGatewayFrontendIpConfigurationPropertiesFormat.subnet
+                        = SubResource.fromJson(reader);
+                } else if ("publicIPAddress".equals(fieldName)) {
+                    deserializedApplicationGatewayFrontendIpConfigurationPropertiesFormat.publicIpAddress
+                        = SubResource.fromJson(reader);
+                } else if ("privateLinkConfiguration".equals(fieldName)) {
+                    deserializedApplicationGatewayFrontendIpConfigurationPropertiesFormat.privateLinkConfiguration
+                        = SubResource.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApplicationGatewayFrontendIpConfigurationPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayFrontendIpConfigurationPropertiesFormat;
+        });
     }
 }

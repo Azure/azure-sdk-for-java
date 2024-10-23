@@ -5,21 +5,24 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** chatMessageAttachment. */
+/**
+ * chatMessageAttachment.
+ */
 @Fluent
-public final class MicrosoftGraphChatMessageAttachment {
+public final class MicrosoftGraphChatMessageAttachment
+    implements JsonSerializable<MicrosoftGraphChatMessageAttachment> {
     /*
      * The content of the attachment. If the attachment is a rich card, set the property to the rich card object. This
      * property and contentUrl are mutually exclusive.
      */
-    @JsonProperty(value = "content")
     private String content;
 
     /*
@@ -42,49 +45,46 @@ public final class MicrosoftGraphChatMessageAttachment {
      * Set the content property to a ReceiptCard object.application/vnd.microsoft.com.card.signin: A user Sign In card.
      * Set the content property to a SignInCard object.
      */
-    @JsonProperty(value = "contentType")
     private String contentType;
 
     /*
      * URL for the content of the attachment. Supported protocols: http, https, file and data.
      */
-    @JsonProperty(value = "contentUrl")
     private String contentUrl;
 
     /*
      * Read-only. Unique id of the attachment.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Name of the attachment.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
-     * URL to a thumbnail image that the channel can use if it supports using an alternative, smaller form of content
-     * or contentUrl. For example, if you set contentType to application/word and set contentUrl to the location of the
+     * URL to a thumbnail image that the channel can use if it supports using an alternative, smaller form of content or
+     * contentUrl. For example, if you set contentType to application/word and set contentUrl to the location of the
      * Word document, you might include a thumbnail image that represents the document. The channel could display the
      * thumbnail image instead of the document. When the user clicks the image, the channel would open the document.
      */
-    @JsonProperty(value = "thumbnailUrl")
     private String thumbnailUrl;
 
     /*
      * chatMessageAttachment
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphChatMessageAttachment class. */
+    /**
+     * Creates an instance of MicrosoftGraphChatMessageAttachment class.
+     */
     public MicrosoftGraphChatMessageAttachment() {
     }
 
     /**
      * Get the content property: The content of the attachment. If the attachment is a rich card, set the property to
      * the rich card object. This property and contentUrl are mutually exclusive.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -94,7 +94,7 @@ public final class MicrosoftGraphChatMessageAttachment {
     /**
      * Set the content property: The content of the attachment. If the attachment is a rich card, set the property to
      * the rich card object. This property and contentUrl are mutually exclusive.
-     *
+     * 
      * @param content the content value to set.
      * @return the MicrosoftGraphChatMessageAttachment object itself.
      */
@@ -123,7 +123,7 @@ public final class MicrosoftGraphChatMessageAttachment {
      * ThumbnailCard object.application/vnd.microsoft.com.card.receipt: A Receipt card. Set the content property to a
      * ReceiptCard object.application/vnd.microsoft.com.card.signin: A user Sign In card. Set the content property to a
      * SignInCard object.
-     *
+     * 
      * @return the contentType value.
      */
     public String contentType() {
@@ -150,7 +150,7 @@ public final class MicrosoftGraphChatMessageAttachment {
      * ThumbnailCard object.application/vnd.microsoft.com.card.receipt: A Receipt card. Set the content property to a
      * ReceiptCard object.application/vnd.microsoft.com.card.signin: A user Sign In card. Set the content property to a
      * SignInCard object.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the MicrosoftGraphChatMessageAttachment object itself.
      */
@@ -162,7 +162,7 @@ public final class MicrosoftGraphChatMessageAttachment {
     /**
      * Get the contentUrl property: URL for the content of the attachment. Supported protocols: http, https, file and
      * data.
-     *
+     * 
      * @return the contentUrl value.
      */
     public String contentUrl() {
@@ -172,7 +172,7 @@ public final class MicrosoftGraphChatMessageAttachment {
     /**
      * Set the contentUrl property: URL for the content of the attachment. Supported protocols: http, https, file and
      * data.
-     *
+     * 
      * @param contentUrl the contentUrl value to set.
      * @return the MicrosoftGraphChatMessageAttachment object itself.
      */
@@ -183,7 +183,7 @@ public final class MicrosoftGraphChatMessageAttachment {
 
     /**
      * Get the id property: Read-only. Unique id of the attachment.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -192,7 +192,7 @@ public final class MicrosoftGraphChatMessageAttachment {
 
     /**
      * Set the id property: Read-only. Unique id of the attachment.
-     *
+     * 
      * @param id the id value to set.
      * @return the MicrosoftGraphChatMessageAttachment object itself.
      */
@@ -203,7 +203,7 @@ public final class MicrosoftGraphChatMessageAttachment {
 
     /**
      * Get the name property: Name of the attachment.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -212,7 +212,7 @@ public final class MicrosoftGraphChatMessageAttachment {
 
     /**
      * Set the name property: Name of the attachment.
-     *
+     * 
      * @param name the name value to set.
      * @return the MicrosoftGraphChatMessageAttachment object itself.
      */
@@ -227,7 +227,7 @@ public final class MicrosoftGraphChatMessageAttachment {
      * set contentUrl to the location of the Word document, you might include a thumbnail image that represents the
      * document. The channel could display the thumbnail image instead of the document. When the user clicks the image,
      * the channel would open the document.
-     *
+     * 
      * @return the thumbnailUrl value.
      */
     public String thumbnailUrl() {
@@ -240,7 +240,7 @@ public final class MicrosoftGraphChatMessageAttachment {
      * set contentUrl to the location of the Word document, you might include a thumbnail image that represents the
      * document. The channel could display the thumbnail image instead of the document. When the user clicks the image,
      * the channel would open the document.
-     *
+     * 
      * @param thumbnailUrl the thumbnailUrl value to set.
      * @return the MicrosoftGraphChatMessageAttachment object itself.
      */
@@ -251,17 +251,16 @@ public final class MicrosoftGraphChatMessageAttachment {
 
     /**
      * Get the additionalProperties property: chatMessageAttachment.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: chatMessageAttachment.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphChatMessageAttachment object itself.
      */
@@ -270,19 +269,74 @@ public final class MicrosoftGraphChatMessageAttachment {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeStringField("contentType", this.contentType);
+        jsonWriter.writeStringField("contentUrl", this.contentUrl);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("thumbnailUrl", this.thumbnailUrl);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphChatMessageAttachment from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphChatMessageAttachment if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphChatMessageAttachment.
+     */
+    public static MicrosoftGraphChatMessageAttachment fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphChatMessageAttachment deserializedMicrosoftGraphChatMessageAttachment
+                = new MicrosoftGraphChatMessageAttachment();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("content".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessageAttachment.content = reader.getString();
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessageAttachment.contentType = reader.getString();
+                } else if ("contentUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessageAttachment.contentUrl = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessageAttachment.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessageAttachment.name = reader.getString();
+                } else if ("thumbnailUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessageAttachment.thumbnailUrl = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphChatMessageAttachment.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphChatMessageAttachment;
+        });
     }
 }

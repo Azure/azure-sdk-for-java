@@ -2,29 +2,46 @@
 
 > see https://aka.ms/autorest
 
-## Generation
+This is the Autorest configuration file for Mixed Reality Authentication.
 
-You can update the codegen by either running the following commands or by running the `update.ps1` script in PowerShell:
+---
+## Getting Started
+To build the SDK for Mixed Reality Authentication, simply [Install Autorest](https://aka.ms/autorest) and in this folder, run:
 
-```bash
-cd sdk/mixedreality/azure-mixedreality-authentication/swagger
-autorest autorest.md --java --v4 --use=@autorest/java@4.0.16
+> `autorest`
+
+To see additional help and options, run:
+
+> `autorest --help`
+
+### Setup
+```ps
+npm install -g autorest
 ```
 
-### Code generation settings
+### Generation
 
-``` yaml
+```ps
+cd <swagger-folder>
+autorest
+```
+
+## Configuration
+
+```yaml
+use: '@autorest/java@4.1.22'
+output-folder: ../
+java: true
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/aa19725fe79aea2a9dc580f3c66f77f89cc34563/specification/mixedreality/data-plane/Microsoft.MixedReality/preview/2019-02-28-preview/mr-sts.json
 title: MixedRealityStsRestClient
 namespace: com.azure.mixedreality.authentication
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/aa19725fe79aea2a9dc580f3c66f77f89cc34563/specification/mixedreality/data-plane/Microsoft.MixedReality/preview/2019-02-28-preview/mr-sts.json
-java: true
-output-folder: ..\
-generate-client-as-impl: true
+models-subpackage: implementation.models
 generate-client-interfaces: false
+generate-client-as-impl: true
 service-interface-as-public: true
-sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
-models-subpackage: implementation.models
 context-client-method-parameter: true
+sync-methods: none
+stream-style-serialization: true
 ```

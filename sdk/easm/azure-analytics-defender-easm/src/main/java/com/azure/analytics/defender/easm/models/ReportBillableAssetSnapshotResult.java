@@ -5,35 +5,37 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The ReportBillableAssetSnapshotResult model.
  */
 @Immutable
-public final class ReportBillableAssetSnapshotResult {
+public final class ReportBillableAssetSnapshotResult implements JsonSerializable<ReportBillableAssetSnapshotResult> {
 
     /*
      * The date these assets were billed on.
      */
     @Generated
-    @JsonProperty(value = "date")
     private LocalDate date;
 
     /*
      * The total number of billable assets for this date.
      */
     @Generated
-    @JsonProperty(value = "total")
     private Long total;
 
     /*
      * The breakdown of billable asset counts for each asset type.
      */
     @Generated
-    @JsonProperty(value = "assetBreakdown")
     private List<ReportBillableAssetBreakdown> assetBreakdown;
 
     /**
@@ -71,5 +73,52 @@ public final class ReportBillableAssetSnapshotResult {
     @Generated
     public List<ReportBillableAssetBreakdown> getAssetBreakdown() {
         return this.assetBreakdown;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("date", Objects.toString(this.date, null));
+        jsonWriter.writeNumberField("total", this.total);
+        jsonWriter.writeArrayField("assetBreakdown", this.assetBreakdown,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReportBillableAssetSnapshotResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReportBillableAssetSnapshotResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReportBillableAssetSnapshotResult.
+     */
+    @Generated
+    public static ReportBillableAssetSnapshotResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReportBillableAssetSnapshotResult deserializedReportBillableAssetSnapshotResult
+                = new ReportBillableAssetSnapshotResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("date".equals(fieldName)) {
+                    deserializedReportBillableAssetSnapshotResult.date
+                        = reader.getNullable(nonNullReader -> LocalDate.parse(nonNullReader.getString()));
+                } else if ("total".equals(fieldName)) {
+                    deserializedReportBillableAssetSnapshotResult.total = reader.getNullable(JsonReader::getLong);
+                } else if ("assetBreakdown".equals(fieldName)) {
+                    List<ReportBillableAssetBreakdown> assetBreakdown
+                        = reader.readArray(reader1 -> ReportBillableAssetBreakdown.fromJson(reader1));
+                    deserializedReportBillableAssetSnapshotResult.assetBreakdown = assetBreakdown;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedReportBillableAssetSnapshotResult;
+        });
     }
 }

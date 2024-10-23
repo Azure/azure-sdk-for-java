@@ -5,20 +5,32 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 
-/** The DigitalTwinsGetRelationshipByIdHeaders model. */
+/**
+ * The DigitalTwinsGetRelationshipByIdHeaders model.
+ */
 @Fluent
 public final class DigitalTwinsGetRelationshipByIdHeaders {
     /*
      * The ETag property.
      */
-    @JsonProperty(value = "ETag")
     private String eTag;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of DigitalTwinsGetRelationshipByIdHeaders class.
+     * 
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public DigitalTwinsGetRelationshipByIdHeaders(HttpHeaders rawHeaders) {
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+    }
 
     /**
      * Get the eTag property: The ETag property.
-     *
+     * 
      * @return the eTag value.
      */
     public String getETag() {
@@ -27,7 +39,7 @@ public final class DigitalTwinsGetRelationshipByIdHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     *
+     * 
      * @param eTag the eTag value to set.
      * @return the DigitalTwinsGetRelationshipByIdHeaders object itself.
      */
@@ -35,11 +47,4 @@ public final class DigitalTwinsGetRelationshipByIdHeaders {
         this.eTag = eTag;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }

@@ -5,26 +5,28 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appplatform.fluent.models.SupportedApmTypeInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Supported APM types payload.
  */
 @Fluent
-public final class SupportedApmTypes {
+public final class SupportedApmTypes implements JsonSerializable<SupportedApmTypes> {
     /*
      * Collection of the supported APM type
      */
-    @JsonProperty(value = "value")
     private List<SupportedApmTypeInner> value;
 
     /*
      * URL client should use to fetch the next page (per server side paging).
      * It's null for now, added for future use.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -84,5 +86,46 @@ public final class SupportedApmTypes {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SupportedApmTypes from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SupportedApmTypes if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SupportedApmTypes.
+     */
+    public static SupportedApmTypes fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SupportedApmTypes deserializedSupportedApmTypes = new SupportedApmTypes();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SupportedApmTypeInner> value
+                        = reader.readArray(reader1 -> SupportedApmTypeInner.fromJson(reader1));
+                    deserializedSupportedApmTypes.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSupportedApmTypes.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSupportedApmTypes;
+        });
     }
 }

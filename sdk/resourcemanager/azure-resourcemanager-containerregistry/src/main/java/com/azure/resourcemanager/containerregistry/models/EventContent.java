@@ -5,56 +5,55 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The content of the event request message.
  */
 @Fluent
-public final class EventContent {
+public final class EventContent implements JsonSerializable<EventContent> {
     /*
      * The event ID.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The time at which the event occurred.
      */
-    @JsonProperty(value = "timestamp")
     private OffsetDateTime timestamp;
 
     /*
      * The action that encompasses the provided event.
      */
-    @JsonProperty(value = "action")
     private String action;
 
     /*
      * The target of the event.
      */
-    @JsonProperty(value = "target")
     private Target target;
 
     /*
      * The request that generated the event.
      */
-    @JsonProperty(value = "request")
     private Request request;
 
     /*
      * The agent that initiated the event. For most situations, this could be from the authorization context of the
      * request.
      */
-    @JsonProperty(value = "actor")
     private Actor actor;
 
     /*
      * The registry node that generated the event. Put differently, while the actor initiates the event, the source
      * generates it.
      */
-    @JsonProperty(value = "source")
     private Source source;
 
     /**
@@ -225,5 +224,61 @@ public final class EventContent {
         if (source() != null) {
             source().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("timestamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+        jsonWriter.writeStringField("action", this.action);
+        jsonWriter.writeJsonField("target", this.target);
+        jsonWriter.writeJsonField("request", this.request);
+        jsonWriter.writeJsonField("actor", this.actor);
+        jsonWriter.writeJsonField("source", this.source);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventContent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventContent if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventContent.
+     */
+    public static EventContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventContent deserializedEventContent = new EventContent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedEventContent.id = reader.getString();
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedEventContent.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("action".equals(fieldName)) {
+                    deserializedEventContent.action = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    deserializedEventContent.target = Target.fromJson(reader);
+                } else if ("request".equals(fieldName)) {
+                    deserializedEventContent.request = Request.fromJson(reader);
+                } else if ("actor".equals(fieldName)) {
+                    deserializedEventContent.actor = Actor.fromJson(reader);
+                } else if ("source".equals(fieldName)) {
+                    deserializedEventContent.source = Source.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventContent;
+        });
     }
 }

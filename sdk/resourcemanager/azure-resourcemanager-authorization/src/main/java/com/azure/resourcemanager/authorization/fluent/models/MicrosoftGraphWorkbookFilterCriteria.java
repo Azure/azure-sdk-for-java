@@ -5,78 +5,74 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** workbookFilterCriteria. */
+/**
+ * workbookFilterCriteria.
+ */
 @Fluent
-public final class MicrosoftGraphWorkbookFilterCriteria {
+public final class MicrosoftGraphWorkbookFilterCriteria
+    implements JsonSerializable<MicrosoftGraphWorkbookFilterCriteria> {
     /*
      * The color property.
      */
-    @JsonProperty(value = "color")
     private String color;
 
     /*
      * The criterion1 property.
      */
-    @JsonProperty(value = "criterion1")
     private String criterion1;
 
     /*
      * The criterion2 property.
      */
-    @JsonProperty(value = "criterion2")
     private String criterion2;
 
     /*
      * The dynamicCriteria property.
      */
-    @JsonProperty(value = "dynamicCriteria")
     private String dynamicCriteria;
 
     /*
      * The filterOn property.
      */
-    @JsonProperty(value = "filterOn")
     private String filterOn;
 
     /*
      * workbookIcon
      */
-    @JsonProperty(value = "icon")
     private MicrosoftGraphWorkbookIcon icon;
 
     /*
      * The operator property.
      */
-    @JsonProperty(value = "operator")
     private String operator;
 
     /*
      * Json
      */
-    @JsonProperty(value = "values")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> values;
 
     /*
      * workbookFilterCriteria
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphWorkbookFilterCriteria class. */
+    /**
+     * Creates an instance of MicrosoftGraphWorkbookFilterCriteria class.
+     */
     public MicrosoftGraphWorkbookFilterCriteria() {
     }
 
     /**
      * Get the color property: The color property.
-     *
+     * 
      * @return the color value.
      */
     public String color() {
@@ -85,7 +81,7 @@ public final class MicrosoftGraphWorkbookFilterCriteria {
 
     /**
      * Set the color property: The color property.
-     *
+     * 
      * @param color the color value to set.
      * @return the MicrosoftGraphWorkbookFilterCriteria object itself.
      */
@@ -96,7 +92,7 @@ public final class MicrosoftGraphWorkbookFilterCriteria {
 
     /**
      * Get the criterion1 property: The criterion1 property.
-     *
+     * 
      * @return the criterion1 value.
      */
     public String criterion1() {
@@ -105,7 +101,7 @@ public final class MicrosoftGraphWorkbookFilterCriteria {
 
     /**
      * Set the criterion1 property: The criterion1 property.
-     *
+     * 
      * @param criterion1 the criterion1 value to set.
      * @return the MicrosoftGraphWorkbookFilterCriteria object itself.
      */
@@ -116,7 +112,7 @@ public final class MicrosoftGraphWorkbookFilterCriteria {
 
     /**
      * Get the criterion2 property: The criterion2 property.
-     *
+     * 
      * @return the criterion2 value.
      */
     public String criterion2() {
@@ -125,7 +121,7 @@ public final class MicrosoftGraphWorkbookFilterCriteria {
 
     /**
      * Set the criterion2 property: The criterion2 property.
-     *
+     * 
      * @param criterion2 the criterion2 value to set.
      * @return the MicrosoftGraphWorkbookFilterCriteria object itself.
      */
@@ -136,7 +132,7 @@ public final class MicrosoftGraphWorkbookFilterCriteria {
 
     /**
      * Get the dynamicCriteria property: The dynamicCriteria property.
-     *
+     * 
      * @return the dynamicCriteria value.
      */
     public String dynamicCriteria() {
@@ -145,7 +141,7 @@ public final class MicrosoftGraphWorkbookFilterCriteria {
 
     /**
      * Set the dynamicCriteria property: The dynamicCriteria property.
-     *
+     * 
      * @param dynamicCriteria the dynamicCriteria value to set.
      * @return the MicrosoftGraphWorkbookFilterCriteria object itself.
      */
@@ -156,7 +152,7 @@ public final class MicrosoftGraphWorkbookFilterCriteria {
 
     /**
      * Get the filterOn property: The filterOn property.
-     *
+     * 
      * @return the filterOn value.
      */
     public String filterOn() {
@@ -165,7 +161,7 @@ public final class MicrosoftGraphWorkbookFilterCriteria {
 
     /**
      * Set the filterOn property: The filterOn property.
-     *
+     * 
      * @param filterOn the filterOn value to set.
      * @return the MicrosoftGraphWorkbookFilterCriteria object itself.
      */
@@ -176,7 +172,7 @@ public final class MicrosoftGraphWorkbookFilterCriteria {
 
     /**
      * Get the icon property: workbookIcon.
-     *
+     * 
      * @return the icon value.
      */
     public MicrosoftGraphWorkbookIcon icon() {
@@ -185,7 +181,7 @@ public final class MicrosoftGraphWorkbookFilterCriteria {
 
     /**
      * Set the icon property: workbookIcon.
-     *
+     * 
      * @param icon the icon value to set.
      * @return the MicrosoftGraphWorkbookFilterCriteria object itself.
      */
@@ -196,7 +192,7 @@ public final class MicrosoftGraphWorkbookFilterCriteria {
 
     /**
      * Get the operator property: The operator property.
-     *
+     * 
      * @return the operator value.
      */
     public String operator() {
@@ -205,7 +201,7 @@ public final class MicrosoftGraphWorkbookFilterCriteria {
 
     /**
      * Set the operator property: The operator property.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the MicrosoftGraphWorkbookFilterCriteria object itself.
      */
@@ -216,7 +212,7 @@ public final class MicrosoftGraphWorkbookFilterCriteria {
 
     /**
      * Get the values property: Json.
-     *
+     * 
      * @return the values value.
      */
     public Map<String, Object> values() {
@@ -225,7 +221,7 @@ public final class MicrosoftGraphWorkbookFilterCriteria {
 
     /**
      * Set the values property: Json.
-     *
+     * 
      * @param values the values value to set.
      * @return the MicrosoftGraphWorkbookFilterCriteria object itself.
      */
@@ -236,17 +232,16 @@ public final class MicrosoftGraphWorkbookFilterCriteria {
 
     /**
      * Get the additionalProperties property: workbookFilterCriteria.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: workbookFilterCriteria.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphWorkbookFilterCriteria object itself.
      */
@@ -255,22 +250,84 @@ public final class MicrosoftGraphWorkbookFilterCriteria {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (icon() != null) {
             icon().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("color", this.color);
+        jsonWriter.writeStringField("criterion1", this.criterion1);
+        jsonWriter.writeStringField("criterion2", this.criterion2);
+        jsonWriter.writeStringField("dynamicCriteria", this.dynamicCriteria);
+        jsonWriter.writeStringField("filterOn", this.filterOn);
+        jsonWriter.writeJsonField("icon", this.icon);
+        jsonWriter.writeStringField("operator", this.operator);
+        jsonWriter.writeMapField("values", this.values, (writer, element) -> writer.writeUntyped(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphWorkbookFilterCriteria from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphWorkbookFilterCriteria if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphWorkbookFilterCriteria.
+     */
+    public static MicrosoftGraphWorkbookFilterCriteria fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphWorkbookFilterCriteria deserializedMicrosoftGraphWorkbookFilterCriteria
+                = new MicrosoftGraphWorkbookFilterCriteria();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("color".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookFilterCriteria.color = reader.getString();
+                } else if ("criterion1".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookFilterCriteria.criterion1 = reader.getString();
+                } else if ("criterion2".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookFilterCriteria.criterion2 = reader.getString();
+                } else if ("dynamicCriteria".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookFilterCriteria.dynamicCriteria = reader.getString();
+                } else if ("filterOn".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookFilterCriteria.filterOn = reader.getString();
+                } else if ("icon".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookFilterCriteria.icon = MicrosoftGraphWorkbookIcon.fromJson(reader);
+                } else if ("operator".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookFilterCriteria.operator = reader.getString();
+                } else if ("values".equals(fieldName)) {
+                    Map<String, Object> values = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedMicrosoftGraphWorkbookFilterCriteria.values = values;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphWorkbookFilterCriteria.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphWorkbookFilterCriteria;
+        });
     }
 }

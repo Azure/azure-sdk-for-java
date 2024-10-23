@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Specifies the name of the setting to which the content applies. Possible values are: FirstLogonCommands and
  * AutoLogon.
@@ -37,7 +34,6 @@ public enum SettingNames {
      * @param value the serialized value to parse.
      * @return the parsed SettingNames object, or null if unable to parse.
      */
-    @JsonCreator
     public static SettingNames fromString(String value) {
         if (value == null) {
             return null;
@@ -54,7 +50,6 @@ public enum SettingNames {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

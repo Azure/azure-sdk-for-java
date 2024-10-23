@@ -11,7 +11,8 @@ import com.azure.resourcemanager.resources.models.ResourceName;
  */
 public final class ResourceNameCheckResourceNameSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/CheckResourceName.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/CheckResourceName.json
      */
     /**
      * Sample code: CheckValidityForAResourceName.

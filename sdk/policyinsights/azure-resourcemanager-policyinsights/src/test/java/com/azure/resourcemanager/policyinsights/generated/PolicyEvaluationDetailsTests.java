@@ -10,44 +10,38 @@ import com.azure.resourcemanager.policyinsights.models.IfNotExistsEvaluationDeta
 import com.azure.resourcemanager.policyinsights.models.PolicyEvaluationDetails;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PolicyEvaluationDetailsTests {
-    @Test
-    public void testDeserialize() {
-        PolicyEvaluationDetails model =
-            BinaryData
-                .fromString(
-                    "{\"evaluatedExpressions\":[{\"result\":\"nbbelda\",\"expression\":\"zbaliourqha\",\"expressionKind\":\"uhashsfwx\",\"path\":\"owzxcu\",\"operator\":\"ooxdjebwpuc\"}],\"ifNotExistsDetails\":{\"resourceId\":\"vo\",\"totalResources\":1748456219}}")
-                .toObject(PolicyEvaluationDetails.class);
-        Assertions.assertEquals("nbbelda", model.evaluatedExpressions().get(0).result());
-        Assertions.assertEquals("zbaliourqha", model.evaluatedExpressions().get(0).expression());
-        Assertions.assertEquals("owzxcu", model.evaluatedExpressions().get(0).path());
-        Assertions.assertEquals("ooxdjebwpuc", model.evaluatedExpressions().get(0).operator());
-        Assertions.assertEquals("vo", model.ifNotExistsDetails().resourceId());
-        Assertions.assertEquals(1748456219, model.ifNotExistsDetails().totalResources());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PolicyEvaluationDetails model = BinaryData.fromString(
+            "{\"evaluatedExpressions\":[{\"result\":\"biwkojgcyzt\",\"expression\":\"mznbaeqphch\",\"expressionKind\":\"rn\",\"path\":\"x\",\"expressionValue\":\"datauwrykqgaifmvikl\",\"targetValue\":\"datadvk\",\"operator\":\"ejd\"}],\"ifNotExistsDetails\":{\"resourceId\":\"cvdsrhnj\",\"totalResources\":1028204807}}")
+            .toObject(PolicyEvaluationDetails.class);
+        Assertions.assertEquals("biwkojgcyzt", model.evaluatedExpressions().get(0).result());
+        Assertions.assertEquals("mznbaeqphch", model.evaluatedExpressions().get(0).expression());
+        Assertions.assertEquals("x", model.evaluatedExpressions().get(0).path());
+        Assertions.assertEquals("ejd", model.evaluatedExpressions().get(0).operator());
+        Assertions.assertEquals("cvdsrhnj", model.ifNotExistsDetails().resourceId());
+        Assertions.assertEquals(1028204807, model.ifNotExistsDetails().totalResources());
     }
 
-    @Test
-    public void testSerialize() {
-        PolicyEvaluationDetails model =
-            new PolicyEvaluationDetails()
-                .withEvaluatedExpressions(
-                    Arrays
-                        .asList(
-                            new ExpressionEvaluationDetails()
-                                .withResult("nbbelda")
-                                .withExpression("zbaliourqha")
-                                .withPath("owzxcu")
-                                .withOperator("ooxdjebwpuc")))
-                .withIfNotExistsDetails(
-                    new IfNotExistsEvaluationDetails().withResourceId("vo").withTotalResources(1748456219));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PolicyEvaluationDetails model = new PolicyEvaluationDetails()
+            .withEvaluatedExpressions(Arrays.asList(new ExpressionEvaluationDetails().withResult("biwkojgcyzt")
+                .withExpression("mznbaeqphch")
+                .withPath("x")
+                .withExpressionValue("datauwrykqgaifmvikl")
+                .withTargetValue("datadvk")
+                .withOperator("ejd")))
+            .withIfNotExistsDetails(
+                new IfNotExistsEvaluationDetails().withResourceId("cvdsrhnj").withTotalResources(1028204807));
         model = BinaryData.fromObject(model).toObject(PolicyEvaluationDetails.class);
-        Assertions.assertEquals("nbbelda", model.evaluatedExpressions().get(0).result());
-        Assertions.assertEquals("zbaliourqha", model.evaluatedExpressions().get(0).expression());
-        Assertions.assertEquals("owzxcu", model.evaluatedExpressions().get(0).path());
-        Assertions.assertEquals("ooxdjebwpuc", model.evaluatedExpressions().get(0).operator());
-        Assertions.assertEquals("vo", model.ifNotExistsDetails().resourceId());
-        Assertions.assertEquals(1748456219, model.ifNotExistsDetails().totalResources());
+        Assertions.assertEquals("biwkojgcyzt", model.evaluatedExpressions().get(0).result());
+        Assertions.assertEquals("mznbaeqphch", model.evaluatedExpressions().get(0).expression());
+        Assertions.assertEquals("x", model.evaluatedExpressions().get(0).path());
+        Assertions.assertEquals("ejd", model.evaluatedExpressions().get(0).operator());
+        Assertions.assertEquals("cvdsrhnj", model.ifNotExistsDetails().resourceId());
+        Assertions.assertEquals(1028204807, model.ifNotExistsDetails().totalResources());
     }
 }

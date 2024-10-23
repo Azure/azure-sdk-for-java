@@ -11,14 +11,14 @@ public final class OrcWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OrcWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"OrcWriteSettings\",\"maxRowsPerFile\":\"datavrzdjgmg\",\"fileNamePrefix\":\"datayvbsiaenv\",\"\":{\"vcuwfybxorr\":\"databzpizgau\",\"sqarbtrk\":\"dataeo\",\"efijpjiudnust\":\"datan\"}}")
+            "{\"type\":\"OrcWriteSettings\",\"maxRowsPerFile\":\"datambjr\",\"fileNamePrefix\":\"dataiufqxrlzij\",\"\":{\"gmcmlzmfetidnewr\":\"dataz\",\"gowdavpqyhax\":\"datajgwnmxc\",\"gkwpbnefabgt\":\"dataorzozf\",\"ugddycfyfau\":\"dataggoppmxcm\"}}")
             .toObject(OrcWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OrcWriteSettings model
-            = new OrcWriteSettings().withMaxRowsPerFile("datavrzdjgmg").withFileNamePrefix("datayvbsiaenv");
+            = new OrcWriteSettings().withMaxRowsPerFile("datambjr").withFileNamePrefix("dataiufqxrlzij");
         model = BinaryData.fromObject(model).toObject(OrcWriteSettings.class);
     }
 }

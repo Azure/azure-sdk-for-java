@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -67,7 +66,6 @@ public final class RunStatus extends ExpandableStringEnum<RunStatus> {
      * @param name a name to look for.
      * @return the corresponding RunStatus.
      */
-    @JsonCreator
     public static RunStatus fromString(String name) {
         return fromString(name, RunStatus.class);
     }

@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Backup status.
  */
@@ -76,7 +73,6 @@ public enum BackupItemStatus {
      * @param value the serialized value to parse.
      * @return the parsed BackupItemStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static BackupItemStatus fromString(String value) {
         if (value == null) {
             return null;
@@ -93,7 +89,6 @@ public enum BackupItemStatus {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

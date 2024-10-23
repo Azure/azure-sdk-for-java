@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ColumnTransformerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ColumnTransformer model =
-            BinaryData
-                .fromString("{\"fields\":[\"dsmjtgr\",\"gdgkki\"],\"parameters\":\"dataplkcsm\"}")
-                .toObject(ColumnTransformer.class);
-        Assertions.assertEquals("dsmjtgr", model.fields().get(0));
+        ColumnTransformer model = BinaryData.fromString(
+            "{\"fields\":[\"psdudgco\",\"zomehxlantolam\",\"bijux\",\"qllczipvwdtgckz\"],\"parameters\":\"dataiqdlratrkw\"}")
+            .toObject(ColumnTransformer.class);
+        Assertions.assertEquals("psdudgco", model.fields().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ColumnTransformer model =
-            new ColumnTransformer().withFields(Arrays.asList("dsmjtgr", "gdgkki")).withParameters("dataplkcsm");
+        ColumnTransformer model = new ColumnTransformer()
+            .withFields(Arrays.asList("psdudgco", "zomehxlantolam", "bijux", "qllczipvwdtgckz"))
+            .withParameters("dataiqdlratrkw");
         model = BinaryData.fromObject(model).toObject(ColumnTransformer.class);
-        Assertions.assertEquals("dsmjtgr", model.fields().get(0));
+        Assertions.assertEquals("psdudgco", model.fields().get(0));
     }
 }

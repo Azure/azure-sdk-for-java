@@ -5,34 +5,41 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Periodic timer event source. */
+/**
+ * Periodic timer event source.
+ */
 @Fluent
-public final class PeriodicTimerSourceInfo {
+public final class PeriodicTimerSourceInfo implements JsonSerializable<PeriodicTimerSourceInfo> {
     /*
      * The time of the day that results in a valid trigger. Schedule is computed with reference to the time specified
      * upto seconds. If timezone is not specified the time will considered to be in device timezone. The value will
      * always be returned as UTC time.
      */
-    @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
      * Periodic frequency at which timer event needs to be raised. Supports daily, hourly, minutes, and seconds.
      */
-    @JsonProperty(value = "schedule", required = true)
     private String schedule;
 
     /*
      * Topic where periodic events are published to IoT device.
      */
-    @JsonProperty(value = "topic")
     private String topic;
 
-    /** Creates an instance of PeriodicTimerSourceInfo class. */
+    /**
+     * Creates an instance of PeriodicTimerSourceInfo class.
+     */
     public PeriodicTimerSourceInfo() {
     }
 
@@ -40,7 +47,7 @@ public final class PeriodicTimerSourceInfo {
      * Get the startTime property: The time of the day that results in a valid trigger. Schedule is computed with
      * reference to the time specified upto seconds. If timezone is not specified the time will considered to be in
      * device timezone. The value will always be returned as UTC time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -51,7 +58,7 @@ public final class PeriodicTimerSourceInfo {
      * Set the startTime property: The time of the day that results in a valid trigger. Schedule is computed with
      * reference to the time specified upto seconds. If timezone is not specified the time will considered to be in
      * device timezone. The value will always be returned as UTC time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the PeriodicTimerSourceInfo object itself.
      */
@@ -63,7 +70,7 @@ public final class PeriodicTimerSourceInfo {
     /**
      * Get the schedule property: Periodic frequency at which timer event needs to be raised. Supports daily, hourly,
      * minutes, and seconds.
-     *
+     * 
      * @return the schedule value.
      */
     public String schedule() {
@@ -73,7 +80,7 @@ public final class PeriodicTimerSourceInfo {
     /**
      * Set the schedule property: Periodic frequency at which timer event needs to be raised. Supports daily, hourly,
      * minutes, and seconds.
-     *
+     * 
      * @param schedule the schedule value to set.
      * @return the PeriodicTimerSourceInfo object itself.
      */
@@ -84,7 +91,7 @@ public final class PeriodicTimerSourceInfo {
 
     /**
      * Get the topic property: Topic where periodic events are published to IoT device.
-     *
+     * 
      * @return the topic value.
      */
     public String topic() {
@@ -93,7 +100,7 @@ public final class PeriodicTimerSourceInfo {
 
     /**
      * Set the topic property: Topic where periodic events are published to IoT device.
-     *
+     * 
      * @param topic the topic value to set.
      * @return the PeriodicTimerSourceInfo object itself.
      */
@@ -104,23 +111,66 @@ public final class PeriodicTimerSourceInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (startTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property startTime in model PeriodicTimerSourceInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property startTime in model PeriodicTimerSourceInfo"));
         }
         if (schedule() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property schedule in model PeriodicTimerSourceInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property schedule in model PeriodicTimerSourceInfo"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PeriodicTimerSourceInfo.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("schedule", this.schedule);
+        jsonWriter.writeStringField("topic", this.topic);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeriodicTimerSourceInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeriodicTimerSourceInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PeriodicTimerSourceInfo.
+     */
+    public static PeriodicTimerSourceInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeriodicTimerSourceInfo deserializedPeriodicTimerSourceInfo = new PeriodicTimerSourceInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedPeriodicTimerSourceInfo.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("schedule".equals(fieldName)) {
+                    deserializedPeriodicTimerSourceInfo.schedule = reader.getString();
+                } else if ("topic".equals(fieldName)) {
+                    deserializedPeriodicTimerSourceInfo.topic = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeriodicTimerSourceInfo;
+        });
+    }
 }

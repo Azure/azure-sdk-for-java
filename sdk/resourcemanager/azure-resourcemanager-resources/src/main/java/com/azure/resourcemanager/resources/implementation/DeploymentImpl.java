@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
+import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.Context;
@@ -10,10 +11,19 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.serializer.TypeReference;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluent.models.DeploymentExtendedInner;
+import com.azure.resourcemanager.resources.fluent.models.DeploymentInner;
+import com.azure.resourcemanager.resources.fluent.models.ProviderInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.resourcemanager.resources.models.DebugSetting;
 import com.azure.resourcemanager.resources.models.Dependency;
 import com.azure.resourcemanager.resources.models.Deployment;
@@ -34,15 +44,6 @@ import com.azure.resourcemanager.resources.models.ResourceReference;
 import com.azure.resourcemanager.resources.models.TemplateLink;
 import com.azure.resourcemanager.resources.models.WhatIfOperationResult;
 import com.azure.resourcemanager.resources.models.WhatIfResultFormat;
-import com.azure.core.management.Region;
-import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.resourcemanager.resources.fluent.models.DeploymentExtendedInner;
-import com.azure.resourcemanager.resources.fluent.models.DeploymentInner;
-import com.azure.resourcemanager.resources.fluent.models.ProviderInner;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -66,7 +67,6 @@ public final class DeploymentImpl extends
 
     private final ClientLogger logger = new ClientLogger(DeploymentImpl.class);
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final SerializerAdapter SERIALIZER_ADAPTER =
         SerializerFactory.createDefaultManagementSerializerAdapter();
     private static final TypeReference<Map<String, DeploymentParameter>> TYPE_REFERENCE_MAP_DEPLOYMENT_PARAMETER =
@@ -276,7 +276,9 @@ public final class DeploymentImpl extends
 
     @Override
     public DeploymentImpl withTemplate(String templateJson) throws IOException {
-        return withTemplate(OBJECT_MAPPER.readTree(templateJson));
+        try (JsonReader jsonReader = JsonProviders.createReader(templateJson)) {
+            return withTemplate(jsonReader.readUntyped());
+        }
     }
 
     @Override
@@ -617,7 +619,7 @@ public final class DeploymentImpl extends
     private Map<String, DeploymentParameter> getParametersFromJsonString(String parametersJson) throws IOException {
         return SERIALIZER_ADAPTER.deserialize(
             parametersJson,
-            TYPE_REFERENCE_MAP_DEPLOYMENT_PARAMETER.getType(),
+            TYPE_REFERENCE_MAP_DEPLOYMENT_PARAMETER.getJavaType(),
             SerializerEncoding.JSON);
     }
 }

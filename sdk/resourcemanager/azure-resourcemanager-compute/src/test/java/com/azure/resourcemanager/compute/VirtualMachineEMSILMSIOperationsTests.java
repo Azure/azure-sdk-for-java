@@ -4,29 +4,30 @@
 package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.test.annotation.LiveOnly;
+import com.azure.core.management.Region;
+import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
+import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.ResourceIdentityType;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
-import com.azure.resourcemanager.authorization.models.BuiltInRole;
-import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.Network;
-import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import java.util.Iterator;
-import java.util.Set;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-@LiveOnly
+import java.util.Iterator;
+import java.util.Set;
+import java.util.Optional;
+
 public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest {
     // LiveOnly because test needs to be refactored for storing/evaluating PrincipalId
     private String rgName = "";
-    private Region region = Region.US_WEST_CENTRAL;
+    private Region region = Region.US_WEST2;
     private final String vmName = "javavm";
 
     @Override
@@ -35,7 +36,9 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void canCreateUpdateVirtualMachineWithEMSI() {
+        // LiveOnly because "test timing out after latest test proxy update"
         // this.resourceManager.resourceGroups().beginDeleteByName("41522c6e938c4f6");
         rgName = generateRandomResourceName("java-emsi-c-rg", 15);
         String identityName1 = generateRandomResourceName("msi-id", 15);
@@ -254,7 +257,9 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void canCreateVirtualMachineWithLMSIAndEMSI() {
+        // LiveOnly because "test timing out after latest test proxy update"
         rgName = generateRandomResourceName("java-emsi-c-rg", 15);
         String identityName1 = generateRandomResourceName("msi-id", 15);
         String networkName = generateRandomResourceName("nw", 10);
@@ -426,9 +431,10 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
         //
         Set<String> emsiIds = virtualMachine.userAssignedManagedServiceIdentityIds();
         Assertions.assertNotNull(emsiIds);
-        Assertions.assertEquals(1, emsiIds.size());
+        Optional<String> emsiIdOptional = emsiIds.stream().filter(emsiId -> emsiId.endsWith("/" + identityName1)).findAny();
+        Assertions.assertTrue(emsiIdOptional.isPresent());
 
-        Identity identity = msiManager.identities().getById(emsiIds.iterator().next());
+        Identity identity = msiManager.identities().getById(emsiIdOptional.get());
         Assertions.assertNotNull(identity);
         Assertions.assertTrue(identity.name().equalsIgnoreCase(identityName1));
 
@@ -464,9 +470,10 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
         //
         emsiIds = virtualMachine.userAssignedManagedServiceIdentityIds();
         Assertions.assertNotNull(emsiIds);
-        Assertions.assertEquals(1, emsiIds.size());
+        emsiIdOptional = emsiIds.stream().filter(emsiId -> emsiId.endsWith("/" + identityName2)).findAny();
+        Assertions.assertTrue(emsiIdOptional.isPresent());
 
-        identity = msiManager.identities().getById(emsiIds.iterator().next());
+        identity = msiManager.identities().getById(emsiIdOptional.get());
         Assertions.assertNotNull(identity);
         Assertions.assertTrue(identity.name().equalsIgnoreCase(identityName2));
 

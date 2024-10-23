@@ -46,7 +46,7 @@ To take dependency on a particular version of the library that isn't present in 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity-broker</artifactId>
-    <version>1.1.2</version>
+    <version>1.1.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -152,6 +152,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [javadoc]: https://learn.microsoft.com/java/api/com.azure.identity.broker?view=azure-java-stable
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [secrets_client_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-secrets
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity-broker

@@ -30,7 +30,7 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
     public void testAsyncGetMapTileset(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getMapTileset(TilesetId.MICROSOFT_BASE_HYBRID))
-            .assertNext(actualResults -> validateGetMapTileset(TestUtils.getExpectedMapTileset(), actualResults))
+            .assertNext(MapsRenderClientTestBase::validateGetMapTileset)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -42,9 +42,8 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
     public void testAsyncGetMapTilesetWithResponse(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getMapTilesetWithResponse(TilesetId.MICROSOFT_BASE_HYBRID))
-            .assertNext(response -> validateGetMapTilesetWithResponse(TestUtils.getExpectedMapTileset(), response))
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+            .assertNext(MapsRenderClientTestBase::validateGetMapTilesetWithResponse)
+            .expectComplete();
     }
 
     // Case 2: 400 invalid input
@@ -134,8 +133,7 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
         GeoBoundingBox boundingBox = new GeoBoundingBox(52.41064, 4.84228, 52.41072, 4.84239);
         StepVerifier.create(client.getCopyrightFromBoundingBox(boundingBox, true))
-            .assertNext(actualResults -> validateGetCopyrightCaptionFromBoundingBox(
-                TestUtils.getExpectedCopyrightFromBoundingBox(), actualResults))
+            .assertNext(MapsRenderClientTestBase::validateGetCopyrightCaptionFromBoundingBox)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -149,8 +147,7 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
         GeoBoundingBox boundingBox = new GeoBoundingBox(52.41064, 4.84228, 52.41072, 4.84239);
         StepVerifier.create(client.getCopyrightFromBoundingBoxWithResponse(boundingBox, true))
-            .assertNext(response -> validateGetCopyrightCaptionFromBoundingBoxWithResponse(
-                TestUtils.getExpectedCopyrightFromBoundingBox(), response))
+            .assertNext(MapsRenderClientTestBase::validateGetCopyrightCaptionFromBoundingBoxWithResponse)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -177,7 +174,7 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getCopyrightForTile(new TileIndex().setX(9).setY(22).setZ(6), true))
             .assertNext(
-                actualResults -> validateGetCopyrightForTile(TestUtils.getExpectedCopyrightForTile(), actualResults))
+                MapsRenderClientTestBase::validateGetCopyrightForTile)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -191,7 +188,7 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getCopyrightForTileWithResponse(new TileIndex().setX(9).setY(22).setZ(6), true))
             .assertNext(
-                response -> validateGetCopyrightForTileWithResponse(TestUtils.getExpectedCopyrightForTile(), response))
+                MapsRenderClientTestBase::validateGetCopyrightForTileWithResponse)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -217,7 +214,7 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getCopyrightForWorld(true))
             .assertNext(
-                actualResults -> validateGetCopyrightForWorld(TestUtils.getExpectedCopyrightForWorld(), actualResults))
+                MapsRenderClientTestBase::validateGetCopyrightForWorld)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -230,8 +227,7 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
         MapsRenderServiceVersion serviceVersion) {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getCopyrightForWorldWithResponse(true))
-            .assertNext(response -> validateGetCopyrightForWorldWithResponse(TestUtils.getExpectedCopyrightForWorld(),
-                response))
+            .assertNext(MapsRenderClientTestBase::validateGetCopyrightForWorldWithResponse)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }

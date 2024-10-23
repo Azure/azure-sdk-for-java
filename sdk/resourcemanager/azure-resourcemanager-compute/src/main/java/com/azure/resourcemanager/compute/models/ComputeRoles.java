@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.compute.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 /** Defines values for ComputeRoles. */
 public enum ComputeRoles {
@@ -26,7 +24,6 @@ public enum ComputeRoles {
      * @param value the serialized value to parse.
      * @return the parsed ComputeRoles object, or null if unable to parse.
      */
-    @JsonCreator
     public static ComputeRoles fromString(String value) {
         ComputeRoles[] items = ComputeRoles.values();
         for (ComputeRoles item : items) {
@@ -37,7 +34,6 @@ public enum ComputeRoles {
         return null;
     }
 
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

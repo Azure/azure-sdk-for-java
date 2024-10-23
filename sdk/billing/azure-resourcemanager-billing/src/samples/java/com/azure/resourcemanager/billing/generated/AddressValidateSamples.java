@@ -6,47 +6,43 @@ package com.azure.resourcemanager.billing.generated;
 
 import com.azure.resourcemanager.billing.models.AddressDetails;
 
-/** Samples for Address Validate. */
+/**
+ * Samples for Address Validate.
+ */
 public final class AddressValidateSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/AddressInvalid.json
+     * x-ms-original-file:
+     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/addressValidateInvalid.json
      */
     /**
-     * Sample code: AddressInvalid.
-     *
+     * Sample code: AddressValidateInvalid.
+     * 
      * @param manager Entry point to BillingManager.
      */
-    public static void addressInvalid(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager
-            .address()
-            .validateWithResponse(
-                new AddressDetails()
-                    .withAddressLine1("1 Test")
-                    .withCity("bellevue")
-                    .withRegion("wa")
-                    .withCountry("us")
-                    .withPostalCode("fakeTokenPlaceholder"),
-                com.azure.core.util.Context.NONE);
+    public static void addressValidateInvalid(com.azure.resourcemanager.billing.BillingManager manager) {
+        manager.address()
+            .validateWithResponse(new AddressDetails().withAddressLine1("1 Test")
+                .withCity("bellevue")
+                .withCountry("us")
+                .withPostalCode("fakeTokenPlaceholder")
+                .withRegion("wa"), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/AddressValid.json
+     * x-ms-original-file:
+     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/addressValidateValid.json
      */
     /**
-     * Sample code: AddressValid.
-     *
+     * Sample code: AddressValidateValid.
+     * 
      * @param manager Entry point to BillingManager.
      */
-    public static void addressValid(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager
-            .address()
-            .validateWithResponse(
-                new AddressDetails()
-                    .withAddressLine1("1 Test Address")
-                    .withCity("bellevue")
-                    .withRegion("wa")
-                    .withCountry("us")
-                    .withPostalCode("fakeTokenPlaceholder"),
-                com.azure.core.util.Context.NONE);
+    public static void addressValidateValid(com.azure.resourcemanager.billing.BillingManager manager) {
+        manager.address()
+            .validateWithResponse(new AddressDetails().withAddressLine1("1 Test")
+                .withCity("bellevue")
+                .withCountry("us")
+                .withPostalCode("fakeTokenPlaceholder")
+                .withRegion("wa"), com.azure.core.util.Context.NONE);
     }
 }

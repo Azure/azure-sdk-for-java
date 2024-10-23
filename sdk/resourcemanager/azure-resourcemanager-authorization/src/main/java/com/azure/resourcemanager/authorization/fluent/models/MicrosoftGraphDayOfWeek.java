@@ -5,35 +5,50 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** dayOfWeek. */
+/**
+ * dayOfWeek.
+ */
 public final class MicrosoftGraphDayOfWeek extends ExpandableStringEnum<MicrosoftGraphDayOfWeek> {
-    /** Static value sunday for MicrosoftGraphDayOfWeek. */
+    /**
+     * Static value sunday for MicrosoftGraphDayOfWeek.
+     */
     public static final MicrosoftGraphDayOfWeek SUNDAY = fromString("sunday");
 
-    /** Static value monday for MicrosoftGraphDayOfWeek. */
+    /**
+     * Static value monday for MicrosoftGraphDayOfWeek.
+     */
     public static final MicrosoftGraphDayOfWeek MONDAY = fromString("monday");
 
-    /** Static value tuesday for MicrosoftGraphDayOfWeek. */
+    /**
+     * Static value tuesday for MicrosoftGraphDayOfWeek.
+     */
     public static final MicrosoftGraphDayOfWeek TUESDAY = fromString("tuesday");
 
-    /** Static value wednesday for MicrosoftGraphDayOfWeek. */
+    /**
+     * Static value wednesday for MicrosoftGraphDayOfWeek.
+     */
     public static final MicrosoftGraphDayOfWeek WEDNESDAY = fromString("wednesday");
 
-    /** Static value thursday for MicrosoftGraphDayOfWeek. */
+    /**
+     * Static value thursday for MicrosoftGraphDayOfWeek.
+     */
     public static final MicrosoftGraphDayOfWeek THURSDAY = fromString("thursday");
 
-    /** Static value friday for MicrosoftGraphDayOfWeek. */
+    /**
+     * Static value friday for MicrosoftGraphDayOfWeek.
+     */
     public static final MicrosoftGraphDayOfWeek FRIDAY = fromString("friday");
 
-    /** Static value saturday for MicrosoftGraphDayOfWeek. */
+    /**
+     * Static value saturday for MicrosoftGraphDayOfWeek.
+     */
     public static final MicrosoftGraphDayOfWeek SATURDAY = fromString("saturday");
 
     /**
      * Creates a new instance of MicrosoftGraphDayOfWeek value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,18 +57,17 @@ public final class MicrosoftGraphDayOfWeek extends ExpandableStringEnum<Microsof
 
     /**
      * Creates or finds a MicrosoftGraphDayOfWeek from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphDayOfWeek.
      */
-    @JsonCreator
     public static MicrosoftGraphDayOfWeek fromString(String name) {
         return fromString(name, MicrosoftGraphDayOfWeek.class);
     }
 
     /**
      * Gets known MicrosoftGraphDayOfWeek values.
-     *
+     * 
      * @return known MicrosoftGraphDayOfWeek values.
      */
     public static Collection<MicrosoftGraphDayOfWeek> values() {

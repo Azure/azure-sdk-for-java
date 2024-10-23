@@ -6,46 +6,35 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Azure Key Vault secret reference.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = AzureKeyVaultSecretReference.class,
-    visible = true)
-@JsonTypeName("AzureKeyVaultSecret")
 @Fluent
 public final class AzureKeyVaultSecretReference extends SecretBase {
     /*
      * Type of the secret.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "AzureKeyVaultSecret";
 
     /*
      * The Azure Key Vault linked service reference.
      */
-    @JsonProperty(value = "store", required = true)
     private LinkedServiceReference store;
 
     /*
      * The name of the secret in Azure Key Vault. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "secretName", required = true)
     private Object secretName;
 
     /*
      * The version of the secret in Azure Key Vault. The default value is the latest version of the secret. Type: string
      * (or Expression with resultType string).
      */
-    @JsonProperty(value = "secretVersion")
     private Object secretVersion;
 
     /**
@@ -151,4 +140,50 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureKeyVaultSecretReference.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("store", this.store);
+        jsonWriter.writeUntypedField("secretName", this.secretName);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("secretVersion", this.secretVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureKeyVaultSecretReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureKeyVaultSecretReference if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureKeyVaultSecretReference.
+     */
+    public static AzureKeyVaultSecretReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureKeyVaultSecretReference deserializedAzureKeyVaultSecretReference = new AzureKeyVaultSecretReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("store".equals(fieldName)) {
+                    deserializedAzureKeyVaultSecretReference.store = LinkedServiceReference.fromJson(reader);
+                } else if ("secretName".equals(fieldName)) {
+                    deserializedAzureKeyVaultSecretReference.secretName = reader.readUntyped();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureKeyVaultSecretReference.type = reader.getString();
+                } else if ("secretVersion".equals(fieldName)) {
+                    deserializedAzureKeyVaultSecretReference.secretVersion = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureKeyVaultSecretReference;
+        });
+    }
 }

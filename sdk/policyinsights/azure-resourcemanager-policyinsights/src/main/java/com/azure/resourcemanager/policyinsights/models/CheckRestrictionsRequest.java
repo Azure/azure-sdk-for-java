@@ -6,31 +6,37 @@ package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The check policy restrictions parameters describing the resource that is being evaluated. */
+/**
+ * The check policy restrictions parameters describing the resource that is being evaluated.
+ */
 @Fluent
-public final class CheckRestrictionsRequest {
+public final class CheckRestrictionsRequest implements JsonSerializable<CheckRestrictionsRequest> {
     /*
      * The information about the resource that will be evaluated.
      */
-    @JsonProperty(value = "resourceDetails", required = true)
     private CheckRestrictionsResourceDetails resourceDetails;
 
     /*
      * The list of fields and values that should be evaluated for potential restrictions.
      */
-    @JsonProperty(value = "pendingFields")
     private List<PendingField> pendingFields;
 
-    /** Creates an instance of CheckRestrictionsRequest class. */
+    /**
+     * Creates an instance of CheckRestrictionsRequest class.
+     */
     public CheckRestrictionsRequest() {
     }
 
     /**
      * Get the resourceDetails property: The information about the resource that will be evaluated.
-     *
+     * 
      * @return the resourceDetails value.
      */
     public CheckRestrictionsResourceDetails resourceDetails() {
@@ -39,7 +45,7 @@ public final class CheckRestrictionsRequest {
 
     /**
      * Set the resourceDetails property: The information about the resource that will be evaluated.
-     *
+     * 
      * @param resourceDetails the resourceDetails value to set.
      * @return the CheckRestrictionsRequest object itself.
      */
@@ -51,7 +57,7 @@ public final class CheckRestrictionsRequest {
     /**
      * Get the pendingFields property: The list of fields and values that should be evaluated for potential
      * restrictions.
-     *
+     * 
      * @return the pendingFields value.
      */
     public List<PendingField> pendingFields() {
@@ -61,7 +67,7 @@ public final class CheckRestrictionsRequest {
     /**
      * Set the pendingFields property: The list of fields and values that should be evaluated for potential
      * restrictions.
-     *
+     * 
      * @param pendingFields the pendingFields value to set.
      * @return the CheckRestrictionsRequest object itself.
      */
@@ -72,15 +78,14 @@ public final class CheckRestrictionsRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceDetails in model CheckRestrictionsRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resourceDetails in model CheckRestrictionsRequest"));
         } else {
             resourceDetails().validate();
         }
@@ -90,4 +95,46 @@ public final class CheckRestrictionsRequest {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CheckRestrictionsRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resourceDetails", this.resourceDetails);
+        jsonWriter.writeArrayField("pendingFields", this.pendingFields, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckRestrictionsRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckRestrictionsRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CheckRestrictionsRequest.
+     */
+    public static CheckRestrictionsRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckRestrictionsRequest deserializedCheckRestrictionsRequest = new CheckRestrictionsRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceDetails".equals(fieldName)) {
+                    deserializedCheckRestrictionsRequest.resourceDetails
+                        = CheckRestrictionsResourceDetails.fromJson(reader);
+                } else if ("pendingFields".equals(fieldName)) {
+                    List<PendingField> pendingFields = reader.readArray(reader1 -> PendingField.fromJson(reader1));
+                    deserializedCheckRestrictionsRequest.pendingFields = pendingFields;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckRestrictionsRequest;
+        });
+    }
 }

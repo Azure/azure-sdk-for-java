@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualNetworkProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworkProfile model =
-            BinaryData.fromString("{\"id\":\"ys\",\"subnet\":\"i\"}").toObject(VirtualNetworkProfile.class);
+        VirtualNetworkProfile model
+            = BinaryData.fromString("{\"id\":\"ys\",\"subnet\":\"i\"}").toObject(VirtualNetworkProfile.class);
         Assertions.assertEquals("ys", model.id());
         Assertions.assertEquals("i", model.subnet());
     }

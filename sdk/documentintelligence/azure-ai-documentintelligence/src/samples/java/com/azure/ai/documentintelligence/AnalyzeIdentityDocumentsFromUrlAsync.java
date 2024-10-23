@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Async sample for analyzing commonly found identity document fields from a file source URL.
- * See fields found on a license <a href=https://aka.ms/documentintelligence/iddocumentfields>here</a>
+ * See fields found on a license <a href=https://aka.ms/formrecognizer/iddocumentfields>here</a>
  */
 public class AnalyzeIdentityDocumentsFromUrlAsync {
 
@@ -40,6 +40,7 @@ public class AnalyzeIdentityDocumentsFromUrlAsync {
                 + "azure-ai-documentintelligence/src/samples/resources/sample-forms/IdentityDocuments/license.png";
         PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeIdentityDocumentPoller =
             client.beginAnalyzeDocument("prebuilt-idDocument",
+                null,
                 null,
                 null,
                 null,

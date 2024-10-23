@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of DedicatedCloudNodes. */
+/**
+ * Resource collection API of DedicatedCloudNodes.
+ */
 public interface DedicatedCloudNodes {
     /**
      * Implements list of dedicated cloud nodes within subscription method
-     *
-     * <p>Returns list of dedicate cloud nodes within subscription.
-     *
+     * 
+     * Returns list of dedicate cloud nodes within subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of dedicated nodes response model as paginated response with {@link PagedIterable}.
@@ -23,9 +25,9 @@ public interface DedicatedCloudNodes {
 
     /**
      * Implements list of dedicated cloud nodes within subscription method
-     *
-     * <p>Returns list of dedicate cloud nodes within subscription.
-     *
+     * 
+     * Returns list of dedicate cloud nodes within subscription.
+     * 
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
      * @param skipToken to be used by nextLink implementation.
@@ -39,9 +41,9 @@ public interface DedicatedCloudNodes {
 
     /**
      * Implements list of dedicated cloud nodes within RG method
-     *
-     * <p>Returns list of dedicate cloud nodes within resource group.
-     *
+     * 
+     * Returns list of dedicate cloud nodes within resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -52,9 +54,9 @@ public interface DedicatedCloudNodes {
 
     /**
      * Implements list of dedicated cloud nodes within RG method
-     *
-     * <p>Returns list of dedicate cloud nodes within resource group.
-     *
+     * 
+     * Returns list of dedicate cloud nodes within resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
@@ -65,14 +67,14 @@ public interface DedicatedCloudNodes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of dedicated nodes response model as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DedicatedCloudNode> listByResourceGroup(
-        String resourceGroupName, String filter, Integer top, String skipToken, Context context);
+    PagedIterable<DedicatedCloudNode> listByResourceGroup(String resourceGroupName, String filter, Integer top,
+        String skipToken, Context context);
 
     /**
      * Implements dedicated cloud node GET method
-     *
-     * <p>Returns dedicated cloud node.
-     *
+     * 
+     * Returns dedicated cloud node.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param dedicatedCloudNodeName dedicated cloud node name.
      * @param context The context to associate with this operation.
@@ -81,14 +83,14 @@ public interface DedicatedCloudNodes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dedicated cloud node model along with {@link Response}.
      */
-    Response<DedicatedCloudNode> getByResourceGroupWithResponse(
-        String resourceGroupName, String dedicatedCloudNodeName, Context context);
+    Response<DedicatedCloudNode> getByResourceGroupWithResponse(String resourceGroupName, String dedicatedCloudNodeName,
+        Context context);
 
     /**
      * Implements dedicated cloud node GET method
-     *
-     * <p>Returns dedicated cloud node.
-     *
+     * 
+     * Returns dedicated cloud node.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param dedicatedCloudNodeName dedicated cloud node name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -100,9 +102,9 @@ public interface DedicatedCloudNodes {
 
     /**
      * Implements dedicated cloud node DELETE method
-     *
-     * <p>Delete dedicated cloud node.
-     *
+     * 
+     * Delete dedicated cloud node.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param dedicatedCloudNodeName dedicated cloud node name.
      * @param context The context to associate with this operation.
@@ -111,14 +113,14 @@ public interface DedicatedCloudNodes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String dedicatedCloudNodeName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String dedicatedCloudNodeName,
+        Context context);
 
     /**
      * Implements dedicated cloud node DELETE method
-     *
-     * <p>Delete dedicated cloud node.
-     *
+     * 
+     * Delete dedicated cloud node.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param dedicatedCloudNodeName dedicated cloud node name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,9 +131,9 @@ public interface DedicatedCloudNodes {
 
     /**
      * Implements dedicated cloud node GET method
-     *
-     * <p>Returns dedicated cloud node.
-     *
+     * 
+     * Returns dedicated cloud node.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -142,9 +144,9 @@ public interface DedicatedCloudNodes {
 
     /**
      * Implements dedicated cloud node GET method
-     *
-     * <p>Returns dedicated cloud node.
-     *
+     * 
+     * Returns dedicated cloud node.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -156,9 +158,9 @@ public interface DedicatedCloudNodes {
 
     /**
      * Implements dedicated cloud node DELETE method
-     *
-     * <p>Delete dedicated cloud node.
-     *
+     * 
+     * Delete dedicated cloud node.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -168,9 +170,9 @@ public interface DedicatedCloudNodes {
 
     /**
      * Implements dedicated cloud node DELETE method
-     *
-     * <p>Delete dedicated cloud node.
-     *
+     * 
+     * Delete dedicated cloud node.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -182,7 +184,7 @@ public interface DedicatedCloudNodes {
 
     /**
      * Begins definition for a new DedicatedCloudNode resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new DedicatedCloudNode definition.
      */

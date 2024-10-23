@@ -31,6 +31,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.messaging.eventhubs.stress.util.TestUtils.blockingWait;
 import static com.azure.messaging.eventhubs.stress.util.TestUtils.createMessagePayload;
+import static com.azure.messaging.eventhubs.stress.util.TestUtils.getBuilder;
 import static com.azure.messaging.eventhubs.stress.util.TestUtils.getProcessorBuilder;
 
 /**
@@ -100,11 +101,13 @@ public class EventForwarder extends EventHubsScenario {
     }
 
     private EventHubProducerAsyncClient getForwardProducer() {
-        return toClose(new EventHubClientBuilder()
+        // Gets the builder then overwrites the previously set values with new forwarder ones.
+        final EventHubClientBuilder builder = getBuilder(options)
             .connectionString(forwardConnectionString)
             .eventHubName(forwardEventHubName)
-            .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
-            .buildAsyncProducerClient());
+            .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)));
+
+        return toClose(builder.buildAsyncProducerClient());
     }
 
     @SuppressWarnings("try")

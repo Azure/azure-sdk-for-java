@@ -6,31 +6,30 @@ package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Resource group export result.
  */
 @Fluent
-public final class ResourceGroupExportResultInner {
+public final class ResourceGroupExportResultInner implements JsonSerializable<ResourceGroupExportResultInner> {
     /*
      * The template content. Used if outputFormat is empty or set to 'Json'.
      */
-    @JsonProperty(value = "template")
     private Object template;
 
     /*
      * The formatted export content. Used if outputFormat is set to 'Bicep'.
      */
-    @JsonProperty(value = "output")
     private String output;
 
     /*
-     * Error Response
-     * 
      * The template export error.
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
 
     /**
@@ -80,9 +79,7 @@ public final class ResourceGroupExportResultInner {
     }
 
     /**
-     * Get the error property: Error Response
-     * 
-     * The template export error.
+     * Get the error property: The template export error.
      * 
      * @return the error value.
      */
@@ -91,9 +88,7 @@ public final class ResourceGroupExportResultInner {
     }
 
     /**
-     * Set the error property: Error Response
-     * 
-     * The template export error.
+     * Set the error property: The template export error.
      * 
      * @param error the error value to set.
      * @return the ResourceGroupExportResultInner object itself.
@@ -109,5 +104,48 @@ public final class ResourceGroupExportResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("template", this.template);
+        jsonWriter.writeStringField("output", this.output);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceGroupExportResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceGroupExportResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceGroupExportResultInner.
+     */
+    public static ResourceGroupExportResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceGroupExportResultInner deserializedResourceGroupExportResultInner
+                = new ResourceGroupExportResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("template".equals(fieldName)) {
+                    deserializedResourceGroupExportResultInner.template = reader.readUntyped();
+                } else if ("output".equals(fieldName)) {
+                    deserializedResourceGroupExportResultInner.output = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedResourceGroupExportResultInner.error = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceGroupExportResultInner;
+        });
     }
 }

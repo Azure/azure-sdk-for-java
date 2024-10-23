@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -62,7 +61,6 @@ public final class UnitType extends ExpandableStringEnum<UnitType> {
      * @param name a name to look for.
      * @return the corresponding UnitType.
      */
-    @JsonCreator
     public static UnitType fromString(String name) {
         return fromString(name, UnitType.class);
     }

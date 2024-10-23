@@ -6,17 +6,20 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Define user session group by clause variables.
  */
 @Fluent
-public final class GroupByVariable {
+public final class GroupByVariable implements JsonSerializable<GroupByVariable> {
     /*
      * User Session clause variable.
      */
-    @JsonProperty(value = "variableName", required = true)
     private ApplicationGatewayFirewallUserSessionVariable variableName;
 
     /**
@@ -58,4 +61,42 @@ public final class GroupByVariable {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GroupByVariable.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("variableName", this.variableName == null ? null : this.variableName.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GroupByVariable from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GroupByVariable if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GroupByVariable.
+     */
+    public static GroupByVariable fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GroupByVariable deserializedGroupByVariable = new GroupByVariable();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("variableName".equals(fieldName)) {
+                    deserializedGroupByVariable.variableName
+                        = ApplicationGatewayFirewallUserSessionVariable.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGroupByVariable;
+        });
+    }
 }

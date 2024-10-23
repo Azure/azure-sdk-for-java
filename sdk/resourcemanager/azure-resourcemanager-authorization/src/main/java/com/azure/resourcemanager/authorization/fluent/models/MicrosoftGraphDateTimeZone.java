@@ -5,42 +5,45 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** dateTimeTimeZone. */
+/**
+ * dateTimeTimeZone.
+ */
 @Fluent
-public final class MicrosoftGraphDateTimeZone {
+public final class MicrosoftGraphDateTimeZone implements JsonSerializable<MicrosoftGraphDateTimeZone> {
     /*
      * A single point of time in a combined date and time representation ({date}T{time}; for example,
      * 2017-08-29T04:00:00.0000000).
      */
-    @JsonProperty(value = "dateTime")
     private String dateTime;
 
     /*
      * Represents a time zone, for example, 'Pacific Standard Time'. See below for more possible values.
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
     /*
      * dateTimeTimeZone
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphDateTimeZone class. */
+    /**
+     * Creates an instance of MicrosoftGraphDateTimeZone class.
+     */
     public MicrosoftGraphDateTimeZone() {
     }
 
     /**
      * Get the dateTime property: A single point of time in a combined date and time representation ({date}T{time}; for
      * example, 2017-08-29T04:00:00.0000000).
-     *
+     * 
      * @return the dateTime value.
      */
     public String dateTime() {
@@ -50,7 +53,7 @@ public final class MicrosoftGraphDateTimeZone {
     /**
      * Set the dateTime property: A single point of time in a combined date and time representation ({date}T{time}; for
      * example, 2017-08-29T04:00:00.0000000).
-     *
+     * 
      * @param dateTime the dateTime value to set.
      * @return the MicrosoftGraphDateTimeZone object itself.
      */
@@ -62,7 +65,7 @@ public final class MicrosoftGraphDateTimeZone {
     /**
      * Get the timeZone property: Represents a time zone, for example, 'Pacific Standard Time'. See below for more
      * possible values.
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -72,7 +75,7 @@ public final class MicrosoftGraphDateTimeZone {
     /**
      * Set the timeZone property: Represents a time zone, for example, 'Pacific Standard Time'. See below for more
      * possible values.
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the MicrosoftGraphDateTimeZone object itself.
      */
@@ -83,17 +86,16 @@ public final class MicrosoftGraphDateTimeZone {
 
     /**
      * Get the additionalProperties property: dateTimeTimeZone.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: dateTimeTimeZone.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphDateTimeZone object itself.
      */
@@ -102,19 +104,61 @@ public final class MicrosoftGraphDateTimeZone {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dateTime", this.dateTime);
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphDateTimeZone from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphDateTimeZone if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphDateTimeZone.
+     */
+    public static MicrosoftGraphDateTimeZone fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphDateTimeZone deserializedMicrosoftGraphDateTimeZone = new MicrosoftGraphDateTimeZone();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphDateTimeZone.dateTime = reader.getString();
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedMicrosoftGraphDateTimeZone.timeZone = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphDateTimeZone.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphDateTimeZone;
+        });
     }
 }

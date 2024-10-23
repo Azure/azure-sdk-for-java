@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.ImmutabilityPolicyState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The properties of an ImmutabilityPolicy of a blob container.
  */
 @Fluent
-public final class ImmutabilityPolicyProperty {
+public final class ImmutabilityPolicyProperty implements JsonSerializable<ImmutabilityPolicyProperty> {
     /*
      * The immutability period for the blobs in the container since the policy creation, in days.
      */
-    @JsonProperty(value = "immutabilityPeriodSinceCreationInDays")
     private Integer immutabilityPeriodSinceCreationInDays;
 
     /*
      * The ImmutabilityPolicy state of a blob container, possible values include: Locked and Unlocked.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private ImmutabilityPolicyState state;
 
     /*
@@ -31,7 +33,6 @@ public final class ImmutabilityPolicyProperty {
      * and any existing blocks cannot be modified or deleted. This property cannot be changed with
      * ExtendImmutabilityPolicy API.
      */
-    @JsonProperty(value = "allowProtectedAppendWrites")
     private Boolean allowProtectedAppendWrites;
 
     /*
@@ -41,7 +42,6 @@ public final class ImmutabilityPolicyProperty {
      * ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites' and 'allowProtectedAppendWritesAll' properties are
      * mutually exclusive.
      */
-    @JsonProperty(value = "allowProtectedAppendWritesAll")
     private Boolean allowProtectedAppendWritesAll;
 
     /**
@@ -143,5 +143,54 @@ public final class ImmutabilityPolicyProperty {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("immutabilityPeriodSinceCreationInDays",
+            this.immutabilityPeriodSinceCreationInDays);
+        jsonWriter.writeBooleanField("allowProtectedAppendWrites", this.allowProtectedAppendWrites);
+        jsonWriter.writeBooleanField("allowProtectedAppendWritesAll", this.allowProtectedAppendWritesAll);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImmutabilityPolicyProperty from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImmutabilityPolicyProperty if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImmutabilityPolicyProperty.
+     */
+    public static ImmutabilityPolicyProperty fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImmutabilityPolicyProperty deserializedImmutabilityPolicyProperty = new ImmutabilityPolicyProperty();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("immutabilityPeriodSinceCreationInDays".equals(fieldName)) {
+                    deserializedImmutabilityPolicyProperty.immutabilityPeriodSinceCreationInDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("state".equals(fieldName)) {
+                    deserializedImmutabilityPolicyProperty.state
+                        = ImmutabilityPolicyState.fromString(reader.getString());
+                } else if ("allowProtectedAppendWrites".equals(fieldName)) {
+                    deserializedImmutabilityPolicyProperty.allowProtectedAppendWrites
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowProtectedAppendWritesAll".equals(fieldName)) {
+                    deserializedImmutabilityPolicyProperty.allowProtectedAppendWritesAll
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImmutabilityPolicyProperty;
+        });
     }
 }

@@ -6,38 +6,38 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Custom Events Trigger properties.
  */
 @Fluent
-public final class CustomEventsTriggerTypeProperties {
+public final class CustomEventsTriggerTypeProperties implements JsonSerializable<CustomEventsTriggerTypeProperties> {
     /*
      * The event subject must begin with the pattern provided for trigger to fire. At least one of these must be
      * provided: subjectBeginsWith, subjectEndsWith.
      */
-    @JsonProperty(value = "subjectBeginsWith")
     private String subjectBeginsWith;
 
     /*
      * The event subject must end with the pattern provided for trigger to fire. At least one of these must be provided:
      * subjectBeginsWith, subjectEndsWith.
      */
-    @JsonProperty(value = "subjectEndsWith")
     private String subjectEndsWith;
 
     /*
      * The list of event types that cause this trigger to fire.
      */
-    @JsonProperty(value = "events", required = true)
     private List<Object> events;
 
     /*
      * The ARM resource ID of the Azure Event Grid Topic.
      */
-    @JsonProperty(value = "scope", required = true)
     private String scope;
 
     /**
@@ -149,4 +149,52 @@ public final class CustomEventsTriggerTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomEventsTriggerTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("events", this.events, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("scope", this.scope);
+        jsonWriter.writeStringField("subjectBeginsWith", this.subjectBeginsWith);
+        jsonWriter.writeStringField("subjectEndsWith", this.subjectEndsWith);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomEventsTriggerTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomEventsTriggerTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomEventsTriggerTypeProperties.
+     */
+    public static CustomEventsTriggerTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomEventsTriggerTypeProperties deserializedCustomEventsTriggerTypeProperties
+                = new CustomEventsTriggerTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("events".equals(fieldName)) {
+                    List<Object> events = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedCustomEventsTriggerTypeProperties.events = events;
+                } else if ("scope".equals(fieldName)) {
+                    deserializedCustomEventsTriggerTypeProperties.scope = reader.getString();
+                } else if ("subjectBeginsWith".equals(fieldName)) {
+                    deserializedCustomEventsTriggerTypeProperties.subjectBeginsWith = reader.getString();
+                } else if ("subjectEndsWith".equals(fieldName)) {
+                    deserializedCustomEventsTriggerTypeProperties.subjectEndsWith = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomEventsTriggerTypeProperties;
+        });
+    }
 }

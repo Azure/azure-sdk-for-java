@@ -5,74 +5,74 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Role definition properties. */
+/**
+ * Role definition properties.
+ */
 @Fluent
-public final class RoleDefinitionProperties {
+public final class RoleDefinitionProperties implements JsonSerializable<RoleDefinitionProperties> {
     /*
      * The role name.
      */
-    @JsonProperty(value = "roleName")
     private String roleName;
 
     /*
      * The role definition description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The role type.
      */
-    @JsonProperty(value = "type")
     private String roleType;
 
     /*
      * Role definition permissions.
      */
-    @JsonProperty(value = "permissions")
     private List<PermissionInner> permissions;
 
     /*
      * Role definition assignable scopes.
      */
-    @JsonProperty(value = "assignableScopes")
     private List<String> assignableScopes;
 
     /*
      * Time it was created
      */
-    @JsonProperty(value = "createdOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
 
     /*
      * Time it was updated
      */
-    @JsonProperty(value = "updatedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime updatedOn;
 
     /*
      * Id of the user who created the assignment
      */
-    @JsonProperty(value = "createdBy", access = JsonProperty.Access.WRITE_ONLY)
     private String createdBy;
 
     /*
      * Id of the user who updated the assignment
      */
-    @JsonProperty(value = "updatedBy", access = JsonProperty.Access.WRITE_ONLY)
     private String updatedBy;
 
-    /** Creates an instance of RoleDefinitionProperties class. */
+    /**
+     * Creates an instance of RoleDefinitionProperties class.
+     */
     public RoleDefinitionProperties() {
     }
 
     /**
      * Get the roleName property: The role name.
-     *
+     * 
      * @return the roleName value.
      */
     public String roleName() {
@@ -81,7 +81,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Set the roleName property: The role name.
-     *
+     * 
      * @param roleName the roleName value to set.
      * @return the RoleDefinitionProperties object itself.
      */
@@ -92,7 +92,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Get the description property: The role definition description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -101,7 +101,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Set the description property: The role definition description.
-     *
+     * 
      * @param description the description value to set.
      * @return the RoleDefinitionProperties object itself.
      */
@@ -112,7 +112,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Get the roleType property: The role type.
-     *
+     * 
      * @return the roleType value.
      */
     public String roleType() {
@@ -121,7 +121,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Set the roleType property: The role type.
-     *
+     * 
      * @param roleType the roleType value to set.
      * @return the RoleDefinitionProperties object itself.
      */
@@ -132,7 +132,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Get the permissions property: Role definition permissions.
-     *
+     * 
      * @return the permissions value.
      */
     public List<PermissionInner> permissions() {
@@ -141,7 +141,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Set the permissions property: Role definition permissions.
-     *
+     * 
      * @param permissions the permissions value to set.
      * @return the RoleDefinitionProperties object itself.
      */
@@ -152,7 +152,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Get the assignableScopes property: Role definition assignable scopes.
-     *
+     * 
      * @return the assignableScopes value.
      */
     public List<String> assignableScopes() {
@@ -161,7 +161,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Set the assignableScopes property: Role definition assignable scopes.
-     *
+     * 
      * @param assignableScopes the assignableScopes value to set.
      * @return the RoleDefinitionProperties object itself.
      */
@@ -172,7 +172,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Get the createdOn property: Time it was created.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime createdOn() {
@@ -181,7 +181,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Get the updatedOn property: Time it was updated.
-     *
+     * 
      * @return the updatedOn value.
      */
     public OffsetDateTime updatedOn() {
@@ -190,7 +190,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Get the createdBy property: Id of the user who created the assignment.
-     *
+     * 
      * @return the createdBy value.
      */
     public String createdBy() {
@@ -199,7 +199,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Get the updatedBy property: Id of the user who updated the assignment.
-     *
+     * 
      * @return the updatedBy value.
      */
     public String updatedBy() {
@@ -208,12 +208,73 @@ public final class RoleDefinitionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (permissions() != null) {
             permissions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("roleName", this.roleName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("type", this.roleType);
+        jsonWriter.writeArrayField("permissions", this.permissions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("assignableScopes", this.assignableScopes,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleDefinitionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleDefinitionProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoleDefinitionProperties.
+     */
+    public static RoleDefinitionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleDefinitionProperties deserializedRoleDefinitionProperties = new RoleDefinitionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("roleName".equals(fieldName)) {
+                    deserializedRoleDefinitionProperties.roleName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedRoleDefinitionProperties.description = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRoleDefinitionProperties.roleType = reader.getString();
+                } else if ("permissions".equals(fieldName)) {
+                    List<PermissionInner> permissions = reader.readArray(reader1 -> PermissionInner.fromJson(reader1));
+                    deserializedRoleDefinitionProperties.permissions = permissions;
+                } else if ("assignableScopes".equals(fieldName)) {
+                    List<String> assignableScopes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRoleDefinitionProperties.assignableScopes = assignableScopes;
+                } else if ("createdOn".equals(fieldName)) {
+                    deserializedRoleDefinitionProperties.createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updatedOn".equals(fieldName)) {
+                    deserializedRoleDefinitionProperties.updatedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedRoleDefinitionProperties.createdBy = reader.getString();
+                } else if ("updatedBy".equals(fieldName)) {
+                    deserializedRoleDefinitionProperties.updatedBy = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleDefinitionProperties;
+        });
     }
 }

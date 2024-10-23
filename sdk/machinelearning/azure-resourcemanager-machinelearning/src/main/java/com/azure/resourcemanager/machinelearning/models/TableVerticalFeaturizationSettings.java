@@ -5,57 +5,82 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Featurization Configuration. */
+/**
+ * Featurization Configuration.
+ */
 @Fluent
 public final class TableVerticalFeaturizationSettings extends FeaturizationSettings {
-    /*
-     * These transformers shall not be used in featurization.
-     */
-    @JsonProperty(value = "blockedTransformers")
-    private List<BlockedTransformers> blockedTransformers;
-
-    /*
-     * Dictionary of column name and its type (int, float, string, datetime etc).
-     */
-    @JsonProperty(value = "columnNameAndTypes")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> columnNameAndTypes;
-
-    /*
-     * Determines whether to use Dnn based featurizers for data featurization.
-     */
-    @JsonProperty(value = "enableDnnFeaturization")
-    private Boolean enableDnnFeaturization;
-
     /*
      * Featurization mode - User can keep the default 'Auto' mode and AutoML will take care of necessary transformation
      * of the data in featurization phase.
      * If 'Off' is selected then no featurization is done.
      * If 'Custom' is selected then user can specify additional inputs to customize how featurization is done.
      */
-    @JsonProperty(value = "mode")
     private FeaturizationMode mode;
+
+    /*
+     * These transformers shall not be used in featurization.
+     */
+    private List<BlockedTransformers> blockedTransformers;
+
+    /*
+     * Dictionary of column name and its type (int, float, string, datetime etc).
+     */
+    private Map<String, String> columnNameAndTypes;
 
     /*
      * User can specify additional transformers to be used along with the columns to which it would be applied and
      * parameters for the transformer constructor.
      */
-    @JsonProperty(value = "transformerParams")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, List<ColumnTransformer>> transformerParams;
 
-    /** Creates an instance of TableVerticalFeaturizationSettings class. */
+    /*
+     * Determines whether to use Dnn based featurizers for data featurization.
+     */
+    private Boolean enableDnnFeaturization;
+
+    /**
+     * Creates an instance of TableVerticalFeaturizationSettings class.
+     */
     public TableVerticalFeaturizationSettings() {
     }
 
     /**
+     * Get the mode property: Featurization mode - User can keep the default 'Auto' mode and AutoML will take care of
+     * necessary transformation of the data in featurization phase.
+     * If 'Off' is selected then no featurization is done.
+     * If 'Custom' is selected then user can specify additional inputs to customize how featurization is done.
+     * 
+     * @return the mode value.
+     */
+    public FeaturizationMode mode() {
+        return this.mode;
+    }
+
+    /**
+     * Set the mode property: Featurization mode - User can keep the default 'Auto' mode and AutoML will take care of
+     * necessary transformation of the data in featurization phase.
+     * If 'Off' is selected then no featurization is done.
+     * If 'Custom' is selected then user can specify additional inputs to customize how featurization is done.
+     * 
+     * @param mode the mode value to set.
+     * @return the TableVerticalFeaturizationSettings object itself.
+     */
+    public TableVerticalFeaturizationSettings withMode(FeaturizationMode mode) {
+        this.mode = mode;
+        return this;
+    }
+
+    /**
      * Get the blockedTransformers property: These transformers shall not be used in featurization.
-     *
+     * 
      * @return the blockedTransformers value.
      */
     public List<BlockedTransformers> blockedTransformers() {
@@ -64,7 +89,7 @@ public final class TableVerticalFeaturizationSettings extends FeaturizationSetti
 
     /**
      * Set the blockedTransformers property: These transformers shall not be used in featurization.
-     *
+     * 
      * @param blockedTransformers the blockedTransformers value to set.
      * @return the TableVerticalFeaturizationSettings object itself.
      */
@@ -75,7 +100,7 @@ public final class TableVerticalFeaturizationSettings extends FeaturizationSetti
 
     /**
      * Get the columnNameAndTypes property: Dictionary of column name and its type (int, float, string, datetime etc).
-     *
+     * 
      * @return the columnNameAndTypes value.
      */
     public Map<String, String> columnNameAndTypes() {
@@ -84,7 +109,7 @@ public final class TableVerticalFeaturizationSettings extends FeaturizationSetti
 
     /**
      * Set the columnNameAndTypes property: Dictionary of column name and its type (int, float, string, datetime etc).
-     *
+     * 
      * @param columnNameAndTypes the columnNameAndTypes value to set.
      * @return the TableVerticalFeaturizationSettings object itself.
      */
@@ -94,53 +119,9 @@ public final class TableVerticalFeaturizationSettings extends FeaturizationSetti
     }
 
     /**
-     * Get the enableDnnFeaturization property: Determines whether to use Dnn based featurizers for data featurization.
-     *
-     * @return the enableDnnFeaturization value.
-     */
-    public Boolean enableDnnFeaturization() {
-        return this.enableDnnFeaturization;
-    }
-
-    /**
-     * Set the enableDnnFeaturization property: Determines whether to use Dnn based featurizers for data featurization.
-     *
-     * @param enableDnnFeaturization the enableDnnFeaturization value to set.
-     * @return the TableVerticalFeaturizationSettings object itself.
-     */
-    public TableVerticalFeaturizationSettings withEnableDnnFeaturization(Boolean enableDnnFeaturization) {
-        this.enableDnnFeaturization = enableDnnFeaturization;
-        return this;
-    }
-
-    /**
-     * Get the mode property: Featurization mode - User can keep the default 'Auto' mode and AutoML will take care of
-     * necessary transformation of the data in featurization phase. If 'Off' is selected then no featurization is done.
-     * If 'Custom' is selected then user can specify additional inputs to customize how featurization is done.
-     *
-     * @return the mode value.
-     */
-    public FeaturizationMode mode() {
-        return this.mode;
-    }
-
-    /**
-     * Set the mode property: Featurization mode - User can keep the default 'Auto' mode and AutoML will take care of
-     * necessary transformation of the data in featurization phase. If 'Off' is selected then no featurization is done.
-     * If 'Custom' is selected then user can specify additional inputs to customize how featurization is done.
-     *
-     * @param mode the mode value to set.
-     * @return the TableVerticalFeaturizationSettings object itself.
-     */
-    public TableVerticalFeaturizationSettings withMode(FeaturizationMode mode) {
-        this.mode = mode;
-        return this;
-    }
-
-    /**
      * Get the transformerParams property: User can specify additional transformers to be used along with the columns to
      * which it would be applied and parameters for the transformer constructor.
-     *
+     * 
      * @return the transformerParams value.
      */
     public Map<String, List<ColumnTransformer>> transformerParams() {
@@ -150,17 +131,39 @@ public final class TableVerticalFeaturizationSettings extends FeaturizationSetti
     /**
      * Set the transformerParams property: User can specify additional transformers to be used along with the columns to
      * which it would be applied and parameters for the transformer constructor.
-     *
+     * 
      * @param transformerParams the transformerParams value to set.
      * @return the TableVerticalFeaturizationSettings object itself.
      */
-    public TableVerticalFeaturizationSettings withTransformerParams(
-        Map<String, List<ColumnTransformer>> transformerParams) {
+    public TableVerticalFeaturizationSettings
+        withTransformerParams(Map<String, List<ColumnTransformer>> transformerParams) {
         this.transformerParams = transformerParams;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the enableDnnFeaturization property: Determines whether to use Dnn based featurizers for data featurization.
+     * 
+     * @return the enableDnnFeaturization value.
+     */
+    public Boolean enableDnnFeaturization() {
+        return this.enableDnnFeaturization;
+    }
+
+    /**
+     * Set the enableDnnFeaturization property: Determines whether to use Dnn based featurizers for data featurization.
+     * 
+     * @param enableDnnFeaturization the enableDnnFeaturization value to set.
+     * @return the TableVerticalFeaturizationSettings object itself.
+     */
+    public TableVerticalFeaturizationSettings withEnableDnnFeaturization(Boolean enableDnnFeaturization) {
+        this.enableDnnFeaturization = enableDnnFeaturization;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TableVerticalFeaturizationSettings withDatasetLanguage(String datasetLanguage) {
         super.withDatasetLanguage(datasetLanguage);
@@ -169,21 +172,80 @@ public final class TableVerticalFeaturizationSettings extends FeaturizationSetti
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (transformerParams() != null) {
-            transformerParams()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.forEach(e1 -> e1.validate());
-                        }
-                    });
+            transformerParams().values().forEach(e -> {
+                if (e != null) {
+                    e.forEach(e1 -> e1.validate());
+                }
+            });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("datasetLanguage", datasetLanguage());
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeArrayField("blockedTransformers", this.blockedTransformers,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeMapField("columnNameAndTypes", this.columnNameAndTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("transformerParams", this.transformerParams,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeJson(element1)));
+        jsonWriter.writeBooleanField("enableDnnFeaturization", this.enableDnnFeaturization);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TableVerticalFeaturizationSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TableVerticalFeaturizationSettings if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TableVerticalFeaturizationSettings.
+     */
+    public static TableVerticalFeaturizationSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TableVerticalFeaturizationSettings deserializedTableVerticalFeaturizationSettings
+                = new TableVerticalFeaturizationSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("datasetLanguage".equals(fieldName)) {
+                    deserializedTableVerticalFeaturizationSettings.withDatasetLanguage(reader.getString());
+                } else if ("mode".equals(fieldName)) {
+                    deserializedTableVerticalFeaturizationSettings.mode
+                        = FeaturizationMode.fromString(reader.getString());
+                } else if ("blockedTransformers".equals(fieldName)) {
+                    List<BlockedTransformers> blockedTransformers
+                        = reader.readArray(reader1 -> BlockedTransformers.fromString(reader1.getString()));
+                    deserializedTableVerticalFeaturizationSettings.blockedTransformers = blockedTransformers;
+                } else if ("columnNameAndTypes".equals(fieldName)) {
+                    Map<String, String> columnNameAndTypes = reader.readMap(reader1 -> reader1.getString());
+                    deserializedTableVerticalFeaturizationSettings.columnNameAndTypes = columnNameAndTypes;
+                } else if ("transformerParams".equals(fieldName)) {
+                    Map<String, List<ColumnTransformer>> transformerParams
+                        = reader.readMap(reader1 -> reader1.readArray(reader2 -> ColumnTransformer.fromJson(reader2)));
+                    deserializedTableVerticalFeaturizationSettings.transformerParams = transformerParams;
+                } else if ("enableDnnFeaturization".equals(fieldName)) {
+                    deserializedTableVerticalFeaturizationSettings.enableDnnFeaturization
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTableVerticalFeaturizationSettings;
+        });
     }
 }

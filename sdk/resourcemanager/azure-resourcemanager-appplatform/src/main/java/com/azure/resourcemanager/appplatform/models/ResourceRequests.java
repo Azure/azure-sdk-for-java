@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Deployment resource request payload.
  */
 @Fluent
-public final class ResourceRequests {
+public final class ResourceRequests implements JsonSerializable<ResourceRequests> {
     /*
      * Required CPU. 1 core can be represented by 1 or 1000m. This should be 500m or 1 for Basic tier, and {500m, 1, 2,
      * 3, 4} for Standard tier.
      */
-    @JsonProperty(value = "cpu")
     private String cpu;
 
     /*
      * Required memory. 1 GB can be represented by 1Gi or 1024Mi. This should be {512Mi, 1Gi, 2Gi} for Basic tier, and
      * {512Mi, 1Gi, 2Gi, ..., 8Gi} for Standard tier.
      */
-    @JsonProperty(value = "memory")
     private String memory;
 
     /**
@@ -82,5 +84,44 @@ public final class ResourceRequests {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("cpu", this.cpu);
+        jsonWriter.writeStringField("memory", this.memory);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceRequests from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceRequests if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceRequests.
+     */
+    public static ResourceRequests fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceRequests deserializedResourceRequests = new ResourceRequests();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cpu".equals(fieldName)) {
+                    deserializedResourceRequests.cpu = reader.getString();
+                } else if ("memory".equals(fieldName)) {
+                    deserializedResourceRequests.memory = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceRequests;
+        });
     }
 }

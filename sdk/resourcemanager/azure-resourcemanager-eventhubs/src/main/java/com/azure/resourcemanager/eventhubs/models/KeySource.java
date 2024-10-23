@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.eventhubs.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Enumerates the possible value of keySource for Encryption.
  */
@@ -31,7 +28,6 @@ public enum KeySource {
      * @param value the serialized value to parse.
      * @return the parsed KeySource object, or null if unable to parse.
      */
-    @JsonCreator
     public static KeySource fromString(String value) {
         if (value == null) {
             return null;
@@ -48,7 +44,6 @@ public enum KeySource {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

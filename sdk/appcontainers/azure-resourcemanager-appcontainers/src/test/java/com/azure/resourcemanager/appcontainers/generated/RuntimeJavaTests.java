@@ -17,11 +17,11 @@ public final class RuntimeJavaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RuntimeJava model = BinaryData.fromString(
-            "{\"enableMetrics\":true,\"javaAgent\":{\"enabled\":false,\"logging\":{\"loggerSettings\":[{\"logger\":\"pgikdgszywkb\",\"level\":\"info\"},{\"logger\":\"ryuzh\",\"level\":\"warn\"}]}}}")
+            "{\"enableMetrics\":true,\"javaAgent\":{\"enabled\":false,\"logging\":{\"loggerSettings\":[{\"logger\":\"wm\",\"level\":\"info\"}]}}}")
             .toObject(RuntimeJava.class);
         Assertions.assertEquals(true, model.enableMetrics());
         Assertions.assertEquals(false, model.javaAgent().enabled());
-        Assertions.assertEquals("pgikdgszywkb", model.javaAgent().logging().loggerSettings().get(0).logger());
+        Assertions.assertEquals("wm", model.javaAgent().logging().loggerSettings().get(0).logger());
         Assertions.assertEquals(Level.INFO, model.javaAgent().logging().loggerSettings().get(0).level());
     }
 
@@ -29,13 +29,12 @@ public final class RuntimeJavaTests {
     public void testSerialize() throws Exception {
         RuntimeJava model = new RuntimeJava().withEnableMetrics(true)
             .withJavaAgent(new RuntimeJavaAgent().withEnabled(false)
-                .withLogging(new RuntimeJavaAgentLogging().withLoggerSettings(
-                    Arrays.asList(new LoggerSetting().withLogger("pgikdgszywkb").withLevel(Level.INFO),
-                        new LoggerSetting().withLogger("ryuzh").withLevel(Level.WARN)))));
+                .withLogging(new RuntimeJavaAgentLogging()
+                    .withLoggerSettings(Arrays.asList(new LoggerSetting().withLogger("wm").withLevel(Level.INFO)))));
         model = BinaryData.fromObject(model).toObject(RuntimeJava.class);
         Assertions.assertEquals(true, model.enableMetrics());
         Assertions.assertEquals(false, model.javaAgent().enabled());
-        Assertions.assertEquals("pgikdgszywkb", model.javaAgent().logging().loggerSettings().get(0).logger());
+        Assertions.assertEquals("wm", model.javaAgent().logging().loggerSettings().get(0).logger());
         Assertions.assertEquals(Level.INFO, model.javaAgent().logging().loggerSettings().get(0).level());
     }
 }

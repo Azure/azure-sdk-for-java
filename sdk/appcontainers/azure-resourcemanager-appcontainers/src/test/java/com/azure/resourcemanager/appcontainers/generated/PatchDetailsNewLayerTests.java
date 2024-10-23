@@ -13,21 +13,21 @@ public final class PatchDetailsNewLayerTests {
     public void testDeserialize() throws Exception {
         PatchDetailsNewLayer model = BinaryData
             .fromString(
-                "{\"name\":\"xkbsazgakgac\",\"frameworkAndVersion\":\"cmjdmspof\",\"osAndVersion\":\"vuhrylni\"}")
+                "{\"name\":\"jdhttzaefedxi\",\"frameworkAndVersion\":\"hrphkmcrjdqn\",\"osAndVersion\":\"fzpbgtgkyl\"}")
             .toObject(PatchDetailsNewLayer.class);
-        Assertions.assertEquals("xkbsazgakgac", model.name());
-        Assertions.assertEquals("cmjdmspof", model.frameworkAndVersion());
-        Assertions.assertEquals("vuhrylni", model.osAndVersion());
+        Assertions.assertEquals("jdhttzaefedxi", model.name());
+        Assertions.assertEquals("hrphkmcrjdqn", model.frameworkAndVersion());
+        Assertions.assertEquals("fzpbgtgkyl", model.osAndVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PatchDetailsNewLayer model = new PatchDetailsNewLayer().withName("xkbsazgakgac")
-            .withFrameworkAndVersion("cmjdmspof")
-            .withOsAndVersion("vuhrylni");
+        PatchDetailsNewLayer model = new PatchDetailsNewLayer().withName("jdhttzaefedxi")
+            .withFrameworkAndVersion("hrphkmcrjdqn")
+            .withOsAndVersion("fzpbgtgkyl");
         model = BinaryData.fromObject(model).toObject(PatchDetailsNewLayer.class);
-        Assertions.assertEquals("xkbsazgakgac", model.name());
-        Assertions.assertEquals("cmjdmspof", model.frameworkAndVersion());
-        Assertions.assertEquals("vuhrylni", model.osAndVersion());
+        Assertions.assertEquals("jdhttzaefedxi", model.name());
+        Assertions.assertEquals("hrphkmcrjdqn", model.frameworkAndVersion());
+        Assertions.assertEquals("fzpbgtgkyl", model.osAndVersion());
     }
 }

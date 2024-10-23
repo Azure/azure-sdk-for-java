@@ -15,8 +15,8 @@ public final class DiskPoolZoneInfoImpl implements DiskPoolZoneInfo {
 
     private final com.azure.resourcemanager.storagepool.StoragePoolManager serviceManager;
 
-    DiskPoolZoneInfoImpl(
-        DiskPoolZoneInfoInner innerObject, com.azure.resourcemanager.storagepool.StoragePoolManager serviceManager) {
+    DiskPoolZoneInfoImpl(DiskPoolZoneInfoInner innerObject,
+        com.azure.resourcemanager.storagepool.StoragePoolManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

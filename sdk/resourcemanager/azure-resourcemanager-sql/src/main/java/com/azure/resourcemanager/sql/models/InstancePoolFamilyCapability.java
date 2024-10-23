@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The instance pool family capability. */
+/**
+ * The instance pool family capability.
+ */
 @Fluent
-public final class InstancePoolFamilyCapability {
+public final class InstancePoolFamilyCapability implements JsonSerializable<InstancePoolFamilyCapability> {
     /*
      * Family name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * List of supported license types.
      */
-    @JsonProperty(value = "supportedLicenseTypes", access = JsonProperty.Access.WRITE_ONLY)
     private List<LicenseTypeCapability> supportedLicenseTypes;
 
     /*
      * List of supported virtual cores values.
      */
-    @JsonProperty(value = "supportedVcoresValues", access = JsonProperty.Access.WRITE_ONLY)
     private List<InstancePoolVcoresCapability> supportedVcoresValues;
 
     /*
      * The status of the capability.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityStatus status;
 
     /*
      * The reason for the capability not being available.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of InstancePoolFamilyCapability class. */
+    /**
+     * Creates an instance of InstancePoolFamilyCapability class.
+     */
     public InstancePoolFamilyCapability() {
     }
 
     /**
      * Get the name property: Family name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -56,7 +59,7 @@ public final class InstancePoolFamilyCapability {
 
     /**
      * Get the supportedLicenseTypes property: List of supported license types.
-     *
+     * 
      * @return the supportedLicenseTypes value.
      */
     public List<LicenseTypeCapability> supportedLicenseTypes() {
@@ -65,7 +68,7 @@ public final class InstancePoolFamilyCapability {
 
     /**
      * Get the supportedVcoresValues property: List of supported virtual cores values.
-     *
+     * 
      * @return the supportedVcoresValues value.
      */
     public List<InstancePoolVcoresCapability> supportedVcoresValues() {
@@ -74,7 +77,7 @@ public final class InstancePoolFamilyCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -83,7 +86,7 @@ public final class InstancePoolFamilyCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -92,7 +95,7 @@ public final class InstancePoolFamilyCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the InstancePoolFamilyCapability object itself.
      */
@@ -103,7 +106,7 @@ public final class InstancePoolFamilyCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -113,5 +116,53 @@ public final class InstancePoolFamilyCapability {
         if (supportedVcoresValues() != null) {
             supportedVcoresValues().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reason", this.reason);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InstancePoolFamilyCapability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InstancePoolFamilyCapability if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InstancePoolFamilyCapability.
+     */
+    public static InstancePoolFamilyCapability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InstancePoolFamilyCapability deserializedInstancePoolFamilyCapability = new InstancePoolFamilyCapability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedInstancePoolFamilyCapability.name = reader.getString();
+                } else if ("supportedLicenseTypes".equals(fieldName)) {
+                    List<LicenseTypeCapability> supportedLicenseTypes
+                        = reader.readArray(reader1 -> LicenseTypeCapability.fromJson(reader1));
+                    deserializedInstancePoolFamilyCapability.supportedLicenseTypes = supportedLicenseTypes;
+                } else if ("supportedVcoresValues".equals(fieldName)) {
+                    List<InstancePoolVcoresCapability> supportedVcoresValues
+                        = reader.readArray(reader1 -> InstancePoolVcoresCapability.fromJson(reader1));
+                    deserializedInstancePoolFamilyCapability.supportedVcoresValues = supportedVcoresValues;
+                } else if ("status".equals(fieldName)) {
+                    deserializedInstancePoolFamilyCapability.status = CapabilityStatus.fromString(reader.getString());
+                } else if ("reason".equals(fieldName)) {
+                    deserializedInstancePoolFamilyCapability.reason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInstancePoolFamilyCapability;
+        });
     }
 }

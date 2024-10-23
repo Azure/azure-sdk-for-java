@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -39,7 +38,6 @@ public final class NetworkMode extends ExpandableStringEnum<NetworkMode> {
      * @param name a name to look for.
      * @return the corresponding NetworkMode.
      */
-    @JsonCreator
     public static NetworkMode fromString(String name) {
         return fromString(name, NetworkMode.class);
     }

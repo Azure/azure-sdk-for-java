@@ -61,9 +61,9 @@ public final class ContainerAppInner extends Resource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -71,9 +71,9 @@ public final class ContainerAppInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of ContainerAppInner class.
@@ -190,13 +190,13 @@ public final class ContainerAppInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -210,13 +210,13 @@ public final class ContainerAppInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -244,6 +244,15 @@ public final class ContainerAppInner extends Resource {
      */
     public ContainerAppProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the deploymentErrors property: Any errors that occurred during deployment.
+     * 
+     * @return the deploymentErrors value.
+     */
+    public String deploymentErrors() {
+        return this.innerProperties() == null ? null : this.innerProperties().deploymentErrors();
     }
 
     /**

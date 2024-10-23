@@ -29,6 +29,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequestOptions {
     private static final int DEFAULT_MAX_ITEM_COUNT = 100;
     private static final int DEFAULT_MAX_PREFETCH_PAGE_COUNT = 1;
+    private static final boolean DEFAULT_COMPLETE_AFTER_ALL_CURRENT_CHANGES_RETRIEVED = false;
     private final ChangeFeedState continuationState;
     private final FeedRangeInternal feedRangeInternal;
     private final Map<String, Object> properties;
@@ -47,6 +48,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     private PartitionKeyDefinition partitionKeyDefinition;
     private String collectionRid;
     private Set<String> keywordIdentifiers;
+    private boolean completeAfterAllCurrentChangesRetrieved;
 
     public CosmosChangeFeedRequestOptionsImpl(CosmosChangeFeedRequestOptionsImpl toBeCloned) {
         this.continuationState = toBeCloned.continuationState;
@@ -67,6 +69,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.collectionRid = toBeCloned.collectionRid;
         this.partitionKeyDefinition = toBeCloned.partitionKeyDefinition;
         this.keywordIdentifiers = toBeCloned.keywordIdentifiers;
+        this.completeAfterAllCurrentChangesRetrieved = toBeCloned.completeAfterAllCurrentChangesRetrieved;
     }
 
     public CosmosChangeFeedRequestOptionsImpl(
@@ -104,6 +107,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
 
         this.properties = new HashMap<>();
         this.isSplitHandlingDisabled = false;
+        this.completeAfterAllCurrentChangesRetrieved = DEFAULT_COMPLETE_AFTER_ALL_CURRENT_CHANGES_RETRIEVED;
     }
 
     public ChangeFeedState getContinuation() {
@@ -357,6 +361,14 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     @Override
     public Set<String> getKeywordIdentifiers() {
         return this.keywordIdentifiers;
+    }
+
+    public boolean isCompleteAfterAllCurrentChangesRetrieved() {
+        return this.completeAfterAllCurrentChangesRetrieved;
+    }
+
+    public void setCompleteAfterAllCurrentChangesRetrieved(boolean queryAvailableNow) {
+        this.completeAfterAllCurrentChangesRetrieved = queryAvailableNow;
     }
 
     @Override

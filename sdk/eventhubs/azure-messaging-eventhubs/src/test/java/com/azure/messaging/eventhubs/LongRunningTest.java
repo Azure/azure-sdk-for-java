@@ -33,14 +33,10 @@ class LongRunningTest extends IntegrationTestBase {
     void twoConsumersAndSender() throws InterruptedException {
         final EventPosition firstPosition = EventPosition.fromEnqueuedTime(Instant.now());
 
-        EventHubProducerAsyncClient producer = toClose(new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .retry(RETRY_OPTIONS)
+        EventHubProducerAsyncClient producer = toClose(createBuilder()
             .buildAsyncProducerClient());
-        EventHubConsumerAsyncClient consumer = toClose(new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
+        EventHubConsumerAsyncClient consumer = toClose(createBuilder()
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .retry(RETRY_OPTIONS)
             .buildAsyncConsumerClient());
 
         toClose(consumer.receiveFromPartition("0", firstPosition)
@@ -82,9 +78,7 @@ class LongRunningTest extends IntegrationTestBase {
     @Disabled("Testing idle clients. Connections are timed out at 30 mins.")
     @Test
     void idleConnection() throws InterruptedException {
-        try (EventHubProducerAsyncClient idleProducer = new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .buildAsyncProducerClient()) {
+        try (EventHubProducerAsyncClient idleProducer = createBuilder().buildAsyncProducerClient()) {
             for (int i = 0; i < 4; i++) {
                 logger.verbose("Iteration: " + i);
 
@@ -111,9 +105,7 @@ class LongRunningTest extends IntegrationTestBase {
     @Disabled("Testing idle clients. Connections are timed out at 30 mins.")
     @Test
     void idleSendLinks() throws InterruptedException {
-        try (EventHubProducerAsyncClient idleProducer = new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .buildAsyncProducerClient()) {
+        try (EventHubProducerAsyncClient idleProducer = createBuilder().buildAsyncProducerClient()) {
 
             for (int i = 0; i < 4; i++) {
                 logger.verbose("Iteration: " + i);
@@ -151,14 +143,8 @@ class LongRunningTest extends IntegrationTestBase {
         final String partitionId = "0";
         final CreateBatchOptions options = new CreateBatchOptions().setPartitionId(partitionId);
 
-        EventHubProducerAsyncClient producer = toClose(new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .retry(RETRY_OPTIONS)
-            .buildAsyncProducerClient());
-
-        EventHubAsyncClient client = toClose(new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .buildAsyncClient());
+        EventHubProducerAsyncClient producer = toClose(createBuilder().buildAsyncProducerClient());
+        EventHubAsyncClient client = toClose(createBuilder().buildAsyncClient());
 
         toClose(Flux.interval(Duration.ofSeconds(1))
             .flatMap(position -> client.getPartitionIds().collectList())

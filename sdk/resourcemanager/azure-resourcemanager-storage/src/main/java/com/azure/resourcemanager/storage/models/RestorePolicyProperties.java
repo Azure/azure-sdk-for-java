@@ -5,36 +5,37 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * The blob service properties for blob restore policy.
  */
 @Fluent
-public final class RestorePolicyProperties {
+public final class RestorePolicyProperties implements JsonSerializable<RestorePolicyProperties> {
     /*
      * Blob restore is enabled if set to true.
      */
-    @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
     /*
      * how long this blob can be restored. It should be great than zero and less than DeleteRetentionPolicy.days.
      */
-    @JsonProperty(value = "days")
     private Integer days;
 
     /*
      * Deprecated in favor of minRestoreTime property.
      */
-    @JsonProperty(value = "lastEnabledTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastEnabledTime;
 
     /*
      * Returns the minimum date and time that the restore can be started.
      */
-    @JsonProperty(value = "minRestoreTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime minRestoreTime;
 
     /**
@@ -109,5 +110,51 @@ public final class RestorePolicyProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeNumberField("days", this.days);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorePolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorePolicyProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RestorePolicyProperties.
+     */
+    public static RestorePolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorePolicyProperties deserializedRestorePolicyProperties = new RestorePolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedRestorePolicyProperties.enabled = reader.getBoolean();
+                } else if ("days".equals(fieldName)) {
+                    deserializedRestorePolicyProperties.days = reader.getNullable(JsonReader::getInt);
+                } else if ("lastEnabledTime".equals(fieldName)) {
+                    deserializedRestorePolicyProperties.lastEnabledTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("minRestoreTime".equals(fieldName)) {
+                    deserializedRestorePolicyProperties.minRestoreTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorePolicyProperties;
+        });
     }
 }

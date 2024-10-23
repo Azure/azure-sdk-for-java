@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Deployment parameter for the template.
  */
 @Fluent
-public final class DeploymentParameter {
+public final class DeploymentParameter implements JsonSerializable<DeploymentParameter> {
     /*
      * Input value to the parameter .
      */
-    @JsonProperty(value = "value")
     private Object value;
 
     /*
      * Azure Key Vault parameter reference.
      */
-    @JsonProperty(value = "reference")
     private KeyVaultParameterReference reference;
 
     /**
@@ -79,5 +81,44 @@ public final class DeploymentParameter {
         if (reference() != null) {
             reference().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("value", this.value);
+        jsonWriter.writeJsonField("reference", this.reference);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentParameter if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeploymentParameter.
+     */
+    public static DeploymentParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentParameter deserializedDeploymentParameter = new DeploymentParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedDeploymentParameter.value = reader.readUntyped();
+                } else if ("reference".equals(fieldName)) {
+                    deserializedDeploymentParameter.reference = KeyVaultParameterReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentParameter;
+        });
     }
 }

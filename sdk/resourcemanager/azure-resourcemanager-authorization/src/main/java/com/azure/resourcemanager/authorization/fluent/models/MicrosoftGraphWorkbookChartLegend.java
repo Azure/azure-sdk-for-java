@@ -5,54 +5,54 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** workbookChartLegend. */
+/**
+ * workbookChartLegend.
+ */
 @Fluent
 public final class MicrosoftGraphWorkbookChartLegend extends MicrosoftGraphEntity {
     /*
      * Boolean value for whether the chart legend should overlap with the main body of the chart.
      */
-    @JsonProperty(value = "overlay")
     private Boolean overlay;
 
     /*
      * Represents the position of the legend on the chart. The possible values are: Top, Bottom, Left, Right, Corner,
      * Custom.
      */
-    @JsonProperty(value = "position")
     private String position;
 
     /*
      * A boolean value the represents the visibility of a ChartLegend object.
      */
-    @JsonProperty(value = "visible")
     private Boolean visible;
 
     /*
      * workbookChartLegendFormat
      */
-    @JsonProperty(value = "format")
     private MicrosoftGraphWorkbookChartLegendFormat format;
 
     /*
      * workbookChartLegend
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphWorkbookChartLegend class. */
+    /**
+     * Creates an instance of MicrosoftGraphWorkbookChartLegend class.
+     */
     public MicrosoftGraphWorkbookChartLegend() {
     }
 
     /**
      * Get the overlay property: Boolean value for whether the chart legend should overlap with the main body of the
      * chart.
-     *
+     * 
      * @return the overlay value.
      */
     public Boolean overlay() {
@@ -62,7 +62,7 @@ public final class MicrosoftGraphWorkbookChartLegend extends MicrosoftGraphEntit
     /**
      * Set the overlay property: Boolean value for whether the chart legend should overlap with the main body of the
      * chart.
-     *
+     * 
      * @param overlay the overlay value to set.
      * @return the MicrosoftGraphWorkbookChartLegend object itself.
      */
@@ -74,7 +74,7 @@ public final class MicrosoftGraphWorkbookChartLegend extends MicrosoftGraphEntit
     /**
      * Get the position property: Represents the position of the legend on the chart. The possible values are: Top,
      * Bottom, Left, Right, Corner, Custom.
-     *
+     * 
      * @return the position value.
      */
     public String position() {
@@ -84,7 +84,7 @@ public final class MicrosoftGraphWorkbookChartLegend extends MicrosoftGraphEntit
     /**
      * Set the position property: Represents the position of the legend on the chart. The possible values are: Top,
      * Bottom, Left, Right, Corner, Custom.
-     *
+     * 
      * @param position the position value to set.
      * @return the MicrosoftGraphWorkbookChartLegend object itself.
      */
@@ -95,7 +95,7 @@ public final class MicrosoftGraphWorkbookChartLegend extends MicrosoftGraphEntit
 
     /**
      * Get the visible property: A boolean value the represents the visibility of a ChartLegend object.
-     *
+     * 
      * @return the visible value.
      */
     public Boolean visible() {
@@ -104,7 +104,7 @@ public final class MicrosoftGraphWorkbookChartLegend extends MicrosoftGraphEntit
 
     /**
      * Set the visible property: A boolean value the represents the visibility of a ChartLegend object.
-     *
+     * 
      * @param visible the visible value to set.
      * @return the MicrosoftGraphWorkbookChartLegend object itself.
      */
@@ -115,7 +115,7 @@ public final class MicrosoftGraphWorkbookChartLegend extends MicrosoftGraphEntit
 
     /**
      * Get the format property: workbookChartLegendFormat.
-     *
+     * 
      * @return the format value.
      */
     public MicrosoftGraphWorkbookChartLegendFormat format() {
@@ -124,7 +124,7 @@ public final class MicrosoftGraphWorkbookChartLegend extends MicrosoftGraphEntit
 
     /**
      * Set the format property: workbookChartLegendFormat.
-     *
+     * 
      * @param format the format value to set.
      * @return the MicrosoftGraphWorkbookChartLegend object itself.
      */
@@ -135,17 +135,16 @@ public final class MicrosoftGraphWorkbookChartLegend extends MicrosoftGraphEntit
 
     /**
      * Get the additionalProperties property: workbookChartLegend.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: workbookChartLegend.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphWorkbookChartLegend object itself.
      */
@@ -154,15 +153,9 @@ public final class MicrosoftGraphWorkbookChartLegend extends MicrosoftGraphEntit
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphWorkbookChartLegend withId(String id) {
         super.withId(id);
@@ -171,7 +164,7 @@ public final class MicrosoftGraphWorkbookChartLegend extends MicrosoftGraphEntit
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -180,5 +173,66 @@ public final class MicrosoftGraphWorkbookChartLegend extends MicrosoftGraphEntit
         if (format() != null) {
             format().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeBooleanField("overlay", this.overlay);
+        jsonWriter.writeStringField("position", this.position);
+        jsonWriter.writeBooleanField("visible", this.visible);
+        jsonWriter.writeJsonField("format", this.format);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphWorkbookChartLegend from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphWorkbookChartLegend if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphWorkbookChartLegend.
+     */
+    public static MicrosoftGraphWorkbookChartLegend fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphWorkbookChartLegend deserializedMicrosoftGraphWorkbookChartLegend
+                = new MicrosoftGraphWorkbookChartLegend();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartLegend.withId(reader.getString());
+                } else if ("overlay".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartLegend.overlay = reader.getNullable(JsonReader::getBoolean);
+                } else if ("position".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartLegend.position = reader.getString();
+                } else if ("visible".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartLegend.visible = reader.getNullable(JsonReader::getBoolean);
+                } else if ("format".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartLegend.format
+                        = MicrosoftGraphWorkbookChartLegendFormat.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphWorkbookChartLegend.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphWorkbookChartLegend;
+        });
     }
 }

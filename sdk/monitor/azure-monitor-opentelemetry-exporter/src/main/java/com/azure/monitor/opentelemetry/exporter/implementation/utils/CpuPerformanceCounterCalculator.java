@@ -17,8 +17,7 @@ import static com.azure.monitor.opentelemetry.exporter.implementation.utils.Azur
 
 public final class CpuPerformanceCounterCalculator {
 
-    private static final Logger logger =
-        LoggerFactory.getLogger(CpuPerformanceCounterCalculator.class);
+    private static final Logger logger = LoggerFactory.getLogger(CpuPerformanceCounterCalculator.class);
 
     private static final RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
 

@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.CosmosBulkExecutionOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -359,124 +360,23 @@ public final class CosmosBulkExecutionOptions {
         return this;
     }
 
+    CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig() {
+        return this.actualRequestOptions.getCosmosEndToEndLatencyPolicyConfig();
+    }
+
+    CosmosBulkExecutionOptions setEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig cfg) {
+        this.actualRequestOptions.setCosmosEndToEndLatencyPolicyConfig(cfg);
+
+        return this;
+    }
+
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
     static void initialize() {
         ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.setCosmosBulkExecutionOptionsAccessor(
             new ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.CosmosBulkExecutionOptionsAccessor() {
-
-                @Override
-                public void setOperationContext(CosmosBulkExecutionOptions options,
-                                                OperationContextAndListenerTuple operationContextAndListenerTuple) {
-                    options.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
-                }
-
-                @Override
-                public OperationContextAndListenerTuple getOperationContext(CosmosBulkExecutionOptions options) {
-                    return options.getOperationContextAndListenerTuple();
-                }
-
-                @Override
-                @SuppressWarnings({"unchecked"})
-                public <T> T getLegacyBatchScopedContext(CosmosBulkExecutionOptions options) {
-                    return (T)options.getLegacyBatchScopedContext();
-                }
-
-                @Override
-                public double getMinTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options) {
-                    return options.getMinTargetedMicroBatchRetryRate();
-                }
-
-                @Override
-                public double getMaxTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options) {
-                    return options.getMaxTargetedMicroBatchRetryRate();
-                }
-
-                @Override
-                public int getMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options) {
-                    return options.getMaxMicroBatchPayloadSizeInBytes();
-                }
-
-                @Override
-                public CosmosBulkExecutionOptions setMaxMicroBatchPayloadSizeInBytes(
-                    CosmosBulkExecutionOptions options,
-                    int maxMicroBatchPayloadSizeInBytes) {
-
-                    return options.setMaxMicroBatchPayloadSizeInBytes(maxMicroBatchPayloadSizeInBytes);
-                }
-
-                @Override
-                public int getMaxMicroBatchConcurrency(CosmosBulkExecutionOptions options) {
-                    return options.getMaxMicroBatchConcurrency();
-                }
-
-                @Override
-                public Integer getMaxConcurrentCosmosPartitions(CosmosBulkExecutionOptions options) {
-                    return options.getMaxConcurrentCosmosPartitions();
-                }
-
-                @Override
-                public CosmosBulkExecutionOptions setMaxConcurrentCosmosPartitions(
-                    CosmosBulkExecutionOptions options, int maxConcurrentCosmosPartitions) {
-                    return options.setMaxConcurrentCosmosPartitions(maxConcurrentCosmosPartitions);
-                }
-
-                @Override
-                public Duration getMaxMicroBatchInterval(CosmosBulkExecutionOptions options) {
-                    return options.getMaxMicroBatchInterval();
-                }
-
-                @Override
-                public CosmosBulkExecutionOptions setTargetedMicroBatchRetryRate(
-                    CosmosBulkExecutionOptions options,
-                    double minRetryRate,
-                    double maxRetryRate) {
-
-                    return options.setTargetedMicroBatchRetryRate(minRetryRate, maxRetryRate);
-                }
-
-                @Override
-                public CosmosBulkExecutionOptions setHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions,
-                                                            String name, String value) {
-                    return cosmosBulkExecutionOptions.setHeader(name, value);
-                }
-
-                @Override
-                public Map<String, String> getHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
-                    return cosmosBulkExecutionOptions.getHeaders();
-                }
-
-                @Override
-                public Map<String, String> getCustomOptions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
-                    return cosmosBulkExecutionOptions.getHeaders();
-                }
-
-                @Override
-                public int getMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
-                    if (cosmosBulkExecutionOptions == null) {
-                        return BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
-                    }
-
-                    return cosmosBulkExecutionOptions.getMaxMicroBatchSize();
-                }
-
-                @Override
-                public void setDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, BulkExecutorDiagnosticsTracker tracker) {
-                    cosmosBulkExecutionOptions.setDiagnosticsTracker(tracker);
-                }
-
-                @Override
-                public BulkExecutorDiagnosticsTracker getDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
-                    return cosmosBulkExecutionOptions.getDiagnosticsTracker();
-                }
-
-                @Override
-                public CosmosBulkExecutionOptions setSchedulerOverride(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, Scheduler customScheduler) {
-                    return cosmosBulkExecutionOptions.setSchedulerOverride(customScheduler);
-                }
-
-                @Override
                 public CosmosBulkExecutionOptions clone(CosmosBulkExecutionOptions toBeCloned) {
                     return new CosmosBulkExecutionOptions(toBeCloned);
                 }

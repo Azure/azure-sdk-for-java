@@ -6,41 +6,41 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Contains IPv6 peering config.
  */
 @Fluent
-public final class Ipv6ExpressRouteCircuitPeeringConfig {
+public final class Ipv6ExpressRouteCircuitPeeringConfig
+    implements JsonSerializable<Ipv6ExpressRouteCircuitPeeringConfig> {
     /*
      * The primary address prefix.
      */
-    @JsonProperty(value = "primaryPeerAddressPrefix")
     private String primaryPeerAddressPrefix;
 
     /*
      * The secondary address prefix.
      */
-    @JsonProperty(value = "secondaryPeerAddressPrefix")
     private String secondaryPeerAddressPrefix;
 
     /*
      * The Microsoft peering configuration.
      */
-    @JsonProperty(value = "microsoftPeeringConfig")
     private ExpressRouteCircuitPeeringConfig microsoftPeeringConfig;
 
     /*
      * The reference to the RouteFilter resource.
      */
-    @JsonProperty(value = "routeFilter")
     private SubResource routeFilter;
 
     /*
      * The state of peering.
      */
-    @JsonProperty(value = "state")
     private ExpressRouteCircuitPeeringState state;
 
     /**
@@ -159,5 +159,56 @@ public final class Ipv6ExpressRouteCircuitPeeringConfig {
         if (microsoftPeeringConfig() != null) {
             microsoftPeeringConfig().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("primaryPeerAddressPrefix", this.primaryPeerAddressPrefix);
+        jsonWriter.writeStringField("secondaryPeerAddressPrefix", this.secondaryPeerAddressPrefix);
+        jsonWriter.writeJsonField("microsoftPeeringConfig", this.microsoftPeeringConfig);
+        jsonWriter.writeJsonField("routeFilter", this.routeFilter);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Ipv6ExpressRouteCircuitPeeringConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Ipv6ExpressRouteCircuitPeeringConfig if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Ipv6ExpressRouteCircuitPeeringConfig.
+     */
+    public static Ipv6ExpressRouteCircuitPeeringConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Ipv6ExpressRouteCircuitPeeringConfig deserializedIpv6ExpressRouteCircuitPeeringConfig
+                = new Ipv6ExpressRouteCircuitPeeringConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryPeerAddressPrefix".equals(fieldName)) {
+                    deserializedIpv6ExpressRouteCircuitPeeringConfig.primaryPeerAddressPrefix = reader.getString();
+                } else if ("secondaryPeerAddressPrefix".equals(fieldName)) {
+                    deserializedIpv6ExpressRouteCircuitPeeringConfig.secondaryPeerAddressPrefix = reader.getString();
+                } else if ("microsoftPeeringConfig".equals(fieldName)) {
+                    deserializedIpv6ExpressRouteCircuitPeeringConfig.microsoftPeeringConfig
+                        = ExpressRouteCircuitPeeringConfig.fromJson(reader);
+                } else if ("routeFilter".equals(fieldName)) {
+                    deserializedIpv6ExpressRouteCircuitPeeringConfig.routeFilter = SubResource.fromJson(reader);
+                } else if ("state".equals(fieldName)) {
+                    deserializedIpv6ExpressRouteCircuitPeeringConfig.state
+                        = ExpressRouteCircuitPeeringState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpv6ExpressRouteCircuitPeeringConfig;
+        });
     }
 }

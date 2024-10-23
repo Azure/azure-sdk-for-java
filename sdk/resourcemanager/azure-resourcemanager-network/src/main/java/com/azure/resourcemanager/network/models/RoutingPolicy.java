@@ -6,30 +6,31 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The routing policy object used in a RoutingIntent resource.
  */
 @Fluent
-public final class RoutingPolicy {
+public final class RoutingPolicy implements JsonSerializable<RoutingPolicy> {
     /*
      * The unique name for the routing policy.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * List of all destinations which this routing policy is applicable to (for example: Internet, PrivateTraffic).
      */
-    @JsonProperty(value = "destinations", required = true)
     private List<String> destinations;
 
     /*
      * The next hop resource id on which this routing policy is applicable to.
      */
-    @JsonProperty(value = "nextHop", required = true)
     private String nextHop;
 
     /**
@@ -121,4 +122,48 @@ public final class RoutingPolicy {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RoutingPolicy.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("destinations", this.destinations, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("nextHop", this.nextHop);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoutingPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoutingPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RoutingPolicy.
+     */
+    public static RoutingPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoutingPolicy deserializedRoutingPolicy = new RoutingPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedRoutingPolicy.name = reader.getString();
+                } else if ("destinations".equals(fieldName)) {
+                    List<String> destinations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRoutingPolicy.destinations = destinations;
+                } else if ("nextHop".equals(fieldName)) {
+                    deserializedRoutingPolicy.nextHop = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoutingPolicy;
+        });
+    }
 }

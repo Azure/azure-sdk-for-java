@@ -22,28 +22,21 @@ class LocalFileSender implements Runnable {
 
     private final LocalFileLoader localFileLoader;
     private final TelemetryPipeline telemetryPipeline;
-    private final ScheduledExecutorService scheduledExecutor =
-        Executors.newSingleThreadScheduledExecutor(
-            ThreadPoolUtils.createDaemonThreadFactory(LocalFileLoader.class));
+    private final ScheduledExecutorService scheduledExecutor
+        = Executors.newSingleThreadScheduledExecutor(ThreadPoolUtils.createDaemonThreadFactory(LocalFileLoader.class));
 
     private final TelemetryPipelineListener diagnosticListener;
 
-    LocalFileSender(
-        long intervalSeconds,
-        LocalFileLoader localFileLoader,
-        TelemetryPipeline telemetryPipeline,
+    LocalFileSender(long intervalSeconds, LocalFileLoader localFileLoader, TelemetryPipeline telemetryPipeline,
         boolean suppressWarnings) { // used to suppress warnings from statsbeat
         this.localFileLoader = localFileLoader;
         this.telemetryPipeline = telemetryPipeline;
 
-        diagnosticListener =
-            suppressWarnings ? TelemetryPipelineListener.noop() :
-                new DiagnosticTelemetryPipelineListener(
-                    "Sending telemetry to the ingestion service (retry from disk)",
-                    true,
-                    " (will be retried again)");
-        scheduledExecutor.scheduleWithFixedDelay(
-            this, intervalSeconds, intervalSeconds, TimeUnit.SECONDS);
+        diagnosticListener = suppressWarnings
+            ? TelemetryPipelineListener.noop()
+            : new DiagnosticTelemetryPipelineListener("Sending telemetry to the ingestion service (retry from disk)",
+                true, " (will be retried again)");
+        scheduledExecutor.scheduleWithFixedDelay(this, intervalSeconds, intervalSeconds, TimeUnit.SECONDS);
     }
 
     void shutdown() {
@@ -62,19 +55,13 @@ class LocalFileSender implements Runnable {
         try {
             LocalFileLoader.PersistedFile persistedFile = localFileLoader.loadTelemetriesFromDisk();
             if (persistedFile != null) {
-                CompletableResultCode resultCode =
-                    telemetryPipeline.send(
-                        singletonList(persistedFile.rawBytes),
-                        persistedFile.connectionString,
-                        TelemetryPipelineListener.composite(
-                            diagnosticListener,
-                            new LocalFileSenderTelemetryPipelineListener(
-                                localFileLoader, persistedFile.file)));
+                CompletableResultCode resultCode = telemetryPipeline.send(singletonList(persistedFile.rawBytes),
+                    persistedFile.connectionString, TelemetryPipelineListener.composite(diagnosticListener,
+                        new LocalFileSenderTelemetryPipelineListener(localFileLoader, persistedFile.file)));
                 resultCode.join(30, TimeUnit.SECONDS); // wait max 30 seconds for request to be completed.
             }
         } catch (RuntimeException ex) {
-            logger.error(
-                "Unexpected error occurred while sending telemetries from the local storage.", ex);
+            logger.error("Unexpected error occurred while sending telemetries from the local storage.", ex);
         }
     }
 }

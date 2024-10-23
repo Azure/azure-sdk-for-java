@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The TimerTriggerDescriptor model.
  */
 @Fluent
-public final class TimerTriggerDescriptor {
+public final class TimerTriggerDescriptor implements JsonSerializable<TimerTriggerDescriptor> {
     /*
      * The timer trigger name that caused the run.
      */
-    @JsonProperty(value = "timerTriggerName")
     private String timerTriggerName;
 
     /*
      * The occurrence that triggered the run.
      */
-    @JsonProperty(value = "scheduleOccurrence")
     private String scheduleOccurrence;
 
     /**
@@ -76,5 +78,44 @@ public final class TimerTriggerDescriptor {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timerTriggerName", this.timerTriggerName);
+        jsonWriter.writeStringField("scheduleOccurrence", this.scheduleOccurrence);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TimerTriggerDescriptor from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TimerTriggerDescriptor if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TimerTriggerDescriptor.
+     */
+    public static TimerTriggerDescriptor fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TimerTriggerDescriptor deserializedTimerTriggerDescriptor = new TimerTriggerDescriptor();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timerTriggerName".equals(fieldName)) {
+                    deserializedTimerTriggerDescriptor.timerTriggerName = reader.getString();
+                } else if ("scheduleOccurrence".equals(fieldName)) {
+                    deserializedTimerTriggerDescriptor.scheduleOccurrence = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTimerTriggerDescriptor;
+        });
     }
 }

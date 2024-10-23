@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 public final class NetAppResourcesCheckQuotaAvailabilityWithResponseMockTests {
     @Test
     public void testCheckQuotaAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"isAvailable\":false,\"reason\":\"Invalid\",\"message\":\"bvpoekrsgsgbdhu\"}";
+        String responseStr = "{\"isAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"kb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class NetAppResourcesCheckQuotaAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CheckAvailabilityResponse response = manager.netAppResources()
-            .checkQuotaAvailabilityWithResponse("kphhq",
-                new QuotaAvailabilityRequest().withName("ikvylauya")
-                    .withType(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS)
-                    .withResourceGroup("uwmncs"),
+            .checkQuotaAvailabilityWithResponse("zldmozuxy",
+                new QuotaAvailabilityRequest().withName("fsbtkad")
+                    .withType(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES)
+                    .withResourceGroup("s"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(false, response.isAvailable());
-        Assertions.assertEquals(InAvailabilityReasonType.INVALID, response.reason());
-        Assertions.assertEquals("bvpoekrsgsgbdhu", response.message());
+        Assertions.assertEquals(true, response.isAvailable());
+        Assertions.assertEquals(InAvailabilityReasonType.ALREADY_EXISTS, response.reason());
+        Assertions.assertEquals("kb", response.message());
     }
 }

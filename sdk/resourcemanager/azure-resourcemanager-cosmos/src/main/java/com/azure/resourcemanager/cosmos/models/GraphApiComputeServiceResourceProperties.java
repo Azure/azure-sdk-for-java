@@ -5,42 +5,45 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Properties for GraphAPIComputeServiceResource.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "serviceType",
-    defaultImpl = GraphApiComputeServiceResourceProperties.class,
-    visible = true)
-@JsonTypeName("GraphAPICompute")
 @Fluent
 public final class GraphApiComputeServiceResourceProperties extends ServiceResourceProperties {
     /*
      * ServiceType for the service.
      */
-    @JsonTypeId
-    @JsonProperty(value = "serviceType", required = true)
     private ServiceType serviceType = ServiceType.GRAPH_APICOMPUTE;
 
     /*
      * GraphAPICompute endpoint for the service.
      */
-    @JsonProperty(value = "graphApiComputeEndpoint")
     private String graphApiComputeEndpoint;
 
     /*
      * An array that contains all of the locations for the service.
      */
-    @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<GraphApiComputeRegionalServiceResource> locations;
+
+    /*
+     * Describes the status of a service.
+     */
+    private ServiceStatus status;
+
+    /*
+     * Time of the last state change (ISO-8601 format).
+     */
+    private OffsetDateTime creationTime;
 
     /**
      * Creates an instance of GraphApiComputeServiceResourceProperties class.
@@ -50,7 +53,7 @@ public final class GraphApiComputeServiceResourceProperties extends ServiceResou
 
     /**
      * Get the serviceType property: ServiceType for the service.
-     *
+     * 
      * @return the serviceType value.
      */
     @Override
@@ -60,7 +63,7 @@ public final class GraphApiComputeServiceResourceProperties extends ServiceResou
 
     /**
      * Get the graphApiComputeEndpoint property: GraphAPICompute endpoint for the service.
-     *
+     * 
      * @return the graphApiComputeEndpoint value.
      */
     public String graphApiComputeEndpoint() {
@@ -69,7 +72,7 @@ public final class GraphApiComputeServiceResourceProperties extends ServiceResou
 
     /**
      * Set the graphApiComputeEndpoint property: GraphAPICompute endpoint for the service.
-     *
+     * 
      * @param graphApiComputeEndpoint the graphApiComputeEndpoint value to set.
      * @return the GraphApiComputeServiceResourceProperties object itself.
      */
@@ -80,11 +83,31 @@ public final class GraphApiComputeServiceResourceProperties extends ServiceResou
 
     /**
      * Get the locations property: An array that contains all of the locations for the service.
-     *
+     * 
      * @return the locations value.
      */
     public List<GraphApiComputeRegionalServiceResource> locations() {
         return this.locations;
+    }
+
+    /**
+     * Get the status property: Describes the status of a service.
+     * 
+     * @return the status value.
+     */
+    @Override
+    public ServiceStatus status() {
+        return this.status;
+    }
+
+    /**
+     * Get the creationTime property: Time of the last state change (ISO-8601 format).
+     * 
+     * @return the creationTime value.
+     */
+    @Override
+    public OffsetDateTime creationTime() {
+        return this.creationTime;
     }
 
     /**
@@ -107,14 +130,83 @@ public final class GraphApiComputeServiceResourceProperties extends ServiceResou
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (locations() != null) {
             locations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceSize", instanceSize() == null ? null : instanceSize().toString());
+        jsonWriter.writeNumberField("instanceCount", instanceCount());
+        jsonWriter.writeStringField("serviceType", this.serviceType == null ? null : this.serviceType.toString());
+        jsonWriter.writeStringField("graphApiComputeEndpoint", this.graphApiComputeEndpoint);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GraphApiComputeServiceResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GraphApiComputeServiceResourceProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GraphApiComputeServiceResourceProperties.
+     */
+    public static GraphApiComputeServiceResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GraphApiComputeServiceResourceProperties deserializedGraphApiComputeServiceResourceProperties
+                = new GraphApiComputeServiceResourceProperties();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("creationTime".equals(fieldName)) {
+                    deserializedGraphApiComputeServiceResourceProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("instanceSize".equals(fieldName)) {
+                    deserializedGraphApiComputeServiceResourceProperties
+                        .withInstanceSize(ServiceSize.fromString(reader.getString()));
+                } else if ("instanceCount".equals(fieldName)) {
+                    deserializedGraphApiComputeServiceResourceProperties
+                        .withInstanceCount(reader.getNullable(JsonReader::getInt));
+                } else if ("status".equals(fieldName)) {
+                    deserializedGraphApiComputeServiceResourceProperties.status
+                        = ServiceStatus.fromString(reader.getString());
+                } else if ("serviceType".equals(fieldName)) {
+                    deserializedGraphApiComputeServiceResourceProperties.serviceType
+                        = ServiceType.fromString(reader.getString());
+                } else if ("graphApiComputeEndpoint".equals(fieldName)) {
+                    deserializedGraphApiComputeServiceResourceProperties.graphApiComputeEndpoint = reader.getString();
+                } else if ("locations".equals(fieldName)) {
+                    List<GraphApiComputeRegionalServiceResource> locations
+                        = reader.readArray(reader1 -> GraphApiComputeRegionalServiceResource.fromJson(reader1));
+                    deserializedGraphApiComputeServiceResourceProperties.locations = locations;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedGraphApiComputeServiceResourceProperties.withAdditionalProperties(additionalProperties);
+
+            return deserializedGraphApiComputeServiceResourceProperties;
+        });
     }
 }

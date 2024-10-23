@@ -19,7 +19,10 @@ public final class TaskRunsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void taskRunsList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getTaskRuns().list("myResourceGroup", "myRegistry",
-            com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getTaskRuns()
+            .list("myResourceGroup", "myRegistry", com.azure.core.util.Context.NONE);
     }
 }

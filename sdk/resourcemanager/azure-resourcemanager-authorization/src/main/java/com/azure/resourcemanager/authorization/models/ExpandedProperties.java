@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ExpandedProperties model. */
+/**
+ * The ExpandedProperties model.
+ */
 @Fluent
-public final class ExpandedProperties {
+public final class ExpandedProperties implements JsonSerializable<ExpandedProperties> {
     /*
      * Details of the resource scope
      */
-    @JsonProperty(value = "scope")
     private ExpandedPropertiesScope scope;
 
     /*
      * Details of role definition
      */
-    @JsonProperty(value = "roleDefinition")
     private ExpandedPropertiesRoleDefinition roleDefinition;
 
     /*
      * Details of the principal
      */
-    @JsonProperty(value = "principal")
     private ExpandedPropertiesPrincipal principal;
 
-    /** Creates an instance of ExpandedProperties class. */
+    /**
+     * Creates an instance of ExpandedProperties class.
+     */
     public ExpandedProperties() {
     }
 
     /**
      * Get the scope property: Details of the resource scope.
-     *
+     * 
      * @return the scope value.
      */
     public ExpandedPropertiesScope scope() {
@@ -43,7 +48,7 @@ public final class ExpandedProperties {
 
     /**
      * Set the scope property: Details of the resource scope.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the ExpandedProperties object itself.
      */
@@ -54,7 +59,7 @@ public final class ExpandedProperties {
 
     /**
      * Get the roleDefinition property: Details of role definition.
-     *
+     * 
      * @return the roleDefinition value.
      */
     public ExpandedPropertiesRoleDefinition roleDefinition() {
@@ -63,7 +68,7 @@ public final class ExpandedProperties {
 
     /**
      * Set the roleDefinition property: Details of role definition.
-     *
+     * 
      * @param roleDefinition the roleDefinition value to set.
      * @return the ExpandedProperties object itself.
      */
@@ -74,7 +79,7 @@ public final class ExpandedProperties {
 
     /**
      * Get the principal property: Details of the principal.
-     *
+     * 
      * @return the principal value.
      */
     public ExpandedPropertiesPrincipal principal() {
@@ -83,7 +88,7 @@ public final class ExpandedProperties {
 
     /**
      * Set the principal property: Details of the principal.
-     *
+     * 
      * @param principal the principal value to set.
      * @return the ExpandedProperties object itself.
      */
@@ -94,7 +99,7 @@ public final class ExpandedProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -107,5 +112,47 @@ public final class ExpandedProperties {
         if (principal() != null) {
             principal().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("scope", this.scope);
+        jsonWriter.writeJsonField("roleDefinition", this.roleDefinition);
+        jsonWriter.writeJsonField("principal", this.principal);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpandedProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpandedProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpandedProperties.
+     */
+    public static ExpandedProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpandedProperties deserializedExpandedProperties = new ExpandedProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scope".equals(fieldName)) {
+                    deserializedExpandedProperties.scope = ExpandedPropertiesScope.fromJson(reader);
+                } else if ("roleDefinition".equals(fieldName)) {
+                    deserializedExpandedProperties.roleDefinition = ExpandedPropertiesRoleDefinition.fromJson(reader);
+                } else if ("principal".equals(fieldName)) {
+                    deserializedExpandedProperties.principal = ExpandedPropertiesPrincipal.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpandedProperties;
+        });
     }
 }

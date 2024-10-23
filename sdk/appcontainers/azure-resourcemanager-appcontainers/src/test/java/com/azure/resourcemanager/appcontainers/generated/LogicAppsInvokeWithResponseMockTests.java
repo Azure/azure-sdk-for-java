@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public final class LogicAppsInvokeWithResponseMockTests {
     @Test
     public void testInvokeWithResponse() throws Exception {
-        String responseStr = "\"dataspimtcvvf\"";
+        String responseStr = "\"dataeotmf\"";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,7 +29,7 @@ public final class LogicAppsInvokeWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Object response = manager.logicApps()
-            .invokeWithResponse("teyrqshi", "bcejopylbl", "sp", "r", LogicAppsProxyMethod.POST,
+            .invokeWithResponse("xbriifefn", "s", "vrqoemwsi", "eailwdqmqf", LogicAppsProxyMethod.GET,
                 com.azure.core.util.Context.NONE)
             .getValue();
 

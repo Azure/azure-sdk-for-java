@@ -207,8 +207,8 @@ public final class BuilderHelper {
      */
     private static HttpPipelinePolicy getResponseValidationPolicy() {
         return new ResponseValidationPolicyBuilder()
-            .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID)
-            .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
+            .addOptionalEcho(HttpHeaderName.X_MS_CLIENT_REQUEST_ID)
+            .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256_HEADER_NAME)
             .build();
     }
 

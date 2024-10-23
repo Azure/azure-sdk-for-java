@@ -5,72 +5,69 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Deployment operation properties.
  */
 @Immutable
-public final class DeploymentOperationProperties {
+public final class DeploymentOperationProperties implements JsonSerializable<DeploymentOperationProperties> {
     /*
      * The name of the current provisioning operation.
      */
-    @JsonProperty(value = "provisioningOperation", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningOperation provisioningOperation;
 
     /*
      * The state of the provisioning.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The date and time of the operation.
      */
-    @JsonProperty(value = "timestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timestamp;
 
     /*
      * The duration of the operation.
      */
-    @JsonProperty(value = "duration", access = JsonProperty.Access.WRITE_ONLY)
     private String duration;
 
     /*
      * Deployment operation service request id.
      */
-    @JsonProperty(value = "serviceRequestId", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceRequestId;
 
     /*
-     * Operation status code from the resource provider. This property may not be set if a response has not yet been received.
+     * Operation status code from the resource provider. This property may not be set if a response has not yet been
+     * received.
      */
-    @JsonProperty(value = "statusCode", access = JsonProperty.Access.WRITE_ONLY)
     private String statusCode;
 
     /*
-     * Operation status message from the resource provider. This property is optional.  It will only be provided if an error was received from the resource provider.
+     * Operation status message from the resource provider. This property is optional. It will only be provided if an
+     * error was received from the resource provider.
      */
-    @JsonProperty(value = "statusMessage", access = JsonProperty.Access.WRITE_ONLY)
     private StatusMessage statusMessage;
 
     /*
      * The target resource.
      */
-    @JsonProperty(value = "targetResource", access = JsonProperty.Access.WRITE_ONLY)
     private TargetResource targetResource;
 
     /*
      * The HTTP request message.
      */
-    @JsonProperty(value = "request", access = JsonProperty.Access.WRITE_ONLY)
     private HttpMessage request;
 
     /*
      * The HTTP response message.
      */
-    @JsonProperty(value = "response", access = JsonProperty.Access.WRITE_ONLY)
     private HttpMessage response;
 
     /**
@@ -189,5 +186,61 @@ public final class DeploymentOperationProperties {
         if (response() != null) {
             response().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentOperationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentOperationProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeploymentOperationProperties.
+     */
+    public static DeploymentOperationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentOperationProperties deserializedDeploymentOperationProperties
+                = new DeploymentOperationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningOperation".equals(fieldName)) {
+                    deserializedDeploymentOperationProperties.provisioningOperation
+                        = ProvisioningOperation.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDeploymentOperationProperties.provisioningState = reader.getString();
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedDeploymentOperationProperties.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("duration".equals(fieldName)) {
+                    deserializedDeploymentOperationProperties.duration = reader.getString();
+                } else if ("serviceRequestId".equals(fieldName)) {
+                    deserializedDeploymentOperationProperties.serviceRequestId = reader.getString();
+                } else if ("statusCode".equals(fieldName)) {
+                    deserializedDeploymentOperationProperties.statusCode = reader.getString();
+                } else if ("statusMessage".equals(fieldName)) {
+                    deserializedDeploymentOperationProperties.statusMessage = StatusMessage.fromJson(reader);
+                } else if ("targetResource".equals(fieldName)) {
+                    deserializedDeploymentOperationProperties.targetResource = TargetResource.fromJson(reader);
+                } else if ("request".equals(fieldName)) {
+                    deserializedDeploymentOperationProperties.request = HttpMessage.fromJson(reader);
+                } else if ("response".equals(fieldName)) {
+                    deserializedDeploymentOperationProperties.response = HttpMessage.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentOperationProperties;
+        });
     }
 }

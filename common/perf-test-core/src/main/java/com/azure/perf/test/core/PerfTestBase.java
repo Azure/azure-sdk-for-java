@@ -3,6 +3,7 @@
 
 package com.azure.perf.test.core;
 
+import java.util.concurrent.CompletableFuture;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -57,6 +58,17 @@ public abstract class PerfTestBase<TOptions extends PerfStressOptions> {
      */
     public abstract Mono<Void> runAllAsync(long endNanoTime);
 
+    public CompletableFuture<Void> runAllAsyncWithCompletableFuture(long endNanoTime) {
+        throw new UnsupportedOperationException("runAllAsyncWithCompletableFuture is not supported.");
+    }
+
+    public Runnable runAllAsyncWithExecutorService(long endNanoTime) {
+        throw new UnsupportedOperationException("runAllAsyncWithExecutorService is not supported.");
+    }
+
+    public Runnable runAllAsyncWithVirtualThread(long endNanoTime) {
+        throw new UnsupportedOperationException("runAllAsyncWithVirtualThread is not supported.");
+    }
     /**
      * Runs before cleanup stage.
      *

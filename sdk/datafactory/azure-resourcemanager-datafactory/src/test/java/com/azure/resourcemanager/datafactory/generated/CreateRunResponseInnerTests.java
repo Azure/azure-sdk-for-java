@@ -12,14 +12,14 @@ public final class CreateRunResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CreateRunResponseInner model
-            = BinaryData.fromString("{\"runId\":\"vvhmxtdrj\"}").toObject(CreateRunResponseInner.class);
-        Assertions.assertEquals("vvhmxtdrj", model.runId());
+            = BinaryData.fromString("{\"runId\":\"kokwbqplhlvnu\"}").toObject(CreateRunResponseInner.class);
+        Assertions.assertEquals("kokwbqplhlvnu", model.runId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateRunResponseInner model = new CreateRunResponseInner().withRunId("vvhmxtdrj");
+        CreateRunResponseInner model = new CreateRunResponseInner().withRunId("kokwbqplhlvnu");
         model = BinaryData.fromObject(model).toObject(CreateRunResponseInner.class);
-        Assertions.assertEquals("vvhmxtdrj", model.runId());
+        Assertions.assertEquals("kokwbqplhlvnu", model.runId());
     }
 }

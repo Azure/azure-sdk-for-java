@@ -6,37 +6,37 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ConfigurationType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Network Manager Commit.
  */
 @Fluent
-public final class NetworkManagerCommitInner {
+public final class NetworkManagerCommitInner implements JsonSerializable<NetworkManagerCommitInner> {
     /*
      * Commit Id.
      */
-    @JsonProperty(value = "commitId", access = JsonProperty.Access.WRITE_ONLY)
     private String commitId;
 
     /*
      * List of target locations.
      */
-    @JsonProperty(value = "targetLocations", required = true)
     private List<String> targetLocations;
 
     /*
      * List of configuration ids.
      */
-    @JsonProperty(value = "configurationIds")
     private List<String> configurationIds;
 
     /*
      * Commit Type.
      */
-    @JsonProperty(value = "commitType", required = true)
     private ConfigurationType commitType;
 
     /**
@@ -133,4 +133,53 @@ public final class NetworkManagerCommitInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NetworkManagerCommitInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("targetLocations", this.targetLocations,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("commitType", this.commitType == null ? null : this.commitType.toString());
+        jsonWriter.writeArrayField("configurationIds", this.configurationIds,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkManagerCommitInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkManagerCommitInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkManagerCommitInner.
+     */
+    public static NetworkManagerCommitInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkManagerCommitInner deserializedNetworkManagerCommitInner = new NetworkManagerCommitInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetLocations".equals(fieldName)) {
+                    List<String> targetLocations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkManagerCommitInner.targetLocations = targetLocations;
+                } else if ("commitType".equals(fieldName)) {
+                    deserializedNetworkManagerCommitInner.commitType = ConfigurationType.fromString(reader.getString());
+                } else if ("commitId".equals(fieldName)) {
+                    deserializedNetworkManagerCommitInner.commitId = reader.getString();
+                } else if ("configurationIds".equals(fieldName)) {
+                    List<String> configurationIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkManagerCommitInner.configurationIds = configurationIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkManagerCommitInner;
+        });
+    }
 }

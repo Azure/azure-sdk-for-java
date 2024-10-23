@@ -15,25 +15,27 @@ public final class ClusterPoolVersionsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterPoolVersionsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"clusterPoolVersion\":\"twbdsrezpdrhn\",\"aksVersion\":\"yowqkdwytisibir\",\"isPreview\":false},\"id\":\"kpzi\",\"name\":\"ejzanlfz\",\"type\":\"iavrm\"},{\"properties\":{\"clusterPoolVersion\":\"nokixrjqcirgz\",\"aksVersion\":\"rlazszrnw\",\"isPreview\":true},\"id\":\"dfpwpjylwbtlhfls\",\"name\":\"cdhszf\",\"type\":\"vfbgofeljagrqmqh\"},{\"properties\":{\"clusterPoolVersion\":\"riiiojnalghfkv\",\"aksVersion\":\"sexso\",\"isPreview\":false},\"id\":\"uqhhahhxvrh\",\"name\":\"zkw\",\"type\":\"jgwwspughftq\"}],\"nextLink\":\"hqxujxukndxdi\"}")
+            "{\"value\":[{\"properties\":{\"clusterPoolVersion\":\"jzgxmrhublwp\",\"aksVersion\":\"sutrgjup\",\"isPreview\":true},\"id\":\"p\",\"name\":\"oqh\",\"type\":\"hej\"},{\"properties\":{\"clusterPoolVersion\":\"zpnfqntcypsxj\",\"aksVersion\":\"oimwkslirc\",\"isPreview\":false},\"id\":\"vydfceacvlhvygdy\",\"name\":\"t\",\"type\":\"mrtwna\"}],\"nextLink\":\"slbi\"}")
             .toObject(ClusterPoolVersionsListResult.class);
-        Assertions.assertEquals("twbdsrezpdrhn", model.value().get(0).properties().clusterPoolVersion());
-        Assertions.assertEquals("yowqkdwytisibir", model.value().get(0).properties().aksVersion());
-        Assertions.assertEquals(false, model.value().get(0).properties().isPreview());
+        Assertions.assertEquals("jzgxmrhublwp", model.value().get(0).properties().clusterPoolVersion());
+        Assertions.assertEquals("sutrgjup", model.value().get(0).properties().aksVersion());
+        Assertions.assertEquals(true, model.value().get(0).properties().isPreview());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterPoolVersionsListResult model = new ClusterPoolVersionsListResult().withValue(Arrays.asList(
-            new ClusterPoolVersionInner().withProperties(new ClusterPoolVersionProperties()
-                .withClusterPoolVersion("twbdsrezpdrhn").withAksVersion("yowqkdwytisibir").withIsPreview(false)),
-            new ClusterPoolVersionInner().withProperties(new ClusterPoolVersionProperties()
-                .withClusterPoolVersion("nokixrjqcirgz").withAksVersion("rlazszrnw").withIsPreview(true)),
-            new ClusterPoolVersionInner().withProperties(new ClusterPoolVersionProperties()
-                .withClusterPoolVersion("riiiojnalghfkv").withAksVersion("sexso").withIsPreview(false))));
+            new ClusterPoolVersionInner()
+                .withProperties(new ClusterPoolVersionProperties().withClusterPoolVersion("jzgxmrhublwp")
+                    .withAksVersion("sutrgjup")
+                    .withIsPreview(true)),
+            new ClusterPoolVersionInner()
+                .withProperties(new ClusterPoolVersionProperties().withClusterPoolVersion("zpnfqntcypsxj")
+                    .withAksVersion("oimwkslirc")
+                    .withIsPreview(false))));
         model = BinaryData.fromObject(model).toObject(ClusterPoolVersionsListResult.class);
-        Assertions.assertEquals("twbdsrezpdrhn", model.value().get(0).properties().clusterPoolVersion());
-        Assertions.assertEquals("yowqkdwytisibir", model.value().get(0).properties().aksVersion());
-        Assertions.assertEquals(false, model.value().get(0).properties().isPreview());
+        Assertions.assertEquals("jzgxmrhublwp", model.value().get(0).properties().clusterPoolVersion());
+        Assertions.assertEquals("sutrgjup", model.value().get(0).properties().aksVersion());
+        Assertions.assertEquals(true, model.value().get(0).properties().isPreview());
     }
 }

@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for ElasticPoolEdition. */
@@ -30,7 +29,6 @@ public final class ElasticPoolEdition extends ExpandableStringEnum<ElasticPoolEd
      * @param name a name to look for.
      * @return the corresponding ElasticPoolEdition.
      */
-    @JsonCreator
     public static ElasticPoolEdition fromString(String name) {
         return fromString(name, ElasticPoolEdition.class);
     }

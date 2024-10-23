@@ -74,6 +74,7 @@ public final class ReadmeSamples {
                 null,
                 null,
                 null,
+                null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(layoutDocument.toPath())));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
@@ -121,6 +122,7 @@ public final class ReadmeSamples {
 
         SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeReceiptPoller =
             documentIntelligenceClient.beginAnalyzeDocument("prebuilt-receipt",
+                null,
                 null,
                 null,
                 null,
@@ -214,6 +216,7 @@ public final class ReadmeSamples {
             Arrays.asList(DocumentAnalysisFeature.LANGUAGES),
             null,
             ContentFormat.TEXT,
+            null,
             new AnalyzeDocumentRequest().setUrlSource(documentUrl));
 
         AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();

@@ -6,25 +6,27 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An object to provide order by options for listing runs.
  */
 @Fluent
-public final class RunQueryOrderBy {
+public final class RunQueryOrderBy implements JsonSerializable<RunQueryOrderBy> {
     /*
      * Parameter name to be used for order by. The allowed parameters to order by for pipeline runs are PipelineName,
      * RunStart, RunEnd and Status; for activity runs are ActivityName, ActivityRunStart, ActivityRunEnd and Status; for
      * trigger runs are TriggerName, TriggerRunTimestamp and Status.
      */
-    @JsonProperty(value = "orderBy", required = true)
     private RunQueryOrderByField orderBy;
 
     /*
      * Sorting order of the parameter.
      */
-    @JsonProperty(value = "order", required = true)
     private RunQueryOrder order;
 
     /**
@@ -94,4 +96,44 @@ public final class RunQueryOrderBy {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RunQueryOrderBy.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("orderBy", this.orderBy == null ? null : this.orderBy.toString());
+        jsonWriter.writeStringField("order", this.order == null ? null : this.order.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunQueryOrderBy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunQueryOrderBy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RunQueryOrderBy.
+     */
+    public static RunQueryOrderBy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunQueryOrderBy deserializedRunQueryOrderBy = new RunQueryOrderBy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("orderBy".equals(fieldName)) {
+                    deserializedRunQueryOrderBy.orderBy = RunQueryOrderByField.fromString(reader.getString());
+                } else if ("order".equals(fieldName)) {
+                    deserializedRunQueryOrderBy.order = RunQueryOrder.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunQueryOrderBy;
+        });
+    }
 }

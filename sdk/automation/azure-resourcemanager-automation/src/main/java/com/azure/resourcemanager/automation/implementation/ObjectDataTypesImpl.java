@@ -19,42 +19,38 @@ public final class ObjectDataTypesImpl implements ObjectDataTypes {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public ObjectDataTypesImpl(
-        ObjectDataTypesClient innerClient, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    public ObjectDataTypesImpl(ObjectDataTypesClient innerClient,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<TypeField> listFieldsByModuleAndType(
-        String resourceGroupName, String automationAccountName, String moduleName, String typeName) {
-        PagedIterable<TypeFieldInner> inner =
-            this
-                .serviceClient()
-                .listFieldsByModuleAndType(resourceGroupName, automationAccountName, moduleName, typeName);
-        return Utils.mapPage(inner, inner1 -> new TypeFieldImpl(inner1, this.manager()));
+    public PagedIterable<TypeField> listFieldsByModuleAndType(String resourceGroupName, String automationAccountName,
+        String moduleName, String typeName) {
+        PagedIterable<TypeFieldInner> inner = this.serviceClient()
+            .listFieldsByModuleAndType(resourceGroupName, automationAccountName, moduleName, typeName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TypeFieldImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<TypeField> listFieldsByModuleAndType(
-        String resourceGroupName, String automationAccountName, String moduleName, String typeName, Context context) {
-        PagedIterable<TypeFieldInner> inner =
-            this
-                .serviceClient()
-                .listFieldsByModuleAndType(resourceGroupName, automationAccountName, moduleName, typeName, context);
-        return Utils.mapPage(inner, inner1 -> new TypeFieldImpl(inner1, this.manager()));
+    public PagedIterable<TypeField> listFieldsByModuleAndType(String resourceGroupName, String automationAccountName,
+        String moduleName, String typeName, Context context) {
+        PagedIterable<TypeFieldInner> inner = this.serviceClient()
+            .listFieldsByModuleAndType(resourceGroupName, automationAccountName, moduleName, typeName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TypeFieldImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<TypeField> listFieldsByType(
-        String resourceGroupName, String automationAccountName, String typeName) {
-        PagedIterable<TypeFieldInner> inner =
-            this.serviceClient().listFieldsByType(resourceGroupName, automationAccountName, typeName);
-        return Utils.mapPage(inner, inner1 -> new TypeFieldImpl(inner1, this.manager()));
+    public PagedIterable<TypeField> listFieldsByType(String resourceGroupName, String automationAccountName,
+        String typeName) {
+        PagedIterable<TypeFieldInner> inner
+            = this.serviceClient().listFieldsByType(resourceGroupName, automationAccountName, typeName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TypeFieldImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<TypeField> listFieldsByType(
-        String resourceGroupName, String automationAccountName, String typeName, Context context) {
-        PagedIterable<TypeFieldInner> inner =
-            this.serviceClient().listFieldsByType(resourceGroupName, automationAccountName, typeName, context);
-        return Utils.mapPage(inner, inner1 -> new TypeFieldImpl(inner1, this.manager()));
+    public PagedIterable<TypeField> listFieldsByType(String resourceGroupName, String automationAccountName,
+        String typeName, Context context) {
+        PagedIterable<TypeFieldInner> inner
+            = this.serviceClient().listFieldsByType(resourceGroupName, automationAccountName, typeName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TypeFieldImpl(inner1, this.manager()));
     }
 
     private ObjectDataTypesClient serviceClient() {

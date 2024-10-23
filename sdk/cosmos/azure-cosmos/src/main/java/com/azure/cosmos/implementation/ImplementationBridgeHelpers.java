@@ -465,54 +465,6 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosBulkExecutionOptionsAccessor {
-
-            void setOperationContext(CosmosBulkExecutionOptions options,
-                                     OperationContextAndListenerTuple operationContextAndListenerTuple);
-
-            OperationContextAndListenerTuple getOperationContext(CosmosBulkExecutionOptions options);
-
-            Duration getMaxMicroBatchInterval(CosmosBulkExecutionOptions options);
-
-            CosmosBulkExecutionOptions setTargetedMicroBatchRetryRate(
-                CosmosBulkExecutionOptions options,
-                double minRetryRate,
-                double maxRetryRate);
-
-            @SuppressWarnings({"unchecked"})
-            <T> T getLegacyBatchScopedContext(CosmosBulkExecutionOptions options);
-
-            double getMinTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options);
-
-            double getMaxTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options);
-
-            int getMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options);
-
-            CosmosBulkExecutionOptions setMaxMicroBatchPayloadSizeInBytes(
-                CosmosBulkExecutionOptions options,
-                int maxMicroBatchPayloadSizeInBytes);
-
-            int getMaxMicroBatchConcurrency(CosmosBulkExecutionOptions options);
-
-            Integer getMaxConcurrentCosmosPartitions(CosmosBulkExecutionOptions options);
-
-            CosmosBulkExecutionOptions setMaxConcurrentCosmosPartitions(
-                CosmosBulkExecutionOptions options, int mxConcurrentCosmosPartitions);
-
-            CosmosBulkExecutionOptions setHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions,
-                                                 String name, String value);
-
-            Map<String, String> getHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
-
-            Map<String, String> getCustomOptions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
-
-            int getMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
-
-            void setDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, BulkExecutorDiagnosticsTracker tracker);
-
-            BulkExecutorDiagnosticsTracker getDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
-
-            CosmosBulkExecutionOptions setSchedulerOverride(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, Scheduler customScheduler);
-
             CosmosBulkExecutionOptions clone(CosmosBulkExecutionOptions toBeCloned);
             CosmosBulkExecutionOptionsImpl getImpl(CosmosBulkExecutionOptions options);
         }

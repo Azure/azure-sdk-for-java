@@ -5,22 +5,24 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The pod identity profile of the Managed Cluster.
- *
+ * 
  * See [use AAD pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on pod
  * identity integration.
  */
 @Fluent
-public final class ManagedClusterPodIdentityProfile {
+public final class ManagedClusterPodIdentityProfile implements JsonSerializable<ManagedClusterPodIdentityProfile> {
     /*
      * Whether the pod identity addon is enabled.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
@@ -29,19 +31,16 @@ public final class ManagedClusterPodIdentityProfile {
      * Identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#using-kubenet-network-plugin-with-azure-
      * active-directory-pod-managed-identities) for more information.
      */
-    @JsonProperty(value = "allowNetworkPluginKubenet")
     private Boolean allowNetworkPluginKubenet;
 
     /*
      * The pod identities to use in the cluster.
      */
-    @JsonProperty(value = "userAssignedIdentities")
     private List<ManagedClusterPodIdentity> userAssignedIdentities;
 
     /*
      * The pod identity exceptions to allow.
      */
-    @JsonProperty(value = "userAssignedIdentityExceptions")
     private List<ManagedClusterPodIdentityException> userAssignedIdentityExceptions;
 
     /**
@@ -52,7 +51,7 @@ public final class ManagedClusterPodIdentityProfile {
 
     /**
      * Get the enabled property: Whether the pod identity addon is enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -61,7 +60,7 @@ public final class ManagedClusterPodIdentityProfile {
 
     /**
      * Set the enabled property: Whether the pod identity addon is enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterPodIdentityProfile object itself.
      */
@@ -75,7 +74,7 @@ public final class ManagedClusterPodIdentityProfile {
      * nature of AAD Pod Identity and the risks of IP spoofing. See [using Kubenet network plugin with AAD Pod
      * Identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#using-kubenet-network-plugin-with-azure-active-directory-pod-managed-identities)
      * for more information.
-     *
+     * 
      * @return the allowNetworkPluginKubenet value.
      */
     public Boolean allowNetworkPluginKubenet() {
@@ -87,7 +86,7 @@ public final class ManagedClusterPodIdentityProfile {
      * nature of AAD Pod Identity and the risks of IP spoofing. See [using Kubenet network plugin with AAD Pod
      * Identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#using-kubenet-network-plugin-with-azure-active-directory-pod-managed-identities)
      * for more information.
-     *
+     * 
      * @param allowNetworkPluginKubenet the allowNetworkPluginKubenet value to set.
      * @return the ManagedClusterPodIdentityProfile object itself.
      */
@@ -98,7 +97,7 @@ public final class ManagedClusterPodIdentityProfile {
 
     /**
      * Get the userAssignedIdentities property: The pod identities to use in the cluster.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public List<ManagedClusterPodIdentity> userAssignedIdentities() {
@@ -107,7 +106,7 @@ public final class ManagedClusterPodIdentityProfile {
 
     /**
      * Set the userAssignedIdentities property: The pod identities to use in the cluster.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ManagedClusterPodIdentityProfile object itself.
      */
@@ -119,7 +118,7 @@ public final class ManagedClusterPodIdentityProfile {
 
     /**
      * Get the userAssignedIdentityExceptions property: The pod identity exceptions to allow.
-     *
+     * 
      * @return the userAssignedIdentityExceptions value.
      */
     public List<ManagedClusterPodIdentityException> userAssignedIdentityExceptions() {
@@ -128,7 +127,7 @@ public final class ManagedClusterPodIdentityProfile {
 
     /**
      * Set the userAssignedIdentityExceptions property: The pod identity exceptions to allow.
-     *
+     * 
      * @param userAssignedIdentityExceptions the userAssignedIdentityExceptions value to set.
      * @return the ManagedClusterPodIdentityProfile object itself.
      */
@@ -140,7 +139,7 @@ public final class ManagedClusterPodIdentityProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -150,5 +149,59 @@ public final class ManagedClusterPodIdentityProfile {
         if (userAssignedIdentityExceptions() != null) {
             userAssignedIdentityExceptions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeBooleanField("allowNetworkPluginKubenet", this.allowNetworkPluginKubenet);
+        jsonWriter.writeArrayField("userAssignedIdentities", this.userAssignedIdentities,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userAssignedIdentityExceptions", this.userAssignedIdentityExceptions,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterPodIdentityProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterPodIdentityProfile if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedClusterPodIdentityProfile.
+     */
+    public static ManagedClusterPodIdentityProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterPodIdentityProfile deserializedManagedClusterPodIdentityProfile
+                = new ManagedClusterPodIdentityProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedManagedClusterPodIdentityProfile.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowNetworkPluginKubenet".equals(fieldName)) {
+                    deserializedManagedClusterPodIdentityProfile.allowNetworkPluginKubenet
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("userAssignedIdentities".equals(fieldName)) {
+                    List<ManagedClusterPodIdentity> userAssignedIdentities
+                        = reader.readArray(reader1 -> ManagedClusterPodIdentity.fromJson(reader1));
+                    deserializedManagedClusterPodIdentityProfile.userAssignedIdentities = userAssignedIdentities;
+                } else if ("userAssignedIdentityExceptions".equals(fieldName)) {
+                    List<ManagedClusterPodIdentityException> userAssignedIdentityExceptions
+                        = reader.readArray(reader1 -> ManagedClusterPodIdentityException.fromJson(reader1));
+                    deserializedManagedClusterPodIdentityProfile.userAssignedIdentityExceptions
+                        = userAssignedIdentityExceptions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterPodIdentityProfile;
+        });
     }
 }

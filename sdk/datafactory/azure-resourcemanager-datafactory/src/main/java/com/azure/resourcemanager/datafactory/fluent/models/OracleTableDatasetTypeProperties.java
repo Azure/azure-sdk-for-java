@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * On-premises Oracle dataset properties.
  */
 @Fluent
-public final class OracleTableDatasetTypeProperties {
+public final class OracleTableDatasetTypeProperties implements JsonSerializable<OracleTableDatasetTypeProperties> {
     /*
      * This property will be retired. Please consider using schema + table properties instead.
      */
-    @JsonProperty(value = "tableName")
     private Object tableName;
 
     /*
      * The schema name of the on-premises Oracle database. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "schema")
     private Object schema;
 
     /*
      * The table name of the on-premises Oracle database. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "table")
     private Object table;
 
     /**
@@ -108,5 +109,48 @@ public final class OracleTableDatasetTypeProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("tableName", this.tableName);
+        jsonWriter.writeUntypedField("schema", this.schema);
+        jsonWriter.writeUntypedField("table", this.table);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OracleTableDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OracleTableDatasetTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OracleTableDatasetTypeProperties.
+     */
+    public static OracleTableDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OracleTableDatasetTypeProperties deserializedOracleTableDatasetTypeProperties
+                = new OracleTableDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tableName".equals(fieldName)) {
+                    deserializedOracleTableDatasetTypeProperties.tableName = reader.readUntyped();
+                } else if ("schema".equals(fieldName)) {
+                    deserializedOracleTableDatasetTypeProperties.schema = reader.readUntyped();
+                } else if ("table".equals(fieldName)) {
+                    deserializedOracleTableDatasetTypeProperties.table = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOracleTableDatasetTypeProperties;
+        });
     }
 }

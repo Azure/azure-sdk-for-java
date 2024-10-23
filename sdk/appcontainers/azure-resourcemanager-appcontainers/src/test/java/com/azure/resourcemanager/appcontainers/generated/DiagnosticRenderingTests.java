@@ -12,24 +12,24 @@ public final class DiagnosticRenderingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiagnosticRendering model = BinaryData
-            .fromString("{\"type\":1717573357,\"title\":\"sharujtj\",\"description\":\"xfz\",\"isVisible\":false}")
+            .fromString("{\"type\":1451303679,\"title\":\"rdfjmzsyzfhotl\",\"description\":\"k\",\"isVisible\":true}")
             .toObject(DiagnosticRendering.class);
-        Assertions.assertEquals(1717573357, model.type());
-        Assertions.assertEquals("sharujtj", model.title());
-        Assertions.assertEquals("xfz", model.description());
-        Assertions.assertEquals(false, model.isVisible());
+        Assertions.assertEquals(1451303679, model.type());
+        Assertions.assertEquals("rdfjmzsyzfhotl", model.title());
+        Assertions.assertEquals("k", model.description());
+        Assertions.assertEquals(true, model.isVisible());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiagnosticRendering model = new DiagnosticRendering().withType(1717573357)
-            .withTitle("sharujtj")
-            .withDescription("xfz")
-            .withIsVisible(false);
+        DiagnosticRendering model = new DiagnosticRendering().withType(1451303679)
+            .withTitle("rdfjmzsyzfhotl")
+            .withDescription("k")
+            .withIsVisible(true);
         model = BinaryData.fromObject(model).toObject(DiagnosticRendering.class);
-        Assertions.assertEquals(1717573357, model.type());
-        Assertions.assertEquals("sharujtj", model.title());
-        Assertions.assertEquals("xfz", model.description());
-        Assertions.assertEquals(false, model.isVisible());
+        Assertions.assertEquals(1451303679, model.type());
+        Assertions.assertEquals("rdfjmzsyzfhotl", model.title());
+        Assertions.assertEquals("k", model.description());
+        Assertions.assertEquals(true, model.isVisible());
     }
 }

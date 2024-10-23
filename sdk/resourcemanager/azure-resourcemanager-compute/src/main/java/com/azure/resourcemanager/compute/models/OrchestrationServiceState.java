@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class OrchestrationServiceState extends ExpandableStringEnum<Orches
      * @param name a name to look for.
      * @return the corresponding OrchestrationServiceState.
      */
-    @JsonCreator
     public static OrchestrationServiceState fromString(String name) {
         return fromString(name, OrchestrationServiceState.class);
     }

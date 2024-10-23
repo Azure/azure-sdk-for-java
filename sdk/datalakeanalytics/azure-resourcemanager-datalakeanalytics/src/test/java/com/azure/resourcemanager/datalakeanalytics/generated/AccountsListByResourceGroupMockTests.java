@@ -6,74 +6,36 @@ package com.azure.resourcemanager.datalakeanalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager;
 import com.azure.resourcemanager.datalakeanalytics.models.DataLakeAnalyticsAccountBasic;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AccountsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"accountId\":\"11faa0f8-db2a-44a8-8b97-494a06a4e068\",\"provisioningState\":\"Canceled\",\"state\":\"Suspended\",\"creationTime\":\"2021-11-06T18:49:40Z\",\"lastModifiedTime\":\"2021-10-14T05:29:13Z\",\"endpoint\":\"znud\"},\"location\":\"od\",\"tags\":{\"rzdzucerscdnt\":\"bncblylpstdbhhx\"},\"id\":\"evfiwjmygt\",\"name\":\"sslswtmweriof\",\"type\":\"pyqs\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"accountId\":\"051ef576-78d1-46bc-9cfa-5189d17969b9\",\"provisioningState\":\"Succeeded\",\"state\":\"Active\",\"creationTime\":\"2021-08-20T16:40:33Z\",\"lastModifiedTime\":\"2021-03-09T22:42:48Z\",\"endpoint\":\"bebxmubyyntwl\"},\"location\":\"bqtkoievseotgqr\",\"tags\":{\"gcj\":\"muwlauwzizxbm\",\"um\":\"fuzmuvpbtt\",\"xe\":\"rp\"},\"id\":\"mnzb\",\"name\":\"bhjpglkfgohdne\",\"type\":\"el\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataLakeAnalyticsManager manager = DataLakeAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<DataLakeAnalyticsAccountBasic> response = manager.accounts()
+            .listByResourceGroup("aolps", "lqlfm", 219002993, 57076299, "bbglzpswiydmc", "yhz", true,
+                com.azure.core.util.Context.NONE);
 
-        DataLakeAnalyticsManager manager =
-            DataLakeAnalyticsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<DataLakeAnalyticsAccountBasic> response =
-            manager
-                .accounts()
-                .listByResourceGroup(
-                    "fzxmhhvhgureodkw",
-                    "bdagxt",
-                    1583051460,
-                    1795454962,
-                    "dxbx",
-                    "akbogqxndlkzgxh",
-                    false,
-                    com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("bqtkoievseotgqr", response.iterator().next().location());
-        Assertions.assertEquals("muwlauwzizxbm", response.iterator().next().tags().get("gcj"));
+        Assertions.assertEquals("od", response.iterator().next().location());
+        Assertions.assertEquals("bncblylpstdbhhx", response.iterator().next().tags().get("rzdzucerscdnt"));
     }
 }

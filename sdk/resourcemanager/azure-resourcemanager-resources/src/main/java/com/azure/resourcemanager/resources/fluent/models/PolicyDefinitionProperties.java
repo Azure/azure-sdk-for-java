@@ -5,58 +5,54 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.ParameterDefinitionsValue;
 import com.azure.resourcemanager.resources.models.PolicyType;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * The policy definition properties.
  */
 @Fluent
-public final class PolicyDefinitionProperties {
+public final class PolicyDefinitionProperties implements JsonSerializable<PolicyDefinitionProperties> {
     /*
      * The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom, and Static.
      */
-    @JsonProperty(value = "policyType")
     private PolicyType policyType;
 
     /*
      * The policy definition mode. Some examples are All, Indexed, Microsoft.KeyVault.Data.
      */
-    @JsonProperty(value = "mode")
     private String mode;
 
     /*
      * The display name of the policy definition.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The policy definition description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The policy rule.
      */
-    @JsonProperty(value = "policyRule")
     private Object policyRule;
 
     /*
-     * The policy definition metadata.  Metadata is an open ended object and is typically a collection of key value pairs.
+     * The policy definition metadata. Metadata is an open ended object and is typically a collection of key value
+     * pairs.
      */
-    @JsonProperty(value = "metadata")
     private Object metadata;
 
     /*
      * The parameter definitions for parameters used in the policy rule. The keys are the parameter names.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ParameterDefinitionsValue> parameters;
 
     /**
@@ -224,5 +220,61 @@ public final class PolicyDefinitionProperties {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("policyType", this.policyType == null ? null : this.policyType.toString());
+        jsonWriter.writeStringField("mode", this.mode);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeUntypedField("policyRule", this.policyRule);
+        jsonWriter.writeUntypedField("metadata", this.metadata);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyDefinitionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyDefinitionProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyDefinitionProperties.
+     */
+    public static PolicyDefinitionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyDefinitionProperties deserializedPolicyDefinitionProperties = new PolicyDefinitionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("policyType".equals(fieldName)) {
+                    deserializedPolicyDefinitionProperties.policyType = PolicyType.fromString(reader.getString());
+                } else if ("mode".equals(fieldName)) {
+                    deserializedPolicyDefinitionProperties.mode = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedPolicyDefinitionProperties.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedPolicyDefinitionProperties.description = reader.getString();
+                } else if ("policyRule".equals(fieldName)) {
+                    deserializedPolicyDefinitionProperties.policyRule = reader.readUntyped();
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedPolicyDefinitionProperties.metadata = reader.readUntyped();
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterDefinitionsValue> parameters
+                        = reader.readMap(reader1 -> ParameterDefinitionsValue.fromJson(reader1));
+                    deserializedPolicyDefinitionProperties.parameters = parameters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyDefinitionProperties;
+        });
     }
 }

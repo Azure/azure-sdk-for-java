@@ -12,20 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class BatchRetrySettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BatchRetrySettings model =
-            BinaryData
-                .fromString("{\"maxRetries\":80770684,\"timeout\":\"PT155H21M58S\"}")
-                .toObject(BatchRetrySettings.class);
-        Assertions.assertEquals(80770684, model.maxRetries());
-        Assertions.assertEquals(Duration.parse("PT155H21M58S"), model.timeout());
+        BatchRetrySettings model = BinaryData.fromString("{\"maxRetries\":1662564263,\"timeout\":\"PT208H49M32S\"}")
+            .toObject(BatchRetrySettings.class);
+        Assertions.assertEquals(1662564263, model.maxRetries());
+        Assertions.assertEquals(Duration.parse("PT208H49M32S"), model.timeout());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BatchRetrySettings model =
-            new BatchRetrySettings().withMaxRetries(80770684).withTimeout(Duration.parse("PT155H21M58S"));
+        BatchRetrySettings model
+            = new BatchRetrySettings().withMaxRetries(1662564263).withTimeout(Duration.parse("PT208H49M32S"));
         model = BinaryData.fromObject(model).toObject(BatchRetrySettings.class);
-        Assertions.assertEquals(80770684, model.maxRetries());
-        Assertions.assertEquals(Duration.parse("PT155H21M58S"), model.timeout());
+        Assertions.assertEquals(1662564263, model.maxRetries());
+        Assertions.assertEquals(Duration.parse("PT208H49M32S"), model.timeout());
     }
 }

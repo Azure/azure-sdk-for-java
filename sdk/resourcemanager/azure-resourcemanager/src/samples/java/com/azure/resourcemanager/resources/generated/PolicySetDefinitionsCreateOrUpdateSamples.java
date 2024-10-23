@@ -23,7 +23,8 @@ import java.util.Map;
  */
 public final class PolicySetDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/createOrUpdatePolicySetDefinitionWithGroups.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/
+     * createOrUpdatePolicySetDefinitionWithGroups.json
      */
     /**
      * Sample code: Create or update a policy set definition with groups.
@@ -66,7 +67,8 @@ public final class PolicySetDefinitionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/createOrUpdatePolicySetDefinition.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/
+     * createOrUpdatePolicySetDefinition.json
      */
     /**
      * Sample code: Create or update a policy set definition.

@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.billingbenefits.fluent.models.RoleAssignmentEntityInner;
 import com.azure.resourcemanager.billingbenefits.fluent.models.SavingsPlanOrderModelInner;
 
-/** An instance of this class provides access to all the operations defined in SavingsPlanOrdersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SavingsPlanOrdersClient.
+ */
 public interface SavingsPlanOrdersClient {
     /**
      * Get a savings plan order.
-     *
+     * 
      * @param savingsPlanOrderId Order ID of the savings plan.
      * @param expand May be used to expand the detail information of some properties.
      * @param context The context to associate with this operation.
@@ -30,7 +32,7 @@ public interface SavingsPlanOrdersClient {
 
     /**
      * Get a savings plan order.
-     *
+     * 
      * @param savingsPlanOrderId Order ID of the savings plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -42,7 +44,7 @@ public interface SavingsPlanOrdersClient {
 
     /**
      * Elevate as owner on savings plan order based on billing permissions.
-     *
+     * 
      * @param savingsPlanOrderId Order ID of the savings plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,7 +57,7 @@ public interface SavingsPlanOrdersClient {
 
     /**
      * Elevate as owner on savings plan order based on billing permissions.
-     *
+     * 
      * @param savingsPlanOrderId Order ID of the savings plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -67,7 +69,7 @@ public interface SavingsPlanOrdersClient {
 
     /**
      * List all Savings plan orders.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
@@ -77,7 +79,7 @@ public interface SavingsPlanOrdersClient {
 
     /**
      * List all Savings plan orders.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.fluent.models.ManagementLockObjectInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The list of locks.
  */
 @Fluent
-public final class ManagementLockListResult {
+public final class ManagementLockListResult implements JsonSerializable<ManagementLockListResult> {
     /*
      * The list of locks.
      */
-    @JsonProperty(value = "value")
     private List<ManagementLockObjectInner> value;
 
     /*
      * The URL to use for getting the next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -81,5 +83,46 @@ public final class ManagementLockListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagementLockListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagementLockListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagementLockListResult.
+     */
+    public static ManagementLockListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagementLockListResult deserializedManagementLockListResult = new ManagementLockListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ManagementLockObjectInner> value
+                        = reader.readArray(reader1 -> ManagementLockObjectInner.fromJson(reader1));
+                    deserializedManagementLockListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedManagementLockListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagementLockListResult;
+        });
     }
 }

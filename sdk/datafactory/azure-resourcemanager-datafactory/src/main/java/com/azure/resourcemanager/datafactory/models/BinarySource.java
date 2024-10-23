@@ -5,35 +5,31 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity Binary source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = BinarySource.class, visible = true)
-@JsonTypeName("BinarySource")
 @Fluent
 public final class BinarySource extends CopySource {
     /*
      * Copy source type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "BinarySource";
 
     /*
      * Binary store settings.
      */
-    @JsonProperty(value = "storeSettings")
     private StoreReadSettings storeSettings;
 
     /*
      * Binary format settings.
      */
-    @JsonProperty(value = "formatSettings")
     private BinaryReadSettings formatSettings;
 
     /**
@@ -142,5 +138,70 @@ public final class BinarySource extends CopySource {
         if (formatSettings() != null) {
             formatSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("storeSettings", this.storeSettings);
+        jsonWriter.writeJsonField("formatSettings", this.formatSettings);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BinarySource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BinarySource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BinarySource.
+     */
+    public static BinarySource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BinarySource deserializedBinarySource = new BinarySource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedBinarySource.withSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedBinarySource.withSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedBinarySource.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedBinarySource.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedBinarySource.type = reader.getString();
+                } else if ("storeSettings".equals(fieldName)) {
+                    deserializedBinarySource.storeSettings = StoreReadSettings.fromJson(reader);
+                } else if ("formatSettings".equals(fieldName)) {
+                    deserializedBinarySource.formatSettings = BinaryReadSettings.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedBinarySource.withAdditionalProperties(additionalProperties);
+
+            return deserializedBinarySource;
+        });
     }
 }

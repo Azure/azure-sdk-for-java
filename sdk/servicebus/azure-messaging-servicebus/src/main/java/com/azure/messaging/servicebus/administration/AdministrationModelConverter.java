@@ -159,6 +159,7 @@ class AdministrationModelConverter {
         final CreateSubscriptionBodyContentImpl content = new CreateSubscriptionBodyContentImpl()
             .setType(CONTENT_TYPE)
             .setSubscriptionDescription(subscriptionDescription);
+
         return new CreateSubscriptionBodyImpl().setContent(content);
     }
 
@@ -257,7 +258,19 @@ class AdministrationModelConverter {
             subscription.setForwardDeadLetteredMessagesTo(forwardDlq);
         }
 
-        return getCreateSubscriptionBody(EntityHelper.toImplementation(subscription));
+        // Set read-only properties on the subscription to null so they are not serialized.  The service will not
+        // properly update fields if it encounters MessageCountDetails in the serialized XML.  Mirrors behaviour in
+        // Track 1 library.
+        final SubscriptionDescriptionImpl implementation = EntityHelper.toImplementation(subscription)
+            .setDefaultMessageTimeToLive(null)
+            .setMessageCount(null)
+            .setCreatedAt(null)
+            .setUpdatedAt(null)
+            .setAccessedAt(null)
+            .setMessageCountDetails(null)
+            .setEntityAvailabilityStatus(null);
+
+        return getCreateSubscriptionBody(implementation);
     }
 
     CreateTopicBodyImpl getUpdateTopicBody(TopicProperties topic) {

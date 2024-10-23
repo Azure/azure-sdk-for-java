@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class SubnetsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/SubnetGetWithSharingScope.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/SubnetGetWithSharingScope.
      * json
      */
     /**
@@ -28,7 +28,7 @@ public final class SubnetsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/SubnetGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/SubnetGet.json
      */
     /**
      * Sample code: Get subnet.
@@ -45,7 +45,7 @@ public final class SubnetsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/SubnetGetWithDelegation.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/SubnetGetWithDelegation.json
      */
     /**
      * Sample code: Get subnet with a delegation.

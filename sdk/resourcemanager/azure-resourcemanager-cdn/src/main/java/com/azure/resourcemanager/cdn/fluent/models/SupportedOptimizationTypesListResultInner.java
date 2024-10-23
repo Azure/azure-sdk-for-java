@@ -5,19 +5,23 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.OptimizationType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The result of the GetSupportedOptimizationTypes API.
  */
 @Immutable
-public final class SupportedOptimizationTypesListResultInner {
+public final class SupportedOptimizationTypesListResultInner
+    implements JsonSerializable<SupportedOptimizationTypesListResultInner> {
     /*
      * Supported optimization types for a profile.
      */
-    @JsonProperty(value = "supportedOptimizationTypes", access = JsonProperty.Access.WRITE_ONLY)
     private List<OptimizationType> supportedOptimizationTypes;
 
     /**
@@ -41,5 +45,44 @@ public final class SupportedOptimizationTypesListResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SupportedOptimizationTypesListResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SupportedOptimizationTypesListResultInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SupportedOptimizationTypesListResultInner.
+     */
+    public static SupportedOptimizationTypesListResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SupportedOptimizationTypesListResultInner deserializedSupportedOptimizationTypesListResultInner
+                = new SupportedOptimizationTypesListResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("supportedOptimizationTypes".equals(fieldName)) {
+                    List<OptimizationType> supportedOptimizationTypes
+                        = reader.readArray(reader1 -> OptimizationType.fromString(reader1.getString()));
+                    deserializedSupportedOptimizationTypesListResultInner.supportedOptimizationTypes
+                        = supportedOptimizationTypes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSupportedOptimizationTypesListResultInner;
+        });
     }
 }

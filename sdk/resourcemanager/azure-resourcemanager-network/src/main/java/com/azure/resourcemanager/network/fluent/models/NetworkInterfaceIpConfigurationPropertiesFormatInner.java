@@ -6,109 +6,99 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of IP configuration.
  */
 @Fluent
-public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
+public final class NetworkInterfaceIpConfigurationPropertiesFormatInner
+    implements JsonSerializable<NetworkInterfaceIpConfigurationPropertiesFormatInner> {
     /*
      * The reference to gateway load balancer frontend IP.
      */
-    @JsonProperty(value = "gatewayLoadBalancer")
     private SubResource gatewayLoadBalancer;
 
     /*
      * The reference to Virtual Network Taps.
      */
-    @JsonProperty(value = "virtualNetworkTaps")
     private List<VirtualNetworkTapInner> virtualNetworkTaps;
 
     /*
      * The reference to ApplicationGatewayBackendAddressPool resource.
      */
-    @JsonProperty(value = "applicationGatewayBackendAddressPools")
     private List<ApplicationGatewayBackendAddressPool> applicationGatewayBackendAddressPools;
 
     /*
      * The reference to LoadBalancerBackendAddressPool resource.
      */
-    @JsonProperty(value = "loadBalancerBackendAddressPools")
     private List<BackendAddressPoolInner> loadBalancerBackendAddressPools;
 
     /*
      * A list of references of LoadBalancerInboundNatRules.
      */
-    @JsonProperty(value = "loadBalancerInboundNatRules")
     private List<InboundNatRuleInner> loadBalancerInboundNatRules;
 
     /*
      * Private IP address of the IP configuration. It can be a single IP address or a CIDR block in the format
      * <address>/<prefix-length>.
      */
-    @JsonProperty(value = "privateIPAddress")
     private String privateIpAddress;
 
     /*
      * The private IP address prefix length. If specified and the allocation method is dynamic, the service will
      * allocate a CIDR block instead of a single IP address.
      */
-    @JsonProperty(value = "privateIPAddressPrefixLength")
     private Integer privateIpAddressPrefixLength;
 
     /*
      * The private IP address allocation method.
      */
-    @JsonProperty(value = "privateIPAllocationMethod")
     private IpAllocationMethod privateIpAllocationMethod;
 
     /*
      * Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4.
      */
-    @JsonProperty(value = "privateIPAddressVersion")
     private IpVersion privateIpAddressVersion;
 
     /*
      * Subnet bound to the IP configuration.
      */
-    @JsonProperty(value = "subnet")
     private SubnetInner subnet;
 
     /*
      * Whether this is a primary customer address on the network interface.
      */
-    @JsonProperty(value = "primary")
     private Boolean primary;
 
     /*
      * Public IP address bound to the IP configuration.
      */
-    @JsonProperty(value = "publicIPAddress")
     private PublicIpAddressInner publicIpAddress;
 
     /*
      * Application security groups in which the IP configuration is included.
      */
-    @JsonProperty(value = "applicationSecurityGroups")
     private List<ApplicationSecurityGroupInner> applicationSecurityGroups;
 
     /*
      * The provisioning state of the network interface IP configuration.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * PrivateLinkConnection properties for the network interface.
      */
-    @JsonProperty(value = "privateLinkConnectionProperties", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties privateLinkConnectionProperties;
 
     /**
@@ -443,5 +433,115 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
         if (privateLinkConnectionProperties() != null) {
             privateLinkConnectionProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("gatewayLoadBalancer", this.gatewayLoadBalancer);
+        jsonWriter.writeArrayField("virtualNetworkTaps", this.virtualNetworkTaps,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("applicationGatewayBackendAddressPools", this.applicationGatewayBackendAddressPools,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("loadBalancerBackendAddressPools", this.loadBalancerBackendAddressPools,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("loadBalancerInboundNatRules", this.loadBalancerInboundNatRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("privateIPAddress", this.privateIpAddress);
+        jsonWriter.writeNumberField("privateIPAddressPrefixLength", this.privateIpAddressPrefixLength);
+        jsonWriter.writeStringField("privateIPAllocationMethod",
+            this.privateIpAllocationMethod == null ? null : this.privateIpAllocationMethod.toString());
+        jsonWriter.writeStringField("privateIPAddressVersion",
+            this.privateIpAddressVersion == null ? null : this.privateIpAddressVersion.toString());
+        jsonWriter.writeJsonField("subnet", this.subnet);
+        jsonWriter.writeBooleanField("primary", this.primary);
+        jsonWriter.writeJsonField("publicIPAddress", this.publicIpAddress);
+        jsonWriter.writeArrayField("applicationSecurityGroups", this.applicationSecurityGroups,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkInterfaceIpConfigurationPropertiesFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkInterfaceIpConfigurationPropertiesFormatInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkInterfaceIpConfigurationPropertiesFormatInner.
+     */
+    public static NetworkInterfaceIpConfigurationPropertiesFormatInner fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkInterfaceIpConfigurationPropertiesFormatInner deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner
+                = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("gatewayLoadBalancer".equals(fieldName)) {
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.gatewayLoadBalancer
+                        = SubResource.fromJson(reader);
+                } else if ("virtualNetworkTaps".equals(fieldName)) {
+                    List<VirtualNetworkTapInner> virtualNetworkTaps
+                        = reader.readArray(reader1 -> VirtualNetworkTapInner.fromJson(reader1));
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.virtualNetworkTaps
+                        = virtualNetworkTaps;
+                } else if ("applicationGatewayBackendAddressPools".equals(fieldName)) {
+                    List<ApplicationGatewayBackendAddressPool> applicationGatewayBackendAddressPools
+                        = reader.readArray(reader1 -> ApplicationGatewayBackendAddressPool.fromJson(reader1));
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.applicationGatewayBackendAddressPools
+                        = applicationGatewayBackendAddressPools;
+                } else if ("loadBalancerBackendAddressPools".equals(fieldName)) {
+                    List<BackendAddressPoolInner> loadBalancerBackendAddressPools
+                        = reader.readArray(reader1 -> BackendAddressPoolInner.fromJson(reader1));
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.loadBalancerBackendAddressPools
+                        = loadBalancerBackendAddressPools;
+                } else if ("loadBalancerInboundNatRules".equals(fieldName)) {
+                    List<InboundNatRuleInner> loadBalancerInboundNatRules
+                        = reader.readArray(reader1 -> InboundNatRuleInner.fromJson(reader1));
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.loadBalancerInboundNatRules
+                        = loadBalancerInboundNatRules;
+                } else if ("privateIPAddress".equals(fieldName)) {
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.privateIpAddress
+                        = reader.getString();
+                } else if ("privateIPAddressPrefixLength".equals(fieldName)) {
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.privateIpAddressPrefixLength
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("privateIPAllocationMethod".equals(fieldName)) {
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.privateIpAllocationMethod
+                        = IpAllocationMethod.fromString(reader.getString());
+                } else if ("privateIPAddressVersion".equals(fieldName)) {
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.privateIpAddressVersion
+                        = IpVersion.fromString(reader.getString());
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.subnet
+                        = SubnetInner.fromJson(reader);
+                } else if ("primary".equals(fieldName)) {
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.primary
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("publicIPAddress".equals(fieldName)) {
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.publicIpAddress
+                        = PublicIpAddressInner.fromJson(reader);
+                } else if ("applicationSecurityGroups".equals(fieldName)) {
+                    List<ApplicationSecurityGroupInner> applicationSecurityGroups
+                        = reader.readArray(reader1 -> ApplicationSecurityGroupInner.fromJson(reader1));
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.applicationSecurityGroups
+                        = applicationSecurityGroups;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("privateLinkConnectionProperties".equals(fieldName)) {
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.privateLinkConnectionProperties
+                        = NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner;
+        });
     }
 }

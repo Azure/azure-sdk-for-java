@@ -6,7 +6,10 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The parameters of a managed disk.
@@ -17,19 +20,16 @@ public final class ManagedDiskParameters extends SubResource {
      * Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it
      * cannot be used with OS Disk.
      */
-    @JsonProperty(value = "storageAccountType")
     private StorageAccountTypes storageAccountType;
 
     /*
      * Specifies the customer managed disk encryption set resource id for the managed disk.
      */
-    @JsonProperty(value = "diskEncryptionSet")
     private DiskEncryptionSetParameters diskEncryptionSet;
 
     /*
      * Specifies the security profile for the managed disk.
      */
-    @JsonProperty(value = "securityProfile")
     private VMDiskSecurityProfile securityProfile;
 
     /**
@@ -123,5 +123,52 @@ public final class ManagedDiskParameters extends SubResource {
         if (securityProfile() != null) {
             securityProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("storageAccountType",
+            this.storageAccountType == null ? null : this.storageAccountType.toString());
+        jsonWriter.writeJsonField("diskEncryptionSet", this.diskEncryptionSet);
+        jsonWriter.writeJsonField("securityProfile", this.securityProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedDiskParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedDiskParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedDiskParameters.
+     */
+    public static ManagedDiskParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedDiskParameters deserializedManagedDiskParameters = new ManagedDiskParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedManagedDiskParameters.withId(reader.getString());
+                } else if ("storageAccountType".equals(fieldName)) {
+                    deserializedManagedDiskParameters.storageAccountType
+                        = StorageAccountTypes.fromString(reader.getString());
+                } else if ("diskEncryptionSet".equals(fieldName)) {
+                    deserializedManagedDiskParameters.diskEncryptionSet = DiskEncryptionSetParameters.fromJson(reader);
+                } else if ("securityProfile".equals(fieldName)) {
+                    deserializedManagedDiskParameters.securityProfile = VMDiskSecurityProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedDiskParameters;
+        });
     }
 }

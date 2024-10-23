@@ -40,8 +40,12 @@ public final class PoliciesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createsSpecificPolicy(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getPolicies().createOrUpdate("rg1", "MicrosoftCdnWafPolicy",
-            new CdnWebApplicationFirewallPolicyInner().withLocation("WestUs")
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getPolicies()
+            .createOrUpdate("rg1", "MicrosoftCdnWafPolicy", new CdnWebApplicationFirewallPolicyInner()
+                .withLocation("WestUs")
                 .withSku(new Sku().withName(SkuName.STANDARD_MICROSOFT))
                 .withPolicySettings(new PolicySettings().withDefaultRedirectUrl("http://www.bing.com")
                     .withDefaultCustomBlockResponseStatusCode(
@@ -50,34 +54,49 @@ public final class PoliciesCreateOrUpdateSamples {
                         "PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg=="))
                 .withRateLimitRules(
                     new RateLimitRuleList().withRules(Arrays.asList(new RateLimitRule().withName("RateLimitRule1")
-                        .withEnabledState(CustomRuleEnabledState.ENABLED).withPriority(1)
-                        .withMatchConditions(Arrays.asList(new MatchCondition()
-                            .withMatchVariable(WafMatchVariable.REMOTE_ADDR).withOperator(Operator.IPMATCH)
-                            .withNegateCondition(false).withMatchValue(Arrays.asList("192.168.1.0/24", "10.0.0.0/24"))
-                            .withTransforms(Arrays.asList())))
-                        .withAction(ActionType.BLOCK).withRateLimitThreshold(1000).withRateLimitDurationInMinutes(0))))
+                        .withEnabledState(CustomRuleEnabledState.ENABLED)
+                        .withPriority(1)
+                        .withMatchConditions(
+                            Arrays.asList(new MatchCondition().withMatchVariable(WafMatchVariable.REMOTE_ADDR)
+                                .withOperator(Operator.IPMATCH)
+                                .withNegateCondition(false)
+                                .withMatchValue(Arrays.asList("192.168.1.0/24", "10.0.0.0/24"))
+                                .withTransforms(Arrays.asList())))
+                        .withAction(ActionType.BLOCK)
+                        .withRateLimitThreshold(1000)
+                        .withRateLimitDurationInMinutes(0))))
                 .withCustomRules(new CustomRuleList().withRules(Arrays.asList(new CustomRule().withName("CustomRule1")
-                    .withEnabledState(CustomRuleEnabledState.ENABLED).withPriority(2)
+                    .withEnabledState(CustomRuleEnabledState.ENABLED)
+                    .withPriority(2)
                     .withMatchConditions(Arrays.asList(
                         new MatchCondition().withMatchVariable(WafMatchVariable.REMOTE_ADDR)
-                            .withOperator(Operator.GEO_MATCH).withNegateCondition(false)
-                            .withMatchValue(Arrays.asList("CH")).withTransforms(Arrays.asList()),
+                            .withOperator(Operator.GEO_MATCH)
+                            .withNegateCondition(false)
+                            .withMatchValue(Arrays.asList("CH"))
+                            .withTransforms(Arrays.asList()),
                         new MatchCondition().withMatchVariable(WafMatchVariable.REQUEST_HEADER)
-                            .withSelector("UserAgent").withOperator(Operator.CONTAINS).withNegateCondition(false)
-                            .withMatchValue(Arrays.asList("windows")).withTransforms(Arrays.asList()),
-                        new MatchCondition().withMatchVariable(WafMatchVariable.QUERY_STRING).withSelector("search")
-                            .withOperator(Operator.CONTAINS).withNegateCondition(false)
+                            .withSelector("UserAgent")
+                            .withOperator(Operator.CONTAINS)
+                            .withNegateCondition(false)
+                            .withMatchValue(Arrays.asList("windows"))
+                            .withTransforms(Arrays.asList()),
+                        new MatchCondition().withMatchVariable(WafMatchVariable.QUERY_STRING)
+                            .withSelector("search")
+                            .withOperator(Operator.CONTAINS)
+                            .withNegateCondition(false)
                             .withMatchValue(Arrays.asList("<?php", "?>"))
                             .withTransforms(Arrays.asList(TransformType.URL_DECODE, TransformType.LOWERCASE))))
                     .withAction(ActionType.BLOCK))))
-                .withManagedRules(new ManagedRuleSetList().withManagedRuleSets(Arrays.asList(new ManagedRuleSet()
-                    .withRuleSetType("DefaultRuleSet").withRuleSetVersion("preview-1.0")
-                    .withRuleGroupOverrides(Arrays.asList(new ManagedRuleGroupOverride().withRuleGroupName("Group1")
-                        .withRules(Arrays.asList(
-                            new ManagedRuleOverride().withRuleId("GROUP1-0001")
-                                .withEnabledState(ManagedRuleEnabledState.ENABLED).withAction(ActionType.REDIRECT),
-                            new ManagedRuleOverride().withRuleId("GROUP1-0002")
-                                .withEnabledState(ManagedRuleEnabledState.DISABLED)))))))),
-            com.azure.core.util.Context.NONE);
+                .withManagedRules(new ManagedRuleSetList()
+                    .withManagedRuleSets(Arrays.asList(new ManagedRuleSet().withRuleSetType("DefaultRuleSet")
+                        .withRuleSetVersion("preview-1.0")
+                        .withRuleGroupOverrides(Arrays.asList(new ManagedRuleGroupOverride().withRuleGroupName("Group1")
+                            .withRules(Arrays.asList(
+                                new ManagedRuleOverride().withRuleId("GROUP1-0001")
+                                    .withEnabledState(ManagedRuleEnabledState.ENABLED)
+                                    .withAction(ActionType.REDIRECT),
+                                new ManagedRuleOverride().withRuleId("GROUP1-0002")
+                                    .withEnabledState(ManagedRuleEnabledState.DISABLED)))))))),
+                com.azure.core.util.Context.NONE);
     }
 }

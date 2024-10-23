@@ -5,73 +5,72 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The managed instance virtual cores capability. */
+/**
+ * The managed instance virtual cores capability.
+ */
 @Fluent
-public final class ManagedInstanceVcoresCapability {
+public final class ManagedInstanceVcoresCapability implements JsonSerializable<ManagedInstanceVcoresCapability> {
     /*
      * The virtual cores identifier.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The virtual cores value.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private Integer value;
 
     /*
      * Included size.
      */
-    @JsonProperty(value = "includedMaxSize", access = JsonProperty.Access.WRITE_ONLY)
     private MaxSizeCapability includedMaxSize;
 
     /*
      * Storage size ranges.
      */
-    @JsonProperty(value = "supportedStorageSizes", access = JsonProperty.Access.WRITE_ONLY)
     private List<MaxSizeRangeCapability> supportedStorageSizes;
 
     /*
      * True if this service objective is supported for managed instances in an instance pool.
      */
-    @JsonProperty(value = "instancePoolSupported", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean instancePoolSupported;
 
     /*
      * True if this service objective is supported for standalone managed instances.
      */
-    @JsonProperty(value = "standaloneSupported", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean standaloneSupported;
 
     /*
      * List of supported maintenance configurations
      */
-    @JsonProperty(value = "supportedMaintenanceConfigurations", access = JsonProperty.Access.WRITE_ONLY)
     private List<ManagedInstanceMaintenanceConfigurationCapability> supportedMaintenanceConfigurations;
 
     /*
      * The status of the capability.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityStatus status;
 
     /*
      * The reason for the capability not being available.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of ManagedInstanceVcoresCapability class. */
+    /**
+     * Creates an instance of ManagedInstanceVcoresCapability class.
+     */
     public ManagedInstanceVcoresCapability() {
     }
 
     /**
      * Get the name property: The virtual cores identifier.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -80,7 +79,7 @@ public final class ManagedInstanceVcoresCapability {
 
     /**
      * Get the value property: The virtual cores value.
-     *
+     * 
      * @return the value value.
      */
     public Integer value() {
@@ -89,7 +88,7 @@ public final class ManagedInstanceVcoresCapability {
 
     /**
      * Get the includedMaxSize property: Included size.
-     *
+     * 
      * @return the includedMaxSize value.
      */
     public MaxSizeCapability includedMaxSize() {
@@ -98,7 +97,7 @@ public final class ManagedInstanceVcoresCapability {
 
     /**
      * Get the supportedStorageSizes property: Storage size ranges.
-     *
+     * 
      * @return the supportedStorageSizes value.
      */
     public List<MaxSizeRangeCapability> supportedStorageSizes() {
@@ -108,7 +107,7 @@ public final class ManagedInstanceVcoresCapability {
     /**
      * Get the instancePoolSupported property: True if this service objective is supported for managed instances in an
      * instance pool.
-     *
+     * 
      * @return the instancePoolSupported value.
      */
     public Boolean instancePoolSupported() {
@@ -118,7 +117,7 @@ public final class ManagedInstanceVcoresCapability {
     /**
      * Get the standaloneSupported property: True if this service objective is supported for standalone managed
      * instances.
-     *
+     * 
      * @return the standaloneSupported value.
      */
     public Boolean standaloneSupported() {
@@ -127,7 +126,7 @@ public final class ManagedInstanceVcoresCapability {
 
     /**
      * Get the supportedMaintenanceConfigurations property: List of supported maintenance configurations.
-     *
+     * 
      * @return the supportedMaintenanceConfigurations value.
      */
     public List<ManagedInstanceMaintenanceConfigurationCapability> supportedMaintenanceConfigurations() {
@@ -136,7 +135,7 @@ public final class ManagedInstanceVcoresCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -145,7 +144,7 @@ public final class ManagedInstanceVcoresCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -154,7 +153,7 @@ public final class ManagedInstanceVcoresCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the ManagedInstanceVcoresCapability object itself.
      */
@@ -165,7 +164,7 @@ public final class ManagedInstanceVcoresCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -178,5 +177,66 @@ public final class ManagedInstanceVcoresCapability {
         if (supportedMaintenanceConfigurations() != null) {
             supportedMaintenanceConfigurations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reason", this.reason);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedInstanceVcoresCapability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedInstanceVcoresCapability if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedInstanceVcoresCapability.
+     */
+    public static ManagedInstanceVcoresCapability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedInstanceVcoresCapability deserializedManagedInstanceVcoresCapability
+                = new ManagedInstanceVcoresCapability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedManagedInstanceVcoresCapability.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedManagedInstanceVcoresCapability.value = reader.getNullable(JsonReader::getInt);
+                } else if ("includedMaxSize".equals(fieldName)) {
+                    deserializedManagedInstanceVcoresCapability.includedMaxSize = MaxSizeCapability.fromJson(reader);
+                } else if ("supportedStorageSizes".equals(fieldName)) {
+                    List<MaxSizeRangeCapability> supportedStorageSizes
+                        = reader.readArray(reader1 -> MaxSizeRangeCapability.fromJson(reader1));
+                    deserializedManagedInstanceVcoresCapability.supportedStorageSizes = supportedStorageSizes;
+                } else if ("instancePoolSupported".equals(fieldName)) {
+                    deserializedManagedInstanceVcoresCapability.instancePoolSupported
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("standaloneSupported".equals(fieldName)) {
+                    deserializedManagedInstanceVcoresCapability.standaloneSupported
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("supportedMaintenanceConfigurations".equals(fieldName)) {
+                    List<ManagedInstanceMaintenanceConfigurationCapability> supportedMaintenanceConfigurations = reader
+                        .readArray(reader1 -> ManagedInstanceMaintenanceConfigurationCapability.fromJson(reader1));
+                    deserializedManagedInstanceVcoresCapability.supportedMaintenanceConfigurations
+                        = supportedMaintenanceConfigurations;
+                } else if ("status".equals(fieldName)) {
+                    deserializedManagedInstanceVcoresCapability.status
+                        = CapabilityStatus.fromString(reader.getString());
+                } else if ("reason".equals(fieldName)) {
+                    deserializedManagedInstanceVcoresCapability.reason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedInstanceVcoresCapability;
+        });
     }
 }

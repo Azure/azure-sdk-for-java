@@ -176,7 +176,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
 
         //@formatter:off
         this.subscriptions = Disposables.composite(
-            this.endpointStates.subscribe(),
+            this.endpointStates.subscribe(null, e -> logger.warning("Receive link endpoint state signaled error.", e)),
             this.tokenManager.getAuthorizationResults()
                 .onErrorResume(error -> {
                     // When we encounter an error refreshing authorization results, close the receive link.

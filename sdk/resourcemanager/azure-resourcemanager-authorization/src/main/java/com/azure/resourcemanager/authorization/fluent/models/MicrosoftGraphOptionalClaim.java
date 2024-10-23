@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** optionalClaim. */
+/**
+ * optionalClaim.
+ */
 @Fluent
-public final class MicrosoftGraphOptionalClaim {
+public final class MicrosoftGraphOptionalClaim implements JsonSerializable<MicrosoftGraphOptionalClaim> {
     /*
      * Additional properties of the claim. If a property exists in this collection, it modifies the behavior of the
      * optional claim specified in the name property.
      */
-    @JsonProperty(value = "additionalProperties")
     private List<String> additionalPropertiesProperty;
 
     /*
      * If the value is true, the claim specified by the client is necessary to ensure a smooth authorization experience
      * for the specific task requested by the end user. The default value is false.
      */
-    @JsonProperty(value = "essential")
     private Boolean essential;
 
     /*
      * The name of the optional claim.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
@@ -41,22 +41,23 @@ public final class MicrosoftGraphOptionalClaim {
      * properties. If the source value is null, the claim is a predefined optional claim. If the source value is user,
      * the value in the name property is the extension property from the user object.
      */
-    @JsonProperty(value = "source")
     private String source;
 
     /*
      * optionalClaim
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphOptionalClaim class. */
+    /**
+     * Creates an instance of MicrosoftGraphOptionalClaim class.
+     */
     public MicrosoftGraphOptionalClaim() {
     }
 
     /**
      * Get the additionalPropertiesProperty property: Additional properties of the claim. If a property exists in this
      * collection, it modifies the behavior of the optional claim specified in the name property.
-     *
+     * 
      * @return the additionalPropertiesProperty value.
      */
     public List<String> additionalPropertiesProperty() {
@@ -66,7 +67,7 @@ public final class MicrosoftGraphOptionalClaim {
     /**
      * Set the additionalPropertiesProperty property: Additional properties of the claim. If a property exists in this
      * collection, it modifies the behavior of the optional claim specified in the name property.
-     *
+     * 
      * @param additionalPropertiesProperty the additionalPropertiesProperty value to set.
      * @return the MicrosoftGraphOptionalClaim object itself.
      */
@@ -78,7 +79,7 @@ public final class MicrosoftGraphOptionalClaim {
     /**
      * Get the essential property: If the value is true, the claim specified by the client is necessary to ensure a
      * smooth authorization experience for the specific task requested by the end user. The default value is false.
-     *
+     * 
      * @return the essential value.
      */
     public Boolean essential() {
@@ -88,7 +89,7 @@ public final class MicrosoftGraphOptionalClaim {
     /**
      * Set the essential property: If the value is true, the claim specified by the client is necessary to ensure a
      * smooth authorization experience for the specific task requested by the end user. The default value is false.
-     *
+     * 
      * @param essential the essential value to set.
      * @return the MicrosoftGraphOptionalClaim object itself.
      */
@@ -99,7 +100,7 @@ public final class MicrosoftGraphOptionalClaim {
 
     /**
      * Get the name property: The name of the optional claim.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -108,7 +109,7 @@ public final class MicrosoftGraphOptionalClaim {
 
     /**
      * Set the name property: The name of the optional claim.
-     *
+     * 
      * @param name the name value to set.
      * @return the MicrosoftGraphOptionalClaim object itself.
      */
@@ -121,7 +122,7 @@ public final class MicrosoftGraphOptionalClaim {
      * Get the source property: The source (directory object) of the claim. There are predefined claims and user-defined
      * claims from extension properties. If the source value is null, the claim is a predefined optional claim. If the
      * source value is user, the value in the name property is the extension property from the user object.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -132,7 +133,7 @@ public final class MicrosoftGraphOptionalClaim {
      * Set the source property: The source (directory object) of the claim. There are predefined claims and user-defined
      * claims from extension properties. If the source value is null, the claim is a predefined optional claim. If the
      * source value is user, the value in the name property is the extension property from the user object.
-     *
+     * 
      * @param source the source value to set.
      * @return the MicrosoftGraphOptionalClaim object itself.
      */
@@ -143,17 +144,16 @@ public final class MicrosoftGraphOptionalClaim {
 
     /**
      * Get the additionalProperties property: optionalClaim.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: optionalClaim.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphOptionalClaim object itself.
      */
@@ -162,19 +162,69 @@ public final class MicrosoftGraphOptionalClaim {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("additionalProperties", this.additionalPropertiesProperty,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("essential", this.essential);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("source", this.source);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphOptionalClaim from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphOptionalClaim if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphOptionalClaim.
+     */
+    public static MicrosoftGraphOptionalClaim fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphOptionalClaim deserializedMicrosoftGraphOptionalClaim = new MicrosoftGraphOptionalClaim();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("additionalProperties".equals(fieldName)) {
+                    List<String> additionalPropertiesProperty = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphOptionalClaim.additionalPropertiesProperty = additionalPropertiesProperty;
+                } else if ("essential".equals(fieldName)) {
+                    deserializedMicrosoftGraphOptionalClaim.essential = reader.getNullable(JsonReader::getBoolean);
+                } else if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphOptionalClaim.name = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    deserializedMicrosoftGraphOptionalClaim.source = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphOptionalClaim.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphOptionalClaim;
+        });
     }
 }

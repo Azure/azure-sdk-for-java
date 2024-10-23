@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The GremlinDatabaseGetPropertiesResource model.
@@ -15,19 +19,16 @@ public final class GremlinDatabaseGetPropertiesResource extends GremlinDatabaseR
     /*
      * A system generated property. A unique identifier.
      */
-    @JsonProperty(value = "_rid", access = JsonProperty.Access.WRITE_ONLY)
     private String rid;
 
     /*
      * A system generated property that denotes the last updated timestamp of the resource.
      */
-    @JsonProperty(value = "_ts", access = JsonProperty.Access.WRITE_ONLY)
     private Float ts;
 
     /*
      * A system generated property representing the resource etag required for optimistic concurrency control.
      */
-    @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
@@ -98,6 +99,67 @@ public final class GremlinDatabaseGetPropertiesResource extends GremlinDatabaseR
      */
     @Override
     public void validate() {
-        super.validate();
+        if (id() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property id in model GremlinDatabaseGetPropertiesResource"));
+        }
+        if (restoreParameters() != null) {
+            restoreParameters().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GremlinDatabaseGetPropertiesResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("restoreParameters", restoreParameters());
+        jsonWriter.writeStringField("createMode", createMode() == null ? null : createMode().toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GremlinDatabaseGetPropertiesResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GremlinDatabaseGetPropertiesResource if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GremlinDatabaseGetPropertiesResource.
+     */
+    public static GremlinDatabaseGetPropertiesResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GremlinDatabaseGetPropertiesResource deserializedGremlinDatabaseGetPropertiesResource
+                = new GremlinDatabaseGetPropertiesResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedGremlinDatabaseGetPropertiesResource.withId(reader.getString());
+                } else if ("restoreParameters".equals(fieldName)) {
+                    deserializedGremlinDatabaseGetPropertiesResource
+                        .withRestoreParameters(ResourceRestoreParameters.fromJson(reader));
+                } else if ("createMode".equals(fieldName)) {
+                    deserializedGremlinDatabaseGetPropertiesResource
+                        .withCreateMode(CreateMode.fromString(reader.getString()));
+                } else if ("_rid".equals(fieldName)) {
+                    deserializedGremlinDatabaseGetPropertiesResource.rid = reader.getString();
+                } else if ("_ts".equals(fieldName)) {
+                    deserializedGremlinDatabaseGetPropertiesResource.ts = reader.getNullable(JsonReader::getFloat);
+                } else if ("_etag".equals(fieldName)) {
+                    deserializedGremlinDatabaseGetPropertiesResource.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGremlinDatabaseGetPropertiesResource;
+        });
     }
 }

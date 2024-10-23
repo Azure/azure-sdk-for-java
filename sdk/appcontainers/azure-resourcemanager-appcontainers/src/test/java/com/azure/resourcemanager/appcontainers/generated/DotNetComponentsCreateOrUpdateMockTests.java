@@ -25,7 +25,7 @@ public final class DotNetComponentsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"componentType\":\"AspireDashboard\",\"provisioningState\":\"Succeeded\",\"configurations\":[{\"propertyName\":\"wgzygbaduvecovsd\",\"value\":\"zrtdbakr\"}],\"serviceBinds\":[{\"name\":\"fvppkeqsifj\",\"serviceId\":\"lng\"}]},\"id\":\"nhr\",\"name\":\"ombcdtajdopggo\",\"type\":\"wj\"}";
+            = "{\"properties\":{\"componentType\":\"AspireDashboard\",\"provisioningState\":\"Succeeded\",\"configurations\":[{\"propertyName\":\"zdqiqdlrat\",\"value\":\"wxoauwxsuy\"},{\"propertyName\":\"nhrfgslgl\",\"value\":\"ry\"},{\"propertyName\":\"zihuioaeo\",\"value\":\"ajtfey\"}],\"serviceBinds\":[{\"name\":\"gdd\",\"serviceId\":\"hdccxb\"},{\"name\":\"uqutkzwtjww\",\"serviceId\":\"zytijcx\"}]},\"id\":\"ondegjdydhqkkk\",\"name\":\"juck\",\"type\":\"a\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,24 +34,26 @@ public final class DotNetComponentsCreateOrUpdateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DotNetComponent response = manager.dotNetComponents()
-            .define("zcntogffjwajnrtw")
-            .withExistingManagedEnvironment("fvezefk", "kqtwqlepjjzkcasf")
-            .withComponentType(DotNetComponentType.ASPIRE_DASHBOARD)
-            .withConfigurations(Arrays.asList(
-                new DotNetComponentConfigurationProperty().withPropertyName("awostfzknhr").withValue("jqncfvdscnh"),
-                new DotNetComponentConfigurationProperty().withPropertyName("vwfnqqwypvn").withValue("wbgodtggrssg"),
-                new DotNetComponentConfigurationProperty().withPropertyName("fk").withValue("njm")))
-            .withServiceBinds(Arrays.asList(new DotNetComponentServiceBind().withName("ecvztsc").withServiceId("mu"),
-                new DotNetComponentServiceBind().withName("ictdscnkzzo").withServiceId("rddclzeqozrehlb"),
-                new DotNetComponentServiceBind().withName("ixbnj").withServiceId("vzyue"),
-                new DotNetComponentServiceBind().withName("z").withServiceId("ynp")))
-            .create();
+        DotNetComponent response
+            = manager.dotNetComponents()
+                .define("ceeg")
+                .withExistingManagedEnvironment("ovyzt", "lnomfpb")
+                .withComponentType(DotNetComponentType.ASPIRE_DASHBOARD)
+                .withConfigurations(Arrays.asList(
+                    new DotNetComponentConfigurationProperty().withPropertyName("nji").withValue("ukkrehyh"),
+                    new DotNetComponentConfigurationProperty().withPropertyName("joduifvulxfaryrv")
+                        .withValue("gdezvjqwahoy"),
+                    new DotNetComponentConfigurationProperty().withPropertyName("axqvjweiwtczkddn")
+                        .withValue("vbooqbmdqrxy"),
+                    new DotNetComponentConfigurationProperty().withPropertyName("ae").withValue("cflwtjdtlr")))
+                .withServiceBinds(Arrays
+                    .asList(new DotNetComponentServiceBind().withName("oyycuxdtz").withServiceId("ipsdudgcozzomehx")))
+                .create();
 
         Assertions.assertEquals(DotNetComponentType.ASPIRE_DASHBOARD, response.componentType());
-        Assertions.assertEquals("wgzygbaduvecovsd", response.configurations().get(0).propertyName());
-        Assertions.assertEquals("zrtdbakr", response.configurations().get(0).value());
-        Assertions.assertEquals("fvppkeqsifj", response.serviceBinds().get(0).name());
-        Assertions.assertEquals("lng", response.serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("zdqiqdlrat", response.configurations().get(0).propertyName());
+        Assertions.assertEquals("wxoauwxsuy", response.configurations().get(0).value());
+        Assertions.assertEquals("gdd", response.serviceBinds().get(0).name());
+        Assertions.assertEquals("hdccxb", response.serviceBinds().get(0).serviceId());
     }
 }

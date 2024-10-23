@@ -37,9 +37,8 @@ import com.azure.resourcemanager.appservice.models.DetectorResponseCollection;
 import com.azure.resourcemanager.appservice.models.DiagnosticAnalysisCollection;
 import com.azure.resourcemanager.appservice.models.DiagnosticCategoryCollection;
 import com.azure.resourcemanager.appservice.models.DiagnosticDetectorCollection;
-import reactor.core.publisher.Mono;
-
 import java.time.OffsetDateTime;
+import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in DiagnosticsClient.
@@ -57,7 +56,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Initializes an instance of DiagnosticsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DiagnosticsClientImpl(WebSiteManagementClientImpl client) {
@@ -373,9 +372,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * List Hosting Environment Detector Responses
-     *
+     * 
      * Description for List Hosting Environment Detector Responses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -413,9 +412,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * List Hosting Environment Detector Responses
-     *
+     * 
      * Description for List Hosting Environment Detector Responses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site Name.
      * @param context The context to associate with this operation.
@@ -454,9 +453,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * List Hosting Environment Detector Responses
-     *
+     * 
      * Description for List Hosting Environment Detector Responses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -473,9 +472,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * List Hosting Environment Detector Responses
-     *
+     * 
      * Description for List Hosting Environment Detector Responses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site Name.
      * @param context The context to associate with this operation.
@@ -494,9 +493,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * List Hosting Environment Detector Responses
-     *
+     * 
      * Description for List Hosting Environment Detector Responses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -512,9 +511,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * List Hosting Environment Detector Responses
-     *
+     * 
      * Description for List Hosting Environment Detector Responses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site Name.
      * @param context The context to associate with this operation.
@@ -531,9 +530,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Hosting Environment Detector Response
-     *
+     * 
      * Description for Get Hosting Environment Detector Response.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name App Service Environment Name.
      * @param detectorName Detector Resource Name.
@@ -578,9 +577,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Hosting Environment Detector Response
-     *
+     * 
      * Description for Get Hosting Environment Detector Response.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name App Service Environment Name.
      * @param detectorName Detector Resource Name.
@@ -625,9 +624,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Hosting Environment Detector Response
-     *
+     * 
      * Description for Get Hosting Environment Detector Response.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name App Service Environment Name.
      * @param detectorName Detector Resource Name.
@@ -648,9 +647,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Hosting Environment Detector Response
-     *
+     * 
      * Description for Get Hosting Environment Detector Response.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name App Service Environment Name.
      * @param detectorName Detector Resource Name.
@@ -673,9 +672,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Hosting Environment Detector Response
-     *
+     * 
      * Description for Get Hosting Environment Detector Response.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name App Service Environment Name.
      * @param detectorName Detector Resource Name.
@@ -696,9 +695,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * List Site Detector Responses
-     *
+     * 
      * Description for List Site Detector Responses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -736,9 +735,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * List Site Detector Responses
-     *
+     * 
      * Description for List Site Detector Responses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param context The context to associate with this operation.
@@ -777,9 +776,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * List Site Detector Responses
-     *
+     * 
      * Description for List Site Detector Responses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -795,9 +794,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * List Site Detector Responses
-     *
+     * 
      * Description for List Site Detector Responses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param context The context to associate with this operation.
@@ -815,9 +814,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * List Site Detector Responses
-     *
+     * 
      * Description for List Site Detector Responses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -832,9 +831,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * List Site Detector Responses
-     *
+     * 
      * Description for List Site Detector Responses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param context The context to associate with this operation.
@@ -851,9 +850,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get site detector response
-     *
+     * 
      * Description for Get site detector response.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
@@ -897,9 +896,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get site detector response
-     *
+     * 
      * Description for Get site detector response.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
@@ -944,9 +943,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get site detector response
-     *
+     * 
      * Description for Get site detector response.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
@@ -967,9 +966,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get site detector response
-     *
+     * 
      * Description for Get site detector response.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
@@ -992,9 +991,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get site detector response
-     *
+     * 
      * Description for Get site detector response.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
@@ -1015,9 +1014,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Diagnostics Categories
-     *
+     * 
      * Description for Get Diagnostics Categories.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1055,9 +1054,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Diagnostics Categories
-     *
+     * 
      * Description for Get Diagnostics Categories.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param context The context to associate with this operation.
@@ -1096,9 +1095,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Diagnostics Categories
-     *
+     * 
      * Description for Get Diagnostics Categories.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1115,9 +1114,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Diagnostics Categories
-     *
+     * 
      * Description for Get Diagnostics Categories.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param context The context to associate with this operation.
@@ -1135,9 +1134,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Diagnostics Categories
-     *
+     * 
      * Description for Get Diagnostics Categories.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1153,9 +1152,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Diagnostics Categories
-     *
+     * 
      * Description for Get Diagnostics Categories.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param context The context to associate with this operation.
@@ -1172,9 +1171,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Diagnostics Category
-     *
+     * 
      * Description for Get Diagnostics Category.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -1216,9 +1215,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Diagnostics Category
-     *
+     * 
      * Description for Get Diagnostics Category.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -1259,9 +1258,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Diagnostics Category
-     *
+     * 
      * Description for Get Diagnostics Category.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -1279,9 +1278,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Diagnostics Category
-     *
+     * 
      * Description for Get Diagnostics Category.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -1300,9 +1299,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Diagnostics Category
-     *
+     * 
      * Description for Get Diagnostics Category.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -1320,9 +1319,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Site Analyses
-     *
+     * 
      * Description for Get Site Analyses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -1365,9 +1364,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Site Analyses
-     *
+     * 
      * Description for Get Site Analyses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -1411,9 +1410,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Site Analyses
-     *
+     * 
      * Description for Get Site Analyses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -1431,9 +1430,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Site Analyses
-     *
+     * 
      * Description for Get Site Analyses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -1453,9 +1452,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Site Analyses
-     *
+     * 
      * Description for Get Site Analyses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -1472,9 +1471,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Site Analyses
-     *
+     * 
      * Description for Get Site Analyses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -1492,9 +1491,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Site Analysis
-     *
+     * 
      * Description for Get Site Analysis.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -1539,9 +1538,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Site Analysis
-     *
+     * 
      * Description for Get Site Analysis.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -1585,9 +1584,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Site Analysis
-     *
+     * 
      * Description for Get Site Analysis.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -1606,9 +1605,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Site Analysis
-     *
+     * 
      * Description for Get Site Analysis.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -1628,9 +1627,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Site Analysis
-     *
+     * 
      * Description for Get Site Analysis.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -1649,9 +1648,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Execute Analysis
-     *
+     * 
      * Description for Execute Analysis.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Category Name.
@@ -1701,9 +1700,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Execute Analysis
-     *
+     * 
      * Description for Execute Analysis.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Category Name.
@@ -1753,9 +1752,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Execute Analysis
-     *
+     * 
      * Description for Execute Analysis.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Category Name.
@@ -1777,9 +1776,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Execute Analysis
-     *
+     * 
      * Description for Execute Analysis.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Category Name.
@@ -1803,9 +1802,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Execute Analysis
-     *
+     * 
      * Description for Execute Analysis.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Category Name.
@@ -1827,9 +1826,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Detectors
-     *
+     * 
      * Description for Get Detectors.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -1872,9 +1871,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Detectors
-     *
+     * 
      * Description for Get Detectors.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -1918,9 +1917,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Detectors
-     *
+     * 
      * Description for Get Detectors.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -1938,9 +1937,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Detectors
-     *
+     * 
      * Description for Get Detectors.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -1960,9 +1959,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Detectors
-     *
+     * 
      * Description for Get Detectors.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -1979,9 +1978,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Detectors
-     *
+     * 
      * Description for Get Detectors.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -1999,9 +1998,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Detector
-     *
+     * 
      * Description for Get Detector.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -2047,9 +2046,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Detector
-     *
+     * 
      * Description for Get Detector.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -2094,9 +2093,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Detector
-     *
+     * 
      * Description for Get Detector.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -2115,9 +2114,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Detector
-     *
+     * 
      * Description for Get Detector.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -2137,9 +2136,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Detector
-     *
+     * 
      * Description for Get Detector.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -2158,9 +2157,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Execute Detector
-     *
+     * 
      * Description for Execute Detector.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
@@ -2210,9 +2209,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Execute Detector
-     *
+     * 
      * Description for Execute Detector.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
@@ -2262,9 +2261,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Execute Detector
-     *
+     * 
      * Description for Execute Detector.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
@@ -2286,9 +2285,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Execute Detector
-     *
+     * 
      * Description for Execute Detector.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
@@ -2312,9 +2311,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Execute Detector
-     *
+     * 
      * Description for Execute Detector.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
@@ -2336,9 +2335,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * List Site Detector Responses
-     *
+     * 
      * Description for List Site Detector Responses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param slot Slot Name.
@@ -2380,9 +2379,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * List Site Detector Responses
-     *
+     * 
      * Description for List Site Detector Responses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param slot Slot Name.
@@ -2425,9 +2424,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * List Site Detector Responses
-     *
+     * 
      * Description for List Site Detector Responses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param slot Slot Name.
@@ -2445,9 +2444,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * List Site Detector Responses
-     *
+     * 
      * Description for List Site Detector Responses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param slot Slot Name.
@@ -2467,9 +2466,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * List Site Detector Responses
-     *
+     * 
      * Description for List Site Detector Responses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param slot Slot Name.
@@ -2486,9 +2485,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * List Site Detector Responses
-     *
+     * 
      * Description for List Site Detector Responses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param slot Slot Name.
@@ -2506,9 +2505,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get site detector response
-     *
+     * 
      * Description for Get site detector response.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
@@ -2557,9 +2556,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get site detector response
-     *
+     * 
      * Description for Get site detector response.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
@@ -2608,9 +2607,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get site detector response
-     *
+     * 
      * Description for Get site detector response.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
@@ -2632,9 +2631,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get site detector response
-     *
+     * 
      * Description for Get site detector response.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
@@ -2658,9 +2657,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get site detector response
-     *
+     * 
      * Description for Get site detector response.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
@@ -2682,9 +2681,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Diagnostics Categories
-     *
+     * 
      * Description for Get Diagnostics Categories.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param slot Slot Name.
@@ -2727,9 +2726,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Diagnostics Categories
-     *
+     * 
      * Description for Get Diagnostics Categories.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param slot Slot Name.
@@ -2772,9 +2771,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Diagnostics Categories
-     *
+     * 
      * Description for Get Diagnostics Categories.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param slot Slot Name.
@@ -2792,9 +2791,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Diagnostics Categories
-     *
+     * 
      * Description for Get Diagnostics Categories.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param slot Slot Name.
@@ -2814,9 +2813,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Diagnostics Categories
-     *
+     * 
      * Description for Get Diagnostics Categories.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param slot Slot Name.
@@ -2833,9 +2832,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Diagnostics Categories
-     *
+     * 
      * Description for Get Diagnostics Categories.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param slot Slot Name.
@@ -2853,9 +2852,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Diagnostics Category
-     *
+     * 
      * Description for Get Diagnostics Category.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -2901,9 +2900,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Diagnostics Category
-     *
+     * 
      * Description for Get Diagnostics Category.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -2948,9 +2947,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Diagnostics Category
-     *
+     * 
      * Description for Get Diagnostics Category.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -2969,9 +2968,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Diagnostics Category
-     *
+     * 
      * Description for Get Diagnostics Category.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -2991,9 +2990,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Diagnostics Category
-     *
+     * 
      * Description for Get Diagnostics Category.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -3012,9 +3011,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Site Analyses
-     *
+     * 
      * Description for Get Site Analyses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -3062,9 +3061,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Site Analyses
-     *
+     * 
      * Description for Get Site Analyses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -3112,9 +3111,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Site Analyses
-     *
+     * 
      * Description for Get Site Analyses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -3134,9 +3133,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Site Analyses
-     *
+     * 
      * Description for Get Site Analyses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -3157,9 +3156,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Site Analyses
-     *
+     * 
      * Description for Get Site Analyses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -3177,9 +3176,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Site Analyses
-     *
+     * 
      * Description for Get Site Analyses.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -3199,9 +3198,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Site Analysis
-     *
+     * 
      * Description for Get Site Analysis.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -3250,9 +3249,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Site Analysis
-     *
+     * 
      * Description for Get Site Analysis.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -3300,9 +3299,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Site Analysis
-     *
+     * 
      * Description for Get Site Analysis.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -3322,9 +3321,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Site Analysis
-     *
+     * 
      * Description for Get Site Analysis.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -3345,9 +3344,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Site Analysis
-     *
+     * 
      * Description for Get Site Analysis.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -3367,9 +3366,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Execute Analysis
-     *
+     * 
      * Description for Execute Analysis.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Category Name.
@@ -3423,9 +3422,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Execute Analysis
-     *
+     * 
      * Description for Execute Analysis.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Category Name.
@@ -3479,9 +3478,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Execute Analysis
-     *
+     * 
      * Description for Execute Analysis.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Category Name.
@@ -3504,9 +3503,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Execute Analysis
-     *
+     * 
      * Description for Execute Analysis.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Category Name.
@@ -3531,9 +3530,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Execute Analysis
-     *
+     * 
      * Description for Execute Analysis.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Category Name.
@@ -3556,9 +3555,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Detectors
-     *
+     * 
      * Description for Get Detectors.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -3606,9 +3605,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Detectors
-     *
+     * 
      * Description for Get Detectors.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -3656,9 +3655,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Detectors
-     *
+     * 
      * Description for Get Detectors.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -3678,9 +3677,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Detectors
-     *
+     * 
      * Description for Get Detectors.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -3701,9 +3700,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Detectors
-     *
+     * 
      * Description for Get Detectors.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -3721,9 +3720,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Detectors
-     *
+     * 
      * Description for Get Detectors.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -3743,9 +3742,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Detector
-     *
+     * 
      * Description for Get Detector.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -3795,9 +3794,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Detector
-     *
+     * 
      * Description for Get Detector.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -3847,9 +3846,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Detector
-     *
+     * 
      * Description for Get Detector.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -3869,9 +3868,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Detector
-     *
+     * 
      * Description for Get Detector.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -3892,9 +3891,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get Detector
-     *
+     * 
      * Description for Get Detector.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
@@ -3914,9 +3913,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Execute Detector
-     *
+     * 
      * Description for Execute Detector.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
@@ -3970,9 +3969,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Execute Detector
-     *
+     * 
      * Description for Execute Detector.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
@@ -4026,9 +4025,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Execute Detector
-     *
+     * 
      * Description for Execute Detector.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
@@ -4051,9 +4050,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Execute Detector
-     *
+     * 
      * Description for Execute Detector.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
@@ -4078,9 +4077,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Execute Detector
-     *
+     * 
      * Description for Execute Detector.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
@@ -4103,10 +4102,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4134,10 +4131,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -4164,10 +4159,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4194,10 +4187,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -4224,10 +4215,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4254,10 +4243,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -4284,10 +4271,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4313,10 +4298,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -4343,10 +4326,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4372,10 +4353,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -4402,10 +4381,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4432,10 +4409,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -4462,10 +4437,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4493,10 +4466,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -4523,10 +4494,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4553,10 +4522,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -4583,10 +4550,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4614,10 +4579,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.

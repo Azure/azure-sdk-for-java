@@ -5,9 +5,14 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -15,29 +20,25 @@ import java.util.List;
  * The properties of a scope map.
  */
 @Fluent
-public final class ScopeMapProperties {
+public final class ScopeMapProperties implements JsonSerializable<ScopeMapProperties> {
     /*
      * The user friendly description of the scope map.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The type of the scope map. E.g. BuildIn scope map.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * The creation date of scope map.
      */
-    @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
@@ -45,7 +46,6 @@ public final class ScopeMapProperties {
      * E.g. repositories/repository-name/content/read,
      * repositories/repository-name/metadata/write
      */
-    @JsonProperty(value = "actions", required = true)
     private List<String> actions;
 
     /**
@@ -132,10 +132,58 @@ public final class ScopeMapProperties {
      */
     public void validate() {
         if (actions() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property actions in model ScopeMapProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property actions in model ScopeMapProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScopeMapProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("actions", this.actions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScopeMapProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScopeMapProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScopeMapProperties.
+     */
+    public static ScopeMapProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScopeMapProperties deserializedScopeMapProperties = new ScopeMapProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("actions".equals(fieldName)) {
+                    List<String> actions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedScopeMapProperties.actions = actions;
+                } else if ("description".equals(fieldName)) {
+                    deserializedScopeMapProperties.description = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedScopeMapProperties.type = reader.getString();
+                } else if ("creationDate".equals(fieldName)) {
+                    deserializedScopeMapProperties.creationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedScopeMapProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScopeMapProperties;
+        });
+    }
 }

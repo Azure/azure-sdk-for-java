@@ -13,54 +13,55 @@ import org.junit.jupiter.api.Assertions;
 public final class PeeringLocationPropertiesExchangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeeringLocationPropertiesExchange model =
-            BinaryData
-                .fromString(
-                    "{\"peeringFacilities\":[{\"exchangeName\":\"i\",\"bandwidthInMbps\":1236632858,\"microsoftIPv4Address\":\"epcyvahfnlj\",\"microsoftIPv6Address\":\"qxj\",\"facilityIPv4Prefix\":\"ujqgidok\",\"facilityIPv6Prefix\":\"ljyoxgvcltb\",\"peeringDBFacilityId\":1745548413,\"peeringDBFacilityLink\":\"ghkjeszzhbi\"},{\"exchangeName\":\"txfvgx\",\"bandwidthInMbps\":557104558,\"microsoftIPv4Address\":\"xnehmpvec\",\"microsoftIPv6Address\":\"odebfqkkrbmpu\",\"facilityIPv4Prefix\":\"riwflzlfb\",\"facilityIPv6Prefix\":\"puz\",\"peeringDBFacilityId\":1610498845,\"peeringDBFacilityLink\":\"pnq\"}]}")
-                .toObject(PeeringLocationPropertiesExchange.class);
-        Assertions.assertEquals("i", model.peeringFacilities().get(0).exchangeName());
-        Assertions.assertEquals(1236632858, model.peeringFacilities().get(0).bandwidthInMbps());
-        Assertions.assertEquals("epcyvahfnlj", model.peeringFacilities().get(0).microsoftIPv4Address());
-        Assertions.assertEquals("qxj", model.peeringFacilities().get(0).microsoftIPv6Address());
-        Assertions.assertEquals("ujqgidok", model.peeringFacilities().get(0).facilityIPv4Prefix());
-        Assertions.assertEquals("ljyoxgvcltb", model.peeringFacilities().get(0).facilityIPv6Prefix());
-        Assertions.assertEquals(1745548413, model.peeringFacilities().get(0).peeringDBFacilityId());
-        Assertions.assertEquals("ghkjeszzhbi", model.peeringFacilities().get(0).peeringDBFacilityLink());
+        PeeringLocationPropertiesExchange model = BinaryData.fromString(
+            "{\"peeringFacilities\":[{\"exchangeName\":\"hjjdhtldwkyzxuut\",\"bandwidthInMbps\":38172527,\"microsoftIPv4Address\":\"scwsv\",\"microsoftIPv6Address\":\"otogtwrupqs\",\"facilityIPv4Prefix\":\"nmic\",\"facilityIPv6Prefix\":\"vce\",\"peeringDBFacilityId\":579723655,\"peeringDBFacilityLink\":\"lo\"},{\"exchangeName\":\"oty\",\"bandwidthInMbps\":914615331,\"microsoftIPv4Address\":\"njbkcnxdhbttkph\",\"microsoftIPv6Address\":\"pnvjtoqnermclf\",\"facilityIPv4Prefix\":\"phoxus\",\"facilityIPv6Prefix\":\"pabgyeps\",\"peeringDBFacilityId\":1974668378,\"peeringDBFacilityLink\":\"zq\"},{\"exchangeName\":\"xywpmueefjzwfqkq\",\"bandwidthInMbps\":640895390,\"microsoftIPv4Address\":\"suyonobglaocq\",\"microsoftIPv6Address\":\"ccm\",\"facilityIPv4Prefix\":\"udxytlmoyrx\",\"facilityIPv6Prefix\":\"fudwpznt\",\"peeringDBFacilityId\":1417270726,\"peeringDBFacilityLink\":\"hl\"}]}")
+            .toObject(PeeringLocationPropertiesExchange.class);
+        Assertions.assertEquals("hjjdhtldwkyzxuut", model.peeringFacilities().get(0).exchangeName());
+        Assertions.assertEquals(38172527, model.peeringFacilities().get(0).bandwidthInMbps());
+        Assertions.assertEquals("scwsv", model.peeringFacilities().get(0).microsoftIPv4Address());
+        Assertions.assertEquals("otogtwrupqs", model.peeringFacilities().get(0).microsoftIPv6Address());
+        Assertions.assertEquals("nmic", model.peeringFacilities().get(0).facilityIPv4Prefix());
+        Assertions.assertEquals("vce", model.peeringFacilities().get(0).facilityIPv6Prefix());
+        Assertions.assertEquals(579723655, model.peeringFacilities().get(0).peeringDBFacilityId());
+        Assertions.assertEquals("lo", model.peeringFacilities().get(0).peeringDBFacilityLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeeringLocationPropertiesExchange model =
-            new PeeringLocationPropertiesExchange()
-                .withPeeringFacilities(
-                    Arrays
-                        .asList(
-                            new ExchangePeeringFacility()
-                                .withExchangeName("i")
-                                .withBandwidthInMbps(1236632858)
-                                .withMicrosoftIPv4Address("epcyvahfnlj")
-                                .withMicrosoftIPv6Address("qxj")
-                                .withFacilityIPv4Prefix("ujqgidok")
-                                .withFacilityIPv6Prefix("ljyoxgvcltb")
-                                .withPeeringDBFacilityId(1745548413)
-                                .withPeeringDBFacilityLink("ghkjeszzhbi"),
-                            new ExchangePeeringFacility()
-                                .withExchangeName("txfvgx")
-                                .withBandwidthInMbps(557104558)
-                                .withMicrosoftIPv4Address("xnehmpvec")
-                                .withMicrosoftIPv6Address("odebfqkkrbmpu")
-                                .withFacilityIPv4Prefix("riwflzlfb")
-                                .withFacilityIPv6Prefix("puz")
-                                .withPeeringDBFacilityId(1610498845)
-                                .withPeeringDBFacilityLink("pnq")));
+        PeeringLocationPropertiesExchange model
+            = new PeeringLocationPropertiesExchange().withPeeringFacilities(Arrays.asList(
+                new ExchangePeeringFacility().withExchangeName("hjjdhtldwkyzxuut")
+                    .withBandwidthInMbps(38172527)
+                    .withMicrosoftIPv4Address("scwsv")
+                    .withMicrosoftIPv6Address("otogtwrupqs")
+                    .withFacilityIPv4Prefix("nmic")
+                    .withFacilityIPv6Prefix("vce")
+                    .withPeeringDBFacilityId(579723655)
+                    .withPeeringDBFacilityLink("lo"),
+                new ExchangePeeringFacility().withExchangeName("oty")
+                    .withBandwidthInMbps(914615331)
+                    .withMicrosoftIPv4Address("njbkcnxdhbttkph")
+                    .withMicrosoftIPv6Address("pnvjtoqnermclf")
+                    .withFacilityIPv4Prefix("phoxus")
+                    .withFacilityIPv6Prefix("pabgyeps")
+                    .withPeeringDBFacilityId(1974668378)
+                    .withPeeringDBFacilityLink("zq"),
+                new ExchangePeeringFacility().withExchangeName("xywpmueefjzwfqkq")
+                    .withBandwidthInMbps(640895390)
+                    .withMicrosoftIPv4Address("suyonobglaocq")
+                    .withMicrosoftIPv6Address("ccm")
+                    .withFacilityIPv4Prefix("udxytlmoyrx")
+                    .withFacilityIPv6Prefix("fudwpznt")
+                    .withPeeringDBFacilityId(1417270726)
+                    .withPeeringDBFacilityLink("hl")));
         model = BinaryData.fromObject(model).toObject(PeeringLocationPropertiesExchange.class);
-        Assertions.assertEquals("i", model.peeringFacilities().get(0).exchangeName());
-        Assertions.assertEquals(1236632858, model.peeringFacilities().get(0).bandwidthInMbps());
-        Assertions.assertEquals("epcyvahfnlj", model.peeringFacilities().get(0).microsoftIPv4Address());
-        Assertions.assertEquals("qxj", model.peeringFacilities().get(0).microsoftIPv6Address());
-        Assertions.assertEquals("ujqgidok", model.peeringFacilities().get(0).facilityIPv4Prefix());
-        Assertions.assertEquals("ljyoxgvcltb", model.peeringFacilities().get(0).facilityIPv6Prefix());
-        Assertions.assertEquals(1745548413, model.peeringFacilities().get(0).peeringDBFacilityId());
-        Assertions.assertEquals("ghkjeszzhbi", model.peeringFacilities().get(0).peeringDBFacilityLink());
+        Assertions.assertEquals("hjjdhtldwkyzxuut", model.peeringFacilities().get(0).exchangeName());
+        Assertions.assertEquals(38172527, model.peeringFacilities().get(0).bandwidthInMbps());
+        Assertions.assertEquals("scwsv", model.peeringFacilities().get(0).microsoftIPv4Address());
+        Assertions.assertEquals("otogtwrupqs", model.peeringFacilities().get(0).microsoftIPv6Address());
+        Assertions.assertEquals("nmic", model.peeringFacilities().get(0).facilityIPv4Prefix());
+        Assertions.assertEquals("vce", model.peeringFacilities().get(0).facilityIPv6Prefix());
+        Assertions.assertEquals(579723655, model.peeringFacilities().get(0).peeringDBFacilityId());
+        Assertions.assertEquals("lo", model.peeringFacilities().get(0).peeringDBFacilityLink());
     }
 }

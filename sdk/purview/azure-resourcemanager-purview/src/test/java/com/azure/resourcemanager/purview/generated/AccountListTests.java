@@ -7,9 +7,11 @@ package com.azure.resourcemanager.purview.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.purview.fluent.models.AccountInner;
 import com.azure.resourcemanager.purview.models.AccountList;
+import com.azure.resourcemanager.purview.models.CloudConnectors;
 import com.azure.resourcemanager.purview.models.Identity;
 import com.azure.resourcemanager.purview.models.PublicNetworkAccess;
 import com.azure.resourcemanager.purview.models.Type;
+import com.azure.resourcemanager.purview.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,76 +20,59 @@ import org.junit.jupiter.api.Assertions;
 public final class AccountListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccountList model =
-            BinaryData
-                .fromString(
-                    "{\"count\":1151238805444659333,\"nextLink\":\"uv\",\"value\":[{\"properties\":{\"createdAt\":\"2021-08-02T07:01:22Z\",\"createdBy\":\"zm\",\"createdByObjectId\":\"mtz\",\"friendlyName\":\"sphrupidgs\",\"managedResourceGroupName\":\"bejhphoycmsxa\",\"privateEndpointConnections\":[],\"provisioningState\":\"Deleting\",\"publicNetworkAccess\":\"NotSpecified\"},\"sku\":{\"capacity\":589802492,\"name\":\"Standard\"},\"identity\":{\"principalId\":\"ehtbm\",\"tenantId\":\"p\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"location\":\"zhwlrxy\",\"tags\":{\"obcu\":\"oqijgkdmbpaz\",\"qgn\":\"pdznrbtcqqjnqgl\"},\"id\":\"foooj\",\"name\":\"wifsq\",\"type\":\"saagdf\"},{\"properties\":{\"createdAt\":\"2021-05-15T08:16:53Z\",\"createdBy\":\"j\",\"createdByObjectId\":\"ifkwmrvktsizntoc\",\"friendlyName\":\"ouajpsqucmpoyf\",\"managedResourceGroupName\":\"fogknygjofjdde\",\"privateEndpointConnections\":[],\"provisioningState\":\"Failed\",\"publicNetworkAccess\":\"Enabled\"},\"sku\":{\"capacity\":727938504,\"name\":\"Standard\"},\"identity\":{\"principalId\":\"tjzyflus\",\"tenantId\":\"hmofc\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"location\":\"urkdtmlx\",\"tags\":{\"rcryuanzwuxzdxta\":\"uksjtxukcdmp\",\"hfpmrqobmtukknr\":\"rlhm\",\"gnwzsymglzufc\":\"rtihfxtijbpz\"},\"id\":\"zk\",\"name\":\"hdbihan\",\"type\":\"fhfcb\"},{\"properties\":{\"createdAt\":\"2021-04-18T20:42:54Z\",\"createdBy\":\"th\",\"createdByObjectId\":\"hab\",\"friendlyName\":\"ikxwc\",\"managedResourceGroupName\":\"yscnpqxu\",\"privateEndpointConnections\":[],\"provisioningState\":\"SoftDeleting\",\"publicNetworkAccess\":\"Disabled\"},\"sku\":{\"capacity\":992034682,\"name\":\"Standard\"},\"identity\":{\"principalId\":\"vd\",\"tenantId\":\"jgrtfwvukxga\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"location\":\"nhsjcnyej\",\"tags\":{\"kkvnipjox\":\"yhtnapczwlokjye\",\"podmailzydehojwy\":\"jnchgej\",\"qwixjspro\":\"huxinpmqnj\",\"wmfdatscmdvpjhul\":\"vcputegj\"},\"id\":\"uuvmkjozkrwfnd\",\"name\":\"odjpslwejd\",\"type\":\"vwryoqpso\"}]}")
-                .toObject(AccountList.class);
+        AccountList model = BinaryData.fromString(
+            "{\"count\":1151238805444659333,\"nextLink\":\"uv\",\"value\":[{\"properties\":{\"cloudConnectors\":{\"awsExternalId\":\"bczmeh\"},\"createdAt\":\"2021-05-05T08:48:19Z\",\"createdBy\":\"pbsphrupidgs\",\"createdByObjectId\":\"bejhphoycmsxa\",\"endpoints\":{\"catalog\":\"dxbmtqioq\",\"guardian\":\"ehtbm\",\"scan\":\"p\"},\"friendlyName\":\"noi\",\"managedResourceGroupName\":\"wlrxyb\",\"managedResources\":{\"eventHubNamespace\":\"qijgkd\",\"resourceGroup\":\"pazlobcufpdz\",\"storageAccount\":\"btcqq\"},\"privateEndpointConnections\":[{\"properties\":{},\"id\":\"lhqgnufooojy\",\"name\":\"ifsqesaagdfmg\",\"type\":\"zlhjxrifkwmrvkt\"},{\"properties\":{},\"id\":\"zntocipaouajps\",\"name\":\"ucmpoyfd\",\"type\":\"fogknygjofjdde\"}],\"provisioningState\":\"SoftDeleted\",\"publicNetworkAccess\":\"NotSpecified\"},\"sku\":{\"capacity\":1270858426,\"name\":\"Standard\"},\"identity\":{\"principalId\":\"eitjz\",\"tenantId\":\"lusarh\",\"type\":\"None\",\"userAssignedIdentities\":{\"jtxukcdm\":{\"clientId\":\"smy\",\"principalId\":\"kdtmlxhekuk\"},\"u\":{\"clientId\":\"rcryuanzwuxzdxta\",\"principalId\":\"lhmwhfpmrqobm\"},\"uf\":{\"clientId\":\"nryrtihf\",\"principalId\":\"ijbpzvgnwzsymgl\"}}},\"location\":\"zk\",\"tags\":{\"fcbjysagithxqha\":\"bihanuf\",\"cnpqxuhivyqniwby\":\"ifpikxwczby\",\"grtfwvu\":\"rkxvdum\",\"h\":\"xgaudccs\"},\"id\":\"jcny\",\"name\":\"j\",\"type\":\"kryhtnapczwlokj\"},{\"properties\":{\"cloudConnectors\":{\"awsExternalId\":\"kvnipjoxz\"},\"createdAt\":\"2021-09-07T17:28:25Z\",\"createdBy\":\"gejspodmailzyde\",\"createdByObjectId\":\"jwyahuxinpmqnja\",\"endpoints\":{\"catalog\":\"xj\",\"guardian\":\"r\",\"scan\":\"vcputegj\"},\"friendlyName\":\"mfdatscmdvpj\",\"managedResourceGroupName\":\"lsuuvmkjozkrwfnd\",\"managedResources\":{\"eventHubNamespace\":\"jpslwejd\",\"resourceGroup\":\"wryoqpsoacc\",\"storageAccount\":\"zakljlahbc\"},\"privateEndpointConnections\":[{\"properties\":{},\"id\":\"dfdosygexp\",\"name\":\"ojakhmsbzjhcrze\",\"type\":\"dphlxaolt\"},{\"properties\":{},\"id\":\"trg\",\"name\":\"jbp\",\"type\":\"zfsinzgvf\"},{\"properties\":{},\"id\":\"rwzoxxjtfelluwf\",\"name\":\"it\",\"type\":\"np\"},{\"properties\":{},\"id\":\"fpjkjlxofp\",\"name\":\"vhpfxxypininmay\",\"type\":\"uybbkpodep\"}],\"provisioningState\":\"Unknown\",\"publicNetworkAccess\":\"Disabled\"},\"sku\":{\"capacity\":827066207,\"name\":\"Standard\"},\"identity\":{\"principalId\":\"ognarxzxtheotus\",\"tenantId\":\"yevc\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ljofxqeofjaeqjh\":{\"clientId\":\"hungbwjzrnf\",\"principalId\":\"xgispemvtzfkufu\"}}},\"location\":\"b\",\"tags\":{\"ybkzgcwr\":\"msmjqulngsntn\"},\"id\":\"clxxwrljdo\",\"name\":\"skcqvkocrcjd\",\"type\":\"wtnhxbnjbiksqr\"},{\"properties\":{\"cloudConnectors\":{\"awsExternalId\":\"ainqpjwnzlljfm\"},\"createdAt\":\"2021-03-13T08:06:39Z\",\"createdBy\":\"bvmgxsabkyqduuji\",\"createdByObjectId\":\"jczdzevndh\",\"endpoints\":{\"catalog\":\"pdappds\",\"guardian\":\"kvwrwjfeu\",\"scan\":\"hutje\"},\"friendlyName\":\"mrldhu\",\"managedResourceGroupName\":\"zzd\",\"managedResources\":{\"eventHubNamespace\":\"xhocdgeablgphuti\",\"resourceGroup\":\"dvkaozw\",\"storageAccount\":\"ftyhxhurokf\"},\"privateEndpointConnections\":[{\"properties\":{},\"id\":\"lniwpwcukjfkgiaw\",\"name\":\"klryplwck\",\"type\":\"asy\"},{\"properties\":{},\"id\":\"nddhsgcbacph\",\"name\":\"jkot\",\"type\":\"nqgoulzndli\"},{\"properties\":{},\"id\":\"yqkgfg\",\"name\":\"bmadgak\",\"type\":\"qsrxybzqqed\"},{\"properties\":{},\"id\":\"tbciqfouflmm\",\"name\":\"kzsmodm\",\"type\":\"lougpbkw\"}],\"provisioningState\":\"Succeeded\",\"publicNetworkAccess\":\"Disabled\"},\"sku\":{\"capacity\":1519721589,\"name\":\"Standard\"},\"identity\":{\"principalId\":\"pwgcuertu\",\"tenantId\":\"dosvqwhbmdgbbjf\",\"type\":\"None\",\"userAssignedIdentities\":{\"rolfpfp\":{\"clientId\":\"bexppb\",\"principalId\":\"q\"},\"lnerkujysvleju\":{\"clientId\":\"lgbquxig\",\"principalId\":\"jgzjaoyfhrtx\"},\"ysszdnrujqguh\":{\"clientId\":\"qawrlyxwj\",\"principalId\":\"prbnwbxgjvtbv\"},\"izuckyfihrfidfvz\":{\"clientId\":\"ouqfprwz\",\"principalId\":\"nguitnwuizgazxu\"}}},\"location\":\"zuhtymwisdkfthwx\",\"tags\":{\"c\":\"eiwaopvkmi\"},\"id\":\"mxdcufufsrp\",\"name\":\"mzidnsezcxtb\",\"type\":\"sgfyccsnew\"}]}")
+            .toObject(AccountList.class);
         Assertions.assertEquals(1151238805444659333L, model.count());
         Assertions.assertEquals("uv", model.nextLink());
-        Assertions.assertEquals("zhwlrxy", model.value().get(0).location());
-        Assertions.assertEquals("oqijgkdmbpaz", model.value().get(0).tags().get("obcu"));
-        Assertions.assertEquals(Type.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
-        Assertions.assertEquals("bejhphoycmsxa", model.value().get(0).managedResourceGroupName());
+        Assertions.assertEquals("zk", model.value().get(0).location());
+        Assertions.assertEquals("bihanuf", model.value().get(0).tags().get("fcbjysagithxqha"));
+        Assertions.assertEquals(Type.NONE, model.value().get(0).identity().type());
+        Assertions.assertEquals("wlrxyb", model.value().get(0).managedResourceGroupName());
         Assertions.assertEquals(PublicNetworkAccess.NOT_SPECIFIED, model.value().get(0).publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccountList model =
-            new AccountList()
-                .withCount(1151238805444659333L)
-                .withNextLink("uv")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AccountInner()
-                                .withLocation("zhwlrxy")
-                                .withTags(mapOf("obcu", "oqijgkdmbpaz", "qgn", "pdznrbtcqqjnqgl"))
-                                .withIdentity(
-                                    new Identity().withType(Type.SYSTEM_ASSIGNED).withUserAssignedIdentities(mapOf()))
-                                .withManagedResourceGroupName("bejhphoycmsxa")
-                                .withPublicNetworkAccess(PublicNetworkAccess.NOT_SPECIFIED),
-                            new AccountInner()
-                                .withLocation("urkdtmlx")
-                                .withTags(
-                                    mapOf(
-                                        "rcryuanzwuxzdxta",
-                                        "uksjtxukcdmp",
-                                        "hfpmrqobmtukknr",
-                                        "rlhm",
-                                        "gnwzsymglzufc",
-                                        "rtihfxtijbpz"))
-                                .withIdentity(
-                                    new Identity().withType(Type.SYSTEM_ASSIGNED).withUserAssignedIdentities(mapOf()))
-                                .withManagedResourceGroupName("fogknygjofjdde")
-                                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED),
-                            new AccountInner()
-                                .withLocation("nhsjcnyej")
-                                .withTags(
-                                    mapOf(
-                                        "kkvnipjox",
-                                        "yhtnapczwlokjye",
-                                        "podmailzydehojwy",
-                                        "jnchgej",
-                                        "qwixjspro",
-                                        "huxinpmqnj",
-                                        "wmfdatscmdvpjhul",
-                                        "vcputegj"))
-                                .withIdentity(
-                                    new Identity().withType(Type.SYSTEM_ASSIGNED).withUserAssignedIdentities(mapOf()))
-                                .withManagedResourceGroupName("yscnpqxu")
-                                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)));
+        AccountList model = new AccountList().withCount(1151238805444659333L)
+            .withNextLink("uv")
+            .withValue(Arrays.asList(
+                new AccountInner().withLocation("zk")
+                    .withTags(mapOf("fcbjysagithxqha", "bihanuf", "cnpqxuhivyqniwby", "ifpikxwczby", "grtfwvu",
+                        "rkxvdum", "h", "xgaudccs"))
+                    .withIdentity(new Identity().withType(Type.NONE)
+                        .withUserAssignedIdentities(mapOf("jtxukcdm", new UserAssignedIdentity(), "u",
+                            new UserAssignedIdentity(), "uf", new UserAssignedIdentity())))
+                    .withCloudConnectors(new CloudConnectors())
+                    .withManagedResourceGroupName("wlrxyb")
+                    .withPublicNetworkAccess(PublicNetworkAccess.NOT_SPECIFIED),
+                new AccountInner().withLocation("b")
+                    .withTags(mapOf("ybkzgcwr", "msmjqulngsntn"))
+                    .withIdentity(new Identity().withType(Type.USER_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("ljofxqeofjaeqjh", new UserAssignedIdentity())))
+                    .withCloudConnectors(new CloudConnectors())
+                    .withManagedResourceGroupName("lsuuvmkjozkrwfnd")
+                    .withPublicNetworkAccess(PublicNetworkAccess.DISABLED),
+                new AccountInner().withLocation("zuhtymwisdkfthwx")
+                    .withTags(mapOf("c", "eiwaopvkmi"))
+                    .withIdentity(new Identity().withType(Type.NONE)
+                        .withUserAssignedIdentities(mapOf("rolfpfp", new UserAssignedIdentity(), "lnerkujysvleju",
+                            new UserAssignedIdentity(), "ysszdnrujqguh", new UserAssignedIdentity(), "izuckyfihrfidfvz",
+                            new UserAssignedIdentity())))
+                    .withCloudConnectors(new CloudConnectors())
+                    .withManagedResourceGroupName("zzd")
+                    .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)));
         model = BinaryData.fromObject(model).toObject(AccountList.class);
         Assertions.assertEquals(1151238805444659333L, model.count());
         Assertions.assertEquals("uv", model.nextLink());
-        Assertions.assertEquals("zhwlrxy", model.value().get(0).location());
-        Assertions.assertEquals("oqijgkdmbpaz", model.value().get(0).tags().get("obcu"));
-        Assertions.assertEquals(Type.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
-        Assertions.assertEquals("bejhphoycmsxa", model.value().get(0).managedResourceGroupName());
+        Assertions.assertEquals("zk", model.value().get(0).location());
+        Assertions.assertEquals("bihanuf", model.value().get(0).tags().get("fcbjysagithxqha"));
+        Assertions.assertEquals(Type.NONE, model.value().get(0).identity().type());
+        Assertions.assertEquals("wlrxyb", model.value().get(0).managedResourceGroupName());
         Assertions.assertEquals(PublicNetworkAccess.NOT_SPECIFIED, model.value().get(0).publicNetworkAccess());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

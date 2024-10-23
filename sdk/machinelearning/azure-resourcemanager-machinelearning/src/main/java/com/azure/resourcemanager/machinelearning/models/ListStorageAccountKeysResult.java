@@ -6,18 +6,20 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.resourcemanager.machinelearning.fluent.models.ListStorageAccountKeysResultInner;
 
-/** An immutable client-side representation of ListStorageAccountKeysResult. */
+/**
+ * An immutable client-side representation of ListStorageAccountKeysResult.
+ */
 public interface ListStorageAccountKeysResult {
     /**
      * Gets the userStorageKey property: The userStorageKey property.
-     *
+     * 
      * @return the userStorageKey value.
      */
     String userStorageKey();
 
     /**
      * Gets the inner com.azure.resourcemanager.machinelearning.fluent.models.ListStorageAccountKeysResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     ListStorageAccountKeysResultInner innerModel();

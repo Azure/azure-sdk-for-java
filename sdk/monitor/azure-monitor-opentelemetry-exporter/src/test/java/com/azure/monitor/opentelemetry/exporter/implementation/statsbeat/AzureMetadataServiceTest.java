@@ -19,17 +19,17 @@ public class AzureMetadataServiceTest {
 
     @Test
     public void testParseJsonResponseLinux() throws IOException {
-        Path path =
-            new File(getClass().getClassLoader().getResource("metadata_instance_linux.json").getPath())
-                .toPath();
+        Path path
+            = new File(getClass().getClassLoader().getResource("metadata_instance_linux.json").getPath()).toPath();
         InputStream in = Files.newInputStream(path);
         BufferedSource source = Okio.buffer(Okio.source(in));
         String result = source.readUtf8();
         source.close();
 
         AttachStatsbeat attachStatsbeat = new AttachStatsbeat(new CustomDimensions());
-        AzureMetadataService azureMetadataService =
-            new AzureMetadataService(attachStatsbeat, new CustomDimensions(), response -> {});
+        AzureMetadataService azureMetadataService
+            = new AzureMetadataService(attachStatsbeat, new CustomDimensions(), response -> {
+            });
         azureMetadataService.updateMetadata(result);
 
         MetadataInstanceResponse response = attachStatsbeat.getMetadataInstanceResponse();
@@ -41,18 +41,17 @@ public class AzureMetadataServiceTest {
 
     @Test
     public void testParseJsonResponseWindows() throws IOException {
-        Path path =
-            new File(
-                getClass().getClassLoader().getResource("metadata_instance_windows.json").getPath())
-                .toPath();
+        Path path
+            = new File(getClass().getClassLoader().getResource("metadata_instance_windows.json").getPath()).toPath();
         InputStream in = Files.newInputStream(path);
         BufferedSource source = Okio.buffer(Okio.source(in));
         String result = source.readUtf8();
         source.close();
 
         AttachStatsbeat attachStatsbeat = new AttachStatsbeat(new CustomDimensions());
-        AzureMetadataService azureMetadataService =
-            new AzureMetadataService(attachStatsbeat, new CustomDimensions(), (response) -> {});
+        AzureMetadataService azureMetadataService
+            = new AzureMetadataService(attachStatsbeat, new CustomDimensions(), (response) -> {
+            });
         azureMetadataService.updateMetadata(result);
 
         MetadataInstanceResponse response = attachStatsbeat.getMetadataInstanceResponse();

@@ -5,106 +5,95 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Effective network security rules.
  */
 @Fluent
-public final class EffectiveNetworkSecurityRule {
+public final class EffectiveNetworkSecurityRule implements JsonSerializable<EffectiveNetworkSecurityRule> {
     /*
      * The name of the security rule specified by the user (if created by the user).
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The network protocol this rule applies to.
      */
-    @JsonProperty(value = "protocol")
     private EffectiveSecurityRuleProtocol protocol;
 
     /*
      * The source port or range.
      */
-    @JsonProperty(value = "sourcePortRange")
     private String sourcePortRange;
 
     /*
      * The destination port or range.
      */
-    @JsonProperty(value = "destinationPortRange")
     private String destinationPortRange;
 
     /*
      * The source port ranges. Expected values include a single integer between 0 and 65535, a range using '-' as
      * separator (e.g. 100-400), or an asterisk (*).
      */
-    @JsonProperty(value = "sourcePortRanges")
     private List<String> sourcePortRanges;
 
     /*
      * The destination port ranges. Expected values include a single integer between 0 and 65535, a range using '-' as
      * separator (e.g. 100-400), or an asterisk (*).
      */
-    @JsonProperty(value = "destinationPortRanges")
     private List<String> destinationPortRanges;
 
     /*
      * The source address prefix.
      */
-    @JsonProperty(value = "sourceAddressPrefix")
     private String sourceAddressPrefix;
 
     /*
      * The destination address prefix.
      */
-    @JsonProperty(value = "destinationAddressPrefix")
     private String destinationAddressPrefix;
 
     /*
      * The source address prefixes. Expected values include CIDR IP ranges, Default Tags (VirtualNetwork,
      * AzureLoadBalancer, Internet), System Tags, and the asterisk (*).
      */
-    @JsonProperty(value = "sourceAddressPrefixes")
     private List<String> sourceAddressPrefixes;
 
     /*
      * The destination address prefixes. Expected values include CIDR IP ranges, Default Tags (VirtualNetwork,
      * AzureLoadBalancer, Internet), System Tags, and the asterisk (*).
      */
-    @JsonProperty(value = "destinationAddressPrefixes")
     private List<String> destinationAddressPrefixes;
 
     /*
      * The expanded source address prefix.
      */
-    @JsonProperty(value = "expandedSourceAddressPrefix")
     private List<String> expandedSourceAddressPrefix;
 
     /*
      * Expanded destination address prefix.
      */
-    @JsonProperty(value = "expandedDestinationAddressPrefix")
     private List<String> expandedDestinationAddressPrefix;
 
     /*
      * Whether network traffic is allowed or denied.
      */
-    @JsonProperty(value = "access")
     private SecurityRuleAccess access;
 
     /*
      * The priority of the rule.
      */
-    @JsonProperty(value = "priority")
     private Integer priority;
 
     /*
      * The direction of the rule.
      */
-    @JsonProperty(value = "direction")
     private SecurityRuleDirection direction;
 
     /**
@@ -428,5 +417,98 @@ public final class EffectiveNetworkSecurityRule {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeStringField("sourcePortRange", this.sourcePortRange);
+        jsonWriter.writeStringField("destinationPortRange", this.destinationPortRange);
+        jsonWriter.writeArrayField("sourcePortRanges", this.sourcePortRanges,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("destinationPortRanges", this.destinationPortRanges,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("sourceAddressPrefix", this.sourceAddressPrefix);
+        jsonWriter.writeStringField("destinationAddressPrefix", this.destinationAddressPrefix);
+        jsonWriter.writeArrayField("sourceAddressPrefixes", this.sourceAddressPrefixes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("destinationAddressPrefixes", this.destinationAddressPrefixes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("expandedSourceAddressPrefix", this.expandedSourceAddressPrefix,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("expandedDestinationAddressPrefix", this.expandedDestinationAddressPrefix,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("access", this.access == null ? null : this.access.toString());
+        jsonWriter.writeNumberField("priority", this.priority);
+        jsonWriter.writeStringField("direction", this.direction == null ? null : this.direction.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EffectiveNetworkSecurityRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EffectiveNetworkSecurityRule if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EffectiveNetworkSecurityRule.
+     */
+    public static EffectiveNetworkSecurityRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EffectiveNetworkSecurityRule deserializedEffectiveNetworkSecurityRule = new EffectiveNetworkSecurityRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedEffectiveNetworkSecurityRule.name = reader.getString();
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedEffectiveNetworkSecurityRule.protocol
+                        = EffectiveSecurityRuleProtocol.fromString(reader.getString());
+                } else if ("sourcePortRange".equals(fieldName)) {
+                    deserializedEffectiveNetworkSecurityRule.sourcePortRange = reader.getString();
+                } else if ("destinationPortRange".equals(fieldName)) {
+                    deserializedEffectiveNetworkSecurityRule.destinationPortRange = reader.getString();
+                } else if ("sourcePortRanges".equals(fieldName)) {
+                    List<String> sourcePortRanges = reader.readArray(reader1 -> reader1.getString());
+                    deserializedEffectiveNetworkSecurityRule.sourcePortRanges = sourcePortRanges;
+                } else if ("destinationPortRanges".equals(fieldName)) {
+                    List<String> destinationPortRanges = reader.readArray(reader1 -> reader1.getString());
+                    deserializedEffectiveNetworkSecurityRule.destinationPortRanges = destinationPortRanges;
+                } else if ("sourceAddressPrefix".equals(fieldName)) {
+                    deserializedEffectiveNetworkSecurityRule.sourceAddressPrefix = reader.getString();
+                } else if ("destinationAddressPrefix".equals(fieldName)) {
+                    deserializedEffectiveNetworkSecurityRule.destinationAddressPrefix = reader.getString();
+                } else if ("sourceAddressPrefixes".equals(fieldName)) {
+                    List<String> sourceAddressPrefixes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedEffectiveNetworkSecurityRule.sourceAddressPrefixes = sourceAddressPrefixes;
+                } else if ("destinationAddressPrefixes".equals(fieldName)) {
+                    List<String> destinationAddressPrefixes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedEffectiveNetworkSecurityRule.destinationAddressPrefixes = destinationAddressPrefixes;
+                } else if ("expandedSourceAddressPrefix".equals(fieldName)) {
+                    List<String> expandedSourceAddressPrefix = reader.readArray(reader1 -> reader1.getString());
+                    deserializedEffectiveNetworkSecurityRule.expandedSourceAddressPrefix = expandedSourceAddressPrefix;
+                } else if ("expandedDestinationAddressPrefix".equals(fieldName)) {
+                    List<String> expandedDestinationAddressPrefix = reader.readArray(reader1 -> reader1.getString());
+                    deserializedEffectiveNetworkSecurityRule.expandedDestinationAddressPrefix
+                        = expandedDestinationAddressPrefix;
+                } else if ("access".equals(fieldName)) {
+                    deserializedEffectiveNetworkSecurityRule.access = SecurityRuleAccess.fromString(reader.getString());
+                } else if ("priority".equals(fieldName)) {
+                    deserializedEffectiveNetworkSecurityRule.priority = reader.getNullable(JsonReader::getInt);
+                } else if ("direction".equals(fieldName)) {
+                    deserializedEffectiveNetworkSecurityRule.direction
+                        = SecurityRuleDirection.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEffectiveNetworkSecurityRule;
+        });
     }
 }

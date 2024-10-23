@@ -223,8 +223,6 @@ final class ServiceBusProcessor {
             if (kind == Kind.NON_SESSION) {
                 pumping = Mono.using(
                     () -> {
-                        // TODO: anu, there seems an opportunity to simplify, if builder directly returns MessagePump,
-                        //  similar to SessionsMessagePump.
                         return nonSessionBuilder.buildAsyncClientForProcessor();
                     },
                     client -> {

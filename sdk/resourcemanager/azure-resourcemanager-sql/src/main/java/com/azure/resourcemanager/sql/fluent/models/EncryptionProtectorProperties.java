@@ -6,55 +6,57 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.ServerKeyType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties for an encryption protector execution. */
+/**
+ * Properties for an encryption protector execution.
+ */
 @Fluent
-public final class EncryptionProtectorProperties {
+public final class EncryptionProtectorProperties implements JsonSerializable<EncryptionProtectorProperties> {
     /*
      * Subregion of the encryption protector.
      */
-    @JsonProperty(value = "subregion", access = JsonProperty.Access.WRITE_ONLY)
     private String subregion;
 
     /*
      * The name of the server key.
      */
-    @JsonProperty(value = "serverKeyName")
     private String serverKeyName;
 
     /*
      * The encryption protector type like 'ServiceManaged', 'AzureKeyVault'.
      */
-    @JsonProperty(value = "serverKeyType", required = true)
     private ServerKeyType serverKeyType;
 
     /*
      * The URI of the server key.
      */
-    @JsonProperty(value = "uri", access = JsonProperty.Access.WRITE_ONLY)
     private String uri;
 
     /*
      * Thumbprint of the server key.
      */
-    @JsonProperty(value = "thumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbprint;
 
     /*
      * Key auto rotation opt-in flag. Either true or false.
      */
-    @JsonProperty(value = "autoRotationEnabled")
     private Boolean autoRotationEnabled;
 
-    /** Creates an instance of EncryptionProtectorProperties class. */
+    /**
+     * Creates an instance of EncryptionProtectorProperties class.
+     */
     public EncryptionProtectorProperties() {
     }
 
     /**
      * Get the subregion property: Subregion of the encryption protector.
-     *
+     * 
      * @return the subregion value.
      */
     public String subregion() {
@@ -63,7 +65,7 @@ public final class EncryptionProtectorProperties {
 
     /**
      * Get the serverKeyName property: The name of the server key.
-     *
+     * 
      * @return the serverKeyName value.
      */
     public String serverKeyName() {
@@ -72,7 +74,7 @@ public final class EncryptionProtectorProperties {
 
     /**
      * Set the serverKeyName property: The name of the server key.
-     *
+     * 
      * @param serverKeyName the serverKeyName value to set.
      * @return the EncryptionProtectorProperties object itself.
      */
@@ -83,7 +85,7 @@ public final class EncryptionProtectorProperties {
 
     /**
      * Get the serverKeyType property: The encryption protector type like 'ServiceManaged', 'AzureKeyVault'.
-     *
+     * 
      * @return the serverKeyType value.
      */
     public ServerKeyType serverKeyType() {
@@ -92,7 +94,7 @@ public final class EncryptionProtectorProperties {
 
     /**
      * Set the serverKeyType property: The encryption protector type like 'ServiceManaged', 'AzureKeyVault'.
-     *
+     * 
      * @param serverKeyType the serverKeyType value to set.
      * @return the EncryptionProtectorProperties object itself.
      */
@@ -103,7 +105,7 @@ public final class EncryptionProtectorProperties {
 
     /**
      * Get the uri property: The URI of the server key.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -112,7 +114,7 @@ public final class EncryptionProtectorProperties {
 
     /**
      * Get the thumbprint property: Thumbprint of the server key.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -121,7 +123,7 @@ public final class EncryptionProtectorProperties {
 
     /**
      * Get the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
-     *
+     * 
      * @return the autoRotationEnabled value.
      */
     public Boolean autoRotationEnabled() {
@@ -130,7 +132,7 @@ public final class EncryptionProtectorProperties {
 
     /**
      * Set the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
-     *
+     * 
      * @param autoRotationEnabled the autoRotationEnabled value to set.
      * @return the EncryptionProtectorProperties object itself.
      */
@@ -141,17 +143,68 @@ public final class EncryptionProtectorProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serverKeyType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serverKeyType in model EncryptionProtectorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serverKeyType in model EncryptionProtectorProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EncryptionProtectorProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serverKeyType", this.serverKeyType == null ? null : this.serverKeyType.toString());
+        jsonWriter.writeStringField("serverKeyName", this.serverKeyName);
+        jsonWriter.writeBooleanField("autoRotationEnabled", this.autoRotationEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EncryptionProtectorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EncryptionProtectorProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EncryptionProtectorProperties.
+     */
+    public static EncryptionProtectorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EncryptionProtectorProperties deserializedEncryptionProtectorProperties
+                = new EncryptionProtectorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serverKeyType".equals(fieldName)) {
+                    deserializedEncryptionProtectorProperties.serverKeyType
+                        = ServerKeyType.fromString(reader.getString());
+                } else if ("subregion".equals(fieldName)) {
+                    deserializedEncryptionProtectorProperties.subregion = reader.getString();
+                } else if ("serverKeyName".equals(fieldName)) {
+                    deserializedEncryptionProtectorProperties.serverKeyName = reader.getString();
+                } else if ("uri".equals(fieldName)) {
+                    deserializedEncryptionProtectorProperties.uri = reader.getString();
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedEncryptionProtectorProperties.thumbprint = reader.getString();
+                } else if ("autoRotationEnabled".equals(fieldName)) {
+                    deserializedEncryptionProtectorProperties.autoRotationEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncryptionProtectorProperties;
+        });
+    }
 }

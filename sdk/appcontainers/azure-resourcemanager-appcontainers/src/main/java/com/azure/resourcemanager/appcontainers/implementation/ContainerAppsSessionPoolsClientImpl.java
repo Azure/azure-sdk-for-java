@@ -26,6 +26,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -33,7 +34,6 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsSessionPoolsClient;
 import com.azure.resourcemanager.appcontainers.fluent.models.SessionPoolInner;
-import com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException;
 import com.azure.resourcemanager.appcontainers.models.SessionPoolCollection;
 import com.azure.resourcemanager.appcontainers.models.SessionPoolUpdatableProperties;
 import java.nio.ByteBuffer;
@@ -75,7 +75,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.App/sessionPools")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SessionPoolCollection>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
@@ -83,7 +83,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sessionPools")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SessionPoolCollection>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
@@ -92,7 +92,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sessionPools/{sessionPoolName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SessionPoolInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -102,7 +102,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sessionPools/{sessionPoolName}")
         @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -113,7 +113,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
         @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sessionPools/{sessionPoolName}")
         @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -124,7 +124,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/sessionPools/{sessionPoolName}")
         @ExpectedResponses({ 202, 204 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -134,7 +134,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SessionPoolCollection>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
@@ -142,7 +142,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SessionPoolCollection>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
@@ -151,7 +151,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
     /**
      * Get the session pools in a given subscription.
      * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the session pools in a given subscription along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
@@ -180,7 +180,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the session pools in a given subscription along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
@@ -207,7 +207,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
     /**
      * Get the session pools in a given subscription.
      * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the session pools in a given subscription as paginated response with {@link PagedFlux}.
      */
@@ -222,7 +222,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the session pools in a given subscription as paginated response with {@link PagedFlux}.
      */
@@ -235,7 +235,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
     /**
      * Get the session pools in a given subscription.
      * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the session pools in a given subscription as paginated response with {@link PagedIterable}.
      */
@@ -249,7 +249,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the session pools in a given subscription as paginated response with {@link PagedIterable}.
      */
@@ -263,7 +263,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the session pools in a given resource group of a subscription along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
@@ -297,7 +297,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the session pools in a given resource group of a subscription along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
@@ -331,7 +331,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the session pools in a given resource group of a subscription as paginated response with
      * {@link PagedFlux}.
@@ -348,7 +348,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the session pools in a given resource group of a subscription as paginated response with
      * {@link PagedFlux}.
@@ -364,7 +364,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the session pools in a given resource group of a subscription as paginated response with
      * {@link PagedIterable}.
@@ -380,7 +380,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the session pools in a given resource group of a subscription as paginated response with
      * {@link PagedIterable}.
@@ -396,7 +396,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sessionPoolName Name of the session pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a session pool along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -434,7 +434,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolName Name of the session pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a session pool along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -469,7 +469,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sessionPoolName Name of the session pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a session pool on successful completion of {@link Mono}.
      */
@@ -486,7 +486,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolName Name of the session pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a session pool along with {@link Response}.
      */
@@ -502,7 +502,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sessionPoolName Name of the session pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a session pool.
      */
@@ -520,7 +520,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolName Name of the session pool.
      * @param sessionPoolEnvelope Properties used to create a session pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App session pool along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -566,7 +566,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolEnvelope Properties used to create a session pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App session pool along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -610,7 +610,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolName Name of the session pool.
      * @param sessionPoolEnvelope Properties used to create a session pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of container App session pool.
      */
@@ -633,7 +633,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolEnvelope Properties used to create a session pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of container App session pool.
      */
@@ -656,7 +656,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolName Name of the session pool.
      * @param sessionPoolEnvelope Properties used to create a session pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of container App session pool.
      */
@@ -676,7 +676,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolEnvelope Properties used to create a session pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of container App session pool.
      */
@@ -696,7 +696,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolName Name of the session pool.
      * @param sessionPoolEnvelope Properties used to create a session pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App session pool on successful completion of {@link Mono}.
      */
@@ -717,7 +717,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolEnvelope Properties used to create a session pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App session pool on successful completion of {@link Mono}.
      */
@@ -737,7 +737,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolName Name of the session pool.
      * @param sessionPoolEnvelope Properties used to create a session pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App session pool.
      */
@@ -757,7 +757,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolEnvelope Properties used to create a session pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App session pool.
      */
@@ -776,7 +776,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolName Name of the session pool.
      * @param sessionPoolEnvelope Properties used to create a session pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App session pool along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -822,7 +822,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolEnvelope Properties used to create a session pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App session pool along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -866,7 +866,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolName Name of the session pool.
      * @param sessionPoolEnvelope Properties used to create a session pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of container App session pool.
      */
@@ -889,7 +889,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolEnvelope Properties used to create a session pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of container App session pool.
      */
@@ -912,7 +912,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolName Name of the session pool.
      * @param sessionPoolEnvelope Properties used to create a session pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of container App session pool.
      */
@@ -932,7 +932,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolEnvelope Properties used to create a session pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of container App session pool.
      */
@@ -951,7 +951,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolName Name of the session pool.
      * @param sessionPoolEnvelope Properties used to create a session pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App session pool on successful completion of {@link Mono}.
      */
@@ -972,7 +972,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolEnvelope Properties used to create a session pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App session pool on successful completion of {@link Mono}.
      */
@@ -992,7 +992,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolName Name of the session pool.
      * @param sessionPoolEnvelope Properties used to create a session pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App session pool.
      */
@@ -1012,7 +1012,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolEnvelope Properties used to create a session pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App session pool.
      */
@@ -1030,7 +1030,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sessionPoolName Name of the session pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1068,7 +1068,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolName Name of the session pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1105,7 +1105,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sessionPoolName Name of the session pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
@@ -1125,7 +1125,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolName Name of the session pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
@@ -1146,7 +1146,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sessionPoolName Name of the session pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
@@ -1164,7 +1164,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolName Name of the session pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
@@ -1182,7 +1182,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sessionPoolName Name of the session pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1201,7 +1201,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolName Name of the session pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1219,7 +1219,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sessionPoolName Name of the session pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1236,7 +1236,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param sessionPoolName Name of the session pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1249,7 +1249,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return session pool collection Azure resource along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
@@ -1278,7 +1278,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return session pool collection Azure resource along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
@@ -1305,7 +1305,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return session pool collection Azure resource along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
@@ -1334,7 +1334,7 @@ public final class ContainerAppsSessionPoolsClientImpl implements ContainerAppsS
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return session pool collection Azure resource along with {@link PagedResponse} on successful completion of
      * {@link Mono}.

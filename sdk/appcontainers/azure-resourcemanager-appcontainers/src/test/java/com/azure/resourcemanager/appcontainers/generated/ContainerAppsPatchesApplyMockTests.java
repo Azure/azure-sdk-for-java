@@ -20,7 +20,7 @@ public final class ContainerAppsPatchesApplyMockTests {
     @Test
     public void testApply() throws Exception {
         String responseStr
-            = "{\"properties\":{\"targetEnvironmentId\":\"yfj\",\"targetContainerAppId\":\"fiddhlrufzcq\",\"targetRevisionId\":\"mq\",\"patchApplyStatus\":\"Canceled\",\"createdAt\":\"2021-07-31T07:30:36Z\",\"lastModifiedAt\":\"2021-05-02T11:00:18Z\",\"patchDetails\":[{\"targetContainerName\":\"lqkrs\",\"targetImage\":\"zrhxuddqmdtf\",\"lastDetectionTime\":\"2021-06-22T21:43:03Z\",\"detectionStatus\":\"RegistryLoginFailed\",\"newImageName\":\"mrkkhmwd\",\"newLayer\":{\"name\":\"gyqi\",\"frameworkAndVersion\":\"kwtjawhva\",\"osAndVersion\":\"qfqqdlcvmyolc\"},\"oldLayer\":{\"name\":\"jchtvsnvlaqd\",\"frameworkAndVersion\":\"yzawatu\",\"osAndVersion\":\"kokb\"},\"patchType\":\"FrameworkAndOSSecurity\"}]},\"id\":\"hymgobllms\",\"name\":\"wgwima\",\"type\":\"neakh\"}";
+            = "{\"properties\":{\"targetEnvironmentId\":\"tfjikffffgkuh\",\"targetContainerAppId\":\"whvuldbkk\",\"targetRevisionId\":\"jkjigawgaz\",\"patchApplyStatus\":\"RebaseFailed\",\"createdAt\":\"2021-07-17T19:23:56Z\",\"lastModifiedAt\":\"2021-03-12T04:48:13Z\",\"patchDetails\":[{\"targetContainerName\":\"jsbcml\",\"targetImage\":\"aahzbhuroolkol\",\"lastDetectionTime\":\"2021-03-29T10:52:42Z\",\"detectionStatus\":\"RegistryLoginFailed\",\"newImageName\":\"mojusuz\",\"newLayer\":{\"name\":\"zcvaaxoialahfxwc\",\"frameworkAndVersion\":\"kdxkuk\",\"osAndVersion\":\"c\"},\"oldLayer\":{\"name\":\"uhhoqeqshavlj\",\"frameworkAndVersion\":\"xyrqo\",\"osAndVersion\":\"thbb\"},\"patchType\":\"OSSecurity\"},{\"targetContainerName\":\"zukwdrnzkj\",\"targetImage\":\"hfceyjncjm\",\"lastDetectionTime\":\"2021-12-08T19:24:03Z\",\"detectionStatus\":\"Succeeded\",\"newImageName\":\"fjbpfiddhlrufzcq\",\"newLayer\":{\"name\":\"qrfuiocusel\",\"frameworkAndVersion\":\"rsazrhxud\",\"osAndVersion\":\"mdtff\"},\"oldLayer\":{\"name\":\"mrkkhmwd\",\"frameworkAndVersion\":\"lgyqixokw\",\"osAndVersion\":\"awhva\"},\"patchType\":\"Other\"},{\"targetContainerName\":\"fqqdl\",\"targetImage\":\"vmyolcaym\",\"lastDetectionTime\":\"2021-04-25T03:05:01Z\",\"detectionStatus\":\"Failed\",\"newImageName\":\"vsnvlaq\",\"newLayer\":{\"name\":\"yzawatu\",\"frameworkAndVersion\":\"kokb\",\"osAndVersion\":\"othymgobl\"},\"oldLayer\":{\"name\":\"nwgwimaanea\",\"frameworkAndVersion\":\"t\",\"osAndVersion\":\"obcyanrfvqtvk\"},\"patchType\":\"FrameworkAndOSSecurity\"},{\"targetContainerName\":\"oog\",\"targetImage\":\"kfnaoaqymhc\",\"lastDetectionTime\":\"2021-08-22T04:15:50Z\",\"detectionStatus\":\"Failed\",\"newImageName\":\"uowyrnskbyhqu\",\"newLayer\":{\"name\":\"ygxvha\",\"frameworkAndVersion\":\"xecxqnwh\",\"osAndVersion\":\"ozawmvgxsmpk\"},\"oldLayer\":{\"name\":\"irfljf\",\"frameworkAndVersion\":\"xqou\",\"osAndVersion\":\"ud\"},\"patchType\":\"Other\"}]},\"id\":\"aprhknqiijgencdg\",\"name\":\"oqueqihkkyowltj\",\"type\":\"uwhldxwhieproqks\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ContainerAppsPatchesApplyMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ContainerAppsPatchResource response = manager.containerAppsPatches()
-            .apply("yrqolnthbbnkgz", "kwdrnzkjthfc", "yjncjm", com.azure.core.util.Context.NONE);
+            .apply("akt", "jktzboimyfpq", "owkppnwyytf", com.azure.core.util.Context.NONE);
 
     }
 }

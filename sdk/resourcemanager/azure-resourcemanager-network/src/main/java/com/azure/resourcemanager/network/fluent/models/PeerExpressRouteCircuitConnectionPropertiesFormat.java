@@ -6,55 +6,53 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.CircuitConnectionStatus;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties of the peer express route circuit connection.
  */
 @Fluent
-public final class PeerExpressRouteCircuitConnectionPropertiesFormat {
+public final class PeerExpressRouteCircuitConnectionPropertiesFormat
+    implements JsonSerializable<PeerExpressRouteCircuitConnectionPropertiesFormat> {
     /*
      * Reference to Express Route Circuit Private Peering Resource of the circuit.
      */
-    @JsonProperty(value = "expressRouteCircuitPeering")
     private SubResource expressRouteCircuitPeering;
 
     /*
      * Reference to Express Route Circuit Private Peering Resource of the peered circuit.
      */
-    @JsonProperty(value = "peerExpressRouteCircuitPeering")
     private SubResource peerExpressRouteCircuitPeering;
 
     /*
      * /29 IP address space to carve out Customer addresses for tunnels.
      */
-    @JsonProperty(value = "addressPrefix")
     private String addressPrefix;
 
     /*
      * Express Route Circuit connection state.
      */
-    @JsonProperty(value = "circuitConnectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private CircuitConnectionStatus circuitConnectionStatus;
 
     /*
      * The name of the express route circuit connection resource.
      */
-    @JsonProperty(value = "connectionName")
     private String connectionName;
 
     /*
      * The resource guid of the authorization used for the express route circuit connection.
      */
-    @JsonProperty(value = "authResourceGuid")
     private String authResourceGuid;
 
     /*
      * The provisioning state of the peer express route circuit connection resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -195,5 +193,62 @@ public final class PeerExpressRouteCircuitConnectionPropertiesFormat {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("expressRouteCircuitPeering", this.expressRouteCircuitPeering);
+        jsonWriter.writeJsonField("peerExpressRouteCircuitPeering", this.peerExpressRouteCircuitPeering);
+        jsonWriter.writeStringField("addressPrefix", this.addressPrefix);
+        jsonWriter.writeStringField("connectionName", this.connectionName);
+        jsonWriter.writeStringField("authResourceGuid", this.authResourceGuid);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeerExpressRouteCircuitConnectionPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeerExpressRouteCircuitConnectionPropertiesFormat if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PeerExpressRouteCircuitConnectionPropertiesFormat.
+     */
+    public static PeerExpressRouteCircuitConnectionPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeerExpressRouteCircuitConnectionPropertiesFormat deserializedPeerExpressRouteCircuitConnectionPropertiesFormat
+                = new PeerExpressRouteCircuitConnectionPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("expressRouteCircuitPeering".equals(fieldName)) {
+                    deserializedPeerExpressRouteCircuitConnectionPropertiesFormat.expressRouteCircuitPeering
+                        = SubResource.fromJson(reader);
+                } else if ("peerExpressRouteCircuitPeering".equals(fieldName)) {
+                    deserializedPeerExpressRouteCircuitConnectionPropertiesFormat.peerExpressRouteCircuitPeering
+                        = SubResource.fromJson(reader);
+                } else if ("addressPrefix".equals(fieldName)) {
+                    deserializedPeerExpressRouteCircuitConnectionPropertiesFormat.addressPrefix = reader.getString();
+                } else if ("circuitConnectionStatus".equals(fieldName)) {
+                    deserializedPeerExpressRouteCircuitConnectionPropertiesFormat.circuitConnectionStatus
+                        = CircuitConnectionStatus.fromString(reader.getString());
+                } else if ("connectionName".equals(fieldName)) {
+                    deserializedPeerExpressRouteCircuitConnectionPropertiesFormat.connectionName = reader.getString();
+                } else if ("authResourceGuid".equals(fieldName)) {
+                    deserializedPeerExpressRouteCircuitConnectionPropertiesFormat.authResourceGuid = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedPeerExpressRouteCircuitConnectionPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeerExpressRouteCircuitConnectionPropertiesFormat;
+        });
     }
 }

@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Encryption settings for one disk volume.
  */
 @Fluent
-public final class EncryptionSettingsElement {
+public final class EncryptionSettingsElement implements JsonSerializable<EncryptionSettingsElement> {
     /*
      * Key Vault Secret Url and vault id of the disk encryption key
      */
-    @JsonProperty(value = "diskEncryptionKey")
     private KeyVaultAndSecretReference diskEncryptionKey;
 
     /*
      * Key Vault Key Url and vault id of the key encryption key. KeyEncryptionKey is optional and when provided is used
      * to unwrap the disk encryption key.
      */
-    @JsonProperty(value = "keyEncryptionKey")
     private KeyVaultAndKeyReference keyEncryptionKey;
 
     /**
@@ -85,5 +87,45 @@ public final class EncryptionSettingsElement {
         if (keyEncryptionKey() != null) {
             keyEncryptionKey().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("diskEncryptionKey", this.diskEncryptionKey);
+        jsonWriter.writeJsonField("keyEncryptionKey", this.keyEncryptionKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EncryptionSettingsElement from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EncryptionSettingsElement if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EncryptionSettingsElement.
+     */
+    public static EncryptionSettingsElement fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EncryptionSettingsElement deserializedEncryptionSettingsElement = new EncryptionSettingsElement();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskEncryptionKey".equals(fieldName)) {
+                    deserializedEncryptionSettingsElement.diskEncryptionKey
+                        = KeyVaultAndSecretReference.fromJson(reader);
+                } else if ("keyEncryptionKey".equals(fieldName)) {
+                    deserializedEncryptionSettingsElement.keyEncryptionKey = KeyVaultAndKeyReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncryptionSettingsElement;
+        });
     }
 }

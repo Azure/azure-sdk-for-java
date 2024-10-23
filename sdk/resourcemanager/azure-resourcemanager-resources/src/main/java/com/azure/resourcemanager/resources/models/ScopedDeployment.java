@@ -6,32 +6,31 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Deployment operation parameters.
  */
 @Fluent
-public final class ScopedDeployment {
+public final class ScopedDeployment implements JsonSerializable<ScopedDeployment> {
     /*
      * The location to store the deployment data.
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
      * The deployment properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private DeploymentProperties properties;
 
     /*
      * Deployment tags
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
@@ -119,4 +118,48 @@ public final class ScopedDeployment {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScopedDeployment.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScopedDeployment from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScopedDeployment if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScopedDeployment.
+     */
+    public static ScopedDeployment fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScopedDeployment deserializedScopedDeployment = new ScopedDeployment();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedScopedDeployment.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedScopedDeployment.properties = DeploymentProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedScopedDeployment.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScopedDeployment;
+        });
+    }
 }

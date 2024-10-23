@@ -34,18 +34,19 @@ class AzureServiceBusProducerClientConfiguration {
         AzureServiceBusProperties serviceBusProperties,
         ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
         ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
-        ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> customizers) {
+        ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> customizers,
+        ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderCustomizers) {
 
         ServiceBusSenderClientBuilderFactory factory;
         if (isDedicatedConnection(serviceBusProperties.getProducer())) {
-            factory = new ServiceBusSenderClientBuilderFactory(serviceBusProperties.buildProducerProperties());
+            factory = new ServiceBusSenderClientBuilderFactory(serviceBusProperties.buildProducerProperties(), customizers.orderedStream().toList());
         } else {
             factory = new ServiceBusSenderClientBuilderFactory(
                 serviceBusClientBuilders.getIfAvailable(), serviceBusProperties.buildProducerProperties());
         }
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
         connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
-        customizers.orderedStream().forEach(factory::addBuilderCustomizer);
+        senderCustomizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
     }
 

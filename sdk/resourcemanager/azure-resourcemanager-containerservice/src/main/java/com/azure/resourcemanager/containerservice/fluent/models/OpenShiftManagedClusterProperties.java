@@ -6,78 +6,71 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.models.NetworkProfile;
 import com.azure.resourcemanager.containerservice.models.OpenShiftManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.OpenShiftManagedClusterAuthProfile;
 import com.azure.resourcemanager.containerservice.models.OpenShiftManagedClusterMasterPoolProfile;
 import com.azure.resourcemanager.containerservice.models.OpenShiftRouterProfile;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of the OpenShift managed cluster.
  */
 @Fluent
-public final class OpenShiftManagedClusterProperties {
+public final class OpenShiftManagedClusterProperties implements JsonSerializable<OpenShiftManagedClusterProperties> {
     /*
      * The current deployment or provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Version of OpenShift specified when creating the cluster.
      */
-    @JsonProperty(value = "openShiftVersion", required = true)
     private String openShiftVersion;
 
     /*
      * Version of OpenShift specified when creating the cluster.
      */
-    @JsonProperty(value = "clusterVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String clusterVersion;
 
     /*
      * Service generated FQDN for OpenShift API server.
      */
-    @JsonProperty(value = "publicHostname", access = JsonProperty.Access.WRITE_ONLY)
     private String publicHostname;
 
     /*
      * Service generated FQDN for OpenShift API server loadbalancer internal hostname.
      */
-    @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
 
     /*
      * Configuration for OpenShift networking.
      */
-    @JsonProperty(value = "networkProfile")
     private NetworkProfile networkProfile;
 
     /*
      * Configuration for OpenShift router(s).
      */
-    @JsonProperty(value = "routerProfiles")
     private List<OpenShiftRouterProfile> routerProfiles;
 
     /*
      * Configuration for OpenShift master VMs.
      */
-    @JsonProperty(value = "masterPoolProfile")
     private OpenShiftManagedClusterMasterPoolProfile masterPoolProfile;
 
     /*
      * Configuration of OpenShift cluster VMs.
      */
-    @JsonProperty(value = "agentPoolProfiles")
     private List<OpenShiftManagedClusterAgentPoolProfile> agentPoolProfiles;
 
     /*
      * Configures OpenShift authentication.
      */
-    @JsonProperty(value = "authProfile")
     private OpenShiftManagedClusterAuthProfile authProfile;
 
     /**
@@ -89,7 +82,7 @@ public final class OpenShiftManagedClusterProperties {
     /**
      * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
      * response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -98,7 +91,7 @@ public final class OpenShiftManagedClusterProperties {
 
     /**
      * Get the openShiftVersion property: Version of OpenShift specified when creating the cluster.
-     *
+     * 
      * @return the openShiftVersion value.
      */
     public String openShiftVersion() {
@@ -107,7 +100,7 @@ public final class OpenShiftManagedClusterProperties {
 
     /**
      * Set the openShiftVersion property: Version of OpenShift specified when creating the cluster.
-     *
+     * 
      * @param openShiftVersion the openShiftVersion value to set.
      * @return the OpenShiftManagedClusterProperties object itself.
      */
@@ -118,7 +111,7 @@ public final class OpenShiftManagedClusterProperties {
 
     /**
      * Get the clusterVersion property: Version of OpenShift specified when creating the cluster.
-     *
+     * 
      * @return the clusterVersion value.
      */
     public String clusterVersion() {
@@ -127,7 +120,7 @@ public final class OpenShiftManagedClusterProperties {
 
     /**
      * Get the publicHostname property: Service generated FQDN for OpenShift API server.
-     *
+     * 
      * @return the publicHostname value.
      */
     public String publicHostname() {
@@ -136,7 +129,7 @@ public final class OpenShiftManagedClusterProperties {
 
     /**
      * Get the fqdn property: Service generated FQDN for OpenShift API server loadbalancer internal hostname.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -145,7 +138,7 @@ public final class OpenShiftManagedClusterProperties {
 
     /**
      * Get the networkProfile property: Configuration for OpenShift networking.
-     *
+     * 
      * @return the networkProfile value.
      */
     public NetworkProfile networkProfile() {
@@ -154,7 +147,7 @@ public final class OpenShiftManagedClusterProperties {
 
     /**
      * Set the networkProfile property: Configuration for OpenShift networking.
-     *
+     * 
      * @param networkProfile the networkProfile value to set.
      * @return the OpenShiftManagedClusterProperties object itself.
      */
@@ -165,7 +158,7 @@ public final class OpenShiftManagedClusterProperties {
 
     /**
      * Get the routerProfiles property: Configuration for OpenShift router(s).
-     *
+     * 
      * @return the routerProfiles value.
      */
     public List<OpenShiftRouterProfile> routerProfiles() {
@@ -174,7 +167,7 @@ public final class OpenShiftManagedClusterProperties {
 
     /**
      * Set the routerProfiles property: Configuration for OpenShift router(s).
-     *
+     * 
      * @param routerProfiles the routerProfiles value to set.
      * @return the OpenShiftManagedClusterProperties object itself.
      */
@@ -185,7 +178,7 @@ public final class OpenShiftManagedClusterProperties {
 
     /**
      * Get the masterPoolProfile property: Configuration for OpenShift master VMs.
-     *
+     * 
      * @return the masterPoolProfile value.
      */
     public OpenShiftManagedClusterMasterPoolProfile masterPoolProfile() {
@@ -194,7 +187,7 @@ public final class OpenShiftManagedClusterProperties {
 
     /**
      * Set the masterPoolProfile property: Configuration for OpenShift master VMs.
-     *
+     * 
      * @param masterPoolProfile the masterPoolProfile value to set.
      * @return the OpenShiftManagedClusterProperties object itself.
      */
@@ -206,7 +199,7 @@ public final class OpenShiftManagedClusterProperties {
 
     /**
      * Get the agentPoolProfiles property: Configuration of OpenShift cluster VMs.
-     *
+     * 
      * @return the agentPoolProfiles value.
      */
     public List<OpenShiftManagedClusterAgentPoolProfile> agentPoolProfiles() {
@@ -215,7 +208,7 @@ public final class OpenShiftManagedClusterProperties {
 
     /**
      * Set the agentPoolProfiles property: Configuration of OpenShift cluster VMs.
-     *
+     * 
      * @param agentPoolProfiles the agentPoolProfiles value to set.
      * @return the OpenShiftManagedClusterProperties object itself.
      */
@@ -227,7 +220,7 @@ public final class OpenShiftManagedClusterProperties {
 
     /**
      * Get the authProfile property: Configures OpenShift authentication.
-     *
+     * 
      * @return the authProfile value.
      */
     public OpenShiftManagedClusterAuthProfile authProfile() {
@@ -236,7 +229,7 @@ public final class OpenShiftManagedClusterProperties {
 
     /**
      * Set the authProfile property: Configures OpenShift authentication.
-     *
+     * 
      * @param authProfile the authProfile value to set.
      * @return the OpenShiftManagedClusterProperties object itself.
      */
@@ -247,7 +240,7 @@ public final class OpenShiftManagedClusterProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -274,4 +267,73 @@ public final class OpenShiftManagedClusterProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OpenShiftManagedClusterProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("openShiftVersion", this.openShiftVersion);
+        jsonWriter.writeJsonField("networkProfile", this.networkProfile);
+        jsonWriter.writeArrayField("routerProfiles", this.routerProfiles,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("masterPoolProfile", this.masterPoolProfile);
+        jsonWriter.writeArrayField("agentPoolProfiles", this.agentPoolProfiles,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("authProfile", this.authProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OpenShiftManagedClusterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OpenShiftManagedClusterProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OpenShiftManagedClusterProperties.
+     */
+    public static OpenShiftManagedClusterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OpenShiftManagedClusterProperties deserializedOpenShiftManagedClusterProperties
+                = new OpenShiftManagedClusterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("openShiftVersion".equals(fieldName)) {
+                    deserializedOpenShiftManagedClusterProperties.openShiftVersion = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedOpenShiftManagedClusterProperties.provisioningState = reader.getString();
+                } else if ("clusterVersion".equals(fieldName)) {
+                    deserializedOpenShiftManagedClusterProperties.clusterVersion = reader.getString();
+                } else if ("publicHostname".equals(fieldName)) {
+                    deserializedOpenShiftManagedClusterProperties.publicHostname = reader.getString();
+                } else if ("fqdn".equals(fieldName)) {
+                    deserializedOpenShiftManagedClusterProperties.fqdn = reader.getString();
+                } else if ("networkProfile".equals(fieldName)) {
+                    deserializedOpenShiftManagedClusterProperties.networkProfile = NetworkProfile.fromJson(reader);
+                } else if ("routerProfiles".equals(fieldName)) {
+                    List<OpenShiftRouterProfile> routerProfiles
+                        = reader.readArray(reader1 -> OpenShiftRouterProfile.fromJson(reader1));
+                    deserializedOpenShiftManagedClusterProperties.routerProfiles = routerProfiles;
+                } else if ("masterPoolProfile".equals(fieldName)) {
+                    deserializedOpenShiftManagedClusterProperties.masterPoolProfile
+                        = OpenShiftManagedClusterMasterPoolProfile.fromJson(reader);
+                } else if ("agentPoolProfiles".equals(fieldName)) {
+                    List<OpenShiftManagedClusterAgentPoolProfile> agentPoolProfiles
+                        = reader.readArray(reader1 -> OpenShiftManagedClusterAgentPoolProfile.fromJson(reader1));
+                    deserializedOpenShiftManagedClusterProperties.agentPoolProfiles = agentPoolProfiles;
+                } else if ("authProfile".equals(fieldName)) {
+                    deserializedOpenShiftManagedClusterProperties.authProfile
+                        = OpenShiftManagedClusterAuthProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOpenShiftManagedClusterProperties;
+        });
+    }
 }

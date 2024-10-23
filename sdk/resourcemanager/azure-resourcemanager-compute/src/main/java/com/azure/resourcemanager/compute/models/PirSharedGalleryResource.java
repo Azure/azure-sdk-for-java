@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.SharedGalleryIdentifier;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Base information about the shared gallery resource in pir.
@@ -16,8 +19,17 @@ public class PirSharedGalleryResource extends PirResource {
     /*
      * The identifier information of shared gallery.
      */
-    @JsonProperty(value = "identifier")
     private SharedGalleryIdentifier innerIdentifier;
+
+    /*
+     * Resource name
+     */
+    private String name;
+
+    /*
+     * Resource location
+     */
+    private String location;
 
     /**
      * Creates an instance of PirSharedGalleryResource class.
@@ -32,6 +44,37 @@ public class PirSharedGalleryResource extends PirResource {
      */
     private SharedGalleryIdentifier innerIdentifier() {
         return this.innerIdentifier;
+    }
+
+    /**
+     * Set the innerIdentifier property: The identifier information of shared gallery.
+     * 
+     * @param innerIdentifier the innerIdentifier value to set.
+     * @return the PirSharedGalleryResource object itself.
+     */
+    PirSharedGalleryResource withInnerIdentifier(SharedGalleryIdentifier innerIdentifier) {
+        this.innerIdentifier = innerIdentifier;
+        return this;
+    }
+
+    /**
+     * Get the name property: Resource name.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the location property: Resource location.
+     * 
+     * @return the location value.
+     */
+    @Override
+    public String location() {
+        return this.location;
     }
 
     /**
@@ -68,5 +111,45 @@ public class PirSharedGalleryResource extends PirResource {
         if (innerIdentifier() != null) {
             innerIdentifier().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identifier", this.innerIdentifier);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PirSharedGalleryResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PirSharedGalleryResource if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PirSharedGalleryResource.
+     */
+    public static PirSharedGalleryResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PirSharedGalleryResource deserializedPirSharedGalleryResource = new PirSharedGalleryResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPirSharedGalleryResource.name = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedPirSharedGalleryResource.location = reader.getString();
+                } else if ("identifier".equals(fieldName)) {
+                    deserializedPirSharedGalleryResource.innerIdentifier = SharedGalleryIdentifier.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPirSharedGalleryResource;
+        });
     }
 }

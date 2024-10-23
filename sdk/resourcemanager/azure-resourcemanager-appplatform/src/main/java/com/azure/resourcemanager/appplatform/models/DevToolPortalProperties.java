@@ -5,48 +5,46 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Dev Tool Portal properties payload.
  */
 @Fluent
-public final class DevToolPortalProperties {
+public final class DevToolPortalProperties implements JsonSerializable<DevToolPortalProperties> {
     /*
      * State of the Dev Tool Portal.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private DevToolPortalProvisioningState provisioningState;
 
     /*
      * Collection of components belong to Dev Tool Portal.
      */
-    @JsonProperty(value = "components", access = JsonProperty.Access.WRITE_ONLY)
     private List<DevToolPortalComponent> components;
 
     /*
      * Indicates whether the resource exposes public endpoint
      */
-    @JsonProperty(value = "public")
     private Boolean publicProperty;
 
     /*
      * URL of the resource, exposed when 'public' is true.
      */
-    @JsonProperty(value = "url", access = JsonProperty.Access.WRITE_ONLY)
     private String url;
 
     /*
      * Single sign-on related configuration
      */
-    @JsonProperty(value = "ssoProperties")
     private DevToolPortalSsoProperties ssoProperties;
 
     /*
      * Settings for Dev Tool Portal
      */
-    @JsonProperty(value = "features")
     private DevToolPortalFeatureSettings features;
 
     /**
@@ -157,5 +155,56 @@ public final class DevToolPortalProperties {
         if (features() != null) {
             features().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("public", this.publicProperty);
+        jsonWriter.writeJsonField("ssoProperties", this.ssoProperties);
+        jsonWriter.writeJsonField("features", this.features);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DevToolPortalProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DevToolPortalProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DevToolPortalProperties.
+     */
+    public static DevToolPortalProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DevToolPortalProperties deserializedDevToolPortalProperties = new DevToolPortalProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedDevToolPortalProperties.provisioningState
+                        = DevToolPortalProvisioningState.fromString(reader.getString());
+                } else if ("components".equals(fieldName)) {
+                    List<DevToolPortalComponent> components
+                        = reader.readArray(reader1 -> DevToolPortalComponent.fromJson(reader1));
+                    deserializedDevToolPortalProperties.components = components;
+                } else if ("public".equals(fieldName)) {
+                    deserializedDevToolPortalProperties.publicProperty = reader.getNullable(JsonReader::getBoolean);
+                } else if ("url".equals(fieldName)) {
+                    deserializedDevToolPortalProperties.url = reader.getString();
+                } else if ("ssoProperties".equals(fieldName)) {
+                    deserializedDevToolPortalProperties.ssoProperties = DevToolPortalSsoProperties.fromJson(reader);
+                } else if ("features".equals(fieldName)) {
+                    deserializedDevToolPortalProperties.features = DevToolPortalFeatureSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDevToolPortalProperties;
+        });
     }
 }

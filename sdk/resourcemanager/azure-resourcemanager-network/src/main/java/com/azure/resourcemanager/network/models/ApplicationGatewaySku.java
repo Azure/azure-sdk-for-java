@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * SKU of an application gateway.
  */
 @Fluent
-public final class ApplicationGatewaySku {
+public final class ApplicationGatewaySku implements JsonSerializable<ApplicationGatewaySku> {
     /*
      * Name of an application gateway SKU.
      */
-    @JsonProperty(value = "name")
     private ApplicationGatewaySkuName name;
 
     /*
      * Tier of an application gateway.
      */
-    @JsonProperty(value = "tier")
     private ApplicationGatewayTier tier;
 
     /*
      * Capacity (instance count) of an application gateway.
      */
-    @JsonProperty(value = "capacity")
     private Integer capacity;
 
     /*
      * Family of an application gateway SKU.
      */
-    @JsonProperty(value = "family")
     private ApplicationGatewaySkuFamily family;
 
     /**
@@ -128,5 +128,51 @@ public final class ApplicationGatewaySku {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeStringField("tier", this.tier == null ? null : this.tier.toString());
+        jsonWriter.writeNumberField("capacity", this.capacity);
+        jsonWriter.writeStringField("family", this.family == null ? null : this.family.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewaySku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewaySku if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewaySku.
+     */
+    public static ApplicationGatewaySku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewaySku deserializedApplicationGatewaySku = new ApplicationGatewaySku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedApplicationGatewaySku.name = ApplicationGatewaySkuName.fromString(reader.getString());
+                } else if ("tier".equals(fieldName)) {
+                    deserializedApplicationGatewaySku.tier = ApplicationGatewayTier.fromString(reader.getString());
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedApplicationGatewaySku.capacity = reader.getNullable(JsonReader::getInt);
+                } else if ("family".equals(fieldName)) {
+                    deserializedApplicationGatewaySku.family
+                        = ApplicationGatewaySkuFamily.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewaySku;
+        });
     }
 }

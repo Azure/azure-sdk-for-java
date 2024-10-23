@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.batch.models.PrivateEndpoint;
 import com.azure.resourcemanager.batch.models.PrivateEndpointConnectionProvisioningState;
 import com.azure.resourcemanager.batch.models.PrivateLinkServiceConnectionState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Private endpoint connection properties.
  */
 @Fluent
-public final class PrivateEndpointConnectionProperties {
+public final class PrivateEndpointConnectionProperties
+    implements JsonSerializable<PrivateEndpointConnectionProperties> {
     /*
      * The provisioning state of the private endpoint connection.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpointConnectionProvisioningState provisioningState;
 
     /*
      * The private endpoint of the private endpoint connection.
      */
-    @JsonProperty(value = "privateEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpoint privateEndpoint;
 
     /*
-     * The group id of the private endpoint connection.
-     * 
      * The value has one and only one group id.
      */
-    @JsonProperty(value = "groupIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> groupIds;
 
     /*
      * The private link service connection state of the private endpoint connection
      */
-    @JsonProperty(value = "privateLinkServiceConnectionState")
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
 
     /**
@@ -67,9 +66,7 @@ public final class PrivateEndpointConnectionProperties {
     }
 
     /**
-     * Get the groupIds property: The group id of the private endpoint connection.
-     * 
-     * The value has one and only one group id.
+     * Get the groupIds property: The value has one and only one group id.
      * 
      * @return the groupIds value.
      */
@@ -112,5 +109,51 @@ public final class PrivateEndpointConnectionProperties {
         if (privateLinkServiceConnectionState() != null) {
             privateLinkServiceConnectionState().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("privateLinkServiceConnectionState", this.privateLinkServiceConnectionState);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateEndpointConnectionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateEndpointConnectionProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateEndpointConnectionProperties.
+     */
+    public static PrivateEndpointConnectionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateEndpointConnectionProperties deserializedPrivateEndpointConnectionProperties
+                = new PrivateEndpointConnectionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionProperties.provisioningState
+                        = PrivateEndpointConnectionProvisioningState.fromString(reader.getString());
+                } else if ("privateEndpoint".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionProperties.privateEndpoint = PrivateEndpoint.fromJson(reader);
+                } else if ("groupIds".equals(fieldName)) {
+                    List<String> groupIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPrivateEndpointConnectionProperties.groupIds = groupIds;
+                } else if ("privateLinkServiceConnectionState".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionProperties.privateLinkServiceConnectionState
+                        = PrivateLinkServiceConnectionState.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateEndpointConnectionProperties;
+        });
     }
 }

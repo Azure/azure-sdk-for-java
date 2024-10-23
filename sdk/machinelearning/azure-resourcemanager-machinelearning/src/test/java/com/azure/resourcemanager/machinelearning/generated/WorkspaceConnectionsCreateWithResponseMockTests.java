@@ -6,78 +6,68 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.ConnectionCategory;
 import com.azure.resourcemanager.machinelearning.models.ValueFormat;
 import com.azure.resourcemanager.machinelearning.models.WorkspaceConnectionPropertiesV2;
 import com.azure.resourcemanager.machinelearning.models.WorkspaceConnectionPropertiesV2BasicResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class WorkspaceConnectionsCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"authType\":\"WorkspaceConnectionPropertiesV2\",\"category\":\"AzureTableStorage\",\"createdByWorkspaceArmId\":\"njjthpsnxebycym\",\"expiryTime\":\"2021-04-08T08:44:08Z\",\"group\":\"AzureAI\",\"isSharedToAll\":false,\"target\":\"pnse\",\"metadata\":{\"dyzssjlmykdygj\":\"nous\",\"h\":\"gspjlf\",\"s\":\"ngwqxcrbcrgyoim\"},\"sharedUserList\":[\"cctvkog\",\"htvagwnnw\",\"nv\"],\"value\":\"yldjdkjvdryk\",\"valueFormat\":\"JSON\"},\"id\":\"oxh\",\"name\":\"rjlqdoqeje\",\"type\":\"fdlh\"}";
 
-        String responseStr =
-            "{\"properties\":{\"authType\":\"WorkspaceConnectionPropertiesV2\",\"category\":\"ContainerRegistry\",\"target\":\"zuzhasup\",\"value\":\"p\",\"valueFormat\":\"JSON\"},\"id\":\"zvzqazvbkark\",\"name\":\"tgongrua\",\"type\":\"s\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MachineLearningManager manager = MachineLearningManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        WorkspaceConnectionPropertiesV2BasicResource response = manager.workspaceConnections()
+            .define("irlunsskydi")
+            .withExistingWorkspace("ex", "fjqzyhzydyvtuq")
+            .withProperties(new WorkspaceConnectionPropertiesV2().withCategory(ConnectionCategory.AZURE_MY_SQL_DB)
+                .withExpiryTime(OffsetDateTime.parse("2021-10-27T23:46:30Z"))
+                .withIsSharedToAll(true)
+                .withTarget("dcwuzs")
+                .withMetadata(mapOf("jeeyv", "yixecmasjnfgngxa", "axvwxtxuzh", "xbfckmoal"))
+                .withSharedUserList(Arrays.asList("yffwflbkjcdzu", "ygtc", "z"))
+                .withValue("efpubaldjcgldryv")
+                .withValueFormat(ValueFormat.JSON))
+            .create();
 
-        MachineLearningManager manager =
-            MachineLearningManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        WorkspaceConnectionPropertiesV2BasicResource response =
-            manager
-                .workspaceConnections()
-                .define("rwqirvtktyhhmvf")
-                .withExistingWorkspace("ouigdmfivjqte", "dqqigdydkghpc")
-                .withProperties(
-                    new WorkspaceConnectionPropertiesV2()
-                        .withCategory(ConnectionCategory.PYTHON_FEED)
-                        .withTarget("jajodmkrr")
-                        .withValue("pgqvqo")
-                        .withValueFormat(ValueFormat.JSON))
-                .create();
-
-        Assertions.assertEquals(ConnectionCategory.CONTAINER_REGISTRY, response.properties().category());
-        Assertions.assertEquals("zuzhasup", response.properties().target());
-        Assertions.assertEquals("p", response.properties().value());
+        Assertions.assertEquals(ConnectionCategory.AZURE_TABLE_STORAGE, response.properties().category());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-08T08:44:08Z"), response.properties().expiryTime());
+        Assertions.assertEquals(false, response.properties().isSharedToAll());
+        Assertions.assertEquals("pnse", response.properties().target());
+        Assertions.assertEquals("nous", response.properties().metadata().get("dyzssjlmykdygj"));
+        Assertions.assertEquals("cctvkog", response.properties().sharedUserList().get(0));
+        Assertions.assertEquals("yldjdkjvdryk", response.properties().value());
         Assertions.assertEquals(ValueFormat.JSON, response.properties().valueFormat());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

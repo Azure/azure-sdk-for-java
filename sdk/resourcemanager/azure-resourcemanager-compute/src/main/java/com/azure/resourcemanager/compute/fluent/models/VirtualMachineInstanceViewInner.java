@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.BootDiagnosticsInstanceView;
 import com.azure.resourcemanager.compute.models.DiskInstanceView;
 import com.azure.resourcemanager.compute.models.HyperVGenerationType;
@@ -14,84 +18,72 @@ import com.azure.resourcemanager.compute.models.VirtualMachineAgentInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachineHealthStatus;
 import com.azure.resourcemanager.compute.models.VirtualMachinePatchStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The instance view of a virtual machine.
  */
 @Fluent
-public final class VirtualMachineInstanceViewInner {
+public final class VirtualMachineInstanceViewInner implements JsonSerializable<VirtualMachineInstanceViewInner> {
     /*
      * Specifies the update domain of the virtual machine.
      */
-    @JsonProperty(value = "platformUpdateDomain")
     private Integer platformUpdateDomain;
 
     /*
      * Specifies the fault domain of the virtual machine.
      */
-    @JsonProperty(value = "platformFaultDomain")
     private Integer platformFaultDomain;
 
     /*
      * The computer name assigned to the virtual machine.
      */
-    @JsonProperty(value = "computerName")
     private String computerName;
 
     /*
      * The Operating System running on the virtual machine.
      */
-    @JsonProperty(value = "osName")
     private String osName;
 
     /*
      * The version of Operating System running on the virtual machine.
      */
-    @JsonProperty(value = "osVersion")
     private String osVersion;
 
     /*
      * Specifies the HyperVGeneration Type associated with a resource
      */
-    @JsonProperty(value = "hyperVGeneration")
     private HyperVGenerationType hyperVGeneration;
 
     /*
      * The Remote desktop certificate thumbprint.
      */
-    @JsonProperty(value = "rdpThumbPrint")
     private String rdpThumbPrint;
 
     /*
      * The VM Agent running on the virtual machine.
      */
-    @JsonProperty(value = "vmAgent")
     private VirtualMachineAgentInstanceView vmAgent;
 
     /*
      * The Maintenance Operation status on the virtual machine.
      */
-    @JsonProperty(value = "maintenanceRedeployStatus")
     private MaintenanceRedeployStatus maintenanceRedeployStatus;
 
     /*
      * The virtual machine disk information.
      */
-    @JsonProperty(value = "disks")
     private List<DiskInstanceView> disks;
 
     /*
      * The extensions information.
      */
-    @JsonProperty(value = "extensions")
     private List<VirtualMachineExtensionInstanceView> extensions;
 
     /*
      * The health status for the VM.
      */
-    @JsonProperty(value = "vmHealth", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineHealthStatus vmHealth;
 
     /*
@@ -99,7 +91,6 @@ public final class VirtualMachineInstanceViewInner {
      * status. You can easily view the output of your console log. Azure also enables you to see a screenshot of the VM
      * from the hypervisor.
      */
-    @JsonProperty(value = "bootDiagnostics")
     private BootDiagnosticsInstanceView bootDiagnostics;
 
     /*
@@ -107,25 +98,21 @@ public final class VirtualMachineInstanceViewInner {
      * the virtual machine is associated with a dedicated host group that has automatic placement enabled. Minimum
      * api-version: 2020-06-01.
      */
-    @JsonProperty(value = "assignedHost", access = JsonProperty.Access.WRITE_ONLY)
     private String assignedHost;
 
     /*
      * The resource status information.
      */
-    @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
 
     /*
      * [Preview Feature] The status of virtual machine patch operations.
      */
-    @JsonProperty(value = "patchStatus")
     private VirtualMachinePatchStatus patchStatus;
 
     /*
      * [Preview Feature] Specifies whether the VM is currently in or out of the Standby Pool.
      */
-    @JsonProperty(value = "isVMInStandbyPool", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isVMInStandbyPool;
 
     /**
@@ -479,5 +466,101 @@ public final class VirtualMachineInstanceViewInner {
         if (patchStatus() != null) {
             patchStatus().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("platformUpdateDomain", this.platformUpdateDomain);
+        jsonWriter.writeNumberField("platformFaultDomain", this.platformFaultDomain);
+        jsonWriter.writeStringField("computerName", this.computerName);
+        jsonWriter.writeStringField("osName", this.osName);
+        jsonWriter.writeStringField("osVersion", this.osVersion);
+        jsonWriter.writeStringField("hyperVGeneration",
+            this.hyperVGeneration == null ? null : this.hyperVGeneration.toString());
+        jsonWriter.writeStringField("rdpThumbPrint", this.rdpThumbPrint);
+        jsonWriter.writeJsonField("vmAgent", this.vmAgent);
+        jsonWriter.writeJsonField("maintenanceRedeployStatus", this.maintenanceRedeployStatus);
+        jsonWriter.writeArrayField("disks", this.disks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("bootDiagnostics", this.bootDiagnostics);
+        jsonWriter.writeArrayField("statuses", this.statuses, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("patchStatus", this.patchStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineInstanceViewInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineInstanceViewInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineInstanceViewInner.
+     */
+    public static VirtualMachineInstanceViewInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineInstanceViewInner deserializedVirtualMachineInstanceViewInner
+                = new VirtualMachineInstanceViewInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("platformUpdateDomain".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceViewInner.platformUpdateDomain
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("platformFaultDomain".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceViewInner.platformFaultDomain
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("computerName".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceViewInner.computerName = reader.getString();
+                } else if ("osName".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceViewInner.osName = reader.getString();
+                } else if ("osVersion".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceViewInner.osVersion = reader.getString();
+                } else if ("hyperVGeneration".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceViewInner.hyperVGeneration
+                        = HyperVGenerationType.fromString(reader.getString());
+                } else if ("rdpThumbPrint".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceViewInner.rdpThumbPrint = reader.getString();
+                } else if ("vmAgent".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceViewInner.vmAgent
+                        = VirtualMachineAgentInstanceView.fromJson(reader);
+                } else if ("maintenanceRedeployStatus".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceViewInner.maintenanceRedeployStatus
+                        = MaintenanceRedeployStatus.fromJson(reader);
+                } else if ("disks".equals(fieldName)) {
+                    List<DiskInstanceView> disks = reader.readArray(reader1 -> DiskInstanceView.fromJson(reader1));
+                    deserializedVirtualMachineInstanceViewInner.disks = disks;
+                } else if ("extensions".equals(fieldName)) {
+                    List<VirtualMachineExtensionInstanceView> extensions
+                        = reader.readArray(reader1 -> VirtualMachineExtensionInstanceView.fromJson(reader1));
+                    deserializedVirtualMachineInstanceViewInner.extensions = extensions;
+                } else if ("vmHealth".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceViewInner.vmHealth = VirtualMachineHealthStatus.fromJson(reader);
+                } else if ("bootDiagnostics".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceViewInner.bootDiagnostics
+                        = BootDiagnosticsInstanceView.fromJson(reader);
+                } else if ("assignedHost".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceViewInner.assignedHost = reader.getString();
+                } else if ("statuses".equals(fieldName)) {
+                    List<InstanceViewStatus> statuses
+                        = reader.readArray(reader1 -> InstanceViewStatus.fromJson(reader1));
+                    deserializedVirtualMachineInstanceViewInner.statuses = statuses;
+                } else if ("patchStatus".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceViewInner.patchStatus
+                        = VirtualMachinePatchStatus.fromJson(reader);
+                } else if ("isVMInStandbyPool".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceViewInner.isVMInStandbyPool
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineInstanceViewInner;
+        });
     }
 }

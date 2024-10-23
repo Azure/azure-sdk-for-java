@@ -5,12 +5,20 @@
 package com.azure.resourcemanager.billing.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.BillingPermissionsClient;
-import com.azure.resourcemanager.billing.fluent.models.BillingPermissionsPropertiesInner;
+import com.azure.resourcemanager.billing.fluent.models.BillingPermissionInner;
+import com.azure.resourcemanager.billing.fluent.models.CheckAccessResponseInner;
+import com.azure.resourcemanager.billing.models.BillingPermission;
 import com.azure.resourcemanager.billing.models.BillingPermissions;
-import com.azure.resourcemanager.billing.models.BillingPermissionsProperties;
+import com.azure.resourcemanager.billing.models.CheckAccessRequest;
+import com.azure.resourcemanager.billing.models.CheckAccessResponse;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public final class BillingPermissionsImpl implements BillingPermissions {
     private static final ClientLogger LOGGER = new ClientLogger(BillingPermissionsImpl.class);
@@ -19,66 +27,273 @@ public final class BillingPermissionsImpl implements BillingPermissions {
 
     private final com.azure.resourcemanager.billing.BillingManager serviceManager;
 
-    public BillingPermissionsImpl(
-        BillingPermissionsClient innerClient, com.azure.resourcemanager.billing.BillingManager serviceManager) {
+    public BillingPermissionsImpl(BillingPermissionsClient innerClient,
+        com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<BillingPermissionsProperties> listByCustomer(String billingAccountName, String customerName) {
-        PagedIterable<BillingPermissionsPropertiesInner> inner =
-            this.serviceClient().listByCustomer(billingAccountName, customerName);
-        return Utils.mapPage(inner, inner1 -> new BillingPermissionsPropertiesImpl(inner1, this.manager()));
+    public PagedIterable<BillingPermission> listByBillingAccount(String billingAccountName) {
+        PagedIterable<BillingPermissionInner> inner = this.serviceClient().listByBillingAccount(billingAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingPermissionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BillingPermissionsProperties> listByCustomer(
-        String billingAccountName, String customerName, Context context) {
-        PagedIterable<BillingPermissionsPropertiesInner> inner =
-            this.serviceClient().listByCustomer(billingAccountName, customerName, context);
-        return Utils.mapPage(inner, inner1 -> new BillingPermissionsPropertiesImpl(inner1, this.manager()));
+    public PagedIterable<BillingPermission> listByBillingAccount(String billingAccountName, Context context) {
+        PagedIterable<BillingPermissionInner> inner
+            = this.serviceClient().listByBillingAccount(billingAccountName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingPermissionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BillingPermissionsProperties> listByBillingAccount(String billingAccountName) {
-        PagedIterable<BillingPermissionsPropertiesInner> inner =
-            this.serviceClient().listByBillingAccount(billingAccountName);
-        return Utils.mapPage(inner, inner1 -> new BillingPermissionsPropertiesImpl(inner1, this.manager()));
+    public PagedIterable<BillingPermission> listByBillingProfile(String billingAccountName, String billingProfileName) {
+        PagedIterable<BillingPermissionInner> inner
+            = this.serviceClient().listByBillingProfile(billingAccountName, billingProfileName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingPermissionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BillingPermissionsProperties> listByBillingAccount(
-        String billingAccountName, Context context) {
-        PagedIterable<BillingPermissionsPropertiesInner> inner =
-            this.serviceClient().listByBillingAccount(billingAccountName, context);
-        return Utils.mapPage(inner, inner1 -> new BillingPermissionsPropertiesImpl(inner1, this.manager()));
+    public PagedIterable<BillingPermission> listByBillingProfile(String billingAccountName, String billingProfileName,
+        Context context) {
+        PagedIterable<BillingPermissionInner> inner
+            = this.serviceClient().listByBillingProfile(billingAccountName, billingProfileName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingPermissionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BillingPermissionsProperties> listByInvoiceSections(
-        String billingAccountName, String billingProfileName, String invoiceSectionName) {
-        PagedIterable<BillingPermissionsPropertiesInner> inner =
-            this.serviceClient().listByInvoiceSections(billingAccountName, billingProfileName, invoiceSectionName);
-        return Utils.mapPage(inner, inner1 -> new BillingPermissionsPropertiesImpl(inner1, this.manager()));
+    public Response<List<CheckAccessResponse>> checkAccessByBillingProfileWithResponse(String billingAccountName,
+        String billingProfileName, CheckAccessRequest parameters, Context context) {
+        Response<List<CheckAccessResponseInner>> inner = this.serviceClient()
+            .checkAccessByBillingProfileWithResponse(billingAccountName, billingProfileName, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
+                    .stream()
+                    .map(inner1 -> new CheckAccessResponseImpl(inner1, this.manager()))
+                    .collect(Collectors.toList()));
+        } else {
+            return null;
+        }
     }
 
-    public PagedIterable<BillingPermissionsProperties> listByInvoiceSections(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, Context context) {
-        PagedIterable<BillingPermissionsPropertiesInner> inner =
-            this
-                .serviceClient()
-                .listByInvoiceSections(billingAccountName, billingProfileName, invoiceSectionName, context);
-        return Utils.mapPage(inner, inner1 -> new BillingPermissionsPropertiesImpl(inner1, this.manager()));
+    public List<CheckAccessResponse> checkAccessByBillingProfile(String billingAccountName, String billingProfileName,
+        CheckAccessRequest parameters) {
+        List<CheckAccessResponseInner> inner
+            = this.serviceClient().checkAccessByBillingProfile(billingAccountName, billingProfileName, parameters);
+        if (inner != null) {
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new CheckAccessResponseImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
     }
 
-    public PagedIterable<BillingPermissionsProperties> listByBillingProfile(
-        String billingAccountName, String billingProfileName) {
-        PagedIterable<BillingPermissionsPropertiesInner> inner =
-            this.serviceClient().listByBillingProfile(billingAccountName, billingProfileName);
-        return Utils.mapPage(inner, inner1 -> new BillingPermissionsPropertiesImpl(inner1, this.manager()));
+    public PagedIterable<BillingPermission> listByCustomer(String billingAccountName, String billingProfileName,
+        String customerName) {
+        PagedIterable<BillingPermissionInner> inner
+            = this.serviceClient().listByCustomer(billingAccountName, billingProfileName, customerName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingPermissionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BillingPermissionsProperties> listByBillingProfile(
-        String billingAccountName, String billingProfileName, Context context) {
-        PagedIterable<BillingPermissionsPropertiesInner> inner =
-            this.serviceClient().listByBillingProfile(billingAccountName, billingProfileName, context);
-        return Utils.mapPage(inner, inner1 -> new BillingPermissionsPropertiesImpl(inner1, this.manager()));
+    public PagedIterable<BillingPermission> listByCustomer(String billingAccountName, String billingProfileName,
+        String customerName, Context context) {
+        PagedIterable<BillingPermissionInner> inner
+            = this.serviceClient().listByCustomer(billingAccountName, billingProfileName, customerName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingPermissionImpl(inner1, this.manager()));
+    }
+
+    public Response<List<CheckAccessResponse>> checkAccessByCustomerWithResponse(String billingAccountName,
+        String billingProfileName, String customerName, CheckAccessRequest parameters, Context context) {
+        Response<List<CheckAccessResponseInner>> inner = this.serviceClient()
+            .checkAccessByCustomerWithResponse(billingAccountName, billingProfileName, customerName, parameters,
+                context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
+                    .stream()
+                    .map(inner1 -> new CheckAccessResponseImpl(inner1, this.manager()))
+                    .collect(Collectors.toList()));
+        } else {
+            return null;
+        }
+    }
+
+    public List<CheckAccessResponse> checkAccessByCustomer(String billingAccountName, String billingProfileName,
+        String customerName, CheckAccessRequest parameters) {
+        List<CheckAccessResponseInner> inner = this.serviceClient()
+            .checkAccessByCustomer(billingAccountName, billingProfileName, customerName, parameters);
+        if (inner != null) {
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new CheckAccessResponseImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public PagedIterable<BillingPermission> listByInvoiceSection(String billingAccountName, String billingProfileName,
+        String invoiceSectionName) {
+        PagedIterable<BillingPermissionInner> inner
+            = this.serviceClient().listByInvoiceSection(billingAccountName, billingProfileName, invoiceSectionName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingPermissionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<BillingPermission> listByInvoiceSection(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Context context) {
+        PagedIterable<BillingPermissionInner> inner = this.serviceClient()
+            .listByInvoiceSection(billingAccountName, billingProfileName, invoiceSectionName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingPermissionImpl(inner1, this.manager()));
+    }
+
+    public Response<List<CheckAccessResponse>> checkAccessByInvoiceSectionWithResponse(String billingAccountName,
+        String billingProfileName, String invoiceSectionName, CheckAccessRequest parameters, Context context) {
+        Response<List<CheckAccessResponseInner>> inner = this.serviceClient()
+            .checkAccessByInvoiceSectionWithResponse(billingAccountName, billingProfileName, invoiceSectionName,
+                parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
+                    .stream()
+                    .map(inner1 -> new CheckAccessResponseImpl(inner1, this.manager()))
+                    .collect(Collectors.toList()));
+        } else {
+            return null;
+        }
+    }
+
+    public List<CheckAccessResponse> checkAccessByInvoiceSection(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, CheckAccessRequest parameters) {
+        List<CheckAccessResponseInner> inner = this.serviceClient()
+            .checkAccessByInvoiceSection(billingAccountName, billingProfileName, invoiceSectionName, parameters);
+        if (inner != null) {
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new CheckAccessResponseImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public Response<List<CheckAccessResponse>> checkAccessByBillingAccountWithResponse(String billingAccountName,
+        CheckAccessRequest parameters, Context context) {
+        Response<List<CheckAccessResponseInner>> inner
+            = this.serviceClient().checkAccessByBillingAccountWithResponse(billingAccountName, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
+                    .stream()
+                    .map(inner1 -> new CheckAccessResponseImpl(inner1, this.manager()))
+                    .collect(Collectors.toList()));
+        } else {
+            return null;
+        }
+    }
+
+    public List<CheckAccessResponse> checkAccessByBillingAccount(String billingAccountName,
+        CheckAccessRequest parameters) {
+        List<CheckAccessResponseInner> inner
+            = this.serviceClient().checkAccessByBillingAccount(billingAccountName, parameters);
+        if (inner != null) {
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new CheckAccessResponseImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public PagedIterable<BillingPermission> listByCustomerAtBillingAccount(String billingAccountName,
+        String customerName) {
+        PagedIterable<BillingPermissionInner> inner
+            = this.serviceClient().listByCustomerAtBillingAccount(billingAccountName, customerName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingPermissionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<BillingPermission> listByCustomerAtBillingAccount(String billingAccountName,
+        String customerName, Context context) {
+        PagedIterable<BillingPermissionInner> inner
+            = this.serviceClient().listByCustomerAtBillingAccount(billingAccountName, customerName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingPermissionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<BillingPermission> listByDepartment(String billingAccountName, String departmentName) {
+        PagedIterable<BillingPermissionInner> inner
+            = this.serviceClient().listByDepartment(billingAccountName, departmentName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingPermissionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<BillingPermission> listByDepartment(String billingAccountName, String departmentName,
+        Context context) {
+        PagedIterable<BillingPermissionInner> inner
+            = this.serviceClient().listByDepartment(billingAccountName, departmentName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingPermissionImpl(inner1, this.manager()));
+    }
+
+    public Response<List<CheckAccessResponse>> checkAccessByDepartmentWithResponse(String billingAccountName,
+        String departmentName, CheckAccessRequest parameters, Context context) {
+        Response<List<CheckAccessResponseInner>> inner = this.serviceClient()
+            .checkAccessByDepartmentWithResponse(billingAccountName, departmentName, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
+                    .stream()
+                    .map(inner1 -> new CheckAccessResponseImpl(inner1, this.manager()))
+                    .collect(Collectors.toList()));
+        } else {
+            return null;
+        }
+    }
+
+    public List<CheckAccessResponse> checkAccessByDepartment(String billingAccountName, String departmentName,
+        CheckAccessRequest parameters) {
+        List<CheckAccessResponseInner> inner
+            = this.serviceClient().checkAccessByDepartment(billingAccountName, departmentName, parameters);
+        if (inner != null) {
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new CheckAccessResponseImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public PagedIterable<BillingPermission> listByEnrollmentAccount(String billingAccountName,
+        String enrollmentAccountName) {
+        PagedIterable<BillingPermissionInner> inner
+            = this.serviceClient().listByEnrollmentAccount(billingAccountName, enrollmentAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingPermissionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<BillingPermission> listByEnrollmentAccount(String billingAccountName,
+        String enrollmentAccountName, Context context) {
+        PagedIterable<BillingPermissionInner> inner
+            = this.serviceClient().listByEnrollmentAccount(billingAccountName, enrollmentAccountName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingPermissionImpl(inner1, this.manager()));
+    }
+
+    public Response<List<CheckAccessResponse>> checkAccessByEnrollmentAccountWithResponse(String billingAccountName,
+        String enrollmentAccountName, CheckAccessRequest parameters, Context context) {
+        Response<List<CheckAccessResponseInner>> inner = this.serviceClient()
+            .checkAccessByEnrollmentAccountWithResponse(billingAccountName, enrollmentAccountName, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
+                    .stream()
+                    .map(inner1 -> new CheckAccessResponseImpl(inner1, this.manager()))
+                    .collect(Collectors.toList()));
+        } else {
+            return null;
+        }
+    }
+
+    public List<CheckAccessResponse> checkAccessByEnrollmentAccount(String billingAccountName,
+        String enrollmentAccountName, CheckAccessRequest parameters) {
+        List<CheckAccessResponseInner> inner = this.serviceClient()
+            .checkAccessByEnrollmentAccount(billingAccountName, enrollmentAccountName, parameters);
+        if (inner != null) {
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new CheckAccessResponseImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     private BillingPermissionsClient serviceClient() {

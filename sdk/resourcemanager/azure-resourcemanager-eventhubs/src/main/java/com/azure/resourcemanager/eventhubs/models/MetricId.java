@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -36,7 +34,7 @@ public final class MetricId extends ExpandableStringEnum<MetricId> {
 
     /**
      * Creates a new instance of MetricId value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,18 +43,17 @@ public final class MetricId extends ExpandableStringEnum<MetricId> {
 
     /**
      * Creates or finds a MetricId from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MetricId.
      */
-    @JsonCreator
     public static MetricId fromString(String name) {
         return fromString(name, MetricId.class);
     }
 
     /**
      * Gets known MetricId values.
-     *
+     * 
      * @return known MetricId values.
      */
     public static Collection<MetricId> values() {

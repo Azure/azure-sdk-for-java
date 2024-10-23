@@ -5,61 +5,59 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Class representing Abnormal Time Period detected.
  */
 @Fluent
-public final class DetectorAbnormalTimePeriod {
+public final class DetectorAbnormalTimePeriod implements JsonSerializable<DetectorAbnormalTimePeriod> {
     /*
      * Start time of the correlated event
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * End time of the correlated event
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * Message describing the event
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * Represents the name of the Detector
      */
-    @JsonProperty(value = "source")
     private String source;
 
     /*
      * Represents the rank of the Detector
      */
-    @JsonProperty(value = "priority")
     private Double priority;
 
     /*
      * Downtime metadata
      */
-    @JsonProperty(value = "metaData")
     private List<List<NameValuePair>> metadata;
 
     /*
      * Represents the type of the Detector
      */
-    @JsonProperty(value = "type")
     private IssueType type;
 
     /*
      * List of proposed solutions
      */
-    @JsonProperty(value = "solutions")
     private List<Solution> solutions;
 
     /**
@@ -240,5 +238,70 @@ public final class DetectorAbnormalTimePeriod {
         if (solutions() != null) {
             solutions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("source", this.source);
+        jsonWriter.writeNumberField("priority", this.priority);
+        jsonWriter.writeArrayField("metaData", this.metadata,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeJson(element1)));
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeArrayField("solutions", this.solutions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DetectorAbnormalTimePeriod from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DetectorAbnormalTimePeriod if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DetectorAbnormalTimePeriod.
+     */
+    public static DetectorAbnormalTimePeriod fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DetectorAbnormalTimePeriod deserializedDetectorAbnormalTimePeriod = new DetectorAbnormalTimePeriod();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedDetectorAbnormalTimePeriod.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedDetectorAbnormalTimePeriod.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("message".equals(fieldName)) {
+                    deserializedDetectorAbnormalTimePeriod.message = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    deserializedDetectorAbnormalTimePeriod.source = reader.getString();
+                } else if ("priority".equals(fieldName)) {
+                    deserializedDetectorAbnormalTimePeriod.priority = reader.getNullable(JsonReader::getDouble);
+                } else if ("metaData".equals(fieldName)) {
+                    List<List<NameValuePair>> metadata
+                        = reader.readArray(reader1 -> reader1.readArray(reader2 -> NameValuePair.fromJson(reader2)));
+                    deserializedDetectorAbnormalTimePeriod.metadata = metadata;
+                } else if ("type".equals(fieldName)) {
+                    deserializedDetectorAbnormalTimePeriod.type = IssueType.fromString(reader.getString());
+                } else if ("solutions".equals(fieldName)) {
+                    List<Solution> solutions = reader.readArray(reader1 -> Solution.fromJson(reader1));
+                    deserializedDetectorAbnormalTimePeriod.solutions = solutions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDetectorAbnormalTimePeriod;
+        });
     }
 }

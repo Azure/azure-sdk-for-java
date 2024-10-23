@@ -5,120 +5,113 @@
 package com.azure.resourcemanager.trafficmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.trafficmanager.models.AlwaysServe;
 import com.azure.resourcemanager.trafficmanager.models.EndpointMonitorStatus;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesCustomHeadersItem;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesSubnetsItem;
 import com.azure.resourcemanager.trafficmanager.models.EndpointStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Class representing a Traffic Manager endpoint properties. */
+/**
+ * Class representing a Traffic Manager endpoint properties.
+ */
 @Fluent
-public final class EndpointProperties {
+public final class EndpointProperties implements JsonSerializable<EndpointProperties> {
     /*
      * The Azure Resource URI of the of the endpoint. Not applicable to endpoints of type 'ExternalEndpoints'.
      */
-    @JsonProperty(value = "targetResourceId")
     private String targetResourceId;
 
     /*
      * The fully-qualified DNS name or IP address of the endpoint. Traffic Manager returns this value in DNS responses
      * to direct traffic to this endpoint.
      */
-    @JsonProperty(value = "target")
     private String target;
 
     /*
      * The status of the endpoint. If the endpoint is Enabled, it is probed for endpoint health and is included in the
      * traffic routing method.
      */
-    @JsonProperty(value = "endpointStatus")
     private EndpointStatus endpointStatus;
 
     /*
-     * The weight of this endpoint when using the 'Weighted' traffic routing method. Possible values are from 1 to
-     * 1000.
+     * The weight of this endpoint when using the 'Weighted' traffic routing method. Possible values are from 1 to 1000.
      */
-    @JsonProperty(value = "weight")
     private Long weight;
 
     /*
      * The priority of this endpoint when using the 'Priority' traffic routing method. Possible values are from 1 to
-     * 1000, lower values represent higher priority. This is an optional parameter.  If specified, it must be specified
+     * 1000, lower values represent higher priority. This is an optional parameter. If specified, it must be specified
      * on all endpoints, and no two endpoints can share the same priority value.
      */
-    @JsonProperty(value = "priority")
     private Long priority;
 
     /*
      * Specifies the location of the external or nested endpoints when using the 'Performance' traffic routing method.
      */
-    @JsonProperty(value = "endpointLocation")
     private String endpointLocation;
 
     /*
      * The monitoring status of the endpoint.
      */
-    @JsonProperty(value = "endpointMonitorStatus")
     private EndpointMonitorStatus endpointMonitorStatus;
 
     /*
-     * The minimum number of endpoints that must be available in the child profile in order for the parent profile to
-     * be considered available. Only applicable to endpoint of type 'NestedEndpoints'.
+     * The minimum number of endpoints that must be available in the child profile in order for the parent profile to be
+     * considered available. Only applicable to endpoint of type 'NestedEndpoints'.
      */
-    @JsonProperty(value = "minChildEndpoints")
     private Long minChildEndpoints;
 
     /*
-     * The minimum number of IPv4 (DNS record type A) endpoints that must be available in the child profile in order
-     * for the parent profile to be considered available. Only applicable to endpoint of type 'NestedEndpoints'.
+     * The minimum number of IPv4 (DNS record type A) endpoints that must be available in the child profile in order for
+     * the parent profile to be considered available. Only applicable to endpoint of type 'NestedEndpoints'.
      */
-    @JsonProperty(value = "minChildEndpointsIPv4")
     private Long minChildEndpointsIPv4;
 
     /*
      * The minimum number of IPv6 (DNS record type AAAA) endpoints that must be available in the child profile in order
      * for the parent profile to be considered available. Only applicable to endpoint of type 'NestedEndpoints'.
      */
-    @JsonProperty(value = "minChildEndpointsIPv6")
     private Long minChildEndpointsIPv6;
 
     /*
      * The list of countries/regions mapped to this endpoint when using the 'Geographic' traffic routing method. Please
      * consult Traffic Manager Geographic documentation for a full list of accepted values.
      */
-    @JsonProperty(value = "geoMapping")
     private List<String> geoMapping;
 
     /*
      * The list of subnets, IP addresses, and/or address ranges mapped to this endpoint when using the 'Subnet' traffic
      * routing method. An empty list will match all ranges not covered by other endpoints.
      */
-    @JsonProperty(value = "subnets")
     private List<EndpointPropertiesSubnetsItem> subnets;
 
     /*
      * List of custom headers.
      */
-    @JsonProperty(value = "customHeaders")
     private List<EndpointPropertiesCustomHeadersItem> customHeaders;
 
     /*
      * If Always Serve is enabled, probing for endpoint health will be disabled and endpoints will be included in the
      * traffic routing method.
      */
-    @JsonProperty(value = "alwaysServe")
     private AlwaysServe alwaysServe;
 
-    /** Creates an instance of EndpointProperties class. */
+    /**
+     * Creates an instance of EndpointProperties class.
+     */
     public EndpointProperties() {
     }
 
     /**
      * Get the targetResourceId property: The Azure Resource URI of the of the endpoint. Not applicable to endpoints of
      * type 'ExternalEndpoints'.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -128,7 +121,7 @@ public final class EndpointProperties {
     /**
      * Set the targetResourceId property: The Azure Resource URI of the of the endpoint. Not applicable to endpoints of
      * type 'ExternalEndpoints'.
-     *
+     * 
      * @param targetResourceId the targetResourceId value to set.
      * @return the EndpointProperties object itself.
      */
@@ -140,7 +133,7 @@ public final class EndpointProperties {
     /**
      * Get the target property: The fully-qualified DNS name or IP address of the endpoint. Traffic Manager returns this
      * value in DNS responses to direct traffic to this endpoint.
-     *
+     * 
      * @return the target value.
      */
     public String target() {
@@ -150,7 +143,7 @@ public final class EndpointProperties {
     /**
      * Set the target property: The fully-qualified DNS name or IP address of the endpoint. Traffic Manager returns this
      * value in DNS responses to direct traffic to this endpoint.
-     *
+     * 
      * @param target the target value to set.
      * @return the EndpointProperties object itself.
      */
@@ -162,7 +155,7 @@ public final class EndpointProperties {
     /**
      * Get the endpointStatus property: The status of the endpoint. If the endpoint is Enabled, it is probed for
      * endpoint health and is included in the traffic routing method.
-     *
+     * 
      * @return the endpointStatus value.
      */
     public EndpointStatus endpointStatus() {
@@ -172,7 +165,7 @@ public final class EndpointProperties {
     /**
      * Set the endpointStatus property: The status of the endpoint. If the endpoint is Enabled, it is probed for
      * endpoint health and is included in the traffic routing method.
-     *
+     * 
      * @param endpointStatus the endpointStatus value to set.
      * @return the EndpointProperties object itself.
      */
@@ -184,7 +177,7 @@ public final class EndpointProperties {
     /**
      * Get the weight property: The weight of this endpoint when using the 'Weighted' traffic routing method. Possible
      * values are from 1 to 1000.
-     *
+     * 
      * @return the weight value.
      */
     public Long weight() {
@@ -194,7 +187,7 @@ public final class EndpointProperties {
     /**
      * Set the weight property: The weight of this endpoint when using the 'Weighted' traffic routing method. Possible
      * values are from 1 to 1000.
-     *
+     * 
      * @param weight the weight value to set.
      * @return the EndpointProperties object itself.
      */
@@ -207,7 +200,7 @@ public final class EndpointProperties {
      * Get the priority property: The priority of this endpoint when using the 'Priority' traffic routing method.
      * Possible values are from 1 to 1000, lower values represent higher priority. This is an optional parameter. If
      * specified, it must be specified on all endpoints, and no two endpoints can share the same priority value.
-     *
+     * 
      * @return the priority value.
      */
     public Long priority() {
@@ -218,7 +211,7 @@ public final class EndpointProperties {
      * Set the priority property: The priority of this endpoint when using the 'Priority' traffic routing method.
      * Possible values are from 1 to 1000, lower values represent higher priority. This is an optional parameter. If
      * specified, it must be specified on all endpoints, and no two endpoints can share the same priority value.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the EndpointProperties object itself.
      */
@@ -230,7 +223,7 @@ public final class EndpointProperties {
     /**
      * Get the endpointLocation property: Specifies the location of the external or nested endpoints when using the
      * 'Performance' traffic routing method.
-     *
+     * 
      * @return the endpointLocation value.
      */
     public String endpointLocation() {
@@ -240,7 +233,7 @@ public final class EndpointProperties {
     /**
      * Set the endpointLocation property: Specifies the location of the external or nested endpoints when using the
      * 'Performance' traffic routing method.
-     *
+     * 
      * @param endpointLocation the endpointLocation value to set.
      * @return the EndpointProperties object itself.
      */
@@ -251,7 +244,7 @@ public final class EndpointProperties {
 
     /**
      * Get the endpointMonitorStatus property: The monitoring status of the endpoint.
-     *
+     * 
      * @return the endpointMonitorStatus value.
      */
     public EndpointMonitorStatus endpointMonitorStatus() {
@@ -260,7 +253,7 @@ public final class EndpointProperties {
 
     /**
      * Set the endpointMonitorStatus property: The monitoring status of the endpoint.
-     *
+     * 
      * @param endpointMonitorStatus the endpointMonitorStatus value to set.
      * @return the EndpointProperties object itself.
      */
@@ -273,7 +266,7 @@ public final class EndpointProperties {
      * Get the minChildEndpoints property: The minimum number of endpoints that must be available in the child profile
      * in order for the parent profile to be considered available. Only applicable to endpoint of type
      * 'NestedEndpoints'.
-     *
+     * 
      * @return the minChildEndpoints value.
      */
     public Long minChildEndpoints() {
@@ -284,7 +277,7 @@ public final class EndpointProperties {
      * Set the minChildEndpoints property: The minimum number of endpoints that must be available in the child profile
      * in order for the parent profile to be considered available. Only applicable to endpoint of type
      * 'NestedEndpoints'.
-     *
+     * 
      * @param minChildEndpoints the minChildEndpoints value to set.
      * @return the EndpointProperties object itself.
      */
@@ -297,7 +290,7 @@ public final class EndpointProperties {
      * Get the minChildEndpointsIPv4 property: The minimum number of IPv4 (DNS record type A) endpoints that must be
      * available in the child profile in order for the parent profile to be considered available. Only applicable to
      * endpoint of type 'NestedEndpoints'.
-     *
+     * 
      * @return the minChildEndpointsIPv4 value.
      */
     public Long minChildEndpointsIPv4() {
@@ -308,7 +301,7 @@ public final class EndpointProperties {
      * Set the minChildEndpointsIPv4 property: The minimum number of IPv4 (DNS record type A) endpoints that must be
      * available in the child profile in order for the parent profile to be considered available. Only applicable to
      * endpoint of type 'NestedEndpoints'.
-     *
+     * 
      * @param minChildEndpointsIPv4 the minChildEndpointsIPv4 value to set.
      * @return the EndpointProperties object itself.
      */
@@ -321,7 +314,7 @@ public final class EndpointProperties {
      * Get the minChildEndpointsIPv6 property: The minimum number of IPv6 (DNS record type AAAA) endpoints that must be
      * available in the child profile in order for the parent profile to be considered available. Only applicable to
      * endpoint of type 'NestedEndpoints'.
-     *
+     * 
      * @return the minChildEndpointsIPv6 value.
      */
     public Long minChildEndpointsIPv6() {
@@ -332,7 +325,7 @@ public final class EndpointProperties {
      * Set the minChildEndpointsIPv6 property: The minimum number of IPv6 (DNS record type AAAA) endpoints that must be
      * available in the child profile in order for the parent profile to be considered available. Only applicable to
      * endpoint of type 'NestedEndpoints'.
-     *
+     * 
      * @param minChildEndpointsIPv6 the minChildEndpointsIPv6 value to set.
      * @return the EndpointProperties object itself.
      */
@@ -345,7 +338,7 @@ public final class EndpointProperties {
      * Get the geoMapping property: The list of countries/regions mapped to this endpoint when using the 'Geographic'
      * traffic routing method. Please consult Traffic Manager Geographic documentation for a full list of accepted
      * values.
-     *
+     * 
      * @return the geoMapping value.
      */
     public List<String> geoMapping() {
@@ -356,7 +349,7 @@ public final class EndpointProperties {
      * Set the geoMapping property: The list of countries/regions mapped to this endpoint when using the 'Geographic'
      * traffic routing method. Please consult Traffic Manager Geographic documentation for a full list of accepted
      * values.
-     *
+     * 
      * @param geoMapping the geoMapping value to set.
      * @return the EndpointProperties object itself.
      */
@@ -368,7 +361,7 @@ public final class EndpointProperties {
     /**
      * Get the subnets property: The list of subnets, IP addresses, and/or address ranges mapped to this endpoint when
      * using the 'Subnet' traffic routing method. An empty list will match all ranges not covered by other endpoints.
-     *
+     * 
      * @return the subnets value.
      */
     public List<EndpointPropertiesSubnetsItem> subnets() {
@@ -378,7 +371,7 @@ public final class EndpointProperties {
     /**
      * Set the subnets property: The list of subnets, IP addresses, and/or address ranges mapped to this endpoint when
      * using the 'Subnet' traffic routing method. An empty list will match all ranges not covered by other endpoints.
-     *
+     * 
      * @param subnets the subnets value to set.
      * @return the EndpointProperties object itself.
      */
@@ -389,7 +382,7 @@ public final class EndpointProperties {
 
     /**
      * Get the customHeaders property: List of custom headers.
-     *
+     * 
      * @return the customHeaders value.
      */
     public List<EndpointPropertiesCustomHeadersItem> customHeaders() {
@@ -398,7 +391,7 @@ public final class EndpointProperties {
 
     /**
      * Set the customHeaders property: List of custom headers.
-     *
+     * 
      * @param customHeaders the customHeaders value to set.
      * @return the EndpointProperties object itself.
      */
@@ -410,7 +403,7 @@ public final class EndpointProperties {
     /**
      * Get the alwaysServe property: If Always Serve is enabled, probing for endpoint health will be disabled and
      * endpoints will be included in the traffic routing method.
-     *
+     * 
      * @return the alwaysServe value.
      */
     public AlwaysServe alwaysServe() {
@@ -420,7 +413,7 @@ public final class EndpointProperties {
     /**
      * Set the alwaysServe property: If Always Serve is enabled, probing for endpoint health will be disabled and
      * endpoints will be included in the traffic routing method.
-     *
+     * 
      * @param alwaysServe the alwaysServe value to set.
      * @return the EndpointProperties object itself.
      */
@@ -431,7 +424,7 @@ public final class EndpointProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -441,5 +434,88 @@ public final class EndpointProperties {
         if (customHeaders() != null) {
             customHeaders().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetResourceId", this.targetResourceId);
+        jsonWriter.writeStringField("target", this.target);
+        jsonWriter.writeStringField("endpointStatus",
+            this.endpointStatus == null ? null : this.endpointStatus.toString());
+        jsonWriter.writeNumberField("weight", this.weight);
+        jsonWriter.writeNumberField("priority", this.priority);
+        jsonWriter.writeStringField("endpointLocation", this.endpointLocation);
+        jsonWriter.writeStringField("endpointMonitorStatus",
+            this.endpointMonitorStatus == null ? null : this.endpointMonitorStatus.toString());
+        jsonWriter.writeNumberField("minChildEndpoints", this.minChildEndpoints);
+        jsonWriter.writeNumberField("minChildEndpointsIPv4", this.minChildEndpointsIPv4);
+        jsonWriter.writeNumberField("minChildEndpointsIPv6", this.minChildEndpointsIPv6);
+        jsonWriter.writeArrayField("geoMapping", this.geoMapping, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("subnets", this.subnets, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("customHeaders", this.customHeaders, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("alwaysServe", this.alwaysServe == null ? null : this.alwaysServe.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EndpointProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EndpointProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EndpointProperties.
+     */
+    public static EndpointProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EndpointProperties deserializedEndpointProperties = new EndpointProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetResourceId".equals(fieldName)) {
+                    deserializedEndpointProperties.targetResourceId = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    deserializedEndpointProperties.target = reader.getString();
+                } else if ("endpointStatus".equals(fieldName)) {
+                    deserializedEndpointProperties.endpointStatus = EndpointStatus.fromString(reader.getString());
+                } else if ("weight".equals(fieldName)) {
+                    deserializedEndpointProperties.weight = reader.getNullable(JsonReader::getLong);
+                } else if ("priority".equals(fieldName)) {
+                    deserializedEndpointProperties.priority = reader.getNullable(JsonReader::getLong);
+                } else if ("endpointLocation".equals(fieldName)) {
+                    deserializedEndpointProperties.endpointLocation = reader.getString();
+                } else if ("endpointMonitorStatus".equals(fieldName)) {
+                    deserializedEndpointProperties.endpointMonitorStatus
+                        = EndpointMonitorStatus.fromString(reader.getString());
+                } else if ("minChildEndpoints".equals(fieldName)) {
+                    deserializedEndpointProperties.minChildEndpoints = reader.getNullable(JsonReader::getLong);
+                } else if ("minChildEndpointsIPv4".equals(fieldName)) {
+                    deserializedEndpointProperties.minChildEndpointsIPv4 = reader.getNullable(JsonReader::getLong);
+                } else if ("minChildEndpointsIPv6".equals(fieldName)) {
+                    deserializedEndpointProperties.minChildEndpointsIPv6 = reader.getNullable(JsonReader::getLong);
+                } else if ("geoMapping".equals(fieldName)) {
+                    List<String> geoMapping = reader.readArray(reader1 -> reader1.getString());
+                    deserializedEndpointProperties.geoMapping = geoMapping;
+                } else if ("subnets".equals(fieldName)) {
+                    List<EndpointPropertiesSubnetsItem> subnets
+                        = reader.readArray(reader1 -> EndpointPropertiesSubnetsItem.fromJson(reader1));
+                    deserializedEndpointProperties.subnets = subnets;
+                } else if ("customHeaders".equals(fieldName)) {
+                    List<EndpointPropertiesCustomHeadersItem> customHeaders
+                        = reader.readArray(reader1 -> EndpointPropertiesCustomHeadersItem.fromJson(reader1));
+                    deserializedEndpointProperties.customHeaders = customHeaders;
+                } else if ("alwaysServe".equals(fieldName)) {
+                    deserializedEndpointProperties.alwaysServe = AlwaysServe.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEndpointProperties;
+        });
     }
 }

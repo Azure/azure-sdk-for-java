@@ -6,36 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.PostgreSqlV2LinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Linked service for PostgreSQLV2 data source.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = PostgreSqlV2LinkedService.class,
-    visible = true)
-@JsonTypeName("PostgreSqlV2")
 @Fluent
 public final class PostgreSqlV2LinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "PostgreSqlV2";
 
     /*
      * PostgreSQLV2 linked service properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private PostgreSqlV2LinkedServiceTypeProperties innerTypeProperties = new PostgreSqlV2LinkedServiceTypeProperties();
 
     /**
@@ -61,6 +53,15 @@ public final class PostgreSqlV2LinkedService extends LinkedService {
      */
     private PostgreSqlV2LinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PostgreSqlV2LinkedService withVersion(String version) {
+        super.withVersion(version);
+        return this;
     }
 
     /**
@@ -572,4 +573,74 @@ public final class PostgreSqlV2LinkedService extends LinkedService {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PostgreSqlV2LinkedService.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeJsonField("connectVia", connectVia());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PostgreSqlV2LinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PostgreSqlV2LinkedService if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PostgreSqlV2LinkedService.
+     */
+    public static PostgreSqlV2LinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PostgreSqlV2LinkedService deserializedPostgreSqlV2LinkedService = new PostgreSqlV2LinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedService.withVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedService.withConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedService.withDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedPostgreSqlV2LinkedService.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedPostgreSqlV2LinkedService.withAnnotations(annotations);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedService.innerTypeProperties
+                        = PostgreSqlV2LinkedServiceTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedService.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedPostgreSqlV2LinkedService.withAdditionalProperties(additionalProperties);
+
+            return deserializedPostgreSqlV2LinkedService;
+        });
+    }
 }

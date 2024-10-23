@@ -5,53 +5,51 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The resource of an Azure Cosmos DB MongoDB collection event.
  */
 @Immutable
-public final class RestorableMongodbCollectionPropertiesResource {
+public final class RestorableMongodbCollectionPropertiesResource
+    implements JsonSerializable<RestorableMongodbCollectionPropertiesResource> {
     /*
      * A system generated property. A unique identifier.
      */
-    @JsonProperty(value = "_rid", access = JsonProperty.Access.WRITE_ONLY)
     private String rid;
 
     /*
      * The operation type of this collection event.
      */
-    @JsonProperty(value = "operationType", access = JsonProperty.Access.WRITE_ONLY)
     private OperationType operationType;
 
     /*
      * A state of this collection to identify if this container is restorable in same account.
      */
-    @JsonProperty(value = "canUndelete", access = JsonProperty.Access.WRITE_ONLY)
     private String canUndelete;
 
     /*
      * The reason why this collection can not be restored in same account.
      */
-    @JsonProperty(value = "canUndeleteReason", access = JsonProperty.Access.WRITE_ONLY)
     private String canUndeleteReason;
 
     /*
      * The time when this collection event happened.
      */
-    @JsonProperty(value = "eventTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private String eventTimestamp;
 
     /*
      * The name of this MongoDB collection.
      */
-    @JsonProperty(value = "ownerId", access = JsonProperty.Access.WRITE_ONLY)
     private String ownerId;
 
     /*
      * The resource ID of this MongoDB collection.
      */
-    @JsonProperty(value = "ownerResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String ownerResourceId;
 
     /**
@@ -130,5 +128,54 @@ public final class RestorableMongodbCollectionPropertiesResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorableMongodbCollectionPropertiesResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorableMongodbCollectionPropertiesResource if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorableMongodbCollectionPropertiesResource.
+     */
+    public static RestorableMongodbCollectionPropertiesResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorableMongodbCollectionPropertiesResource deserializedRestorableMongodbCollectionPropertiesResource
+                = new RestorableMongodbCollectionPropertiesResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("_rid".equals(fieldName)) {
+                    deserializedRestorableMongodbCollectionPropertiesResource.rid = reader.getString();
+                } else if ("operationType".equals(fieldName)) {
+                    deserializedRestorableMongodbCollectionPropertiesResource.operationType
+                        = OperationType.fromString(reader.getString());
+                } else if ("canUndelete".equals(fieldName)) {
+                    deserializedRestorableMongodbCollectionPropertiesResource.canUndelete = reader.getString();
+                } else if ("canUndeleteReason".equals(fieldName)) {
+                    deserializedRestorableMongodbCollectionPropertiesResource.canUndeleteReason = reader.getString();
+                } else if ("eventTimestamp".equals(fieldName)) {
+                    deserializedRestorableMongodbCollectionPropertiesResource.eventTimestamp = reader.getString();
+                } else if ("ownerId".equals(fieldName)) {
+                    deserializedRestorableMongodbCollectionPropertiesResource.ownerId = reader.getString();
+                } else if ("ownerResourceId".equals(fieldName)) {
+                    deserializedRestorableMongodbCollectionPropertiesResource.ownerResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorableMongodbCollectionPropertiesResource;
+        });
     }
 }

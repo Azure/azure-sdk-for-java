@@ -9,7 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class DomainsRenewSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-12-01/examples/RenewDomain.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-12-01/examples/RenewDomain.json
      */
     /**
      * Sample code: Renew an existing domain.

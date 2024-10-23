@@ -5,42 +5,42 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Defines the parameters for RequestScheme match conditions.
  */
 @Fluent
-public final class RequestSchemeMatchConditionParameters {
+public final class RequestSchemeMatchConditionParameters
+    implements JsonSerializable<RequestSchemeMatchConditionParameters> {
     /*
      * The typeName property.
      */
-    @JsonProperty(value = "typeName", required = true)
     private String typeName = "DeliveryRuleRequestSchemeConditionParameters";
 
     /*
      * Describes operator to be matched
      */
-    @JsonProperty(value = "operator", required = true)
     private String operator = "Equal";
 
     /*
      * Describes if this is negate condition or not
      */
-    @JsonProperty(value = "negateCondition")
     private Boolean negateCondition;
 
     /*
      * List of transforms
      */
-    @JsonProperty(value = "transforms")
     private List<Transform> transforms;
 
     /*
      * The match value for the condition of the delivery rule
      */
-    @JsonProperty(value = "matchValues")
     private List<RequestSchemeMatchConditionParametersMatchValuesItem> matchValues;
 
     /**
@@ -156,5 +156,58 @@ public final class RequestSchemeMatchConditionParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("typeName", this.typeName);
+        jsonWriter.writeStringField("operator", this.operator);
+        jsonWriter.writeBooleanField("negateCondition", this.negateCondition);
+        jsonWriter.writeArrayField("transforms", this.transforms,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("matchValues", this.matchValues,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RequestSchemeMatchConditionParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RequestSchemeMatchConditionParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RequestSchemeMatchConditionParameters.
+     */
+    public static RequestSchemeMatchConditionParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RequestSchemeMatchConditionParameters deserializedRequestSchemeMatchConditionParameters
+                = new RequestSchemeMatchConditionParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("negateCondition".equals(fieldName)) {
+                    deserializedRequestSchemeMatchConditionParameters.negateCondition
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("transforms".equals(fieldName)) {
+                    List<Transform> transforms = reader.readArray(reader1 -> Transform.fromString(reader1.getString()));
+                    deserializedRequestSchemeMatchConditionParameters.transforms = transforms;
+                } else if ("matchValues".equals(fieldName)) {
+                    List<RequestSchemeMatchConditionParametersMatchValuesItem> matchValues
+                        = reader.readArray(reader1 -> RequestSchemeMatchConditionParametersMatchValuesItem
+                            .fromString(reader1.getString()));
+                    deserializedRequestSchemeMatchConditionParameters.matchValues = matchValues;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRequestSchemeMatchConditionParameters;
+        });
     }
 }

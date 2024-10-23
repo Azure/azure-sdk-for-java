@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.PrivateEndpointIpConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * An IP Configuration of the private endpoint.
  */
 @Fluent
-public final class PrivateEndpointIpConfiguration {
+public final class PrivateEndpointIpConfiguration implements JsonSerializable<PrivateEndpointIpConfiguration> {
     /*
      * Properties of private endpoint IP configurations.
      */
-    @JsonProperty(value = "properties")
     private PrivateEndpointIpConfigurationProperties innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
@@ -172,5 +172,50 @@ public final class PrivateEndpointIpConfiguration {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateEndpointIpConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateEndpointIpConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateEndpointIpConfiguration.
+     */
+    public static PrivateEndpointIpConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateEndpointIpConfiguration deserializedPrivateEndpointIpConfiguration
+                = new PrivateEndpointIpConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedPrivateEndpointIpConfiguration.innerProperties
+                        = PrivateEndpointIpConfigurationProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedPrivateEndpointIpConfiguration.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPrivateEndpointIpConfiguration.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedPrivateEndpointIpConfiguration.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateEndpointIpConfiguration;
+        });
     }
 }

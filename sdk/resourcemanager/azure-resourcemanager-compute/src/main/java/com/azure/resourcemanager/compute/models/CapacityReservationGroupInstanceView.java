@@ -5,25 +5,28 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The CapacityReservationGroupInstanceView model.
  */
 @Immutable
-public final class CapacityReservationGroupInstanceView {
+public final class CapacityReservationGroupInstanceView
+    implements JsonSerializable<CapacityReservationGroupInstanceView> {
     /*
      * List of instance view of the capacity reservations under the capacity reservation group.
      */
-    @JsonProperty(value = "capacityReservations", access = JsonProperty.Access.WRITE_ONLY)
     private List<CapacityReservationInstanceViewWithName> capacityReservations;
 
     /*
      * List of the subscriptions that the capacity reservation group is shared with. **Note:** Minimum api-version:
-     * 2024-03-01. Please refer to https://aka.ms/computereservationsharing for more details.
+     * 2023-09-01. Please refer to https://aka.ms/computereservationsharing for more details.
      */
-    @JsonProperty(value = "sharedSubscriptionIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResourceReadOnly> sharedSubscriptionIds;
 
     /**
@@ -44,7 +47,7 @@ public final class CapacityReservationGroupInstanceView {
 
     /**
      * Get the sharedSubscriptionIds property: List of the subscriptions that the capacity reservation group is shared
-     * with. **Note:** Minimum api-version: 2024-03-01. Please refer to https://aka.ms/computereservationsharing for
+     * with. **Note:** Minimum api-version: 2023-09-01. Please refer to https://aka.ms/computereservationsharing for
      * more details.
      * 
      * @return the sharedSubscriptionIds value.
@@ -65,5 +68,47 @@ public final class CapacityReservationGroupInstanceView {
         if (sharedSubscriptionIds() != null) {
             sharedSubscriptionIds().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CapacityReservationGroupInstanceView from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CapacityReservationGroupInstanceView if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CapacityReservationGroupInstanceView.
+     */
+    public static CapacityReservationGroupInstanceView fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CapacityReservationGroupInstanceView deserializedCapacityReservationGroupInstanceView
+                = new CapacityReservationGroupInstanceView();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("capacityReservations".equals(fieldName)) {
+                    List<CapacityReservationInstanceViewWithName> capacityReservations
+                        = reader.readArray(reader1 -> CapacityReservationInstanceViewWithName.fromJson(reader1));
+                    deserializedCapacityReservationGroupInstanceView.capacityReservations = capacityReservations;
+                } else if ("sharedSubscriptionIds".equals(fieldName)) {
+                    List<SubResourceReadOnly> sharedSubscriptionIds
+                        = reader.readArray(reader1 -> SubResourceReadOnly.fromJson(reader1));
+                    deserializedCapacityReservationGroupInstanceView.sharedSubscriptionIds = sharedSubscriptionIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCapacityReservationGroupInstanceView;
+        });
     }
 }

@@ -20,7 +20,8 @@ import com.azure.core.util.polling.SyncPoller;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = FarmOperationsClientBuilder.class)
 public final class FarmOperationsClient {
-    @Generated private final FarmOperationsAsyncClient client;
+    @Generated
+    private final FarmOperationsAsyncClient client;
 
     /**
      * Initializes an instance of FarmOperationsClient class.
@@ -106,8 +107,8 @@ public final class FarmOperationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateDataIngestionJob(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginCreateDataIngestionJob(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
         return this.client.beginCreateDataIngestionJob(jobId, job, requestOptions).getSyncPoller();
     }
 

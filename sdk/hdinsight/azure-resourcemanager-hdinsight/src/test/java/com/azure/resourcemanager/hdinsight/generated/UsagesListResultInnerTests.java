@@ -13,34 +13,26 @@ import org.junit.jupiter.api.Assertions;
 public final class UsagesListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsagesListResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"unit\":\"gkfbtndoaong\",\"currentValue\":1271439560574404501,\"limit\":3888691267660480720,\"name\":{\"value\":\"c\",\"localizedValue\":\"df\"}},{\"unit\":\"waezkojvd\",\"currentValue\":5361825295052268042,\"limit\":6459666134329406148,\"name\":{\"value\":\"cybxa\",\"localizedValue\":\"gszufoxciqopid\"}}]}")
-                .toObject(UsagesListResultInner.class);
-        Assertions.assertEquals("gkfbtndoaong", model.value().get(0).unit());
-        Assertions.assertEquals(1271439560574404501L, model.value().get(0).currentValue());
-        Assertions.assertEquals(3888691267660480720L, model.value().get(0).limit());
+        UsagesListResultInner model = BinaryData.fromString(
+            "{\"value\":[{\"unit\":\"dcpzfoqo\",\"currentValue\":4892524565143747736,\"limit\":6615741978857229687,\"name\":{\"value\":\"gszufoxciqopid\",\"localizedValue\":\"mciodhkhazxkhn\"}},{\"unit\":\"onlwntoeg\",\"currentValue\":8928756986200818231,\"limit\":8840780603115522856,\"name\":{\"value\":\"z\",\"localizedValue\":\"mrv\"}},{\"unit\":\"ztvbtqgsfr\",\"currentValue\":3999543626969444509,\"limit\":1008926283024648920,\"name\":{\"value\":\"lmnguxaw\",\"localizedValue\":\"ldsyuuximerqfob\"}},{\"unit\":\"znkbykutwpfhpagm\",\"currentValue\":5006093182566843640,\"limit\":5038627427973777976,\"name\":{\"value\":\"sd\",\"localizedValue\":\"kgtdlmkkze\"}}]}")
+            .toObject(UsagesListResultInner.class);
+        Assertions.assertEquals("dcpzfoqo", model.value().get(0).unit());
+        Assertions.assertEquals(4892524565143747736L, model.value().get(0).currentValue());
+        Assertions.assertEquals(6615741978857229687L, model.value().get(0).limit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UsagesListResultInner model =
-            new UsagesListResultInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new Usage()
-                                .withUnit("gkfbtndoaong")
-                                .withCurrentValue(1271439560574404501L)
-                                .withLimit(3888691267660480720L),
-                            new Usage()
-                                .withUnit("waezkojvd")
-                                .withCurrentValue(5361825295052268042L)
-                                .withLimit(6459666134329406148L)));
+        UsagesListResultInner model = new UsagesListResultInner().withValue(Arrays.asList(
+            new Usage().withUnit("dcpzfoqo").withCurrentValue(4892524565143747736L).withLimit(6615741978857229687L),
+            new Usage().withUnit("onlwntoeg").withCurrentValue(8928756986200818231L).withLimit(8840780603115522856L),
+            new Usage().withUnit("ztvbtqgsfr").withCurrentValue(3999543626969444509L).withLimit(1008926283024648920L),
+            new Usage().withUnit("znkbykutwpfhpagm")
+                .withCurrentValue(5006093182566843640L)
+                .withLimit(5038627427973777976L)));
         model = BinaryData.fromObject(model).toObject(UsagesListResultInner.class);
-        Assertions.assertEquals("gkfbtndoaong", model.value().get(0).unit());
-        Assertions.assertEquals(1271439560574404501L, model.value().get(0).currentValue());
-        Assertions.assertEquals(3888691267660480720L, model.value().get(0).limit());
+        Assertions.assertEquals("dcpzfoqo", model.value().get(0).unit());
+        Assertions.assertEquals(4892524565143747736L, model.value().get(0).currentValue());
+        Assertions.assertEquals(6615741978857229687L, model.value().get(0).limit());
     }
 }

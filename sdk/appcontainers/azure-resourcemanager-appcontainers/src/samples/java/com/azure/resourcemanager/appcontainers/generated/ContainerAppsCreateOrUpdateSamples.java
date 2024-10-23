@@ -35,8 +35,8 @@ import com.azure.resourcemanager.appcontainers.models.InitContainer;
 import com.azure.resourcemanager.appcontainers.models.IpSecurityRestrictionRule;
 import com.azure.resourcemanager.appcontainers.models.Kind;
 import com.azure.resourcemanager.appcontainers.models.Level;
-import com.azure.resourcemanager.appcontainers.models.LoggerSetting;
 import com.azure.resourcemanager.appcontainers.models.LogLevel;
+import com.azure.resourcemanager.appcontainers.models.LoggerSetting;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.appcontainers.models.PatchingMode;
@@ -67,7 +67,7 @@ import java.util.Map;
  */
 public final class ContainerAppsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
      * ContainerApps_SourceToCloudApp_CreateOrUpdate.json
      */
     /**
@@ -166,6 +166,8 @@ public final class ContainerAppsCreateOrUpdateSamples {
                 .withScale(
                     new Scale().withMinReplicas(1)
                         .withMaxReplicas(5)
+                        .withCooldownPeriod(350)
+                        .withPollingInterval(35)
                         .withRules(Arrays.asList(new ScaleRule().withName("httpscalingrule")
                             .withCustom(new CustomScaleRule().withType("http")
                                 .withMetadata(mapOf("concurrentRequests", "50"))))))
@@ -185,7 +187,7 @@ public final class ContainerAppsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
      * ContainerApps_CreateOrUpdate_ConnectedEnvironment.json
      */
     /**
@@ -279,6 +281,8 @@ public final class ContainerAppsCreateOrUpdateSamples {
                 .withScale(
                     new Scale().withMinReplicas(1)
                         .withMaxReplicas(5)
+                        .withCooldownPeriod(350)
+                        .withPollingInterval(35)
                         .withRules(Arrays.asList(new ScaleRule().withName("httpscalingrule")
                             .withCustom(new CustomScaleRule().withType("http")
                                 .withMetadata(mapOf("concurrentRequests", "50")))))))
@@ -287,7 +291,7 @@ public final class ContainerAppsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/ContainerApps_CreateOrUpdate
+     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/ContainerApps_CreateOrUpdate
      * .json
      */
     /**
@@ -400,6 +404,8 @@ public final class ContainerAppsCreateOrUpdateSamples {
                             .withPort(8080)).withInitialDelaySeconds(3).withPeriodSeconds(3).withType(Type.LIVENESS)))))
                 .withScale(new Scale().withMinReplicas(1)
                     .withMaxReplicas(5)
+                    .withCooldownPeriod(350)
+                    .withPollingInterval(35)
                     .withRules(Arrays.asList(
                         new ScaleRule().withName("httpscalingrule")
                             .withCustom(
@@ -431,7 +437,7 @@ public final class ContainerAppsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
      * ContainerApps_TcpApp_CreateOrUpdate.json
      */
     /**
@@ -462,13 +468,15 @@ public final class ContainerAppsCreateOrUpdateSamples {
                         .withType(Type.LIVENESS)))))
                 .withScale(new Scale().withMinReplicas(1)
                     .withMaxReplicas(5)
+                    .withCooldownPeriod(350)
+                    .withPollingInterval(35)
                     .withRules(Arrays.asList(new ScaleRule().withName("tcpscalingrule")
                         .withTcp(new TcpScaleRule().withMetadata(mapOf("concurrentConnections", "50")))))))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
      * ContainerApps_Kind_CreateOrUpdate.json
      */
     /**
@@ -492,12 +500,13 @@ public final class ContainerAppsCreateOrUpdateSamples {
                 .withContainers(Arrays.asList(new Container().withImage("default/logicapps-base:latest")
                     .withName("logicapps-container")
                     .withResources(new ContainerResources().withCpu(1.0D).withMemory("2.0Gi"))))
-                .withScale(new Scale().withMinReplicas(1).withMaxReplicas(30)))
+                .withScale(
+                    new Scale().withMinReplicas(1).withMaxReplicas(30).withCooldownPeriod(350).withPollingInterval(35)))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
      * ContainerApps_ManagedBy_CreateOrUpdate.json
      */
     /**
@@ -530,6 +539,8 @@ public final class ContainerAppsCreateOrUpdateSamples {
                         .withType(Type.LIVENESS)))))
                 .withScale(new Scale().withMinReplicas(1)
                     .withMaxReplicas(5)
+                    .withCooldownPeriod(350)
+                    .withPollingInterval(35)
                     .withRules(Arrays.asList(new ScaleRule().withName("tcpscalingrule")
                         .withTcp(new TcpScaleRule().withMetadata(mapOf("concurrentConnections", "50")))))))
             .create();

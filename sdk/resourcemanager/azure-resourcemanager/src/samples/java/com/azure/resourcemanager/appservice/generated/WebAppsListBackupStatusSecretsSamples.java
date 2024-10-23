@@ -9,7 +9,6 @@ import com.azure.resourcemanager.appservice.models.BackupSchedule;
 import com.azure.resourcemanager.appservice.models.DatabaseBackupSetting;
 import com.azure.resourcemanager.appservice.models.DatabaseType;
 import com.azure.resourcemanager.appservice.models.FrequencyUnit;
-
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
@@ -18,11 +17,12 @@ import java.util.Arrays;
  */
 public final class WebAppsListBackupStatusSecretsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetWebAppBackupWithSecrets.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetWebAppBackupWithSecrets.json
      */
     /**
      * Sample code: Get web app backup with secrets.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getWebAppBackupWithSecrets(com.azure.resourcemanager.AzureResourceManager azure) {

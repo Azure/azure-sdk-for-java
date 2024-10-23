@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The DataLakeAnalyticsSchemaProperties model. */
+/**
+ * The DataLakeAnalyticsSchemaProperties model.
+ */
 @Fluent
-public final class DataLakeAnalyticsSchemaProperties {
+public final class DataLakeAnalyticsSchemaProperties implements JsonSerializable<DataLakeAnalyticsSchemaProperties> {
     /*
      * DataLake Store Account Name
      */
-    @JsonProperty(value = "dataLakeStoreAccountName")
     private String dataLakeStoreAccountName;
 
-    /** Creates an instance of DataLakeAnalyticsSchemaProperties class. */
+    /**
+     * Creates an instance of DataLakeAnalyticsSchemaProperties class.
+     */
     public DataLakeAnalyticsSchemaProperties() {
     }
 
     /**
      * Get the dataLakeStoreAccountName property: DataLake Store Account Name.
-     *
+     * 
      * @return the dataLakeStoreAccountName value.
      */
     public String dataLakeStoreAccountName() {
@@ -31,7 +38,7 @@ public final class DataLakeAnalyticsSchemaProperties {
 
     /**
      * Set the dataLakeStoreAccountName property: DataLake Store Account Name.
-     *
+     * 
      * @param dataLakeStoreAccountName the dataLakeStoreAccountName value to set.
      * @return the DataLakeAnalyticsSchemaProperties object itself.
      */
@@ -42,9 +49,46 @@ public final class DataLakeAnalyticsSchemaProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataLakeStoreAccountName", this.dataLakeStoreAccountName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataLakeAnalyticsSchemaProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataLakeAnalyticsSchemaProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataLakeAnalyticsSchemaProperties.
+     */
+    public static DataLakeAnalyticsSchemaProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataLakeAnalyticsSchemaProperties deserializedDataLakeAnalyticsSchemaProperties
+                = new DataLakeAnalyticsSchemaProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataLakeStoreAccountName".equals(fieldName)) {
+                    deserializedDataLakeAnalyticsSchemaProperties.dataLakeStoreAccountName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataLakeAnalyticsSchemaProperties;
+        });
     }
 }

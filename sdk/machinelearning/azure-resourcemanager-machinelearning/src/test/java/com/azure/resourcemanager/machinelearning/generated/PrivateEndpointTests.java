@@ -10,8 +10,7 @@ import com.azure.resourcemanager.machinelearning.models.PrivateEndpoint;
 public final class PrivateEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateEndpoint model =
-            BinaryData.fromString("{\"id\":\"elluwfziton\",\"subnetArmId\":\"qfpjk\"}").toObject(PrivateEndpoint.class);
+        PrivateEndpoint model = BinaryData.fromString("{\"id\":\"jbasvmsmjqulngs\"}").toObject(PrivateEndpoint.class);
     }
 
     @org.junit.jupiter.api.Test

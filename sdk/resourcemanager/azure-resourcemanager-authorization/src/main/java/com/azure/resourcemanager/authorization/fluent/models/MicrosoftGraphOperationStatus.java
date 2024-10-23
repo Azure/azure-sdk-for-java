@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** operationStatus. */
+/**
+ * operationStatus.
+ */
 public final class MicrosoftGraphOperationStatus extends ExpandableStringEnum<MicrosoftGraphOperationStatus> {
-    /** Static value NotStarted for MicrosoftGraphOperationStatus. */
+    /**
+     * Static value NotStarted for MicrosoftGraphOperationStatus.
+     */
     public static final MicrosoftGraphOperationStatus NOT_STARTED = fromString("NotStarted");
 
-    /** Static value Running for MicrosoftGraphOperationStatus. */
+    /**
+     * Static value Running for MicrosoftGraphOperationStatus.
+     */
     public static final MicrosoftGraphOperationStatus RUNNING = fromString("Running");
 
-    /** Static value Completed for MicrosoftGraphOperationStatus. */
+    /**
+     * Static value Completed for MicrosoftGraphOperationStatus.
+     */
     public static final MicrosoftGraphOperationStatus COMPLETED = fromString("Completed");
 
-    /** Static value Failed for MicrosoftGraphOperationStatus. */
+    /**
+     * Static value Failed for MicrosoftGraphOperationStatus.
+     */
     public static final MicrosoftGraphOperationStatus FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of MicrosoftGraphOperationStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class MicrosoftGraphOperationStatus extends ExpandableStringEnum<Mi
 
     /**
      * Creates or finds a MicrosoftGraphOperationStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphOperationStatus.
      */
-    @JsonCreator
     public static MicrosoftGraphOperationStatus fromString(String name) {
         return fromString(name, MicrosoftGraphOperationStatus.class);
     }
 
     /**
      * Gets known MicrosoftGraphOperationStatus values.
-     *
+     * 
      * @return known MicrosoftGraphOperationStatus values.
      */
     public static Collection<MicrosoftGraphOperationStatus> values() {

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class Action extends ExpandableStringEnum<Action> {
      * @param name a name to look for.
      * @return the corresponding Action.
      */
-    @JsonCreator
     public static Action fromString(String name) {
         return fromString(name, Action.class);
     }

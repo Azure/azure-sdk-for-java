@@ -5,93 +5,91 @@
 package com.azure.resourcemanager.purview.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.purview.models.AccountPropertiesEndpoints;
 import com.azure.resourcemanager.purview.models.AccountPropertiesManagedResources;
 import com.azure.resourcemanager.purview.models.CloudConnectors;
 import com.azure.resourcemanager.purview.models.ProvisioningState;
 import com.azure.resourcemanager.purview.models.PublicNetworkAccess;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The account properties. */
+/**
+ * The account properties.
+ */
 @Fluent
-public final class AccountProperties {
+public final class AccountProperties implements JsonSerializable<AccountProperties> {
     /*
      * Cloud connectors.
      * External cloud identifier used as part of scanning configuration.
      */
-    @JsonProperty(value = "cloudConnectors")
     private CloudConnectors cloudConnectors;
 
     /*
      * Gets the time at which the entity was created.
      */
-    @JsonProperty(value = "createdAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdAt;
 
     /*
      * Gets the creator of the entity.
      */
-    @JsonProperty(value = "createdBy", access = JsonProperty.Access.WRITE_ONLY)
     private String createdBy;
 
     /*
      * Gets the creators of the entity's object id.
      */
-    @JsonProperty(value = "createdByObjectId", access = JsonProperty.Access.WRITE_ONLY)
     private String createdByObjectId;
 
     /*
      * The URIs that are the public endpoints of the account.
      */
-    @JsonProperty(value = "endpoints", access = JsonProperty.Access.WRITE_ONLY)
     private AccountPropertiesEndpoints endpoints;
 
     /*
      * Gets or sets the friendly name.
      */
-    @JsonProperty(value = "friendlyName", access = JsonProperty.Access.WRITE_ONLY)
     private String friendlyName;
 
     /*
      * Gets or sets the managed resource group name
      */
-    @JsonProperty(value = "managedResourceGroupName")
     private String managedResourceGroupName;
 
     /*
      * Gets the resource identifiers of the managed resources.
      */
-    @JsonProperty(value = "managedResources", access = JsonProperty.Access.WRITE_ONLY)
     private AccountPropertiesManagedResources managedResources;
 
     /*
      * Gets the private endpoint connections information.
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
      * Gets or sets the state of the provisioning.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Gets or sets the public network access.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
-    /** Creates an instance of AccountProperties class. */
+    /**
+     * Creates an instance of AccountProperties class.
+     */
     public AccountProperties() {
     }
 
     /**
-     * Get the cloudConnectors property: Cloud connectors. External cloud identifier used as part of scanning
-     * configuration.
-     *
+     * Get the cloudConnectors property: Cloud connectors.
+     * External cloud identifier used as part of scanning configuration.
+     * 
      * @return the cloudConnectors value.
      */
     public CloudConnectors cloudConnectors() {
@@ -99,9 +97,9 @@ public final class AccountProperties {
     }
 
     /**
-     * Set the cloudConnectors property: Cloud connectors. External cloud identifier used as part of scanning
-     * configuration.
-     *
+     * Set the cloudConnectors property: Cloud connectors.
+     * External cloud identifier used as part of scanning configuration.
+     * 
      * @param cloudConnectors the cloudConnectors value to set.
      * @return the AccountProperties object itself.
      */
@@ -112,7 +110,7 @@ public final class AccountProperties {
 
     /**
      * Get the createdAt property: Gets the time at which the entity was created.
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
@@ -121,7 +119,7 @@ public final class AccountProperties {
 
     /**
      * Get the createdBy property: Gets the creator of the entity.
-     *
+     * 
      * @return the createdBy value.
      */
     public String createdBy() {
@@ -130,7 +128,7 @@ public final class AccountProperties {
 
     /**
      * Get the createdByObjectId property: Gets the creators of the entity's object id.
-     *
+     * 
      * @return the createdByObjectId value.
      */
     public String createdByObjectId() {
@@ -139,7 +137,7 @@ public final class AccountProperties {
 
     /**
      * Get the endpoints property: The URIs that are the public endpoints of the account.
-     *
+     * 
      * @return the endpoints value.
      */
     public AccountPropertiesEndpoints endpoints() {
@@ -148,7 +146,7 @@ public final class AccountProperties {
 
     /**
      * Get the friendlyName property: Gets or sets the friendly name.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -157,7 +155,7 @@ public final class AccountProperties {
 
     /**
      * Get the managedResourceGroupName property: Gets or sets the managed resource group name.
-     *
+     * 
      * @return the managedResourceGroupName value.
      */
     public String managedResourceGroupName() {
@@ -166,7 +164,7 @@ public final class AccountProperties {
 
     /**
      * Set the managedResourceGroupName property: Gets or sets the managed resource group name.
-     *
+     * 
      * @param managedResourceGroupName the managedResourceGroupName value to set.
      * @return the AccountProperties object itself.
      */
@@ -177,7 +175,7 @@ public final class AccountProperties {
 
     /**
      * Get the managedResources property: Gets the resource identifiers of the managed resources.
-     *
+     * 
      * @return the managedResources value.
      */
     public AccountPropertiesManagedResources managedResources() {
@@ -186,7 +184,7 @@ public final class AccountProperties {
 
     /**
      * Get the privateEndpointConnections property: Gets the private endpoint connections information.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -195,7 +193,7 @@ public final class AccountProperties {
 
     /**
      * Get the provisioningState property: Gets or sets the state of the provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -204,7 +202,7 @@ public final class AccountProperties {
 
     /**
      * Get the publicNetworkAccess property: Gets or sets the public network access.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -213,7 +211,7 @@ public final class AccountProperties {
 
     /**
      * Set the publicNetworkAccess property: Gets or sets the public network access.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the AccountProperties object itself.
      */
@@ -224,7 +222,7 @@ public final class AccountProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -240,5 +238,68 @@ public final class AccountProperties {
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("cloudConnectors", this.cloudConnectors);
+        jsonWriter.writeStringField("managedResourceGroupName", this.managedResourceGroupName);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccountProperties.
+     */
+    public static AccountProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountProperties deserializedAccountProperties = new AccountProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cloudConnectors".equals(fieldName)) {
+                    deserializedAccountProperties.cloudConnectors = CloudConnectors.fromJson(reader);
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedAccountProperties.createdAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedAccountProperties.createdBy = reader.getString();
+                } else if ("createdByObjectId".equals(fieldName)) {
+                    deserializedAccountProperties.createdByObjectId = reader.getString();
+                } else if ("endpoints".equals(fieldName)) {
+                    deserializedAccountProperties.endpoints = AccountPropertiesEndpoints.fromJson(reader);
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedAccountProperties.friendlyName = reader.getString();
+                } else if ("managedResourceGroupName".equals(fieldName)) {
+                    deserializedAccountProperties.managedResourceGroupName = reader.getString();
+                } else if ("managedResources".equals(fieldName)) {
+                    deserializedAccountProperties.managedResources = AccountPropertiesManagedResources.fromJson(reader);
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedAccountProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAccountProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedAccountProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountProperties;
+        });
     }
 }

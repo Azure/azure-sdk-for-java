@@ -34,8 +34,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerregistry.fluent.CacheRulesClient;
 import com.azure.resourcemanager.containerregistry.fluent.models.CacheRuleInner;
-import com.azure.resourcemanager.containerregistry.models.CacheRuleUpdateParameters;
 import com.azure.resourcemanager.containerregistry.models.CacheRulesListResult;
+import com.azure.resourcemanager.containerregistry.models.CacheRuleUpdateParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -624,7 +624,8 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
     private Mono<CacheRuleInner> createAsync(String resourceGroupName, String registryName, String cacheRuleName,
         CacheRuleInner cacheRuleCreateParameters, Context context) {
         return beginCreateAsync(resourceGroupName, registryName, cacheRuleName, cacheRuleCreateParameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1105,7 +1106,8 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
     private Mono<CacheRuleInner> updateAsync(String resourceGroupName, String registryName, String cacheRuleName,
         CacheRuleUpdateParameters cacheRuleUpdateParameters, Context context) {
         return beginUpdateAsync(resourceGroupName, registryName, cacheRuleName, cacheRuleUpdateParameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1148,9 +1150,7 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1176,9 +1176,7 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

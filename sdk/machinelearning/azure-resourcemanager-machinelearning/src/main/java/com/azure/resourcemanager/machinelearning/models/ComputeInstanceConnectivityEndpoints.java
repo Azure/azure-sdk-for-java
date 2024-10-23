@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines all connectivity endpoints and properties for an ComputeInstance. */
+/**
+ * Defines all connectivity endpoints and properties for an ComputeInstance.
+ */
 @Immutable
-public final class ComputeInstanceConnectivityEndpoints {
+public final class ComputeInstanceConnectivityEndpoints
+    implements JsonSerializable<ComputeInstanceConnectivityEndpoints> {
     /*
      * Public IP Address of this ComputeInstance.
      */
-    @JsonProperty(value = "publicIpAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String publicIpAddress;
 
     /*
      * Private IP Address of this ComputeInstance (local to the VNET in which the compute instance is deployed).
      */
-    @JsonProperty(value = "privateIpAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String privateIpAddress;
 
-    /** Creates an instance of ComputeInstanceConnectivityEndpoints class. */
+    /**
+     * Creates an instance of ComputeInstanceConnectivityEndpoints class.
+     */
     public ComputeInstanceConnectivityEndpoints() {
     }
 
     /**
      * Get the publicIpAddress property: Public IP Address of this ComputeInstance.
-     *
+     * 
      * @return the publicIpAddress value.
      */
     public String publicIpAddress() {
@@ -38,7 +45,7 @@ public final class ComputeInstanceConnectivityEndpoints {
     /**
      * Get the privateIpAddress property: Private IP Address of this ComputeInstance (local to the VNET in which the
      * compute instance is deployed).
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -47,9 +54,47 @@ public final class ComputeInstanceConnectivityEndpoints {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComputeInstanceConnectivityEndpoints from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComputeInstanceConnectivityEndpoints if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ComputeInstanceConnectivityEndpoints.
+     */
+    public static ComputeInstanceConnectivityEndpoints fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComputeInstanceConnectivityEndpoints deserializedComputeInstanceConnectivityEndpoints
+                = new ComputeInstanceConnectivityEndpoints();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publicIpAddress".equals(fieldName)) {
+                    deserializedComputeInstanceConnectivityEndpoints.publicIpAddress = reader.getString();
+                } else if ("privateIpAddress".equals(fieldName)) {
+                    deserializedComputeInstanceConnectivityEndpoints.privateIpAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedComputeInstanceConnectivityEndpoints;
+        });
     }
 }

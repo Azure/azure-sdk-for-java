@@ -24,9 +24,8 @@ public class StatsbeatModule {
 
     private static final Logger logger = LoggerFactory.getLogger(BaseStatsbeat.class);
 
-    private final ScheduledExecutorService scheduledExecutor =
-        Executors.newSingleThreadScheduledExecutor(
-            ThreadPoolUtils.createDaemonThreadFactory(BaseStatsbeat.class));
+    private final ScheduledExecutorService scheduledExecutor
+        = Executors.newSingleThreadScheduledExecutor(ThreadPoolUtils.createDaemonThreadFactory(BaseStatsbeat.class));
 
     private final CustomDimensions customDimensions;
     private final NetworkStatsbeat networkStatsbeat;
@@ -55,15 +54,9 @@ public class StatsbeatModule {
         }
     }
 
-    public void start(
-        TelemetryItemExporter telemetryItemExporter,
-        Supplier<StatsbeatConnectionString> connectionString,
-        Supplier<String> instrumentationKey,
-        boolean disabledAll,
-        long shortIntervalSeconds,
-        long longIntervalSeconds,
-        boolean disabled,
-        Set<Feature> featureSet) {
+    public void start(TelemetryItemExporter telemetryItemExporter, Supplier<StatsbeatConnectionString> connectionString,
+        Supplier<String> instrumentationKey, boolean disabledAll, long shortIntervalSeconds, long longIntervalSeconds,
+        boolean disabled, Set<Feature> featureSet) {
         if (connectionString.get() == null) {
             logger.debug("Don't start StatsbeatModule when statsbeat connection string is null.");
             return;
@@ -84,27 +77,15 @@ public class StatsbeatModule {
         updateInstrumentationKey(instrumentationKey.get());
 
         if (RpAttachType.getRpAttachType() != RpAttachType.MANUAL) {
-            scheduledExecutor.scheduleWithFixedDelay(
-                new StatsbeatSender(networkStatsbeat, telemetryItemExporter),
-                shortIntervalSeconds,
-                shortIntervalSeconds,
-                TimeUnit.SECONDS);
+            scheduledExecutor.scheduleWithFixedDelay(new StatsbeatSender(networkStatsbeat, telemetryItemExporter),
+                shortIntervalSeconds, shortIntervalSeconds, TimeUnit.SECONDS);
         }
-        scheduledExecutor.scheduleWithFixedDelay(
-            new StatsbeatSender(attachStatsbeat, telemetryItemExporter),
-            Math.min(60, longIntervalSeconds),
-            longIntervalSeconds,
-            TimeUnit.SECONDS);
-        scheduledExecutor.scheduleWithFixedDelay(
-            new StatsbeatSender(featureStatsbeat, telemetryItemExporter),
-            Math.min(60, longIntervalSeconds),
-            longIntervalSeconds,
-            TimeUnit.SECONDS);
-        scheduledExecutor.scheduleWithFixedDelay(
-            new StatsbeatSender(instrumentationStatsbeat, telemetryItemExporter),
-            Math.min(60, longIntervalSeconds),
-            longIntervalSeconds,
-            TimeUnit.SECONDS);
+        scheduledExecutor.scheduleWithFixedDelay(new StatsbeatSender(attachStatsbeat, telemetryItemExporter),
+            Math.min(60, longIntervalSeconds), longIntervalSeconds, TimeUnit.SECONDS);
+        scheduledExecutor.scheduleWithFixedDelay(new StatsbeatSender(featureStatsbeat, telemetryItemExporter),
+            Math.min(60, longIntervalSeconds), longIntervalSeconds, TimeUnit.SECONDS);
+        scheduledExecutor.scheduleWithFixedDelay(new StatsbeatSender(instrumentationStatsbeat, telemetryItemExporter),
+            Math.min(60, longIntervalSeconds), longIntervalSeconds, TimeUnit.SECONDS);
 
         ResourceProvider rp = customDimensions.getResourceProvider();
         // only turn on AzureMetadataService when the resource provider is VM or UNKNOWN.
@@ -118,11 +99,8 @@ public class StatsbeatModule {
         if (!disabled && RpAttachType.getRpAttachType() != RpAttachType.MANUAL) {
             nonessentialStatsbeat.setConnectionString(connectionString.get());
             nonessentialStatsbeat.setInstrumentationKey(instrumentationKey.get());
-            scheduledExecutor.scheduleWithFixedDelay(
-                new StatsbeatSender(nonessentialStatsbeat, telemetryItemExporter),
-                longIntervalSeconds,
-                longIntervalSeconds,
-                TimeUnit.SECONDS);
+            scheduledExecutor.scheduleWithFixedDelay(new StatsbeatSender(nonessentialStatsbeat, telemetryItemExporter),
+                longIntervalSeconds, longIntervalSeconds, TimeUnit.SECONDS);
         } else {
             logger.debug("Non-essential Statsbeat is disabled.");
         }
@@ -195,8 +173,7 @@ public class StatsbeatModule {
             try {
                 // For Linux Consumption Plan, connection string is lazily set.
                 // There is no need to send statsbeat when cikey is empty.
-                if (statsbeat.getInstrumentationKey() == null
-                    || statsbeat.getInstrumentationKey().isEmpty()) {
+                if (statsbeat.getInstrumentationKey() == null || statsbeat.getInstrumentationKey().isEmpty()) {
                     return;
                 }
                 statsbeat.send(telemetryItemExporter);

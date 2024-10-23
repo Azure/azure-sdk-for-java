@@ -6,58 +6,71 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The Docker build step.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Docker")
 @Fluent
 public final class DockerTaskStep extends TaskStepProperties {
     /*
+     * The type of the step.
+     */
+    private StepType type = StepType.DOCKER;
+
+    /*
      * The fully qualified image names including the repository and tag.
      */
-    @JsonProperty(value = "imageNames")
     private List<String> imageNames;
 
     /*
      * The value of this property indicates whether the image built should be pushed to the registry or not.
      */
-    @JsonProperty(value = "isPushEnabled")
     private Boolean isPushEnabled;
 
     /*
      * The value of this property indicates whether the image cache is enabled or not.
      */
-    @JsonProperty(value = "noCache")
     private Boolean noCache;
 
     /*
      * The Docker file path relative to the source context.
      */
-    @JsonProperty(value = "dockerFilePath", required = true)
     private String dockerFilePath;
 
     /*
      * The name of the target build stage for the docker build.
      */
-    @JsonProperty(value = "target")
     private String target;
 
     /*
      * The collection of override arguments to be used when executing this build step.
      */
-    @JsonProperty(value = "arguments")
     private List<Argument> arguments;
+
+    /*
+     * List of base image dependencies for a step.
+     */
+    private List<BaseImageDependency> baseImageDependencies;
 
     /**
      * Creates an instance of DockerTaskStep class.
      */
     public DockerTaskStep() {
+    }
+
+    /**
+     * Get the type property: The type of the step.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public StepType type() {
+        return this.type;
     }
 
     /**
@@ -183,6 +196,16 @@ public final class DockerTaskStep extends TaskStepProperties {
     }
 
     /**
+     * Get the baseImageDependencies property: List of base image dependencies for a step.
+     * 
+     * @return the baseImageDependencies value.
+     */
+    @Override
+    public List<BaseImageDependency> baseImageDependencies() {
+        return this.baseImageDependencies;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -209,8 +232,8 @@ public final class DockerTaskStep extends TaskStepProperties {
     public void validate() {
         super.validate();
         if (dockerFilePath() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property dockerFilePath in model DockerTaskStep"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property dockerFilePath in model DockerTaskStep"));
         }
         if (arguments() != null) {
             arguments().forEach(e -> e.validate());
@@ -218,4 +241,71 @@ public final class DockerTaskStep extends TaskStepProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DockerTaskStep.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("contextPath", contextPath());
+        jsonWriter.writeStringField("contextAccessToken", contextAccessToken());
+        jsonWriter.writeStringField("dockerFilePath", this.dockerFilePath);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeArrayField("imageNames", this.imageNames, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isPushEnabled", this.isPushEnabled);
+        jsonWriter.writeBooleanField("noCache", this.noCache);
+        jsonWriter.writeStringField("target", this.target);
+        jsonWriter.writeArrayField("arguments", this.arguments, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DockerTaskStep from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DockerTaskStep if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DockerTaskStep.
+     */
+    public static DockerTaskStep fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DockerTaskStep deserializedDockerTaskStep = new DockerTaskStep();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("baseImageDependencies".equals(fieldName)) {
+                    List<BaseImageDependency> baseImageDependencies
+                        = reader.readArray(reader1 -> BaseImageDependency.fromJson(reader1));
+                    deserializedDockerTaskStep.baseImageDependencies = baseImageDependencies;
+                } else if ("contextPath".equals(fieldName)) {
+                    deserializedDockerTaskStep.withContextPath(reader.getString());
+                } else if ("contextAccessToken".equals(fieldName)) {
+                    deserializedDockerTaskStep.withContextAccessToken(reader.getString());
+                } else if ("dockerFilePath".equals(fieldName)) {
+                    deserializedDockerTaskStep.dockerFilePath = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDockerTaskStep.type = StepType.fromString(reader.getString());
+                } else if ("imageNames".equals(fieldName)) {
+                    List<String> imageNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDockerTaskStep.imageNames = imageNames;
+                } else if ("isPushEnabled".equals(fieldName)) {
+                    deserializedDockerTaskStep.isPushEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("noCache".equals(fieldName)) {
+                    deserializedDockerTaskStep.noCache = reader.getNullable(JsonReader::getBoolean);
+                } else if ("target".equals(fieldName)) {
+                    deserializedDockerTaskStep.target = reader.getString();
+                } else if ("arguments".equals(fieldName)) {
+                    List<Argument> arguments = reader.readArray(reader1 -> Argument.fromJson(reader1));
+                    deserializedDockerTaskStep.arguments = arguments;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDockerTaskStep;
+        });
+    }
 }

@@ -5,11 +5,14 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -17,47 +20,40 @@ import java.util.Map;
  * The workflow trigger recurrence.
  */
 @Fluent
-public final class ScheduleTriggerRecurrence {
+public final class ScheduleTriggerRecurrence implements JsonSerializable<ScheduleTriggerRecurrence> {
     /*
      * The frequency.
      */
-    @JsonProperty(value = "frequency")
     private RecurrenceFrequency frequency;
 
     /*
      * The interval.
      */
-    @JsonProperty(value = "interval")
     private Integer interval;
 
     /*
      * The start time.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * The end time.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * The time zone.
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
     /*
      * The recurrence schedule.
      */
-    @JsonProperty(value = "schedule")
     private RecurrenceSchedule schedule;
 
     /*
      * The workflow trigger recurrence.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -191,7 +187,6 @@ public final class ScheduleTriggerRecurrence {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -207,14 +202,6 @@ public final class ScheduleTriggerRecurrence {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new LinkedHashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
      * 
@@ -224,5 +211,72 @@ public final class ScheduleTriggerRecurrence {
         if (schedule() != null) {
             schedule().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("frequency", this.frequency == null ? null : this.frequency.toString());
+        jsonWriter.writeNumberField("interval", this.interval);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeJsonField("schedule", this.schedule);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleTriggerRecurrence from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleTriggerRecurrence if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduleTriggerRecurrence.
+     */
+    public static ScheduleTriggerRecurrence fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleTriggerRecurrence deserializedScheduleTriggerRecurrence = new ScheduleTriggerRecurrence();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("frequency".equals(fieldName)) {
+                    deserializedScheduleTriggerRecurrence.frequency
+                        = RecurrenceFrequency.fromString(reader.getString());
+                } else if ("interval".equals(fieldName)) {
+                    deserializedScheduleTriggerRecurrence.interval = reader.getNullable(JsonReader::getInt);
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedScheduleTriggerRecurrence.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedScheduleTriggerRecurrence.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedScheduleTriggerRecurrence.timeZone = reader.getString();
+                } else if ("schedule".equals(fieldName)) {
+                    deserializedScheduleTriggerRecurrence.schedule = RecurrenceSchedule.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedScheduleTriggerRecurrence.additionalProperties = additionalProperties;
+
+            return deserializedScheduleTriggerRecurrence;
+        });
     }
 }

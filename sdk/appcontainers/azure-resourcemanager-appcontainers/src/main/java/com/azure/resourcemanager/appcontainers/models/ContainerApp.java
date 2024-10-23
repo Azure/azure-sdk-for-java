@@ -99,6 +99,13 @@ public interface ContainerApp {
     ContainerAppProvisioningState provisioningState();
 
     /**
+     * Gets the deploymentErrors property: Any errors that occurred during deployment.
+     * 
+     * @return the deploymentErrors value.
+     */
+    String deploymentErrors();
+
+    /**
      * Gets the managedEnvironmentId property: Deprecated. Resource ID of the Container App's environment.
      * 
      * @return the managedEnvironmentId value.

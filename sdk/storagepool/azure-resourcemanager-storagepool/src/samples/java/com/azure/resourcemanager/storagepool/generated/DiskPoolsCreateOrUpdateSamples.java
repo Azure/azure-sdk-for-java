@@ -10,39 +10,37 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DiskPools CreateOrUpdate. */
+/**
+ * Samples for DiskPools CreateOrUpdate.
+ */
 public final class DiskPoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/DiskPools_Put.json
+     * x-ms-original-file:
+     * specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/DiskPools_Put.json
      */
     /**
      * Sample code: Create or Update Disk pool.
-     *
+     * 
      * @param manager Entry point to StoragePoolManager.
      */
     public static void createOrUpdateDiskPool(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager
-            .diskPools()
+        manager.diskPools()
             .define("myDiskPool")
             .withRegion("westus")
             .withExistingResourceGroup("myResourceGroup")
             .withSku(new Sku().withName("Basic_V1").withTier("Basic"))
             .withSubnetId(
                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myvnet/subnets/mysubnet")
-            .withTags(mapOf("key", "value"))
+            .withTags(mapOf("key", "fakeTokenPlaceholder"))
             .withAvailabilityZones(Arrays.asList("1"))
-            .withDisks(
-                Arrays
-                    .asList(
-                        new Disk()
-                            .withId(
-                                "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/vm-name_DataDisk_0"),
-                        new Disk()
-                            .withId(
-                                "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/vm-name_DataDisk_1")))
+            .withDisks(Arrays.asList(new Disk().withId(
+                "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/vm-name_DataDisk_0"),
+                new Disk().withId(
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/vm-name_DataDisk_1")))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

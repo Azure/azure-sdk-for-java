@@ -37,7 +37,7 @@ stages:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
         # TODO (vcolin7): Evaluate if we can avoid separating the Cosmos Spark connectors and Java 7 libraries from the rest for this. See: https://github.com/Azure/azure-sdk-for-java/issues/38283.
-        - task: Maven@3
+        - task: Maven@4
           displayName: 'Build all libraries that support Java $(JavaBuildVersion)'
           inputs:
             mavenPomFile: pom.xml
@@ -49,7 +49,7 @@ stages:
             publishJUnitResults: false
             goals: 'clean install'
 
-        - task: Maven@3
+        - task: Maven@4
           displayName: 'Build remaining libraries with Java $(FallbackJavaBuildVersion)'
           inputs:
             mavenPomFile: pom.xml
@@ -67,7 +67,7 @@ stages:
             Copy-Item eng/versioning/version_client.txt eng/bomgenerator/inputdir/
           displayName: Copy input files for BOM generation
 
-        - task: Maven@3
+        - task: Maven@4
           condition: succeededOrFailed()
           displayName: 'Generate BOM Reports'
           inputs:
@@ -88,7 +88,7 @@ stages:
             arguments: '--groups com.azure --type javadoc --exclude-project-list com.azure:azure-cosmos-benchmark,com.azure:azure-cosmos-dotnet-benchmark,com.azure:azure-messaging-servicebus-stress,com.azure:azure-messaging-eventhubs-stress'
             workingDirectory: '$(System.DefaultWorkingDirectory)'
 
-        - task: Maven@3
+        - task: Maven@4
           displayName: 'Generate Aggregate JavaDocs'
           inputs:
             mavenPomFile: aggregate-pom.xml

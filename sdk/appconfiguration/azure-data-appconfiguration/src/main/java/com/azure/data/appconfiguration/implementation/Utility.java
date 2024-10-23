@@ -27,6 +27,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -53,15 +54,14 @@ public class Utility {
      * Translate public ConfigurationSetting to KeyValue autorest generated class.
      */
     public static KeyValue toKeyValue(ConfigurationSetting setting) {
-        return new KeyValue()
-                   .setKey(setting.getKey())
-                   .setValue(setting.getValue())
-                   .setLabel(setting.getLabel())
-                   .setContentType(setting.getContentType())
-                   .setEtag(setting.getETag())
-                   .setLastModified(setting.getLastModified())
-                   .setLocked(setting.isReadOnly())
-                   .setTags(setting.getTags());
+        return new KeyValue().setKey(setting.getKey())
+            .setValue(setting.getValue())
+            .setLabel(setting.getLabel())
+            .setContentType(setting.getContentType())
+            .setEtag(setting.getETag())
+            .setLastModified(setting.getLastModified())
+            .setLocked(setting.isReadOnly())
+            .setTags(setting.getTags());
     }
 
     // SettingFields[] to List<SettingFields>
@@ -97,6 +97,7 @@ public class Utility {
             throw new IllegalArgumentException("Parameter 'key' is required and cannot be null.");
         }
     }
+
     /*
      * Asynchronously validate that setting and key is not null. The key is used in the service URL,
      *  so it cannot be null.
@@ -112,22 +113,22 @@ public class Utility {
     }
 
     public static Response<ConfigurationSnapshot> updateSnapshotSync(String snapshotName,
-        MatchConditions matchConditions, ConfigurationSnapshotStatus status,
-        AzureAppConfigurationImpl serviceClient, Context context) {
+        MatchConditions matchConditions, ConfigurationSnapshotStatus status, AzureAppConfigurationImpl serviceClient,
+        Context context) {
         final String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
 
-        final ResponseBase<UpdateSnapshotHeaders, ConfigurationSnapshot> response =
-            serviceClient.updateSnapshotWithResponse(snapshotName,
-                new SnapshotUpdateParameters().setStatus(status), ifMatch, null, context);
+        final ResponseBase<UpdateSnapshotHeaders, ConfigurationSnapshot> response
+            = serviceClient.updateSnapshotWithResponse(snapshotName, new SnapshotUpdateParameters().setStatus(status),
+                ifMatch, null, context);
         return new SimpleResponse<>(response, response.getValue());
     }
 
     public static Mono<Response<ConfigurationSnapshot>> updateSnapshotAsync(String snapshotName,
-        MatchConditions matchConditions, ConfigurationSnapshotStatus status,
-        AzureAppConfigurationImpl serviceClient) {
+        MatchConditions matchConditions, ConfigurationSnapshotStatus status, AzureAppConfigurationImpl serviceClient) {
         final String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        return serviceClient.updateSnapshotWithResponseAsync(snapshotName,
-                new SnapshotUpdateParameters().setStatus(status), ifMatch, null)
+        return serviceClient
+            .updateSnapshotWithResponseAsync(snapshotName, new SnapshotUpdateParameters().setStatus(status), ifMatch,
+                null)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -159,6 +160,7 @@ public class Utility {
 
         return Mono.error(error);
     }
+
     // Sync Handler
     public static PagedResponse<ConfigurationSetting> handleNotModifiedErrorToValidResponse(HttpResponseException error,
         ClientLogger logger) {
@@ -190,5 +192,22 @@ public class Utility {
         }
 
         return nextPageETag;
+    }
+
+    // Convert the Map<String, String> to a filter string
+    public static List<String> getTagsFilterInString(Map<String, String> tagsFilter) {
+        List<String> tagsFilters;
+
+        if (tagsFilter != null) {
+            tagsFilters = new ArrayList<>();
+            tagsFilter.forEach((key, value) -> {
+                if (!CoreUtils.isNullOrEmpty(key) && !CoreUtils.isNullOrEmpty(value)) {
+                    tagsFilters.add(key + "=" + value);
+                }
+            });
+        } else {
+            tagsFilters = null;
+        }
+        return tagsFilters;
     }
 }

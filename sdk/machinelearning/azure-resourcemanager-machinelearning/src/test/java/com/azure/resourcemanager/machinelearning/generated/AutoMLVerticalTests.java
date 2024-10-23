@@ -14,31 +14,28 @@ import org.junit.jupiter.api.Assertions;
 public final class AutoMLVerticalTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutoMLVertical model =
-            BinaryData
-                .fromString(
-                    "{\"taskType\":\"AutoMLVertical\",\"logVerbosity\":\"Critical\",\"targetColumnName\":\"eocnhzqrottj\",\"trainingData\":{\"jobInputType\":\"mltable\",\"mode\":\"Download\",\"uri\":\"yjzp\",\"description\":\"rl\"}}")
-                .toObject(AutoMLVertical.class);
-        Assertions.assertEquals(LogVerbosity.CRITICAL, model.logVerbosity());
-        Assertions.assertEquals("eocnhzqrottj", model.targetColumnName());
-        Assertions.assertEquals("rl", model.trainingData().description());
-        Assertions.assertEquals(InputDeliveryMode.DOWNLOAD, model.trainingData().mode());
-        Assertions.assertEquals("yjzp", model.trainingData().uri());
+        AutoMLVertical model = BinaryData.fromString(
+            "{\"taskType\":\"AutoMLVertical\",\"logVerbosity\":\"Error\",\"trainingData\":{\"jobInputType\":\"mltable\",\"uri\":\"q\",\"mode\":\"ReadOnlyMount\",\"description\":\"xqwqueu\"},\"targetColumnName\":\"lztpziizevjykof\"}")
+            .toObject(AutoMLVertical.class);
+        Assertions.assertEquals(LogVerbosity.ERROR, model.logVerbosity());
+        Assertions.assertEquals("xqwqueu", model.trainingData().description());
+        Assertions.assertEquals("q", model.trainingData().uri());
+        Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.trainingData().mode());
+        Assertions.assertEquals("lztpziizevjykof", model.targetColumnName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutoMLVertical model =
-            new AutoMLVertical()
-                .withLogVerbosity(LogVerbosity.CRITICAL)
-                .withTargetColumnName("eocnhzqrottj")
-                .withTrainingData(
-                    new MLTableJobInput().withDescription("rl").withMode(InputDeliveryMode.DOWNLOAD).withUri("yjzp"));
+        AutoMLVertical model = new AutoMLVertical().withLogVerbosity(LogVerbosity.ERROR)
+            .withTrainingData(new MLTableJobInput().withDescription("xqwqueu")
+                .withUri("q")
+                .withMode(InputDeliveryMode.READ_ONLY_MOUNT))
+            .withTargetColumnName("lztpziizevjykof");
         model = BinaryData.fromObject(model).toObject(AutoMLVertical.class);
-        Assertions.assertEquals(LogVerbosity.CRITICAL, model.logVerbosity());
-        Assertions.assertEquals("eocnhzqrottj", model.targetColumnName());
-        Assertions.assertEquals("rl", model.trainingData().description());
-        Assertions.assertEquals(InputDeliveryMode.DOWNLOAD, model.trainingData().mode());
-        Assertions.assertEquals("yjzp", model.trainingData().uri());
+        Assertions.assertEquals(LogVerbosity.ERROR, model.logVerbosity());
+        Assertions.assertEquals("xqwqueu", model.trainingData().description());
+        Assertions.assertEquals("q", model.trainingData().uri());
+        Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.trainingData().mode());
+        Assertions.assertEquals("lztpziizevjykof", model.targetColumnName());
     }
 }

@@ -7,7 +7,6 @@
   <suppress checks="com.azure.tools.checkstyle.checks.DenyListedWords" files="com.azure.core.test.utils.HttpURLConnectionHttpClient.java" />
 
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposed" files="com.azure.core.test.AzureTestWatcher.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposed" files="com.azure.core.test.http.LocalTestServer.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposed" files="com.azure.core.test.SyncAsyncExtension.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposed" files="com.azure.core.test.TestBase.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposed" files="com.azure.core.test.junitextensions.LiveOnlyExtension.java" />
@@ -23,13 +22,8 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilder" files="com.azure.core.test.http.AssertingHttpClientBuilder.java" />
 
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.test.http.AssertingClient.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.test.http.HttpClientTests.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.test.http.LocalTestServer.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.test.http.TestProxyPlaybackClient.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.test.InterceptorManager.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.test.policy.TestProxyRecordPolicy.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.test.utils.HttpURLConnectionHttpClient.java" />
-
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.core.test.MyAzureException.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.core.test.MyRestException.java" />
 </suppressions>

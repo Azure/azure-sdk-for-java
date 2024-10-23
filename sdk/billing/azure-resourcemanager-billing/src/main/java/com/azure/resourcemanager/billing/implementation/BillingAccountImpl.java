@@ -4,26 +4,20 @@
 
 package com.azure.resourcemanager.billing.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.billing.fluent.models.BillingAccountInner;
-import com.azure.resourcemanager.billing.models.AccountStatus;
-import com.azure.resourcemanager.billing.models.AccountType;
-import com.azure.resourcemanager.billing.models.AddressDetails;
-import com.azure.resourcemanager.billing.models.AgreementType;
 import com.azure.resourcemanager.billing.models.BillingAccount;
-import com.azure.resourcemanager.billing.models.BillingProfilesOnExpand;
-import com.azure.resourcemanager.billing.models.Department;
-import com.azure.resourcemanager.billing.models.Enrollment;
-import com.azure.resourcemanager.billing.models.EnrollmentAccount;
+import com.azure.resourcemanager.billing.models.BillingAccountProperties;
 import java.util.Collections;
-import java.util.List;
+import java.util.Map;
 
 public final class BillingAccountImpl implements BillingAccount {
     private BillingAccountInner innerObject;
 
     private final com.azure.resourcemanager.billing.BillingManager serviceManager;
 
-    BillingAccountImpl(
-        BillingAccountInner innerObject, com.azure.resourcemanager.billing.BillingManager serviceManager) {
+    BillingAccountImpl(BillingAccountInner innerObject,
+        com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -40,58 +34,21 @@ public final class BillingAccountImpl implements BillingAccount {
         return this.innerModel().type();
     }
 
-    public String displayName() {
-        return this.innerModel().displayName();
-    }
-
-    public AddressDetails soldTo() {
-        return this.innerModel().soldTo();
-    }
-
-    public AgreementType agreementType() {
-        return this.innerModel().agreementType();
-    }
-
-    public AccountType accountType() {
-        return this.innerModel().accountType();
-    }
-
-    public AccountStatus accountStatus() {
-        return this.innerModel().accountStatus();
-    }
-
-    public BillingProfilesOnExpand billingProfiles() {
-        return this.innerModel().billingProfiles();
-    }
-
-    public Enrollment enrollmentDetails() {
-        return this.innerModel().enrollmentDetails();
-    }
-
-    public List<Department> departments() {
-        List<Department> inner = this.innerModel().departments();
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
         if (inner != null) {
-            return Collections.unmodifiableList(inner);
+            return Collections.unmodifiableMap(inner);
         } else {
-            return Collections.emptyList();
+            return Collections.emptyMap();
         }
     }
 
-    public List<EnrollmentAccount> enrollmentAccounts() {
-        List<EnrollmentAccount> inner = this.innerModel().enrollmentAccounts();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
-    public Boolean hasReadAccess() {
-        return this.innerModel().hasReadAccess();
-    }
-
-    public String notificationEmailAddress() {
-        return this.innerModel().notificationEmailAddress();
+    public BillingAccountProperties properties() {
+        return this.innerModel().properties();
     }
 
     public BillingAccountInner innerModel() {

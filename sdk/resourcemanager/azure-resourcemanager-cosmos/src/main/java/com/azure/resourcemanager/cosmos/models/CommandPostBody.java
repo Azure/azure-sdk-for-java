@@ -6,45 +6,41 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Specification of which command to run where.
  */
 @Fluent
-public final class CommandPostBody {
+public final class CommandPostBody implements JsonSerializable<CommandPostBody> {
     /*
      * The command which should be run
      */
-    @JsonProperty(value = "command", required = true)
     private String command;
 
     /*
      * The arguments for the command to be run
      */
-    @JsonProperty(value = "arguments")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> arguments;
 
     /*
      * IP address of the cassandra host to run the command on
      */
-    @JsonProperty(value = "host", required = true)
     private String host;
 
     /*
      * If true, stops cassandra before executing the command and then start it again
      */
-    @JsonProperty(value = "cassandra-stop-start")
     private Boolean cassandraStopStart;
 
     /*
      * If true, allows the command to *write* to the cassandra directory, otherwise read-only.
      */
-    @JsonProperty(value = "readwrite")
     private Boolean readwrite;
 
     /**
@@ -55,7 +51,7 @@ public final class CommandPostBody {
 
     /**
      * Get the command property: The command which should be run.
-     *
+     * 
      * @return the command value.
      */
     public String command() {
@@ -64,7 +60,7 @@ public final class CommandPostBody {
 
     /**
      * Set the command property: The command which should be run.
-     *
+     * 
      * @param command the command value to set.
      * @return the CommandPostBody object itself.
      */
@@ -75,7 +71,7 @@ public final class CommandPostBody {
 
     /**
      * Get the arguments property: The arguments for the command to be run.
-     *
+     * 
      * @return the arguments value.
      */
     public Map<String, String> arguments() {
@@ -84,7 +80,7 @@ public final class CommandPostBody {
 
     /**
      * Set the arguments property: The arguments for the command to be run.
-     *
+     * 
      * @param arguments the arguments value to set.
      * @return the CommandPostBody object itself.
      */
@@ -95,7 +91,7 @@ public final class CommandPostBody {
 
     /**
      * Get the host property: IP address of the cassandra host to run the command on.
-     *
+     * 
      * @return the host value.
      */
     public String host() {
@@ -104,7 +100,7 @@ public final class CommandPostBody {
 
     /**
      * Set the host property: IP address of the cassandra host to run the command on.
-     *
+     * 
      * @param host the host value to set.
      * @return the CommandPostBody object itself.
      */
@@ -116,7 +112,7 @@ public final class CommandPostBody {
     /**
      * Get the cassandraStopStart property: If true, stops cassandra before executing the command and then start it
      * again.
-     *
+     * 
      * @return the cassandraStopStart value.
      */
     public Boolean cassandraStopStart() {
@@ -126,7 +122,7 @@ public final class CommandPostBody {
     /**
      * Set the cassandraStopStart property: If true, stops cassandra before executing the command and then start it
      * again.
-     *
+     * 
      * @param cassandraStopStart the cassandraStopStart value to set.
      * @return the CommandPostBody object itself.
      */
@@ -138,7 +134,7 @@ public final class CommandPostBody {
     /**
      * Get the readwrite property: If true, allows the command to *write* to the cassandra directory, otherwise
      * read-only.
-     *
+     * 
      * @return the readwrite value.
      */
     public Boolean readwrite() {
@@ -148,7 +144,7 @@ public final class CommandPostBody {
     /**
      * Set the readwrite property: If true, allows the command to *write* to the cassandra directory, otherwise
      * read-only.
-     *
+     * 
      * @param readwrite the readwrite value to set.
      * @return the CommandPostBody object itself.
      */
@@ -159,7 +155,7 @@ public final class CommandPostBody {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -174,4 +170,54 @@ public final class CommandPostBody {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CommandPostBody.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("command", this.command);
+        jsonWriter.writeStringField("host", this.host);
+        jsonWriter.writeMapField("arguments", this.arguments, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("cassandra-stop-start", this.cassandraStopStart);
+        jsonWriter.writeBooleanField("readwrite", this.readwrite);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommandPostBody from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommandPostBody if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CommandPostBody.
+     */
+    public static CommandPostBody fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommandPostBody deserializedCommandPostBody = new CommandPostBody();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("command".equals(fieldName)) {
+                    deserializedCommandPostBody.command = reader.getString();
+                } else if ("host".equals(fieldName)) {
+                    deserializedCommandPostBody.host = reader.getString();
+                } else if ("arguments".equals(fieldName)) {
+                    Map<String, String> arguments = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCommandPostBody.arguments = arguments;
+                } else if ("cassandra-stop-start".equals(fieldName)) {
+                    deserializedCommandPostBody.cassandraStopStart = reader.getNullable(JsonReader::getBoolean);
+                } else if ("readwrite".equals(fieldName)) {
+                    deserializedCommandPostBody.readwrite = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommandPostBody;
+        });
+    }
 }

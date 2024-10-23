@@ -178,9 +178,9 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> startTranslation(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData startTranslationDetails, RequestOptions requestOptions,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData startTranslationDetails,
+            RequestOptions requestOptions, Context context);
 
         @Post("/document/batches")
         @ExpectedResponses({ 202 })
@@ -189,9 +189,9 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> startTranslationSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData startTranslationDetails, RequestOptions requestOptions,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData startTranslationDetails,
+            RequestOptions requestOptions, Context context);
 
         @Get("/document/batches")
         @ExpectedResponses({ 200 })
@@ -200,7 +200,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getTranslationsStatus(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/document/batches")
@@ -210,7 +210,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getTranslationsStatusSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/document/batches/{id}/documents/{documentId}")
@@ -221,7 +221,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDocumentStatus(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @PathParam("documentId") String documentId, @HeaderParam("accept") String accept,
+            @PathParam("documentId") String documentId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/document/batches/{id}/documents/{documentId}")
@@ -232,7 +232,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDocumentStatusSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @PathParam("documentId") String documentId, @HeaderParam("accept") String accept,
+            @PathParam("documentId") String documentId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/document/batches/{id}")
@@ -243,7 +243,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getTranslationStatus(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/document/batches/{id}")
         @ExpectedResponses({ 200 })
@@ -253,7 +253,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getTranslationStatusSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/document/batches/{id}")
         @ExpectedResponses({ 200 })
@@ -263,7 +263,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> cancelTranslation(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/document/batches/{id}")
         @ExpectedResponses({ 200 })
@@ -273,7 +273,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> cancelTranslationSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/document/batches/{id}/documents")
         @ExpectedResponses({ 200 })
@@ -283,7 +283,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDocumentsStatus(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/document/batches/{id}/documents")
         @ExpectedResponses({ 200 })
@@ -293,7 +293,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDocumentsStatusSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/document/formats")
         @ExpectedResponses({ 200 })
@@ -302,7 +302,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSupportedFormats(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/document/formats")
@@ -312,7 +312,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSupportedFormatsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
@@ -323,7 +323,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getTranslationsStatusNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -333,7 +333,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getTranslationsStatusNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -343,7 +343,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDocumentsStatusNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -352,7 +352,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDocumentsStatusNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
     }
 
@@ -380,7 +380,8 @@ public final class DocumentTranslationClientImpl {
      * must be unique.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     inputs (Required): [
      *          (Required){
@@ -413,7 +414,8 @@ public final class DocumentTranslationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param startTranslationDetails Translation job submission batch request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -426,9 +428,11 @@ public final class DocumentTranslationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> startTranslationWithResponseAsync(BinaryData startTranslationDetails,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.startTranslation(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, startTranslationDetails, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.startTranslation(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                contentType, accept, startTranslationDetails, requestOptions, context));
     }
 
     /**
@@ -455,7 +459,8 @@ public final class DocumentTranslationClientImpl {
      * must be unique.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     inputs (Required): [
      *          (Required){
@@ -488,7 +493,8 @@ public final class DocumentTranslationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param startTranslationDetails Translation job submission batch request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -501,9 +507,10 @@ public final class DocumentTranslationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<Void> startTranslationWithResponse(BinaryData startTranslationDetails,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.startTranslationSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            startTranslationDetails, requestOptions, Context.NONE);
+        return service.startTranslationSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            accept, startTranslationDetails, requestOptions, Context.NONE);
     }
 
     /**
@@ -530,7 +537,8 @@ public final class DocumentTranslationClientImpl {
      * must be unique.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     inputs (Required): [
      *          (Required){
@@ -563,7 +571,8 @@ public final class DocumentTranslationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param startTranslationDetails Translation job submission batch request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -611,7 +620,8 @@ public final class DocumentTranslationClientImpl {
      * must be unique.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     inputs (Required): [
      *          (Required){
@@ -644,7 +654,8 @@ public final class DocumentTranslationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param startTranslationDetails Translation job submission batch request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -692,7 +703,8 @@ public final class DocumentTranslationClientImpl {
      * must be unique.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     inputs (Required): [
      *          (Required){
@@ -725,7 +737,8 @@ public final class DocumentTranslationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param startTranslationDetails Translation job submission batch request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -736,8 +749,8 @@ public final class DocumentTranslationClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<TranslationStatus, Void> beginStartTranslationWithModelAsync(BinaryData startTranslationDetails,
-        RequestOptions requestOptions) {
+    public PollerFlux<TranslationStatus, TranslationStatus>
+        beginStartTranslationWithModelAsync(BinaryData startTranslationDetails, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.startTranslationWithResponseAsync(startTranslationDetails, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
@@ -746,7 +759,8 @@ public final class DocumentTranslationClientImpl {
                     ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(TranslationStatus.class), TypeReference.createInstance(Void.class));
+            TypeReference.createInstance(TranslationStatus.class),
+            TypeReference.createInstance(TranslationStatus.class));
     }
 
     /**
@@ -773,7 +787,8 @@ public final class DocumentTranslationClientImpl {
      * must be unique.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     inputs (Required): [
      *          (Required){
@@ -806,7 +821,8 @@ public final class DocumentTranslationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param startTranslationDetails Translation job submission batch request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -817,8 +833,8 @@ public final class DocumentTranslationClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TranslationStatus, Void> beginStartTranslationWithModel(BinaryData startTranslationDetails,
-        RequestOptions requestOptions) {
+    public SyncPoller<TranslationStatus, TranslationStatus>
+        beginStartTranslationWithModel(BinaryData startTranslationDetails, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.startTranslationWithResponse(startTranslationDetails, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
@@ -827,7 +843,8 @@ public final class DocumentTranslationClientImpl {
                     ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(TranslationStatus.class), TypeReference.createInstance(Void.class));
+            TypeReference.createInstance(TranslationStatus.class),
+            TypeReference.createInstance(TranslationStatus.class));
     }
 
     /**
@@ -939,7 +956,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -966,7 +984,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1095,7 +1114,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -1122,7 +1142,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1269,7 +1290,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -1296,7 +1318,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1423,7 +1446,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -1450,7 +1474,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1495,7 +1520,8 @@ public final class DocumentTranslationClientImpl {
      * and document Id.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -1518,7 +1544,8 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id Format - uuid. The batch id.
      * @param documentId Format - uuid. The document id.
@@ -1544,7 +1571,8 @@ public final class DocumentTranslationClientImpl {
      * and document Id.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -1567,7 +1595,8 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id Format - uuid. The batch id.
      * @param documentId Format - uuid. The document id.
@@ -1595,7 +1624,8 @@ public final class DocumentTranslationClientImpl {
      * translated as part of that request.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -1622,7 +1652,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id Format - uuid. The operation id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1648,7 +1679,8 @@ public final class DocumentTranslationClientImpl {
      * translated as part of that request.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -1675,7 +1707,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id Format - uuid. The operation id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1705,7 +1738,8 @@ public final class DocumentTranslationClientImpl {
      * possible.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -1732,7 +1766,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id Format - uuid. The operation-id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1762,7 +1797,8 @@ public final class DocumentTranslationClientImpl {
      * possible.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -1789,7 +1825,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id Format - uuid. The operation-id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1909,7 +1946,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -1932,7 +1970,8 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id Format - uuid. The operation id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2056,7 +2095,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -2079,7 +2119,8 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id Format - uuid. The operation id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2221,7 +2262,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -2244,7 +2286,8 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id Format - uuid. The operation id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2366,7 +2409,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -2389,7 +2433,8 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id Format - uuid. The operation id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2445,7 +2490,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -2464,7 +2510,8 @@ public final class DocumentTranslationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2497,7 +2544,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -2516,7 +2564,8 @@ public final class DocumentTranslationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2538,7 +2587,8 @@ public final class DocumentTranslationClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -2565,7 +2615,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2592,7 +2643,8 @@ public final class DocumentTranslationClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -2619,7 +2671,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2645,7 +2698,8 @@ public final class DocumentTranslationClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -2668,7 +2722,8 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2694,7 +2749,8 @@ public final class DocumentTranslationClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -2717,7 +2773,8 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

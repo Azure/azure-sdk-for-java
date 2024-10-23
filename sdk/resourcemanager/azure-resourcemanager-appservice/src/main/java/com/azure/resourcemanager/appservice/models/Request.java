@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A request.
  */
 @Fluent
-public final class Request {
+public final class Request implements JsonSerializable<Request> {
     /*
      * A list of all the headers attached to the request.
      */
-    @JsonProperty(value = "headers")
     private Object headers;
 
     /*
      * The destination for the request.
      */
-    @JsonProperty(value = "uri")
     private String uri;
 
     /*
      * The HTTP method used for the request.
      */
-    @JsonProperty(value = "method")
     private String method;
 
     /**
@@ -102,5 +103,47 @@ public final class Request {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("headers", this.headers);
+        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeStringField("method", this.method);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Request from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Request if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Request.
+     */
+    public static Request fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Request deserializedRequest = new Request();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("headers".equals(fieldName)) {
+                    deserializedRequest.headers = reader.readUntyped();
+                } else if ("uri".equals(fieldName)) {
+                    deserializedRequest.uri = reader.getString();
+                } else if ("method".equals(fieldName)) {
+                    deserializedRequest.method = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRequest;
+        });
     }
 }

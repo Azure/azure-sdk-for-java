@@ -6,31 +6,32 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A web application firewall rule group.
  */
 @Fluent
-public final class ApplicationGatewayFirewallRuleGroup {
+public final class ApplicationGatewayFirewallRuleGroup
+    implements JsonSerializable<ApplicationGatewayFirewallRuleGroup> {
     /*
      * The name of the web application firewall rule group.
      */
-    @JsonProperty(value = "ruleGroupName", required = true)
     private String ruleGroupName;
 
     /*
      * The description of the web application firewall rule group.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The rules of the web application firewall rule group.
      */
-    @JsonProperty(value = "rules", required = true)
     private List<ApplicationGatewayFirewallRule> rules;
 
     /**
@@ -41,7 +42,7 @@ public final class ApplicationGatewayFirewallRuleGroup {
 
     /**
      * Get the ruleGroupName property: The name of the web application firewall rule group.
-     *
+     * 
      * @return the ruleGroupName value.
      */
     public String ruleGroupName() {
@@ -50,7 +51,7 @@ public final class ApplicationGatewayFirewallRuleGroup {
 
     /**
      * Set the ruleGroupName property: The name of the web application firewall rule group.
-     *
+     * 
      * @param ruleGroupName the ruleGroupName value to set.
      * @return the ApplicationGatewayFirewallRuleGroup object itself.
      */
@@ -61,7 +62,7 @@ public final class ApplicationGatewayFirewallRuleGroup {
 
     /**
      * Get the description property: The description of the web application firewall rule group.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -70,7 +71,7 @@ public final class ApplicationGatewayFirewallRuleGroup {
 
     /**
      * Set the description property: The description of the web application firewall rule group.
-     *
+     * 
      * @param description the description value to set.
      * @return the ApplicationGatewayFirewallRuleGroup object itself.
      */
@@ -81,7 +82,7 @@ public final class ApplicationGatewayFirewallRuleGroup {
 
     /**
      * Get the rules property: The rules of the web application firewall rule group.
-     *
+     * 
      * @return the rules value.
      */
     public List<ApplicationGatewayFirewallRule> rules() {
@@ -90,7 +91,7 @@ public final class ApplicationGatewayFirewallRuleGroup {
 
     /**
      * Set the rules property: The rules of the web application firewall rule group.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the ApplicationGatewayFirewallRuleGroup object itself.
      */
@@ -101,7 +102,7 @@ public final class ApplicationGatewayFirewallRuleGroup {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -120,4 +121,50 @@ public final class ApplicationGatewayFirewallRuleGroup {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApplicationGatewayFirewallRuleGroup.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ruleGroupName", this.ruleGroupName);
+        jsonWriter.writeArrayField("rules", this.rules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayFirewallRuleGroup from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayFirewallRuleGroup if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayFirewallRuleGroup.
+     */
+    public static ApplicationGatewayFirewallRuleGroup fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayFirewallRuleGroup deserializedApplicationGatewayFirewallRuleGroup
+                = new ApplicationGatewayFirewallRuleGroup();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ruleGroupName".equals(fieldName)) {
+                    deserializedApplicationGatewayFirewallRuleGroup.ruleGroupName = reader.getString();
+                } else if ("rules".equals(fieldName)) {
+                    List<ApplicationGatewayFirewallRule> rules
+                        = reader.readArray(reader1 -> ApplicationGatewayFirewallRule.fromJson(reader1));
+                    deserializedApplicationGatewayFirewallRuleGroup.rules = rules;
+                } else if ("description".equals(fieldName)) {
+                    deserializedApplicationGatewayFirewallRuleGroup.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayFirewallRuleGroup;
+        });
+    }
 }

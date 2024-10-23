@@ -28,7 +28,7 @@ public final class VolumesReInitializeReplicationMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.volumes()
-            .reInitializeReplication("hnomdrkywuh", "svfuurutlwexxwl", "lniexz", "rzpgep",
+            .reInitializeReplication("aoqltfaey", "inmfgvxirp", "hriypoqeyhlqhy", "prlpy",
                 com.azure.core.util.Context.NONE);
 
     }

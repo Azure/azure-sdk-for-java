@@ -19,33 +19,36 @@ public final class PaypalObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PaypalObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"PaypalObject\",\"typeProperties\":{\"tableName\":\"datau\"},\"description\":\"ajvvq\",\"structure\":\"datao\",\"schema\":\"dataon\",\"linkedServiceName\":{\"referenceName\":\"livgti\",\"parameters\":{\"mrvkxeojtdyulglh\":\"dataqjqjcajgofytkhhk\",\"xspxgogypbztgae\":\"datalwruklfq\"}},\"parameters\":{\"lvry\":{\"type\":\"Bool\",\"defaultValue\":\"datavctvuzimbwttm\"},\"ajnpdwzjgg\":{\"type\":\"Float\",\"defaultValue\":\"datarnwuk\"},\"ayfiq\":{\"type\":\"Int\",\"defaultValue\":\"dataepemz\"}},\"annotations\":[\"dataxcor\",\"datavudyhgtrttcuayi\"],\"folder\":{\"name\":\"nkmm\"},\"\":{\"qgqexowqzrtgqr\":\"dataf\",\"obothx\":\"datakkvfygkuobpwainp\",\"qgzyvextc\":\"dataewhpnyjt\",\"whdlrifioz\":\"dataslroldow\"}}")
+            "{\"type\":\"PaypalObject\",\"typeProperties\":{\"tableName\":\"databb\"},\"description\":\"yp\",\"structure\":\"dataodaq\",\"schema\":\"datakp\",\"linkedServiceName\":{\"referenceName\":\"zf\",\"parameters\":{\"valcrqaxlmbrtvtg\":\"databg\"}},\"parameters\":{\"voysxa\":{\"type\":\"Object\",\"defaultValue\":\"datalgtlayyxhx\"},\"njc\":{\"type\":\"SecureString\",\"defaultValue\":\"datahdfhfaob\"},\"ydvwr\":{\"type\":\"SecureString\",\"defaultValue\":\"datazvcdqws\"},\"dlxbaeyocpkv\":{\"type\":\"Int\",\"defaultValue\":\"datavywotjnjuvtzij\"}},\"annotations\":[\"datafdz\",\"datamnpbdrcibj\",\"datannno\",\"datatnhvdtu\"],\"folder\":{\"name\":\"qobqehspshtisy\"},\"\":{\"zeb\":\"dataoctrzjwnzwc\",\"lmlnxrcatkuh\":\"databvwdxgyypmxq\",\"gdkvviilyeshoxf\":\"datak\"}}")
             .toObject(PaypalObjectDataset.class);
-        Assertions.assertEquals("ajvvq", model.description());
-        Assertions.assertEquals("livgti", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("lvry").type());
-        Assertions.assertEquals("nkmm", model.folder().name());
+        Assertions.assertEquals("yp", model.description());
+        Assertions.assertEquals("zf", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("voysxa").type());
+        Assertions.assertEquals("qobqehspshtisy", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PaypalObjectDataset model = new PaypalObjectDataset().withDescription("ajvvq")
-            .withStructure("datao")
-            .withSchema("dataon")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("livgti")
-                .withParameters(mapOf("mrvkxeojtdyulglh", "dataqjqjcajgofytkhhk", "xspxgogypbztgae", "datalwruklfq")))
-            .withParameters(mapOf("lvry",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datavctvuzimbwttm"),
-                "ajnpdwzjgg", new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datarnwuk"),
-                "ayfiq", new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("dataepemz")))
-            .withAnnotations(Arrays.asList("dataxcor", "datavudyhgtrttcuayi"))
-            .withFolder(new DatasetFolder().withName("nkmm"))
-            .withTableName("datau");
+        PaypalObjectDataset model = new PaypalObjectDataset().withDescription("yp")
+            .withStructure("dataodaq")
+            .withSchema("datakp")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("zf")
+                .withParameters(mapOf("valcrqaxlmbrtvtg", "databg")))
+            .withParameters(mapOf("voysxa",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datalgtlayyxhx"), "njc",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datahdfhfaob"),
+                "ydvwr",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datazvcdqws"),
+                "dlxbaeyocpkv",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datavywotjnjuvtzij")))
+            .withAnnotations(Arrays.asList("datafdz", "datamnpbdrcibj", "datannno", "datatnhvdtu"))
+            .withFolder(new DatasetFolder().withName("qobqehspshtisy"))
+            .withTableName("databb");
         model = BinaryData.fromObject(model).toObject(PaypalObjectDataset.class);
-        Assertions.assertEquals("ajvvq", model.description());
-        Assertions.assertEquals("livgti", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("lvry").type());
-        Assertions.assertEquals("nkmm", model.folder().name());
+        Assertions.assertEquals("yp", model.description());
+        Assertions.assertEquals("zf", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("voysxa").type());
+        Assertions.assertEquals("qobqehspshtisy", model.folder().name());
     }
 
     // Use "Map.of" if available

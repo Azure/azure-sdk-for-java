@@ -52,8 +52,7 @@ import java.util.Objects;
  *
  * <!-- src_embed com.azure.identity.credential.clientcertificatecredential.construct -->
  * <pre>
- * TokenCredential clientCertificateCredential = new ClientCertificateCredentialBuilder&#40;&#41;
- *     .tenantId&#40;tenantId&#41;
+ * TokenCredential clientCertificateCredential = new ClientCertificateCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
  *     .clientId&#40;clientId&#41;
  *     .pemCertificate&#40;&quot;&lt;PATH-TO-PEM-CERTIFICATE&gt;&quot;&#41;
  *     .build&#40;&#41;;
@@ -71,8 +70,7 @@ import java.util.Objects;
  * <!-- src_embed com.azure.identity.credential.clientcertificatecredential.constructWithStream -->
  * <pre>
  * ByteArrayInputStream certificateStream = new ByteArrayInputStream&#40;certificateBytes&#41;;
- * TokenCredential certificateCredentialWithStream = new ClientCertificateCredentialBuilder&#40;&#41;
- *     .tenantId&#40;tenantId&#41;
+ * TokenCredential certificateCredentialWithStream = new ClientCertificateCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
  *     .clientId&#40;clientId&#41;
  *     .pemCertificate&#40;certificateStream&#41;
  *     .build&#40;&#41;;
@@ -90,8 +88,7 @@ import java.util.Objects;
  *
  * <!-- src_embed com.azure.identity.credential.clientcertificatecredential.constructwithproxy -->
  * <pre>
- * TokenCredential certificateCredential = new ClientCertificateCredentialBuilder&#40;&#41;
- *     .tenantId&#40;tenantId&#41;
+ * TokenCredential certificateCredential = new ClientCertificateCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
  *     .clientId&#40;clientId&#41;
  *     .pfxCertificate&#40;&quot;&lt;PATH-TO-PFX-CERTIFICATE&gt;&quot;, &quot;P&#64;s$w0rd&quot;&#41;
  *     .proxyOptions&#40;new ProxyOptions&#40;Type.HTTP, new InetSocketAddress&#40;&quot;10.21.32.43&quot;, 5465&#41;&#41;&#41;

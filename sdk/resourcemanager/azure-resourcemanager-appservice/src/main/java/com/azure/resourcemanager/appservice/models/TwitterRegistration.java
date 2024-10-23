@@ -5,26 +5,28 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The configuration settings of the app registration for the Twitter provider.
  */
 @Fluent
-public final class TwitterRegistration {
+public final class TwitterRegistration implements JsonSerializable<TwitterRegistration> {
     /*
      * The OAuth 1.0a consumer key of the Twitter application used for sign-in.
      * This setting is required for enabling Twitter Sign-In.
      * Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in
      */
-    @JsonProperty(value = "consumerKey")
     private String consumerKey;
 
     /*
      * The app setting name that contains the OAuth 1.0a consumer secret of the Twitter
      * application used for sign-in.
      */
-    @JsonProperty(value = "consumerSecretSettingName")
     private String consumerSecretSettingName;
 
     /**
@@ -87,5 +89,44 @@ public final class TwitterRegistration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("consumerKey", this.consumerKey);
+        jsonWriter.writeStringField("consumerSecretSettingName", this.consumerSecretSettingName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TwitterRegistration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TwitterRegistration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TwitterRegistration.
+     */
+    public static TwitterRegistration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TwitterRegistration deserializedTwitterRegistration = new TwitterRegistration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("consumerKey".equals(fieldName)) {
+                    deserializedTwitterRegistration.consumerKey = reader.getString();
+                } else if ("consumerSecretSettingName".equals(fieldName)) {
+                    deserializedTwitterRegistration.consumerSecretSettingName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTwitterRegistration;
+        });
     }
 }

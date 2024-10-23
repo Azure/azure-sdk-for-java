@@ -5,26 +5,28 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.AssignmentScopeValidation;
 import com.azure.resourcemanager.resources.models.ResourceSelector;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The policy exemption properties for Patch request.
  */
 @Fluent
-public final class PolicyExemptionUpdateProperties {
+public final class PolicyExemptionUpdateProperties implements JsonSerializable<PolicyExemptionUpdateProperties> {
     /*
      * The resource selector list to filter policies by resource properties.
      */
-    @JsonProperty(value = "resourceSelectors")
     private List<ResourceSelector> resourceSelectors;
 
     /*
      * The option whether validate the exemption is at or under the assignment scope.
      */
-    @JsonProperty(value = "assignmentScopeValidation")
     private AssignmentScopeValidation assignmentScopeValidation;
 
     /**
@@ -85,5 +87,50 @@ public final class PolicyExemptionUpdateProperties {
         if (resourceSelectors() != null) {
             resourceSelectors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("resourceSelectors", this.resourceSelectors,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("assignmentScopeValidation",
+            this.assignmentScopeValidation == null ? null : this.assignmentScopeValidation.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyExemptionUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyExemptionUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyExemptionUpdateProperties.
+     */
+    public static PolicyExemptionUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyExemptionUpdateProperties deserializedPolicyExemptionUpdateProperties
+                = new PolicyExemptionUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceSelectors".equals(fieldName)) {
+                    List<ResourceSelector> resourceSelectors
+                        = reader.readArray(reader1 -> ResourceSelector.fromJson(reader1));
+                    deserializedPolicyExemptionUpdateProperties.resourceSelectors = resourceSelectors;
+                } else if ("assignmentScopeValidation".equals(fieldName)) {
+                    deserializedPolicyExemptionUpdateProperties.assignmentScopeValidation
+                        = AssignmentScopeValidation.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyExemptionUpdateProperties;
+        });
     }
 }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class RestorePointsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * restorePointExamples/RestorePoint_Get.json
      */
     /**
@@ -28,7 +28,7 @@ public final class RestorePointsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * restorePointExamples/RestorePoint_Get_WithInstanceView.json
      */
     /**

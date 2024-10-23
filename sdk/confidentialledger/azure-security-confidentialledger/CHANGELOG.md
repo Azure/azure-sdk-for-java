@@ -10,6 +10,27 @@
 
 ### Other Changes
 
+
+## 1.0.24 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+- Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
+
+
+## 1.0.23 (2024-08-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+
+
 ## 1.0.22 (2024-07-26)
 
 ### Other Changes

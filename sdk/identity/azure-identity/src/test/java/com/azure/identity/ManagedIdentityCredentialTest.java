@@ -26,6 +26,7 @@ import static org.mockito.Mockito.when;
 public class ManagedIdentityCredentialTest {
 
     private static final String CLIENT_ID = UUID.randomUUID().toString();
+    private static final String OBJECT_ID = UUID.randomUUID().toString();
 
     @Test
     public void testVirtualMachineMSICredentialConfigurations() {
@@ -102,14 +103,44 @@ public class ManagedIdentityCredentialTest {
     }
 
     @Test
+    public void testCloudshellUserAssigned() {
+        // setup
+        String endpoint = "http://localhost";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
+            .put("MSI_ENDPOINT", endpoint));
+
+
+        // test
+        ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder()
+            .configuration(configuration).objectId(OBJECT_ID).build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(t -> t instanceof CredentialUnavailableException)
+            .verify();
+    }
+
+    @Test
     public void testInvalidIdCombination() {
         // setup
         String resourceId = "/subscriptions/" + UUID.randomUUID() + "/resourcegroups/aresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ident";
+        String objectId = "2323-sd2323s-32323-32334-34343";
 
         // test
         Assertions.assertThrows(IllegalStateException.class,
             () -> new ManagedIdentityCredentialBuilder()
                 .clientId(CLIENT_ID).resourceId(resourceId).build());
+
+        Assertions.assertThrows(IllegalStateException.class,
+            () -> new ManagedIdentityCredentialBuilder()
+                .clientId(CLIENT_ID).resourceId(resourceId).objectId(objectId).build());
+
+        Assertions.assertThrows(IllegalStateException.class,
+            () -> new ManagedIdentityCredentialBuilder()
+                .clientId(CLIENT_ID).objectId(objectId).build());
+
+        Assertions.assertThrows(IllegalStateException.class,
+            () -> new ManagedIdentityCredentialBuilder()
+                .resourceId(resourceId).objectId(objectId).build());
     }
 
     @Test
@@ -121,7 +152,7 @@ public class ManagedIdentityCredentialTest {
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential, instanceOf(ArcIdentityCredential.class));
+            cred.managedIdentityServiceCredential, instanceOf(ManagedIdentityMsalCredential.class));
     }
 
     @Test
@@ -134,7 +165,7 @@ public class ManagedIdentityCredentialTest {
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential, instanceOf(ServiceFabricMsiCredential.class));
+            cred.managedIdentityServiceCredential, instanceOf(ManagedIdentityMsalCredential.class));
     }
 
     @Test
@@ -146,7 +177,7 @@ public class ManagedIdentityCredentialTest {
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential, instanceOf(AppServiceMsiCredential.class));
+            cred.managedIdentityServiceCredential, instanceOf(ManagedIdentityMsalCredential.class));
     }
 
     @Test
@@ -158,7 +189,7 @@ public class ManagedIdentityCredentialTest {
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential, instanceOf(AppServiceMsiCredential.class));
+            cred.managedIdentityServiceCredential, instanceOf(ManagedIdentityMsalCredential.class));
     }
 
     @Test
@@ -169,7 +200,7 @@ public class ManagedIdentityCredentialTest {
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential, instanceOf(AppServiceMsiCredential.class));
+            cred.managedIdentityServiceCredential, instanceOf(ManagedIdentityMsalCredential.class));
     }
 
     @Test
@@ -191,7 +222,7 @@ public class ManagedIdentityCredentialTest {
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential, instanceOf(VirtualMachineMsiCredential.class));
+            cred.managedIdentityServiceCredential, instanceOf(ManagedIdentityMsalCredential.class));
     }
 }
 

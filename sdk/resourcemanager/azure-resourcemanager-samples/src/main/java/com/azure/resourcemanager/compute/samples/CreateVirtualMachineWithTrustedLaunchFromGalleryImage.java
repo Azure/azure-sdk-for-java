@@ -12,17 +12,12 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.Gallery;
-import com.azure.resourcemanager.compute.models.GalleryDataDiskImage;
 import com.azure.resourcemanager.compute.models.GalleryImage;
 import com.azure.resourcemanager.compute.models.GalleryImageVersion;
 import com.azure.resourcemanager.compute.models.HyperVGeneration;
-import com.azure.resourcemanager.compute.models.HyperVGenerationTypes;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
-import com.azure.resourcemanager.compute.models.OperatingSystemStateTypes;
 import com.azure.resourcemanager.compute.models.RunCommandInput;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
-import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
-import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.samples.Utils;
@@ -35,10 +30,9 @@ import java.util.Arrays;
  * - Prepare virtual machine for generalization
  * - Deallocate virtual machine
  * - Generalize virtual machine
- * - Create a virtual machine custom image from the created virtual machine
- * - Create a gallery to hold gallery images
+ * - Create an Azure Compute Gallery to hold gallery images
  * - Create a gallery image in the gallery with hypervisor generation 2 and with TrustedLaunch feature
- * - Create a gallery image version from the virtual machine custom image
+ * - Create a gallery image version from the virtual machine
  * - Create a virtual machine with TrustedLaunch from the gallery image version
  */
 public class CreateVirtualMachineWithTrustedLaunchFromGalleryImage {
@@ -49,9 +43,9 @@ public class CreateVirtualMachineWithTrustedLaunchFromGalleryImage {
      */
     public static boolean runSample(AzureResourceManager azure) {
         final String rgName = Utils.randomResourceName(azure, "rg", 15);
-        final Region region = Region.US_WEST;
+        final Region region = Region.US_WEST2;
         final String newRgName = Utils.randomResourceName(azure, "rg", 15);
-        final Region newRegion = Region.US_WEST2;
+        final Region newRegion = Region.US_WEST3;
 
         ResourceGroup resourceGroup = null;
         ResourceGroup newResourceGroup = null;
@@ -104,30 +98,6 @@ public class CreateVirtualMachineWithTrustedLaunchFromGalleryImage {
             trustedVMFromPirImage.generalize();
 
             //=============================================================
-            // Create a virtual machine custom image
-            final String imageName = Utils.randomResourceName(azure, "img", 20);
-            VirtualMachineCustomImage.DefinitionStages.WithCreateAndDataDiskImageOSDiskSettings creatableDisk =
-                azure.virtualMachineCustomImages()
-                    .define(imageName)
-                    .withRegion(resourceGroup.region())
-                    .withExistingResourceGroup(resourceGroup)
-                    .withHyperVGeneration(HyperVGenerationTypes.V2)
-                    .withWindowsFromDisk(trustedVMFromPirImage.osDiskId(), OperatingSystemStateTypes.GENERALIZED)
-                    .withOSDiskCaching(trustedVMFromPirImage.osDiskCachingType());
-
-            for (VirtualMachineDataDisk dataDisk : trustedVMFromPirImage.dataDisks().values()) {
-                creatableDisk.defineDataDiskImage()
-                    .withLun(dataDisk.lun())
-                    .fromManagedDisk(dataDisk.id())
-                    .withDiskCaching(dataDisk.cachingType())
-                    .withDiskSizeInGB(dataDisk.size())
-                    .attach();
-            }
-
-            VirtualMachineCustomImage customImage = creatableDisk.create();
-            Utils.print(customImage);
-
-            //=============================================================
             // Create a gallery to hold gallery images
             final String galleryName = Utils.randomResourceName(azure, "jsim", 15);
             Gallery gallery = azure
@@ -160,14 +130,14 @@ public class CreateVirtualMachineWithTrustedLaunchFromGalleryImage {
                 .define(versionName)
                 .withExistingImage(resourceGroup.name(), gallery.name(), galleryImage.name())
                 .withLocation(resourceGroup.region())
-                .withSourceCustomImage(customImage)
+                .withSourceVirtualMachine(trustedVMFromPirImage)
                 .withRegionAvailability(newRegion, 1)
                 .create();
 
             //=============================================================
             // Create a virtual machine with TrustedLaunch from the gallery image version
             final String vmFromImageName = Utils.randomResourceName(azure, "tlvm", 15);
-            VirtualMachine.DefinitionStages.WithManagedCreate withManagedCreate =
+            VirtualMachine trustedVMFromGalleryImage =
                 azure
                     .virtualMachines()
                     .define(vmFromImageName)
@@ -178,22 +148,13 @@ public class CreateVirtualMachineWithTrustedLaunchFromGalleryImage {
                     .withoutPrimaryPublicIPAddress()
                     .withGeneralizedWindowsGalleryImageVersion(imageVersion.id())
                     .withAdminUsername("jvuser")
-                    .withAdminPassword(Utils.password());
-
-            for (GalleryDataDiskImage ddi : imageVersion.storageProfile().dataDiskImages()) {
-                withManagedCreate.withNewDataDiskFromImage(
-                    ddi.lun(),
-                    ddi.sizeInGB() + 1,
-                    ddi.hostCaching() == null ? null : CachingTypes.fromString(ddi.hostCaching().toString()));
-            }
-
-            VirtualMachine trustedVMFromGalleryImage = withManagedCreate
-                .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
-                // gallery images with 'TrustedLaunch` feature can only create VMs with 'TrustedLaunch' feature
-                .withTrustedLaunch()
-                .withSecureBoot()
-                .withVTpm()
-                .create();
+                    .withAdminPassword(Utils.password())
+                    .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
+                    // gallery images with 'TrustedLaunch` feature can only create VMs with 'TrustedLaunch' feature
+                    .withTrustedLaunch()
+                    .withSecureBoot()
+                    .withVTpm()
+                    .create();
             Utils.print(trustedVMFromGalleryImage);
 
             return true;

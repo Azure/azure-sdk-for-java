@@ -5,43 +5,43 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties of IP configuration.
  */
 @Fluent
-public final class HubIpConfigurationPropertiesFormatInner {
+public final class HubIpConfigurationPropertiesFormatInner
+    implements JsonSerializable<HubIpConfigurationPropertiesFormatInner> {
     /*
      * The private IP address of the IP configuration.
      */
-    @JsonProperty(value = "privateIPAddress")
     private String privateIpAddress;
 
     /*
      * The private IP address allocation method.
      */
-    @JsonProperty(value = "privateIPAllocationMethod")
     private IpAllocationMethod privateIpAllocationMethod;
 
     /*
      * The reference to the subnet resource.
      */
-    @JsonProperty(value = "subnet")
     private SubnetInner subnet;
 
     /*
      * The reference to the public IP resource.
      */
-    @JsonProperty(value = "publicIPAddress")
     private PublicIpAddressInner publicIpAddress;
 
     /*
      * The provisioning state of the IP configuration resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -152,5 +152,57 @@ public final class HubIpConfigurationPropertiesFormatInner {
         if (publicIpAddress() != null) {
             publicIpAddress().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("privateIPAddress", this.privateIpAddress);
+        jsonWriter.writeStringField("privateIPAllocationMethod",
+            this.privateIpAllocationMethod == null ? null : this.privateIpAllocationMethod.toString());
+        jsonWriter.writeJsonField("subnet", this.subnet);
+        jsonWriter.writeJsonField("publicIPAddress", this.publicIpAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HubIpConfigurationPropertiesFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HubIpConfigurationPropertiesFormatInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HubIpConfigurationPropertiesFormatInner.
+     */
+    public static HubIpConfigurationPropertiesFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HubIpConfigurationPropertiesFormatInner deserializedHubIpConfigurationPropertiesFormatInner
+                = new HubIpConfigurationPropertiesFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("privateIPAddress".equals(fieldName)) {
+                    deserializedHubIpConfigurationPropertiesFormatInner.privateIpAddress = reader.getString();
+                } else if ("privateIPAllocationMethod".equals(fieldName)) {
+                    deserializedHubIpConfigurationPropertiesFormatInner.privateIpAllocationMethod
+                        = IpAllocationMethod.fromString(reader.getString());
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedHubIpConfigurationPropertiesFormatInner.subnet = SubnetInner.fromJson(reader);
+                } else if ("publicIPAddress".equals(fieldName)) {
+                    deserializedHubIpConfigurationPropertiesFormatInner.publicIpAddress
+                        = PublicIpAddressInner.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedHubIpConfigurationPropertiesFormatInner.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHubIpConfigurationPropertiesFormatInner;
+        });
     }
 }

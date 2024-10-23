@@ -22,6 +22,7 @@ import com.azure.resourcemanager.alertsmanagement.models.AlertsMetadata;
 import com.azure.resourcemanager.alertsmanagement.models.AlertsSortByFields;
 import com.azure.resourcemanager.alertsmanagement.models.AlertsSummary;
 import com.azure.resourcemanager.alertsmanagement.models.AlertsSummaryGroupByFields;
+import com.azure.resourcemanager.alertsmanagement.models.Comments;
 import com.azure.resourcemanager.alertsmanagement.models.Identifier;
 import com.azure.resourcemanager.alertsmanagement.models.MonitorCondition;
 import com.azure.resourcemanager.alertsmanagement.models.MonitorService;
@@ -36,10 +37,20 @@ public final class AlertsImpl implements Alerts {
 
     private final com.azure.resourcemanager.alertsmanagement.AlertsManagementManager serviceManager;
 
-    public AlertsImpl(
-        AlertsClient innerClient, com.azure.resourcemanager.alertsmanagement.AlertsManagementManager serviceManager) {
+    public AlertsImpl(AlertsClient innerClient,
+        com.azure.resourcemanager.alertsmanagement.AlertsManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<AlertsMetadata> metadataWithResponse(Identifier identifier, Context context) {
+        Response<AlertsMetadataInner> inner = this.serviceClient().metadataWithResponse(identifier, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AlertsMetadataImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AlertsMetadata metadata(Identifier identifier) {
@@ -51,66 +62,31 @@ public final class AlertsImpl implements Alerts {
         }
     }
 
-    public Response<AlertsMetadata> metadataWithResponse(Identifier identifier, Context context) {
-        Response<AlertsMetadataInner> inner = this.serviceClient().metadataWithResponse(identifier, context);
+    public PagedIterable<Alert> list() {
+        PagedIterable<AlertInner> inner = this.serviceClient().list();
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AlertImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Alert> list(String targetResource, String targetResourceType, String targetResourceGroup,
+        MonitorService monitorService, MonitorCondition monitorCondition, Severity severity, AlertState alertState,
+        String alertRule, String smartGroupId, Boolean includeContext, Boolean includeEgressConfig, Long pageCount,
+        AlertsSortByFields sortBy, SortOrder sortOrder, String select, TimeRange timeRange, String customTimeRange,
+        Context context) {
+        PagedIterable<AlertInner> inner = this.serviceClient()
+            .list(targetResource, targetResourceType, targetResourceGroup, monitorService, monitorCondition, severity,
+                alertState, alertRule, smartGroupId, includeContext, includeEgressConfig, pageCount, sortBy, sortOrder,
+                select, timeRange, customTimeRange, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AlertImpl(inner1, this.manager()));
+    }
+
+    public Response<Alert> getByIdWithResponse(String alertId, Context context) {
+        Response<AlertInner> inner = this.serviceClient().getByIdWithResponse(alertId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AlertsMetadataImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AlertImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
-    }
-
-    public PagedIterable<Alert> list() {
-        PagedIterable<AlertInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new AlertImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<Alert> list(
-        String targetResource,
-        String targetResourceType,
-        String targetResourceGroup,
-        MonitorService monitorService,
-        MonitorCondition monitorCondition,
-        Severity severity,
-        AlertState alertState,
-        String alertRule,
-        String smartGroupId,
-        Boolean includeContext,
-        Boolean includeEgressConfig,
-        Long pageCount,
-        AlertsSortByFields sortBy,
-        SortOrder sortOrder,
-        String select,
-        TimeRange timeRange,
-        String customTimeRange,
-        Context context) {
-        PagedIterable<AlertInner> inner =
-            this
-                .serviceClient()
-                .list(
-                    targetResource,
-                    targetResourceType,
-                    targetResourceGroup,
-                    monitorService,
-                    monitorCondition,
-                    severity,
-                    alertState,
-                    alertRule,
-                    smartGroupId,
-                    includeContext,
-                    includeEgressConfig,
-                    pageCount,
-                    sortBy,
-                    sortOrder,
-                    select,
-                    timeRange,
-                    customTimeRange,
-                    context);
-        return Utils.mapPage(inner, inner1 -> new AlertImpl(inner1, this.manager()));
     }
 
     public Alert getById(String alertId) {
@@ -122,13 +98,11 @@ public final class AlertsImpl implements Alerts {
         }
     }
 
-    public Response<Alert> getByIdWithResponse(String alertId, Context context) {
-        Response<AlertInner> inner = this.serviceClient().getByIdWithResponse(alertId, context);
+    public Response<Alert> changeStateWithResponse(String alertId, AlertState newState, Comments comment,
+        Context context) {
+        Response<AlertInner> inner = this.serviceClient().changeStateWithResponse(alertId, newState, comment, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AlertImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -144,15 +118,11 @@ public final class AlertsImpl implements Alerts {
         }
     }
 
-    public Response<Alert> changeStateWithResponse(
-        String alertId, AlertState newState, String comment, Context context) {
-        Response<AlertInner> inner = this.serviceClient().changeStateWithResponse(alertId, newState, comment, context);
+    public Response<AlertModification> getHistoryWithResponse(String alertId, Context context) {
+        Response<AlertModificationInner> inner = this.serviceClient().getHistoryWithResponse(alertId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AlertImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AlertModificationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -167,14 +137,17 @@ public final class AlertsImpl implements Alerts {
         }
     }
 
-    public Response<AlertModification> getHistoryWithResponse(String alertId, Context context) {
-        Response<AlertModificationInner> inner = this.serviceClient().getHistoryWithResponse(alertId, context);
+    public Response<AlertsSummary> getSummaryWithResponse(AlertsSummaryGroupByFields groupby,
+        Boolean includeSmartGroupsCount, String targetResource, String targetResourceType, String targetResourceGroup,
+        MonitorService monitorService, MonitorCondition monitorCondition, Severity severity, AlertState alertState,
+        String alertRule, TimeRange timeRange, String customTimeRange, Context context) {
+        Response<AlertsSummaryInner> inner = this.serviceClient()
+            .getSummaryWithResponse(groupby, includeSmartGroupsCount, targetResource, targetResourceType,
+                targetResourceGroup, monitorService, monitorCondition, severity, alertState, alertRule, timeRange,
+                customTimeRange, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AlertModificationImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AlertsSummaryImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -184,48 +157,6 @@ public final class AlertsImpl implements Alerts {
         AlertsSummaryInner inner = this.serviceClient().getSummary(groupby);
         if (inner != null) {
             return new AlertsSummaryImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<AlertsSummary> getSummaryWithResponse(
-        AlertsSummaryGroupByFields groupby,
-        Boolean includeSmartGroupsCount,
-        String targetResource,
-        String targetResourceType,
-        String targetResourceGroup,
-        MonitorService monitorService,
-        MonitorCondition monitorCondition,
-        Severity severity,
-        AlertState alertState,
-        String alertRule,
-        TimeRange timeRange,
-        String customTimeRange,
-        Context context) {
-        Response<AlertsSummaryInner> inner =
-            this
-                .serviceClient()
-                .getSummaryWithResponse(
-                    groupby,
-                    includeSmartGroupsCount,
-                    targetResource,
-                    targetResourceType,
-                    targetResourceGroup,
-                    monitorService,
-                    monitorCondition,
-                    severity,
-                    alertState,
-                    alertRule,
-                    timeRange,
-                    customTimeRange,
-                    context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AlertsSummaryImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

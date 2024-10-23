@@ -14,22 +14,24 @@ public final class ScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Schedule model = BinaryData.fromString(
-            "{\"startTime\":\"lqidyby\",\"endTime\":\"czfc\",\"count\":751467546,\"days\":[\"Monday\",\"Thursday\",\"Tuesday\",\"Wednesday\"]}")
+            "{\"startTime\":\"znfqqnvwpmqtar\",\"endTime\":\"oujmkcjhwqytj\",\"count\":734102755,\"days\":[\"Saturday\"]}")
             .toObject(Schedule.class);
-        Assertions.assertEquals("lqidyby", model.startTime());
-        Assertions.assertEquals("czfc", model.endTime());
-        Assertions.assertEquals(751467546, model.count());
-        Assertions.assertEquals(ScheduleDay.MONDAY, model.days().get(0));
+        Assertions.assertEquals("znfqqnvwpmqtar", model.startTime());
+        Assertions.assertEquals("oujmkcjhwqytj", model.endTime());
+        Assertions.assertEquals(734102755, model.count());
+        Assertions.assertEquals(ScheduleDay.SATURDAY, model.days().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Schedule model = new Schedule().withStartTime("lqidyby").withEndTime("czfc").withCount(751467546).withDays(
-            Arrays.asList(ScheduleDay.MONDAY, ScheduleDay.THURSDAY, ScheduleDay.TUESDAY, ScheduleDay.WEDNESDAY));
+        Schedule model = new Schedule().withStartTime("znfqqnvwpmqtar")
+            .withEndTime("oujmkcjhwqytj")
+            .withCount(734102755)
+            .withDays(Arrays.asList(ScheduleDay.SATURDAY));
         model = BinaryData.fromObject(model).toObject(Schedule.class);
-        Assertions.assertEquals("lqidyby", model.startTime());
-        Assertions.assertEquals("czfc", model.endTime());
-        Assertions.assertEquals(751467546, model.count());
-        Assertions.assertEquals(ScheduleDay.MONDAY, model.days().get(0));
+        Assertions.assertEquals("znfqqnvwpmqtar", model.startTime());
+        Assertions.assertEquals("oujmkcjhwqytj", model.endTime());
+        Assertions.assertEquals(734102755, model.count());
+        Assertions.assertEquals(ScheduleDay.SATURDAY, model.days().get(0));
     }
 }

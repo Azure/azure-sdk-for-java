@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.machinelearning.fluent.models.DatastoreSecretsInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
-/** Datastore Service Principal secrets. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "secretsType")
-@JsonTypeName("ServicePrincipal")
+/**
+ * Datastore Service Principal secrets.
+ */
 @Fluent
 public final class ServicePrincipalDatastoreSecrets extends DatastoreSecretsInner {
     /*
+     * [Required] Credential type used to authentication with storage.
+     */
+    private SecretsType secretsType = SecretsType.SERVICE_PRINCIPAL;
+
+    /*
      * Service principal secret.
      */
-    @JsonProperty(value = "clientSecret")
     private String clientSecret;
 
-    /** Creates an instance of ServicePrincipalDatastoreSecrets class. */
+    /**
+     * Creates an instance of ServicePrincipalDatastoreSecrets class.
+     */
     public ServicePrincipalDatastoreSecrets() {
     }
 
     /**
+     * Get the secretsType property: [Required] Credential type used to authentication with storage.
+     * 
+     * @return the secretsType value.
+     */
+    @Override
+    public SecretsType secretsType() {
+        return this.secretsType;
+    }
+
+    /**
      * Get the clientSecret property: Service principal secret.
-     *
+     * 
      * @return the clientSecret value.
      */
     public String clientSecret() {
@@ -36,7 +53,7 @@ public final class ServicePrincipalDatastoreSecrets extends DatastoreSecretsInne
 
     /**
      * Set the clientSecret property: Service principal secret.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the ServicePrincipalDatastoreSecrets object itself.
      */
@@ -47,11 +64,52 @@ public final class ServicePrincipalDatastoreSecrets extends DatastoreSecretsInne
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("secretsType", this.secretsType == null ? null : this.secretsType.toString());
+        jsonWriter.writeStringField("clientSecret", this.clientSecret);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServicePrincipalDatastoreSecrets from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServicePrincipalDatastoreSecrets if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServicePrincipalDatastoreSecrets.
+     */
+    public static ServicePrincipalDatastoreSecrets fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServicePrincipalDatastoreSecrets deserializedServicePrincipalDatastoreSecrets
+                = new ServicePrincipalDatastoreSecrets();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("secretsType".equals(fieldName)) {
+                    deserializedServicePrincipalDatastoreSecrets.secretsType
+                        = SecretsType.fromString(reader.getString());
+                } else if ("clientSecret".equals(fieldName)) {
+                    deserializedServicePrincipalDatastoreSecrets.clientSecret = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServicePrincipalDatastoreSecrets;
+        });
     }
 }

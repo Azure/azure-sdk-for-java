@@ -6,27 +6,48 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.PrivateEndpointConnectionRequestStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-/** An Extension operation result resource. */
+/**
+ * An Extension operation result resource.
+ */
 @Immutable
 public final class ImportExportExtensionsOperationResultInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private ImportExportExtensionsOperationResultProperties innerProperties;
 
-    /** Creates an instance of ImportExportExtensionsOperationResultInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ImportExportExtensionsOperationResultInner class.
+     */
     public ImportExportExtensionsOperationResultInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ImportExportExtensionsOperationResultProperties innerProperties() {
@@ -34,8 +55,38 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the requestId property: Request Id.
-     *
+     * 
      * @return the requestId value.
      */
     public UUID requestId() {
@@ -44,7 +95,7 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
 
     /**
      * Get the requestType property: Request type.
-     *
+     * 
      * @return the requestType value.
      */
     public String requestType() {
@@ -53,7 +104,7 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
 
     /**
      * Get the lastModifiedTime property: Last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public String lastModifiedTime() {
@@ -62,7 +113,7 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
 
     /**
      * Get the serverName property: Server name.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -71,7 +122,7 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
 
     /**
      * Get the databaseName property: Database name.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -80,7 +131,7 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
 
     /**
      * Get the status property: Operation status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -89,7 +140,7 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
 
     /**
      * Get the errorMessage property: Error message.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -98,7 +149,7 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
 
     /**
      * Get the queuedTime property: Queued time.
-     *
+     * 
      * @return the queuedTime value.
      */
     public String queuedTime() {
@@ -107,7 +158,7 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
 
     /**
      * Get the blobUri property: Blob URI.
-     *
+     * 
      * @return the blobUri value.
      */
     public String blobUri() {
@@ -116,7 +167,7 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
 
     /**
      * Get the privateEndpointConnections property: Gets the status of private endpoints associated with this request.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionRequestStatus> privateEndpointConnections() {
@@ -125,12 +176,57 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImportExportExtensionsOperationResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImportExportExtensionsOperationResultInner if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImportExportExtensionsOperationResultInner.
+     */
+    public static ImportExportExtensionsOperationResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImportExportExtensionsOperationResultInner deserializedImportExportExtensionsOperationResultInner
+                = new ImportExportExtensionsOperationResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedImportExportExtensionsOperationResultInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedImportExportExtensionsOperationResultInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedImportExportExtensionsOperationResultInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedImportExportExtensionsOperationResultInner.innerProperties
+                        = ImportExportExtensionsOperationResultProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImportExportExtensionsOperationResultInner;
+        });
     }
 }

@@ -6,73 +6,67 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Application gateway web application firewall configuration.
  */
 @Fluent
-public final class ApplicationGatewayWebApplicationFirewallConfiguration {
+public final class ApplicationGatewayWebApplicationFirewallConfiguration
+    implements JsonSerializable<ApplicationGatewayWebApplicationFirewallConfiguration> {
     /*
      * Whether the web application firewall is enabled or not.
      */
-    @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
     /*
      * Web application firewall mode.
      */
-    @JsonProperty(value = "firewallMode", required = true)
     private ApplicationGatewayFirewallMode firewallMode;
 
     /*
      * The type of the web application firewall rule set. Possible values are: 'OWASP'.
      */
-    @JsonProperty(value = "ruleSetType", required = true)
     private String ruleSetType;
 
     /*
      * The version of the rule set type.
      */
-    @JsonProperty(value = "ruleSetVersion", required = true)
     private String ruleSetVersion;
 
     /*
      * The disabled rule groups.
      */
-    @JsonProperty(value = "disabledRuleGroups")
     private List<ApplicationGatewayFirewallDisabledRuleGroup> disabledRuleGroups;
 
     /*
      * Whether allow WAF to check request Body.
      */
-    @JsonProperty(value = "requestBodyCheck")
     private Boolean requestBodyCheck;
 
     /*
      * Maximum request body size for WAF.
      */
-    @JsonProperty(value = "maxRequestBodySize")
     private Integer maxRequestBodySize;
 
     /*
      * Maximum request body size in Kb for WAF.
      */
-    @JsonProperty(value = "maxRequestBodySizeInKb")
     private Integer maxRequestBodySizeInKb;
 
     /*
      * Maximum file upload size in Mb for WAF.
      */
-    @JsonProperty(value = "fileUploadLimitInMb")
     private Integer fileUploadLimitInMb;
 
     /*
      * The exclusion list.
      */
-    @JsonProperty(value = "exclusions")
     private List<ApplicationGatewayFirewallExclusion> exclusions;
 
     /**
@@ -83,7 +77,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Get the enabled property: Whether the web application firewall is enabled or not.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -92,7 +86,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Set the enabled property: Whether the web application firewall is enabled or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
      */
@@ -103,7 +97,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Get the firewallMode property: Web application firewall mode.
-     *
+     * 
      * @return the firewallMode value.
      */
     public ApplicationGatewayFirewallMode firewallMode() {
@@ -112,7 +106,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Set the firewallMode property: Web application firewall mode.
-     *
+     * 
      * @param firewallMode the firewallMode value to set.
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
      */
@@ -124,7 +118,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Get the ruleSetType property: The type of the web application firewall rule set. Possible values are: 'OWASP'.
-     *
+     * 
      * @return the ruleSetType value.
      */
     public String ruleSetType() {
@@ -133,7 +127,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Set the ruleSetType property: The type of the web application firewall rule set. Possible values are: 'OWASP'.
-     *
+     * 
      * @param ruleSetType the ruleSetType value to set.
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
      */
@@ -144,7 +138,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Get the ruleSetVersion property: The version of the rule set type.
-     *
+     * 
      * @return the ruleSetVersion value.
      */
     public String ruleSetVersion() {
@@ -153,7 +147,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Set the ruleSetVersion property: The version of the rule set type.
-     *
+     * 
      * @param ruleSetVersion the ruleSetVersion value to set.
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
      */
@@ -164,7 +158,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Get the disabledRuleGroups property: The disabled rule groups.
-     *
+     * 
      * @return the disabledRuleGroups value.
      */
     public List<ApplicationGatewayFirewallDisabledRuleGroup> disabledRuleGroups() {
@@ -173,7 +167,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Set the disabledRuleGroups property: The disabled rule groups.
-     *
+     * 
      * @param disabledRuleGroups the disabledRuleGroups value to set.
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
      */
@@ -185,7 +179,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Get the requestBodyCheck property: Whether allow WAF to check request Body.
-     *
+     * 
      * @return the requestBodyCheck value.
      */
     public Boolean requestBodyCheck() {
@@ -194,7 +188,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Set the requestBodyCheck property: Whether allow WAF to check request Body.
-     *
+     * 
      * @param requestBodyCheck the requestBodyCheck value to set.
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
      */
@@ -205,7 +199,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Get the maxRequestBodySize property: Maximum request body size for WAF.
-     *
+     * 
      * @return the maxRequestBodySize value.
      */
     public Integer maxRequestBodySize() {
@@ -214,7 +208,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Set the maxRequestBodySize property: Maximum request body size for WAF.
-     *
+     * 
      * @param maxRequestBodySize the maxRequestBodySize value to set.
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
      */
@@ -225,7 +219,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Get the maxRequestBodySizeInKb property: Maximum request body size in Kb for WAF.
-     *
+     * 
      * @return the maxRequestBodySizeInKb value.
      */
     public Integer maxRequestBodySizeInKb() {
@@ -234,7 +228,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Set the maxRequestBodySizeInKb property: Maximum request body size in Kb for WAF.
-     *
+     * 
      * @param maxRequestBodySizeInKb the maxRequestBodySizeInKb value to set.
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
      */
@@ -246,7 +240,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Get the fileUploadLimitInMb property: Maximum file upload size in Mb for WAF.
-     *
+     * 
      * @return the fileUploadLimitInMb value.
      */
     public Integer fileUploadLimitInMb() {
@@ -255,7 +249,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Set the fileUploadLimitInMb property: Maximum file upload size in Mb for WAF.
-     *
+     * 
      * @param fileUploadLimitInMb the fileUploadLimitInMb value to set.
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
      */
@@ -266,7 +260,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Get the exclusions property: The exclusion list.
-     *
+     * 
      * @return the exclusions value.
      */
     public List<ApplicationGatewayFirewallExclusion> exclusions() {
@@ -275,7 +269,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Set the exclusions property: The exclusion list.
-     *
+     * 
      * @param exclusions the exclusions value to set.
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
      */
@@ -287,7 +281,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -316,4 +310,82 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     private static final ClientLogger LOGGER
         = new ClientLogger(ApplicationGatewayWebApplicationFirewallConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("firewallMode", this.firewallMode == null ? null : this.firewallMode.toString());
+        jsonWriter.writeStringField("ruleSetType", this.ruleSetType);
+        jsonWriter.writeStringField("ruleSetVersion", this.ruleSetVersion);
+        jsonWriter.writeArrayField("disabledRuleGroups", this.disabledRuleGroups,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("requestBodyCheck", this.requestBodyCheck);
+        jsonWriter.writeNumberField("maxRequestBodySize", this.maxRequestBodySize);
+        jsonWriter.writeNumberField("maxRequestBodySizeInKb", this.maxRequestBodySizeInKb);
+        jsonWriter.writeNumberField("fileUploadLimitInMb", this.fileUploadLimitInMb);
+        jsonWriter.writeArrayField("exclusions", this.exclusions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayWebApplicationFirewallConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayWebApplicationFirewallConfiguration if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayWebApplicationFirewallConfiguration.
+     */
+    public static ApplicationGatewayWebApplicationFirewallConfiguration fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayWebApplicationFirewallConfiguration deserializedApplicationGatewayWebApplicationFirewallConfiguration
+                = new ApplicationGatewayWebApplicationFirewallConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedApplicationGatewayWebApplicationFirewallConfiguration.enabled = reader.getBoolean();
+                } else if ("firewallMode".equals(fieldName)) {
+                    deserializedApplicationGatewayWebApplicationFirewallConfiguration.firewallMode
+                        = ApplicationGatewayFirewallMode.fromString(reader.getString());
+                } else if ("ruleSetType".equals(fieldName)) {
+                    deserializedApplicationGatewayWebApplicationFirewallConfiguration.ruleSetType = reader.getString();
+                } else if ("ruleSetVersion".equals(fieldName)) {
+                    deserializedApplicationGatewayWebApplicationFirewallConfiguration.ruleSetVersion
+                        = reader.getString();
+                } else if ("disabledRuleGroups".equals(fieldName)) {
+                    List<ApplicationGatewayFirewallDisabledRuleGroup> disabledRuleGroups
+                        = reader.readArray(reader1 -> ApplicationGatewayFirewallDisabledRuleGroup.fromJson(reader1));
+                    deserializedApplicationGatewayWebApplicationFirewallConfiguration.disabledRuleGroups
+                        = disabledRuleGroups;
+                } else if ("requestBodyCheck".equals(fieldName)) {
+                    deserializedApplicationGatewayWebApplicationFirewallConfiguration.requestBodyCheck
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("maxRequestBodySize".equals(fieldName)) {
+                    deserializedApplicationGatewayWebApplicationFirewallConfiguration.maxRequestBodySize
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("maxRequestBodySizeInKb".equals(fieldName)) {
+                    deserializedApplicationGatewayWebApplicationFirewallConfiguration.maxRequestBodySizeInKb
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("fileUploadLimitInMb".equals(fieldName)) {
+                    deserializedApplicationGatewayWebApplicationFirewallConfiguration.fileUploadLimitInMb
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("exclusions".equals(fieldName)) {
+                    List<ApplicationGatewayFirewallExclusion> exclusions
+                        = reader.readArray(reader1 -> ApplicationGatewayFirewallExclusion.fromJson(reader1));
+                    deserializedApplicationGatewayWebApplicationFirewallConfiguration.exclusions = exclusions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayWebApplicationFirewallConfiguration;
+        });
+    }
 }

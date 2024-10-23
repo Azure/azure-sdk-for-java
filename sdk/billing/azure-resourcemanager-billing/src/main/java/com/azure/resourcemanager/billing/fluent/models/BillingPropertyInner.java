@@ -5,210 +5,178 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
-import com.azure.resourcemanager.billing.models.BillingProfileSpendingLimit;
-import com.azure.resourcemanager.billing.models.BillingProfileStatus;
-import com.azure.resourcemanager.billing.models.BillingProfileStatusReasonCode;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.billing.models.BillingPropertyProperties;
+import com.azure.resourcemanager.billing.models.ProxyResourceWithTags;
+import java.io.IOException;
+import java.util.Map;
 
-/** A billing property. */
+/**
+ * A billing property.
+ */
 @Fluent
-public final class BillingPropertyInner extends ProxyResource {
+public final class BillingPropertyInner extends ProxyResourceWithTags {
     /*
      * A billing property.
      */
-    @JsonProperty(value = "properties")
-    private BillingPropertyProperties innerProperties;
+    private BillingPropertyProperties properties;
 
-    /** Creates an instance of BillingPropertyInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of BillingPropertyInner class.
+     */
     public BillingPropertyInner() {
     }
 
     /**
-     * Get the innerProperties property: A billing property.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: A billing property.
+     * 
+     * @return the properties value.
      */
-    private BillingPropertyProperties innerProperties() {
-        return this.innerProperties;
+    public BillingPropertyProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the accountAdminNotificationEmailAddress property: The email address on which the account admin gets all
-     * Azure notifications.
-     *
-     * @return the accountAdminNotificationEmailAddress value.
-     */
-    public String accountAdminNotificationEmailAddress() {
-        return this.innerProperties() == null ? null : this.innerProperties().accountAdminNotificationEmailAddress();
-    }
-
-    /**
-     * Get the billingTenantId property: The Azure AD tenant ID of the billing account for the subscription.
-     *
-     * @return the billingTenantId value.
-     */
-    public String billingTenantId() {
-        return this.innerProperties() == null ? null : this.innerProperties().billingTenantId();
-    }
-
-    /**
-     * Get the billingAccountId property: The ID of the billing account to which the subscription is billed.
-     *
-     * @return the billingAccountId value.
-     */
-    public String billingAccountId() {
-        return this.innerProperties() == null ? null : this.innerProperties().billingAccountId();
-    }
-
-    /**
-     * Get the billingAccountDisplayName property: The name of the billing account to which the subscription is billed.
-     *
-     * @return the billingAccountDisplayName value.
-     */
-    public String billingAccountDisplayName() {
-        return this.innerProperties() == null ? null : this.innerProperties().billingAccountDisplayName();
-    }
-
-    /**
-     * Get the billingProfileId property: The ID of the billing profile to which the subscription is billed.
-     *
-     * @return the billingProfileId value.
-     */
-    public String billingProfileId() {
-        return this.innerProperties() == null ? null : this.innerProperties().billingProfileId();
-    }
-
-    /**
-     * Get the billingProfileDisplayName property: The name of the billing profile to which the subscription is billed.
-     *
-     * @return the billingProfileDisplayName value.
-     */
-    public String billingProfileDisplayName() {
-        return this.innerProperties() == null ? null : this.innerProperties().billingProfileDisplayName();
-    }
-
-    /**
-     * Get the billingProfileStatus property: The status of the billing profile.
-     *
-     * @return the billingProfileStatus value.
-     */
-    public BillingProfileStatus billingProfileStatus() {
-        return this.innerProperties() == null ? null : this.innerProperties().billingProfileStatus();
-    }
-
-    /**
-     * Get the billingProfileStatusReasonCode property: Reason for the specified billing profile status.
-     *
-     * @return the billingProfileStatusReasonCode value.
-     */
-    public BillingProfileStatusReasonCode billingProfileStatusReasonCode() {
-        return this.innerProperties() == null ? null : this.innerProperties().billingProfileStatusReasonCode();
-    }
-
-    /**
-     * Get the billingProfileSpendingLimit property: The billing profile spending limit.
-     *
-     * @return the billingProfileSpendingLimit value.
-     */
-    public BillingProfileSpendingLimit billingProfileSpendingLimit() {
-        return this.innerProperties() == null ? null : this.innerProperties().billingProfileSpendingLimit();
-    }
-
-    /**
-     * Get the costCenter property: The cost center applied to the subscription.
-     *
-     * @return the costCenter value.
-     */
-    public String costCenter() {
-        return this.innerProperties() == null ? null : this.innerProperties().costCenter();
-    }
-
-    /**
-     * Set the costCenter property: The cost center applied to the subscription.
-     *
-     * @param costCenter the costCenter value to set.
+     * Set the properties property: A billing property.
+     * 
+     * @param properties the properties value to set.
      * @return the BillingPropertyInner object itself.
      */
-    public BillingPropertyInner withCostCenter(String costCenter) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BillingPropertyProperties();
-        }
-        this.innerProperties().withCostCenter(costCenter);
+    public BillingPropertyInner withProperties(BillingPropertyProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
-     * Get the invoiceSectionId property: The ID of the invoice section to which the subscription is billed.
-     *
-     * @return the invoiceSectionId value.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    public String invoiceSectionId() {
-        return this.innerProperties() == null ? null : this.innerProperties().invoiceSectionId();
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
-     * Get the invoiceSectionDisplayName property: The name of the invoice section to which the subscription is billed.
-     *
-     * @return the invoiceSectionDisplayName value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public String invoiceSectionDisplayName() {
-        return this.innerProperties() == null ? null : this.innerProperties().invoiceSectionDisplayName();
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the isAccountAdmin property: Indicates whether user is the account admin.
-     *
-     * @return the isAccountAdmin value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public Boolean isAccountAdmin() {
-        return this.innerProperties() == null ? null : this.innerProperties().isAccountAdmin();
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the productId property: The product ID of the Azure plan.
-     *
-     * @return the productId value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public String productId() {
-        return this.innerProperties() == null ? null : this.innerProperties().productId();
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Get the productName property: The product name of the Azure plan.
-     *
-     * @return the productName value.
+     * {@inheritDoc}
      */
-    public String productName() {
-        return this.innerProperties() == null ? null : this.innerProperties().productName();
-    }
-
-    /**
-     * Get the skuId property: The sku ID of the Azure plan for the subscription.
-     *
-     * @return the skuId value.
-     */
-    public String skuId() {
-        return this.innerProperties() == null ? null : this.innerProperties().skuId();
-    }
-
-    /**
-     * Get the skuDescription property: The sku description of the Azure plan for the subscription.
-     *
-     * @return the skuDescription value.
-     */
-    public String skuDescription() {
-        return this.innerProperties() == null ? null : this.innerProperties().skuDescription();
+    @Override
+    public BillingPropertyInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BillingPropertyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BillingPropertyInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BillingPropertyInner.
+     */
+    public static BillingPropertyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BillingPropertyInner deserializedBillingPropertyInner = new BillingPropertyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBillingPropertyInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBillingPropertyInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBillingPropertyInner.type = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBillingPropertyInner.withTags(tags);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedBillingPropertyInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBillingPropertyInner.properties = BillingPropertyProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBillingPropertyInner;
+        });
     }
 }

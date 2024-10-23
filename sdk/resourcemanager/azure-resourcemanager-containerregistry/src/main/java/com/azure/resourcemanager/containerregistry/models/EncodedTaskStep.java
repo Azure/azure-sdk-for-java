@@ -6,40 +6,56 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The properties of a encoded task step.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("EncodedTask")
 @Fluent
 public final class EncodedTaskStep extends TaskStepProperties {
     /*
+     * The type of the step.
+     */
+    private StepType type = StepType.ENCODED_TASK;
+
+    /*
      * Base64 encoded value of the template/definition file content.
      */
-    @JsonProperty(value = "encodedTaskContent", required = true)
     private String encodedTaskContent;
 
     /*
      * Base64 encoded value of the parameters/values file content.
      */
-    @JsonProperty(value = "encodedValuesContent")
     private String encodedValuesContent;
 
     /*
      * The collection of overridable values that can be passed when running a task.
      */
-    @JsonProperty(value = "values")
     private List<SetValue> values;
+
+    /*
+     * List of base image dependencies for a step.
+     */
+    private List<BaseImageDependency> baseImageDependencies;
 
     /**
      * Creates an instance of EncodedTaskStep class.
      */
     public EncodedTaskStep() {
+    }
+
+    /**
+     * Get the type property: The type of the step.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public StepType type() {
+        return this.type;
     }
 
     /**
@@ -103,6 +119,16 @@ public final class EncodedTaskStep extends TaskStepProperties {
     }
 
     /**
+     * Get the baseImageDependencies property: List of base image dependencies for a step.
+     * 
+     * @return the baseImageDependencies value.
+     */
+    @Override
+    public List<BaseImageDependency> baseImageDependencies() {
+        return this.baseImageDependencies;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -129,8 +155,9 @@ public final class EncodedTaskStep extends TaskStepProperties {
     public void validate() {
         super.validate();
         if (encodedTaskContent() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property encodedTaskContent in model EncodedTaskStep"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property encodedTaskContent in model EncodedTaskStep"));
         }
         if (values() != null) {
             values().forEach(e -> e.validate());
@@ -138,4 +165,61 @@ public final class EncodedTaskStep extends TaskStepProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EncodedTaskStep.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("contextPath", contextPath());
+        jsonWriter.writeStringField("contextAccessToken", contextAccessToken());
+        jsonWriter.writeStringField("encodedTaskContent", this.encodedTaskContent);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("encodedValuesContent", this.encodedValuesContent);
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EncodedTaskStep from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EncodedTaskStep if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EncodedTaskStep.
+     */
+    public static EncodedTaskStep fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EncodedTaskStep deserializedEncodedTaskStep = new EncodedTaskStep();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("baseImageDependencies".equals(fieldName)) {
+                    List<BaseImageDependency> baseImageDependencies
+                        = reader.readArray(reader1 -> BaseImageDependency.fromJson(reader1));
+                    deserializedEncodedTaskStep.baseImageDependencies = baseImageDependencies;
+                } else if ("contextPath".equals(fieldName)) {
+                    deserializedEncodedTaskStep.withContextPath(reader.getString());
+                } else if ("contextAccessToken".equals(fieldName)) {
+                    deserializedEncodedTaskStep.withContextAccessToken(reader.getString());
+                } else if ("encodedTaskContent".equals(fieldName)) {
+                    deserializedEncodedTaskStep.encodedTaskContent = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEncodedTaskStep.type = StepType.fromString(reader.getString());
+                } else if ("encodedValuesContent".equals(fieldName)) {
+                    deserializedEncodedTaskStep.encodedValuesContent = reader.getString();
+                } else if ("values".equals(fieldName)) {
+                    List<SetValue> values = reader.readArray(reader1 -> SetValue.fromJson(reader1));
+                    deserializedEncodedTaskStep.values = values;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncodedTaskStep;
+        });
+    }
 }

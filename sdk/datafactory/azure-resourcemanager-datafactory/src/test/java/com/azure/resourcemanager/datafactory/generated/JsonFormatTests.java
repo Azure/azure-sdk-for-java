@@ -11,19 +11,19 @@ public final class JsonFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JsonFormat model = BinaryData.fromString(
-            "{\"type\":\"JsonFormat\",\"filePattern\":\"datazdqwuzvcm\",\"nestingSeparator\":\"datakxizek\",\"encodingName\":\"datafrjwucaon\",\"jsonNodeReference\":\"dataajbvbn\",\"jsonPathDefinition\":\"datademdidackzi\",\"serializer\":\"datazwdydamisvpztdi\",\"deserializer\":\"datakpxkqejtpjfoj\",\"\":{\"oiboan\":\"datarlshxuknsykd\",\"uld\":\"datadrcoanv\"}}")
+            "{\"type\":\"JsonFormat\",\"filePattern\":\"datapmillxgjsci\",\"nestingSeparator\":\"datagsoriobij\",\"encodingName\":\"dataydyeuy\",\"jsonNodeReference\":\"databok\",\"jsonPathDefinition\":\"datar\",\"serializer\":\"dataybriop\",\"deserializer\":\"dataeoftnorwai\",\"\":{\"f\":\"dataoctqkmvjanxvzf\",\"wosstfjxtvlxx\":\"datatj\"}}")
             .toObject(JsonFormat.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JsonFormat model = new JsonFormat().withSerializer("datazwdydamisvpztdi")
-            .withDeserializer("datakpxkqejtpjfoj")
-            .withFilePattern("datazdqwuzvcm")
-            .withNestingSeparator("datakxizek")
-            .withEncodingName("datafrjwucaon")
-            .withJsonNodeReference("dataajbvbn")
-            .withJsonPathDefinition("datademdidackzi");
+        JsonFormat model = new JsonFormat().withSerializer("dataybriop")
+            .withDeserializer("dataeoftnorwai")
+            .withFilePattern("datapmillxgjsci")
+            .withNestingSeparator("datagsoriobij")
+            .withEncodingName("dataydyeuy")
+            .withJsonNodeReference("databok")
+            .withJsonPathDefinition("datar");
         model = BinaryData.fromObject(model).toObject(JsonFormat.class);
     }
 }

@@ -6,62 +6,59 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.Restriction;
 import com.azure.resourcemanager.storage.models.SkuCapability;
 import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.SkuTier;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Storage SKU and its properties.
  */
 @Fluent
-public final class SkuInformationInner {
+public final class SkuInformationInner implements JsonSerializable<SkuInformationInner> {
     /*
      * The SKU name. Required for account creation; optional for update. Note that in older versions, SKU name was
      * called accountType.
      */
-    @JsonProperty(value = "name", required = true)
     private SkuName name;
 
     /*
      * The SKU tier. This is based on the SKU name.
      */
-    @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private SkuTier tier;
 
     /*
      * The type of the resource, usually it is 'storageAccounts'.
      */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceType;
 
     /*
      * Indicates the type of storage account.
      */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private Kind kind;
 
     /*
      * The set of locations that the SKU is available. This will be supported and registered Azure Geo Regions (e.g.
      * West US, East US, Southeast Asia, etc.).
      */
-    @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> locations;
 
     /*
      * The capability information in the specified SKU, including file encryption, network ACLs, change notification,
      * etc.
      */
-    @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuCapability> capabilities;
 
     /*
      * The restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
      */
-    @JsonProperty(value = "restrictions")
     private List<Restriction> restrictions;
 
     /**
@@ -180,4 +177,57 @@ public final class SkuInformationInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SkuInformationInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeArrayField("restrictions", this.restrictions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuInformationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuInformationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SkuInformationInner.
+     */
+    public static SkuInformationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuInformationInner deserializedSkuInformationInner = new SkuInformationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSkuInformationInner.name = SkuName.fromString(reader.getString());
+                } else if ("tier".equals(fieldName)) {
+                    deserializedSkuInformationInner.tier = SkuTier.fromString(reader.getString());
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedSkuInformationInner.resourceType = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedSkuInformationInner.kind = Kind.fromString(reader.getString());
+                } else if ("locations".equals(fieldName)) {
+                    List<String> locations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSkuInformationInner.locations = locations;
+                } else if ("capabilities".equals(fieldName)) {
+                    List<SkuCapability> capabilities = reader.readArray(reader1 -> SkuCapability.fromJson(reader1));
+                    deserializedSkuInformationInner.capabilities = capabilities;
+                } else if ("restrictions".equals(fieldName)) {
+                    List<Restriction> restrictions = reader.readArray(reader1 -> Restriction.fromJson(reader1));
+                    deserializedSkuInformationInner.restrictions = restrictions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuInformationInner;
+        });
+    }
 }

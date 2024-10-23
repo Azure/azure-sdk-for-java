@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** taskStatus. */
+/**
+ * taskStatus.
+ */
 public final class MicrosoftGraphTaskStatus extends ExpandableStringEnum<MicrosoftGraphTaskStatus> {
-    /** Static value notStarted for MicrosoftGraphTaskStatus. */
+    /**
+     * Static value notStarted for MicrosoftGraphTaskStatus.
+     */
     public static final MicrosoftGraphTaskStatus NOT_STARTED = fromString("notStarted");
 
-    /** Static value inProgress for MicrosoftGraphTaskStatus. */
+    /**
+     * Static value inProgress for MicrosoftGraphTaskStatus.
+     */
     public static final MicrosoftGraphTaskStatus IN_PROGRESS = fromString("inProgress");
 
-    /** Static value completed for MicrosoftGraphTaskStatus. */
+    /**
+     * Static value completed for MicrosoftGraphTaskStatus.
+     */
     public static final MicrosoftGraphTaskStatus COMPLETED = fromString("completed");
 
-    /** Static value waitingOnOthers for MicrosoftGraphTaskStatus. */
+    /**
+     * Static value waitingOnOthers for MicrosoftGraphTaskStatus.
+     */
     public static final MicrosoftGraphTaskStatus WAITING_ON_OTHERS = fromString("waitingOnOthers");
 
-    /** Static value deferred for MicrosoftGraphTaskStatus. */
+    /**
+     * Static value deferred for MicrosoftGraphTaskStatus.
+     */
     public static final MicrosoftGraphTaskStatus DEFERRED = fromString("deferred");
 
     /**
      * Creates a new instance of MicrosoftGraphTaskStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class MicrosoftGraphTaskStatus extends ExpandableStringEnum<Microso
 
     /**
      * Creates or finds a MicrosoftGraphTaskStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphTaskStatus.
      */
-    @JsonCreator
     public static MicrosoftGraphTaskStatus fromString(String name) {
         return fromString(name, MicrosoftGraphTaskStatus.class);
     }
 
     /**
      * Gets known MicrosoftGraphTaskStatus values.
-     *
+     * 
      * @return known MicrosoftGraphTaskStatus values.
      */
     public static Collection<MicrosoftGraphTaskStatus> values() {

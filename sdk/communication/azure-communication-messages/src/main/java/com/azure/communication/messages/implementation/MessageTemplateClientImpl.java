@@ -163,7 +163,7 @@ public final class MessageTemplateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listTemplates(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("channelId") String channelId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/messages/channels/{channelId}/templates")
         @ExpectedResponses({ 200 })
@@ -173,7 +173,7 @@ public final class MessageTemplateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listTemplatesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("channelId") String channelId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -182,7 +182,7 @@ public final class MessageTemplateClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listTemplatesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -192,7 +192,7 @@ public final class MessageTemplateClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listTemplatesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
     }
 
@@ -207,14 +207,16 @@ public final class MessageTemplateClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String(whatsApp) (Required)
      *     name: String (Required)
      *     language: String (Required)
      *     status: String(approved/rejected/pending/paused) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param channelId The registration ID of the channel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -247,14 +249,16 @@ public final class MessageTemplateClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String(whatsApp) (Required)
      *     name: String (Required)
      *     language: String (Required)
      *     status: String(approved/rejected/pending/paused) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param channelId The registration ID of the channel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -304,14 +308,16 @@ public final class MessageTemplateClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String(whatsApp) (Required)
      *     name: String (Required)
      *     language: String (Required)
      *     status: String(approved/rejected/pending/paused) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param channelId The registration ID of the channel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -341,14 +347,16 @@ public final class MessageTemplateClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String(whatsApp) (Required)
      *     name: String (Required)
      *     language: String (Required)
      *     status: String(approved/rejected/pending/paused) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param channelId The registration ID of the channel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -391,14 +399,16 @@ public final class MessageTemplateClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String(whatsApp) (Required)
      *     name: String (Required)
      *     language: String (Required)
      *     status: String(approved/rejected/pending/paused) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -424,14 +434,16 @@ public final class MessageTemplateClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String(whatsApp) (Required)
      *     name: String (Required)
      *     language: String (Required)
      *     status: String(approved/rejected/pending/paused) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

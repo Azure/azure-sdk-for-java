@@ -11,7 +11,8 @@ import com.azure.resourcemanager.appservice.fluent.models.SitePatchResourceInner
  */
 public final class WebAppsUpdateSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateWebAppSlot.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateWebAppSlot.json
      */
     /**
      * Sample code: Update Web App Slot.

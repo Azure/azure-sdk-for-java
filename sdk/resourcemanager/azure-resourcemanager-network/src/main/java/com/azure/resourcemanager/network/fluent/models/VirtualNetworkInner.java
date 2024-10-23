@@ -7,13 +7,17 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.DhcpOptions;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
+import com.azure.resourcemanager.network.models.PrivateEndpointVNetPolicies;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkBgpCommunities;
 import com.azure.resourcemanager.network.models.VirtualNetworkEncryption;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -25,26 +29,32 @@ public final class VirtualNetworkInner extends Resource {
     /*
      * The extended location of the virtual network.
      */
-    @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
     /*
      * Properties of the virtual network.
      */
-    @JsonProperty(value = "properties")
     private VirtualNetworkPropertiesFormat innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of VirtualNetworkInner class.
@@ -108,6 +118,26 @@ public final class VirtualNetworkInner extends Resource {
     public VirtualNetworkInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -421,6 +451,30 @@ public final class VirtualNetworkInner extends Resource {
     }
 
     /**
+     * Get the privateEndpointVNetPolicies property: Private Endpoint VNet Policies.
+     * 
+     * @return the privateEndpointVNetPolicies value.
+     */
+    public PrivateEndpointVNetPolicies privateEndpointVNetPolicies() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointVNetPolicies();
+    }
+
+    /**
+     * Set the privateEndpointVNetPolicies property: Private Endpoint VNet Policies.
+     * 
+     * @param privateEndpointVNetPolicies the privateEndpointVNetPolicies value to set.
+     * @return the VirtualNetworkInner object itself.
+     */
+    public VirtualNetworkInner
+        withPrivateEndpointVNetPolicies(PrivateEndpointVNetPolicies privateEndpointVNetPolicies) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkPropertiesFormat();
+        }
+        this.innerProperties().withPrivateEndpointVNetPolicies(privateEndpointVNetPolicies);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -432,5 +486,61 @@ public final class VirtualNetworkInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualNetworkInner.
+     */
+    public static VirtualNetworkInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkInner deserializedVirtualNetworkInner = new VirtualNetworkInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVirtualNetworkInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualNetworkInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedVirtualNetworkInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVirtualNetworkInner.withTags(tags);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedVirtualNetworkInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualNetworkInner.innerProperties = VirtualNetworkPropertiesFormat.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedVirtualNetworkInner.etag = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedVirtualNetworkInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkInner;
+        });
     }
 }

@@ -130,7 +130,7 @@ public final class GetClientAccessTokenOptions {
      *
      * @return The same instance of this type, modified based on the value provided in this set method.
      */
-    public WebPubSubClientProtocol getWebPubSubClientAccess() {
+    public WebPubSubClientProtocol getWebPubSubClientProtocol() {
         return webPubSubClientProtocol;
     }
 
@@ -140,7 +140,7 @@ public final class GetClientAccessTokenOptions {
      * @param webPubSubClientProtocol The endpoint type of client
      * @return The same instance of this type, modified based on the value provided in this set method.
      */
-    public GetClientAccessTokenOptions setWebPubSubClientAccess(final WebPubSubClientProtocol webPubSubClientProtocol) {
+    public GetClientAccessTokenOptions setWebPubSubClientProtocol(final WebPubSubClientProtocol webPubSubClientProtocol) {
         this.webPubSubClientProtocol = webPubSubClientProtocol;
         return this;
     }

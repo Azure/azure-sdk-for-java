@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class NotebookParameterType extends ExpandableStringEnum<NotebookPa
      * @param name a name to look for.
      * @return the corresponding NotebookParameterType.
      */
-    @JsonCreator
     public static NotebookParameterType fromString(String name) {
         return fromString(name, NotebookParameterType.class);
     }

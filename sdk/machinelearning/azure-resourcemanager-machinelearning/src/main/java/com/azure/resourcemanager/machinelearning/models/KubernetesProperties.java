@@ -5,69 +5,67 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Kubernetes properties. */
+/**
+ * Kubernetes properties.
+ */
 @Fluent
-public final class KubernetesProperties {
+public final class KubernetesProperties implements JsonSerializable<KubernetesProperties> {
     /*
      * Relay connection string.
      */
-    @JsonProperty(value = "relayConnectionString")
     private String relayConnectionString;
 
     /*
      * ServiceBus connection string.
      */
-    @JsonProperty(value = "serviceBusConnectionString")
     private String serviceBusConnectionString;
 
     /*
      * Extension principal-id.
      */
-    @JsonProperty(value = "extensionPrincipalId")
     private String extensionPrincipalId;
 
     /*
      * Extension instance release train.
      */
-    @JsonProperty(value = "extensionInstanceReleaseTrain")
     private String extensionInstanceReleaseTrain;
 
     /*
      * VC name.
      */
-    @JsonProperty(value = "vcName")
     private String vcName;
 
     /*
      * Compute namespace
      */
-    @JsonProperty(value = "namespace")
     private String namespace;
 
     /*
      * Default instance type
      */
-    @JsonProperty(value = "defaultInstanceType")
     private String defaultInstanceType;
 
     /*
      * Instance Type Schema
      */
-    @JsonProperty(value = "instanceTypes")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, InstanceTypeSchema> instanceTypes;
 
-    /** Creates an instance of KubernetesProperties class. */
+    /**
+     * Creates an instance of KubernetesProperties class.
+     */
     public KubernetesProperties() {
     }
 
     /**
      * Get the relayConnectionString property: Relay connection string.
-     *
+     * 
      * @return the relayConnectionString value.
      */
     public String relayConnectionString() {
@@ -76,7 +74,7 @@ public final class KubernetesProperties {
 
     /**
      * Set the relayConnectionString property: Relay connection string.
-     *
+     * 
      * @param relayConnectionString the relayConnectionString value to set.
      * @return the KubernetesProperties object itself.
      */
@@ -87,7 +85,7 @@ public final class KubernetesProperties {
 
     /**
      * Get the serviceBusConnectionString property: ServiceBus connection string.
-     *
+     * 
      * @return the serviceBusConnectionString value.
      */
     public String serviceBusConnectionString() {
@@ -96,7 +94,7 @@ public final class KubernetesProperties {
 
     /**
      * Set the serviceBusConnectionString property: ServiceBus connection string.
-     *
+     * 
      * @param serviceBusConnectionString the serviceBusConnectionString value to set.
      * @return the KubernetesProperties object itself.
      */
@@ -107,7 +105,7 @@ public final class KubernetesProperties {
 
     /**
      * Get the extensionPrincipalId property: Extension principal-id.
-     *
+     * 
      * @return the extensionPrincipalId value.
      */
     public String extensionPrincipalId() {
@@ -116,7 +114,7 @@ public final class KubernetesProperties {
 
     /**
      * Set the extensionPrincipalId property: Extension principal-id.
-     *
+     * 
      * @param extensionPrincipalId the extensionPrincipalId value to set.
      * @return the KubernetesProperties object itself.
      */
@@ -127,7 +125,7 @@ public final class KubernetesProperties {
 
     /**
      * Get the extensionInstanceReleaseTrain property: Extension instance release train.
-     *
+     * 
      * @return the extensionInstanceReleaseTrain value.
      */
     public String extensionInstanceReleaseTrain() {
@@ -136,7 +134,7 @@ public final class KubernetesProperties {
 
     /**
      * Set the extensionInstanceReleaseTrain property: Extension instance release train.
-     *
+     * 
      * @param extensionInstanceReleaseTrain the extensionInstanceReleaseTrain value to set.
      * @return the KubernetesProperties object itself.
      */
@@ -147,7 +145,7 @@ public final class KubernetesProperties {
 
     /**
      * Get the vcName property: VC name.
-     *
+     * 
      * @return the vcName value.
      */
     public String vcName() {
@@ -156,7 +154,7 @@ public final class KubernetesProperties {
 
     /**
      * Set the vcName property: VC name.
-     *
+     * 
      * @param vcName the vcName value to set.
      * @return the KubernetesProperties object itself.
      */
@@ -167,7 +165,7 @@ public final class KubernetesProperties {
 
     /**
      * Get the namespace property: Compute namespace.
-     *
+     * 
      * @return the namespace value.
      */
     public String namespace() {
@@ -176,7 +174,7 @@ public final class KubernetesProperties {
 
     /**
      * Set the namespace property: Compute namespace.
-     *
+     * 
      * @param namespace the namespace value to set.
      * @return the KubernetesProperties object itself.
      */
@@ -187,7 +185,7 @@ public final class KubernetesProperties {
 
     /**
      * Get the defaultInstanceType property: Default instance type.
-     *
+     * 
      * @return the defaultInstanceType value.
      */
     public String defaultInstanceType() {
@@ -196,7 +194,7 @@ public final class KubernetesProperties {
 
     /**
      * Set the defaultInstanceType property: Default instance type.
-     *
+     * 
      * @param defaultInstanceType the defaultInstanceType value to set.
      * @return the KubernetesProperties object itself.
      */
@@ -207,7 +205,7 @@ public final class KubernetesProperties {
 
     /**
      * Get the instanceTypes property: Instance Type Schema.
-     *
+     * 
      * @return the instanceTypes value.
      */
     public Map<String, InstanceTypeSchema> instanceTypes() {
@@ -216,7 +214,7 @@ public final class KubernetesProperties {
 
     /**
      * Set the instanceTypes property: Instance Type Schema.
-     *
+     * 
      * @param instanceTypes the instanceTypes value to set.
      * @return the KubernetesProperties object itself.
      */
@@ -227,19 +225,75 @@ public final class KubernetesProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (instanceTypes() != null) {
-            instanceTypes()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            instanceTypes().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("relayConnectionString", this.relayConnectionString);
+        jsonWriter.writeStringField("serviceBusConnectionString", this.serviceBusConnectionString);
+        jsonWriter.writeStringField("extensionPrincipalId", this.extensionPrincipalId);
+        jsonWriter.writeStringField("extensionInstanceReleaseTrain", this.extensionInstanceReleaseTrain);
+        jsonWriter.writeStringField("vcName", this.vcName);
+        jsonWriter.writeStringField("namespace", this.namespace);
+        jsonWriter.writeStringField("defaultInstanceType", this.defaultInstanceType);
+        jsonWriter.writeMapField("instanceTypes", this.instanceTypes, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KubernetesProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KubernetesProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KubernetesProperties.
+     */
+    public static KubernetesProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KubernetesProperties deserializedKubernetesProperties = new KubernetesProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("relayConnectionString".equals(fieldName)) {
+                    deserializedKubernetesProperties.relayConnectionString = reader.getString();
+                } else if ("serviceBusConnectionString".equals(fieldName)) {
+                    deserializedKubernetesProperties.serviceBusConnectionString = reader.getString();
+                } else if ("extensionPrincipalId".equals(fieldName)) {
+                    deserializedKubernetesProperties.extensionPrincipalId = reader.getString();
+                } else if ("extensionInstanceReleaseTrain".equals(fieldName)) {
+                    deserializedKubernetesProperties.extensionInstanceReleaseTrain = reader.getString();
+                } else if ("vcName".equals(fieldName)) {
+                    deserializedKubernetesProperties.vcName = reader.getString();
+                } else if ("namespace".equals(fieldName)) {
+                    deserializedKubernetesProperties.namespace = reader.getString();
+                } else if ("defaultInstanceType".equals(fieldName)) {
+                    deserializedKubernetesProperties.defaultInstanceType = reader.getString();
+                } else if ("instanceTypes".equals(fieldName)) {
+                    Map<String, InstanceTypeSchema> instanceTypes
+                        = reader.readMap(reader1 -> InstanceTypeSchema.fromJson(reader1));
+                    deserializedKubernetesProperties.instanceTypes = instanceTypes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKubernetesProperties;
+        });
     }
 }

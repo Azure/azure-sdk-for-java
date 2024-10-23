@@ -1,6 +1,6 @@
 # Release History
 
-## 1.14.0-beta.2 (Unreleased)
+## 1.15.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,68 @@
 ### Bugs Fixed
 
 ### Other Changes
+- `@Deprecated` methods `DefaultAzureCredential.setIntelliJKeePassDatabasePath` and `IntelliJCredentialBuilder.keePassDatabasePath`. [#42437](https://github.com/Azure/azure-sdk-for-java/pull/42437)
+
+## 1.14.0 (2024-10-03)
+
+### Features Added
+- Features now generally available from previous betas:
+  - Added object id support in `ManagedIdentityCredential`. It can be configured via `ManagedIdentityCredentialBuilder`.
+  - Added support for a client assertion in `OnBehalfOfCredential` [#40552](https://github.com/Azure/azure-sdk-for-java/pull/40552/files)
+
+### Breaking Changes
+- Breaking changes generally available from previous betas:
+  - Removed support in `IntelliJCredential` for legacy Azure Toolkit for IntelliJ versions. Please upgrade to latest if you are using 3.52 or below.
+
+### Bugs Fixed
+- Fixed the request sent in `AzurePipelinesCredential` so it doesn't result in a redirect response when an invalid system access token is provided. 
+
+### Other Changes
+- Allow certain response headers to be logged in `AzurePipelinesCredential` for diagnostics and include them in the exception message.
+- Mark `AzureAuthorityHosts.AZURE_GERMANY` deprecated as the Germany cloud closed in 2021. [#42148](https://github.com/Azure/azure-sdk-for-java/issues/42148)
+- Using msal4j's managed identity implementation is now on by default. (Added in 1.13.0-beta.1) 
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
+- Upgraded `msal4j` from `1.17.1` to version `1.17.2`.
+
+## 1.14.0-beta.2 (2024-09-20)
+
+### Features Added
+- Added object id support in `ManagedIdentityCredential`. It can be configured via `ManagedIdentityCredentialBuilder`.
+
+### Breaking Changes
+- Removed support in `IntelliJCredential` for legacy Azure Toolkit for IntelliJ versions. Please upgrade to latest if you are using 3.52 or below.
+
+### Bugs Fixed
+Fixed issue in `IntelliJCredential` blocking sign in [#39799](https://github.com/Azure/azure-sdk-for-java/issues/39799)
+
+## 1.13.3 (2024-09-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+- Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
+- Upgraded `azure-json` from `1.2.0` to version `1.3.0`.
+- Upgraded `msal4j` from `1.16.2` to version `1.17.1`.
+
+## 1.13.2 (2024-08-02)
+
+### Bugs Fixed
+- Fixed bugs in `AzurePowerShellCredential` - Fixed break on Windows related to ordering of parameters, and fixed [#41234](https://github.com/Azure/azure-sdk-for-java/issues/41234) (previously shipped in beta)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
+- Upgraded `azure-json` from `1.1.0` to version `1.2.0`.
+- Upgraded `msal4j` from `1.16.1` to version `1.16.2`.
 
 ## 1.14.0-beta.1 (2024-07-24)
 

@@ -18,8 +18,11 @@ public final class BuildServiceGetSupportedStackSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void buildServiceGetSupportedStack(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getBuildServices().getSupportedStackWithResponse(
-            "myResourceGroup", "myservice", "default", "io.buildpacks.stacks.bionic-base",
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getBuildServices()
+            .getSupportedStackWithResponse("myResourceGroup", "myservice", "default",
+                "io.buildpacks.stacks.bionic-base", com.azure.core.util.Context.NONE);
     }
 }

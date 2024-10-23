@@ -13,15 +13,15 @@ public final class SessionNetworkConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SessionNetworkConfiguration model
-            = BinaryData.fromString("{\"status\":\"EgressDisabled\"}").toObject(SessionNetworkConfiguration.class);
-        Assertions.assertEquals(SessionNetworkStatus.EGRESS_DISABLED, model.status());
+            = BinaryData.fromString("{\"status\":\"EgressEnabled\"}").toObject(SessionNetworkConfiguration.class);
+        Assertions.assertEquals(SessionNetworkStatus.EGRESS_ENABLED, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SessionNetworkConfiguration model
-            = new SessionNetworkConfiguration().withStatus(SessionNetworkStatus.EGRESS_DISABLED);
+            = new SessionNetworkConfiguration().withStatus(SessionNetworkStatus.EGRESS_ENABLED);
         model = BinaryData.fromObject(model).toObject(SessionNetworkConfiguration.class);
-        Assertions.assertEquals(SessionNetworkStatus.EGRESS_DISABLED, model.status());
+        Assertions.assertEquals(SessionNetworkStatus.EGRESS_ENABLED, model.status());
     }
 }

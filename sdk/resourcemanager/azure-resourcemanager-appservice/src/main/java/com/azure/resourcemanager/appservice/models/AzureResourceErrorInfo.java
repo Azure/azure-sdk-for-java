@@ -6,8 +6,10 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -18,13 +20,11 @@ public final class AzureResourceErrorInfo extends ErrorInfo {
     /*
      * The error message.
      */
-    @JsonProperty(value = "message", required = true)
     private String message;
 
     /*
      * The error details.
      */
-    @JsonProperty(value = "details")
     private List<AzureResourceErrorInfo> details;
 
     /**
@@ -35,7 +35,7 @@ public final class AzureResourceErrorInfo extends ErrorInfo {
 
     /**
      * Get the message property: The error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -44,7 +44,7 @@ public final class AzureResourceErrorInfo extends ErrorInfo {
 
     /**
      * Set the message property: The error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the AzureResourceErrorInfo object itself.
      */
@@ -55,7 +55,7 @@ public final class AzureResourceErrorInfo extends ErrorInfo {
 
     /**
      * Get the details property: The error details.
-     *
+     * 
      * @return the details value.
      */
     public List<AzureResourceErrorInfo> details() {
@@ -64,7 +64,7 @@ public final class AzureResourceErrorInfo extends ErrorInfo {
 
     /**
      * Set the details property: The error details.
-     *
+     * 
      * @param details the details value to set.
      * @return the AzureResourceErrorInfo object itself.
      */
@@ -84,7 +84,7 @@ public final class AzureResourceErrorInfo extends ErrorInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -100,4 +100,49 @@ public final class AzureResourceErrorInfo extends ErrorInfo {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureResourceErrorInfo.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", code());
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureResourceErrorInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureResourceErrorInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureResourceErrorInfo.
+     */
+    public static AzureResourceErrorInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureResourceErrorInfo deserializedAzureResourceErrorInfo = new AzureResourceErrorInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedAzureResourceErrorInfo.withCode(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedAzureResourceErrorInfo.message = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    List<AzureResourceErrorInfo> details
+                        = reader.readArray(reader1 -> AzureResourceErrorInfo.fromJson(reader1));
+                    deserializedAzureResourceErrorInfo.details = details;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureResourceErrorInfo;
+        });
+    }
 }

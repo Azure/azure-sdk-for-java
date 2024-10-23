@@ -6,7 +6,10 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The resourceId extended model. This is used to document failed resources with a resourceId and a corresponding error.
@@ -16,8 +19,12 @@ public final class ResourceReferenceExtended extends ResourceReference {
     /*
      * The error detail.
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
+
+    /*
+     * The resourceId of a resource managed by the deployment stack.
+     */
+    private String id;
 
     /**
      * Creates an instance of ResourceReferenceExtended class.
@@ -46,6 +53,16 @@ public final class ResourceReferenceExtended extends ResourceReference {
     }
 
     /**
+     * Get the id property: The resourceId of a resource managed by the deployment stack.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -53,5 +70,43 @@ public final class ResourceReferenceExtended extends ResourceReference {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceReferenceExtended from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceReferenceExtended if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceReferenceExtended.
+     */
+    public static ResourceReferenceExtended fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceReferenceExtended deserializedResourceReferenceExtended = new ResourceReferenceExtended();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedResourceReferenceExtended.id = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedResourceReferenceExtended.error = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceReferenceExtended;
+        });
     }
 }

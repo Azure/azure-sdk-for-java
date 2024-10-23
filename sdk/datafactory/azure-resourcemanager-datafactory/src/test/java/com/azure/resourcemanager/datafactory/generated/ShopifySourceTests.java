@@ -11,19 +11,19 @@ public final class ShopifySourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ShopifySource model = BinaryData.fromString(
-            "{\"type\":\"ShopifySource\",\"query\":\"datajckgwtbfxxsfjnba\",\"queryTimeout\":\"datajighmkds\",\"additionalColumns\":\"datayyhtiyxehmn\",\"sourceRetryCount\":\"dataoy\",\"sourceRetryWait\":\"dataehkytl\",\"maxConcurrentConnections\":\"datamyznwrcfqwkqul\",\"disableMetricsCollection\":\"dataovqohwiw\",\"\":{\"sjjjcd\":\"dataxjxlssosndnypx\",\"xb\":\"datasvgdbfni\",\"jgczpdio\":\"datasjhpm\",\"cwmabehr\":\"datadtjylimzvjwjhmtc\"}}")
+            "{\"type\":\"ShopifySource\",\"query\":\"datadtq\",\"queryTimeout\":\"datajbxol\",\"additionalColumns\":\"datahquqihgibog\",\"sourceRetryCount\":\"datajupenoupcolxc\",\"sourceRetryWait\":\"dataszwadesisd\",\"maxConcurrentConnections\":\"datauhqts\",\"disableMetricsCollection\":\"datab\",\"\":{\"bymrgelgoduexx\":\"dataeeucvv\",\"fr\":\"datad\",\"wqzvqtnozwphka\":\"dataenvkqtvtq\",\"bzbbjxkami\":\"dataracvcbrtltpo\"}}")
             .toObject(ShopifySource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ShopifySource model = new ShopifySource().withSourceRetryCount("dataoy")
-            .withSourceRetryWait("dataehkytl")
-            .withMaxConcurrentConnections("datamyznwrcfqwkqul")
-            .withDisableMetricsCollection("dataovqohwiw")
-            .withQueryTimeout("datajighmkds")
-            .withAdditionalColumns("datayyhtiyxehmn")
-            .withQuery("datajckgwtbfxxsfjnba");
+        ShopifySource model = new ShopifySource().withSourceRetryCount("datajupenoupcolxc")
+            .withSourceRetryWait("dataszwadesisd")
+            .withMaxConcurrentConnections("datauhqts")
+            .withDisableMetricsCollection("datab")
+            .withQueryTimeout("datajbxol")
+            .withAdditionalColumns("datahquqihgibog")
+            .withQuery("datadtq");
         model = BinaryData.fromObject(model).toObject(ShopifySource.class);
     }
 }

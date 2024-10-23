@@ -5,47 +5,49 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** choiceColumn. */
+/**
+ * choiceColumn.
+ */
 @Fluent
-public final class MicrosoftGraphChoiceColumn {
+public final class MicrosoftGraphChoiceColumn implements JsonSerializable<MicrosoftGraphChoiceColumn> {
     /*
      * If true, allows custom values that aren't in the configured choices.
      */
-    @JsonProperty(value = "allowTextEntry")
     private Boolean allowTextEntry;
 
     /*
      * The list of values available for this column.
      */
-    @JsonProperty(value = "choices")
     private List<String> choices;
 
     /*
      * How the choices are to be presented in the UX. Must be one of checkBoxes, dropDownMenu, or radioButtons
      */
-    @JsonProperty(value = "displayAs")
     private String displayAs;
 
     /*
      * choiceColumn
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphChoiceColumn class. */
+    /**
+     * Creates an instance of MicrosoftGraphChoiceColumn class.
+     */
     public MicrosoftGraphChoiceColumn() {
     }
 
     /**
      * Get the allowTextEntry property: If true, allows custom values that aren't in the configured choices.
-     *
+     * 
      * @return the allowTextEntry value.
      */
     public Boolean allowTextEntry() {
@@ -54,7 +56,7 @@ public final class MicrosoftGraphChoiceColumn {
 
     /**
      * Set the allowTextEntry property: If true, allows custom values that aren't in the configured choices.
-     *
+     * 
      * @param allowTextEntry the allowTextEntry value to set.
      * @return the MicrosoftGraphChoiceColumn object itself.
      */
@@ -65,7 +67,7 @@ public final class MicrosoftGraphChoiceColumn {
 
     /**
      * Get the choices property: The list of values available for this column.
-     *
+     * 
      * @return the choices value.
      */
     public List<String> choices() {
@@ -74,7 +76,7 @@ public final class MicrosoftGraphChoiceColumn {
 
     /**
      * Set the choices property: The list of values available for this column.
-     *
+     * 
      * @param choices the choices value to set.
      * @return the MicrosoftGraphChoiceColumn object itself.
      */
@@ -86,7 +88,7 @@ public final class MicrosoftGraphChoiceColumn {
     /**
      * Get the displayAs property: How the choices are to be presented in the UX. Must be one of checkBoxes,
      * dropDownMenu, or radioButtons.
-     *
+     * 
      * @return the displayAs value.
      */
     public String displayAs() {
@@ -96,7 +98,7 @@ public final class MicrosoftGraphChoiceColumn {
     /**
      * Set the displayAs property: How the choices are to be presented in the UX. Must be one of checkBoxes,
      * dropDownMenu, or radioButtons.
-     *
+     * 
      * @param displayAs the displayAs value to set.
      * @return the MicrosoftGraphChoiceColumn object itself.
      */
@@ -107,17 +109,16 @@ public final class MicrosoftGraphChoiceColumn {
 
     /**
      * Get the additionalProperties property: choiceColumn.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: choiceColumn.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphChoiceColumn object itself.
      */
@@ -126,19 +127,65 @@ public final class MicrosoftGraphChoiceColumn {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("allowTextEntry", this.allowTextEntry);
+        jsonWriter.writeArrayField("choices", this.choices, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("displayAs", this.displayAs);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphChoiceColumn from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphChoiceColumn if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphChoiceColumn.
+     */
+    public static MicrosoftGraphChoiceColumn fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphChoiceColumn deserializedMicrosoftGraphChoiceColumn = new MicrosoftGraphChoiceColumn();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowTextEntry".equals(fieldName)) {
+                    deserializedMicrosoftGraphChoiceColumn.allowTextEntry = reader.getNullable(JsonReader::getBoolean);
+                } else if ("choices".equals(fieldName)) {
+                    List<String> choices = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphChoiceColumn.choices = choices;
+                } else if ("displayAs".equals(fieldName)) {
+                    deserializedMicrosoftGraphChoiceColumn.displayAs = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphChoiceColumn.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphChoiceColumn;
+        });
     }
 }

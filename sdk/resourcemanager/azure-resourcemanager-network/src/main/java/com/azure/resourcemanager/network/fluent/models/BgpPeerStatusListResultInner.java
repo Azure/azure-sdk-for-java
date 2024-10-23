@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.BgpPeerStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Response for list BGP peer status API service call.
  */
 @Fluent
-public final class BgpPeerStatusListResultInner {
+public final class BgpPeerStatusListResultInner implements JsonSerializable<BgpPeerStatusListResultInner> {
     /*
      * List of BGP peers.
      */
-    @JsonProperty(value = "value")
     private List<BgpPeerStatus> value;
 
     /**
@@ -55,5 +58,42 @@ public final class BgpPeerStatusListResultInner {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BgpPeerStatusListResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BgpPeerStatusListResultInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BgpPeerStatusListResultInner.
+     */
+    public static BgpPeerStatusListResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BgpPeerStatusListResultInner deserializedBgpPeerStatusListResultInner = new BgpPeerStatusListResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<BgpPeerStatus> value = reader.readArray(reader1 -> BgpPeerStatus.fromJson(reader1));
+                    deserializedBgpPeerStatusListResultInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBgpPeerStatusListResultInner;
+        });
     }
 }

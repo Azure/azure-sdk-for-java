@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -44,5 +48,49 @@ public final class ClusterInstanceViewResultProperties extends ClusterInstanceVi
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("status", status());
+        jsonWriter.writeArrayField("serviceStatuses", serviceStatuses(),
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterInstanceViewResultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterInstanceViewResultProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterInstanceViewResultProperties.
+     */
+    public static ClusterInstanceViewResultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterInstanceViewResultProperties deserializedClusterInstanceViewResultProperties
+                = new ClusterInstanceViewResultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedClusterInstanceViewResultProperties
+                        .withStatus(ClusterInstanceViewPropertiesStatus.fromJson(reader));
+                } else if ("serviceStatuses".equals(fieldName)) {
+                    List<ServiceStatus> serviceStatuses = reader.readArray(reader1 -> ServiceStatus.fromJson(reader1));
+                    deserializedClusterInstanceViewResultProperties.withServiceStatuses(serviceStatuses);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterInstanceViewResultProperties;
+        });
     }
 }

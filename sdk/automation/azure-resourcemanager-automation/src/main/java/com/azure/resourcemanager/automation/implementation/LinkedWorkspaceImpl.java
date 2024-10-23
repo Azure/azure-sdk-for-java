@@ -12,8 +12,8 @@ public final class LinkedWorkspaceImpl implements LinkedWorkspace {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    LinkedWorkspaceImpl(
-        LinkedWorkspaceInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    LinkedWorkspaceImpl(LinkedWorkspaceInner innerObject,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

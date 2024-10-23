@@ -6,19 +6,23 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes the properties of the load balancer configuration.
  */
 @Fluent
-public final class LoadBalancerConfigurationProperties {
+public final class LoadBalancerConfigurationProperties
+    implements JsonSerializable<LoadBalancerConfigurationProperties> {
     /*
      * Specifies the frontend IP to be used for the load balancer. Only IPv4 frontend IP address is supported. Each load
      * balancer configuration must have exactly one frontend IP configuration.
      */
-    @JsonProperty(value = "frontendIpConfigurations", required = true)
     private List<LoadBalancerFrontendIpConfiguration> frontendIpConfigurations;
 
     /**
@@ -68,4 +72,45 @@ public final class LoadBalancerConfigurationProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LoadBalancerConfigurationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("frontendIpConfigurations", this.frontendIpConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LoadBalancerConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LoadBalancerConfigurationProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LoadBalancerConfigurationProperties.
+     */
+    public static LoadBalancerConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LoadBalancerConfigurationProperties deserializedLoadBalancerConfigurationProperties
+                = new LoadBalancerConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("frontendIpConfigurations".equals(fieldName)) {
+                    List<LoadBalancerFrontendIpConfiguration> frontendIpConfigurations
+                        = reader.readArray(reader1 -> LoadBalancerFrontendIpConfiguration.fromJson(reader1));
+                    deserializedLoadBalancerConfigurationProperties.frontendIpConfigurations = frontendIpConfigurations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLoadBalancerConfigurationProperties;
+        });
+    }
 }

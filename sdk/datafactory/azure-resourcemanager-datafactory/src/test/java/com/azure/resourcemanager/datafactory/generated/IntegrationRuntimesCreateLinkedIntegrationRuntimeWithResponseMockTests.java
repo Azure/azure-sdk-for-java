@@ -21,7 +21,7 @@ public final class IntegrationRuntimesCreateLinkedIntegrationRuntimeWithResponse
     @Test
     public void testCreateLinkedIntegrationRuntimeWithResponse() throws Exception {
         String responseStr
-            = "{\"name\":\"iaognmanrzjprlq\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"wpejtszjbvjcvw\",\"state\":\"Started\",\"\":{\"hxwwhusrodr\":\"dataowzclijmd\",\"wkwmq\":\"datamozafwqmo\"}}}";
+            = "{\"name\":\"z\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"hmkoxsavzngpaw\",\"state\":\"Started\",\"\":{\"fz\":\"datac\",\"zr\":\"dataqqtpwhicnnan\",\"puzxinw\":\"datalbdptmzsdwxls\",\"zdfpeauhld\":\"datauqzjr\"}}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class IntegrationRuntimesCreateLinkedIntegrationRuntimeWithResponse
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IntegrationRuntimeStatusResponse response = manager.integrationRuntimes()
-            .createLinkedIntegrationRuntimeWithResponse("taeallsxfzantssb", "moq", "j",
-                new CreateLinkedIntegrationRuntimeRequest().withName("hmxkgxrfrm")
-                    .withSubscriptionId("wpzuxoynxlkloqp")
-                    .withDataFactoryName("aqcrefk")
-                    .withDataFactoryLocation("dnzowpvrwecr"),
+            .createLinkedIntegrationRuntimeWithResponse("usln", "qyknsdwc", "yagidyansnun",
+                new CreateLinkedIntegrationRuntimeRequest().withName("qtvg")
+                    .withSubscriptionId("erbnbsdyvrds")
+                    .withDataFactoryName("jgtqqrmi")
+                    .withDataFactoryLocation("nmxspzti"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

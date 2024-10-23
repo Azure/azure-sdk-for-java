@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The response from the List Managed Clusters operation.
  */
 @Fluent
-public final class ManagedClusterListResult {
+public final class ManagedClusterListResult implements JsonSerializable<ManagedClusterListResult> {
     /*
      * The list of managed clusters.
      */
-    @JsonProperty(value = "value")
     private List<ManagedClusterInner> value;
 
     /*
      * The URL to get the next set of managed cluster results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -70,5 +72,45 @@ public final class ManagedClusterListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedClusterListResult.
+     */
+    public static ManagedClusterListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterListResult deserializedManagedClusterListResult = new ManagedClusterListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ManagedClusterInner> value
+                        = reader.readArray(reader1 -> ManagedClusterInner.fromJson(reader1));
+                    deserializedManagedClusterListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedManagedClusterListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterListResult;
+        });
     }
 }

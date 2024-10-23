@@ -5,38 +5,38 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.KeyVaultSecretReference;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes the properties of a Virtual Machine Extension.
  */
 @Fluent
-public final class VirtualMachineExtensionProperties {
+public final class VirtualMachineExtensionProperties implements JsonSerializable<VirtualMachineExtensionProperties> {
     /*
      * How the extension handler should be forced to update even if the extension configuration has not changed.
      */
-    @JsonProperty(value = "forceUpdateTag")
     private String forceUpdateTag;
 
     /*
      * The name of the extension handler publisher.
      */
-    @JsonProperty(value = "publisher")
     private String publisher;
 
     /*
      * Specifies the type of the extension; an example is "CustomScriptExtension".
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Specifies the version of the script handler.
      */
-    @JsonProperty(value = "typeHandlerVersion")
     private String typeHandlerVersion;
 
     /*
@@ -44,58 +44,49 @@ public final class VirtualMachineExtensionProperties {
      * deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set
      * to true.
      */
-    @JsonProperty(value = "autoUpgradeMinorVersion")
     private Boolean autoUpgradeMinorVersion;
 
     /*
      * Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of
      * the extension available.
      */
-    @JsonProperty(value = "enableAutomaticUpgrade")
     private Boolean enableAutomaticUpgrade;
 
     /*
      * Json formatted public settings for the extension.
      */
-    @JsonProperty(value = "settings")
     private Object settings;
 
     /*
      * The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at
      * all.
      */
-    @JsonProperty(value = "protectedSettings")
     private Object protectedSettings;
 
     /*
      * The provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The virtual machine extension instance view.
      */
-    @JsonProperty(value = "instanceView")
     private VirtualMachineExtensionInstanceView instanceView;
 
     /*
      * Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not
      * connecting to the VM will not be suppressed regardless of this value). The default is false.
      */
-    @JsonProperty(value = "suppressFailures")
     private Boolean suppressFailures;
 
     /*
      * The extensions protected settings that are passed by reference, and consumed from key vault
      */
-    @JsonProperty(value = "protectedSettingsFromKeyVault")
     private KeyVaultSecretReference protectedSettingsFromKeyVault;
 
     /*
      * Collection of extension names after which this extension needs to be provisioned.
      */
-    @JsonProperty(value = "provisionAfterExtensions")
     private List<String> provisionAfterExtensions;
 
     /**
@@ -384,5 +375,84 @@ public final class VirtualMachineExtensionProperties {
         if (protectedSettingsFromKeyVault() != null) {
             protectedSettingsFromKeyVault().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("forceUpdateTag", this.forceUpdateTag);
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("typeHandlerVersion", this.typeHandlerVersion);
+        jsonWriter.writeBooleanField("autoUpgradeMinorVersion", this.autoUpgradeMinorVersion);
+        jsonWriter.writeBooleanField("enableAutomaticUpgrade", this.enableAutomaticUpgrade);
+        jsonWriter.writeUntypedField("settings", this.settings);
+        jsonWriter.writeUntypedField("protectedSettings", this.protectedSettings);
+        jsonWriter.writeJsonField("instanceView", this.instanceView);
+        jsonWriter.writeBooleanField("suppressFailures", this.suppressFailures);
+        jsonWriter.writeJsonField("protectedSettingsFromKeyVault", this.protectedSettingsFromKeyVault);
+        jsonWriter.writeArrayField("provisionAfterExtensions", this.provisionAfterExtensions,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineExtensionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineExtensionProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineExtensionProperties.
+     */
+    public static VirtualMachineExtensionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineExtensionProperties deserializedVirtualMachineExtensionProperties
+                = new VirtualMachineExtensionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("forceUpdateTag".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionProperties.forceUpdateTag = reader.getString();
+                } else if ("publisher".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionProperties.publisher = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionProperties.type = reader.getString();
+                } else if ("typeHandlerVersion".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionProperties.typeHandlerVersion = reader.getString();
+                } else if ("autoUpgradeMinorVersion".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionProperties.autoUpgradeMinorVersion
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableAutomaticUpgrade".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionProperties.enableAutomaticUpgrade
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("settings".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionProperties.settings = reader.readUntyped();
+                } else if ("protectedSettings".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionProperties.protectedSettings = reader.readUntyped();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionProperties.provisioningState = reader.getString();
+                } else if ("instanceView".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionProperties.instanceView
+                        = VirtualMachineExtensionInstanceView.fromJson(reader);
+                } else if ("suppressFailures".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionProperties.suppressFailures
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("protectedSettingsFromKeyVault".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionProperties.protectedSettingsFromKeyVault
+                        = KeyVaultSecretReference.fromJson(reader);
+                } else if ("provisionAfterExtensions".equals(fieldName)) {
+                    List<String> provisionAfterExtensions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualMachineExtensionProperties.provisionAfterExtensions = provisionAfterExtensions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineExtensionProperties;
+        });
     }
 }

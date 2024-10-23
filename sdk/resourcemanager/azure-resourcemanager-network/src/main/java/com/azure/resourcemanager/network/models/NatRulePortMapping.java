@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Individual port mappings for inbound NAT rule created for backend pool.
  */
 @Fluent
-public final class NatRulePortMapping {
+public final class NatRulePortMapping implements JsonSerializable<NatRulePortMapping> {
     /*
      * Name of inbound NAT rule.
      */
-    @JsonProperty(value = "inboundNatRuleName")
     private String inboundNatRuleName;
 
     /*
      * Frontend port.
      */
-    @JsonProperty(value = "frontendPort")
     private Integer frontendPort;
 
     /*
      * Backend port.
      */
-    @JsonProperty(value = "backendPort")
     private Integer backendPort;
 
     /**
@@ -102,5 +103,47 @@ public final class NatRulePortMapping {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("inboundNatRuleName", this.inboundNatRuleName);
+        jsonWriter.writeNumberField("frontendPort", this.frontendPort);
+        jsonWriter.writeNumberField("backendPort", this.backendPort);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NatRulePortMapping from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NatRulePortMapping if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NatRulePortMapping.
+     */
+    public static NatRulePortMapping fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NatRulePortMapping deserializedNatRulePortMapping = new NatRulePortMapping();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("inboundNatRuleName".equals(fieldName)) {
+                    deserializedNatRulePortMapping.inboundNatRuleName = reader.getString();
+                } else if ("frontendPort".equals(fieldName)) {
+                    deserializedNatRulePortMapping.frontendPort = reader.getNullable(JsonReader::getInt);
+                } else if ("backendPort".equals(fieldName)) {
+                    deserializedNatRulePortMapping.backendPort = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNatRulePortMapping;
+        });
     }
 }

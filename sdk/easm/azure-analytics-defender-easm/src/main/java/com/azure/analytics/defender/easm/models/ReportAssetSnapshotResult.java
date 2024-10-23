@@ -5,56 +5,56 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
- * A snapshot of assets captured daily for the provided metric. Asset details only contain primary properties.
- * Detailed asset data can be retrieved from the asset endpoints.
+ * A snapshot of assets captured daily for the provided metric. Asset details only contain primary properties. Detailed
+ * asset data can be retrieved from the asset endpoints.
  */
 @Immutable
-public final class ReportAssetSnapshotResult {
+public final class ReportAssetSnapshotResult implements JsonSerializable<ReportAssetSnapshotResult> {
 
     /*
      * The name of the metric.
      */
     @Generated
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The unique metric name.
      */
     @Generated
-    @JsonProperty(value = "metric")
     private String metric;
 
     /*
      * The customer label that was filtered on, if one was provided.
      */
     @Generated
-    @JsonProperty(value = "labelName")
     private String labelName;
 
     /*
      * The last time this asset data was updated on this metric.
      */
     @Generated
-    @JsonProperty(value = "updatedAt")
     private OffsetDateTime updatedAt;
 
     /*
      * A description of what the metric represents.
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The page of assets that match the provided metric.
      */
     @Generated
-    @JsonProperty(value = "assets")
     private AssetPageResult assets;
 
     /**
@@ -122,5 +122,58 @@ public final class ReportAssetSnapshotResult {
     @Generated
     public AssetPageResult getAssets() {
         return this.assets;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("metric", this.metric);
+        jsonWriter.writeStringField("labelName", this.labelName);
+        jsonWriter.writeStringField("updatedAt",
+            this.updatedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.updatedAt));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("assets", this.assets);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReportAssetSnapshotResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReportAssetSnapshotResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReportAssetSnapshotResult.
+     */
+    @Generated
+    public static ReportAssetSnapshotResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReportAssetSnapshotResult deserializedReportAssetSnapshotResult = new ReportAssetSnapshotResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("displayName".equals(fieldName)) {
+                    deserializedReportAssetSnapshotResult.displayName = reader.getString();
+                } else if ("metric".equals(fieldName)) {
+                    deserializedReportAssetSnapshotResult.metric = reader.getString();
+                } else if ("labelName".equals(fieldName)) {
+                    deserializedReportAssetSnapshotResult.labelName = reader.getString();
+                } else if ("updatedAt".equals(fieldName)) {
+                    deserializedReportAssetSnapshotResult.updatedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedReportAssetSnapshotResult.description = reader.getString();
+                } else if ("assets".equals(fieldName)) {
+                    deserializedReportAssetSnapshotResult.assets = AssetPageResult.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedReportAssetSnapshotResult;
+        });
     }
 }

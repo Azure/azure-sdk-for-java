@@ -9,7 +9,8 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class ManagementLocksListByScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2017-04-01/examples/ManagementLocks_ListAtScope.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2017-04-01/examples/
+     * ManagementLocks_ListAtScope.json
      */
     /**
      * Sample code: List management locks at scope.

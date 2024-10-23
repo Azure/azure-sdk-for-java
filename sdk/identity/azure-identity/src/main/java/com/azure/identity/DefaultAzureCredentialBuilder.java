@@ -20,12 +20,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
 /**
- * <p>Fluent credential builder for instantiating a {@link DefaultAzureCredential}.</p>
- *
- * <p>The {@link DefaultAzureCredential} is appropriate for most scenarios where the application is intended to
- * ultimately be run in Azure. DefaultAzureCredential combines credentials that are commonly used to authenticate when
- * deployed, with credentials that are used to authenticate in a development environment.
- * The {@link DefaultAzureCredential} will attempt to authenticate via the following mechanisms in order.</p>
+ * <p>Fluent credential builder for instantiating {@link DefaultAzureCredential}.</p>
  *
  * <p><strong>Sample: Construct DefaultAzureCredential</strong></p>
  *
@@ -35,26 +30,24 @@ import java.util.concurrent.ForkJoinPool;
  *
  * <!-- src_embed com.azure.identity.credential.defaultazurecredential.construct -->
  * <pre>
- * TokenCredential defaultAzureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential defaultAzureCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.defaultazurecredential.construct -->
  *
- * <p><strong>Sample: Construct DefaultAzureCredential with User Assigned Managed Identity </strong></p>
+ * <p><strong>Sample: Construct DefaultAzureCredential with User-Assigned Managed Identity </strong></p>
  *
  * <p>User-Assigned Managed Identity (UAMI) in Azure is a feature that allows you to create an identity in
  * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a> that is
  * associated with one or more Azure resources. This identity can then be used to authenticate and
  * authorize access to various Azure services and resources. The following code sample demonstrates the creation of
- * a {@link DefaultAzureCredential} to target a user assigned managed identity, using the DefaultAzureCredentialBuilder
+ * a {@link DefaultAzureCredential} to target a user-assigned managed identity, using the DefaultAzureCredentialBuilder
  * to configure it. Once this credential is created, it may be passed into the builder of many of the
  * Azure SDK for Java client builders as the 'credential' parameter.</p>
  *
  * <!-- src_embed com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity -->
  * <pre>
- * TokenCredential dacWithUserAssignedManagedIdentity = new DefaultAzureCredentialBuilder&#40;&#41;
- *     .managedIdentityClientId&#40;&quot;&lt;Managed-Identity-Client-Id&quot;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential dacWithUserAssignedManagedIdentity
+ *     = new DefaultAzureCredentialBuilder&#40;&#41;.managedIdentityClientId&#40;&quot;&lt;Managed-Identity-Client-Id&quot;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity -->
  *
@@ -115,7 +108,10 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * @param databasePath the path to the KeePass database.
      * @throws IllegalArgumentException if {@code databasePath} is either not specified or is empty.
      * @return An updated instance of this builder with the KeePass database path set as specified.
+     * @deprecated Support for older Azure Toolkit for IntelliJ versions was
+     * <a href="https://aka.ms/azsdk/java/identity/intellij-credential-update">removed in 1.14.0.</a>
      */
+    @Deprecated
     public DefaultAzureCredentialBuilder intelliJKeePassDatabasePath(String databasePath) {
         if (CoreUtils.isNullOrEmpty(databasePath)) {
             throw LOGGER.logExceptionAsError(
@@ -254,10 +250,12 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      */
     public DefaultAzureCredential build() {
         loadFallbackValuesFromEnvironment();
+
         if (managedIdentityClientId != null && managedIdentityResourceId != null) {
             throw LOGGER.logExceptionAsError(
-                new IllegalStateException("Only one of managedIdentityResourceId and managedIdentityClientId can be specified."));
+                new IllegalStateException("Only one of managedIdentityClientId and managedIdentityResourceId can be specified."));
         }
+
         if (!CoreUtils.isNullOrEmpty(additionallyAllowedTenants)) {
             identityClientOptions.setAdditionallyAllowedTenants(additionallyAllowedTenants);
         }
@@ -275,7 +273,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(8);
         output.add(new EnvironmentCredential(identityClientOptions.clone()));
         output.add(getWorkloadIdentityCredential());
-        output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, identityClientOptions.clone()));
+        output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, null, identityClientOptions.clone()));
         output.add(new SharedTokenCacheCredential(null, IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID,
             tenantId, identityClientOptions.clone()));
         output.add(new IntelliJCredential(tenantId, identityClientOptions.clone()));

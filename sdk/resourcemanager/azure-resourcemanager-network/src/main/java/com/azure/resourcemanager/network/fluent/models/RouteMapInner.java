@@ -6,9 +6,12 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RouteMapRule;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -19,25 +22,21 @@ public final class RouteMapInner extends SubResource {
     /*
      * Properties of the RouteMap resource.
      */
-    @JsonProperty(value = "properties")
     private RouteMapProperties innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -183,5 +182,50 @@ public final class RouteMapInner extends SubResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RouteMapInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RouteMapInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RouteMapInner.
+     */
+    public static RouteMapInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RouteMapInner deserializedRouteMapInner = new RouteMapInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRouteMapInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRouteMapInner.innerProperties = RouteMapProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedRouteMapInner.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedRouteMapInner.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRouteMapInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRouteMapInner;
+        });
     }
 }

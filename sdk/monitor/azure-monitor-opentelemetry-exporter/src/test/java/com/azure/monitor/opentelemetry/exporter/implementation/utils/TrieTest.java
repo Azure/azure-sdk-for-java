@@ -11,8 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class TrieTest {
     @Test
     void shouldMatchExactString() {
-        Trie<Integer> trie =
-            Trie.<Integer>newBuilder().put("abc", 0).put("abcd", 10).put("abcde", 20).build();
+        Trie<Integer> trie = Trie.<Integer>newBuilder().put("abc", 0).put("abcd", 10).put("abcde", 20).build();
 
         assertThat(trie.getOrNull("ab")).isNull();
         assertEquals(0, trie.getOrNull("abc"));
@@ -22,8 +21,7 @@ class TrieTest {
 
     @Test
     void shouldReturnLastMatchedValue() {
-        Trie<Integer> trie =
-            Trie.<Integer>newBuilder().put("abc", 0).put("abcde", 10).put("abcdfgh", 20).build();
+        Trie<Integer> trie = Trie.<Integer>newBuilder().put("abc", 0).put("abcde", 10).put("abcdfgh", 20).build();
 
         assertThat(trie.getOrNull("ababababa")).isNull();
         assertEquals(0, trie.getOrNull("abcd"));

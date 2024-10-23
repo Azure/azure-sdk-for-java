@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -16,90 +19,75 @@ import java.util.Map;
  * Function App runtime settings.
  */
 @Immutable
-public final class FunctionAppRuntimeSettings {
+public final class FunctionAppRuntimeSettings implements JsonSerializable<FunctionAppRuntimeSettings> {
     /*
      * Function App stack minor version (runtime only).
      */
-    @JsonProperty(value = "runtimeVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String runtimeVersion;
 
     /*
      * <code>true</code> if remote debugging is supported for the stack; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "remoteDebuggingSupported", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean remoteDebuggingSupported;
 
     /*
      * Application Insights settings associated with the minor version.
      */
-    @JsonProperty(value = "appInsightsSettings", access = JsonProperty.Access.WRITE_ONLY)
     private AppInsightsWebAppStackSettings appInsightsSettings;
 
     /*
      * GitHub Actions settings associated with the minor version.
      */
-    @JsonProperty(value = "gitHubActionSettings", access = JsonProperty.Access.WRITE_ONLY)
     private GitHubActionWebAppStackSettings gitHubActionSettings;
 
     /*
      * Application settings associated with the minor version.
      */
-    @JsonProperty(value = "appSettingsDictionary", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> appSettingsDictionary;
 
     /*
      * Configuration settings associated with the minor version.
      */
-    @JsonProperty(value = "siteConfigPropertiesDictionary", access = JsonProperty.Access.WRITE_ONLY)
     private SiteConfigPropertiesDictionary siteConfigPropertiesDictionary;
 
     /*
      * List of supported Functions extension versions.
      */
-    @JsonProperty(value = "supportedFunctionsExtensionVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> supportedFunctionsExtensionVersions;
 
     /*
      * <code>true</code> if the stack is in preview; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isPreview", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isPreview;
 
     /*
      * <code>true</code> if the stack is deprecated; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isDeprecated", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDeprecated;
 
     /*
      * <code>true</code> if the stack should be hidden; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isHidden", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isHidden;
 
     /*
      * End-of-life date for the minor version.
      */
-    @JsonProperty(value = "endOfLifeDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endOfLifeDate;
 
     /*
      * <code>true</code> if the stack version is auto-updated; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isAutoUpdate", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isAutoUpdate;
 
     /*
      * <code>true</code> if the minor version is early-access; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isEarlyAccess", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isEarlyAccess;
 
     /*
      * <code>true</code> if the minor version the default; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isDefault", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDefault;
 
     /**
@@ -110,7 +98,7 @@ public final class FunctionAppRuntimeSettings {
 
     /**
      * Get the runtimeVersion property: Function App stack minor version (runtime only).
-     *
+     * 
      * @return the runtimeVersion value.
      */
     public String runtimeVersion() {
@@ -120,7 +108,7 @@ public final class FunctionAppRuntimeSettings {
     /**
      * Get the remoteDebuggingSupported property: &lt;code&gt;true&lt;/code&gt; if remote debugging is supported for the
      * stack; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the remoteDebuggingSupported value.
      */
     public Boolean remoteDebuggingSupported() {
@@ -129,7 +117,7 @@ public final class FunctionAppRuntimeSettings {
 
     /**
      * Get the appInsightsSettings property: Application Insights settings associated with the minor version.
-     *
+     * 
      * @return the appInsightsSettings value.
      */
     public AppInsightsWebAppStackSettings appInsightsSettings() {
@@ -138,7 +126,7 @@ public final class FunctionAppRuntimeSettings {
 
     /**
      * Get the gitHubActionSettings property: GitHub Actions settings associated with the minor version.
-     *
+     * 
      * @return the gitHubActionSettings value.
      */
     public GitHubActionWebAppStackSettings gitHubActionSettings() {
@@ -147,7 +135,7 @@ public final class FunctionAppRuntimeSettings {
 
     /**
      * Get the appSettingsDictionary property: Application settings associated with the minor version.
-     *
+     * 
      * @return the appSettingsDictionary value.
      */
     public Map<String, String> appSettingsDictionary() {
@@ -156,7 +144,7 @@ public final class FunctionAppRuntimeSettings {
 
     /**
      * Get the siteConfigPropertiesDictionary property: Configuration settings associated with the minor version.
-     *
+     * 
      * @return the siteConfigPropertiesDictionary value.
      */
     public SiteConfigPropertiesDictionary siteConfigPropertiesDictionary() {
@@ -165,7 +153,7 @@ public final class FunctionAppRuntimeSettings {
 
     /**
      * Get the supportedFunctionsExtensionVersions property: List of supported Functions extension versions.
-     *
+     * 
      * @return the supportedFunctionsExtensionVersions value.
      */
     public List<String> supportedFunctionsExtensionVersions() {
@@ -175,7 +163,7 @@ public final class FunctionAppRuntimeSettings {
     /**
      * Get the isPreview property: &lt;code&gt;true&lt;/code&gt; if the stack is in preview; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isPreview value.
      */
     public Boolean isPreview() {
@@ -185,7 +173,7 @@ public final class FunctionAppRuntimeSettings {
     /**
      * Get the isDeprecated property: &lt;code&gt;true&lt;/code&gt; if the stack is deprecated; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isDeprecated value.
      */
     public Boolean isDeprecated() {
@@ -195,7 +183,7 @@ public final class FunctionAppRuntimeSettings {
     /**
      * Get the isHidden property: &lt;code&gt;true&lt;/code&gt; if the stack should be hidden; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isHidden value.
      */
     public Boolean isHidden() {
@@ -204,7 +192,7 @@ public final class FunctionAppRuntimeSettings {
 
     /**
      * Get the endOfLifeDate property: End-of-life date for the minor version.
-     *
+     * 
      * @return the endOfLifeDate value.
      */
     public OffsetDateTime endOfLifeDate() {
@@ -214,7 +202,7 @@ public final class FunctionAppRuntimeSettings {
     /**
      * Get the isAutoUpdate property: &lt;code&gt;true&lt;/code&gt; if the stack version is auto-updated; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isAutoUpdate value.
      */
     public Boolean isAutoUpdate() {
@@ -224,7 +212,7 @@ public final class FunctionAppRuntimeSettings {
     /**
      * Get the isEarlyAccess property: &lt;code&gt;true&lt;/code&gt; if the minor version is early-access; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isEarlyAccess value.
      */
     public Boolean isEarlyAccess() {
@@ -234,7 +222,7 @@ public final class FunctionAppRuntimeSettings {
     /**
      * Get the isDefault property: &lt;code&gt;true&lt;/code&gt; if the minor version the default; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isDefault value.
      */
     public Boolean isDefault() {
@@ -243,7 +231,7 @@ public final class FunctionAppRuntimeSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -256,5 +244,74 @@ public final class FunctionAppRuntimeSettings {
         if (siteConfigPropertiesDictionary() != null) {
             siteConfigPropertiesDictionary().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FunctionAppRuntimeSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FunctionAppRuntimeSettings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FunctionAppRuntimeSettings.
+     */
+    public static FunctionAppRuntimeSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FunctionAppRuntimeSettings deserializedFunctionAppRuntimeSettings = new FunctionAppRuntimeSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("runtimeVersion".equals(fieldName)) {
+                    deserializedFunctionAppRuntimeSettings.runtimeVersion = reader.getString();
+                } else if ("remoteDebuggingSupported".equals(fieldName)) {
+                    deserializedFunctionAppRuntimeSettings.remoteDebuggingSupported
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("appInsightsSettings".equals(fieldName)) {
+                    deserializedFunctionAppRuntimeSettings.appInsightsSettings
+                        = AppInsightsWebAppStackSettings.fromJson(reader);
+                } else if ("gitHubActionSettings".equals(fieldName)) {
+                    deserializedFunctionAppRuntimeSettings.gitHubActionSettings
+                        = GitHubActionWebAppStackSettings.fromJson(reader);
+                } else if ("appSettingsDictionary".equals(fieldName)) {
+                    Map<String, String> appSettingsDictionary = reader.readMap(reader1 -> reader1.getString());
+                    deserializedFunctionAppRuntimeSettings.appSettingsDictionary = appSettingsDictionary;
+                } else if ("siteConfigPropertiesDictionary".equals(fieldName)) {
+                    deserializedFunctionAppRuntimeSettings.siteConfigPropertiesDictionary
+                        = SiteConfigPropertiesDictionary.fromJson(reader);
+                } else if ("supportedFunctionsExtensionVersions".equals(fieldName)) {
+                    List<String> supportedFunctionsExtensionVersions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedFunctionAppRuntimeSettings.supportedFunctionsExtensionVersions
+                        = supportedFunctionsExtensionVersions;
+                } else if ("isPreview".equals(fieldName)) {
+                    deserializedFunctionAppRuntimeSettings.isPreview = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isDeprecated".equals(fieldName)) {
+                    deserializedFunctionAppRuntimeSettings.isDeprecated = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isHidden".equals(fieldName)) {
+                    deserializedFunctionAppRuntimeSettings.isHidden = reader.getNullable(JsonReader::getBoolean);
+                } else if ("endOfLifeDate".equals(fieldName)) {
+                    deserializedFunctionAppRuntimeSettings.endOfLifeDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("isAutoUpdate".equals(fieldName)) {
+                    deserializedFunctionAppRuntimeSettings.isAutoUpdate = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isEarlyAccess".equals(fieldName)) {
+                    deserializedFunctionAppRuntimeSettings.isEarlyAccess = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isDefault".equals(fieldName)) {
+                    deserializedFunctionAppRuntimeSettings.isDefault = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFunctionAppRuntimeSettings;
+        });
     }
 }

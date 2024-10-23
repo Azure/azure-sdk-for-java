@@ -7,74 +7,76 @@ package com.azure.resourcemanager.desktopvirtualization.models;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.DesktopInner;
 
-/** An immutable client-side representation of Desktop. */
+/**
+ * An immutable client-side representation of Desktop.
+ */
 public interface Desktop {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the objectId property: ObjectId of Desktop. (internal use).
-     *
+     * 
      * @return the objectId value.
      */
     String objectId();
 
     /**
      * Gets the description property: Description of Desktop.
-     *
+     * 
      * @return the description value.
      */
     String description();
 
     /**
      * Gets the friendlyName property: Friendly name of Desktop.
-     *
+     * 
      * @return the friendlyName value.
      */
     String friendlyName();
 
     /**
      * Gets the iconHash property: Hash of the icon.
-     *
+     * 
      * @return the iconHash value.
      */
     String iconHash();
 
     /**
      * Gets the iconContent property: The icon a 64 bit string as a byte array.
-     *
+     * 
      * @return the iconContent value.
      */
     byte[] iconContent();
 
     /**
      * Gets the inner com.azure.resourcemanager.desktopvirtualization.fluent.models.DesktopInner object.
-     *
+     * 
      * @return the inner object.
      */
     DesktopInner innerModel();

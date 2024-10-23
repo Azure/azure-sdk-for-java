@@ -6,7 +6,10 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Endpoint service.
@@ -16,13 +19,11 @@ public final class EndpointServiceResultInner extends SubResource {
     /*
      * Name of the endpoint service.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Type of the endpoint service.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -64,5 +65,45 @@ public final class EndpointServiceResultInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EndpointServiceResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EndpointServiceResultInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EndpointServiceResultInner.
+     */
+    public static EndpointServiceResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EndpointServiceResultInner deserializedEndpointServiceResultInner = new EndpointServiceResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedEndpointServiceResultInner.withId(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedEndpointServiceResultInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEndpointServiceResultInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEndpointServiceResultInner;
+        });
     }
 }

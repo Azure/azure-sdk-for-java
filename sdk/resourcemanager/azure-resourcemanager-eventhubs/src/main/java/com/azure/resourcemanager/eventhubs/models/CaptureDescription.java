@@ -5,50 +5,48 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties to configure capture description for eventhub.
  */
 @Fluent
-public final class CaptureDescription {
+public final class CaptureDescription implements JsonSerializable<CaptureDescription> {
     /*
      * A value that indicates whether capture description is enabled.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * Enumerates the possible values for the encoding format of capture description. Note: 'AvroDeflate' will be
      * deprecated in New API Version
      */
-    @JsonProperty(value = "encoding")
     private EncodingCaptureDescription encoding;
 
     /*
      * The time window allows you to set the frequency with which the capture to Azure Blobs will happen, value should
      * between 60 to 900 seconds
      */
-    @JsonProperty(value = "intervalInSeconds")
     private Integer intervalInSeconds;
 
     /*
      * The size window defines the amount of data built up in your Event Hub before an capture operation, value should
      * be between 10485760 to 524288000 bytes
      */
-    @JsonProperty(value = "sizeLimitInBytes")
     private Integer sizeLimitInBytes;
 
     /*
      * Properties of Destination where capture will be stored. (Storage Account, Blob Names)
      */
-    @JsonProperty(value = "destination")
     private Destination destination;
 
     /*
      * A value that indicates whether to Skip Empty Archives
      */
-    @JsonProperty(value = "skipEmptyArchives")
     private Boolean skipEmptyArchives;
 
     /**
@@ -194,5 +192,56 @@ public final class CaptureDescription {
         if (destination() != null) {
             destination().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("encoding", this.encoding == null ? null : this.encoding.toString());
+        jsonWriter.writeNumberField("intervalInSeconds", this.intervalInSeconds);
+        jsonWriter.writeNumberField("sizeLimitInBytes", this.sizeLimitInBytes);
+        jsonWriter.writeJsonField("destination", this.destination);
+        jsonWriter.writeBooleanField("skipEmptyArchives", this.skipEmptyArchives);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CaptureDescription from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CaptureDescription if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CaptureDescription.
+     */
+    public static CaptureDescription fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CaptureDescription deserializedCaptureDescription = new CaptureDescription();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedCaptureDescription.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("encoding".equals(fieldName)) {
+                    deserializedCaptureDescription.encoding = EncodingCaptureDescription.fromString(reader.getString());
+                } else if ("intervalInSeconds".equals(fieldName)) {
+                    deserializedCaptureDescription.intervalInSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("sizeLimitInBytes".equals(fieldName)) {
+                    deserializedCaptureDescription.sizeLimitInBytes = reader.getNullable(JsonReader::getInt);
+                } else if ("destination".equals(fieldName)) {
+                    deserializedCaptureDescription.destination = Destination.fromJson(reader);
+                } else if ("skipEmptyArchives".equals(fieldName)) {
+                    deserializedCaptureDescription.skipEmptyArchives = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCaptureDescription;
+        });
     }
 }

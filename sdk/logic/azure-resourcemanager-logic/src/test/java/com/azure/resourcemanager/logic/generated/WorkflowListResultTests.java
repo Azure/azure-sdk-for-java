@@ -6,9 +6,20 @@ package com.azure.resourcemanager.logic.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowInner;
+import com.azure.resourcemanager.logic.models.FlowAccessControlConfiguration;
+import com.azure.resourcemanager.logic.models.FlowAccessControlConfigurationPolicy;
+import com.azure.resourcemanager.logic.models.FlowEndpoints;
+import com.azure.resourcemanager.logic.models.FlowEndpointsConfiguration;
+import com.azure.resourcemanager.logic.models.IpAddress;
+import com.azure.resourcemanager.logic.models.IpAddressRange;
 import com.azure.resourcemanager.logic.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.logic.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.logic.models.OpenAuthenticationAccessPolicies;
+import com.azure.resourcemanager.logic.models.ParameterType;
+import com.azure.resourcemanager.logic.models.ResourceReference;
+import com.azure.resourcemanager.logic.models.UserAssignedIdentity;
 import com.azure.resourcemanager.logic.models.WorkflowListResult;
+import com.azure.resourcemanager.logic.models.WorkflowParameter;
 import com.azure.resourcemanager.logic.models.WorkflowState;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,64 +29,168 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkflowListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkflowListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"createdTime\":\"2021-08-01T15:29:09Z\",\"changedTime\":\"2021-10-26T10:24:19Z\",\"state\":\"Disabled\",\"version\":\"czmehmtzopbsp\",\"accessEndpoint\":\"upi\",\"definition\":\"datajhphoyc\",\"parameters\":{}},\"identity\":{\"type\":\"None\",\"tenantId\":\"48a923a0-2191-40eb-89cc-1e8815c3d2ae\",\"principalId\":\"c2987522-fd89-409f-90b3-12873e616c8a\",\"userAssignedIdentities\":{}},\"location\":\"dxbmtqioq\",\"tags\":{\"ownoizhw\":\"htbmuf\",\"jgkdmbpazlobcu\":\"rxybqsoq\"},\"id\":\"pdznrbtcqqjnqgl\",\"name\":\"qgn\",\"type\":\"foooj\"},{\"properties\":{\"provisioningState\":\"Running\",\"createdTime\":\"2021-11-05T21:59:46Z\",\"changedTime\":\"2021-01-11T01:11:56Z\",\"state\":\"Enabled\",\"version\":\"dfmglzlhjx\",\"accessEndpoint\":\"f\",\"definition\":\"datasiznto\",\"parameters\":{}},\"identity\":{\"type\":\"UserAssigned\",\"tenantId\":\"ad599008-9ca5-43de-aabf-dfc962f54961\",\"principalId\":\"ae1cddeb-e549-4ea0-aa26-de637814b237\",\"userAssignedIdentities\":{}},\"location\":\"jpsq\",\"tags\":{\"gjofjd\":\"poyfdkfogkn\",\"zyf\":\"eqsrdeupewnwreit\"},\"id\":\"usarhmofc\",\"name\":\"hs\",\"type\":\"yurkdtmlxhekuksj\"},{\"properties\":{\"provisioningState\":\"Updating\",\"createdTime\":\"2020-12-22T19:53:18Z\",\"changedTime\":\"2021-01-30T12:07:20Z\",\"state\":\"NotSpecified\",\"version\":\"ryuanzwuxzdxtay\",\"accessEndpoint\":\"hmwhfpmrqo\",\"definition\":\"dataryrtihfxtijbpzv\",\"parameters\":{}},\"identity\":{\"type\":\"UserAssigned\",\"tenantId\":\"fdbb7d96-8f6e-4366-9bf0-ddd0eb5e9c79\",\"principalId\":\"9ea56f08-0548-4845-af3e-07b142f25264\",\"userAssignedIdentities\":{}},\"location\":\"glzufc\",\"tags\":{\"cbjy\":\"ohdbihanufh\",\"ithxqhabifpi\":\"a\"},\"id\":\"xwczbyscnp\",\"name\":\"x\",\"type\":\"hiv\"}],\"nextLink\":\"n\"}")
-                .toObject(WorkflowListResult.class);
-        Assertions.assertEquals("dxbmtqioq", model.value().get(0).location());
-        Assertions.assertEquals("htbmuf", model.value().get(0).tags().get("ownoizhw"));
+        WorkflowListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"createdTime\":\"2021-08-01T15:29:09Z\",\"changedTime\":\"2021-10-26T10:24:19Z\",\"state\":\"Disabled\",\"version\":\"czmehmtzopbsp\",\"accessEndpoint\":\"upi\",\"endpointsConfiguration\":{\"workflow\":{\"outgoingIpAddresses\":[{}],\"accessEndpointIpAddresses\":[{},{}]},\"connector\":{\"outgoingIpAddresses\":[{}],\"accessEndpointIpAddresses\":[{},{},{},{}]}},\"accessControl\":{\"triggers\":{\"allowedCallerIpAddresses\":[{}],\"openAuthenticationPolicies\":{}},\"contents\":{\"allowedCallerIpAddresses\":[{},{}],\"openAuthenticationPolicies\":{}},\"actions\":{\"allowedCallerIpAddresses\":[{},{}],\"openAuthenticationPolicies\":{}},\"workflowManagement\":{\"allowedCallerIpAddresses\":[{}],\"openAuthenticationPolicies\":{}}},\"sku\":{\"name\":\"Shared\",\"plan\":{\"id\":\"htbmuf\",\"name\":\"wnoi\",\"type\":\"wlrxyb\"}},\"integrationAccount\":{\"id\":\"qijgkd\",\"name\":\"pazlobcufpdz\",\"type\":\"btcqq\"},\"integrationServiceEnvironment\":{\"id\":\"glhqg\",\"name\":\"foooj\",\"type\":\"ifsqesaagdfmg\"},\"definition\":\"datalhjxr\",\"parameters\":{\"fogknygjofjdde\":{\"type\":\"Array\",\"value\":\"datavktsizntocipao\",\"metadata\":\"datajpsq\",\"description\":\"mpoyfd\"}}},\"identity\":{\"type\":\"None\",\"tenantId\":\"9c1c978d-972b-4684-9148-a0920d4983d1\",\"principalId\":\"2926b181-0c72-4967-aba2-f0520a1b5c13\",\"userAssignedIdentities\":{\"flusarhmof\":{\"principalId\":\"wnw\",\"clientId\":\"itjz\"},\"ekuksjtx\":{\"principalId\":\"hs\",\"clientId\":\"urkdtmlx\"}}},\"location\":\"kc\",\"tags\":{\"yrlhmwhfpmrqobm\":\"arcryuanzwuxzdxt\",\"knryrtihfxtij\":\"u\"},\"id\":\"pzvgnwzsymglzufc\",\"name\":\"zk\",\"type\":\"hdbihan\"},{\"properties\":{\"provisioningState\":\"Completed\",\"createdTime\":\"2021-01-11T10:02:32Z\",\"changedTime\":\"2021-08-29T12:06:15Z\",\"state\":\"Deleted\",\"version\":\"ithxqhabifpi\",\"accessEndpoint\":\"wczbys\",\"endpointsConfiguration\":{\"workflow\":{\"outgoingIpAddresses\":[{}],\"accessEndpointIpAddresses\":[{}]},\"connector\":{\"outgoingIpAddresses\":[{}],\"accessEndpointIpAddresses\":[{}]}},\"accessControl\":{\"triggers\":{\"allowedCallerIpAddresses\":[{}],\"openAuthenticationPolicies\":{}},\"contents\":{\"allowedCallerIpAddresses\":[{}],\"openAuthenticationPolicies\":{}},\"actions\":{\"allowedCallerIpAddresses\":[{}],\"openAuthenticationPolicies\":{}},\"workflowManagement\":{\"allowedCallerIpAddresses\":[{},{},{}],\"openAuthenticationPolicies\":{}}},\"sku\":{\"name\":\"Standard\",\"plan\":{\"id\":\"xgaudccs\",\"name\":\"s\",\"type\":\"nyejhkryhtnap\"}},\"integrationAccount\":{\"id\":\"lokjyemkk\",\"name\":\"ipjoxzjnchgejs\",\"type\":\"dmailzydehojw\"},\"integrationServiceEnvironment\":{\"id\":\"uxinpmqnjaq\",\"name\":\"xj\",\"type\":\"r\"},\"definition\":\"datavcputegj\",\"parameters\":{\"dio\":{\"type\":\"Array\",\"value\":\"datat\",\"metadata\":\"datamdvpjhulsu\",\"description\":\"mkjozkrwf\"},\"bcryffdfd\":{\"type\":\"SecureString\",\"value\":\"datalwejdpv\",\"metadata\":\"datayoqpsoaccta\",\"description\":\"kljla\"},\"qtrgqjbpfzfsinzg\":{\"type\":\"Object\",\"value\":\"dataexpa\",\"metadata\":\"dataakhmsbzjhcrz\",\"description\":\"dphlxaolt\"}}},\"identity\":{\"type\":\"None\",\"tenantId\":\"0eabf250-50e8-4b28-a4fb-8a0146748af5\",\"principalId\":\"fa2f6449-ce69-4cd7-9635-1fb418e3e252\",\"userAssignedIdentities\":{\"fpjkjlxofp\":{\"principalId\":\"xxjtfe\",\"clientId\":\"uwfzitonpe\"},\"yhuybbkpod\":{\"principalId\":\"hpf\",\"clientId\":\"ypininm\"}}},\"location\":\"po\",\"tags\":{\"xzxtheo\":\"nuvamiheogna\",\"cciqihnhungbwjz\":\"usivye\",\"kufubljo\":\"nfygxgispemvtz\"},\"id\":\"xqeofjaeqjhqjba\",\"name\":\"v\",\"type\":\"smjqulngsntnbyb\"},{\"properties\":{\"provisioningState\":\"Registered\",\"createdTime\":\"2021-06-16T21:35:22Z\",\"changedTime\":\"2021-10-31T07:08:50Z\",\"state\":\"Completed\",\"version\":\"wrljdouskc\",\"accessEndpoint\":\"kocrcjdkwtnhx\",\"endpointsConfiguration\":{\"workflow\":{\"outgoingIpAddresses\":[{},{}],\"accessEndpointIpAddresses\":[{},{},{}]},\"connector\":{\"outgoingIpAddresses\":[{}],\"accessEndpointIpAddresses\":[{},{},{},{}]}},\"accessControl\":{\"triggers\":{\"allowedCallerIpAddresses\":[{},{},{},{}],\"openAuthenticationPolicies\":{}},\"contents\":{\"allowedCallerIpAddresses\":[{},{},{},{}],\"openAuthenticationPolicies\":{}},\"actions\":{\"allowedCallerIpAddresses\":[{},{}],\"openAuthenticationPolicies\":{}},\"workflowManagement\":{\"allowedCallerIpAddresses\":[{},{},{}],\"openAuthenticationPolicies\":{}}},\"sku\":{\"name\":\"NotSpecified\",\"plan\":{\"id\":\"mgxsab\",\"name\":\"qduujitcjczdz\",\"type\":\"ndhkrw\"}},\"integrationAccount\":{\"id\":\"ppdsbdkvwrwj\",\"name\":\"usnhutje\",\"type\":\"mrldhu\"},\"integrationServiceEnvironment\":{\"id\":\"zdatqxhocdg\",\"name\":\"blgphuticn\",\"type\":\"kao\"},\"definition\":\"datayiftyhxhuro\",\"parameters\":{\"koty\":{\"type\":\"SecureString\",\"value\":\"datalniwpwcukjfkgiaw\",\"metadata\":\"datalryplwckbasyy\",\"description\":\"ddhsgcbacphe\"},\"xybz\":{\"type\":\"String\",\"value\":\"dataulzndlikwyqk\",\"metadata\":\"datagibma\",\"description\":\"akeqs\"},\"dmgloug\":{\"type\":\"SecureObject\",\"value\":\"dataqytbciq\",\"metadata\":\"datauflmm\",\"description\":\"zsm\"}}},\"identity\":{\"type\":\"None\",\"tenantId\":\"7d934afa-8561-4527-8bd9-15794863d2eb\",\"principalId\":\"6c2f1b51-6e3f-4e60-a015-a4bbcd0c9486\",\"userAssignedIdentities\":{\"whbmd\":{\"principalId\":\"duqkt\",\"clientId\":\"spwgcuertumkdosv\"},\"q\":{\"principalId\":\"bjf\",\"clientId\":\"gmbmbexppbh\"},\"igjyjg\":{\"principalId\":\"ol\",\"clientId\":\"fpsalgbqu\"},\"rlyxwjkcprbnw\":{\"principalId\":\"aoyfhrtxilnerkuj\",\"clientId\":\"vlejuvfqa\"}}},\"location\":\"xgjvtbv\",\"tags\":{\"jq\":\"szdnr\",\"uitnwuiz\":\"uhmuouqfprwzwbn\"},\"id\":\"a\",\"name\":\"x\",\"type\":\"fizuckyf\"}],\"nextLink\":\"rfidfvzwdz\"}")
+            .toObject(WorkflowListResult.class);
+        Assertions.assertEquals("kc", model.value().get(0).location());
+        Assertions.assertEquals("arcryuanzwuxzdxt", model.value().get(0).tags().get("yrlhmwhfpmrqobm"));
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.value().get(0).identity().type());
         Assertions.assertEquals(WorkflowState.DISABLED, model.value().get(0).state());
-        Assertions.assertEquals("n", model.nextLink());
+        Assertions.assertEquals("qijgkd", model.value().get(0).integrationAccount().id());
+        Assertions.assertEquals("glhqg", model.value().get(0).integrationServiceEnvironment().id());
+        Assertions.assertEquals(ParameterType.ARRAY, model.value().get(0).parameters().get("fogknygjofjdde").type());
+        Assertions.assertEquals("mpoyfd", model.value().get(0).parameters().get("fogknygjofjdde").description());
+        Assertions.assertEquals("rfidfvzwdz", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkflowListResult model =
-            new WorkflowListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new WorkflowInner()
-                                .withLocation("dxbmtqioq")
-                                .withTags(mapOf("ownoizhw", "htbmuf", "jgkdmbpazlobcu", "rxybqsoq"))
-                                .withIdentity(
-                                    new ManagedServiceIdentity()
-                                        .withType(ManagedServiceIdentityType.NONE)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withState(WorkflowState.DISABLED)
-                                .withDefinition("datajhphoyc")
-                                .withParameters(mapOf()),
-                            new WorkflowInner()
-                                .withLocation("jpsq")
-                                .withTags(mapOf("gjofjd", "poyfdkfogkn", "zyf", "eqsrdeupewnwreit"))
-                                .withIdentity(
-                                    new ManagedServiceIdentity()
-                                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withState(WorkflowState.ENABLED)
-                                .withDefinition("datasiznto")
-                                .withParameters(mapOf()),
-                            new WorkflowInner()
-                                .withLocation("glzufc")
-                                .withTags(mapOf("cbjy", "ohdbihanufh", "ithxqhabifpi", "a"))
-                                .withIdentity(
-                                    new ManagedServiceIdentity()
-                                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withState(WorkflowState.NOT_SPECIFIED)
-                                .withDefinition("dataryrtihfxtijbpzv")
-                                .withParameters(mapOf())))
-                .withNextLink("n");
+        WorkflowListResult model
+            = new WorkflowListResult()
+                .withValue(Arrays.asList(
+                    new WorkflowInner().withLocation("kc")
+                        .withTags(mapOf("yrlhmwhfpmrqobm", "arcryuanzwuxzdxt", "knryrtihfxtij", "u"))
+                        .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                            .withUserAssignedIdentities(mapOf("flusarhmof", new UserAssignedIdentity(), "ekuksjtx",
+                                new UserAssignedIdentity())))
+                        .withState(WorkflowState.DISABLED)
+                        .withEndpointsConfiguration(new FlowEndpointsConfiguration()
+                            .withWorkflow(new FlowEndpoints().withOutgoingIpAddresses(Arrays.asList(new IpAddress()))
+                                .withAccessEndpointIpAddresses(Arrays.asList(new IpAddress(), new IpAddress())))
+                            .withConnector(
+                                new FlowEndpoints().withOutgoingIpAddresses(Arrays.asList(new IpAddress()))
+                                    .withAccessEndpointIpAddresses(Arrays.asList(new IpAddress(), new IpAddress(),
+                                        new IpAddress(), new IpAddress()))))
+                        .withAccessControl(new FlowAccessControlConfiguration()
+                            .withTriggers(new FlowAccessControlConfigurationPolicy()
+                                .withAllowedCallerIpAddresses(Arrays.asList(new IpAddressRange()))
+                                .withOpenAuthenticationPolicies(new OpenAuthenticationAccessPolicies()))
+                            .withContents(new FlowAccessControlConfigurationPolicy()
+                                .withAllowedCallerIpAddresses(Arrays.asList(new IpAddressRange(), new IpAddressRange()))
+                                .withOpenAuthenticationPolicies(new OpenAuthenticationAccessPolicies()))
+                            .withActions(new FlowAccessControlConfigurationPolicy()
+                                .withAllowedCallerIpAddresses(Arrays.asList(new IpAddressRange(), new IpAddressRange()))
+                                .withOpenAuthenticationPolicies(new OpenAuthenticationAccessPolicies()))
+                            .withWorkflowManagement(new FlowAccessControlConfigurationPolicy()
+                                .withAllowedCallerIpAddresses(Arrays.asList(new IpAddressRange()))
+                                .withOpenAuthenticationPolicies(new OpenAuthenticationAccessPolicies())))
+                        .withIntegrationAccount(new ResourceReference().withId("qijgkd"))
+                        .withIntegrationServiceEnvironment(new ResourceReference().withId("glhqg"))
+                        .withDefinition("datalhjxr")
+                        .withParameters(mapOf("fogknygjofjdde", new WorkflowParameter()
+                            .withType(ParameterType.ARRAY)
+                            .withValue("datavktsizntocipao")
+                            .withMetadata("datajpsq")
+                            .withDescription("mpoyfd"))),
+                    new WorkflowInner().withLocation("po")
+                        .withTags(
+                            mapOf("xzxtheo", "nuvamiheogna", "cciqihnhungbwjz", "usivye", "kufubljo", "nfygxgispemvtz"))
+                        .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                            .withUserAssignedIdentities(mapOf("fpjkjlxofp", new UserAssignedIdentity(), "yhuybbkpod",
+                                new UserAssignedIdentity())))
+                        .withState(WorkflowState.DELETED)
+                        .withEndpointsConfiguration(new FlowEndpointsConfiguration()
+                            .withWorkflow(new FlowEndpoints().withOutgoingIpAddresses(Arrays.asList(new IpAddress()))
+                                .withAccessEndpointIpAddresses(Arrays.asList(new IpAddress())))
+                            .withConnector(new FlowEndpoints().withOutgoingIpAddresses(Arrays.asList(new IpAddress()))
+                                .withAccessEndpointIpAddresses(Arrays.asList(new IpAddress()))))
+                        .withAccessControl(new FlowAccessControlConfiguration()
+                            .withTriggers(new FlowAccessControlConfigurationPolicy()
+                                .withAllowedCallerIpAddresses(Arrays.asList(new IpAddressRange()))
+                                .withOpenAuthenticationPolicies(new OpenAuthenticationAccessPolicies()))
+                            .withContents(new FlowAccessControlConfigurationPolicy()
+                                .withAllowedCallerIpAddresses(Arrays.asList(new IpAddressRange()))
+                                .withOpenAuthenticationPolicies(new OpenAuthenticationAccessPolicies()))
+                            .withActions(new FlowAccessControlConfigurationPolicy()
+                                .withAllowedCallerIpAddresses(Arrays.asList(new IpAddressRange()))
+                                .withOpenAuthenticationPolicies(new OpenAuthenticationAccessPolicies()))
+                            .withWorkflowManagement(new FlowAccessControlConfigurationPolicy()
+                                .withAllowedCallerIpAddresses(
+                                    Arrays.asList(new IpAddressRange(), new IpAddressRange(), new IpAddressRange()))
+                                .withOpenAuthenticationPolicies(new OpenAuthenticationAccessPolicies())))
+                        .withIntegrationAccount(new ResourceReference().withId("lokjyemkk"))
+                        .withIntegrationServiceEnvironment(new ResourceReference().withId("uxinpmqnjaq"))
+                        .withDefinition("datavcputegj")
+                        .withParameters(mapOf("dio",
+                            new WorkflowParameter().withType(ParameterType.ARRAY)
+                                .withValue("datat")
+                                .withMetadata("datamdvpjhulsu")
+                                .withDescription("mkjozkrwf"),
+                            "bcryffdfd",
+                            new WorkflowParameter().withType(ParameterType.SECURE_STRING)
+                                .withValue("datalwejdpv")
+                                .withMetadata("datayoqpsoaccta")
+                                .withDescription("kljla"),
+                            "qtrgqjbpfzfsinzg",
+                            new WorkflowParameter().withType(ParameterType.OBJECT)
+                                .withValue("dataexpa")
+                                .withMetadata("dataakhmsbzjhcrz")
+                                .withDescription("dphlxaolt"))),
+                    new WorkflowInner().withLocation("xgjvtbv")
+                        .withTags(mapOf("jq", "szdnr", "uitnwuiz", "uhmuouqfprwzwbn"))
+                        .withIdentity(
+                            new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                                .withUserAssignedIdentities(mapOf("whbmd", new UserAssignedIdentity(), "q",
+                                    new UserAssignedIdentity(), "igjyjg", new UserAssignedIdentity(), "rlyxwjkcprbnw",
+                                    new UserAssignedIdentity())))
+                        .withState(WorkflowState.COMPLETED)
+                        .withEndpointsConfiguration(new FlowEndpointsConfiguration()
+                            .withWorkflow(new FlowEndpoints()
+                                .withOutgoingIpAddresses(Arrays.asList(new IpAddress(), new IpAddress()))
+                                .withAccessEndpointIpAddresses(
+                                    Arrays.asList(new IpAddress(), new IpAddress(), new IpAddress())))
+                            .withConnector(
+                                new FlowEndpoints().withOutgoingIpAddresses(Arrays.asList(new IpAddress()))
+                                    .withAccessEndpointIpAddresses(Arrays.asList(new IpAddress(), new IpAddress(),
+                                        new IpAddress(), new IpAddress()))))
+                        .withAccessControl(new FlowAccessControlConfiguration()
+                            .withTriggers(new FlowAccessControlConfigurationPolicy()
+                                .withAllowedCallerIpAddresses(Arrays.asList(new IpAddressRange(), new IpAddressRange(),
+                                    new IpAddressRange(), new IpAddressRange()))
+                                .withOpenAuthenticationPolicies(new OpenAuthenticationAccessPolicies()))
+                            .withContents(new FlowAccessControlConfigurationPolicy()
+                                .withAllowedCallerIpAddresses(Arrays.asList(new IpAddressRange(), new IpAddressRange(),
+                                    new IpAddressRange(), new IpAddressRange()))
+                                .withOpenAuthenticationPolicies(new OpenAuthenticationAccessPolicies()))
+                            .withActions(new FlowAccessControlConfigurationPolicy()
+                                .withAllowedCallerIpAddresses(Arrays.asList(new IpAddressRange(), new IpAddressRange()))
+                                .withOpenAuthenticationPolicies(new OpenAuthenticationAccessPolicies()))
+                            .withWorkflowManagement(new FlowAccessControlConfigurationPolicy()
+                                .withAllowedCallerIpAddresses(
+                                    Arrays.asList(new IpAddressRange(), new IpAddressRange(), new IpAddressRange()))
+                                .withOpenAuthenticationPolicies(new OpenAuthenticationAccessPolicies())))
+                        .withIntegrationAccount(new ResourceReference().withId("ppdsbdkvwrwj"))
+                        .withIntegrationServiceEnvironment(new ResourceReference().withId("zdatqxhocdg"))
+                        .withDefinition("datayiftyhxhuro")
+                        .withParameters(mapOf("koty",
+                            new WorkflowParameter().withType(ParameterType.SECURE_STRING)
+                                .withValue("datalniwpwcukjfkgiaw")
+                                .withMetadata("datalryplwckbasyy")
+                                .withDescription("ddhsgcbacphe"),
+                            "xybz",
+                            new WorkflowParameter().withType(ParameterType.STRING)
+                                .withValue("dataulzndlikwyqk")
+                                .withMetadata("datagibma")
+                                .withDescription("akeqs"),
+                            "dmgloug",
+                            new WorkflowParameter().withType(ParameterType.SECURE_OBJECT)
+                                .withValue("dataqytbciq")
+                                .withMetadata("datauflmm")
+                                .withDescription("zsm")))))
+                .withNextLink("rfidfvzwdz");
         model = BinaryData.fromObject(model).toObject(WorkflowListResult.class);
-        Assertions.assertEquals("dxbmtqioq", model.value().get(0).location());
-        Assertions.assertEquals("htbmuf", model.value().get(0).tags().get("ownoizhw"));
+        Assertions.assertEquals("kc", model.value().get(0).location());
+        Assertions.assertEquals("arcryuanzwuxzdxt", model.value().get(0).tags().get("yrlhmwhfpmrqobm"));
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.value().get(0).identity().type());
         Assertions.assertEquals(WorkflowState.DISABLED, model.value().get(0).state());
-        Assertions.assertEquals("n", model.nextLink());
+        Assertions.assertEquals("qijgkd", model.value().get(0).integrationAccount().id());
+        Assertions.assertEquals("glhqg", model.value().get(0).integrationServiceEnvironment().id());
+        Assertions.assertEquals(ParameterType.ARRAY, model.value().get(0).parameters().get("fogknygjofjdde").type());
+        Assertions.assertEquals("mpoyfd", model.value().get(0).parameters().get("fogknygjofjdde").description());
+        Assertions.assertEquals("rfidfvzwdz", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -22,6 +22,12 @@ public final class StandbyVirtualMachinePoolElasticityProfile
      */
     private long maxReadyCapacity;
 
+    /*
+     * Specifies the desired minimum number of virtual machines in the standby virtual machine pool. MinReadyCapacity
+     * cannot exceed MaxReadyCapacity.
+     */
+    private Long minReadyCapacity;
+
     /**
      * Creates an instance of StandbyVirtualMachinePoolElasticityProfile class.
      */
@@ -51,6 +57,28 @@ public final class StandbyVirtualMachinePoolElasticityProfile
     }
 
     /**
+     * Get the minReadyCapacity property: Specifies the desired minimum number of virtual machines in the standby
+     * virtual machine pool. MinReadyCapacity cannot exceed MaxReadyCapacity.
+     * 
+     * @return the minReadyCapacity value.
+     */
+    public Long minReadyCapacity() {
+        return this.minReadyCapacity;
+    }
+
+    /**
+     * Set the minReadyCapacity property: Specifies the desired minimum number of virtual machines in the standby
+     * virtual machine pool. MinReadyCapacity cannot exceed MaxReadyCapacity.
+     * 
+     * @param minReadyCapacity the minReadyCapacity value to set.
+     * @return the StandbyVirtualMachinePoolElasticityProfile object itself.
+     */
+    public StandbyVirtualMachinePoolElasticityProfile withMinReadyCapacity(Long minReadyCapacity) {
+        this.minReadyCapacity = minReadyCapacity;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -65,6 +93,7 @@ public final class StandbyVirtualMachinePoolElasticityProfile
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeLongField("maxReadyCapacity", this.maxReadyCapacity);
+        jsonWriter.writeNumberField("minReadyCapacity", this.minReadyCapacity);
         return jsonWriter.writeEndObject();
     }
 
@@ -87,6 +116,9 @@ public final class StandbyVirtualMachinePoolElasticityProfile
 
                 if ("maxReadyCapacity".equals(fieldName)) {
                     deserializedStandbyVirtualMachinePoolElasticityProfile.maxReadyCapacity = reader.getLong();
+                } else if ("minReadyCapacity".equals(fieldName)) {
+                    deserializedStandbyVirtualMachinePoolElasticityProfile.minReadyCapacity
+                        = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }

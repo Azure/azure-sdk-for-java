@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class RootSquashType extends ExpandableStringEnum<RootSquashType> {
      * @param name a name to look for.
      * @return the corresponding RootSquashType.
      */
-    @JsonCreator
     public static RootSquashType fromString(String name) {
         return fromString(name, RootSquashType.class);
     }

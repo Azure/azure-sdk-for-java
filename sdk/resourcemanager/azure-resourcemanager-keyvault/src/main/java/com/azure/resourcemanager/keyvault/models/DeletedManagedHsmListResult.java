@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.keyvault.fluent.models.DeletedManagedHsmInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of deleted managed HSM Pools. */
+/**
+ * List of deleted managed HSM Pools.
+ */
 @Fluent
-public final class DeletedManagedHsmListResult {
+public final class DeletedManagedHsmListResult implements JsonSerializable<DeletedManagedHsmListResult> {
     /*
      * The list of deleted managed HSM Pools.
      */
-    @JsonProperty(value = "value")
     private List<DeletedManagedHsmInner> value;
 
     /*
      * The URL to get the next set of deleted managed HSM Pools.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of DeletedManagedHsmListResult class. */
+    /**
+     * Creates an instance of DeletedManagedHsmListResult class.
+     */
     public DeletedManagedHsmListResult() {
     }
 
     /**
      * Get the value property: The list of deleted managed HSM Pools.
-     *
+     * 
      * @return the value value.
      */
     public List<DeletedManagedHsmInner> value() {
@@ -39,7 +45,7 @@ public final class DeletedManagedHsmListResult {
 
     /**
      * Set the value property: The list of deleted managed HSM Pools.
-     *
+     * 
      * @param value the value value to set.
      * @return the DeletedManagedHsmListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class DeletedManagedHsmListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of deleted managed HSM Pools.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class DeletedManagedHsmListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of deleted managed HSM Pools.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the DeletedManagedHsmListResult object itself.
      */
@@ -70,12 +76,53 @@ public final class DeletedManagedHsmListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeletedManagedHsmListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeletedManagedHsmListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeletedManagedHsmListResult.
+     */
+    public static DeletedManagedHsmListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeletedManagedHsmListResult deserializedDeletedManagedHsmListResult = new DeletedManagedHsmListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DeletedManagedHsmInner> value
+                        = reader.readArray(reader1 -> DeletedManagedHsmInner.fromJson(reader1));
+                    deserializedDeletedManagedHsmListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDeletedManagedHsmListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeletedManagedHsmListResult;
+        });
     }
 }

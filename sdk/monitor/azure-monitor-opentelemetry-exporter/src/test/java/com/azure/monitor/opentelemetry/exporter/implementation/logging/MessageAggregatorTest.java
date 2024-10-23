@@ -41,14 +41,9 @@ class MessageAggregatorTest {
 
         assertThat(logCaptor.getWarnLogs()).hasSize(2);
         assertThat(logCaptor.getWarnLogs().get(0))
-            .contains(
-                "intro: Test Message (future warnings will be aggregated and logged once every 0 minutes)");
+            .contains("intro: Test Message (future warnings will be aggregated and logged once every 0 minutes)");
         assertThat(logCaptor.getWarnLogs().get(1))
-            .contains(
-                "In the last 0 minutes, the following operation has failed 3 times (out of 4): intro:"
-                    + NEWLINE
-                    + " * Test Message2 (2 times)"
-                    + NEWLINE
-                    + " * Test Message3 (1 times)");
+            .contains("In the last 0 minutes, the following operation has failed 3 times (out of 4): intro:" + NEWLINE
+                + " * Test Message2 (2 times)" + NEWLINE + " * Test Message3 (1 times)");
     }
 }

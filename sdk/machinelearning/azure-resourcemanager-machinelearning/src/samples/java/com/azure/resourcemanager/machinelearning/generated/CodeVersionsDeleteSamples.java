@@ -4,19 +4,23 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-/** Samples for CodeVersions Delete. */
+/**
+ * Samples for CodeVersions Delete.
+ */
 public final class CodeVersionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/CodeVersion/delete.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Workspace/CodeVersion/delete.json
      */
     /**
-     * Sample code: Delete Code Version.
-     *
+     * Sample code: Delete Workspace Code Version.
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
-    public static void deleteCodeVersion(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .codeVersions()
+    public static void
+        deleteWorkspaceCodeVersion(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
+        manager.codeVersions()
             .deleteWithResponse("test-rg", "my-aml-workspace", "string", "string", com.azure.core.util.Context.NONE);
     }
 }

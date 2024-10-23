@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class LogicAppsListWorkflowsSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/LogicApps_ListWorkflows.json
+     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/LogicApps_ListWorkflows.json
      */
     /**
      * Sample code: List the workflows.

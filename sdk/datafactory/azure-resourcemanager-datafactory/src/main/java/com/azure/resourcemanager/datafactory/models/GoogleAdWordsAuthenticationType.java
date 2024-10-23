@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -38,7 +37,6 @@ public final class GoogleAdWordsAuthenticationType extends ExpandableStringEnum<
      * @param name a name to look for.
      * @return the corresponding GoogleAdWordsAuthenticationType.
      */
-    @JsonCreator
     public static GoogleAdWordsAuthenticationType fromString(String name) {
         return fromString(name, GoogleAdWordsAuthenticationType.class);
     }

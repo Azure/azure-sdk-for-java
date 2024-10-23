@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class SparkUserPluginTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SparkUserPlugin model = BinaryData.fromString("{\"path\":\"nrjawgqwg\"}").toObject(SparkUserPlugin.class);
-        Assertions.assertEquals("nrjawgqwg", model.path());
+        SparkUserPlugin model = BinaryData.fromString("{\"path\":\"mutwuoe\"}").toObject(SparkUserPlugin.class);
+        Assertions.assertEquals("mutwuoe", model.path());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SparkUserPlugin model = new SparkUserPlugin().withPath("nrjawgqwg");
+        SparkUserPlugin model = new SparkUserPlugin().withPath("mutwuoe");
         model = BinaryData.fromObject(model).toObject(SparkUserPlugin.class);
-        Assertions.assertEquals("nrjawgqwg", model.path());
+        Assertions.assertEquals("mutwuoe", model.path());
     }
 }

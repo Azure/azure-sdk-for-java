@@ -12,7 +12,8 @@ import com.azure.resourcemanager.resources.models.LockLevel;
  */
 public final class ManagementLocksCreateOrUpdateAtSubscriptionLevelSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2017-04-01/examples/ManagementLocks_CreateOrUpdateAtSubscriptionLevel.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2017-04-01/examples/
+     * ManagementLocks_CreateOrUpdateAtSubscriptionLevel.json
      */
     /**
      * Sample code: Create management lock at subscription level.

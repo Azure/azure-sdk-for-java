@@ -5,84 +5,80 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The Banner model.
  */
 @Immutable
-public final class Banner {
+public final class Banner implements JsonSerializable<Banner> {
 
     /*
      * The port property.
      */
     @Generated
-    @JsonProperty(value = "port")
     private Integer port;
 
     /*
      * The banner property.
      */
     @Generated
-    @JsonProperty(value = "banner")
     private String banner;
 
     /*
      * The firstSeen property.
      */
     @Generated
-    @JsonProperty(value = "firstSeen")
     private OffsetDateTime firstSeen;
 
     /*
      * The lastSeen property.
      */
     @Generated
-    @JsonProperty(value = "lastSeen")
     private OffsetDateTime lastSeen;
 
     /*
      * The count property.
      */
     @Generated
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * The scanType property.
      */
     @Generated
-    @JsonProperty(value = "scanType")
     private String scanType;
 
     /*
      * The bannerMetadata property.
      */
     @Generated
-    @JsonProperty(value = "bannerMetadata")
     private String bannerMetadata;
 
     /*
      * The recent property.
      */
     @Generated
-    @JsonProperty(value = "recent")
     private Boolean recent;
 
     /*
      * The sha256 property.
      */
     @Generated
-    @JsonProperty(value = "sha256")
     private String sha256;
 
     /*
      * The sources property.
      */
     @Generated
-    @JsonProperty(value = "sources")
     private List<Source> sources;
 
     /**
@@ -190,5 +186,73 @@ public final class Banner {
     @Generated
     public List<Source> getSources() {
         return this.sources;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("port", this.port);
+        jsonWriter.writeStringField("banner", this.banner);
+        jsonWriter.writeStringField("firstSeen",
+            this.firstSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.firstSeen));
+        jsonWriter.writeStringField("lastSeen",
+            this.lastSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastSeen));
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("scanType", this.scanType);
+        jsonWriter.writeStringField("bannerMetadata", this.bannerMetadata);
+        jsonWriter.writeBooleanField("recent", this.recent);
+        jsonWriter.writeStringField("sha256", this.sha256);
+        jsonWriter.writeArrayField("sources", this.sources, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Banner from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Banner if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Banner.
+     */
+    @Generated
+    public static Banner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Banner deserializedBanner = new Banner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("port".equals(fieldName)) {
+                    deserializedBanner.port = reader.getNullable(JsonReader::getInt);
+                } else if ("banner".equals(fieldName)) {
+                    deserializedBanner.banner = reader.getString();
+                } else if ("firstSeen".equals(fieldName)) {
+                    deserializedBanner.firstSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastSeen".equals(fieldName)) {
+                    deserializedBanner.lastSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("count".equals(fieldName)) {
+                    deserializedBanner.count = reader.getNullable(JsonReader::getLong);
+                } else if ("scanType".equals(fieldName)) {
+                    deserializedBanner.scanType = reader.getString();
+                } else if ("bannerMetadata".equals(fieldName)) {
+                    deserializedBanner.bannerMetadata = reader.getString();
+                } else if ("recent".equals(fieldName)) {
+                    deserializedBanner.recent = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sha256".equals(fieldName)) {
+                    deserializedBanner.sha256 = reader.getString();
+                } else if ("sources".equals(fieldName)) {
+                    List<Source> sources = reader.readArray(reader1 -> Source.fromJson(reader1));
+                    deserializedBanner.sources = sources;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedBanner;
+        });
     }
 }

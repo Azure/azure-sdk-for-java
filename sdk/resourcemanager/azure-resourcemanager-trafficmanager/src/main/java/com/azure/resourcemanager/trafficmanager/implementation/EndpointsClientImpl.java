@@ -31,22 +31,28 @@ import com.azure.resourcemanager.trafficmanager.fluent.models.EndpointInner;
 import com.azure.resourcemanager.trafficmanager.models.EndpointTypes;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in EndpointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EndpointsClient.
+ */
 public final class EndpointsClientImpl implements EndpointsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final EndpointsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final TrafficManagerManagementClientImpl client;
 
     /**
      * Initializes an instance of EndpointsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     EndpointsClientImpl(TrafficManagerManagementClientImpl client) {
-        this.service =
-            RestProxy.create(EndpointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(EndpointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,76 +63,52 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @Host("{$host}")
     @ServiceInterface(name = "TrafficManagerManage")
     public interface EndpointsService {
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EndpointInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("endpointType") EndpointTypes endpointType,
-            @PathParam("endpointName") String endpointName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") EndpointInner parameters,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<EndpointInner>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("endpointType") EndpointTypes endpointType, @PathParam("endpointName") String endpointName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") EndpointInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EndpointInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("endpointType") EndpointTypes endpointType,
-            @PathParam("endpointName") String endpointName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<EndpointInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("endpointType") EndpointTypes endpointType, @PathParam("endpointName") String endpointName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<EndpointInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("endpointType") EndpointTypes endpointType, @PathParam("endpointName") String endpointName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") EndpointInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EndpointInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("endpointType") EndpointTypes endpointType,
-            @PathParam("endpointName") String endpointName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") EndpointInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeleteOperationResultInner>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("endpointType") EndpointTypes endpointType,
-            @PathParam("endpointName") String endpointName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeleteOperationResultInner>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("endpointType") EndpointTypes endpointType, @PathParam("endpointName") String endpointName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Update a Traffic Manager endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
@@ -136,20 +118,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Traffic Manager endpoint along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EndpointInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        EndpointTypes endpointType,
-        String endpointName,
-        EndpointInner parameters) {
+    public Mono<Response<EndpointInner>> updateWithResponseAsync(String resourceGroupName, String profileName,
+        EndpointTypes endpointType, String endpointName, EndpointInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -165,10 +141,8 @@ public final class EndpointsClientImpl implements EndpointsClient {
             return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -177,26 +151,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            endpointType,
-                            endpointName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, profileName,
+                endpointType, endpointName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a Traffic Manager endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
@@ -207,21 +170,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Traffic Manager endpoint along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EndpointInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        EndpointTypes endpointType,
-        String endpointName,
-        EndpointInner parameters,
-        Context context) {
+    private Mono<Response<EndpointInner>> updateWithResponseAsync(String resourceGroupName, String profileName,
+        EndpointTypes endpointType, String endpointName, EndpointInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -237,10 +193,8 @@ public final class EndpointsClientImpl implements EndpointsClient {
             return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -249,23 +203,13 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                endpointType,
-                endpointName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, profileName, endpointType, endpointName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Update a Traffic Manager endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
@@ -277,19 +221,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return class representing a Traffic Manager endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EndpointInner> updateAsync(
-        String resourceGroupName,
-        String profileName,
-        EndpointTypes endpointType,
-        String endpointName,
-        EndpointInner parameters) {
+    public Mono<EndpointInner> updateAsync(String resourceGroupName, String profileName, EndpointTypes endpointType,
+        String endpointName, EndpointInner parameters) {
         return updateWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update a Traffic Manager endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
@@ -302,20 +242,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return class representing a Traffic Manager endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EndpointInner> updateWithResponse(
-        String resourceGroupName,
-        String profileName,
-        EndpointTypes endpointType,
-        String endpointName,
-        EndpointInner parameters,
-        Context context) {
+    public Response<EndpointInner> updateWithResponse(String resourceGroupName, String profileName,
+        EndpointTypes endpointType, String endpointName, EndpointInner parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters, context)
             .block();
     }
 
     /**
      * Update a Traffic Manager endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
@@ -327,19 +262,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return class representing a Traffic Manager endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EndpointInner update(
-        String resourceGroupName,
-        String profileName,
-        EndpointTypes endpointType,
-        String endpointName,
-        EndpointInner parameters) {
+    public EndpointInner update(String resourceGroupName, String profileName, EndpointTypes endpointType,
+        String endpointName, EndpointInner parameters) {
         return updateWithResponse(resourceGroupName, profileName, endpointType, endpointName, parameters, Context.NONE)
             .getValue();
     }
 
     /**
      * Gets a Traffic Manager endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint.
@@ -350,13 +281,11 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return a Traffic Manager endpoint along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EndpointInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName) {
+    public Mono<Response<EndpointInner>> getWithResponseAsync(String resourceGroupName, String profileName,
+        EndpointTypes endpointType, String endpointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -372,32 +301,19 @@ public final class EndpointsClientImpl implements EndpointsClient {
             return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            endpointType,
-                            endpointName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, profileName, endpointType,
+                endpointName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a Traffic Manager endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint.
@@ -409,17 +325,11 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return a Traffic Manager endpoint along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EndpointInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        EndpointTypes endpointType,
-        String endpointName,
-        Context context) {
+    private Mono<Response<EndpointInner>> getWithResponseAsync(String resourceGroupName, String profileName,
+        EndpointTypes endpointType, String endpointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -435,29 +345,18 @@ public final class EndpointsClientImpl implements EndpointsClient {
             return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                endpointType,
-                endpointName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, profileName, endpointType, endpointName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets a Traffic Manager endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint.
@@ -468,15 +367,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return a Traffic Manager endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EndpointInner> getAsync(
-        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName) {
+    public Mono<EndpointInner> getAsync(String resourceGroupName, String profileName, EndpointTypes endpointType,
+        String endpointName) {
         return getWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a Traffic Manager endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint.
@@ -488,18 +387,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return a Traffic Manager endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EndpointInner> getWithResponse(
-        String resourceGroupName,
-        String profileName,
-        EndpointTypes endpointType,
-        String endpointName,
-        Context context) {
+    public Response<EndpointInner> getWithResponse(String resourceGroupName, String profileName,
+        EndpointTypes endpointType, String endpointName, Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName, context).block();
     }
 
     /**
      * Gets a Traffic Manager endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint.
@@ -510,14 +405,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return a Traffic Manager endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EndpointInner get(
-        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName) {
+    public EndpointInner get(String resourceGroupName, String profileName, EndpointTypes endpointType,
+        String endpointName) {
         return getWithResponse(resourceGroupName, profileName, endpointType, endpointName, Context.NONE).getValue();
     }
 
     /**
      * Create or update a Traffic Manager endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
@@ -527,20 +422,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Traffic Manager endpoint along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EndpointInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        EndpointTypes endpointType,
-        String endpointName,
-        EndpointInner parameters) {
+    public Mono<Response<EndpointInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String profileName,
+        EndpointTypes endpointType, String endpointName, EndpointInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -556,10 +445,8 @@ public final class EndpointsClientImpl implements EndpointsClient {
             return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -568,26 +455,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            endpointType,
-                            endpointName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, profileName,
+                endpointType, endpointName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a Traffic Manager endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
@@ -598,21 +474,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Traffic Manager endpoint along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EndpointInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        EndpointTypes endpointType,
-        String endpointName,
-        EndpointInner parameters,
-        Context context) {
+    private Mono<Response<EndpointInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String profileName,
+        EndpointTypes endpointType, String endpointName, EndpointInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -628,10 +497,8 @@ public final class EndpointsClientImpl implements EndpointsClient {
             return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -640,23 +507,13 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                endpointType,
-                endpointName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, profileName, endpointType,
+            endpointName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Create or update a Traffic Manager endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
@@ -668,19 +525,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return class representing a Traffic Manager endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EndpointInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String profileName,
-        EndpointTypes endpointType,
-        String endpointName,
-        EndpointInner parameters) {
+    public Mono<EndpointInner> createOrUpdateAsync(String resourceGroupName, String profileName,
+        EndpointTypes endpointType, String endpointName, EndpointInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or update a Traffic Manager endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
@@ -693,21 +546,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return class representing a Traffic Manager endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EndpointInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String profileName,
-        EndpointTypes endpointType,
-        String endpointName,
-        EndpointInner parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, profileName, endpointType, endpointName, parameters, context)
-            .block();
+    public Response<EndpointInner> createOrUpdateWithResponse(String resourceGroupName, String profileName,
+        EndpointTypes endpointType, String endpointName, EndpointInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters,
+            context).block();
     }
 
     /**
      * Create or update a Traffic Manager endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
@@ -719,20 +566,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return class representing a Traffic Manager endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EndpointInner createOrUpdate(
-        String resourceGroupName,
-        String profileName,
-        EndpointTypes endpointType,
-        String endpointName,
-        EndpointInner parameters) {
-        return createOrUpdateWithResponse(
-                resourceGroupName, profileName, endpointType, endpointName, parameters, Context.NONE)
-            .getValue();
+    public EndpointInner createOrUpdate(String resourceGroupName, String profileName, EndpointTypes endpointType,
+        String endpointName, EndpointInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, profileName, endpointType, endpointName, parameters,
+            Context.NONE).getValue();
     }
 
     /**
      * Deletes a Traffic Manager endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
@@ -740,17 +582,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the result of the request or operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeleteOperationResultInner>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName) {
+    public Mono<Response<DeleteOperationResultInner>> deleteWithResponseAsync(String resourceGroupName,
+        String profileName, EndpointTypes endpointType, String endpointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -766,32 +606,20 @@ public final class EndpointsClientImpl implements EndpointsClient {
             return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            endpointType,
-                            endpointName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), resourceGroupName, profileName, endpointType,
+                    endpointName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a Traffic Manager endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
@@ -800,21 +628,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the result of the request or operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeleteOperationResultInner>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        EndpointTypes endpointType,
-        String endpointName,
-        Context context) {
+    private Mono<Response<DeleteOperationResultInner>> deleteWithResponseAsync(String resourceGroupName,
+        String profileName, EndpointTypes endpointType, String endpointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -830,29 +652,18 @@ public final class EndpointsClientImpl implements EndpointsClient {
             return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                endpointType,
-                endpointName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, profileName, endpointType, endpointName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Deletes a Traffic Manager endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
@@ -863,15 +674,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return the result of the request or operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeleteOperationResultInner> deleteAsync(
-        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName) {
+    public Mono<DeleteOperationResultInner> deleteAsync(String resourceGroupName, String profileName,
+        EndpointTypes endpointType, String endpointName) {
         return deleteWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Deletes a Traffic Manager endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
@@ -883,18 +694,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return the result of the request or operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeleteOperationResultInner> deleteWithResponse(
-        String resourceGroupName,
-        String profileName,
-        EndpointTypes endpointType,
-        String endpointName,
-        Context context) {
+    public Response<DeleteOperationResultInner> deleteWithResponse(String resourceGroupName, String profileName,
+        EndpointTypes endpointType, String endpointName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName, context).block();
     }
 
     /**
      * Deletes a Traffic Manager endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
@@ -905,8 +712,8 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return the result of the request or operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeleteOperationResultInner delete(
-        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName) {
+    public DeleteOperationResultInner delete(String resourceGroupName, String profileName, EndpointTypes endpointType,
+        String endpointName) {
         return deleteWithResponse(resourceGroupName, profileName, endpointType, endpointName, Context.NONE).getValue();
     }
 }

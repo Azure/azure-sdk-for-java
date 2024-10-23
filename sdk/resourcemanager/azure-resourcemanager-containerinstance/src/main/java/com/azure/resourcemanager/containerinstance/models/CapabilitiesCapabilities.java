@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The supported capabilities. */
+/**
+ * The supported capabilities.
+ */
 @Immutable
-public final class CapabilitiesCapabilities {
+public final class CapabilitiesCapabilities implements JsonSerializable<CapabilitiesCapabilities> {
     /*
      * The maximum allowed memory request in GB.
      */
-    @JsonProperty(value = "maxMemoryInGB", access = JsonProperty.Access.WRITE_ONLY)
     private Float maxMemoryInGB;
 
     /*
      * The maximum allowed CPU request in cores.
      */
-    @JsonProperty(value = "maxCpu", access = JsonProperty.Access.WRITE_ONLY)
     private Float maxCpu;
 
     /*
      * The maximum allowed GPU count.
      */
-    @JsonProperty(value = "maxGpuCount", access = JsonProperty.Access.WRITE_ONLY)
     private Float maxGpuCount;
 
-    /** Creates an instance of CapabilitiesCapabilities class. */
+    /**
+     * Creates an instance of CapabilitiesCapabilities class.
+     */
     public CapabilitiesCapabilities() {
     }
 
     /**
      * Get the maxMemoryInGB property: The maximum allowed memory request in GB.
-     *
+     * 
      * @return the maxMemoryInGB value.
      */
     public Float maxMemoryInGB() {
@@ -43,7 +48,7 @@ public final class CapabilitiesCapabilities {
 
     /**
      * Get the maxCpu property: The maximum allowed CPU request in cores.
-     *
+     * 
      * @return the maxCpu value.
      */
     public Float maxCpu() {
@@ -52,7 +57,7 @@ public final class CapabilitiesCapabilities {
 
     /**
      * Get the maxGpuCount property: The maximum allowed GPU count.
-     *
+     * 
      * @return the maxGpuCount value.
      */
     public Float maxGpuCount() {
@@ -61,9 +66,48 @@ public final class CapabilitiesCapabilities {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CapabilitiesCapabilities from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CapabilitiesCapabilities if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CapabilitiesCapabilities.
+     */
+    public static CapabilitiesCapabilities fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CapabilitiesCapabilities deserializedCapabilitiesCapabilities = new CapabilitiesCapabilities();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxMemoryInGB".equals(fieldName)) {
+                    deserializedCapabilitiesCapabilities.maxMemoryInGB = reader.getNullable(JsonReader::getFloat);
+                } else if ("maxCpu".equals(fieldName)) {
+                    deserializedCapabilitiesCapabilities.maxCpu = reader.getNullable(JsonReader::getFloat);
+                } else if ("maxGpuCount".equals(fieldName)) {
+                    deserializedCapabilitiesCapabilities.maxGpuCount = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCapabilitiesCapabilities;
+        });
     }
 }

@@ -13,13 +13,15 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseTableInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ManagedDatabaseTablesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagedDatabaseTablesClient.
+ */
 public interface ManagedDatabaseTablesClient {
     /**
      * List managed database tables.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -30,14 +32,14 @@ public interface ManagedDatabaseTablesClient {
      * @return a list of database tables as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DatabaseTableInner> listBySchemaAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName, String schemaName, String filter);
+    PagedFlux<DatabaseTableInner> listBySchemaAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, String schemaName, String filter);
 
     /**
      * List managed database tables.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -47,14 +49,14 @@ public interface ManagedDatabaseTablesClient {
      * @return a list of database tables as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DatabaseTableInner> listBySchemaAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName, String schemaName);
+    PagedFlux<DatabaseTableInner> listBySchemaAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, String schemaName);
 
     /**
      * List managed database tables.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -64,14 +66,14 @@ public interface ManagedDatabaseTablesClient {
      * @return a list of database tables as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabaseTableInner> listBySchema(
-        String resourceGroupName, String managedInstanceName, String databaseName, String schemaName);
+    PagedIterable<DatabaseTableInner> listBySchema(String resourceGroupName, String managedInstanceName,
+        String databaseName, String schemaName);
 
     /**
      * List managed database tables.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -83,19 +85,14 @@ public interface ManagedDatabaseTablesClient {
      * @return a list of database tables as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabaseTableInner> listBySchema(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        String schemaName,
-        String filter,
-        Context context);
+    PagedIterable<DatabaseTableInner> listBySchema(String resourceGroupName, String managedInstanceName,
+        String databaseName, String schemaName, String filter, Context context);
 
     /**
      * Get managed database table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -106,14 +103,14 @@ public interface ManagedDatabaseTablesClient {
      * @return managed database table along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DatabaseTableInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName, String schemaName, String tableName);
+    Mono<Response<DatabaseTableInner>> getWithResponseAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, String schemaName, String tableName);
 
     /**
      * Get managed database table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -124,14 +121,14 @@ public interface ManagedDatabaseTablesClient {
      * @return managed database table on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DatabaseTableInner> getAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName, String schemaName, String tableName);
+    Mono<DatabaseTableInner> getAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+        String schemaName, String tableName);
 
     /**
      * Get managed database table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -143,19 +140,14 @@ public interface ManagedDatabaseTablesClient {
      * @return managed database table along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseTableInner> getWithResponse(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        Context context);
+    Response<DatabaseTableInner> getWithResponse(String resourceGroupName, String managedInstanceName,
+        String databaseName, String schemaName, String tableName, Context context);
 
     /**
      * Get managed database table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -166,6 +158,6 @@ public interface ManagedDatabaseTablesClient {
      * @return managed database table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseTableInner get(
-        String resourceGroupName, String managedInstanceName, String databaseName, String schemaName, String tableName);
+    DatabaseTableInner get(String resourceGroupName, String managedInstanceName, String databaseName, String schemaName,
+        String tableName);
 }

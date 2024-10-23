@@ -5,7 +5,7 @@ package com.azure.spring.cloud.feature.management;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,12 +20,23 @@ public class ServerSideFeatureManagementPropertiesListTest {
     @Test
     void featureManagementTest() {
         serverSideProperties = new FeatureManagementProperties();
-        Map<String, List<Object>> test = new HashMap<>();
-        Map<String, Object> alpha = Map.of("id", "Alpha", "enabled", true);
-        
-        Map<String, Object> randomFilter = Map.of("name", "Microsoft.Random", "parameters", Map.of("Value", 50));
-        Map<String, Object> beta = Map.of("id", "Beta", "enabled", true, "conditions",
-            Map.of("client_filters", Map.of("0", randomFilter)));
+        Map<String, List<Object>> test = new LinkedHashMap<>();
+        Map<String, Object> alpha = new LinkedHashMap<>();
+        alpha.put("id", "Alpha");
+        alpha.put("enabled", true);
+
+        Map<String, Object> randomFilter = new LinkedHashMap<>();
+        randomFilter.put("name", "Microsoft.Random");
+        randomFilter.put("parameters", Map.of("Value", 50));
+
+        Map<String, Object> clientFilters = new LinkedHashMap<>();
+        clientFilters.put("0", randomFilter);
+        Map<String, Object> conditions = new LinkedHashMap<>();
+        conditions.put("client_filters", clientFilters);
+        Map<String, Object> beta = new LinkedHashMap<>();
+        beta.put("id", "Beta");
+        beta.put("enabled", true);
+        beta.put("conditions", conditions);
 
         test.put("feature_flags", List.of(alpha, beta));
         serverSideProperties.putAll(test);

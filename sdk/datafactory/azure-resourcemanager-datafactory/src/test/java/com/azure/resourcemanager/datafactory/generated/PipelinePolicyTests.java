@@ -11,14 +11,14 @@ import com.azure.resourcemanager.datafactory.models.PipelinePolicy;
 public final class PipelinePolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PipelinePolicy model
-            = BinaryData.fromString("{\"elapsedTimeMetric\":{\"duration\":\"datawr\"}}").toObject(PipelinePolicy.class);
+        PipelinePolicy model = BinaryData.fromString("{\"elapsedTimeMetric\":{\"duration\":\"dataonfo\"}}")
+            .toObject(PipelinePolicy.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PipelinePolicy model
-            = new PipelinePolicy().withElapsedTimeMetric(new PipelineElapsedTimeMetricPolicy().withDuration("datawr"));
+        PipelinePolicy model = new PipelinePolicy()
+            .withElapsedTimeMetric(new PipelineElapsedTimeMetricPolicy().withDuration("dataonfo"));
         model = BinaryData.fromObject(model).toObject(PipelinePolicy.class);
     }
 }

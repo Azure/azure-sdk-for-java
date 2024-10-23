@@ -11,15 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class AzurePlanTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzurePlan model =
-            BinaryData.fromString("{\"skuId\":\"hocdgeab\",\"skuDescription\":\"phut\"}").toObject(AzurePlan.class);
-        Assertions.assertEquals("hocdgeab", model.skuId());
+        AzurePlan model
+            = BinaryData.fromString("{\"productId\":\"zb\",\"skuId\":\"uebbaumnyqup\",\"skuDescription\":\"eojnabc\"}")
+                .toObject(AzurePlan.class);
+        Assertions.assertEquals("zb", model.productId());
+        Assertions.assertEquals("uebbaumnyqup", model.skuId());
+        Assertions.assertEquals("eojnabc", model.skuDescription());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzurePlan model = new AzurePlan().withSkuId("hocdgeab");
+        AzurePlan model = new AzurePlan().withProductId("zb").withSkuId("uebbaumnyqup").withSkuDescription("eojnabc");
         model = BinaryData.fromObject(model).toObject(AzurePlan.class);
-        Assertions.assertEquals("hocdgeab", model.skuId());
+        Assertions.assertEquals("zb", model.productId());
+        Assertions.assertEquals("uebbaumnyqup", model.skuId());
+        Assertions.assertEquals("eojnabc", model.skuDescription());
     }
 }

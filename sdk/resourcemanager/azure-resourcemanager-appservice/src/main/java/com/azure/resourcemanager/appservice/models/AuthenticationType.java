@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -32,7 +30,7 @@ public final class AuthenticationType extends ExpandableStringEnum<Authenticatio
 
     /**
      * Creates a new instance of AuthenticationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -41,18 +39,17 @@ public final class AuthenticationType extends ExpandableStringEnum<Authenticatio
 
     /**
      * Creates or finds a AuthenticationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AuthenticationType.
      */
-    @JsonCreator
     public static AuthenticationType fromString(String name) {
         return fromString(name, AuthenticationType.class);
     }
 
     /**
      * Gets known AuthenticationType values.
-     *
+     * 
      * @return known AuthenticationType values.
      */
     public static Collection<AuthenticationType> values() {

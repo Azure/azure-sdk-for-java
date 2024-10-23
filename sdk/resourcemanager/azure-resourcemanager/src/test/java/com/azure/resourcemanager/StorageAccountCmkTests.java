@@ -113,7 +113,7 @@ public class StorageAccountCmkTests extends ResourceManagerTestProxyTestBase {
             // assign access policy to the three MSIs
             vault.update()
                 .defineAccessPolicy()   // access policy for this sample client to generate key
-                    .forServicePrincipal(clientIdFromFile())
+                    .forUser(azureCliSignedInUser().userPrincipalName())
                     .allowKeyAllPermissions()
                     .attach()
                 .defineAccessPolicy()

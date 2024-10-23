@@ -5,48 +5,50 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** offerShiftRequest. */
+/**
+ * offerShiftRequest.
+ */
 @Fluent
 public class MicrosoftGraphOfferShiftRequest extends MicrosoftGraphScheduleChangeRequest {
     /*
      * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For
      * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
-    @JsonProperty(value = "recipientActionDateTime")
     private OffsetDateTime recipientActionDateTime;
 
     /*
      * Custom message sent by recipient of the offer shift request.
      */
-    @JsonProperty(value = "recipientActionMessage")
     private String recipientActionMessage;
 
     /*
      * User ID of the recipient of the offer shift request.
      */
-    @JsonProperty(value = "recipientUserId")
     private String recipientUserId;
 
     /*
      * User ID of the sender of the offer shift request.
      */
-    @JsonProperty(value = "senderShiftId")
     private String senderShiftId;
 
     /*
      * offerShiftRequest
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphOfferShiftRequest class. */
+    /**
+     * Creates an instance of MicrosoftGraphOfferShiftRequest class.
+     */
     public MicrosoftGraphOfferShiftRequest() {
     }
 
@@ -54,7 +56,7 @@ public class MicrosoftGraphOfferShiftRequest extends MicrosoftGraphScheduleChang
      * Get the recipientActionDateTime property: The Timestamp type represents date and time information using ISO 8601
      * format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @return the recipientActionDateTime value.
      */
     public OffsetDateTime recipientActionDateTime() {
@@ -65,7 +67,7 @@ public class MicrosoftGraphOfferShiftRequest extends MicrosoftGraphScheduleChang
      * Set the recipientActionDateTime property: The Timestamp type represents date and time information using ISO 8601
      * format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @param recipientActionDateTime the recipientActionDateTime value to set.
      * @return the MicrosoftGraphOfferShiftRequest object itself.
      */
@@ -76,7 +78,7 @@ public class MicrosoftGraphOfferShiftRequest extends MicrosoftGraphScheduleChang
 
     /**
      * Get the recipientActionMessage property: Custom message sent by recipient of the offer shift request.
-     *
+     * 
      * @return the recipientActionMessage value.
      */
     public String recipientActionMessage() {
@@ -85,7 +87,7 @@ public class MicrosoftGraphOfferShiftRequest extends MicrosoftGraphScheduleChang
 
     /**
      * Set the recipientActionMessage property: Custom message sent by recipient of the offer shift request.
-     *
+     * 
      * @param recipientActionMessage the recipientActionMessage value to set.
      * @return the MicrosoftGraphOfferShiftRequest object itself.
      */
@@ -96,7 +98,7 @@ public class MicrosoftGraphOfferShiftRequest extends MicrosoftGraphScheduleChang
 
     /**
      * Get the recipientUserId property: User ID of the recipient of the offer shift request.
-     *
+     * 
      * @return the recipientUserId value.
      */
     public String recipientUserId() {
@@ -105,7 +107,7 @@ public class MicrosoftGraphOfferShiftRequest extends MicrosoftGraphScheduleChang
 
     /**
      * Set the recipientUserId property: User ID of the recipient of the offer shift request.
-     *
+     * 
      * @param recipientUserId the recipientUserId value to set.
      * @return the MicrosoftGraphOfferShiftRequest object itself.
      */
@@ -116,7 +118,7 @@ public class MicrosoftGraphOfferShiftRequest extends MicrosoftGraphScheduleChang
 
     /**
      * Get the senderShiftId property: User ID of the sender of the offer shift request.
-     *
+     * 
      * @return the senderShiftId value.
      */
     public String senderShiftId() {
@@ -125,7 +127,7 @@ public class MicrosoftGraphOfferShiftRequest extends MicrosoftGraphScheduleChang
 
     /**
      * Set the senderShiftId property: User ID of the sender of the offer shift request.
-     *
+     * 
      * @param senderShiftId the senderShiftId value to set.
      * @return the MicrosoftGraphOfferShiftRequest object itself.
      */
@@ -136,17 +138,16 @@ public class MicrosoftGraphOfferShiftRequest extends MicrosoftGraphScheduleChang
 
     /**
      * Get the additionalProperties property: offerShiftRequest.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: offerShiftRequest.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphOfferShiftRequest object itself.
      */
@@ -155,92 +156,108 @@ public class MicrosoftGraphOfferShiftRequest extends MicrosoftGraphScheduleChang
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOfferShiftRequest withAssignedTo(MicrosoftGraphScheduleChangeRequestActor assignedTo) {
         super.withAssignedTo(assignedTo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOfferShiftRequest withManagerActionDateTime(OffsetDateTime managerActionDateTime) {
         super.withManagerActionDateTime(managerActionDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOfferShiftRequest withManagerActionMessage(String managerActionMessage) {
         super.withManagerActionMessage(managerActionMessage);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOfferShiftRequest withManagerUserId(String managerUserId) {
         super.withManagerUserId(managerUserId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOfferShiftRequest withSenderDateTime(OffsetDateTime senderDateTime) {
         super.withSenderDateTime(senderDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOfferShiftRequest withSenderMessage(String senderMessage) {
         super.withSenderMessage(senderMessage);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOfferShiftRequest withSenderUserId(String senderUserId) {
         super.withSenderUserId(senderUserId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOfferShiftRequest withState(MicrosoftGraphScheduleChangeState state) {
         super.withState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOfferShiftRequest withCreatedDateTime(OffsetDateTime createdDateTime) {
         super.withCreatedDateTime(createdDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOfferShiftRequest withLastModifiedBy(MicrosoftGraphIdentitySet lastModifiedBy) {
         super.withLastModifiedBy(lastModifiedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOfferShiftRequest withLastModifiedDateTime(OffsetDateTime lastModifiedDateTime) {
         super.withLastModifiedDateTime(lastModifiedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOfferShiftRequest withId(String id) {
         super.withId(id);
@@ -249,11 +266,123 @@ public class MicrosoftGraphOfferShiftRequest extends MicrosoftGraphScheduleChang
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("createdDateTime",
+            createdDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(createdDateTime()));
+        jsonWriter.writeJsonField("lastModifiedBy", lastModifiedBy());
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            lastModifiedDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastModifiedDateTime()));
+        jsonWriter.writeStringField("assignedTo", assignedTo() == null ? null : assignedTo().toString());
+        jsonWriter.writeStringField("managerActionDateTime",
+            managerActionDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(managerActionDateTime()));
+        jsonWriter.writeStringField("managerActionMessage", managerActionMessage());
+        jsonWriter.writeStringField("managerUserId", managerUserId());
+        jsonWriter.writeStringField("senderDateTime",
+            senderDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(senderDateTime()));
+        jsonWriter.writeStringField("senderMessage", senderMessage());
+        jsonWriter.writeStringField("senderUserId", senderUserId());
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("recipientActionDateTime",
+            this.recipientActionDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.recipientActionDateTime));
+        jsonWriter.writeStringField("recipientActionMessage", this.recipientActionMessage);
+        jsonWriter.writeStringField("recipientUserId", this.recipientUserId);
+        jsonWriter.writeStringField("senderShiftId", this.senderShiftId);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphOfferShiftRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphOfferShiftRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphOfferShiftRequest.
+     */
+    public static MicrosoftGraphOfferShiftRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphOfferShiftRequest deserializedMicrosoftGraphOfferShiftRequest
+                = new MicrosoftGraphOfferShiftRequest();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphOfferShiftRequest.withId(reader.getString());
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphOfferShiftRequest.withCreatedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphOfferShiftRequest
+                        .withLastModifiedBy(MicrosoftGraphIdentitySet.fromJson(reader));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphOfferShiftRequest.withLastModifiedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("assignedTo".equals(fieldName)) {
+                    deserializedMicrosoftGraphOfferShiftRequest
+                        .withAssignedTo(MicrosoftGraphScheduleChangeRequestActor.fromString(reader.getString()));
+                } else if ("managerActionDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphOfferShiftRequest.withManagerActionDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("managerActionMessage".equals(fieldName)) {
+                    deserializedMicrosoftGraphOfferShiftRequest.withManagerActionMessage(reader.getString());
+                } else if ("managerUserId".equals(fieldName)) {
+                    deserializedMicrosoftGraphOfferShiftRequest.withManagerUserId(reader.getString());
+                } else if ("senderDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphOfferShiftRequest.withSenderDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("senderMessage".equals(fieldName)) {
+                    deserializedMicrosoftGraphOfferShiftRequest.withSenderMessage(reader.getString());
+                } else if ("senderUserId".equals(fieldName)) {
+                    deserializedMicrosoftGraphOfferShiftRequest.withSenderUserId(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedMicrosoftGraphOfferShiftRequest
+                        .withState(MicrosoftGraphScheduleChangeState.fromString(reader.getString()));
+                } else if ("recipientActionDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphOfferShiftRequest.recipientActionDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("recipientActionMessage".equals(fieldName)) {
+                    deserializedMicrosoftGraphOfferShiftRequest.recipientActionMessage = reader.getString();
+                } else if ("recipientUserId".equals(fieldName)) {
+                    deserializedMicrosoftGraphOfferShiftRequest.recipientUserId = reader.getString();
+                } else if ("senderShiftId".equals(fieldName)) {
+                    deserializedMicrosoftGraphOfferShiftRequest.senderShiftId = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphOfferShiftRequest.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphOfferShiftRequest;
+        });
     }
 }

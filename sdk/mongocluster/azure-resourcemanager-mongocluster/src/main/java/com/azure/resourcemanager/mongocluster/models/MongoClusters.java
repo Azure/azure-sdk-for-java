@@ -135,7 +135,7 @@ public interface MongoClusters {
     /**
      * Check if mongo cluster name is available for use.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The CheckAvailability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -149,7 +149,7 @@ public interface MongoClusters {
     /**
      * Check if mongo cluster name is available for use.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The CheckAvailability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -157,6 +157,31 @@ public interface MongoClusters {
      * @return the check availability result.
      */
     CheckNameAvailabilityResponse checkNameAvailability(String location, CheckNameAvailabilityRequest body);
+
+    /**
+     * Promotes a replica mongo cluster to a primary role.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mongoClusterName The name of the mongo cluster.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void promote(String resourceGroupName, String mongoClusterName, PromoteReplicaRequest body);
+
+    /**
+     * Promotes a replica mongo cluster to a primary role.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mongoClusterName The name of the mongo cluster.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void promote(String resourceGroupName, String mongoClusterName, PromoteReplicaRequest body, Context context);
 
     /**
      * Gets information about a mongo cluster.

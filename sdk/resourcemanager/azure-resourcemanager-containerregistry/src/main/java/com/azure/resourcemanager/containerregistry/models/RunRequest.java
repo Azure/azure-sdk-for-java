@@ -5,49 +5,50 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The request parameters for scheduling a run.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = RunRequest.class)
-@JsonTypeName("RunRequest")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "DockerBuildRequest", value = DockerBuildRequest.class),
-    @JsonSubTypes.Type(name = "FileTaskRunRequest", value = FileTaskRunRequest.class),
-    @JsonSubTypes.Type(name = "TaskRunRequest", value = TaskRunRequest.class),
-    @JsonSubTypes.Type(name = "EncodedTaskRunRequest", value = EncodedTaskRunRequest.class) })
 @Fluent
-public class RunRequest {
+public class RunRequest implements JsonSerializable<RunRequest> {
+    /*
+     * The type of the run request.
+     */
+    private String type = "RunRequest";
+
     /*
      * The value that indicates whether archiving is enabled for the run or not.
      */
-    @JsonProperty(value = "isArchiveEnabled")
     private Boolean isArchiveEnabled;
 
     /*
      * The dedicated agent pool for the run.
      */
-    @JsonProperty(value = "agentPoolName")
     private String agentPoolName;
 
     /*
      * The template that describes the repository and tag information for run log artifact.
      */
-    @JsonProperty(value = "logTemplate")
     private String logTemplate;
 
     /**
      * Creates an instance of RunRequest class.
      */
     public RunRequest() {
+    }
+
+    /**
+     * Get the type property: The type of the run request.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -118,5 +119,81 @@ public class RunRequest {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeBooleanField("isArchiveEnabled", this.isArchiveEnabled);
+        jsonWriter.writeStringField("agentPoolName", this.agentPoolName);
+        jsonWriter.writeStringField("logTemplate", this.logTemplate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunRequest if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the RunRequest.
+     */
+    public static RunRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("DockerBuildRequest".equals(discriminatorValue)) {
+                    return DockerBuildRequest.fromJson(readerToUse.reset());
+                } else if ("FileTaskRunRequest".equals(discriminatorValue)) {
+                    return FileTaskRunRequest.fromJson(readerToUse.reset());
+                } else if ("TaskRunRequest".equals(discriminatorValue)) {
+                    return TaskRunRequest.fromJson(readerToUse.reset());
+                } else if ("EncodedTaskRunRequest".equals(discriminatorValue)) {
+                    return EncodedTaskRunRequest.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static RunRequest fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunRequest deserializedRunRequest = new RunRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedRunRequest.type = reader.getString();
+                } else if ("isArchiveEnabled".equals(fieldName)) {
+                    deserializedRunRequest.isArchiveEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("agentPoolName".equals(fieldName)) {
+                    deserializedRunRequest.agentPoolName = reader.getString();
+                } else if ("logTemplate".equals(fieldName)) {
+                    deserializedRunRequest.logTemplate = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunRequest;
+        });
     }
 }

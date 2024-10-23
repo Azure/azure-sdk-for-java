@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class ExpressRoutePeeringType extends ExpandableStringEnum<ExpressR
      * @param name a name to look for.
      * @return the corresponding ExpressRoutePeeringType.
      */
-    @JsonCreator
     public static ExpressRoutePeeringType fromString(String name) {
         return fromString(name, ExpressRoutePeeringType.class);
     }

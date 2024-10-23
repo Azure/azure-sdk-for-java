@@ -5,40 +5,59 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the target. */
+/**
+ * The type of the target.
+ */
 public final class JobTargetType extends ExpandableStringEnum<JobTargetType> {
-    /** Static value TargetGroup for JobTargetType. */
+    /**
+     * Static value TargetGroup for JobTargetType.
+     */
     public static final JobTargetType TARGET_GROUP = fromString("TargetGroup");
 
-    /** Static value SqlDatabase for JobTargetType. */
+    /**
+     * Static value SqlDatabase for JobTargetType.
+     */
     public static final JobTargetType SQL_DATABASE = fromString("SqlDatabase");
 
-    /** Static value SqlElasticPool for JobTargetType. */
+    /**
+     * Static value SqlElasticPool for JobTargetType.
+     */
     public static final JobTargetType SQL_ELASTIC_POOL = fromString("SqlElasticPool");
 
-    /** Static value SqlShardMap for JobTargetType. */
+    /**
+     * Static value SqlShardMap for JobTargetType.
+     */
     public static final JobTargetType SQL_SHARD_MAP = fromString("SqlShardMap");
 
-    /** Static value SqlServer for JobTargetType. */
+    /**
+     * Static value SqlServer for JobTargetType.
+     */
     public static final JobTargetType SQL_SERVER = fromString("SqlServer");
 
     /**
+     * Creates a new instance of JobTargetType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JobTargetType() {
+    }
+
+    /**
      * Creates or finds a JobTargetType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding JobTargetType.
      */
-    @JsonCreator
     public static JobTargetType fromString(String name) {
         return fromString(name, JobTargetType.class);
     }
 
     /**
      * Gets known JobTargetType values.
-     *
+     * 
      * @return known JobTargetType values.
      */
     public static Collection<JobTargetType> values() {

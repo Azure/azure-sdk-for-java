@@ -78,6 +78,10 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
         return this.innerModel().provisioningState();
     }
 
+    public String deploymentErrors() {
+        return this.innerModel().deploymentErrors();
+    }
+
     public String managedEnvironmentId() {
         return this.innerModel().managedEnvironmentId();
     }

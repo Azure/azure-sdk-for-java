@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.hanaonazure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies information related to a SAP system ID. */
+/**
+ * Specifies information related to a SAP system ID.
+ */
 @Fluent
-public final class SapSystemId {
+public final class SapSystemId implements JsonSerializable<SapSystemId> {
     /*
      * Group ID of the HANA database user.
      */
-    @JsonProperty(value = "gid")
     private String gid;
 
     /*
      * Percent of memory to allocate to this SID.
      */
-    @JsonProperty(value = "memoryAllocation", access = JsonProperty.Access.WRITE_ONLY)
     private String memoryAllocation;
 
     /*
      * SAP system ID as database identifier.
      */
-    @JsonProperty(value = "sid")
     private String sid;
 
     /*
      * Name of the HANA database user.
      */
-    @JsonProperty(value = "username")
     private String username;
 
     /*
      * User ID of the HANA database user.
      */
-    @JsonProperty(value = "uid")
     private String uid;
 
-    /** Creates an instance of SapSystemId class. */
+    /**
+     * Creates an instance of SapSystemId class.
+     */
     public SapSystemId() {
     }
 
     /**
      * Get the gid property: Group ID of the HANA database user.
-     *
+     * 
      * @return the gid value.
      */
     public String gid() {
@@ -55,7 +58,7 @@ public final class SapSystemId {
 
     /**
      * Set the gid property: Group ID of the HANA database user.
-     *
+     * 
      * @param gid the gid value to set.
      * @return the SapSystemId object itself.
      */
@@ -66,7 +69,7 @@ public final class SapSystemId {
 
     /**
      * Get the memoryAllocation property: Percent of memory to allocate to this SID.
-     *
+     * 
      * @return the memoryAllocation value.
      */
     public String memoryAllocation() {
@@ -75,7 +78,7 @@ public final class SapSystemId {
 
     /**
      * Get the sid property: SAP system ID as database identifier.
-     *
+     * 
      * @return the sid value.
      */
     public String sid() {
@@ -84,7 +87,7 @@ public final class SapSystemId {
 
     /**
      * Set the sid property: SAP system ID as database identifier.
-     *
+     * 
      * @param sid the sid value to set.
      * @return the SapSystemId object itself.
      */
@@ -95,7 +98,7 @@ public final class SapSystemId {
 
     /**
      * Get the username property: Name of the HANA database user.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -104,7 +107,7 @@ public final class SapSystemId {
 
     /**
      * Set the username property: Name of the HANA database user.
-     *
+     * 
      * @param username the username value to set.
      * @return the SapSystemId object itself.
      */
@@ -115,7 +118,7 @@ public final class SapSystemId {
 
     /**
      * Get the uid property: User ID of the HANA database user.
-     *
+     * 
      * @return the uid value.
      */
     public String uid() {
@@ -124,7 +127,7 @@ public final class SapSystemId {
 
     /**
      * Set the uid property: User ID of the HANA database user.
-     *
+     * 
      * @param uid the uid value to set.
      * @return the SapSystemId object itself.
      */
@@ -135,9 +138,56 @@ public final class SapSystemId {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("gid", this.gid);
+        jsonWriter.writeStringField("sid", this.sid);
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("uid", this.uid);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapSystemId from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapSystemId if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapSystemId.
+     */
+    public static SapSystemId fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapSystemId deserializedSapSystemId = new SapSystemId();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("gid".equals(fieldName)) {
+                    deserializedSapSystemId.gid = reader.getString();
+                } else if ("memoryAllocation".equals(fieldName)) {
+                    deserializedSapSystemId.memoryAllocation = reader.getString();
+                } else if ("sid".equals(fieldName)) {
+                    deserializedSapSystemId.sid = reader.getString();
+                } else if ("username".equals(fieldName)) {
+                    deserializedSapSystemId.username = reader.getString();
+                } else if ("uid".equals(fieldName)) {
+                    deserializedSapSystemId.uid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapSystemId;
+        });
     }
 }

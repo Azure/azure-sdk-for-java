@@ -18,7 +18,10 @@ public final class ServicesListGloballyEnabledApmsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void servicesListGloballyEnabledApms(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getServices()
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getServices()
             .listGloballyEnabledApmsWithResponse("myResourceGroup", "myservice", com.azure.core.util.Context.NONE);
     }
 }

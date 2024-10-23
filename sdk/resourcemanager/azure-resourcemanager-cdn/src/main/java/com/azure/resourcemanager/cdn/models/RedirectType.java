@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class RedirectType extends ExpandableStringEnum<RedirectType> {
      * @param name a name to look for.
      * @return the corresponding RedirectType.
      */
-    @JsonCreator
     public static RedirectType fromString(String name) {
         return fromString(name, RedirectType.class);
     }

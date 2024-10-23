@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LegacyPeeringsKind. */
+/**
+ * Defines values for LegacyPeeringsKind.
+ */
 public final class LegacyPeeringsKind extends ExpandableStringEnum<LegacyPeeringsKind> {
-    /** Static value Direct for LegacyPeeringsKind. */
+    /**
+     * Static value Direct for LegacyPeeringsKind.
+     */
     public static final LegacyPeeringsKind DIRECT = fromString("Direct");
 
-    /** Static value Exchange for LegacyPeeringsKind. */
+    /**
+     * Static value Exchange for LegacyPeeringsKind.
+     */
     public static final LegacyPeeringsKind EXCHANGE = fromString("Exchange");
 
     /**
      * Creates a new instance of LegacyPeeringsKind value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class LegacyPeeringsKind extends ExpandableStringEnum<LegacyPeering
 
     /**
      * Creates or finds a LegacyPeeringsKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LegacyPeeringsKind.
      */
-    @JsonCreator
     public static LegacyPeeringsKind fromString(String name) {
         return fromString(name, LegacyPeeringsKind.class);
     }
 
     /**
      * Gets known LegacyPeeringsKind values.
-     *
+     * 
      * @return known LegacyPeeringsKind values.
      */
     public static Collection<LegacyPeeringsKind> values() {

@@ -5,78 +5,85 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
+import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Azure File Storage linked service properties.
  */
 @Fluent
-public final class AzureFileStorageLinkedServiceTypeProperties {
+public final class AzureFileStorageLinkedServiceTypeProperties
+    implements JsonSerializable<AzureFileStorageLinkedServiceTypeProperties> {
     /*
      * Host name of the server. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "host")
     private Object host;
 
     /*
      * User ID to logon the server. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "userId")
     private Object userId;
 
     /*
      * Password to logon the server.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
      * The connection string. It is mutually exclusive with sasUri property. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "connectionString")
     private Object connectionString;
 
     /*
      * The Azure key vault secret reference of accountKey in connection string.
      */
-    @JsonProperty(value = "accountKey")
     private AzureKeyVaultSecretReference accountKey;
 
     /*
      * SAS URI of the Azure File resource. It is mutually exclusive with connectionString property. Type: string,
      * SecureString or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "sasUri")
     private Object sasUri;
 
     /*
      * The Azure key vault secret reference of sasToken in sas uri.
      */
-    @JsonProperty(value = "sasToken")
     private AzureKeyVaultSecretReference sasToken;
 
     /*
      * The azure file share name. It is required when auth with accountKey/sasToken. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "fileShare")
     private Object fileShare;
 
     /*
      * The azure file share snapshot version. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "snapshot")
     private Object snapshot;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
+
+    /*
+     * File service endpoint of the Azure File Storage resource. It is mutually exclusive with connectionString, sasUri
+     * property.
+     */
+    private Object serviceEndpoint;
+
+    /*
+     * The credential reference containing authentication information.
+     */
+    private CredentialReference credential;
 
     /**
      * Creates an instance of AzureFileStorageLinkedServiceTypeProperties class.
@@ -295,6 +302,48 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
     }
 
     /**
+     * Get the serviceEndpoint property: File service endpoint of the Azure File Storage resource. It is mutually
+     * exclusive with connectionString, sasUri property.
+     * 
+     * @return the serviceEndpoint value.
+     */
+    public Object serviceEndpoint() {
+        return this.serviceEndpoint;
+    }
+
+    /**
+     * Set the serviceEndpoint property: File service endpoint of the Azure File Storage resource. It is mutually
+     * exclusive with connectionString, sasUri property.
+     * 
+     * @param serviceEndpoint the serviceEndpoint value to set.
+     * @return the AzureFileStorageLinkedServiceTypeProperties object itself.
+     */
+    public AzureFileStorageLinkedServiceTypeProperties withServiceEndpoint(Object serviceEndpoint) {
+        this.serviceEndpoint = serviceEndpoint;
+        return this;
+    }
+
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     * 
+     * @return the credential value.
+     */
+    public CredentialReference credential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     * 
+     * @param credential the credential value to set.
+     * @return the AzureFileStorageLinkedServiceTypeProperties object itself.
+     */
+    public AzureFileStorageLinkedServiceTypeProperties withCredential(CredentialReference credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -309,5 +358,81 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
         if (sasToken() != null) {
             sasToken().validate();
         }
+        if (credential() != null) {
+            credential().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("host", this.host);
+        jsonWriter.writeUntypedField("userId", this.userId);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        jsonWriter.writeJsonField("accountKey", this.accountKey);
+        jsonWriter.writeUntypedField("sasUri", this.sasUri);
+        jsonWriter.writeJsonField("sasToken", this.sasToken);
+        jsonWriter.writeUntypedField("fileShare", this.fileShare);
+        jsonWriter.writeUntypedField("snapshot", this.snapshot);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        jsonWriter.writeUntypedField("serviceEndpoint", this.serviceEndpoint);
+        jsonWriter.writeJsonField("credential", this.credential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFileStorageLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFileStorageLinkedServiceTypeProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFileStorageLinkedServiceTypeProperties.
+     */
+    public static AzureFileStorageLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFileStorageLinkedServiceTypeProperties deserializedAzureFileStorageLinkedServiceTypeProperties
+                = new AzureFileStorageLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("host".equals(fieldName)) {
+                    deserializedAzureFileStorageLinkedServiceTypeProperties.host = reader.readUntyped();
+                } else if ("userId".equals(fieldName)) {
+                    deserializedAzureFileStorageLinkedServiceTypeProperties.userId = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedAzureFileStorageLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("connectionString".equals(fieldName)) {
+                    deserializedAzureFileStorageLinkedServiceTypeProperties.connectionString = reader.readUntyped();
+                } else if ("accountKey".equals(fieldName)) {
+                    deserializedAzureFileStorageLinkedServiceTypeProperties.accountKey
+                        = AzureKeyVaultSecretReference.fromJson(reader);
+                } else if ("sasUri".equals(fieldName)) {
+                    deserializedAzureFileStorageLinkedServiceTypeProperties.sasUri = reader.readUntyped();
+                } else if ("sasToken".equals(fieldName)) {
+                    deserializedAzureFileStorageLinkedServiceTypeProperties.sasToken
+                        = AzureKeyVaultSecretReference.fromJson(reader);
+                } else if ("fileShare".equals(fieldName)) {
+                    deserializedAzureFileStorageLinkedServiceTypeProperties.fileShare = reader.readUntyped();
+                } else if ("snapshot".equals(fieldName)) {
+                    deserializedAzureFileStorageLinkedServiceTypeProperties.snapshot = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedAzureFileStorageLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else if ("serviceEndpoint".equals(fieldName)) {
+                    deserializedAzureFileStorageLinkedServiceTypeProperties.serviceEndpoint = reader.readUntyped();
+                } else if ("credential".equals(fieldName)) {
+                    deserializedAzureFileStorageLinkedServiceTypeProperties.credential
+                        = CredentialReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFileStorageLinkedServiceTypeProperties;
+        });
     }
 }

@@ -9,7 +9,8 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class ChangesListSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-05-01/examples/ListChanges.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/stable/2022-05-01/examples/ListChanges.json
      */
     /**
      * Sample code: ListChanges.

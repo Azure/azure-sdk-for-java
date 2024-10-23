@@ -27,8 +27,8 @@ public final class ExtensionsImpl implements Extensions {
 
     private final com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager;
 
-    public ExtensionsImpl(
-        ExtensionsClient innerClient, com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
+    public ExtensionsImpl(ExtensionsClient innerClient,
+        com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -37,20 +37,17 @@ public final class ExtensionsImpl implements Extensions {
         this.serviceClient().enableMonitoring(resourceGroupName, clusterName, parameters);
     }
 
-    public void enableMonitoring(
-        String resourceGroupName, String clusterName, ClusterMonitoringRequest parameters, Context context) {
+    public void enableMonitoring(String resourceGroupName, String clusterName, ClusterMonitoringRequest parameters,
+        Context context) {
         this.serviceClient().enableMonitoring(resourceGroupName, clusterName, parameters, context);
     }
 
-    public Response<ClusterMonitoringResponse> getMonitoringStatusWithResponse(
-        String resourceGroupName, String clusterName, Context context) {
-        Response<ClusterMonitoringResponseInner> inner =
-            this.serviceClient().getMonitoringStatusWithResponse(resourceGroupName, clusterName, context);
+    public Response<ClusterMonitoringResponse> getMonitoringStatusWithResponse(String resourceGroupName,
+        String clusterName, Context context) {
+        Response<ClusterMonitoringResponseInner> inner
+            = this.serviceClient().getMonitoringStatusWithResponse(resourceGroupName, clusterName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ClusterMonitoringResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -78,20 +75,17 @@ public final class ExtensionsImpl implements Extensions {
         this.serviceClient().enableAzureMonitor(resourceGroupName, clusterName, parameters);
     }
 
-    public void enableAzureMonitor(
-        String resourceGroupName, String clusterName, AzureMonitorRequest parameters, Context context) {
+    public void enableAzureMonitor(String resourceGroupName, String clusterName, AzureMonitorRequest parameters,
+        Context context) {
         this.serviceClient().enableAzureMonitor(resourceGroupName, clusterName, parameters, context);
     }
 
-    public Response<AzureMonitorResponse> getAzureMonitorStatusWithResponse(
-        String resourceGroupName, String clusterName, Context context) {
-        Response<AzureMonitorResponseInner> inner =
-            this.serviceClient().getAzureMonitorStatusWithResponse(resourceGroupName, clusterName, context);
+    public Response<AzureMonitorResponse> getAzureMonitorStatusWithResponse(String resourceGroupName,
+        String clusterName, Context context) {
+        Response<AzureMonitorResponseInner> inner
+            = this.serviceClient().getAzureMonitorStatusWithResponse(resourceGroupName, clusterName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AzureMonitorResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -115,24 +109,60 @@ public final class ExtensionsImpl implements Extensions {
         this.serviceClient().disableAzureMonitor(resourceGroupName, clusterName, context);
     }
 
+    public void enableAzureMonitorAgent(String resourceGroupName, String clusterName, AzureMonitorRequest parameters) {
+        this.serviceClient().enableAzureMonitorAgent(resourceGroupName, clusterName, parameters);
+    }
+
+    public void enableAzureMonitorAgent(String resourceGroupName, String clusterName, AzureMonitorRequest parameters,
+        Context context) {
+        this.serviceClient().enableAzureMonitorAgent(resourceGroupName, clusterName, parameters, context);
+    }
+
+    public Response<AzureMonitorResponse> getAzureMonitorAgentStatusWithResponse(String resourceGroupName,
+        String clusterName, Context context) {
+        Response<AzureMonitorResponseInner> inner
+            = this.serviceClient().getAzureMonitorAgentStatusWithResponse(resourceGroupName, clusterName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AzureMonitorResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AzureMonitorResponse getAzureMonitorAgentStatus(String resourceGroupName, String clusterName) {
+        AzureMonitorResponseInner inner
+            = this.serviceClient().getAzureMonitorAgentStatus(resourceGroupName, clusterName);
+        if (inner != null) {
+            return new AzureMonitorResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public void disableAzureMonitorAgent(String resourceGroupName, String clusterName) {
+        this.serviceClient().disableAzureMonitorAgent(resourceGroupName, clusterName);
+    }
+
+    public void disableAzureMonitorAgent(String resourceGroupName, String clusterName, Context context) {
+        this.serviceClient().disableAzureMonitorAgent(resourceGroupName, clusterName, context);
+    }
+
     public void create(String resourceGroupName, String clusterName, String extensionName, Extension parameters) {
         this.serviceClient().create(resourceGroupName, clusterName, extensionName, parameters);
     }
 
-    public void create(
-        String resourceGroupName, String clusterName, String extensionName, Extension parameters, Context context) {
+    public void create(String resourceGroupName, String clusterName, String extensionName, Extension parameters,
+        Context context) {
         this.serviceClient().create(resourceGroupName, clusterName, extensionName, parameters, context);
     }
 
-    public Response<ClusterMonitoringResponse> getWithResponse(
-        String resourceGroupName, String clusterName, String extensionName, Context context) {
-        Response<ClusterMonitoringResponseInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, clusterName, extensionName, context);
+    public Response<ClusterMonitoringResponse> getWithResponse(String resourceGroupName, String clusterName,
+        String extensionName, Context context) {
+        Response<ClusterMonitoringResponseInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, clusterName, extensionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ClusterMonitoringResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -156,30 +186,23 @@ public final class ExtensionsImpl implements Extensions {
         this.serviceClient().delete(resourceGroupName, clusterName, extensionName, context);
     }
 
-    public Response<AsyncOperationResult> getAzureAsyncOperationStatusWithResponse(
-        String resourceGroupName, String clusterName, String extensionName, String operationId, Context context) {
-        Response<AsyncOperationResultInner> inner =
-            this
-                .serviceClient()
-                .getAzureAsyncOperationStatusWithResponse(
-                    resourceGroupName, clusterName, extensionName, operationId, context);
+    public Response<AsyncOperationResult> getAzureAsyncOperationStatusWithResponse(String resourceGroupName,
+        String clusterName, String extensionName, String operationId, Context context) {
+        Response<AsyncOperationResultInner> inner = this.serviceClient()
+            .getAzureAsyncOperationStatusWithResponse(resourceGroupName, clusterName, extensionName, operationId,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AsyncOperationResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public AsyncOperationResult getAzureAsyncOperationStatus(
-        String resourceGroupName, String clusterName, String extensionName, String operationId) {
-        AsyncOperationResultInner inner =
-            this
-                .serviceClient()
-                .getAzureAsyncOperationStatus(resourceGroupName, clusterName, extensionName, operationId);
+    public AsyncOperationResult getAzureAsyncOperationStatus(String resourceGroupName, String clusterName,
+        String extensionName, String operationId) {
+        AsyncOperationResultInner inner = this.serviceClient()
+            .getAzureAsyncOperationStatus(resourceGroupName, clusterName, extensionName, operationId);
         if (inner != null) {
             return new AsyncOperationResultImpl(inner, this.manager());
         } else {

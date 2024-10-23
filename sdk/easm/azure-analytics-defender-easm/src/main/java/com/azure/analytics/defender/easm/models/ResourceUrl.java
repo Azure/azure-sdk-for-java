@@ -5,56 +5,56 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The ResourceUrl model.
  */
 @Immutable
-public final class ResourceUrl {
+public final class ResourceUrl implements JsonSerializable<ResourceUrl> {
 
     /*
      * The url property.
      */
     @Generated
-    @JsonProperty(value = "url")
     private String url;
 
     /*
      * The resources property.
      */
     @Generated
-    @JsonProperty(value = "resources")
     private List<DependentResource> resources;
 
     /*
      * The firstSeen property.
      */
     @Generated
-    @JsonProperty(value = "firstSeen")
     private OffsetDateTime firstSeen;
 
     /*
      * The lastSeen property.
      */
     @Generated
-    @JsonProperty(value = "lastSeen")
     private OffsetDateTime lastSeen;
 
     /*
      * The count property.
      */
     @Generated
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * The recent property.
      */
     @Generated
-    @JsonProperty(value = "recent")
     private Boolean recent;
 
     /**
@@ -122,5 +122,62 @@ public final class ResourceUrl {
     @Generated
     public Boolean isRecent() {
         return this.recent;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeArrayField("resources", this.resources, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("firstSeen",
+            this.firstSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.firstSeen));
+        jsonWriter.writeStringField("lastSeen",
+            this.lastSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastSeen));
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeBooleanField("recent", this.recent);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceUrl from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceUrl if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceUrl.
+     */
+    @Generated
+    public static ResourceUrl fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceUrl deserializedResourceUrl = new ResourceUrl();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("url".equals(fieldName)) {
+                    deserializedResourceUrl.url = reader.getString();
+                } else if ("resources".equals(fieldName)) {
+                    List<DependentResource> resources
+                        = reader.readArray(reader1 -> DependentResource.fromJson(reader1));
+                    deserializedResourceUrl.resources = resources;
+                } else if ("firstSeen".equals(fieldName)) {
+                    deserializedResourceUrl.firstSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastSeen".equals(fieldName)) {
+                    deserializedResourceUrl.lastSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("count".equals(fieldName)) {
+                    deserializedResourceUrl.count = reader.getNullable(JsonReader::getLong);
+                } else if ("recent".equals(fieldName)) {
+                    deserializedResourceUrl.recent = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedResourceUrl;
+        });
     }
 }

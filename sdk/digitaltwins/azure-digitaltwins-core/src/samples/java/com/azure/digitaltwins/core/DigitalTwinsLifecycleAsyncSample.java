@@ -11,11 +11,15 @@ import com.azure.digitaltwins.core.helpers.SamplesConstants;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.models.QueryChargeHelper;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
+import com.azure.json.ReadValueCallback;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -59,9 +63,9 @@ import static java.util.Arrays.asList;
 public class DigitalTwinsLifecycleAsyncSample {
 
     private static final int MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS = 10;
-    private static final ObjectMapper MAPPER = new ObjectMapper();
 
-    private static final URL DTDL_DIRECTORY_URL = DigitalTwinsLifecycleAsyncSample.class.getClassLoader().getResource("DTDL");
+    private static final URL DTDL_DIRECTORY_URL = DigitalTwinsLifecycleAsyncSample.class.getClassLoader()
+        .getResource("DTDL");
     private static final Path DTDL_DIRECTORY_PATH;
     private static final Path TWINS_PATH;
     private static final Path MODELS_PATH;
@@ -85,18 +89,13 @@ public class DigitalTwinsLifecycleAsyncSample {
 
         SamplesArguments parsedArguments = new SamplesArguments(args);
 
-        client = new DigitalTwinsClientBuilder()
-            .credential(
-                new ClientSecretCredentialBuilder()
-                    .tenantId(parsedArguments.getTenantId())
+        client = new DigitalTwinsClientBuilder().credential(
+                new ClientSecretCredentialBuilder().tenantId(parsedArguments.getTenantId())
                     .clientId(parsedArguments.getClientId())
                     .clientSecret(parsedArguments.getClientSecret())
-                    .build()
-            )
+                    .build())
             .endpoint(parsedArguments.getDigitalTwinEndpoint())
-            .httpLogOptions(
-                new HttpLogOptions()
-                    .setLogLevel(parsedArguments.getHttpLogDetailLevel()))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(parsedArguments.getHttpLogDetailLevel()))
             .buildAsyncClient();
 
         // Ensure existing twins with the same name are deleted first
@@ -123,6 +122,7 @@ public class DigitalTwinsLifecycleAsyncSample {
 
     /**
      * Delete a twin, and any relationships it might have.
+     *
      * @throws IOException If an I/O error is thrown when accessing the starting file.
      * @throws InterruptedException If the current thread is interrupted while waiting to acquire latch.
      */
@@ -130,22 +130,25 @@ public class DigitalTwinsLifecycleAsyncSample {
         ConsoleLogger.printHeader("Delete digital twins");
         Map<String, String> twins = FileHelper.loadAllFilesInPath(TWINS_PATH);
 
-        // Call APIs to clean up any pre-existing resources that might be referenced by this sample. If digital twin does not exist, ignore.
-        // Once the async API terminates (either successfully, or with an error), the latch count is decremented, or the semaphore is released.
+        // Call APIs to clean up any pre-existing resources that might be referenced by this sample. If digital twin
+        // does not exist, ignore. Once the async API terminates (either successfully, or with an error), the latch
+        // count is decremented, or the semaphore is released.
         for (Map.Entry<String, String> twin : twins.entrySet()) {
             String twinId = twin.getKey();
 
             // This list contains all the relationships that existing between the twins referenced by this sample.
             List<BasicRelationship> relationshipList = Collections.synchronizedList(new ArrayList<>());
 
-            // This latch is to maintain a thread-safe count to ensure that we wait for both the list relationships and list incoming relationships operations to complete,
-            // before proceeding to the delete operation.
+            // This latch is to maintain a thread-safe count to ensure that we wait for both the list relationships and
+            // list incoming relationships operations to complete, before proceeding to the delete operation.
             CountDownLatch listRelationshipSemaphore = new CountDownLatch(2);
-            // This latch is to maintain a thread-safe count to ensure that we wait for the delete twin operation to complete, before proceeding.
+            // This latch is to maintain a thread-safe count to ensure that we wait for the delete twin operation to
+            // complete, before proceeding.
             CountDownLatch deleteTwinsLatch = new CountDownLatch(1);
 
-            // This semaphores indicates when the relationship delete operation has has completed.
-            // We cannot use a latch here since we do not know the no. of relationships that will be deleted (so we do cannot set the latch initial count).
+            // This semaphores indicates when the relationship delete operation has completed.
+            // We cannot use a latch here since we do not know the no. of relationships that will be deleted (so we do
+            // cannot set the latch initial count).
             Semaphore deleteRelationshipsSemaphore = new Semaphore(0);
 
             // Call APIs to retrieve all relationships.
@@ -157,20 +160,21 @@ public class DigitalTwinsLifecycleAsyncSample {
 
             // Call APIs to retrieve all incoming relationships.
             client.listIncomingRelationships(twinId)
-                .doOnNext(e -> relationshipList.add(MAPPER.convertValue(e, BasicRelationship.class)))
+                .doOnNext(e -> relationshipList.add(convertFrom(e, BasicRelationship::fromJson)))
                 .doOnError(IGNORE_NOT_FOUND_ERROR)
                 .doOnTerminate(listRelationshipSemaphore::countDown)
                 .subscribe();
 
             // Call APIs to delete all relationships.
             if (listRelationshipSemaphore.await(MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS, TimeUnit.SECONDS)) {
-                relationshipList
-                    .forEach(relationship -> client.deleteRelationship(relationship.getSourceId(), relationship.getId())
+                relationshipList.forEach(
+                    relationship -> client.deleteRelationship(relationship.getSourceId(), relationship.getId())
                         .doOnSuccess(aVoid -> {
                             if (twinId.equals(relationship.getSourceId())) {
                                 ConsoleLogger.printSuccess("Found and deleted relationship: " + relationship.getId());
                             } else {
-                                ConsoleLogger.printSuccess("Found and deleted incoming relationship: " + relationship.getId());
+                                ConsoleLogger.printSuccess(
+                                    "Found and deleted incoming relationship: " + relationship.getId());
                             }
                         })
                         .doOnError(IGNORE_NOT_FOUND_ERROR)
@@ -179,7 +183,8 @@ public class DigitalTwinsLifecycleAsyncSample {
             }
 
             // Verify that the relationships have been deleted.
-            if (deleteRelationshipsSemaphore.tryAcquire(relationshipList.size(), MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS, TimeUnit.SECONDS)) {
+            if (deleteRelationshipsSemaphore.tryAcquire(relationshipList.size(),
+                MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS, TimeUnit.SECONDS)) {
                 // Now the digital twin should be safe to delete
 
                 // Call APIs to delete the twins.
@@ -195,6 +200,22 @@ public class DigitalTwinsLifecycleAsyncSample {
         }
     }
 
+    private static <T extends JsonSerializable<T>> T convertFrom(JsonSerializable<?> other,
+        ReadValueCallback<JsonReader, T> deserializer) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+            jsonWriter.writeJson(other).flush();
+        } catch (IOException ex) {
+            throw new UncheckedIOException("Error while serializing other to string ", ex);
+        }
+
+        try (JsonReader jsonReader = JsonProviders.createReader(outputStream.toByteArray())) {
+            return deserializer.read(jsonReader);
+        } catch (IOException ex) {
+            throw new UncheckedIOException("Error while deserializing relationship string to BasicRelationship", ex);
+        }
+    }
+
     /**
      * Delete models created by FullLifecycleSample for the ADT service instance.
      */
@@ -203,25 +224,28 @@ public class DigitalTwinsLifecycleAsyncSample {
         ConsoleLogger.printHeader("Deleting models");
 
         // This is to ensure models are deleted in an order such that no other models are referencing it.
-        List<String> models = asList(SamplesConstants.ROOM_MODEL_ID, SamplesConstants.WIFI_MODEL_ID, SamplesConstants.BUILDING_MODEL_ID, SamplesConstants.FLOOR_MODEL_ID, SamplesConstants.HVAC_MODEL_ID);
+        List<String> models = asList(SamplesConstants.ROOM_MODEL_ID, SamplesConstants.WIFI_MODEL_ID,
+            SamplesConstants.BUILDING_MODEL_ID, SamplesConstants.FLOOR_MODEL_ID, SamplesConstants.HVAC_MODEL_ID);
 
         // Call APIs to delete the models.
-        // Note that we are blocking the async API call. This is to ensure models are deleted in an order such that no other models are referencing it.
-        models
-            .forEach(modelId -> {
-                try {
-                    client.deleteModel(modelId).block();
-                    ConsoleLogger.printSuccess("Deleted model: " + modelId);
-                } catch (ErrorResponseException ex) {
-                    if (ex.getResponse().getStatusCode() != HTTP_NOT_FOUND) {
-                        ConsoleLogger.printFatal("Could not delete model " + modelId + " due to " + ex);
-                    }
+        // Note that we are blocking the async API call. This is to ensure models are deleted in an order such that no
+        // other models are referencing it.
+        models.forEach(modelId -> {
+            try {
+                client.deleteModel(modelId).block();
+                ConsoleLogger.printSuccess("Deleted model: " + modelId);
+            } catch (ErrorResponseException ex) {
+                if (ex.getResponse().getStatusCode() != HTTP_NOT_FOUND) {
+                    ConsoleLogger.printFatal("Could not delete model " + modelId + " due to " + ex);
                 }
-            });
+            }
+        });
     }
 
     /**
-     * Loads all the models found in the Models directory into memory and uses CreateModelsAsync API to create all the models in the ADT service instance.
+     * Loads all the models found in the Models directory into memory and uses CreateModelsAsync API to create all the
+     * models in the ADT service instance.
+     *
      * @throws IOException If an I/O error is thrown when accessing the starting file.
      * @throws InterruptedException If the current thread is interrupted while waiting to acquire latch.
      */
@@ -230,11 +254,11 @@ public class DigitalTwinsLifecycleAsyncSample {
         List<String> modelsToCreate = new ArrayList<>(FileHelper.loadAllFilesInPath(MODELS_PATH).values());
         final CountDownLatch createModelsLatch = new CountDownLatch(1);
 
-        // Call API to create the models. For each async operation, once the operation is completed successfully, a latch is counted down.
+        // Call API to create the models. For each async operation, once the operation is completed successfully, a
+        // latch is counted down.
         client.createModels(modelsToCreate)
             .doOnNext(listOfModelData -> listOfModelData.forEach(
-                modelData -> ConsoleLogger.printSuccess("Created model: " + modelData.getModelId())
-            ))
+                modelData -> ConsoleLogger.printSuccess("Created model: " + modelData.getModelId())))
             .doOnError(IGNORE_CONFLICT_ERROR)
             .doOnTerminate(createModelsLatch::countDown)
             .subscribe();
@@ -245,16 +269,20 @@ public class DigitalTwinsLifecycleAsyncSample {
 
     /**
      * Gets all the models within the ADT service instance.
+     *
      * @throws InterruptedException If the current thread is interrupted while waiting to acquire latch.
      */
     public static void listAllModels() throws InterruptedException {
         ConsoleLogger.printHeader("Listing models");
         final CountDownLatch listModelsLatch = new CountDownLatch(1);
 
-        // Call API to list the models. For each async operation, once the operation is completed successfully, a latch is counted down.
+        // Call API to list the models. For each async operation, once the operation is completed successfully, a
+        // latch is counted down.
         client.listModels()
-            .doOnNext(modelData -> ConsoleLogger.printSuccess("Retrieved model: " + modelData.getModelId() + ", display name '" + modelData.getDisplayNameLanguageMap().get("en") + "',"
-                + " upload time '" + modelData.getUploadedOn() + "' and decommissioned '" + modelData.isDecommissioned() + "'"))
+            .doOnNext(modelData -> ConsoleLogger.printSuccess(
+                "Retrieved model: " + modelData.getModelId() + ", display name '"
+                    + modelData.getDisplayNameLanguageMap().get("en") + "'," + " upload time '"
+                    + modelData.getUploadedOn() + "' and decommissioned '" + modelData.isDecommissioned() + "'"))
             .doOnError(throwable -> ConsoleLogger.printFatal("List models error: " + throwable))
             .doOnTerminate(listModelsLatch::countDown)
             .subscribe();
@@ -265,6 +293,7 @@ public class DigitalTwinsLifecycleAsyncSample {
 
     /**
      * Creates all twins specified in the DTDL->DigitalTwins directory.
+     *
      * @throws IOException If an I/O error is thrown when accessing the starting file.
      * @throws InterruptedException If the current thread is interrupted while waiting to acquire latch.
      */
@@ -273,13 +302,12 @@ public class DigitalTwinsLifecycleAsyncSample {
         Map<String, String> twins = FileHelper.loadAllFilesInPath(TWINS_PATH);
         final CountDownLatch createTwinsLatch = new CountDownLatch(twins.size());
 
-        // Call APIs to create the twins. For each async operation, once the operation is completed successfully, a latch is counted down.
-        twins
-            .forEach((twinId, twinContent) -> client.createOrReplaceDigitalTwin(twinId, twinContent, String.class)
-                .subscribe(
-                    twin -> ConsoleLogger.printSuccess("Created digital twin: " + twinId + "\n\t Body: " + twin),
-                    throwable -> ConsoleLogger.printFatal("Could not create digital twin " + twinId + " due to " + throwable),
-                    createTwinsLatch::countDown));
+        // Call APIs to create the twins. For each async operation, once the operation is completed successfully, a
+        // latch is counted down.
+        twins.forEach((twinId, twinContent) -> client.createOrReplaceDigitalTwin(twinId, twinContent, String.class)
+            .subscribe(twin -> ConsoleLogger.printSuccess("Created digital twin: " + twinId + "\n\t Body: " + twin),
+                throwable -> ConsoleLogger.printFatal(
+                    "Could not create digital twin " + twinId + " due to " + throwable), createTwinsLatch::countDown));
 
         // Wait until the latch count reaches zero, signifying that the async calls have completed successfully.
         createTwinsLatch.await(MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS, TimeUnit.SECONDS);
@@ -287,6 +315,7 @@ public class DigitalTwinsLifecycleAsyncSample {
 
     /**
      * Creates all the relationships defined in the DTDL->Relationships directory
+     *
      * @throws IOException If an I/O error is thrown when accessing the starting file.
      * @throws InterruptedException If the current thread is interrupted while waiting to acquire latch.
      */
@@ -297,37 +326,47 @@ public class DigitalTwinsLifecycleAsyncSample {
 
         // For each relationship array we deserialize it first.
         // We deserialize as BasicRelationship to get the entire custom relationship (custom relationship properties).
-        allRelationships.values().forEach(
-            relationshipContent -> {
-                try {
-                    List<BasicRelationship> relationships = MAPPER.readValue(relationshipContent, new TypeReference<List<BasicRelationship>>() { });
+        allRelationships.values().forEach(relationshipContent -> {
+            try (JsonReader jsonReader = JsonProviders.createReader(relationshipContent)) {
+                List<BasicRelationship> relationships = jsonReader.readArray(BasicRelationship::fromJson);
 
-                    // From loaded relationships, get the source Id and Id from each one, and create it with full relationship payload.
-                    relationships
-                        .forEach(relationship -> {
-                            try {
-                                client.createOrReplaceRelationship(relationship.getSourceId(), relationship.getId(), MAPPER.writeValueAsString(relationship), String.class)
-                                    .doOnSuccess(s -> ConsoleLogger.printSuccess("Linked twin " + relationship.getSourceId() + " to twin " + relationship.getTargetId() + " as " + relationship.getName()))
-                                    .doOnError(IGNORE_CONFLICT_ERROR)
-                                    .doOnTerminate(connectTwinsLatch::countDown)
-                                    .subscribe();
-                            } catch (JsonProcessingException e) {
-                                throw new RuntimeException("JsonProcessingException while serializing relationship string from BasicRelationship: ", e);
-                            }
-                        });
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException("JsonProcessingException while deserializing relationship string to BasicRelationship: ", e);
-                }
+                // From loaded relationships, get the source Id and Id from each one, and create it with full
+                // relationship payload.
+                relationships.forEach(relationship -> {
+                    try {
+                        client.createOrReplaceRelationship(relationship.getSourceId(), relationship.getId(),
+                                serializeToString(relationship), String.class)
+                            .doOnSuccess(s -> ConsoleLogger.printSuccess(
+                                "Linked twin " + relationship.getSourceId() + " to twin " + relationship.getTargetId()
+                                    + " as " + relationship.getName()))
+                            .doOnError(IGNORE_CONFLICT_ERROR)
+                            .doOnTerminate(connectTwinsLatch::countDown)
+                            .subscribe();
+                    } catch (IOException e) {
+                        throw new UncheckedIOException(
+                            "Error while deserializing relationship string to BasicRelationship", e);
+                    }
+                });
+            } catch (IOException e) {
+                throw new UncheckedIOException("Error while deserializing relationship string to BasicRelationship", e);
             }
-        );
+        });
 
         // Wait until the latch count reaches zero, signifying that the async calls have completed successfully.
         connectTwinsLatch.await(MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS, TimeUnit.SECONDS);
     }
 
+    private static String serializeToString(JsonSerializable<?> jsonSerializable) throws IOException {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+            jsonSerializable.toJson(jsonWriter).flush();
+            return outputStream.toString();
+        }
+    }
+
     /**
-     *
      * Queries for all the digital twins.
+     *
      * @throws InterruptedException If the current thread is interrupted while waiting to acquire latch.
      */
     public static void queryTwins() throws InterruptedException {
@@ -337,7 +376,8 @@ public class DigitalTwinsLifecycleAsyncSample {
 
         ConsoleLogger.printHeader("Making a twin query and iterating over the results.");
 
-        // Call API to query digital twins. For each async operation, once the operation is completed successfully, a latch is counted down.
+        // Call API to query digital twins. For each async operation, once the operation is completed successfully, a
+        // latch is counted down.
         client.query("SELECT * FROM digitaltwins", String.class, null)
             .doOnNext(queryResult -> ConsoleLogger.printHeader("Query result: " + queryResult))
             .doOnError(throwable -> ConsoleLogger.printFatal("Query error: " + throwable))
@@ -351,13 +391,13 @@ public class DigitalTwinsLifecycleAsyncSample {
 
         final CountDownLatch queryWithChargeLatch = new CountDownLatch(1);
 
-        // Call API to query digital twins. For each async operation, once the operation is completed successfully, a latch is counted down.
+        // Call API to query digital twins. For each async operation, once the operation is completed successfully, a
+        // latch is counted down.
         client.query("SELECT * FROM digitaltwins", BasicDigitalTwin.class, null)
             .byPage()
             .doOnNext(page -> {
                 ConsoleLogger.printHeader("Query charge: " + QueryChargeHelper.getQueryCharge(page));
-                page.getValue()
-                    .forEach(item -> ConsoleLogger.printHeader("Found digital twin: " + item.getId()));
+                page.getValue().forEach(item -> ConsoleLogger.printHeader("Found digital twin: " + item.getId()));
             })
             .doOnError(throwable -> ConsoleLogger.printFatal("Query error: " + throwable))
             .doOnTerminate(queryLatch::countDown)

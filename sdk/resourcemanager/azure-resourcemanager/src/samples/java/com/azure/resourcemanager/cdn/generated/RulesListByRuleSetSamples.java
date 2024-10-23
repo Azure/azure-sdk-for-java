@@ -18,7 +18,10 @@ public final class RulesListByRuleSetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void rulesListByRuleSet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getRules().listByRuleSet("RG", "profile1", "ruleSet1",
-            com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getRules()
+            .listByRuleSet("RG", "profile1", "ruleSet1", com.azure.core.util.Context.NONE);
     }
 }

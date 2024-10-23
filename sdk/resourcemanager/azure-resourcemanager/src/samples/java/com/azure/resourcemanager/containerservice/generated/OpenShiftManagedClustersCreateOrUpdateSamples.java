@@ -15,7 +15,6 @@ import com.azure.resourcemanager.containerservice.models.OpenShiftManagedCluster
 import com.azure.resourcemanager.containerservice.models.OpenShiftManagedClusterIdentityProvider;
 import com.azure.resourcemanager.containerservice.models.OpenShiftManagedClusterMasterPoolProfile;
 import com.azure.resourcemanager.containerservice.models.OpenShiftRouterProfile;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +30,7 @@ public final class OpenShiftManagedClustersCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create/Update OpenShift Managed Cluster.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createUpdateOpenShiftManagedCluster(com.azure.resourcemanager.AzureResourceManager azure) {

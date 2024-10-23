@@ -6,9 +6,12 @@ package com.azure.resourcemanager.resources;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resources.fluent.models.GenericResourceExpandedInner;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
@@ -22,7 +25,6 @@ import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.resourcemanager.resources.models.ResourceIdentityType;
 import com.azure.resourcemanager.resources.models.Sku;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -40,6 +42,7 @@ public class GenericResourcesTests extends ResourceManagementTest {
     private String testId;
     private String rgName;
     private String newRgName;
+    private final SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -75,7 +78,7 @@ public class GenericResourcesTests extends ResourceManagementTest {
                 .withProviderNamespace("Microsoft.Web")
                 .withoutPlan()
                 .withParentResourcePath("")
-                .withProperties(new ObjectMapper().readTree("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Shared\"}"))
+                .withProperties(serializerAdapter.deserialize("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Shared\"}", Object.class, SerializerEncoding.JSON))
                 .create();
         //List
         PagedIterable<GenericResource> resourceList = genericResources.listByResourceGroup(rgName);
@@ -97,7 +100,7 @@ public class GenericResourcesTests extends ResourceManagementTest {
         Assertions.assertNotNull(resource);
         // Update
         resource.update()
-                .withProperties(new ObjectMapper().readTree("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Dynamic\"}"))
+                .withProperties(serializerAdapter.deserialize("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Dynamic\"}", Object.class, SerializerEncoding.JSON))
                 .apply();
         // Delete
         genericResources.deleteById(resource.id());
@@ -167,7 +170,7 @@ public class GenericResourcesTests extends ResourceManagementTest {
             .withProviderNamespace("Microsoft.Web")
             .withoutPlan()
             .withParentResourcePath("")
-            .withProperties(new ObjectMapper().readTree("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Shared\"}"))
+            .withProperties(serializerAdapter.deserialize("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Shared\"}", Object.class, SerializerEncoding.JSON))
             .beginCreate();
 
         LongRunningOperationStatus pollStatus = acceptedResource.getActivationResponse().getStatus();
@@ -217,7 +220,7 @@ public class GenericResourcesTests extends ResourceManagementTest {
             .withKind("Storage")
             .withSku(new Sku().withName("Standard_LRS"))
             .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
-            .withProperties(new ObjectMapper().readTree("{\"minimumTlsVersion\": \"TLS1_2\", \"supportsHttpsTrafficOnly\": true}"))
+            .withProperties(serializerAdapter.deserialize("{\"minimumTlsVersion\": \"TLS1_2\", \"supportsHttpsTrafficOnly\": true}", Object.class, SerializerEncoding.JSON))
             .withApiVersion(apiVersion)
             .create();
         Assertions.assertEquals("Storage", storageResource.kind());

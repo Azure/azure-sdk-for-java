@@ -5,105 +5,98 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The WebComponent model.
  */
 @Immutable
-public final class WebComponent {
+public final class WebComponent implements JsonSerializable<WebComponent> {
 
     /*
      * The name property.
      */
     @Generated
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The type property.
      */
     @Generated
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The version property.
      */
     @Generated
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * The ruleId property.
      */
     @Generated
-    @JsonProperty(value = "ruleId")
     private List<String> ruleId;
 
     /*
      * The firstSeen property.
      */
     @Generated
-    @JsonProperty(value = "firstSeen")
     private OffsetDateTime firstSeen;
 
     /*
      * The lastSeen property.
      */
     @Generated
-    @JsonProperty(value = "lastSeen")
     private OffsetDateTime lastSeen;
 
     /*
      * The count property.
      */
     @Generated
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * The cve property.
      */
     @Generated
-    @JsonProperty(value = "cve")
     private List<Cve> cve;
 
     /*
      * The endOfLife property.
      */
     @Generated
-    @JsonProperty(value = "endOfLife")
     private Long endOfLife;
 
     /*
      * The recent property.
      */
     @Generated
-    @JsonProperty(value = "recent")
     private Boolean recent;
 
     /*
      * The ports property.
      */
     @Generated
-    @JsonProperty(value = "ports")
     private List<Port> ports;
 
     /*
      * The sources property.
      */
     @Generated
-    @JsonProperty(value = "sources")
     private List<Source> sources;
 
     /*
      * The service property.
      */
     @Generated
-    @JsonProperty(value = "service")
     private String service;
 
     /**
@@ -241,5 +234,85 @@ public final class WebComponent {
     @Generated
     public String getService() {
         return this.service;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeArrayField("ruleId", this.ruleId, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("firstSeen",
+            this.firstSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.firstSeen));
+        jsonWriter.writeStringField("lastSeen",
+            this.lastSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastSeen));
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeArrayField("cve", this.cve, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("endOfLife", this.endOfLife);
+        jsonWriter.writeBooleanField("recent", this.recent);
+        jsonWriter.writeArrayField("ports", this.ports, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sources", this.sources, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("service", this.service);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebComponent from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebComponent if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebComponent.
+     */
+    @Generated
+    public static WebComponent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebComponent deserializedWebComponent = new WebComponent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    deserializedWebComponent.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWebComponent.type = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedWebComponent.version = reader.getString();
+                } else if ("ruleId".equals(fieldName)) {
+                    List<String> ruleId = reader.readArray(reader1 -> reader1.getString());
+                    deserializedWebComponent.ruleId = ruleId;
+                } else if ("firstSeen".equals(fieldName)) {
+                    deserializedWebComponent.firstSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastSeen".equals(fieldName)) {
+                    deserializedWebComponent.lastSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("count".equals(fieldName)) {
+                    deserializedWebComponent.count = reader.getNullable(JsonReader::getLong);
+                } else if ("cve".equals(fieldName)) {
+                    List<Cve> cve = reader.readArray(reader1 -> Cve.fromJson(reader1));
+                    deserializedWebComponent.cve = cve;
+                } else if ("endOfLife".equals(fieldName)) {
+                    deserializedWebComponent.endOfLife = reader.getNullable(JsonReader::getLong);
+                } else if ("recent".equals(fieldName)) {
+                    deserializedWebComponent.recent = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ports".equals(fieldName)) {
+                    List<Port> ports = reader.readArray(reader1 -> Port.fromJson(reader1));
+                    deserializedWebComponent.ports = ports;
+                } else if ("sources".equals(fieldName)) {
+                    List<Source> sources = reader.readArray(reader1 -> Source.fromJson(reader1));
+                    deserializedWebComponent.sources = sources;
+                } else if ("service".equals(fieldName)) {
+                    deserializedWebComponent.service = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedWebComponent;
+        });
     }
 }

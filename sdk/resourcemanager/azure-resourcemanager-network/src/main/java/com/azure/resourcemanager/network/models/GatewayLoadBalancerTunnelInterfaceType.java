@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,7 +42,6 @@ public final class GatewayLoadBalancerTunnelInterfaceType
      * @param name a name to look for.
      * @return the corresponding GatewayLoadBalancerTunnelInterfaceType.
      */
-    @JsonCreator
     public static GatewayLoadBalancerTunnelInterfaceType fromString(String name) {
         return fromString(name, GatewayLoadBalancerTunnelInterfaceType.class);
     }

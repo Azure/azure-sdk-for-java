@@ -13,33 +13,29 @@ import org.junit.jupiter.api.Assertions;
 public final class AssetContainerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssetContainer model =
-            BinaryData
-                .fromString(
-                    "{\"isArchived\":false,\"latestVersion\":\"qnyhgb\",\"nextVersion\":\"tjivfxzsjabib\",\"description\":\"stawfsdjpvkv\",\"properties\":{\"budurgkakmo\":\"xbkzbzkdvncj\",\"gzrf\":\"zhjjklffhmouwq\",\"ikayuhqlbjbsybb\":\"eeyebi\"},\"tags\":{\"slthaq\":\"vtldgmfpgvmpip\"}}")
-                .toObject(AssetContainer.class);
-        Assertions.assertEquals("stawfsdjpvkv", model.description());
-        Assertions.assertEquals("xbkzbzkdvncj", model.properties().get("budurgkakmo"));
-        Assertions.assertEquals("vtldgmfpgvmpip", model.tags().get("slthaq"));
-        Assertions.assertEquals(false, model.isArchived());
+        AssetContainer model = BinaryData.fromString(
+            "{\"isArchived\":true,\"latestVersion\":\"equi\",\"nextVersion\":\"xicslfao\",\"description\":\"piyylhalnswhccsp\",\"tags\":{\"oluhczbwemh\":\"ivwitqscywugg\",\"sbrgz\":\"i\",\"ggicccnxqhue\":\"wmsweypqwd\"},\"properties\":{\"ncsdtclusiyp\":\"ttlstvlzywemhz\"}}")
+            .toObject(AssetContainer.class);
+        Assertions.assertEquals("piyylhalnswhccsp", model.description());
+        Assertions.assertEquals("ivwitqscywugg", model.tags().get("oluhczbwemh"));
+        Assertions.assertEquals("ttlstvlzywemhz", model.properties().get("ncsdtclusiyp"));
+        Assertions.assertEquals(true, model.isArchived());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssetContainer model =
-            new AssetContainer()
-                .withDescription("stawfsdjpvkv")
-                .withProperties(
-                    mapOf("budurgkakmo", "xbkzbzkdvncj", "gzrf", "zhjjklffhmouwq", "ikayuhqlbjbsybb", "eeyebi"))
-                .withTags(mapOf("slthaq", "vtldgmfpgvmpip"))
-                .withIsArchived(false);
+        AssetContainer model = new AssetContainer().withDescription("piyylhalnswhccsp")
+            .withTags(mapOf("oluhczbwemh", "ivwitqscywugg", "sbrgz", "i", "ggicccnxqhue", "wmsweypqwd"))
+            .withProperties(mapOf("ncsdtclusiyp", "ttlstvlzywemhz"))
+            .withIsArchived(true);
         model = BinaryData.fromObject(model).toObject(AssetContainer.class);
-        Assertions.assertEquals("stawfsdjpvkv", model.description());
-        Assertions.assertEquals("xbkzbzkdvncj", model.properties().get("budurgkakmo"));
-        Assertions.assertEquals("vtldgmfpgvmpip", model.tags().get("slthaq"));
-        Assertions.assertEquals(false, model.isArchived());
+        Assertions.assertEquals("piyylhalnswhccsp", model.description());
+        Assertions.assertEquals("ivwitqscywugg", model.tags().get("oluhczbwemh"));
+        Assertions.assertEquals("ttlstvlzywemhz", model.properties().get("ncsdtclusiyp"));
+        Assertions.assertEquals(true, model.isArchived());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

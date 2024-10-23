@@ -101,7 +101,15 @@ public final class InitContainer extends BaseContainer {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (env() != null) {
+            env().forEach(e -> e.validate());
+        }
+        if (resources() != null) {
+            resources().validate();
+        }
+        if (volumeMounts() != null) {
+            volumeMounts().forEach(e -> e.validate());
+        }
     }
 
     /**

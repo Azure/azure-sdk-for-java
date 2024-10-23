@@ -5,38 +5,44 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.consumption.fluent.models.ReservationRecommendationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Result of listing reservation recommendations. */
+/**
+ * Result of listing reservation recommendations.
+ */
 @Immutable
-public final class ReservationRecommendationsListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReservationRecommendationsListResult.class);
-
+public final class ReservationRecommendationsListResult
+    implements JsonSerializable<ReservationRecommendationsListResult> {
     /*
      * The list of reservation recommendations.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReservationRecommendationInner> value;
 
     /*
      * The link (url) to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /*
      * The link (url) to the previous page of results.
      */
-    @JsonProperty(value = "previousLink", access = JsonProperty.Access.WRITE_ONLY)
     private String previousLink;
 
     /**
+     * Creates an instance of ReservationRecommendationsListResult class.
+     */
+    public ReservationRecommendationsListResult() {
+    }
+
+    /**
      * Get the value property: The list of reservation recommendations.
-     *
+     * 
      * @return the value value.
      */
     public List<ReservationRecommendationInner> value() {
@@ -45,7 +51,7 @@ public final class ReservationRecommendationsListResult {
 
     /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -54,7 +60,7 @@ public final class ReservationRecommendationsListResult {
 
     /**
      * Get the previousLink property: The link (url) to the previous page of results.
-     *
+     * 
      * @return the previousLink value.
      */
     public String previousLink() {
@@ -63,12 +69,54 @@ public final class ReservationRecommendationsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReservationRecommendationsListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReservationRecommendationsListResult if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReservationRecommendationsListResult.
+     */
+    public static ReservationRecommendationsListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReservationRecommendationsListResult deserializedReservationRecommendationsListResult
+                = new ReservationRecommendationsListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ReservationRecommendationInner> value
+                        = reader.readArray(reader1 -> ReservationRecommendationInner.fromJson(reader1));
+                    deserializedReservationRecommendationsListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedReservationRecommendationsListResult.nextLink = reader.getString();
+                } else if ("previousLink".equals(fieldName)) {
+                    deserializedReservationRecommendationsListResult.previousLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReservationRecommendationsListResult;
+        });
     }
 }

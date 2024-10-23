@@ -5,34 +5,38 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** externalLink. */
+/**
+ * externalLink.
+ */
 @Fluent
-public final class MicrosoftGraphExternalLink {
+public final class MicrosoftGraphExternalLink implements JsonSerializable<MicrosoftGraphExternalLink> {
     /*
      * The url of the link.
      */
-    @JsonProperty(value = "href")
     private String href;
 
     /*
      * externalLink
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphExternalLink class. */
+    /**
+     * Creates an instance of MicrosoftGraphExternalLink class.
+     */
     public MicrosoftGraphExternalLink() {
     }
 
     /**
      * Get the href property: The url of the link.
-     *
+     * 
      * @return the href value.
      */
     public String href() {
@@ -41,7 +45,7 @@ public final class MicrosoftGraphExternalLink {
 
     /**
      * Set the href property: The url of the link.
-     *
+     * 
      * @param href the href value to set.
      * @return the MicrosoftGraphExternalLink object itself.
      */
@@ -52,17 +56,16 @@ public final class MicrosoftGraphExternalLink {
 
     /**
      * Get the additionalProperties property: externalLink.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: externalLink.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphExternalLink object itself.
      */
@@ -71,19 +74,58 @@ public final class MicrosoftGraphExternalLink {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("href", this.href);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphExternalLink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphExternalLink if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphExternalLink.
+     */
+    public static MicrosoftGraphExternalLink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphExternalLink deserializedMicrosoftGraphExternalLink = new MicrosoftGraphExternalLink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("href".equals(fieldName)) {
+                    deserializedMicrosoftGraphExternalLink.href = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphExternalLink.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphExternalLink;
+        });
     }
 }

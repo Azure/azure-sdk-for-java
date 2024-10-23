@@ -5,58 +5,59 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Properties of the deleted vault. */
+/**
+ * Properties of the deleted vault.
+ */
 @Immutable
-public final class DeletedVaultProperties {
+public final class DeletedVaultProperties implements JsonSerializable<DeletedVaultProperties> {
     /*
      * The resource id of the original vault.
      */
-    @JsonProperty(value = "vaultId", access = JsonProperty.Access.WRITE_ONLY)
     private String vaultId;
 
     /*
      * The location of the original vault.
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * The deleted date.
      */
-    @JsonProperty(value = "deletionDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime deletionDate;
 
     /*
      * The scheduled purged date.
      */
-    @JsonProperty(value = "scheduledPurgeDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime scheduledPurgeDate;
 
     /*
      * Tags of the original vault.
      */
-    @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Purge protection status of the original vault.
      */
-    @JsonProperty(value = "purgeProtectionEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean purgeProtectionEnabled;
 
-    /** Creates an instance of DeletedVaultProperties class. */
+    /**
+     * Creates an instance of DeletedVaultProperties class.
+     */
     public DeletedVaultProperties() {
     }
 
     /**
      * Get the vaultId property: The resource id of the original vault.
-     *
+     * 
      * @return the vaultId value.
      */
     public String vaultId() {
@@ -65,7 +66,7 @@ public final class DeletedVaultProperties {
 
     /**
      * Get the location property: The location of the original vault.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -74,7 +75,7 @@ public final class DeletedVaultProperties {
 
     /**
      * Get the deletionDate property: The deleted date.
-     *
+     * 
      * @return the deletionDate value.
      */
     public OffsetDateTime deletionDate() {
@@ -83,7 +84,7 @@ public final class DeletedVaultProperties {
 
     /**
      * Get the scheduledPurgeDate property: The scheduled purged date.
-     *
+     * 
      * @return the scheduledPurgeDate value.
      */
     public OffsetDateTime scheduledPurgeDate() {
@@ -92,7 +93,7 @@ public final class DeletedVaultProperties {
 
     /**
      * Get the tags property: Tags of the original vault.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -101,7 +102,7 @@ public final class DeletedVaultProperties {
 
     /**
      * Get the purgeProtectionEnabled property: Purge protection status of the original vault.
-     *
+     * 
      * @return the purgeProtectionEnabled value.
      */
     public Boolean purgeProtectionEnabled() {
@@ -110,9 +111,58 @@ public final class DeletedVaultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeletedVaultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeletedVaultProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeletedVaultProperties.
+     */
+    public static DeletedVaultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeletedVaultProperties deserializedDeletedVaultProperties = new DeletedVaultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vaultId".equals(fieldName)) {
+                    deserializedDeletedVaultProperties.vaultId = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDeletedVaultProperties.location = reader.getString();
+                } else if ("deletionDate".equals(fieldName)) {
+                    deserializedDeletedVaultProperties.deletionDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("scheduledPurgeDate".equals(fieldName)) {
+                    deserializedDeletedVaultProperties.scheduledPurgeDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDeletedVaultProperties.tags = tags;
+                } else if ("purgeProtectionEnabled".equals(fieldName)) {
+                    deserializedDeletedVaultProperties.purgeProtectionEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeletedVaultProperties;
+        });
     }
 }

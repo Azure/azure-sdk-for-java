@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The instance view of the VM Agent running on the virtual machine.
  */
 @Fluent
-public final class VirtualMachineAgentInstanceView {
+public final class VirtualMachineAgentInstanceView implements JsonSerializable<VirtualMachineAgentInstanceView> {
     /*
      * The VM Agent full version.
      */
-    @JsonProperty(value = "vmAgentVersion")
     private String vmAgentVersion;
 
     /*
      * The virtual machine extension handler instance view.
      */
-    @JsonProperty(value = "extensionHandlers")
     private List<VirtualMachineExtensionHandlerInstanceView> extensionHandlers;
 
     /*
      * The resource status information.
      */
-    @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
 
     /**
@@ -110,5 +111,53 @@ public final class VirtualMachineAgentInstanceView {
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vmAgentVersion", this.vmAgentVersion);
+        jsonWriter.writeArrayField("extensionHandlers", this.extensionHandlers,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("statuses", this.statuses, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineAgentInstanceView from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineAgentInstanceView if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineAgentInstanceView.
+     */
+    public static VirtualMachineAgentInstanceView fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineAgentInstanceView deserializedVirtualMachineAgentInstanceView
+                = new VirtualMachineAgentInstanceView();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vmAgentVersion".equals(fieldName)) {
+                    deserializedVirtualMachineAgentInstanceView.vmAgentVersion = reader.getString();
+                } else if ("extensionHandlers".equals(fieldName)) {
+                    List<VirtualMachineExtensionHandlerInstanceView> extensionHandlers
+                        = reader.readArray(reader1 -> VirtualMachineExtensionHandlerInstanceView.fromJson(reader1));
+                    deserializedVirtualMachineAgentInstanceView.extensionHandlers = extensionHandlers;
+                } else if ("statuses".equals(fieldName)) {
+                    List<InstanceViewStatus> statuses
+                        = reader.readArray(reader1 -> InstanceViewStatus.fromJson(reader1));
+                    deserializedVirtualMachineAgentInstanceView.statuses = statuses;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineAgentInstanceView;
+        });
     }
 }

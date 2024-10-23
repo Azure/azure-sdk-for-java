@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.fluent.models.ManagedInstanceEncryptionProtectorInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of managed instance encryption protectors. */
+/**
+ * A list of managed instance encryption protectors.
+ */
 @Immutable
-public final class ManagedInstanceEncryptionProtectorListResult {
+public final class ManagedInstanceEncryptionProtectorListResult
+    implements JsonSerializable<ManagedInstanceEncryptionProtectorListResult> {
     /*
      * Array of results.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ManagedInstanceEncryptionProtectorInner> value;
 
     /*
      * Link to retrieve next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ManagedInstanceEncryptionProtectorListResult class. */
+    /**
+     * Creates an instance of ManagedInstanceEncryptionProtectorListResult class.
+     */
     public ManagedInstanceEncryptionProtectorListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagedInstanceEncryptionProtectorInner> value() {
@@ -39,7 +46,7 @@ public final class ManagedInstanceEncryptionProtectorListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +55,52 @@ public final class ManagedInstanceEncryptionProtectorListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedInstanceEncryptionProtectorListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedInstanceEncryptionProtectorListResult if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedInstanceEncryptionProtectorListResult.
+     */
+    public static ManagedInstanceEncryptionProtectorListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedInstanceEncryptionProtectorListResult deserializedManagedInstanceEncryptionProtectorListResult
+                = new ManagedInstanceEncryptionProtectorListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ManagedInstanceEncryptionProtectorInner> value
+                        = reader.readArray(reader1 -> ManagedInstanceEncryptionProtectorInner.fromJson(reader1));
+                    deserializedManagedInstanceEncryptionProtectorListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedManagedInstanceEncryptionProtectorListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedInstanceEncryptionProtectorListResult;
+        });
     }
 }

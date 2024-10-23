@@ -1,5 +1,46 @@
 # Release History
 
+## 12.22.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.22.0-beta.1 (2024-10-17)
+
+### Features Added
+- Added support for service version 2025-01-05.
+
+### Breaking Changes
+- When creating a `DataLakeFileClient` or `DataLakeDirectoryClient` via `DataLakePathClientBuilder.pathName(String pathName)`,
+  the path name will be stored exactly as passed in and will not be URL-encoded. For example, if the path name is 
+  "foo/bar" and `DataLakeDirectoryClient` is created via `DataLakePathClientBuilder.pathName("foo/bar")`, 
+  `DataLakeDirectoryClient.getDirectoryPath()` will return "foo/bar" and the path's url will result in
+  “https://account.dfs.core.windows.net/filesystemname/foo%2Fbar”.
+
+## 12.21.0 (2024-09-17)
+
+### Features Added
+- Added ability to retrieve SAS string to sign for debugging purposes.
+- Added support for service version 2024-11-04.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.50.0` to version `1.52.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.4`.
+- Upgraded `azure-storage-blob` from `12.27.0` to version `12.28.0`.
+
+## 12.21.0-beta.1 (2024-08-06)
+
+### Features Added
+- Added ability to retrieve SAS string to sign for debugging purposes.
+- Added support for service version 2024-11-04.
+
 ## 12.20.0 (2024-07-18)
 
 ### Features Added

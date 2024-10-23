@@ -18,7 +18,10 @@ public final class ApplicationAcceleratorsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void applicationAcceleratorsDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getApplicationAccelerators().delete("myResourceGroup",
-            "myservice", "default", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getApplicationAccelerators()
+            .delete("myResourceGroup", "myservice", "default", com.azure.core.util.Context.NONE);
     }
 }

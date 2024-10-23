@@ -5,114 +5,106 @@
 package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.consumption.models.BalancePropertiesAdjustmentDetailsItem;
 import com.azure.resourcemanager.consumption.models.BalancePropertiesNewPurchasesDetailsItem;
 import com.azure.resourcemanager.consumption.models.BillingFrequency;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
-/** The properties of the balance. */
+/**
+ * The properties of the balance.
+ */
 @Fluent
-public final class BalanceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BalanceProperties.class);
-
+public final class BalanceProperties implements JsonSerializable<BalanceProperties> {
     /*
      * The ISO currency in which the meter is charged, for example, USD.
      */
-    @JsonProperty(value = "currency", access = JsonProperty.Access.WRITE_ONLY)
     private String currency;
 
     /*
      * The beginning balance for the billing period.
      */
-    @JsonProperty(value = "beginningBalance", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal beginningBalance;
 
     /*
-     * The ending balance for the billing period (for open periods this will be
-     * updated daily).
+     * The ending balance for the billing period (for open periods this will be updated daily).
      */
-    @JsonProperty(value = "endingBalance", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal endingBalance;
 
     /*
      * Total new purchase amount.
      */
-    @JsonProperty(value = "newPurchases", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal newPurchases;
 
     /*
      * Total adjustment amount.
      */
-    @JsonProperty(value = "adjustments", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal adjustments;
 
     /*
      * Total Commitment usage.
      */
-    @JsonProperty(value = "utilized", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal utilized;
 
     /*
      * Overage for Azure services.
      */
-    @JsonProperty(value = "serviceOverage", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal serviceOverage;
 
     /*
      * Charges Billed separately.
      */
-    @JsonProperty(value = "chargesBilledSeparately", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal chargesBilledSeparately;
 
     /*
      * serviceOverage + chargesBilledSeparately.
      */
-    @JsonProperty(value = "totalOverage", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal totalOverage;
 
     /*
      * Azure service commitment + total Overage.
      */
-    @JsonProperty(value = "totalUsage", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal totalUsage;
 
     /*
      * Total charges for Azure Marketplace.
      */
-    @JsonProperty(value = "azureMarketplaceServiceCharges", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal azureMarketplaceServiceCharges;
 
     /*
      * The billing frequency.
      */
-    @JsonProperty(value = "billingFrequency")
     private BillingFrequency billingFrequency;
 
     /*
      * Price is hidden or not.
      */
-    @JsonProperty(value = "priceHidden", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean priceHidden;
 
     /*
      * List of new purchases.
      */
-    @JsonProperty(value = "newPurchasesDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<BalancePropertiesNewPurchasesDetailsItem> newPurchasesDetails;
 
     /*
      * List of Adjustments (Promo credit, SIE credit etc.).
      */
-    @JsonProperty(value = "adjustmentDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<BalancePropertiesAdjustmentDetailsItem> adjustmentDetails;
 
     /**
+     * Creates an instance of BalanceProperties class.
+     */
+    public BalanceProperties() {
+    }
+
+    /**
      * Get the currency property: The ISO currency in which the meter is charged, for example, USD.
-     *
+     * 
      * @return the currency value.
      */
     public String currency() {
@@ -121,7 +113,7 @@ public final class BalanceProperties {
 
     /**
      * Get the beginningBalance property: The beginning balance for the billing period.
-     *
+     * 
      * @return the beginningBalance value.
      */
     public BigDecimal beginningBalance() {
@@ -131,7 +123,7 @@ public final class BalanceProperties {
     /**
      * Get the endingBalance property: The ending balance for the billing period (for open periods this will be updated
      * daily).
-     *
+     * 
      * @return the endingBalance value.
      */
     public BigDecimal endingBalance() {
@@ -140,7 +132,7 @@ public final class BalanceProperties {
 
     /**
      * Get the newPurchases property: Total new purchase amount.
-     *
+     * 
      * @return the newPurchases value.
      */
     public BigDecimal newPurchases() {
@@ -149,7 +141,7 @@ public final class BalanceProperties {
 
     /**
      * Get the adjustments property: Total adjustment amount.
-     *
+     * 
      * @return the adjustments value.
      */
     public BigDecimal adjustments() {
@@ -158,7 +150,7 @@ public final class BalanceProperties {
 
     /**
      * Get the utilized property: Total Commitment usage.
-     *
+     * 
      * @return the utilized value.
      */
     public BigDecimal utilized() {
@@ -167,7 +159,7 @@ public final class BalanceProperties {
 
     /**
      * Get the serviceOverage property: Overage for Azure services.
-     *
+     * 
      * @return the serviceOverage value.
      */
     public BigDecimal serviceOverage() {
@@ -176,7 +168,7 @@ public final class BalanceProperties {
 
     /**
      * Get the chargesBilledSeparately property: Charges Billed separately.
-     *
+     * 
      * @return the chargesBilledSeparately value.
      */
     public BigDecimal chargesBilledSeparately() {
@@ -185,7 +177,7 @@ public final class BalanceProperties {
 
     /**
      * Get the totalOverage property: serviceOverage + chargesBilledSeparately.
-     *
+     * 
      * @return the totalOverage value.
      */
     public BigDecimal totalOverage() {
@@ -194,7 +186,7 @@ public final class BalanceProperties {
 
     /**
      * Get the totalUsage property: Azure service commitment + total Overage.
-     *
+     * 
      * @return the totalUsage value.
      */
     public BigDecimal totalUsage() {
@@ -203,7 +195,7 @@ public final class BalanceProperties {
 
     /**
      * Get the azureMarketplaceServiceCharges property: Total charges for Azure Marketplace.
-     *
+     * 
      * @return the azureMarketplaceServiceCharges value.
      */
     public BigDecimal azureMarketplaceServiceCharges() {
@@ -212,7 +204,7 @@ public final class BalanceProperties {
 
     /**
      * Get the billingFrequency property: The billing frequency.
-     *
+     * 
      * @return the billingFrequency value.
      */
     public BillingFrequency billingFrequency() {
@@ -221,7 +213,7 @@ public final class BalanceProperties {
 
     /**
      * Set the billingFrequency property: The billing frequency.
-     *
+     * 
      * @param billingFrequency the billingFrequency value to set.
      * @return the BalanceProperties object itself.
      */
@@ -232,7 +224,7 @@ public final class BalanceProperties {
 
     /**
      * Get the priceHidden property: Price is hidden or not.
-     *
+     * 
      * @return the priceHidden value.
      */
     public Boolean priceHidden() {
@@ -241,7 +233,7 @@ public final class BalanceProperties {
 
     /**
      * Get the newPurchasesDetails property: List of new purchases.
-     *
+     * 
      * @return the newPurchasesDetails value.
      */
     public List<BalancePropertiesNewPurchasesDetailsItem> newPurchasesDetails() {
@@ -250,7 +242,7 @@ public final class BalanceProperties {
 
     /**
      * Get the adjustmentDetails property: List of Adjustments (Promo credit, SIE credit etc.).
-     *
+     * 
      * @return the adjustmentDetails value.
      */
     public List<BalancePropertiesAdjustmentDetailsItem> adjustmentDetails() {
@@ -259,7 +251,7 @@ public final class BalanceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -269,5 +261,84 @@ public final class BalanceProperties {
         if (adjustmentDetails() != null) {
             adjustmentDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("billingFrequency",
+            this.billingFrequency == null ? null : this.billingFrequency.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BalanceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BalanceProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BalanceProperties.
+     */
+    public static BalanceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BalanceProperties deserializedBalanceProperties = new BalanceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("currency".equals(fieldName)) {
+                    deserializedBalanceProperties.currency = reader.getString();
+                } else if ("beginningBalance".equals(fieldName)) {
+                    deserializedBalanceProperties.beginningBalance
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("endingBalance".equals(fieldName)) {
+                    deserializedBalanceProperties.endingBalance
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("newPurchases".equals(fieldName)) {
+                    deserializedBalanceProperties.newPurchases
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("adjustments".equals(fieldName)) {
+                    deserializedBalanceProperties.adjustments
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("utilized".equals(fieldName)) {
+                    deserializedBalanceProperties.utilized
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("serviceOverage".equals(fieldName)) {
+                    deserializedBalanceProperties.serviceOverage
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("chargesBilledSeparately".equals(fieldName)) {
+                    deserializedBalanceProperties.chargesBilledSeparately
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("totalOverage".equals(fieldName)) {
+                    deserializedBalanceProperties.totalOverage
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("totalUsage".equals(fieldName)) {
+                    deserializedBalanceProperties.totalUsage
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("azureMarketplaceServiceCharges".equals(fieldName)) {
+                    deserializedBalanceProperties.azureMarketplaceServiceCharges
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("billingFrequency".equals(fieldName)) {
+                    deserializedBalanceProperties.billingFrequency = BillingFrequency.fromString(reader.getString());
+                } else if ("priceHidden".equals(fieldName)) {
+                    deserializedBalanceProperties.priceHidden = reader.getNullable(JsonReader::getBoolean);
+                } else if ("newPurchasesDetails".equals(fieldName)) {
+                    List<BalancePropertiesNewPurchasesDetailsItem> newPurchasesDetails
+                        = reader.readArray(reader1 -> BalancePropertiesNewPurchasesDetailsItem.fromJson(reader1));
+                    deserializedBalanceProperties.newPurchasesDetails = newPurchasesDetails;
+                } else if ("adjustmentDetails".equals(fieldName)) {
+                    List<BalancePropertiesAdjustmentDetailsItem> adjustmentDetails
+                        = reader.readArray(reader1 -> BalancePropertiesAdjustmentDetailsItem.fromJson(reader1));
+                    deserializedBalanceProperties.adjustmentDetails = adjustmentDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBalanceProperties;
+        });
     }
 }

@@ -6,129 +6,117 @@ package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.PredictionGradesItem;
 import com.azure.resourcemanager.customerinsights.models.PredictionMappings;
 import com.azure.resourcemanager.customerinsights.models.PredictionSystemGeneratedEntities;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The prediction definition. */
+/**
+ * The prediction definition.
+ */
 @Fluent
-public final class Prediction {
+public final class Prediction implements JsonSerializable<Prediction> {
     /*
      * Description of the prediction.
      */
-    @JsonProperty(value = "description")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> description;
 
     /*
      * Display name of the prediction.
      */
-    @JsonProperty(value = "displayName")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> displayName;
 
     /*
      * Interaction types involved in the prediction.
      */
-    @JsonProperty(value = "involvedInteractionTypes")
     private List<String> involvedInteractionTypes;
 
     /*
      * KPI types involved in the prediction.
      */
-    @JsonProperty(value = "involvedKpiTypes")
     private List<String> involvedKpiTypes;
 
     /*
      * Relationships involved in the prediction.
      */
-    @JsonProperty(value = "involvedRelationships")
     private List<String> involvedRelationships;
 
     /*
      * Negative outcome expression.
      */
-    @JsonProperty(value = "negativeOutcomeExpression", required = true)
     private String negativeOutcomeExpression;
 
     /*
      * Positive outcome expression.
      */
-    @JsonProperty(value = "positiveOutcomeExpression", required = true)
     private String positiveOutcomeExpression;
 
     /*
      * Primary profile type.
      */
-    @JsonProperty(value = "primaryProfileType", required = true)
     private String primaryProfileType;
 
     /*
      * Provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningStates provisioningState;
 
     /*
      * Name of the prediction.
      */
-    @JsonProperty(value = "predictionName")
     private String predictionName;
 
     /*
      * Scope expression.
      */
-    @JsonProperty(value = "scopeExpression", required = true)
     private String scopeExpression;
 
     /*
      * The hub name.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
      * Whether do auto analyze.
      */
-    @JsonProperty(value = "autoAnalyze", required = true)
     private boolean autoAnalyze;
 
     /*
      * Definition of the link mapping of prediction.
      */
-    @JsonProperty(value = "mappings", required = true)
     private PredictionMappings mappings;
 
     /*
      * Score label.
      */
-    @JsonProperty(value = "scoreLabel", required = true)
     private String scoreLabel;
 
     /*
      * The prediction grades.
      */
-    @JsonProperty(value = "grades")
     private List<PredictionGradesItem> grades;
 
     /*
      * System generated entities.
      */
-    @JsonProperty(value = "systemGeneratedEntities", access = JsonProperty.Access.WRITE_ONLY)
     private PredictionSystemGeneratedEntities systemGeneratedEntities;
 
-    /** Creates an instance of Prediction class. */
+    /**
+     * Creates an instance of Prediction class.
+     */
     public Prediction() {
     }
 
     /**
      * Get the description property: Description of the prediction.
-     *
+     * 
      * @return the description value.
      */
     public Map<String, String> description() {
@@ -137,7 +125,7 @@ public final class Prediction {
 
     /**
      * Set the description property: Description of the prediction.
-     *
+     * 
      * @param description the description value to set.
      * @return the Prediction object itself.
      */
@@ -148,7 +136,7 @@ public final class Prediction {
 
     /**
      * Get the displayName property: Display name of the prediction.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
@@ -157,7 +145,7 @@ public final class Prediction {
 
     /**
      * Set the displayName property: Display name of the prediction.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the Prediction object itself.
      */
@@ -168,7 +156,7 @@ public final class Prediction {
 
     /**
      * Get the involvedInteractionTypes property: Interaction types involved in the prediction.
-     *
+     * 
      * @return the involvedInteractionTypes value.
      */
     public List<String> involvedInteractionTypes() {
@@ -177,7 +165,7 @@ public final class Prediction {
 
     /**
      * Set the involvedInteractionTypes property: Interaction types involved in the prediction.
-     *
+     * 
      * @param involvedInteractionTypes the involvedInteractionTypes value to set.
      * @return the Prediction object itself.
      */
@@ -188,7 +176,7 @@ public final class Prediction {
 
     /**
      * Get the involvedKpiTypes property: KPI types involved in the prediction.
-     *
+     * 
      * @return the involvedKpiTypes value.
      */
     public List<String> involvedKpiTypes() {
@@ -197,7 +185,7 @@ public final class Prediction {
 
     /**
      * Set the involvedKpiTypes property: KPI types involved in the prediction.
-     *
+     * 
      * @param involvedKpiTypes the involvedKpiTypes value to set.
      * @return the Prediction object itself.
      */
@@ -208,7 +196,7 @@ public final class Prediction {
 
     /**
      * Get the involvedRelationships property: Relationships involved in the prediction.
-     *
+     * 
      * @return the involvedRelationships value.
      */
     public List<String> involvedRelationships() {
@@ -217,7 +205,7 @@ public final class Prediction {
 
     /**
      * Set the involvedRelationships property: Relationships involved in the prediction.
-     *
+     * 
      * @param involvedRelationships the involvedRelationships value to set.
      * @return the Prediction object itself.
      */
@@ -228,7 +216,7 @@ public final class Prediction {
 
     /**
      * Get the negativeOutcomeExpression property: Negative outcome expression.
-     *
+     * 
      * @return the negativeOutcomeExpression value.
      */
     public String negativeOutcomeExpression() {
@@ -237,7 +225,7 @@ public final class Prediction {
 
     /**
      * Set the negativeOutcomeExpression property: Negative outcome expression.
-     *
+     * 
      * @param negativeOutcomeExpression the negativeOutcomeExpression value to set.
      * @return the Prediction object itself.
      */
@@ -248,7 +236,7 @@ public final class Prediction {
 
     /**
      * Get the positiveOutcomeExpression property: Positive outcome expression.
-     *
+     * 
      * @return the positiveOutcomeExpression value.
      */
     public String positiveOutcomeExpression() {
@@ -257,7 +245,7 @@ public final class Prediction {
 
     /**
      * Set the positiveOutcomeExpression property: Positive outcome expression.
-     *
+     * 
      * @param positiveOutcomeExpression the positiveOutcomeExpression value to set.
      * @return the Prediction object itself.
      */
@@ -268,7 +256,7 @@ public final class Prediction {
 
     /**
      * Get the primaryProfileType property: Primary profile type.
-     *
+     * 
      * @return the primaryProfileType value.
      */
     public String primaryProfileType() {
@@ -277,7 +265,7 @@ public final class Prediction {
 
     /**
      * Set the primaryProfileType property: Primary profile type.
-     *
+     * 
      * @param primaryProfileType the primaryProfileType value to set.
      * @return the Prediction object itself.
      */
@@ -288,7 +276,7 @@ public final class Prediction {
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -297,7 +285,7 @@ public final class Prediction {
 
     /**
      * Get the predictionName property: Name of the prediction.
-     *
+     * 
      * @return the predictionName value.
      */
     public String predictionName() {
@@ -306,7 +294,7 @@ public final class Prediction {
 
     /**
      * Set the predictionName property: Name of the prediction.
-     *
+     * 
      * @param predictionName the predictionName value to set.
      * @return the Prediction object itself.
      */
@@ -317,7 +305,7 @@ public final class Prediction {
 
     /**
      * Get the scopeExpression property: Scope expression.
-     *
+     * 
      * @return the scopeExpression value.
      */
     public String scopeExpression() {
@@ -326,7 +314,7 @@ public final class Prediction {
 
     /**
      * Set the scopeExpression property: Scope expression.
-     *
+     * 
      * @param scopeExpression the scopeExpression value to set.
      * @return the Prediction object itself.
      */
@@ -337,7 +325,7 @@ public final class Prediction {
 
     /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -346,7 +334,7 @@ public final class Prediction {
 
     /**
      * Get the autoAnalyze property: Whether do auto analyze.
-     *
+     * 
      * @return the autoAnalyze value.
      */
     public boolean autoAnalyze() {
@@ -355,7 +343,7 @@ public final class Prediction {
 
     /**
      * Set the autoAnalyze property: Whether do auto analyze.
-     *
+     * 
      * @param autoAnalyze the autoAnalyze value to set.
      * @return the Prediction object itself.
      */
@@ -366,7 +354,7 @@ public final class Prediction {
 
     /**
      * Get the mappings property: Definition of the link mapping of prediction.
-     *
+     * 
      * @return the mappings value.
      */
     public PredictionMappings mappings() {
@@ -375,7 +363,7 @@ public final class Prediction {
 
     /**
      * Set the mappings property: Definition of the link mapping of prediction.
-     *
+     * 
      * @param mappings the mappings value to set.
      * @return the Prediction object itself.
      */
@@ -386,7 +374,7 @@ public final class Prediction {
 
     /**
      * Get the scoreLabel property: Score label.
-     *
+     * 
      * @return the scoreLabel value.
      */
     public String scoreLabel() {
@@ -395,7 +383,7 @@ public final class Prediction {
 
     /**
      * Set the scoreLabel property: Score label.
-     *
+     * 
      * @param scoreLabel the scoreLabel value to set.
      * @return the Prediction object itself.
      */
@@ -406,7 +394,7 @@ public final class Prediction {
 
     /**
      * Get the grades property: The prediction grades.
-     *
+     * 
      * @return the grades value.
      */
     public List<PredictionGradesItem> grades() {
@@ -415,7 +403,7 @@ public final class Prediction {
 
     /**
      * Set the grades property: The prediction grades.
-     *
+     * 
      * @param grades the grades value to set.
      * @return the Prediction object itself.
      */
@@ -426,7 +414,7 @@ public final class Prediction {
 
     /**
      * Get the systemGeneratedEntities property: System generated entities.
-     *
+     * 
      * @return the systemGeneratedEntities value.
      */
     public PredictionSystemGeneratedEntities systemGeneratedEntities() {
@@ -435,43 +423,37 @@ public final class Prediction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (negativeOutcomeExpression() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property negativeOutcomeExpression in model Prediction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property negativeOutcomeExpression in model Prediction"));
         }
         if (positiveOutcomeExpression() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property positiveOutcomeExpression in model Prediction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property positiveOutcomeExpression in model Prediction"));
         }
         if (primaryProfileType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property primaryProfileType in model Prediction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property primaryProfileType in model Prediction"));
         }
         if (scopeExpression() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property scopeExpression in model Prediction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property scopeExpression in model Prediction"));
         }
         if (mappings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property mappings in model Prediction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property mappings in model Prediction"));
         } else {
             mappings().validate();
         }
         if (scoreLabel() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property scoreLabel in model Prediction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property scoreLabel in model Prediction"));
         }
         if (grades() != null) {
             grades().forEach(e -> e.validate());
@@ -482,4 +464,96 @@ public final class Prediction {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Prediction.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("negativeOutcomeExpression", this.negativeOutcomeExpression);
+        jsonWriter.writeStringField("positiveOutcomeExpression", this.positiveOutcomeExpression);
+        jsonWriter.writeStringField("primaryProfileType", this.primaryProfileType);
+        jsonWriter.writeStringField("scopeExpression", this.scopeExpression);
+        jsonWriter.writeBooleanField("autoAnalyze", this.autoAnalyze);
+        jsonWriter.writeJsonField("mappings", this.mappings);
+        jsonWriter.writeStringField("scoreLabel", this.scoreLabel);
+        jsonWriter.writeMapField("description", this.description, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("displayName", this.displayName, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("involvedInteractionTypes", this.involvedInteractionTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("involvedKpiTypes", this.involvedKpiTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("involvedRelationships", this.involvedRelationships,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("predictionName", this.predictionName);
+        jsonWriter.writeArrayField("grades", this.grades, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Prediction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Prediction if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Prediction.
+     */
+    public static Prediction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Prediction deserializedPrediction = new Prediction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("negativeOutcomeExpression".equals(fieldName)) {
+                    deserializedPrediction.negativeOutcomeExpression = reader.getString();
+                } else if ("positiveOutcomeExpression".equals(fieldName)) {
+                    deserializedPrediction.positiveOutcomeExpression = reader.getString();
+                } else if ("primaryProfileType".equals(fieldName)) {
+                    deserializedPrediction.primaryProfileType = reader.getString();
+                } else if ("scopeExpression".equals(fieldName)) {
+                    deserializedPrediction.scopeExpression = reader.getString();
+                } else if ("autoAnalyze".equals(fieldName)) {
+                    deserializedPrediction.autoAnalyze = reader.getBoolean();
+                } else if ("mappings".equals(fieldName)) {
+                    deserializedPrediction.mappings = PredictionMappings.fromJson(reader);
+                } else if ("scoreLabel".equals(fieldName)) {
+                    deserializedPrediction.scoreLabel = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    Map<String, String> description = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPrediction.description = description;
+                } else if ("displayName".equals(fieldName)) {
+                    Map<String, String> displayName = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPrediction.displayName = displayName;
+                } else if ("involvedInteractionTypes".equals(fieldName)) {
+                    List<String> involvedInteractionTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPrediction.involvedInteractionTypes = involvedInteractionTypes;
+                } else if ("involvedKpiTypes".equals(fieldName)) {
+                    List<String> involvedKpiTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPrediction.involvedKpiTypes = involvedKpiTypes;
+                } else if ("involvedRelationships".equals(fieldName)) {
+                    List<String> involvedRelationships = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPrediction.involvedRelationships = involvedRelationships;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedPrediction.provisioningState = ProvisioningStates.fromString(reader.getString());
+                } else if ("predictionName".equals(fieldName)) {
+                    deserializedPrediction.predictionName = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedPrediction.tenantId = reader.getString();
+                } else if ("grades".equals(fieldName)) {
+                    List<PredictionGradesItem> grades
+                        = reader.readArray(reader1 -> PredictionGradesItem.fromJson(reader1));
+                    deserializedPrediction.grades = grades;
+                } else if ("systemGeneratedEntities".equals(fieldName)) {
+                    deserializedPrediction.systemGeneratedEntities = PredictionSystemGeneratedEntities.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrediction;
+        });
+    }
 }

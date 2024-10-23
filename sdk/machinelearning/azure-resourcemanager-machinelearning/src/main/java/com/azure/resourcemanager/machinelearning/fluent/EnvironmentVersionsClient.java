@@ -8,15 +8,20 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.machinelearning.fluent.models.EnvironmentVersionInner;
+import com.azure.resourcemanager.machinelearning.models.DestinationAsset;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
 
-/** An instance of this class provides access to all the operations defined in EnvironmentVersionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EnvironmentVersionsClient.
+ */
 public interface EnvironmentVersionsClient {
     /**
      * List versions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -30,7 +35,7 @@ public interface EnvironmentVersionsClient {
 
     /**
      * List versions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -45,19 +50,12 @@ public interface EnvironmentVersionsClient {
      * @return a paginated list of EnvironmentVersion entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EnvironmentVersionInner> list(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        String orderBy,
-        Integer top,
-        String skip,
-        ListViewType listViewType,
-        Context context);
+    PagedIterable<EnvironmentVersionInner> list(String resourceGroupName, String workspaceName, String name,
+        String orderBy, Integer top, String skip, ListViewType listViewType, Context context);
 
     /**
      * Delete version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -69,12 +67,12 @@ public interface EnvironmentVersionsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String name, String version, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String name, String version,
+        Context context);
 
     /**
      * Delete version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -88,7 +86,7 @@ public interface EnvironmentVersionsClient {
 
     /**
      * Get version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -100,12 +98,12 @@ public interface EnvironmentVersionsClient {
      * @return version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EnvironmentVersionInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String name, String version, Context context);
+    Response<EnvironmentVersionInner> getWithResponse(String resourceGroupName, String workspaceName, String name,
+        String version, Context context);
 
     /**
      * Get version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -120,7 +118,7 @@ public interface EnvironmentVersionsClient {
 
     /**
      * Creates or updates an EnvironmentVersion.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Name of EnvironmentVersion. This is case-sensitive.
@@ -133,17 +131,12 @@ public interface EnvironmentVersionsClient {
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EnvironmentVersionInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        String version,
-        EnvironmentVersionInner body,
-        Context context);
+    Response<EnvironmentVersionInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String name, String version, EnvironmentVersionInner body, Context context);
 
     /**
      * Creates or updates an EnvironmentVersion.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Name of EnvironmentVersion. This is case-sensitive.
@@ -155,6 +148,73 @@ public interface EnvironmentVersionsClient {
      * @return azure Resource Manager resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EnvironmentVersionInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, String version, EnvironmentVersionInner body);
+    EnvironmentVersionInner createOrUpdate(String resourceGroupName, String workspaceName, String name, String version,
+        EnvironmentVersionInner body);
+
+    /**
+     * Publish version asset into registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name.
+     * @param version Version identifier.
+     * @param body Destination registry info.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginPublish(String resourceGroupName, String workspaceName, String name,
+        String version, DestinationAsset body);
+
+    /**
+     * Publish version asset into registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name.
+     * @param version Version identifier.
+     * @param body Destination registry info.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginPublish(String resourceGroupName, String workspaceName, String name,
+        String version, DestinationAsset body, Context context);
+
+    /**
+     * Publish version asset into registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name.
+     * @param version Version identifier.
+     * @param body Destination registry info.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void publish(String resourceGroupName, String workspaceName, String name, String version, DestinationAsset body);
+
+    /**
+     * Publish version asset into registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name.
+     * @param version Version identifier.
+     * @param body Destination registry info.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void publish(String resourceGroupName, String workspaceName, String name, String version, DestinationAsset body,
+        Context context);
 }

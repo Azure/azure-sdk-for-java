@@ -5,34 +5,37 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** columnLink. */
+/**
+ * columnLink.
+ */
 @Fluent
 public final class MicrosoftGraphColumnLink extends MicrosoftGraphEntity {
     /*
-     * The name of the column  in this content type.
+     * The name of the column in this content type.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * columnLink
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphColumnLink class. */
+    /**
+     * Creates an instance of MicrosoftGraphColumnLink class.
+     */
     public MicrosoftGraphColumnLink() {
     }
 
     /**
      * Get the name property: The name of the column in this content type.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -41,7 +44,7 @@ public final class MicrosoftGraphColumnLink extends MicrosoftGraphEntity {
 
     /**
      * Set the name property: The name of the column in this content type.
-     *
+     * 
      * @param name the name value to set.
      * @return the MicrosoftGraphColumnLink object itself.
      */
@@ -52,17 +55,16 @@ public final class MicrosoftGraphColumnLink extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: columnLink.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: columnLink.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphColumnLink object itself.
      */
@@ -71,15 +73,9 @@ public final class MicrosoftGraphColumnLink extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphColumnLink withId(String id) {
         super.withId(id);
@@ -88,11 +84,61 @@ public final class MicrosoftGraphColumnLink extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("name", this.name);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphColumnLink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphColumnLink if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphColumnLink.
+     */
+    public static MicrosoftGraphColumnLink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphColumnLink deserializedMicrosoftGraphColumnLink = new MicrosoftGraphColumnLink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphColumnLink.withId(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphColumnLink.name = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphColumnLink.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphColumnLink;
+        });
     }
 }

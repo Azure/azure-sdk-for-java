@@ -7,7 +7,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
-import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE;
+import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
 
 /**
  * A {@code StorageException} is thrown whenever Azure Storage successfully returns an error code that is not 200-level.
@@ -40,7 +40,7 @@ public final class ShareStorageException extends HttpResponseException {
      * @return The error code returned by the service.
      */
     public ShareErrorCode getErrorCode() {
-        return ShareErrorCode.fromString(super.getResponse().getHeaders().getValue(ERROR_CODE));
+        return ShareErrorCode.fromString(super.getResponse().getHeaders().getValue(ERROR_CODE_HEADER_NAME));
     }
 
     /**

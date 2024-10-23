@@ -219,12 +219,6 @@ public class JsonWriteContext extends JsonStreamContext {
         return _currentName;
     }
 
-    // @since 2.9
-    @Override
-    public boolean hasCurrentName() {
-        return _currentName != null;
-    }
-
     /**
      * Method that can be used to both clear the accumulated references
      * (specifically value set with {@link #setCurrentValue(Object)})
@@ -268,7 +262,7 @@ public class JsonWriteContext extends JsonStreamContext {
         return (_index < 0) ? STATUS_OK_AS_IS : STATUS_OK_AFTER_COMMA;
     }
 
-    private final void _checkDup(DupDetector dd, String name) throws JsonProcessingException {
+    private void _checkDup(DupDetector dd, String name) throws JsonProcessingException {
         if (dd.isDup(name)) {
             Object src = dd.getSource();
             throw new JsonGenerationException("Duplicate field '" + name + "'",

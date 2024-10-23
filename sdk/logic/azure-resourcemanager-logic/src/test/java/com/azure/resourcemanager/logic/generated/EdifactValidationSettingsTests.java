@@ -12,47 +12,43 @@ import org.junit.jupiter.api.Assertions;
 public final class EdifactValidationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EdifactValidationSettings model =
-            BinaryData
-                .fromString(
-                    "{\"validateCharacterSet\":false,\"checkDuplicateInterchangeControlNumber\":true,\"interchangeControlNumberValidityDays\":194924410,\"checkDuplicateGroupControlNumber\":false,\"checkDuplicateTransactionSetControlNumber\":false,\"validateEDITypes\":false,\"validateXSDTypes\":false,\"allowLeadingAndTrailingSpacesAndZeroes\":true,\"trimLeadingAndTrailingSpacesAndZeroes\":true,\"trailingSeparatorPolicy\":\"NotAllowed\"}")
-                .toObject(EdifactValidationSettings.class);
+        EdifactValidationSettings model = BinaryData.fromString(
+            "{\"validateCharacterSet\":false,\"checkDuplicateInterchangeControlNumber\":true,\"interchangeControlNumberValidityDays\":230332643,\"checkDuplicateGroupControlNumber\":true,\"checkDuplicateTransactionSetControlNumber\":true,\"validateEDITypes\":true,\"validateXSDTypes\":false,\"allowLeadingAndTrailingSpacesAndZeroes\":true,\"trimLeadingAndTrailingSpacesAndZeroes\":false,\"trailingSeparatorPolicy\":\"Mandatory\"}")
+            .toObject(EdifactValidationSettings.class);
         Assertions.assertEquals(false, model.validateCharacterSet());
         Assertions.assertEquals(true, model.checkDuplicateInterchangeControlNumber());
-        Assertions.assertEquals(194924410, model.interchangeControlNumberValidityDays());
-        Assertions.assertEquals(false, model.checkDuplicateGroupControlNumber());
-        Assertions.assertEquals(false, model.checkDuplicateTransactionSetControlNumber());
-        Assertions.assertEquals(false, model.validateEdiTypes());
+        Assertions.assertEquals(230332643, model.interchangeControlNumberValidityDays());
+        Assertions.assertEquals(true, model.checkDuplicateGroupControlNumber());
+        Assertions.assertEquals(true, model.checkDuplicateTransactionSetControlNumber());
+        Assertions.assertEquals(true, model.validateEdiTypes());
         Assertions.assertEquals(false, model.validateXsdTypes());
         Assertions.assertEquals(true, model.allowLeadingAndTrailingSpacesAndZeroes());
-        Assertions.assertEquals(true, model.trimLeadingAndTrailingSpacesAndZeroes());
-        Assertions.assertEquals(TrailingSeparatorPolicy.NOT_ALLOWED, model.trailingSeparatorPolicy());
+        Assertions.assertEquals(false, model.trimLeadingAndTrailingSpacesAndZeroes());
+        Assertions.assertEquals(TrailingSeparatorPolicy.MANDATORY, model.trailingSeparatorPolicy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EdifactValidationSettings model =
-            new EdifactValidationSettings()
-                .withValidateCharacterSet(false)
-                .withCheckDuplicateInterchangeControlNumber(true)
-                .withInterchangeControlNumberValidityDays(194924410)
-                .withCheckDuplicateGroupControlNumber(false)
-                .withCheckDuplicateTransactionSetControlNumber(false)
-                .withValidateEdiTypes(false)
-                .withValidateXsdTypes(false)
-                .withAllowLeadingAndTrailingSpacesAndZeroes(true)
-                .withTrimLeadingAndTrailingSpacesAndZeroes(true)
-                .withTrailingSeparatorPolicy(TrailingSeparatorPolicy.NOT_ALLOWED);
+        EdifactValidationSettings model = new EdifactValidationSettings().withValidateCharacterSet(false)
+            .withCheckDuplicateInterchangeControlNumber(true)
+            .withInterchangeControlNumberValidityDays(230332643)
+            .withCheckDuplicateGroupControlNumber(true)
+            .withCheckDuplicateTransactionSetControlNumber(true)
+            .withValidateEdiTypes(true)
+            .withValidateXsdTypes(false)
+            .withAllowLeadingAndTrailingSpacesAndZeroes(true)
+            .withTrimLeadingAndTrailingSpacesAndZeroes(false)
+            .withTrailingSeparatorPolicy(TrailingSeparatorPolicy.MANDATORY);
         model = BinaryData.fromObject(model).toObject(EdifactValidationSettings.class);
         Assertions.assertEquals(false, model.validateCharacterSet());
         Assertions.assertEquals(true, model.checkDuplicateInterchangeControlNumber());
-        Assertions.assertEquals(194924410, model.interchangeControlNumberValidityDays());
-        Assertions.assertEquals(false, model.checkDuplicateGroupControlNumber());
-        Assertions.assertEquals(false, model.checkDuplicateTransactionSetControlNumber());
-        Assertions.assertEquals(false, model.validateEdiTypes());
+        Assertions.assertEquals(230332643, model.interchangeControlNumberValidityDays());
+        Assertions.assertEquals(true, model.checkDuplicateGroupControlNumber());
+        Assertions.assertEquals(true, model.checkDuplicateTransactionSetControlNumber());
+        Assertions.assertEquals(true, model.validateEdiTypes());
         Assertions.assertEquals(false, model.validateXsdTypes());
         Assertions.assertEquals(true, model.allowLeadingAndTrailingSpacesAndZeroes());
-        Assertions.assertEquals(true, model.trimLeadingAndTrailingSpacesAndZeroes());
-        Assertions.assertEquals(TrailingSeparatorPolicy.NOT_ALLOWED, model.trailingSeparatorPolicy());
+        Assertions.assertEquals(false, model.trimLeadingAndTrailingSpacesAndZeroes());
+        Assertions.assertEquals(TrailingSeparatorPolicy.MANDATORY, model.trailingSeparatorPolicy());
     }
 }

@@ -21,7 +21,7 @@ public final class JavaComponentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"Failed\",\"configurations\":[{\"propertyName\":\"wmhlymgnukx\",\"value\":\"emjpequ\"}],\"serviceBinds\":[{\"name\":\"audgjtfbclakkucd\",\"serviceId\":\"nhczbutoucgjt\"},{\"name\":\"jwayhi\",\"serviceId\":\"qwwvgwkslvl\"}]},\"id\":\"edvbiabvnsrge\",\"name\":\"zyqxadyfhbmwkh\",\"type\":\"jqttbspvk\"}";
+            = "{\"properties\":{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"Deleting\",\"configurations\":[{\"propertyName\":\"joxtdahne\",\"value\":\"ovt\"},{\"propertyName\":\"ztivfwjl\",\"value\":\"zekfsrmauklajv\"}],\"scale\":{\"minReplicas\":630907604,\"maxReplicas\":1874917407},\"serviceBinds\":[{\"name\":\"jovtkwxnhwhhn\",\"serviceId\":\"rzaaoee\"},{\"name\":\"mjenvjeatea\",\"serviceId\":\"crxoxdj\"}]},\"id\":\"dnaryyinzk\",\"name\":\"olrndwdb\",\"type\":\"xvzaledoy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,14 @@ public final class JavaComponentsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         JavaComponent response = manager.javaComponents()
-            .getWithResponse("nhkgq", "goxsstci", "rak", com.azure.core.util.Context.NONE)
+            .getWithResponse("soy", "yxyj", "cbqp", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wmhlymgnukx", response.properties().configurations().get(0).propertyName());
-        Assertions.assertEquals("emjpequ", response.properties().configurations().get(0).value());
-        Assertions.assertEquals("audgjtfbclakkucd", response.properties().serviceBinds().get(0).name());
-        Assertions.assertEquals("nhczbutoucgjt", response.properties().serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("joxtdahne", response.properties().configurations().get(0).propertyName());
+        Assertions.assertEquals("ovt", response.properties().configurations().get(0).value());
+        Assertions.assertEquals(630907604, response.properties().scale().minReplicas());
+        Assertions.assertEquals(1874917407, response.properties().scale().maxReplicas());
+        Assertions.assertEquals("jovtkwxnhwhhn", response.properties().serviceBinds().get(0).name());
+        Assertions.assertEquals("rzaaoee", response.properties().serviceBinds().get(0).serviceId());
     }
 }

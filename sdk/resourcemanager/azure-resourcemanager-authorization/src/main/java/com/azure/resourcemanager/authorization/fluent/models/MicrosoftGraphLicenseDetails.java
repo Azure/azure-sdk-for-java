@@ -5,50 +5,52 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
-/** licenseDetails. */
+/**
+ * licenseDetails.
+ */
 @Fluent
 public final class MicrosoftGraphLicenseDetails extends MicrosoftGraphEntity {
     /*
      * Information about the service plans assigned with the license. Read-only, Not nullable
      */
-    @JsonProperty(value = "servicePlans")
     private List<MicrosoftGraphServicePlanInfo> servicePlans;
 
     /*
      * Unique identifier (GUID) for the service SKU. Equal to the skuId property on the related SubscribedSku object.
      * Read-only
      */
-    @JsonProperty(value = "skuId")
     private UUID skuId;
 
     /*
      * The skuPartNumber property.
      */
-    @JsonProperty(value = "skuPartNumber")
     private String skuPartNumber;
 
     /*
      * licenseDetails
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphLicenseDetails class. */
+    /**
+     * Creates an instance of MicrosoftGraphLicenseDetails class.
+     */
     public MicrosoftGraphLicenseDetails() {
     }
 
     /**
      * Get the servicePlans property: Information about the service plans assigned with the license. Read-only, Not
      * nullable.
-     *
+     * 
      * @return the servicePlans value.
      */
     public List<MicrosoftGraphServicePlanInfo> servicePlans() {
@@ -58,7 +60,7 @@ public final class MicrosoftGraphLicenseDetails extends MicrosoftGraphEntity {
     /**
      * Set the servicePlans property: Information about the service plans assigned with the license. Read-only, Not
      * nullable.
-     *
+     * 
      * @param servicePlans the servicePlans value to set.
      * @return the MicrosoftGraphLicenseDetails object itself.
      */
@@ -70,7 +72,7 @@ public final class MicrosoftGraphLicenseDetails extends MicrosoftGraphEntity {
     /**
      * Get the skuId property: Unique identifier (GUID) for the service SKU. Equal to the skuId property on the related
      * SubscribedSku object. Read-only.
-     *
+     * 
      * @return the skuId value.
      */
     public UUID skuId() {
@@ -80,7 +82,7 @@ public final class MicrosoftGraphLicenseDetails extends MicrosoftGraphEntity {
     /**
      * Set the skuId property: Unique identifier (GUID) for the service SKU. Equal to the skuId property on the related
      * SubscribedSku object. Read-only.
-     *
+     * 
      * @param skuId the skuId value to set.
      * @return the MicrosoftGraphLicenseDetails object itself.
      */
@@ -91,7 +93,7 @@ public final class MicrosoftGraphLicenseDetails extends MicrosoftGraphEntity {
 
     /**
      * Get the skuPartNumber property: The skuPartNumber property.
-     *
+     * 
      * @return the skuPartNumber value.
      */
     public String skuPartNumber() {
@@ -100,7 +102,7 @@ public final class MicrosoftGraphLicenseDetails extends MicrosoftGraphEntity {
 
     /**
      * Set the skuPartNumber property: The skuPartNumber property.
-     *
+     * 
      * @param skuPartNumber the skuPartNumber value to set.
      * @return the MicrosoftGraphLicenseDetails object itself.
      */
@@ -111,17 +113,16 @@ public final class MicrosoftGraphLicenseDetails extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: licenseDetails.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: licenseDetails.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphLicenseDetails object itself.
      */
@@ -130,15 +131,9 @@ public final class MicrosoftGraphLicenseDetails extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphLicenseDetails withId(String id) {
         super.withId(id);
@@ -147,7 +142,7 @@ public final class MicrosoftGraphLicenseDetails extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -156,5 +151,64 @@ public final class MicrosoftGraphLicenseDetails extends MicrosoftGraphEntity {
         if (servicePlans() != null) {
             servicePlans().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeArrayField("servicePlans", this.servicePlans, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("skuId", Objects.toString(this.skuId, null));
+        jsonWriter.writeStringField("skuPartNumber", this.skuPartNumber);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphLicenseDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphLicenseDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphLicenseDetails.
+     */
+    public static MicrosoftGraphLicenseDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphLicenseDetails deserializedMicrosoftGraphLicenseDetails = new MicrosoftGraphLicenseDetails();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphLicenseDetails.withId(reader.getString());
+                } else if ("servicePlans".equals(fieldName)) {
+                    List<MicrosoftGraphServicePlanInfo> servicePlans
+                        = reader.readArray(reader1 -> MicrosoftGraphServicePlanInfo.fromJson(reader1));
+                    deserializedMicrosoftGraphLicenseDetails.servicePlans = servicePlans;
+                } else if ("skuId".equals(fieldName)) {
+                    deserializedMicrosoftGraphLicenseDetails.skuId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("skuPartNumber".equals(fieldName)) {
+                    deserializedMicrosoftGraphLicenseDetails.skuPartNumber = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphLicenseDetails.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphLicenseDetails;
+        });
     }
 }

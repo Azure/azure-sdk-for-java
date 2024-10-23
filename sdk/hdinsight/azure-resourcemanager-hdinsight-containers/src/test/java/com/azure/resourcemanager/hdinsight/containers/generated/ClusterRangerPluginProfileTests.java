@@ -12,14 +12,14 @@ public final class ClusterRangerPluginProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterRangerPluginProfile model
-            = BinaryData.fromString("{\"enabled\":false}").toObject(ClusterRangerPluginProfile.class);
-        Assertions.assertEquals(false, model.enabled());
+            = BinaryData.fromString("{\"enabled\":true}").toObject(ClusterRangerPluginProfile.class);
+        Assertions.assertEquals(true, model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterRangerPluginProfile model = new ClusterRangerPluginProfile().withEnabled(false);
+        ClusterRangerPluginProfile model = new ClusterRangerPluginProfile().withEnabled(true);
         model = BinaryData.fromObject(model).toObject(ClusterRangerPluginProfile.class);
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals(true, model.enabled());
     }
 }

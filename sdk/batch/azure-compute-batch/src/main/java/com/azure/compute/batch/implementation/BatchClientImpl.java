@@ -166,7 +166,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listApplicationsInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/applications")
@@ -176,7 +176,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listApplicationsInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/applications/{applicationId}")
@@ -187,7 +187,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getApplicationInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("applicationId") String applicationId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/applications/{applicationId}")
         @ExpectedResponses({ 200 })
@@ -197,7 +197,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getApplicationInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("applicationId") String applicationId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/poolusagemetrics")
         @ExpectedResponses({ 200 })
@@ -206,7 +206,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listPoolUsageMetricsInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/poolusagemetrics")
@@ -216,7 +216,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listPoolUsageMetricsInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/pools")
@@ -227,7 +227,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> createPoolInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData pool,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData pool,
             RequestOptions requestOptions, Context context);
 
         @Post("/pools")
@@ -238,7 +238,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> createPoolInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData pool,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData pool,
             RequestOptions requestOptions, Context context);
 
         @Get("/pools")
@@ -248,7 +248,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listPoolsInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/pools")
@@ -258,7 +258,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listPoolsInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Delete("/pools/{poolId}")
@@ -269,7 +269,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deletePoolInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/pools/{poolId}")
         @ExpectedResponses({ 202 })
@@ -279,7 +279,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deletePoolInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Head("/pools/{poolId}")
         @ExpectedResponses({ 200, 404 })
@@ -288,7 +288,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Boolean>> poolExistsInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Head("/pools/{poolId}")
         @ExpectedResponses({ 200, 404 })
@@ -297,7 +297,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Boolean> poolExistsInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/pools/{poolId}")
         @ExpectedResponses({ 200 })
@@ -307,7 +307,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getPoolInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/pools/{poolId}")
         @ExpectedResponses({ 200 })
@@ -317,7 +317,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getPoolInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Patch("/pools/{poolId}")
         @ExpectedResponses({ 200 })
@@ -327,7 +327,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> updatePoolInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @HeaderParam("accept") String accept,
+            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
             Context context);
 
@@ -339,7 +339,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> updatePoolInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @HeaderParam("accept") String accept,
+            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
             Context context);
 
@@ -351,7 +351,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> disablePoolAutoScaleInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/disableautoscale")
         @ExpectedResponses({ 200 })
@@ -361,7 +361,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> disablePoolAutoScaleInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/enableautoscale")
         @ExpectedResponses({ 200 })
@@ -371,7 +371,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> enablePoolAutoScaleInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -383,7 +383,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> enablePoolAutoScaleInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -395,7 +395,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> evaluatePoolAutoScaleInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @HeaderParam("accept") String accept,
+            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -407,7 +407,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> evaluatePoolAutoScaleInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @HeaderParam("accept") String accept,
+            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -419,7 +419,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> resizePoolInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -431,7 +431,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> resizePoolInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -443,7 +443,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> stopPoolResizeInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/stopresize")
         @ExpectedResponses({ 202 })
@@ -453,7 +453,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> stopPoolResizeInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/updateproperties")
         @ExpectedResponses({ 204 })
@@ -463,7 +463,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> replacePoolPropertiesInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @HeaderParam("accept") String accept,
+            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
             Context context);
 
@@ -475,7 +475,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> replacePoolPropertiesInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @HeaderParam("accept") String accept,
+            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
             Context context);
 
@@ -487,7 +487,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> removeNodesInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -499,7 +499,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> removeNodesInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -510,7 +510,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listSupportedImagesInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/supportedimages")
@@ -520,7 +520,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listSupportedImagesInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/nodecounts")
@@ -530,7 +530,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listPoolNodeCountsInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/nodecounts")
@@ -540,7 +540,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listPoolNodeCountsInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Delete("/jobs/{jobId}")
@@ -551,7 +551,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteJobInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/jobs/{jobId}")
         @ExpectedResponses({ 202 })
@@ -561,7 +561,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteJobInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{jobId}")
         @ExpectedResponses({ 200 })
@@ -571,7 +571,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getJobInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{jobId}")
         @ExpectedResponses({ 200 })
@@ -581,7 +581,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getJobInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Patch("/jobs/{jobId}")
         @ExpectedResponses({ 200 })
@@ -591,7 +591,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> updateJobInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @HeaderParam("accept") String accept,
+            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
             Context context);
 
@@ -603,7 +603,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> updateJobInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @HeaderParam("accept") String accept,
+            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
             Context context);
 
@@ -615,7 +615,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> replaceJobInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @HeaderParam("accept") String accept,
+            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
             Context context);
 
@@ -627,7 +627,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> replaceJobInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @HeaderParam("accept") String accept,
+            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
             Context context);
 
@@ -639,7 +639,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> disableJobInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @HeaderParam("accept") String accept,
+            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -651,7 +651,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> disableJobInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @HeaderParam("accept") String accept,
+            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -663,7 +663,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> enableJobInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{jobId}/enable")
         @ExpectedResponses({ 202 })
@@ -673,7 +673,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> enableJobInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{jobId}/terminate")
         @ExpectedResponses({ 202 })
@@ -682,9 +682,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> terminateJobInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{jobId}/terminate")
         @ExpectedResponses({ 202 })
@@ -693,9 +692,8 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> terminateJobInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobs")
         @ExpectedResponses({ 201 })
@@ -705,7 +703,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> createJobInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
             RequestOptions requestOptions, Context context);
 
         @Post("/jobs")
@@ -716,7 +714,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> createJobInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
             RequestOptions requestOptions, Context context);
 
         @Get("/jobs")
@@ -726,7 +724,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listJobsInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/jobs")
@@ -736,7 +734,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listJobsInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/jobschedules/{jobScheduleId}/jobs")
@@ -747,7 +745,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listJobsFromScheduleInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobschedules/{jobScheduleId}/jobs")
         @ExpectedResponses({ 200 })
@@ -757,7 +755,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listJobsFromScheduleInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{jobId}/jobpreparationandreleasetaskstatus")
         @ExpectedResponses({ 200 })
@@ -767,7 +765,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listJobPreparationAndReleaseTaskStatusInternal(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("jobId") String jobId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/jobs/{jobId}/jobpreparationandreleasetaskstatus")
@@ -778,7 +776,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listJobPreparationAndReleaseTaskStatusInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{jobId}/taskcounts")
         @ExpectedResponses({ 200 })
@@ -788,7 +786,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getJobTaskCountsInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{jobId}/taskcounts")
         @ExpectedResponses({ 200 })
@@ -798,7 +796,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getJobTaskCountsInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Head("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 200, 404 })
@@ -807,7 +805,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Boolean>> jobScheduleExistsInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Head("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 200, 404 })
@@ -816,7 +814,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Boolean> jobScheduleExistsInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 202 })
@@ -826,7 +824,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteJobScheduleInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 202 })
@@ -836,7 +834,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteJobScheduleInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 200 })
@@ -846,7 +844,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getJobScheduleInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 200 })
@@ -856,7 +854,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getJobScheduleInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Patch("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 200 })
@@ -866,7 +864,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> updateJobScheduleInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("accept") String accept,
+            @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
 
@@ -878,7 +876,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> updateJobScheduleInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("accept") String accept,
+            @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
 
@@ -890,7 +888,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> replaceJobScheduleInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("accept") String accept,
+            @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
 
@@ -902,7 +900,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> replaceJobScheduleInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("accept") String accept,
+            @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
 
@@ -914,7 +912,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> disableJobScheduleInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules/{jobScheduleId}/disable")
         @ExpectedResponses({ 204 })
@@ -924,7 +922,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> disableJobScheduleInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules/{jobScheduleId}/enable")
         @ExpectedResponses({ 204 })
@@ -934,7 +932,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> enableJobScheduleInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules/{jobScheduleId}/enable")
         @ExpectedResponses({ 204 })
@@ -944,7 +942,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> enableJobScheduleInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules/{jobScheduleId}/terminate")
         @ExpectedResponses({ 202 })
@@ -954,7 +952,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> terminateJobScheduleInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules/{jobScheduleId}/terminate")
         @ExpectedResponses({ 202 })
@@ -964,7 +962,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> terminateJobScheduleInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules")
         @ExpectedResponses({ 201 })
@@ -974,7 +972,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> createJobScheduleInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("accept") String accept,
+            @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
 
@@ -986,7 +984,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> createJobScheduleInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("accept") String accept,
+            @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
 
@@ -997,7 +995,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listJobSchedulesInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/jobschedules")
@@ -1007,7 +1005,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listJobSchedulesInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{jobId}/tasks")
@@ -1018,7 +1016,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> createTaskInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @HeaderParam("accept") String accept,
+            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData task, RequestOptions requestOptions,
             Context context);
 
@@ -1030,7 +1028,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> createTaskInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @HeaderParam("accept") String accept,
+            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData task, RequestOptions requestOptions,
             Context context);
 
@@ -1042,7 +1040,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listTasksInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{jobId}/tasks")
         @ExpectedResponses({ 200 })
@@ -1052,7 +1050,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listTasksInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{jobId}/addtaskcollection")
         @ExpectedResponses({ 200 })
@@ -1062,7 +1060,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createTaskCollectionInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @HeaderParam("accept") String accept,
+            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData taskCollection,
             RequestOptions requestOptions, Context context);
 
@@ -1074,7 +1072,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createTaskCollectionInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @HeaderParam("accept") String accept,
+            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData taskCollection,
             RequestOptions requestOptions, Context context);
 
@@ -1086,7 +1084,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteTaskInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Delete("/jobs/{jobId}/tasks/{taskId}")
@@ -1097,7 +1095,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteTaskInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/jobs/{jobId}/tasks/{taskId}")
@@ -1108,7 +1106,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getTaskInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/jobs/{jobId}/tasks/{taskId}")
@@ -1119,7 +1117,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getTaskInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Put("/jobs/{jobId}/tasks/{taskId}")
@@ -1130,7 +1128,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> replaceTaskInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @PathParam("taskId") String taskId, @HeaderParam("accept") String accept,
+            @PathParam("jobId") String jobId, @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData task, RequestOptions requestOptions,
             Context context);
 
@@ -1142,7 +1140,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> replaceTaskInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @PathParam("taskId") String taskId, @HeaderParam("accept") String accept,
+            @PathParam("jobId") String jobId, @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData task, RequestOptions requestOptions,
             Context context);
 
@@ -1154,7 +1152,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listSubTasksInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/jobs/{jobId}/tasks/{taskId}/subtasksinfo")
@@ -1165,7 +1163,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listSubTasksInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Post("/jobs/{jobId}/tasks/{taskId}/terminate")
@@ -1176,7 +1174,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> terminateTaskInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Post("/jobs/{jobId}/tasks/{taskId}/terminate")
@@ -1187,7 +1185,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> terminateTaskInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Post("/jobs/{jobId}/tasks/{taskId}/reactivate")
@@ -1198,7 +1196,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> reactivateTaskInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Post("/jobs/{jobId}/tasks/{taskId}/reactivate")
@@ -1209,7 +1207,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> reactivateTaskInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Delete("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
@@ -1221,7 +1219,7 @@ public final class BatchClientImpl {
         Mono<Response<Void>> deleteTaskFileInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
         @ExpectedResponses({ 200 })
@@ -1232,7 +1230,7 @@ public final class BatchClientImpl {
         Response<Void> deleteTaskFileInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
         @ExpectedResponses({ 200 })
@@ -1243,7 +1241,7 @@ public final class BatchClientImpl {
         Mono<Response<BinaryData>> getTaskFileInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
         @ExpectedResponses({ 200 })
@@ -1254,7 +1252,7 @@ public final class BatchClientImpl {
         Response<BinaryData> getTaskFileInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Head("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
         @ExpectedResponses({ 200 })
@@ -1265,7 +1263,7 @@ public final class BatchClientImpl {
         Mono<Response<Void>> getTaskFilePropertiesInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Head("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
         @ExpectedResponses({ 200 })
@@ -1276,7 +1274,7 @@ public final class BatchClientImpl {
         Response<Void> getTaskFilePropertiesInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{jobId}/tasks/{taskId}/files")
         @ExpectedResponses({ 200 })
@@ -1286,7 +1284,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listTaskFilesInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/jobs/{jobId}/tasks/{taskId}/files")
@@ -1297,7 +1295,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listTaskFilesInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/users")
@@ -1309,7 +1307,7 @@ public final class BatchClientImpl {
         Mono<Response<Void>> createNodeUserInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData user,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData user,
             RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/users")
@@ -1321,7 +1319,7 @@ public final class BatchClientImpl {
         Response<Void> createNodeUserInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData user,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData user,
             RequestOptions requestOptions, Context context);
 
         @Delete("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
@@ -1333,7 +1331,7 @@ public final class BatchClientImpl {
         Mono<Response<Void>> deleteNodeUserInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("userName") String userName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
         @ExpectedResponses({ 200 })
@@ -1344,7 +1342,7 @@ public final class BatchClientImpl {
         Response<Void> deleteNodeUserInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("userName") String userName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
         @ExpectedResponses({ 200 })
@@ -1355,7 +1353,7 @@ public final class BatchClientImpl {
         Mono<Response<Void>> replaceNodeUserInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
-            @PathParam("userName") String userName, @HeaderParam("accept") String accept,
+            @PathParam("userName") String userName, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -1368,7 +1366,7 @@ public final class BatchClientImpl {
         Response<Void> replaceNodeUserInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
-            @PathParam("userName") String userName, @HeaderParam("accept") String accept,
+            @PathParam("userName") String userName, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -1380,7 +1378,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getNodeInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/pools/{poolId}/nodes/{nodeId}")
@@ -1391,7 +1389,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getNodeInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/reboot")
@@ -1401,9 +1399,9 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> rebootNodeInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/reboot")
         @ExpectedResponses({ 202 })
@@ -1412,9 +1410,9 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> rebootNodeInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/disablescheduling")
         @ExpectedResponses({ 200 })
@@ -1423,9 +1421,9 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> disableNodeSchedulingInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/disablescheduling")
         @ExpectedResponses({ 200 })
@@ -1434,9 +1432,9 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> disableNodeSchedulingInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/enablescheduling")
         @ExpectedResponses({ 200 })
@@ -1446,7 +1444,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> enableNodeSchedulingInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/enablescheduling")
@@ -1457,7 +1455,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> enableNodeSchedulingInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/pools/{poolId}/nodes/{nodeId}/remoteloginsettings")
@@ -1468,7 +1466,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getNodeRemoteLoginSettingsInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/pools/{poolId}/nodes/{nodeId}/remoteloginsettings")
@@ -1479,7 +1477,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getNodeRemoteLoginSettingsInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/uploadbatchservicelogs")
@@ -1491,7 +1489,7 @@ public final class BatchClientImpl {
         Mono<Response<BinaryData>> uploadNodeLogsInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
-            @HeaderParam("accept") String accept,
+            @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -1504,7 +1502,7 @@ public final class BatchClientImpl {
         Response<BinaryData> uploadNodeLogsInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
-            @HeaderParam("accept") String accept,
+            @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -1516,7 +1514,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listNodesInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/pools/{poolId}/nodes")
         @ExpectedResponses({ 200 })
@@ -1526,7 +1524,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listNodesInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/pools/{poolId}/nodes/{nodeId}/extensions/{extensionName}")
         @ExpectedResponses({ 200 })
@@ -1537,7 +1535,7 @@ public final class BatchClientImpl {
         Mono<Response<BinaryData>> getNodeExtensionInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("extensionName") String extensionName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/pools/{poolId}/nodes/{nodeId}/extensions/{extensionName}")
         @ExpectedResponses({ 200 })
@@ -1548,7 +1546,7 @@ public final class BatchClientImpl {
         Response<BinaryData> getNodeExtensionInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("extensionName") String extensionName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/pools/{poolId}/nodes/{nodeId}/extensions")
         @ExpectedResponses({ 200 })
@@ -1558,7 +1556,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listNodeExtensionsInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/pools/{poolId}/nodes/{nodeId}/extensions")
@@ -1569,7 +1567,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listNodeExtensionsInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Delete("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
@@ -1581,7 +1579,7 @@ public final class BatchClientImpl {
         Mono<Response<Void>> deleteNodeFileInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
         @ExpectedResponses({ 200 })
@@ -1592,7 +1590,7 @@ public final class BatchClientImpl {
         Response<Void> deleteNodeFileInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
         @ExpectedResponses({ 200 })
@@ -1603,7 +1601,7 @@ public final class BatchClientImpl {
         Mono<Response<BinaryData>> getNodeFileInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
         @ExpectedResponses({ 200 })
@@ -1614,7 +1612,7 @@ public final class BatchClientImpl {
         Response<BinaryData> getNodeFileInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Head("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
         @ExpectedResponses({ 200 })
@@ -1625,7 +1623,7 @@ public final class BatchClientImpl {
         Mono<Response<Void>> getNodeFilePropertiesInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Head("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
         @ExpectedResponses({ 200 })
@@ -1636,7 +1634,7 @@ public final class BatchClientImpl {
         Response<Void> getNodeFilePropertiesInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/pools/{poolId}/nodes/{nodeId}/files")
         @ExpectedResponses({ 200 })
@@ -1646,7 +1644,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listNodeFilesInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/pools/{poolId}/nodes/{nodeId}/files")
@@ -1657,7 +1655,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listNodeFilesInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -1668,7 +1666,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listApplicationsInternalNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -1678,7 +1676,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listApplicationsInternalNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -1688,7 +1686,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listPoolUsageMetricsInternalNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -1698,7 +1696,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listPoolUsageMetricsInternalNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -1707,7 +1705,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listPoolsInternalNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -1717,7 +1715,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listPoolsInternalNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -1728,7 +1726,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listSupportedImagesInternalNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -1738,7 +1736,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listSupportedImagesInternalNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -1748,7 +1746,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listPoolNodeCountsInternalNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -1758,7 +1756,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listPoolNodeCountsInternalNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -1767,7 +1765,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listJobsInternalNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -1777,7 +1775,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listJobsInternalNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -1788,7 +1786,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listJobsFromScheduleInternalNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -1798,7 +1796,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listJobsFromScheduleInternalNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -1808,7 +1806,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listJobPreparationAndReleaseTaskStatusInternalNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -1818,7 +1816,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listJobPreparationAndReleaseTaskStatusInternalNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -1828,7 +1826,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listJobSchedulesInternalNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -1838,7 +1836,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listJobSchedulesInternalNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -1847,7 +1845,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listTasksInternalNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -1857,7 +1855,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listTasksInternalNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -1868,7 +1866,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listSubTasksInternalNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -1878,7 +1876,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listSubTasksInternalNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -1888,7 +1886,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listTaskFilesInternalNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -1898,7 +1896,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listTaskFilesInternalNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -1907,7 +1905,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listNodesInternalNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -1917,7 +1915,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listNodesInternalNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -1928,7 +1926,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listNodeExtensionsInternalNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -1938,7 +1936,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listNodeExtensionsInternalNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -1948,7 +1946,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listNodeFilesInternalNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -1958,7 +1956,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listNodeFilesInternalNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -1983,7 +1981,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Required)
@@ -1991,7 +1990,8 @@ public final class BatchClientImpl {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2033,7 +2033,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Required)
@@ -2041,7 +2042,8 @@ public final class BatchClientImpl {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2102,7 +2104,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Required)
@@ -2110,7 +2113,8 @@ public final class BatchClientImpl {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2150,7 +2154,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Required)
@@ -2158,7 +2163,8 @@ public final class BatchClientImpl {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2216,7 +2222,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Required)
@@ -2224,7 +2231,8 @@ public final class BatchClientImpl {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param applicationId The ID of the Application.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2232,8 +2240,11 @@ public final class BatchClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return contains information about an application in an Azure Batch Account along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return information about the specified Application.
+     * 
+     * This operation returns only Applications and versions that are available for
+     * use on Compute Nodes; that is, that can be used in an Package reference along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getApplicationInternalWithResponseAsync(String applicationId,
@@ -2262,7 +2273,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Required)
@@ -2270,7 +2282,8 @@ public final class BatchClientImpl {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param applicationId The ID of the Application.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2278,7 +2291,10 @@ public final class BatchClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return contains information about an application in an Azure Batch Account along with {@link Response}.
+     * @return information about the specified Application.
+     * 
+     * This operation returns only Applications and versions that are available for
+     * use on Compute Nodes; that is, that can be used in an Package reference along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getApplicationInternalWithResponse(String applicationId,
@@ -2323,7 +2339,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Required)
      *     startTime: OffsetDateTime (Required)
@@ -2331,7 +2348,8 @@ public final class BatchClientImpl {
      *     vmSize: String (Required)
      *     totalCoreHours: double (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2386,7 +2404,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Required)
      *     startTime: OffsetDateTime (Required)
@@ -2394,7 +2413,8 @@ public final class BatchClientImpl {
      *     vmSize: String (Required)
      *     totalCoreHours: double (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2467,7 +2487,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Required)
      *     startTime: OffsetDateTime (Required)
@@ -2475,7 +2496,8 @@ public final class BatchClientImpl {
      *     vmSize: String (Required)
      *     totalCoreHours: double (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2528,7 +2550,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Required)
      *     startTime: OffsetDateTime (Required)
@@ -2536,7 +2559,8 @@ public final class BatchClientImpl {
      *     vmSize: String (Required)
      *     totalCoreHours: double (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2592,7 +2616,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -2845,7 +2870,8 @@ public final class BatchClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param pool The Pool to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2880,7 +2906,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -3133,7 +3160,8 @@ public final class BatchClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param pool The Pool to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3174,7 +3202,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -3496,7 +3525,8 @@ public final class BatchClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3539,7 +3569,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -3861,7 +3892,8 @@ public final class BatchClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3922,7 +3954,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -4244,7 +4277,8 @@ public final class BatchClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4285,7 +4319,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -4607,7 +4642,8 @@ public final class BatchClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4804,9 +4840,11 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * boolean
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4857,9 +4895,11 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * boolean
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4914,7 +4954,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -5236,7 +5277,8 @@ public final class BatchClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5293,7 +5335,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -5615,7 +5658,8 @@ public final class BatchClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5671,7 +5715,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     startTask (Optional): {
      *         commandLine: String (Required)
@@ -5729,7 +5774,8 @@ public final class BatchClientImpl {
      *     ]
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool to get.
      * @param pool The pool properties to update.
@@ -5788,7 +5834,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     startTask (Optional): {
      *         commandLine: String (Required)
@@ -5846,7 +5893,8 @@ public final class BatchClientImpl {
      *     ]
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool to get.
      * @param pool The pool properties to update.
@@ -5963,12 +6011,14 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     autoScaleFormula: String (Optional)
      *     autoScaleEvaluationInterval: Duration (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool to get.
      * @param content The options to use for enabling automatic scaling.
@@ -6030,12 +6080,14 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     autoScaleFormula: String (Optional)
      *     autoScaleEvaluationInterval: Duration (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool to get.
      * @param content The options to use for enabling automatic scaling.
@@ -6072,15 +6124,18 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     autoScaleFormula: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     timestamp: OffsetDateTime (Required)
      *     results: String (Optional)
@@ -6095,7 +6150,8 @@ public final class BatchClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
      * @param content The options to use for evaluating the automatic scaling formula.
@@ -6104,8 +6160,11 @@ public final class BatchClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the results and errors from an execution of a Pool autoscale formula along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return the result of evaluating an automatic scaling formula on the Pool.
+     * 
+     * This API is primarily for validating an autoscale formula, as it simply returns
+     * the result without applying the formula to the Pool along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> evaluatePoolAutoScaleInternalWithResponseAsync(String poolId, BinaryData content,
@@ -6133,15 +6192,18 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     autoScaleFormula: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     timestamp: OffsetDateTime (Required)
      *     results: String (Optional)
@@ -6156,7 +6218,8 @@ public final class BatchClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
      * @param content The options to use for evaluating the automatic scaling formula.
@@ -6165,7 +6228,10 @@ public final class BatchClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the results and errors from an execution of a Pool autoscale formula along with {@link Response}.
+     * @return the result of evaluating an automatic scaling formula on the Pool.
+     * 
+     * This API is primarily for validating an autoscale formula, as it simply returns
+     * the result without applying the formula to the Pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> evaluatePoolAutoScaleInternalWithResponse(String poolId, BinaryData content,
@@ -6219,14 +6285,16 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     resizeTimeout: Duration (Optional)
      *     nodeDeallocationOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool to get.
      * @param content The options to use for resizing the pool.
@@ -6289,14 +6357,16 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     resizeTimeout: Duration (Optional)
      *     nodeDeallocationOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool to get.
      * @param content The options to use for resizing the pool.
@@ -6447,7 +6517,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     startTask (Optional): {
      *         commandLine: String (Required)
@@ -6505,7 +6576,8 @@ public final class BatchClientImpl {
      *     ]
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool to update.
      * @param pool The options to use for replacing properties on the pool.
@@ -6542,7 +6614,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     startTask (Optional): {
      *         commandLine: String (Required)
@@ -6600,7 +6673,8 @@ public final class BatchClientImpl {
      *     ]
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool to update.
      * @param pool The options to use for replacing properties on the pool.
@@ -6659,7 +6733,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeList (Required): [
      *         String (Required)
@@ -6667,7 +6742,8 @@ public final class BatchClientImpl {
      *     resizeTimeout: Duration (Optional)
      *     nodeDeallocationOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool to get.
      * @param content The options to use for removing the node.
@@ -6726,7 +6802,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeList (Required): [
      *         String (Required)
@@ -6734,7 +6811,8 @@ public final class BatchClientImpl {
      *     resizeTimeout: Duration (Optional)
      *     nodeDeallocationOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool to get.
      * @param content The options to use for removing the node.
@@ -6773,7 +6851,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeAgentSKUId: String (Required)
      *     imageReference (Required): {
@@ -6791,7 +6870,8 @@ public final class BatchClientImpl {
      *     batchSupportEndOfLife: OffsetDateTime (Optional)
      *     verificationType: String(verified/unverified) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -6830,7 +6910,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeAgentSKUId: String (Required)
      *     imageReference (Required): {
@@ -6848,7 +6929,8 @@ public final class BatchClientImpl {
      *     batchSupportEndOfLife: OffsetDateTime (Optional)
      *     verificationType: String(verified/unverified) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -6905,7 +6987,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeAgentSKUId: String (Required)
      *     imageReference (Required): {
@@ -6923,7 +7006,8 @@ public final class BatchClientImpl {
      *     batchSupportEndOfLife: OffsetDateTime (Optional)
      *     verificationType: String(verified/unverified) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -6960,7 +7044,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeAgentSKUId: String (Required)
      *     imageReference (Required): {
@@ -6978,7 +7063,8 @@ public final class BatchClientImpl {
      *     batchSupportEndOfLife: OffsetDateTime (Optional)
      *     verificationType: String(verified/unverified) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -7038,7 +7124,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Required)
      *     dedicated (Optional): {
@@ -7060,7 +7147,8 @@ public final class BatchClientImpl {
      *     }
      *     lowPriority (Optional): (recursive schema, see lowPriority above)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -7101,7 +7189,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Required)
      *     dedicated (Optional): {
@@ -7123,7 +7212,8 @@ public final class BatchClientImpl {
      *     }
      *     lowPriority (Optional): (recursive schema, see lowPriority above)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -7182,7 +7272,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Required)
      *     dedicated (Optional): {
@@ -7204,7 +7295,8 @@ public final class BatchClientImpl {
      *     }
      *     lowPriority (Optional): (recursive schema, see lowPriority above)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -7243,7 +7335,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Required)
      *     dedicated (Optional): {
@@ -7265,7 +7358,8 @@ public final class BatchClientImpl {
      *     }
      *     lowPriority (Optional): (recursive schema, see lowPriority above)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -7459,7 +7553,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -7861,7 +7956,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -7917,7 +8013,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -8319,7 +8416,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -8375,7 +8473,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     priority: Integer (Optional)
      *     allowTaskPreemption: Boolean (Optional)
@@ -8646,7 +8745,8 @@ public final class BatchClientImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job The options to use for updating the Job.
@@ -8705,7 +8805,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     priority: Integer (Optional)
      *     allowTaskPreemption: Boolean (Optional)
@@ -8976,7 +9077,8 @@ public final class BatchClientImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job The options to use for updating the Job.
@@ -9034,7 +9136,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -9436,7 +9539,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job A job with updated properties.
@@ -9495,7 +9599,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -9897,7 +10002,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job A job with updated properties.
@@ -9960,11 +10066,13 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     disableTasks: String(requeue/terminate/wait) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job to disable.
      * @param content The options to use for disabling the Job.
@@ -10028,11 +10136,13 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     disableTasks: String(requeue/terminate/wait) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job to disable.
      * @param content The options to use for disabling the Job.
@@ -10186,6 +10296,8 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
+     * odata=minimalmetadata".</td></tr>
      * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
      * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
@@ -10206,11 +10318,13 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     terminateReason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job to terminate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -10222,7 +10336,6 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> terminateJobInternalWithResponseAsync(String jobId, RequestOptions requestOptions) {
-        final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -10231,7 +10344,7 @@ public final class BatchClientImpl {
             }
         });
         return FluxUtil.withContext(context -> service.terminateJobInternal(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, jobId, accept, requestOptionsLocal, context));
+            this.getServiceVersion().getVersion(), jobId, accept, requestOptionsLocal, context));
     }
 
     /**
@@ -10256,6 +10369,8 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
+     * odata=minimalmetadata".</td></tr>
      * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
      * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
@@ -10276,11 +10391,13 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     terminateReason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job to terminate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -10292,7 +10409,6 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> terminateJobInternalWithResponse(String jobId, RequestOptions requestOptions) {
-        final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -10300,8 +10416,8 @@ public final class BatchClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
             }
         });
-        return service.terminateJobInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            jobId, accept, requestOptionsLocal, Context.NONE);
+        return service.terminateJobInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId,
+            accept, requestOptionsLocal, Context.NONE);
     }
 
     /**
@@ -10327,7 +10443,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -10688,7 +10805,8 @@ public final class BatchClientImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param job The Job to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -10729,7 +10847,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -11090,7 +11209,8 @@ public final class BatchClientImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param job The Job to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -11131,7 +11251,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -11533,7 +11654,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -11576,7 +11698,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -11978,7 +12101,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -12039,7 +12163,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -12441,7 +12566,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -12482,7 +12608,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -12884,7 +13011,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -12945,7 +13073,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -13347,7 +13476,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -13392,7 +13522,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -13794,7 +13925,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -13857,7 +13989,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -14259,7 +14392,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -14302,7 +14436,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -14704,7 +14839,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -14772,7 +14908,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Optional)
      *     nodeId: String (Optional)
@@ -14816,7 +14953,8 @@ public final class BatchClientImpl {
      *         result: String(success/failure) (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -14867,7 +15005,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Optional)
      *     nodeId: String (Optional)
@@ -14911,7 +15050,8 @@ public final class BatchClientImpl {
      *         result: String(success/failure) (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -14981,7 +15121,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Optional)
      *     nodeId: String (Optional)
@@ -15025,7 +15166,8 @@ public final class BatchClientImpl {
      *         result: String(success/failure) (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -15075,7 +15217,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Optional)
      *     nodeId: String (Optional)
@@ -15119,7 +15262,8 @@ public final class BatchClientImpl {
      *         result: String(success/failure) (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -15178,7 +15322,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     taskCounts (Required): {
      *         active: int (Required)
@@ -15195,7 +15340,8 @@ public final class BatchClientImpl {
      *         failed: int (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -15203,7 +15349,10 @@ public final class BatchClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the Task and TaskSlot counts for a Job along with {@link Response} on successful completion of
+     * @return the Task counts for the specified Job.
+     * 
+     * Task counts provide a count of the Tasks by active, running or completed Task
+     * state, and a count of Tasks which succeeded or failed along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -15232,7 +15381,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     taskCounts (Required): {
      *         active: int (Required)
@@ -15249,7 +15399,8 @@ public final class BatchClientImpl {
      *         failed: int (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -15257,7 +15408,10 @@ public final class BatchClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the Task and TaskSlot counts for a Job along with {@link Response}.
+     * @return the Task counts for the specified Job.
+     * 
+     * Task counts provide a count of the Tasks by active, running or completed Task
+     * state, and a count of Tasks which succeeded or failed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getJobTaskCountsInternalWithResponse(String jobId, RequestOptions requestOptions) {
@@ -15301,9 +15455,11 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * boolean
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -15355,9 +15511,11 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * boolean
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -15524,7 +15682,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -15929,7 +16088,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobScheduleId The ID of the Job Schedule to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -15987,7 +16147,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -16392,7 +16553,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobScheduleId The ID of the Job Schedule to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -16451,7 +16613,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     schedule (Optional): {
      *         doNotRunUntil: OffsetDateTime (Optional)
@@ -16822,7 +16985,8 @@ public final class BatchClientImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule The options to use for updating the Job Schedule.
@@ -16884,7 +17048,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     schedule (Optional): {
      *         doNotRunUntil: OffsetDateTime (Optional)
@@ -17255,7 +17420,8 @@ public final class BatchClientImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule The options to use for updating the Job Schedule.
@@ -17316,7 +17482,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -17721,7 +17888,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule A Job Schedule with updated properties.
@@ -17783,7 +17951,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -18188,7 +18357,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule A Job Schedule with updated properties.
@@ -18523,7 +18693,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -18896,7 +19067,8 @@ public final class BatchClientImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobSchedule The Job Schedule to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -18928,7 +19100,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -19301,7 +19474,8 @@ public final class BatchClientImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobSchedule The Job Schedule to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -19342,7 +19516,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -19747,7 +19922,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -19790,7 +19966,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -20195,7 +20372,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -20256,7 +20434,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -20661,7 +20840,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -20702,7 +20882,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -21107,7 +21288,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -21162,7 +21344,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -21285,7 +21468,8 @@ public final class BatchClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job to which the Task is to be created.
      * @param task The Task to be created.
@@ -21322,7 +21506,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -21445,7 +21630,8 @@ public final class BatchClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job to which the Task is to be created.
      * @param task The Task to be created.
@@ -21491,7 +21677,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -21669,7 +21856,8 @@ public final class BatchClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -21718,7 +21906,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -21896,7 +22085,8 @@ public final class BatchClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -21962,7 +22152,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -22140,7 +22331,8 @@ public final class BatchClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -22186,7 +22378,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -22364,7 +22557,8 @@ public final class BatchClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -22431,7 +22625,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -22558,11 +22753,13 @@ public final class BatchClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Optional): [
      *          (Optional){
@@ -22587,7 +22784,8 @@ public final class BatchClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job to which the Task collection is to be added.
      * @param taskCollection The Tasks to be added.
@@ -22637,7 +22835,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -22764,11 +22963,13 @@ public final class BatchClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Optional): [
      *          (Optional){
@@ -22793,7 +22994,8 @@ public final class BatchClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job to which the Task collection is to be added.
      * @param taskCollection The Tasks to be added.
@@ -22969,7 +23171,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -23147,7 +23350,8 @@ public final class BatchClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task to get information about.
@@ -23156,11 +23360,10 @@ public final class BatchClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return batch will retry Tasks when a recovery operation is triggered on a Node.
-     * Examples of recovery operations include (but are not limited to) when an
-     * unhealthy Node is rebooted or a Compute Node disappeared due to host failure.
-     * Retries due to recovery operations are independent of and are not counted
-     * against the maxTaskRetryCount along with {@link Response} on successful completion of {@link Mono}.
+     * @return information about the specified Task.
+     * 
+     * For multi-instance Tasks, information such as affinityId, executionInfo and
+     * nodeInfo refer to the primary Task along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTaskInternalWithResponseAsync(String jobId, String taskId,
@@ -23213,7 +23416,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -23391,7 +23595,8 @@ public final class BatchClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task to get information about.
@@ -23400,11 +23605,10 @@ public final class BatchClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return batch will retry Tasks when a recovery operation is triggered on a Node.
-     * Examples of recovery operations include (but are not limited to) when an
-     * unhealthy Node is rebooted or a Compute Node disappeared due to host failure.
-     * Retries due to recovery operations are independent of and are not counted
-     * against the maxTaskRetryCount along with {@link Response}.
+     * @return information about the specified Task.
+     * 
+     * For multi-instance Tasks, information such as affinityId, executionInfo and
+     * nodeInfo refer to the primary Task along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTaskInternalWithResponse(String jobId, String taskId,
@@ -23449,7 +23653,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -23627,7 +23832,8 @@ public final class BatchClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to update.
@@ -23683,7 +23889,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -23861,7 +24068,8 @@ public final class BatchClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to update.
@@ -23900,7 +24108,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: Integer (Optional)
      *     nodeInfo (Optional): {
@@ -23936,7 +24145,8 @@ public final class BatchClientImpl {
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     result: String(success/failure) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job.
      * @param taskId The ID of the Task.
@@ -23977,7 +24187,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: Integer (Optional)
      *     nodeInfo (Optional): {
@@ -24013,7 +24224,8 @@ public final class BatchClientImpl {
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     result: String(success/failure) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job.
      * @param taskId The ID of the Task.
@@ -24051,7 +24263,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: Integer (Optional)
      *     nodeInfo (Optional): {
@@ -24087,7 +24300,8 @@ public final class BatchClientImpl {
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     result: String(success/failure) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job.
      * @param taskId The ID of the Task.
@@ -24126,7 +24340,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: Integer (Optional)
      *     nodeInfo (Optional): {
@@ -24162,7 +24377,8 @@ public final class BatchClientImpl {
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     result: String(success/failure) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job.
      * @param taskId The ID of the Task.
@@ -24512,9 +24728,11 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
@@ -24529,7 +24747,7 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTaskFileInternalWithResponseAsync(String jobId, String taskId, String filePath,
         RequestOptions requestOptions) {
-        final String accept = "application/octet-stream, application/json";
+        final String accept = "application/octet-stream";
         return FluxUtil.withContext(context -> service.getTaskFileInternal(this.getEndpoint(),
             this.getServiceVersion().getVersion(), jobId, taskId, filePath, accept, requestOptions, context));
     }
@@ -24564,9 +24782,11 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
@@ -24581,7 +24801,7 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTaskFileInternalWithResponse(String jobId, String taskId, String filePath,
         RequestOptions requestOptions) {
-        final String accept = "application/octet-stream, application/json";
+        final String accept = "application/octet-stream";
         return service.getTaskFileInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, taskId,
             filePath, accept, requestOptions, Context.NONE);
     }
@@ -24697,7 +24917,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     url: String (Optional)
@@ -24710,7 +24931,8 @@ public final class BatchClientImpl {
      *         fileMode: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
@@ -24755,7 +24977,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     url: String (Optional)
@@ -24768,7 +24991,8 @@ public final class BatchClientImpl {
      *         fileMode: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
@@ -24832,7 +25056,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     url: String (Optional)
@@ -24845,7 +25070,8 @@ public final class BatchClientImpl {
      *         fileMode: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
@@ -24889,7 +25115,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     url: String (Optional)
@@ -24902,7 +25129,8 @@ public final class BatchClientImpl {
      *         fileMode: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
@@ -24959,7 +25187,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     isAdmin: Boolean (Optional)
@@ -24967,7 +25196,8 @@ public final class BatchClientImpl {
      *     password: String (Optional)
      *     sshPublicKey: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.
@@ -25004,7 +25234,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     isAdmin: Boolean (Optional)
@@ -25012,7 +25243,8 @@ public final class BatchClientImpl {
      *     password: String (Optional)
      *     sshPublicKey: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.
@@ -25117,13 +25349,15 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     password: String (Optional)
      *     expiryTime: OffsetDateTime (Optional)
      *     sshPublicKey: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
@@ -25164,13 +25398,15 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     password: String (Optional)
      *     expiryTime: OffsetDateTime (Optional)
      *     sshPublicKey: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
@@ -25207,7 +25443,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     url: String (Optional)
@@ -25349,7 +25586,8 @@ public final class BatchClientImpl {
      *         scaleSetVmResourceId: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to get information about.
@@ -25384,7 +25622,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     url: String (Optional)
@@ -25526,7 +25765,8 @@ public final class BatchClientImpl {
      *         scaleSetVmResourceId: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to get information about.
@@ -25558,13 +25798,23 @@ public final class BatchClientImpl {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
+     * odata=minimalmetadata".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeRebootOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -25578,7 +25828,6 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> rebootNodeInternalWithResponseAsync(String poolId, String nodeId,
         RequestOptions requestOptions) {
-        final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -25587,7 +25836,7 @@ public final class BatchClientImpl {
             }
         });
         return FluxUtil.withContext(context -> service.rebootNodeInternal(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, poolId, nodeId, accept, requestOptionsLocal, context));
+            this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptionsLocal, context));
     }
 
     /**
@@ -25603,13 +25852,23 @@ public final class BatchClientImpl {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
+     * odata=minimalmetadata".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeRebootOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -25622,7 +25881,6 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> rebootNodeInternalWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
-        final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -25630,8 +25888,8 @@ public final class BatchClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
             }
         });
-        return service.rebootNodeInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            poolId, nodeId, accept, requestOptionsLocal, Context.NONE);
+        return service.rebootNodeInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
+            accept, requestOptionsLocal, Context.NONE);
     }
 
     /**
@@ -25648,13 +25906,23 @@ public final class BatchClientImpl {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
+     * odata=minimalmetadata".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeDisableSchedulingOption: String(requeue/terminate/taskcompletion) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
@@ -25668,7 +25936,6 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableNodeSchedulingInternalWithResponseAsync(String poolId, String nodeId,
         RequestOptions requestOptions) {
-        final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -25677,7 +25944,7 @@ public final class BatchClientImpl {
             }
         });
         return FluxUtil.withContext(context -> service.disableNodeSchedulingInternal(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, poolId, nodeId, accept, requestOptionsLocal, context));
+            this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptionsLocal, context));
     }
 
     /**
@@ -25694,13 +25961,23 @@ public final class BatchClientImpl {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
+     * odata=minimalmetadata".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeDisableSchedulingOption: String(requeue/terminate/taskcompletion) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
@@ -25714,7 +25991,6 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableNodeSchedulingInternalWithResponse(String poolId, String nodeId,
         RequestOptions requestOptions) {
-        final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -25723,7 +25999,7 @@ public final class BatchClientImpl {
             }
         });
         return service.disableNodeSchedulingInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            contentType, poolId, nodeId, accept, requestOptionsLocal, Context.NONE);
+            poolId, nodeId, accept, requestOptionsLocal, Context.NONE);
     }
 
     /**
@@ -25807,12 +26083,14 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     remoteLoginIPAddress: String (Required)
      *     remoteLoginPort: int (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -25821,8 +26099,11 @@ public final class BatchClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the remote login settings for a Compute Node along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the settings required for remote login to a Compute Node.
+     * 
+     * Before you can remotely login to a Compute Node using the remote login
+     * settings, you must create a user Account on the Compute Node along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getNodeRemoteLoginSettingsInternalWithResponseAsync(String poolId, String nodeId,
@@ -25849,12 +26130,14 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     remoteLoginIPAddress: String (Required)
      *     remoteLoginPort: int (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -25863,7 +26146,10 @@ public final class BatchClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the remote login settings for a Compute Node along with {@link Response}.
+     * @return the settings required for remote login to a Compute Node.
+     * 
+     * Before you can remotely login to a Compute Node using the remote login
+     * settings, you must create a user Account on the Compute Node along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getNodeRemoteLoginSettingsInternalWithResponse(String poolId, String nodeId,
@@ -25892,7 +26178,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     containerUrl: String (Required)
      *     startTime: OffsetDateTime (Required)
@@ -25901,16 +26188,19 @@ public final class BatchClientImpl {
      *         resourceId: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     virtualDirectoryName: String (Required)
      *     numberOfFilesUploaded: int (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
@@ -25953,7 +26243,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     containerUrl: String (Required)
      *     startTime: OffsetDateTime (Required)
@@ -25962,16 +26253,19 @@ public final class BatchClientImpl {
      *         resourceId: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     virtualDirectoryName: String (Required)
      *     numberOfFilesUploaded: int (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
@@ -26014,7 +26308,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     url: String (Optional)
@@ -26156,7 +26451,8 @@ public final class BatchClientImpl {
      *         scaleSetVmResourceId: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -26199,7 +26495,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     url: String (Optional)
@@ -26341,7 +26638,8 @@ public final class BatchClientImpl {
      *         scaleSetVmResourceId: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -26401,7 +26699,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     url: String (Optional)
@@ -26543,7 +26842,8 @@ public final class BatchClientImpl {
      *         scaleSetVmResourceId: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -26583,7 +26883,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     url: String (Optional)
@@ -26725,7 +27026,8 @@ public final class BatchClientImpl {
      *         scaleSetVmResourceId: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -26779,7 +27081,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provisioningState: String (Optional)
      *     vmExtension (Optional): {
@@ -26815,7 +27118,8 @@ public final class BatchClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that contains the extensions.
@@ -26851,7 +27155,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provisioningState: String (Optional)
      *     vmExtension (Optional): {
@@ -26887,7 +27192,8 @@ public final class BatchClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that contains the extensions.
@@ -26925,7 +27231,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provisioningState: String (Optional)
      *     vmExtension (Optional): {
@@ -26961,7 +27268,8 @@ public final class BatchClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains Compute Node.
      * @param nodeId The ID of the Compute Node that you want to list extensions.
@@ -27002,7 +27310,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provisioningState: String (Optional)
      *     vmExtension (Optional): {
@@ -27038,7 +27347,8 @@ public final class BatchClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains Compute Node.
      * @param nodeId The ID of the Compute Node that you want to list extensions.
@@ -27097,7 +27407,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provisioningState: String (Optional)
      *     vmExtension (Optional): {
@@ -27133,7 +27444,8 @@ public final class BatchClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains Compute Node.
      * @param nodeId The ID of the Compute Node that you want to list extensions.
@@ -27172,7 +27484,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provisioningState: String (Optional)
      *     vmExtension (Optional): {
@@ -27208,7 +27521,8 @@ public final class BatchClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains Compute Node.
      * @param nodeId The ID of the Compute Node that you want to list extensions.
@@ -27350,9 +27664,11 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
@@ -27367,7 +27683,7 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getNodeFileInternalWithResponseAsync(String poolId, String nodeId,
         String filePath, RequestOptions requestOptions) {
-        final String accept = "application/octet-stream, application/json";
+        final String accept = "application/octet-stream";
         return FluxUtil.withContext(context -> service.getNodeFileInternal(this.getEndpoint(),
             this.getServiceVersion().getVersion(), poolId, nodeId, filePath, accept, requestOptions, context));
     }
@@ -27402,9 +27718,11 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
@@ -27419,7 +27737,7 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getNodeFileInternalWithResponse(String poolId, String nodeId, String filePath,
         RequestOptions requestOptions) {
-        final String accept = "application/octet-stream, application/json";
+        final String accept = "application/octet-stream";
         return service.getNodeFileInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
             nodeId, filePath, accept, requestOptions, Context.NONE);
     }
@@ -27533,7 +27851,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     url: String (Optional)
@@ -27546,7 +27865,8 @@ public final class BatchClientImpl {
      *         fileMode: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node whose files you want to list.
@@ -27589,7 +27909,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     url: String (Optional)
@@ -27602,7 +27923,8 @@ public final class BatchClientImpl {
      *         fileMode: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node whose files you want to list.
@@ -27664,7 +27986,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     url: String (Optional)
@@ -27677,7 +28000,8 @@ public final class BatchClientImpl {
      *         fileMode: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node whose files you want to list.
@@ -27719,7 +28043,8 @@ public final class BatchClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     url: String (Optional)
@@ -27732,7 +28057,8 @@ public final class BatchClientImpl {
      *         fileMode: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node whose files you want to list.
@@ -27780,7 +28106,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Required)
@@ -27788,7 +28115,8 @@ public final class BatchClientImpl {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -27816,7 +28144,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Required)
@@ -27824,7 +28153,8 @@ public final class BatchClientImpl {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -27851,7 +28181,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Required)
      *     startTime: OffsetDateTime (Required)
@@ -27859,7 +28190,8 @@ public final class BatchClientImpl {
      *     vmSize: String (Required)
      *     totalCoreHours: double (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -27888,7 +28220,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Required)
      *     startTime: OffsetDateTime (Required)
@@ -27896,7 +28229,8 @@ public final class BatchClientImpl {
      *     vmSize: String (Required)
      *     totalCoreHours: double (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -27922,7 +28256,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -28244,7 +28579,8 @@ public final class BatchClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -28272,7 +28608,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -28594,7 +28931,8 @@ public final class BatchClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -28619,7 +28957,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeAgentSKUId: String (Required)
      *     imageReference (Required): {
@@ -28637,7 +28976,8 @@ public final class BatchClientImpl {
      *     batchSupportEndOfLife: OffsetDateTime (Optional)
      *     verificationType: String(verified/unverified) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -28665,7 +29005,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeAgentSKUId: String (Required)
      *     imageReference (Required): {
@@ -28683,7 +29024,8 @@ public final class BatchClientImpl {
      *     batchSupportEndOfLife: OffsetDateTime (Optional)
      *     verificationType: String(verified/unverified) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -28707,7 +29049,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Required)
      *     dedicated (Optional): {
@@ -28729,7 +29072,8 @@ public final class BatchClientImpl {
      *     }
      *     lowPriority (Optional): (recursive schema, see lowPriority above)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -28755,7 +29099,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Required)
      *     dedicated (Optional): {
@@ -28777,7 +29122,8 @@ public final class BatchClientImpl {
      *     }
      *     lowPriority (Optional): (recursive schema, see lowPriority above)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -28803,7 +29149,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -29205,7 +29552,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -29233,7 +29581,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -29635,7 +29984,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -29660,7 +30010,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -30062,7 +30413,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -30090,7 +30442,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -30492,7 +30845,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -30519,7 +30873,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Optional)
      *     nodeId: String (Optional)
@@ -30563,7 +30918,8 @@ public final class BatchClientImpl {
      *         result: String(success/failure) (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -30592,7 +30948,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Optional)
      *     nodeId: String (Optional)
@@ -30636,7 +30993,8 @@ public final class BatchClientImpl {
      *         result: String(success/failure) (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -30663,7 +31021,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -31068,7 +31427,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -31096,7 +31456,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -31501,7 +31862,8 @@ public final class BatchClientImpl {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -31527,7 +31889,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -31705,7 +32068,8 @@ public final class BatchClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -31733,7 +32097,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -31911,7 +32276,8 @@ public final class BatchClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -31937,7 +32303,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: Integer (Optional)
      *     nodeInfo (Optional): {
@@ -31973,7 +32340,8 @@ public final class BatchClientImpl {
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     result: String(success/failure) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -32001,7 +32369,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: Integer (Optional)
      *     nodeInfo (Optional): {
@@ -32037,7 +32406,8 @@ public final class BatchClientImpl {
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     result: String(success/failure) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -32063,7 +32433,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     url: String (Optional)
@@ -32076,7 +32447,8 @@ public final class BatchClientImpl {
      *         fileMode: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -32103,7 +32475,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     url: String (Optional)
@@ -32116,7 +32489,8 @@ public final class BatchClientImpl {
      *         fileMode: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -32143,7 +32517,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     url: String (Optional)
@@ -32285,7 +32660,8 @@ public final class BatchClientImpl {
      *         scaleSetVmResourceId: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -32313,7 +32689,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     url: String (Optional)
@@ -32455,7 +32832,8 @@ public final class BatchClientImpl {
      *         scaleSetVmResourceId: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -32480,7 +32858,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provisioningState: String (Optional)
      *     vmExtension (Optional): {
@@ -32516,7 +32895,8 @@ public final class BatchClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -32544,7 +32924,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provisioningState: String (Optional)
      *     vmExtension (Optional): {
@@ -32580,7 +32961,8 @@ public final class BatchClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -32606,7 +32988,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     url: String (Optional)
@@ -32619,7 +33002,8 @@ public final class BatchClientImpl {
      *         fileMode: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -32646,7 +33030,8 @@ public final class BatchClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     url: String (Optional)
@@ -32659,7 +33044,8 @@ public final class BatchClientImpl {
      *         fileMode: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

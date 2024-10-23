@@ -5,25 +5,80 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** N-Cross validations determined automatically. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "mode")
-@JsonTypeName("Auto")
+/**
+ * N-Cross validations determined automatically.
+ */
 @Immutable
 public final class AutoNCrossValidations extends NCrossValidations {
-    /** Creates an instance of AutoNCrossValidations class. */
+    /*
+     * [Required] Mode for determining N-Cross validations.
+     */
+    private NCrossValidationsMode mode = NCrossValidationsMode.AUTO;
+
+    /**
+     * Creates an instance of AutoNCrossValidations class.
+     */
     public AutoNCrossValidations() {
     }
 
     /**
+     * Get the mode property: [Required] Mode for determining N-Cross validations.
+     * 
+     * @return the mode value.
+     */
+    @Override
+    public NCrossValidationsMode mode() {
+        return this.mode;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoNCrossValidations from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoNCrossValidations if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutoNCrossValidations.
+     */
+    public static AutoNCrossValidations fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoNCrossValidations deserializedAutoNCrossValidations = new AutoNCrossValidations();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mode".equals(fieldName)) {
+                    deserializedAutoNCrossValidations.mode = NCrossValidationsMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoNCrossValidations;
+        });
     }
 }

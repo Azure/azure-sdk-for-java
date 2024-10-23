@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.keyvault.fluent.models.DeletedVaultInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of vaults. */
+/**
+ * List of vaults.
+ */
 @Fluent
-public final class DeletedVaultListResult {
+public final class DeletedVaultListResult implements JsonSerializable<DeletedVaultListResult> {
     /*
      * The list of deleted vaults.
      */
-    @JsonProperty(value = "value")
     private List<DeletedVaultInner> value;
 
     /*
      * The URL to get the next set of deleted vaults.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of DeletedVaultListResult class. */
+    /**
+     * Creates an instance of DeletedVaultListResult class.
+     */
     public DeletedVaultListResult() {
     }
 
     /**
      * Get the value property: The list of deleted vaults.
-     *
+     * 
      * @return the value value.
      */
     public List<DeletedVaultInner> value() {
@@ -39,7 +45,7 @@ public final class DeletedVaultListResult {
 
     /**
      * Set the value property: The list of deleted vaults.
-     *
+     * 
      * @param value the value value to set.
      * @return the DeletedVaultListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class DeletedVaultListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of deleted vaults.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class DeletedVaultListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of deleted vaults.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the DeletedVaultListResult object itself.
      */
@@ -70,12 +76,52 @@ public final class DeletedVaultListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeletedVaultListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeletedVaultListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeletedVaultListResult.
+     */
+    public static DeletedVaultListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeletedVaultListResult deserializedDeletedVaultListResult = new DeletedVaultListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DeletedVaultInner> value = reader.readArray(reader1 -> DeletedVaultInner.fromJson(reader1));
+                    deserializedDeletedVaultListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDeletedVaultListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeletedVaultListResult;
+        });
     }
 }

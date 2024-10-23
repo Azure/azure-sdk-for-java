@@ -6,37 +6,37 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.MigrationStatus;
 import com.azure.resourcemanager.storage.models.SkuName;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The properties of a storage account’s ongoing or enqueued migration.
  */
 @Fluent
-public final class StorageAccountMigrationProperties {
+public final class StorageAccountMigrationProperties implements JsonSerializable<StorageAccountMigrationProperties> {
     /*
      * Target sku name for the account
      */
-    @JsonProperty(value = "targetSkuName", required = true)
     private SkuName targetSkuName;
 
     /*
      * Current status of migration
      */
-    @JsonProperty(value = "migrationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationStatus migrationStatus;
 
     /*
      * Error code for migration failure
      */
-    @JsonProperty(value = "migrationFailedReason", access = JsonProperty.Access.WRITE_ONLY)
     private String migrationFailedReason;
 
     /*
      * Reason for migration failure
      */
-    @JsonProperty(value = "migrationFailedDetailedReason", access = JsonProperty.Access.WRITE_ONLY)
     private String migrationFailedDetailedReason;
 
     /**
@@ -106,4 +106,50 @@ public final class StorageAccountMigrationProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageAccountMigrationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetSkuName", this.targetSkuName == null ? null : this.targetSkuName.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccountMigrationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccountMigrationProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageAccountMigrationProperties.
+     */
+    public static StorageAccountMigrationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountMigrationProperties deserializedStorageAccountMigrationProperties
+                = new StorageAccountMigrationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetSkuName".equals(fieldName)) {
+                    deserializedStorageAccountMigrationProperties.targetSkuName
+                        = SkuName.fromString(reader.getString());
+                } else if ("migrationStatus".equals(fieldName)) {
+                    deserializedStorageAccountMigrationProperties.migrationStatus
+                        = MigrationStatus.fromString(reader.getString());
+                } else if ("migrationFailedReason".equals(fieldName)) {
+                    deserializedStorageAccountMigrationProperties.migrationFailedReason = reader.getString();
+                } else if ("migrationFailedDetailedReason".equals(fieldName)) {
+                    deserializedStorageAccountMigrationProperties.migrationFailedDetailedReason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccountMigrationProperties;
+        });
+    }
 }

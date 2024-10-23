@@ -6,25 +6,32 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A managed server DNS alias acquisition request. */
+/**
+ * A managed server DNS alias acquisition request.
+ */
 @Fluent
-public final class ManagedServerDnsAliasAcquisition {
+public final class ManagedServerDnsAliasAcquisition implements JsonSerializable<ManagedServerDnsAliasAcquisition> {
     /*
      * The resource ID of the managed server DNS alias that will be acquired to point to this managed server instead.
      */
-    @JsonProperty(value = "oldManagedServerDnsAliasResourceId", required = true)
     private String oldManagedServerDnsAliasResourceId;
 
-    /** Creates an instance of ManagedServerDnsAliasAcquisition class. */
+    /**
+     * Creates an instance of ManagedServerDnsAliasAcquisition class.
+     */
     public ManagedServerDnsAliasAcquisition() {
     }
 
     /**
      * Get the oldManagedServerDnsAliasResourceId property: The resource ID of the managed server DNS alias that will be
      * acquired to point to this managed server instead.
-     *
+     * 
      * @return the oldManagedServerDnsAliasResourceId value.
      */
     public String oldManagedServerDnsAliasResourceId() {
@@ -34,30 +41,67 @@ public final class ManagedServerDnsAliasAcquisition {
     /**
      * Set the oldManagedServerDnsAliasResourceId property: The resource ID of the managed server DNS alias that will be
      * acquired to point to this managed server instead.
-     *
+     * 
      * @param oldManagedServerDnsAliasResourceId the oldManagedServerDnsAliasResourceId value to set.
      * @return the ManagedServerDnsAliasAcquisition object itself.
      */
-    public ManagedServerDnsAliasAcquisition withOldManagedServerDnsAliasResourceId(
-        String oldManagedServerDnsAliasResourceId) {
+    public ManagedServerDnsAliasAcquisition
+        withOldManagedServerDnsAliasResourceId(String oldManagedServerDnsAliasResourceId) {
         this.oldManagedServerDnsAliasResourceId = oldManagedServerDnsAliasResourceId;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (oldManagedServerDnsAliasResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property oldManagedServerDnsAliasResourceId in model"
-                            + " ManagedServerDnsAliasAcquisition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property oldManagedServerDnsAliasResourceId in model ManagedServerDnsAliasAcquisition"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedServerDnsAliasAcquisition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("oldManagedServerDnsAliasResourceId", this.oldManagedServerDnsAliasResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedServerDnsAliasAcquisition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedServerDnsAliasAcquisition if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedServerDnsAliasAcquisition.
+     */
+    public static ManagedServerDnsAliasAcquisition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedServerDnsAliasAcquisition deserializedManagedServerDnsAliasAcquisition
+                = new ManagedServerDnsAliasAcquisition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("oldManagedServerDnsAliasResourceId".equals(fieldName)) {
+                    deserializedManagedServerDnsAliasAcquisition.oldManagedServerDnsAliasResourceId
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedServerDnsAliasAcquisition;
+        });
+    }
 }

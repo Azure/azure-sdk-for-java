@@ -6,37 +6,37 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The IpGroups property information.
  */
 @Fluent
-public final class IpGroupPropertiesFormat {
+public final class IpGroupPropertiesFormat implements JsonSerializable<IpGroupPropertiesFormat> {
     /*
      * The provisioning state of the IpGroups resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * IpAddresses/IpAddressPrefixes in the IpGroups resource.
      */
-    @JsonProperty(value = "ipAddresses")
     private List<String> ipAddresses;
 
     /*
      * List of references to Firewall resources that this IpGroups is associated with.
      */
-    @JsonProperty(value = "firewalls", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> firewalls;
 
     /*
      * List of references to Firewall Policies resources that this IpGroups is associated with.
      */
-    @JsonProperty(value = "firewallPolicies", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> firewallPolicies;
 
     /**
@@ -99,5 +99,51 @@ public final class IpGroupPropertiesFormat {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("ipAddresses", this.ipAddresses, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpGroupPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpGroupPropertiesFormat if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IpGroupPropertiesFormat.
+     */
+    public static IpGroupPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpGroupPropertiesFormat deserializedIpGroupPropertiesFormat = new IpGroupPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedIpGroupPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("ipAddresses".equals(fieldName)) {
+                    List<String> ipAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIpGroupPropertiesFormat.ipAddresses = ipAddresses;
+                } else if ("firewalls".equals(fieldName)) {
+                    List<SubResource> firewalls = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedIpGroupPropertiesFormat.firewalls = firewalls;
+                } else if ("firewallPolicies".equals(fieldName)) {
+                    List<SubResource> firewallPolicies = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedIpGroupPropertiesFormat.firewallPolicies = firewallPolicies;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpGroupPropertiesFormat;
+        });
     }
 }

@@ -5,31 +5,34 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The configuration settings of the platform of App Service Authentication/Authorization.
  */
 @Fluent
-public final class AuthPlatform {
+public final class AuthPlatform implements JsonSerializable<AuthPlatform> {
     /*
-     * <code>true</code> if the Authentication / Authorization feature is enabled for the current app; otherwise, <code>false</code>.
+     * <code>true</code> if the Authentication / Authorization feature is enabled for the current app; otherwise,
+     * <code>false</code>.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * The RuntimeVersion of the Authentication / Authorization feature in use for the current app.
-     * The setting in this value can control the behavior of certain features in the Authentication / Authorization module.
+     * The setting in this value can control the behavior of certain features in the Authentication / Authorization
+     * module.
      */
-    @JsonProperty(value = "runtimeVersion")
     private String runtimeVersion;
 
     /*
      * The path of the config file containing auth settings if they come from a file.
      * If the path is relative, base will the site's root directory.
      */
-    @JsonProperty(value = "configFilePath")
     private String configFilePath;
 
     /**
@@ -114,5 +117,47 @@ public final class AuthPlatform {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("runtimeVersion", this.runtimeVersion);
+        jsonWriter.writeStringField("configFilePath", this.configFilePath);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthPlatform from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthPlatform if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AuthPlatform.
+     */
+    public static AuthPlatform fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthPlatform deserializedAuthPlatform = new AuthPlatform();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedAuthPlatform.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("runtimeVersion".equals(fieldName)) {
+                    deserializedAuthPlatform.runtimeVersion = reader.getString();
+                } else if ("configFilePath".equals(fieldName)) {
+                    deserializedAuthPlatform.configFilePath = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthPlatform;
+        });
     }
 }

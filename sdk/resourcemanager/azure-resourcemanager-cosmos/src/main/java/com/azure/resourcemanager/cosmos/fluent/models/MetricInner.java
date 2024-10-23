@@ -5,10 +5,15 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.MetricName;
 import com.azure.resourcemanager.cosmos.models.MetricValue;
 import com.azure.resourcemanager.cosmos.models.UnitType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -16,41 +21,35 @@ import java.util.List;
  * Metric data.
  */
 @Immutable
-public class MetricInner {
+public class MetricInner implements JsonSerializable<MetricInner> {
     /*
      * The start time for the metric (ISO-8601 format).
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * The end time for the metric (ISO-8601 format).
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * The time grain to be used to summarize the metric values.
      */
-    @JsonProperty(value = "timeGrain", access = JsonProperty.Access.WRITE_ONLY)
     private String timeGrain;
 
     /*
      * The unit of the metric.
      */
-    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private UnitType unit;
 
     /*
      * The name information for the metric.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private MetricName name;
 
     /*
      * The metric values for the specified time window and timestep.
      */
-    @JsonProperty(value = "metricValues", access = JsonProperty.Access.WRITE_ONLY)
     private List<MetricValue> metricValues;
 
     /**
@@ -69,12 +68,34 @@ public class MetricInner {
     }
 
     /**
+     * Set the startTime property: The start time for the metric (ISO-8601 format).
+     * 
+     * @param startTime the startTime value to set.
+     * @return the MetricInner object itself.
+     */
+    MetricInner withStartTime(OffsetDateTime startTime) {
+        this.startTime = startTime;
+        return this;
+    }
+
+    /**
      * Get the endTime property: The end time for the metric (ISO-8601 format).
      * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
         return this.endTime;
+    }
+
+    /**
+     * Set the endTime property: The end time for the metric (ISO-8601 format).
+     * 
+     * @param endTime the endTime value to set.
+     * @return the MetricInner object itself.
+     */
+    MetricInner withEndTime(OffsetDateTime endTime) {
+        this.endTime = endTime;
+        return this;
     }
 
     /**
@@ -87,12 +108,34 @@ public class MetricInner {
     }
 
     /**
+     * Set the timeGrain property: The time grain to be used to summarize the metric values.
+     * 
+     * @param timeGrain the timeGrain value to set.
+     * @return the MetricInner object itself.
+     */
+    MetricInner withTimeGrain(String timeGrain) {
+        this.timeGrain = timeGrain;
+        return this;
+    }
+
+    /**
      * Get the unit property: The unit of the metric.
      * 
      * @return the unit value.
      */
     public UnitType unit() {
         return this.unit;
+    }
+
+    /**
+     * Set the unit property: The unit of the metric.
+     * 
+     * @param unit the unit value to set.
+     * @return the MetricInner object itself.
+     */
+    MetricInner withUnit(UnitType unit) {
+        this.unit = unit;
+        return this;
     }
 
     /**
@@ -105,12 +148,34 @@ public class MetricInner {
     }
 
     /**
+     * Set the name property: The name information for the metric.
+     * 
+     * @param name the name value to set.
+     * @return the MetricInner object itself.
+     */
+    MetricInner withName(MetricName name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
      * Get the metricValues property: The metric values for the specified time window and timestep.
      * 
      * @return the metricValues value.
      */
     public List<MetricValue> metricValues() {
         return this.metricValues;
+    }
+
+    /**
+     * Set the metricValues property: The metric values for the specified time window and timestep.
+     * 
+     * @param metricValues the metricValues value to set.
+     * @return the MetricInner object itself.
+     */
+    MetricInner withMetricValues(List<MetricValue> metricValues) {
+        this.metricValues = metricValues;
+        return this;
     }
 
     /**
@@ -125,5 +190,53 @@ public class MetricInner {
         if (metricValues() != null) {
             metricValues().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricInner.
+     */
+    public static MetricInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricInner deserializedMetricInner = new MetricInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedMetricInner.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedMetricInner.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timeGrain".equals(fieldName)) {
+                    deserializedMetricInner.timeGrain = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedMetricInner.unit = UnitType.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedMetricInner.name = MetricName.fromJson(reader);
+                } else if ("metricValues".equals(fieldName)) {
+                    List<MetricValue> metricValues = reader.readArray(reader1 -> MetricValue.fromJson(reader1));
+                    deserializedMetricInner.metricValues = metricValues;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricInner;
+        });
     }
 }

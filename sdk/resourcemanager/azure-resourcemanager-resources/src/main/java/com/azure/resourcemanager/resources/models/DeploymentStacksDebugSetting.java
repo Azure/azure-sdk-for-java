@@ -5,17 +5,24 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The debug setting.
  */
 @Fluent
-public final class DeploymentStacksDebugSetting {
+public final class DeploymentStacksDebugSetting implements JsonSerializable<DeploymentStacksDebugSetting> {
     /*
-     * Specifies the type of information to log for debugging. The permitted values are none, requestContent, responseContent, or both requestContent and responseContent separated by a comma. The default is none. When setting this value, carefully consider the type of information that is being passed in during deployment. By logging information about the request or response, sensitive data that is retrieved through the deployment operations could potentially be exposed.
+     * Specifies the type of information to log for debugging. The permitted values are none, requestContent,
+     * responseContent, or both requestContent and responseContent separated by a comma. The default is none. When
+     * setting this value, carefully consider the type of information that is being passed in during deployment. By
+     * logging information about the request or response, sensitive data that is retrieved through the deployment
+     * operations could potentially be exposed.
      */
-    @JsonProperty(value = "detailLevel")
     private String detailLevel;
 
     /**
@@ -58,5 +65,41 @@ public final class DeploymentStacksDebugSetting {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("detailLevel", this.detailLevel);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentStacksDebugSetting from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentStacksDebugSetting if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeploymentStacksDebugSetting.
+     */
+    public static DeploymentStacksDebugSetting fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentStacksDebugSetting deserializedDeploymentStacksDebugSetting = new DeploymentStacksDebugSetting();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("detailLevel".equals(fieldName)) {
+                    deserializedDeploymentStacksDebugSetting.detailLevel = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentStacksDebugSetting;
+        });
     }
 }

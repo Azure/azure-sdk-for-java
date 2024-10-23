@@ -6,26 +6,28 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.SharedGalleryInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The List Shared Galleries operation response.
  */
 @Fluent
-public final class SharedGalleryList {
+public final class SharedGalleryList implements JsonSerializable<SharedGalleryList> {
     /*
      * A list of shared galleries.
      */
-    @JsonProperty(value = "value", required = true)
     private List<SharedGalleryInner> value;
 
     /*
      * The uri to fetch the next page of shared galleries. Call ListNext() with this to fetch the next page of shared
      * galleries.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -91,4 +93,45 @@ public final class SharedGalleryList {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SharedGalleryList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SharedGalleryList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SharedGalleryList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SharedGalleryList.
+     */
+    public static SharedGalleryList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SharedGalleryList deserializedSharedGalleryList = new SharedGalleryList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SharedGalleryInner> value = reader.readArray(reader1 -> SharedGalleryInner.fromJson(reader1));
+                    deserializedSharedGalleryList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSharedGalleryList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSharedGalleryList;
+        });
+    }
 }

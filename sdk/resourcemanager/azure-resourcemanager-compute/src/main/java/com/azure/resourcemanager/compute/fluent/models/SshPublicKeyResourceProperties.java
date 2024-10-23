@@ -5,20 +5,23 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of the SSH public key.
  */
 @Fluent
-public final class SshPublicKeyResourceProperties {
+public final class SshPublicKeyResourceProperties implements JsonSerializable<SshPublicKeyResourceProperties> {
     /*
      * SSH public key used to authenticate to a virtual machine through ssh. If this property is not initially provided
      * when the resource is created, the publicKey property will be populated when generateKeyPair is called. If the
      * public key is provided upon resource creation, the provided public key needs to be at least 2048-bit and in
      * ssh-rsa format.
      */
-    @JsonProperty(value = "publicKey")
     private String publicKey;
 
     /**
@@ -59,5 +62,42 @@ public final class SshPublicKeyResourceProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publicKey", this.publicKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SshPublicKeyResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SshPublicKeyResourceProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SshPublicKeyResourceProperties.
+     */
+    public static SshPublicKeyResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SshPublicKeyResourceProperties deserializedSshPublicKeyResourceProperties
+                = new SshPublicKeyResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publicKey".equals(fieldName)) {
+                    deserializedSshPublicKeyResourceProperties.publicKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSshPublicKeyResourceProperties;
+        });
     }
 }

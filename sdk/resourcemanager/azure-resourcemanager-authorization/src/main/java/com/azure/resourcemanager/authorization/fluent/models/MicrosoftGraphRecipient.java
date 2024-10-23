@@ -5,34 +5,38 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** recipient. */
+/**
+ * recipient.
+ */
 @Fluent
-public class MicrosoftGraphRecipient {
+public class MicrosoftGraphRecipient implements JsonSerializable<MicrosoftGraphRecipient> {
     /*
      * emailAddress
      */
-    @JsonProperty(value = "emailAddress")
     private MicrosoftGraphEmailAddress emailAddress;
 
     /*
      * recipient
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphRecipient class. */
+    /**
+     * Creates an instance of MicrosoftGraphRecipient class.
+     */
     public MicrosoftGraphRecipient() {
     }
 
     /**
      * Get the emailAddress property: emailAddress.
-     *
+     * 
      * @return the emailAddress value.
      */
     public MicrosoftGraphEmailAddress emailAddress() {
@@ -41,7 +45,7 @@ public class MicrosoftGraphRecipient {
 
     /**
      * Set the emailAddress property: emailAddress.
-     *
+     * 
      * @param emailAddress the emailAddress value to set.
      * @return the MicrosoftGraphRecipient object itself.
      */
@@ -52,17 +56,16 @@ public class MicrosoftGraphRecipient {
 
     /**
      * Get the additionalProperties property: recipient.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: recipient.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphRecipient object itself.
      */
@@ -71,22 +74,61 @@ public class MicrosoftGraphRecipient {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (emailAddress() != null) {
             emailAddress().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("emailAddress", this.emailAddress);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphRecipient from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphRecipient if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphRecipient.
+     */
+    public static MicrosoftGraphRecipient fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphRecipient deserializedMicrosoftGraphRecipient = new MicrosoftGraphRecipient();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("emailAddress".equals(fieldName)) {
+                    deserializedMicrosoftGraphRecipient.emailAddress = MicrosoftGraphEmailAddress.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphRecipient.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphRecipient;
+        });
     }
 }

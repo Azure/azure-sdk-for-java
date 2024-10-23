@@ -36,21 +36,17 @@ final class QuickPulseDataCollector {
 
     private static final MemoryMXBean memory = ManagementFactory.getMemoryMXBean();
 
-    private static final OperatingSystemMXBean operatingSystemMxBean =
-        ManagementFactory.getOperatingSystemMXBean();
+    private static final OperatingSystemMXBean operatingSystemMxBean = ManagementFactory.getOperatingSystemMXBean();
 
     private final AtomicReference<Counters> counters = new AtomicReference<>(null);
-    private final CpuPerformanceCounterCalculator cpuPerformanceCounterCalculator =
-        getCpuPerformanceCounterCalculator();
-    private final boolean useNormalizedValueForNonNormalizedCpuPercentage;
+    private final CpuPerformanceCounterCalculator cpuPerformanceCounterCalculator
+        = getCpuPerformanceCounterCalculator();
 
     private volatile QuickPulseStatus quickPulseStatus = QuickPulseStatus.QP_IS_OFF;
 
     private volatile Supplier<String> instrumentationKeySupplier;
 
-    QuickPulseDataCollector(boolean useNormalizedValueForNonNormalizedCpuPercentage) {
-        this.useNormalizedValueForNonNormalizedCpuPercentage =
-            useNormalizedValueForNonNormalizedCpuPercentage;
+    QuickPulseDataCollector() {
     }
 
     private static CpuPerformanceCounterCalculator getCpuPerformanceCounterCalculator() {
@@ -158,8 +154,8 @@ final class QuickPulseDataCollector {
         quickPulseDependencyDocument.setResultCode(telemetry.getResultCode());
         quickPulseDependencyDocument.setOperationName(telemetry.getId());
         quickPulseDependencyDocument.setDependencyTypeName(telemetry.getType());
-        quickPulseDependencyDocument.setProperties(
-            aggregateProperties(telemetry.getProperties(), telemetry.getMeasurements()));
+        quickPulseDependencyDocument
+            .setProperties(aggregateProperties(telemetry.getProperties(), telemetry.getMeasurements()));
         synchronized (counters.documentList) {
             if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
                 counters.documentList.add(quickPulseDependencyDocument);
@@ -210,8 +206,7 @@ final class QuickPulseDataCollector {
             return;
         }
         long durationMillis = parseDurationToMillis(requestTelemetry.getDuration());
-        counters.requestsAndDurations.addAndGet(
-            Counters.encodeCountAndDuration(itemCount, durationMillis));
+        counters.requestsAndDurations.addAndGet(Counters.encodeCountAndDuration(itemCount, durationMillis));
         if (!requestTelemetry.isSuccess()) {
             counters.unsuccessfulRequests.incrementAndGet();
         }
@@ -226,8 +221,8 @@ final class QuickPulseDataCollector {
         quickPulseRequestDocument.setOperationName(operationName);
         quickPulseRequestDocument.setName(requestTelemetry.getName());
         quickPulseRequestDocument.setUrl(requestTelemetry.getUrl());
-        quickPulseRequestDocument.setProperties(
-            aggregateProperties(requestTelemetry.getProperties(), requestTelemetry.getMeasurements()));
+        quickPulseRequestDocument
+            .setProperties(aggregateProperties(requestTelemetry.getProperties(), requestTelemetry.getMeasurements()));
         synchronized (counters.documentList) {
             if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
                 counters.documentList.add(quickPulseRequestDocument);
@@ -235,8 +230,8 @@ final class QuickPulseDataCollector {
         }
     }
 
-    private static Map<String, String> aggregateProperties(
-        @Nullable Map<String, String> properties, @Nullable Map<String, Double> measurements) {
+    private static Map<String, String> aggregateProperties(@Nullable Map<String, String> properties,
+        @Nullable Map<String, Double> measurements) {
         Map<String, String> aggregatedProperties = new HashMap<>();
         if (measurements != null) {
             measurements.forEach((k, v) -> aggregatedProperties.put(k, String.valueOf(v)));
@@ -322,18 +317,18 @@ final class QuickPulseDataCollector {
         final long rdds;
         final double rddsDuration;
         final int unsuccessfulRdds;
-        final long memoryCommitted;
-        final double cpuUsage;
+        final long processPhysicalMemory;
+        final double processNormalizedCpuUsage;
         final List<QuickPulseDocument> documentList = new ArrayList<>();
 
         private FinalCounters(Counters currentCounters) {
 
-            memoryCommitted = getMemoryCommitted(memory);
-            cpuUsage = getNonNormalizedCpuPercentage(cpuPerformanceCounterCalculator);
+            processPhysicalMemory = getPhysicalMemory(memory);
+            processNormalizedCpuUsage = getNormalizedCpuPercentage(cpuPerformanceCounterCalculator);
             exceptions = currentCounters.exceptions.get();
 
-            CountAndDuration countAndDuration =
-                Counters.decodeCountAndDuration(currentCounters.requestsAndDurations.get());
+            CountAndDuration countAndDuration
+                = Counters.decodeCountAndDuration(currentCounters.requestsAndDurations.get());
             requests = (int) countAndDuration.count;
             this.requestsDuration = countAndDuration.duration;
             this.unsuccessfulRequests = currentCounters.unsuccessfulRequests.get();
@@ -347,19 +342,20 @@ final class QuickPulseDataCollector {
             }
         }
 
-        private long getMemoryCommitted(@Nullable MemoryMXBean memory) {
+        private long getPhysicalMemory(@Nullable MemoryMXBean memory) {
             if (memory == null) {
                 return -1;
             }
             MemoryUsage heapMemoryUsage = memory.getHeapMemoryUsage();
-            if (heapMemoryUsage == null) {
+            MemoryUsage nonHeapMemoryUsage = memory.getNonHeapMemoryUsage();
+            if (heapMemoryUsage == null || nonHeapMemoryUsage == null) {
                 return -1;
             }
-            return heapMemoryUsage.getCommitted();
+            return heapMemoryUsage.getUsed() + nonHeapMemoryUsage.getUsed();
         }
 
-        private double getNonNormalizedCpuPercentage(
-            @Nullable CpuPerformanceCounterCalculator cpuPerformanceCounterCalculator) {
+        private double
+            getNormalizedCpuPercentage(@Nullable CpuPerformanceCounterCalculator cpuPerformanceCounterCalculator) {
             if (cpuPerformanceCounterCalculator == null) {
                 return -1;
             }
@@ -367,12 +363,7 @@ final class QuickPulseDataCollector {
             if (cpuDatum == null) {
                 return -1;
             }
-
-            if (useNormalizedValueForNonNormalizedCpuPercentage) {
-                // normalize for backwards compatibility even though this is supposed to be non-normalized
-                cpuDatum /= operatingSystemMxBean.getAvailableProcessors();
-            }
-
+            cpuDatum /= operatingSystemMxBean.getAvailableProcessors();
             return cpuDatum;
         }
     }

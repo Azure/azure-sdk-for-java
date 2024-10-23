@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.CommunityGalleryMetadata;
 import com.azure.resourcemanager.compute.models.PirCommunityGalleryResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -18,8 +21,27 @@ public final class CommunityGalleryInner extends PirCommunityGalleryResource {
     /*
      * Describes the properties of a community gallery.
      */
-    @JsonProperty(value = "properties")
     private CommunityGalleryProperties innerProperties;
+
+    /*
+     * Resource name
+     */
+    private String name;
+
+    /*
+     * Resource location
+     */
+    private String location;
+
+    /*
+     * Resource type
+     */
+    private String type;
+
+    /*
+     * The identifier information of community gallery.
+     */
+    private CommunityGalleryIdentifier innerIdentifier;
 
     /**
      * Creates an instance of CommunityGalleryInner class.
@@ -37,11 +59,64 @@ public final class CommunityGalleryInner extends PirCommunityGalleryResource {
     }
 
     /**
-     * {@inheritDoc}
+     * Get the name property: Resource name.
+     * 
+     * @return the name value.
      */
     @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the location property: Resource location.
+     * 
+     * @return the location value.
+     */
+    @Override
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Get the type property: Resource type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the innerIdentifier property: The identifier information of community gallery.
+     * 
+     * @return the innerIdentifier value.
+     */
+    private CommunityGalleryIdentifier innerIdentifier() {
+        return this.innerIdentifier;
+    }
+
+    /**
+     * Get the uniqueId property: The unique id of this community gallery.
+     * 
+     * @return the uniqueId value.
+     */
+    public String uniqueId() {
+        return this.innerIdentifier() == null ? null : this.innerIdentifier().uniqueId();
+    }
+
+    /**
+     * Set the uniqueId property: The unique id of this community gallery.
+     * 
+     * @param uniqueId the uniqueId value to set.
+     * @return the CommunityGalleryInner object itself.
+     */
     public CommunityGalleryInner withUniqueId(String uniqueId) {
-        super.withUniqueId(uniqueId);
+        if (this.innerIdentifier() == null) {
+            this.innerIdentifier = new CommunityGalleryIdentifier();
+        }
+        this.innerIdentifier().withUniqueId(uniqueId);
         return this;
     }
 
@@ -125,5 +200,50 @@ public final class CommunityGalleryInner extends PirCommunityGalleryResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identifier", innerIdentifier());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommunityGalleryInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommunityGalleryInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommunityGalleryInner.
+     */
+    public static CommunityGalleryInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommunityGalleryInner deserializedCommunityGalleryInner = new CommunityGalleryInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCommunityGalleryInner.name = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedCommunityGalleryInner.location = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCommunityGalleryInner.type = reader.getString();
+                } else if ("identifier".equals(fieldName)) {
+                    deserializedCommunityGalleryInner.innerIdentifier = CommunityGalleryIdentifier.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCommunityGalleryInner.innerProperties = CommunityGalleryProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommunityGalleryInner;
+        });
     }
 }

@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes metadata for retrieving price info. */
+/**
+ * Describes metadata for retrieving price info.
+ */
 @Immutable
-public final class ResourceSkuCosts {
+public final class ResourceSkuCosts implements JsonSerializable<ResourceSkuCosts> {
     /*
      * Used for querying price from commerce.
      */
-    @JsonProperty(value = "meterID", access = JsonProperty.Access.WRITE_ONLY)
     private String meterId;
 
     /*
      * The multiplier is needed to extend the base metered cost.
      */
-    @JsonProperty(value = "quantity", access = JsonProperty.Access.WRITE_ONLY)
     private Long quantity;
 
     /*
      * An invariant to show the extended unit.
      */
-    @JsonProperty(value = "extendedUnit", access = JsonProperty.Access.WRITE_ONLY)
     private String extendedUnit;
 
-    /** Creates an instance of ResourceSkuCosts class. */
+    /**
+     * Creates an instance of ResourceSkuCosts class.
+     */
     public ResourceSkuCosts() {
     }
 
     /**
      * Get the meterId property: Used for querying price from commerce.
-     *
+     * 
      * @return the meterId value.
      */
     public String meterId() {
@@ -43,7 +48,7 @@ public final class ResourceSkuCosts {
 
     /**
      * Get the quantity property: The multiplier is needed to extend the base metered cost.
-     *
+     * 
      * @return the quantity value.
      */
     public Long quantity() {
@@ -52,7 +57,7 @@ public final class ResourceSkuCosts {
 
     /**
      * Get the extendedUnit property: An invariant to show the extended unit.
-     *
+     * 
      * @return the extendedUnit value.
      */
     public String extendedUnit() {
@@ -61,9 +66,48 @@ public final class ResourceSkuCosts {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceSkuCosts from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceSkuCosts if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceSkuCosts.
+     */
+    public static ResourceSkuCosts fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceSkuCosts deserializedResourceSkuCosts = new ResourceSkuCosts();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("meterID".equals(fieldName)) {
+                    deserializedResourceSkuCosts.meterId = reader.getString();
+                } else if ("quantity".equals(fieldName)) {
+                    deserializedResourceSkuCosts.quantity = reader.getNullable(JsonReader::getLong);
+                } else if ("extendedUnit".equals(fieldName)) {
+                    deserializedResourceSkuCosts.extendedUnit = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceSkuCosts;
+        });
     }
 }

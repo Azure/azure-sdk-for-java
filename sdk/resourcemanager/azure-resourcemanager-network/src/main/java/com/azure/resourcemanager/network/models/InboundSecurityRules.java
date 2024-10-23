@@ -5,48 +5,46 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of the Inbound Security Rules resource.
  */
 @Fluent
-public final class InboundSecurityRules {
+public final class InboundSecurityRules implements JsonSerializable<InboundSecurityRules> {
     /*
      * Name of the rule.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Protocol. This should be either TCP or UDP.
      */
-    @JsonProperty(value = "protocol")
     private InboundSecurityRulesProtocol protocol;
 
     /*
      * The CIDR or source IP range.
      */
-    @JsonProperty(value = "sourceAddressPrefix")
     private String sourceAddressPrefix;
 
     /*
      * NVA port ranges to be opened up. One needs to provide specific ports.
      */
-    @JsonProperty(value = "destinationPortRange")
     private Integer destinationPortRange;
 
     /*
      * NVA port ranges to be opened up. One can provide a range of ports. Allowed port value between 0 and 65535.
      */
-    @JsonProperty(value = "destinationPortRanges")
     private List<String> destinationPortRanges;
 
     /*
      * Public IP name in case of Permanent Rule type & Interface Name in case of Auto Expire Rule type
      */
-    @JsonProperty(value = "appliesOn")
     private List<String> appliesOn;
 
     /**
@@ -185,5 +183,60 @@ public final class InboundSecurityRules {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeStringField("sourceAddressPrefix", this.sourceAddressPrefix);
+        jsonWriter.writeNumberField("destinationPortRange", this.destinationPortRange);
+        jsonWriter.writeArrayField("destinationPortRanges", this.destinationPortRanges,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("appliesOn", this.appliesOn, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InboundSecurityRules from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InboundSecurityRules if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InboundSecurityRules.
+     */
+    public static InboundSecurityRules fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InboundSecurityRules deserializedInboundSecurityRules = new InboundSecurityRules();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedInboundSecurityRules.name = reader.getString();
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedInboundSecurityRules.protocol
+                        = InboundSecurityRulesProtocol.fromString(reader.getString());
+                } else if ("sourceAddressPrefix".equals(fieldName)) {
+                    deserializedInboundSecurityRules.sourceAddressPrefix = reader.getString();
+                } else if ("destinationPortRange".equals(fieldName)) {
+                    deserializedInboundSecurityRules.destinationPortRange = reader.getNullable(JsonReader::getInt);
+                } else if ("destinationPortRanges".equals(fieldName)) {
+                    List<String> destinationPortRanges = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInboundSecurityRules.destinationPortRanges = destinationPortRanges;
+                } else if ("appliesOn".equals(fieldName)) {
+                    List<String> appliesOn = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInboundSecurityRules.appliesOn = appliesOn;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInboundSecurityRules;
+        });
     }
 }

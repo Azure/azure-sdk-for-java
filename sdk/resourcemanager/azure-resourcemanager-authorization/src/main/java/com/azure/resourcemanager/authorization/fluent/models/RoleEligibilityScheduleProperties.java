@@ -5,109 +5,105 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.authorization.models.ExpandedProperties;
 import com.azure.resourcemanager.authorization.models.MemberType;
 import com.azure.resourcemanager.authorization.models.PrincipalType;
 import com.azure.resourcemanager.authorization.models.Status;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Role eligibility schedule properties with scope. */
+/**
+ * Role eligibility schedule properties with scope.
+ */
 @Fluent
-public final class RoleEligibilityScheduleProperties {
+public final class RoleEligibilityScheduleProperties implements JsonSerializable<RoleEligibilityScheduleProperties> {
     /*
      * The role eligibility schedule scope.
      */
-    @JsonProperty(value = "scope")
     private String scope;
 
     /*
      * The role definition ID.
      */
-    @JsonProperty(value = "roleDefinitionId")
     private String roleDefinitionId;
 
     /*
      * The principal ID.
      */
-    @JsonProperty(value = "principalId")
     private String principalId;
 
     /*
      * The principal type of the assigned principal ID.
      */
-    @JsonProperty(value = "principalType")
     private PrincipalType principalType;
 
     /*
      * The id of roleEligibilityScheduleRequest used to create this roleAssignmentSchedule
      */
-    @JsonProperty(value = "roleEligibilityScheduleRequestId")
     private String roleEligibilityScheduleRequestId;
 
     /*
      * Membership type of the role eligibility schedule
      */
-    @JsonProperty(value = "memberType")
     private MemberType memberType;
 
     /*
      * The status of the role eligibility schedule.
      */
-    @JsonProperty(value = "status")
     private Status status;
 
     /*
      * Start DateTime when role eligibility schedule
      */
-    @JsonProperty(value = "startDateTime")
     private OffsetDateTime startDateTime;
 
     /*
      * End DateTime when role eligibility schedule
      */
-    @JsonProperty(value = "endDateTime")
     private OffsetDateTime endDateTime;
 
     /*
-     * The conditions on the role assignment. This limits the resources it can be assigned to. e.g.:
-     * @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase
+     * The conditions on the role assignment. This limits the resources it can be assigned to.
+     * e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase
      * 'foo_storage_container'
      */
-    @JsonProperty(value = "condition")
     private String condition;
 
     /*
      * Version of the condition. Currently accepted value is '2.0'
      */
-    @JsonProperty(value = "conditionVersion")
     private String conditionVersion;
 
     /*
      * DateTime when role eligibility schedule was created
      */
-    @JsonProperty(value = "createdOn")
     private OffsetDateTime createdOn;
 
     /*
      * DateTime when role eligibility schedule was modified
      */
-    @JsonProperty(value = "updatedOn")
     private OffsetDateTime updatedOn;
 
     /*
      * Additional properties of principal, scope and role definition
      */
-    @JsonProperty(value = "expandedProperties")
     private ExpandedProperties expandedProperties;
 
-    /** Creates an instance of RoleEligibilityScheduleProperties class. */
+    /**
+     * Creates an instance of RoleEligibilityScheduleProperties class.
+     */
     public RoleEligibilityScheduleProperties() {
     }
 
     /**
      * Get the scope property: The role eligibility schedule scope.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -116,7 +112,7 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Set the scope property: The role eligibility schedule scope.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the RoleEligibilityScheduleProperties object itself.
      */
@@ -127,7 +123,7 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Get the roleDefinitionId property: The role definition ID.
-     *
+     * 
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
@@ -136,7 +132,7 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Set the roleDefinitionId property: The role definition ID.
-     *
+     * 
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the RoleEligibilityScheduleProperties object itself.
      */
@@ -147,7 +143,7 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Get the principalId property: The principal ID.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -156,7 +152,7 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Set the principalId property: The principal ID.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the RoleEligibilityScheduleProperties object itself.
      */
@@ -167,7 +163,7 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Get the principalType property: The principal type of the assigned principal ID.
-     *
+     * 
      * @return the principalType value.
      */
     public PrincipalType principalType() {
@@ -176,7 +172,7 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Set the principalType property: The principal type of the assigned principal ID.
-     *
+     * 
      * @param principalType the principalType value to set.
      * @return the RoleEligibilityScheduleProperties object itself.
      */
@@ -188,7 +184,7 @@ public final class RoleEligibilityScheduleProperties {
     /**
      * Get the roleEligibilityScheduleRequestId property: The id of roleEligibilityScheduleRequest used to create this
      * roleAssignmentSchedule.
-     *
+     * 
      * @return the roleEligibilityScheduleRequestId value.
      */
     public String roleEligibilityScheduleRequestId() {
@@ -198,19 +194,19 @@ public final class RoleEligibilityScheduleProperties {
     /**
      * Set the roleEligibilityScheduleRequestId property: The id of roleEligibilityScheduleRequest used to create this
      * roleAssignmentSchedule.
-     *
+     * 
      * @param roleEligibilityScheduleRequestId the roleEligibilityScheduleRequestId value to set.
      * @return the RoleEligibilityScheduleProperties object itself.
      */
-    public RoleEligibilityScheduleProperties withRoleEligibilityScheduleRequestId(
-        String roleEligibilityScheduleRequestId) {
+    public RoleEligibilityScheduleProperties
+        withRoleEligibilityScheduleRequestId(String roleEligibilityScheduleRequestId) {
         this.roleEligibilityScheduleRequestId = roleEligibilityScheduleRequestId;
         return this;
     }
 
     /**
      * Get the memberType property: Membership type of the role eligibility schedule.
-     *
+     * 
      * @return the memberType value.
      */
     public MemberType memberType() {
@@ -219,7 +215,7 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Set the memberType property: Membership type of the role eligibility schedule.
-     *
+     * 
      * @param memberType the memberType value to set.
      * @return the RoleEligibilityScheduleProperties object itself.
      */
@@ -230,7 +226,7 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Get the status property: The status of the role eligibility schedule.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -239,7 +235,7 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Set the status property: The status of the role eligibility schedule.
-     *
+     * 
      * @param status the status value to set.
      * @return the RoleEligibilityScheduleProperties object itself.
      */
@@ -250,7 +246,7 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Get the startDateTime property: Start DateTime when role eligibility schedule.
-     *
+     * 
      * @return the startDateTime value.
      */
     public OffsetDateTime startDateTime() {
@@ -259,7 +255,7 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Set the startDateTime property: Start DateTime when role eligibility schedule.
-     *
+     * 
      * @param startDateTime the startDateTime value to set.
      * @return the RoleEligibilityScheduleProperties object itself.
      */
@@ -270,7 +266,7 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Get the endDateTime property: End DateTime when role eligibility schedule.
-     *
+     * 
      * @return the endDateTime value.
      */
     public OffsetDateTime endDateTime() {
@@ -279,7 +275,7 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Set the endDateTime property: End DateTime when role eligibility schedule.
-     *
+     * 
      * @param endDateTime the endDateTime value to set.
      * @return the RoleEligibilityScheduleProperties object itself.
      */
@@ -290,9 +286,9 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Get the condition property: The conditions on the role assignment. This limits the resources it can be assigned
-     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+     * to. e.g.: &#064;Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
      * StringEqualsIgnoreCase 'foo_storage_container'.
-     *
+     * 
      * @return the condition value.
      */
     public String condition() {
@@ -301,9 +297,9 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Set the condition property: The conditions on the role assignment. This limits the resources it can be assigned
-     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+     * to. e.g.: &#064;Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
      * StringEqualsIgnoreCase 'foo_storage_container'.
-     *
+     * 
      * @param condition the condition value to set.
      * @return the RoleEligibilityScheduleProperties object itself.
      */
@@ -314,7 +310,7 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Get the conditionVersion property: Version of the condition. Currently accepted value is '2.0'.
-     *
+     * 
      * @return the conditionVersion value.
      */
     public String conditionVersion() {
@@ -323,7 +319,7 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Set the conditionVersion property: Version of the condition. Currently accepted value is '2.0'.
-     *
+     * 
      * @param conditionVersion the conditionVersion value to set.
      * @return the RoleEligibilityScheduleProperties object itself.
      */
@@ -334,7 +330,7 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Get the createdOn property: DateTime when role eligibility schedule was created.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime createdOn() {
@@ -343,7 +339,7 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Set the createdOn property: DateTime when role eligibility schedule was created.
-     *
+     * 
      * @param createdOn the createdOn value to set.
      * @return the RoleEligibilityScheduleProperties object itself.
      */
@@ -354,7 +350,7 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Get the updatedOn property: DateTime when role eligibility schedule was modified.
-     *
+     * 
      * @return the updatedOn value.
      */
     public OffsetDateTime updatedOn() {
@@ -363,7 +359,7 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Set the updatedOn property: DateTime when role eligibility schedule was modified.
-     *
+     * 
      * @param updatedOn the updatedOn value to set.
      * @return the RoleEligibilityScheduleProperties object itself.
      */
@@ -374,7 +370,7 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Get the expandedProperties property: Additional properties of principal, scope and role definition.
-     *
+     * 
      * @return the expandedProperties value.
      */
     public ExpandedProperties expandedProperties() {
@@ -383,7 +379,7 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Set the expandedProperties property: Additional properties of principal, scope and role definition.
-     *
+     * 
      * @param expandedProperties the expandedProperties value to set.
      * @return the RoleEligibilityScheduleProperties object itself.
      */
@@ -394,12 +390,99 @@ public final class RoleEligibilityScheduleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (expandedProperties() != null) {
             expandedProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("scope", this.scope);
+        jsonWriter.writeStringField("roleDefinitionId", this.roleDefinitionId);
+        jsonWriter.writeStringField("principalId", this.principalId);
+        jsonWriter.writeStringField("principalType", this.principalType == null ? null : this.principalType.toString());
+        jsonWriter.writeStringField("roleEligibilityScheduleRequestId", this.roleEligibilityScheduleRequestId);
+        jsonWriter.writeStringField("memberType", this.memberType == null ? null : this.memberType.toString());
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("startDateTime",
+            this.startDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startDateTime));
+        jsonWriter.writeStringField("endDateTime",
+            this.endDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endDateTime));
+        jsonWriter.writeStringField("condition", this.condition);
+        jsonWriter.writeStringField("conditionVersion", this.conditionVersion);
+        jsonWriter.writeStringField("createdOn",
+            this.createdOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdOn));
+        jsonWriter.writeStringField("updatedOn",
+            this.updatedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.updatedOn));
+        jsonWriter.writeJsonField("expandedProperties", this.expandedProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleEligibilityScheduleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleEligibilityScheduleProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoleEligibilityScheduleProperties.
+     */
+    public static RoleEligibilityScheduleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleEligibilityScheduleProperties deserializedRoleEligibilityScheduleProperties
+                = new RoleEligibilityScheduleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scope".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleProperties.scope = reader.getString();
+                } else if ("roleDefinitionId".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleProperties.roleDefinitionId = reader.getString();
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleProperties.principalId = reader.getString();
+                } else if ("principalType".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleProperties.principalType
+                        = PrincipalType.fromString(reader.getString());
+                } else if ("roleEligibilityScheduleRequestId".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleProperties.roleEligibilityScheduleRequestId = reader.getString();
+                } else if ("memberType".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleProperties.memberType
+                        = MemberType.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleProperties.status = Status.fromString(reader.getString());
+                } else if ("startDateTime".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleProperties.startDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endDateTime".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleProperties.endDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("condition".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleProperties.condition = reader.getString();
+                } else if ("conditionVersion".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleProperties.conditionVersion = reader.getString();
+                } else if ("createdOn".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleProperties.createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updatedOn".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleProperties.updatedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expandedProperties".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleProperties.expandedProperties
+                        = ExpandedProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleEligibilityScheduleProperties;
+        });
     }
 }

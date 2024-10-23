@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** patternedRecurrence. */
+/**
+ * patternedRecurrence.
+ */
 @Fluent
-public final class MicrosoftGraphPatternedRecurrence {
+public final class MicrosoftGraphPatternedRecurrence implements JsonSerializable<MicrosoftGraphPatternedRecurrence> {
     /*
      * recurrencePattern
      */
-    @JsonProperty(value = "pattern")
     private MicrosoftGraphRecurrencePattern pattern;
 
     /*
      * recurrenceRange
      */
-    @JsonProperty(value = "range")
     private MicrosoftGraphRecurrenceRange range;
 
     /*
      * patternedRecurrence
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphPatternedRecurrence class. */
+    /**
+     * Creates an instance of MicrosoftGraphPatternedRecurrence class.
+     */
     public MicrosoftGraphPatternedRecurrence() {
     }
 
     /**
      * Get the pattern property: recurrencePattern.
-     *
+     * 
      * @return the pattern value.
      */
     public MicrosoftGraphRecurrencePattern pattern() {
@@ -47,7 +50,7 @@ public final class MicrosoftGraphPatternedRecurrence {
 
     /**
      * Set the pattern property: recurrencePattern.
-     *
+     * 
      * @param pattern the pattern value to set.
      * @return the MicrosoftGraphPatternedRecurrence object itself.
      */
@@ -58,7 +61,7 @@ public final class MicrosoftGraphPatternedRecurrence {
 
     /**
      * Get the range property: recurrenceRange.
-     *
+     * 
      * @return the range value.
      */
     public MicrosoftGraphRecurrenceRange range() {
@@ -67,7 +70,7 @@ public final class MicrosoftGraphPatternedRecurrence {
 
     /**
      * Set the range property: recurrenceRange.
-     *
+     * 
      * @param range the range value to set.
      * @return the MicrosoftGraphPatternedRecurrence object itself.
      */
@@ -78,17 +81,16 @@ public final class MicrosoftGraphPatternedRecurrence {
 
     /**
      * Get the additionalProperties property: patternedRecurrence.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: patternedRecurrence.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphPatternedRecurrence object itself.
      */
@@ -97,17 +99,9 @@ public final class MicrosoftGraphPatternedRecurrence {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -117,5 +111,58 @@ public final class MicrosoftGraphPatternedRecurrence {
         if (range() != null) {
             range().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("pattern", this.pattern);
+        jsonWriter.writeJsonField("range", this.range);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphPatternedRecurrence from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphPatternedRecurrence if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphPatternedRecurrence.
+     */
+    public static MicrosoftGraphPatternedRecurrence fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphPatternedRecurrence deserializedMicrosoftGraphPatternedRecurrence
+                = new MicrosoftGraphPatternedRecurrence();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("pattern".equals(fieldName)) {
+                    deserializedMicrosoftGraphPatternedRecurrence.pattern
+                        = MicrosoftGraphRecurrencePattern.fromJson(reader);
+                } else if ("range".equals(fieldName)) {
+                    deserializedMicrosoftGraphPatternedRecurrence.range
+                        = MicrosoftGraphRecurrenceRange.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphPatternedRecurrence.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphPatternedRecurrence;
+        });
     }
 }

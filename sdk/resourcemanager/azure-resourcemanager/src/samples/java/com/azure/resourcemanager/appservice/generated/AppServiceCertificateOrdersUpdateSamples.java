@@ -7,7 +7,6 @@ package com.azure.resourcemanager.appservice.generated;
 import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateInner;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrderPatchResource;
 import com.azure.resourcemanager.appservice.models.CertificateProductType;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,11 +15,13 @@ import java.util.Map;
  */
 public final class AppServiceCertificateOrdersUpdateSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-12-01/examples/UpdateAppServiceCertificateOrder.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-12-01/examples/
+     * UpdateAppServiceCertificateOrder.json
      */
     /**
      * Sample code: Update Certificate order.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateCertificateOrder(com.azure.resourcemanager.AzureResourceManager azure) {

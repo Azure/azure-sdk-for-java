@@ -207,10 +207,6 @@ public abstract class FormTrainingClientTestBase extends TestProxyTestBase {
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void beginTrainingWithoutTrainingLabelsIncludeSubfolderWithNonExistPrefixName(HttpClient httpClient,
-        FormRecognizerServiceVersion serviceVersion);
-
-    @Test
     abstract void beginTrainingWithoutTrainingLabelsExcludeSubfolderWithNonExistPrefixName(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 

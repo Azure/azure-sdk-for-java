@@ -5,48 +5,46 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The alias type.
  */
 @Fluent
-public final class Alias {
+public final class Alias implements JsonSerializable<Alias> {
     /*
      * The alias name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The paths for an alias.
      */
-    @JsonProperty(value = "paths")
     private List<AliasPath> paths;
 
     /*
      * The type of the alias.
      */
-    @JsonProperty(value = "type")
     private AliasType type;
 
     /*
      * The default path for an alias.
      */
-    @JsonProperty(value = "defaultPath")
     private String defaultPath;
 
     /*
      * The default pattern for an alias.
      */
-    @JsonProperty(value = "defaultPattern")
     private AliasPattern defaultPattern;
 
     /*
      * The default alias path metadata. Applies to the default path and to any alias path that doesn't have metadata
      */
-    @JsonProperty(value = "defaultMetadata", access = JsonProperty.Access.WRITE_ONLY)
     private AliasPathMetadata defaultMetadata;
 
     /**
@@ -180,5 +178,56 @@ public final class Alias {
         if (defaultMetadata() != null) {
             defaultMetadata().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("paths", this.paths, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("defaultPath", this.defaultPath);
+        jsonWriter.writeJsonField("defaultPattern", this.defaultPattern);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Alias from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Alias if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Alias.
+     */
+    public static Alias fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Alias deserializedAlias = new Alias();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAlias.name = reader.getString();
+                } else if ("paths".equals(fieldName)) {
+                    List<AliasPath> paths = reader.readArray(reader1 -> AliasPath.fromJson(reader1));
+                    deserializedAlias.paths = paths;
+                } else if ("type".equals(fieldName)) {
+                    deserializedAlias.type = AliasType.fromString(reader.getString());
+                } else if ("defaultPath".equals(fieldName)) {
+                    deserializedAlias.defaultPath = reader.getString();
+                } else if ("defaultPattern".equals(fieldName)) {
+                    deserializedAlias.defaultPattern = AliasPattern.fromJson(reader);
+                } else if ("defaultMetadata".equals(fieldName)) {
+                    deserializedAlias.defaultMetadata = AliasPathMetadata.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlias;
+        });
     }
 }

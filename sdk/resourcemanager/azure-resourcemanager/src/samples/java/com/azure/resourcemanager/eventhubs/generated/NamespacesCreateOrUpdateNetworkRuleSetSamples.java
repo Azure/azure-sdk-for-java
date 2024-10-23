@@ -6,11 +6,10 @@ package com.azure.resourcemanager.eventhubs.generated;
 
 import com.azure.resourcemanager.eventhubs.fluent.models.NetworkRuleSetInner;
 import com.azure.resourcemanager.eventhubs.models.DefaultAction;
+import com.azure.resourcemanager.eventhubs.models.NetworkRuleIpAction;
 import com.azure.resourcemanager.eventhubs.models.NWRuleSetIpRules;
 import com.azure.resourcemanager.eventhubs.models.NWRuleSetVirtualNetworkRules;
-import com.azure.resourcemanager.eventhubs.models.NetworkRuleIpAction;
 import com.azure.resourcemanager.eventhubs.models.Subnet;
-
 import java.util.Arrays;
 
 /**
@@ -24,7 +23,7 @@ public final class NamespacesCreateOrUpdateNetworkRuleSetSamples {
      */
     /**
      * Sample code: NameSpaceNetworkRuleSetCreate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void nameSpaceNetworkRuleSetCreate(com.azure.resourcemanager.AzureResourceManager azure) {

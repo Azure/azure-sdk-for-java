@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * KPack Builder properties payload.
  */
 @Fluent
-public final class BuilderProperties {
+public final class BuilderProperties implements JsonSerializable<BuilderProperties> {
     /*
      * Builder provision status.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private BuilderProvisioningState provisioningState;
 
     /*
      * Builder cluster stack property.
      */
-    @JsonProperty(value = "stack")
     private StackProperties stack;
 
     /*
      * Builder buildpack groups.
      */
-    @JsonProperty(value = "buildpackGroups")
     private List<BuildpacksGroupProperties> buildpackGroups;
 
     /**
@@ -98,5 +99,50 @@ public final class BuilderProperties {
         if (buildpackGroups() != null) {
             buildpackGroups().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("stack", this.stack);
+        jsonWriter.writeArrayField("buildpackGroups", this.buildpackGroups,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BuilderProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BuilderProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BuilderProperties.
+     */
+    public static BuilderProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BuilderProperties deserializedBuilderProperties = new BuilderProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedBuilderProperties.provisioningState
+                        = BuilderProvisioningState.fromString(reader.getString());
+                } else if ("stack".equals(fieldName)) {
+                    deserializedBuilderProperties.stack = StackProperties.fromJson(reader);
+                } else if ("buildpackGroups".equals(fieldName)) {
+                    List<BuildpacksGroupProperties> buildpackGroups
+                        = reader.readArray(reader1 -> BuildpacksGroupProperties.fromJson(reader1));
+                    deserializedBuilderProperties.buildpackGroups = buildpackGroups;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBuilderProperties;
+        });
     }
 }

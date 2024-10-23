@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The JSON object that contains the properties to send health probes to origin.
  */
 @Fluent
-public final class HealthProbeParameters {
+public final class HealthProbeParameters implements JsonSerializable<HealthProbeParameters> {
     /*
      * The path relative to the origin that is used to determine the health of the origin.
      */
-    @JsonProperty(value = "probePath")
     private String probePath;
 
     /*
      * The type of health probe request that is made.
      */
-    @JsonProperty(value = "probeRequestType")
     private HealthProbeRequestType probeRequestType;
 
     /*
      * Protocol to use for health probe.
      */
-    @JsonProperty(value = "probeProtocol")
     private ProbeProtocol probeProtocol;
 
     /*
      * The number of seconds between health probes.Default is 240sec.
      */
-    @JsonProperty(value = "probeIntervalInSeconds")
     private Integer probeIntervalInSeconds;
 
     /**
@@ -128,5 +128,52 @@ public final class HealthProbeParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("probePath", this.probePath);
+        jsonWriter.writeStringField("probeRequestType",
+            this.probeRequestType == null ? null : this.probeRequestType.toString());
+        jsonWriter.writeStringField("probeProtocol", this.probeProtocol == null ? null : this.probeProtocol.toString());
+        jsonWriter.writeNumberField("probeIntervalInSeconds", this.probeIntervalInSeconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HealthProbeParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HealthProbeParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HealthProbeParameters.
+     */
+    public static HealthProbeParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HealthProbeParameters deserializedHealthProbeParameters = new HealthProbeParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("probePath".equals(fieldName)) {
+                    deserializedHealthProbeParameters.probePath = reader.getString();
+                } else if ("probeRequestType".equals(fieldName)) {
+                    deserializedHealthProbeParameters.probeRequestType
+                        = HealthProbeRequestType.fromString(reader.getString());
+                } else if ("probeProtocol".equals(fieldName)) {
+                    deserializedHealthProbeParameters.probeProtocol = ProbeProtocol.fromString(reader.getString());
+                } else if ("probeIntervalInSeconds".equals(fieldName)) {
+                    deserializedHealthProbeParameters.probeIntervalInSeconds = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHealthProbeParameters;
+        });
     }
 }

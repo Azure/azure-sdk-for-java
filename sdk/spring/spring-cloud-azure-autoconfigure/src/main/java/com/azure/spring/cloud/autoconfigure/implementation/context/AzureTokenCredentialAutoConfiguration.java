@@ -22,6 +22,8 @@ import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzur
 import com.azure.spring.cloud.core.implementation.factory.credential.ManagedIdentityCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.UsernamePasswordCredentialBuilderFactory;
 import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -51,6 +53,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureC
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureAfter(TaskExecutionAutoConfiguration.class)
 public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigurationBase {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureTokenCredentialAutoConfiguration.class);
 
     private final IdentityClientProperties identityClientProperties;
 
@@ -68,6 +71,7 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
         if (globalTokenCredential != null) {
             return globalTokenCredential;
         } else {
+            LOGGER.debug("No global token credential found, constructing default credential.");
             return factory.build().build();
         }
     }

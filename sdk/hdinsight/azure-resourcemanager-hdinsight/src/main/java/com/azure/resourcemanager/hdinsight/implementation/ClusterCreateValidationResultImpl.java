@@ -17,8 +17,7 @@ public final class ClusterCreateValidationResultImpl implements ClusterCreateVal
 
     private final com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager;
 
-    ClusterCreateValidationResultImpl(
-        ClusterCreateValidationResultInner innerObject,
+    ClusterCreateValidationResultImpl(ClusterCreateValidationResultInner innerObject,
         com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

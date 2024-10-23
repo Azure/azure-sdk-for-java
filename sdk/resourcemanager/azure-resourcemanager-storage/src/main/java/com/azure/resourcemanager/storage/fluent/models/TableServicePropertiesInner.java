@@ -6,8 +6,11 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.CorsRules;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The properties of a storage account’s Table service.
@@ -17,8 +20,22 @@ public final class TableServicePropertiesInner extends ProxyResource {
     /*
      * The properties of a storage account’s Table service.
      */
-    @JsonProperty(value = "properties")
     private TableServicePropertiesProperties innerTableServiceProperties;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of TableServicePropertiesInner class.
@@ -33,6 +50,36 @@ public final class TableServicePropertiesInner extends ProxyResource {
      */
     private TableServicePropertiesProperties innerTableServiceProperties() {
         return this.innerTableServiceProperties;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -71,5 +118,49 @@ public final class TableServicePropertiesInner extends ProxyResource {
         if (innerTableServiceProperties() != null) {
             innerTableServiceProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerTableServiceProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TableServicePropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TableServicePropertiesInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TableServicePropertiesInner.
+     */
+    public static TableServicePropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TableServicePropertiesInner deserializedTableServicePropertiesInner = new TableServicePropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTableServicePropertiesInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedTableServicePropertiesInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedTableServicePropertiesInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedTableServicePropertiesInner.innerTableServiceProperties
+                        = TableServicePropertiesProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTableServicePropertiesInner;
+        });
     }
 }

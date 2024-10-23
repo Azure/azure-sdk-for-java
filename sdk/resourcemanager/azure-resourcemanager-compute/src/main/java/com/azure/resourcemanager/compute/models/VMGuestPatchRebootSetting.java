@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class VMGuestPatchRebootSetting extends ExpandableStringEnum<VMGues
      * @param name a name to look for.
      * @return the corresponding VMGuestPatchRebootSetting.
      */
-    @JsonCreator
     public static VMGuestPatchRebootSetting fromString(String name) {
         return fromString(name, VMGuestPatchRebootSetting.class);
     }

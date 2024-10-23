@@ -66,23 +66,12 @@ parameters:
   type: object
   default:
     Public:
-      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-      ServiceConnection: azure-sdk-tests
-      SubscriptionConfigurationFilePaths:
-        - eng/common/TestResources/sub-config/AzurePublicMsft.json
     Preview:
-      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
-      ServiceConnection: azure-sdk-tests-preview
-    Canary:
-      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-      ServiceConnection: azure-sdk-tests
-      Location: 'centraluseuap'
+    # Canary regions are currently not supported in TME so disabling for now
+    # Canary:
+    #   Location: 'centraluseuap'
     UsGov:
-      SubscriptionConfiguration: $(sub-config-gov-test-resources)
-      ServiceConnection: usgov_azure-sdk-tests
     China:
-      SubscriptionConfiguration: $(sub-config-cn-test-resources)
-      ServiceConnection: china_azure-sdk-tests
 - name: MatrixConfigs
   type: object
   default:
@@ -122,7 +111,7 @@ parameters:
   default: []
 - name: UseFederatedAuth
   type: boolean
-  default: false
+  default: true
 - name: AdditionalSparseCheckoutPaths
   type: object
   default: []
@@ -192,9 +181,9 @@ stages:
                 - ${{ cloudReplace }}
               - ${{ parameters.MatrixReplace }}
             CloudConfig:
+              Cloud: ${{ cloud.key }}
+              Location: ${{ coalesce(cloud.value.Location, parameters.Location) }}
+              ServiceConnection: ${{ coalesce(cloud.value.ServiceConnection, lower(format('azure-sdk-tests-{0}', cloud.key))) }}
               SubscriptionConfiguration: ${{ cloud.value.SubscriptionConfiguration }}
               SubscriptionConfigurations: ${{ cloud.value.SubscriptionConfigurations }}
-              SubscriptionConfigurationFilePaths: ${{ cloud.value.SubscriptionConfigurationFilePaths}}
-              Location: ${{ coalesce(parameters.Location, cloud.value.Location) }}
-              Cloud: ${{ cloud.key }}
-              ServiceConnection: ${{ cloud.value.ServiceConnection }}
+              SubscriptionConfigurationFilePaths: ${{ cloud.value.SubscriptionConfigurationFilePaths }}

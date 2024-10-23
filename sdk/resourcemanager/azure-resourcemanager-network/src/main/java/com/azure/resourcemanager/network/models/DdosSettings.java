@@ -6,23 +6,25 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Contains the DDoS protection settings of the public IP.
  */
 @Fluent
-public final class DdosSettings {
+public final class DdosSettings implements JsonSerializable<DdosSettings> {
     /*
      * The DDoS protection mode of the public IP
      */
-    @JsonProperty(value = "protectionMode")
     private DdosSettingsProtectionMode protectionMode;
 
     /*
      * The DDoS protection plan associated with the public IP. Can only be set if ProtectionMode is Enabled
      */
-    @JsonProperty(value = "ddosProtectionPlan")
     private SubResource ddosProtectionPlan;
 
     /**
@@ -79,5 +81,45 @@ public final class DdosSettings {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("protectionMode",
+            this.protectionMode == null ? null : this.protectionMode.toString());
+        jsonWriter.writeJsonField("ddosProtectionPlan", this.ddosProtectionPlan);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DdosSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DdosSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DdosSettings.
+     */
+    public static DdosSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DdosSettings deserializedDdosSettings = new DdosSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protectionMode".equals(fieldName)) {
+                    deserializedDdosSettings.protectionMode = DdosSettingsProtectionMode.fromString(reader.getString());
+                } else if ("ddosProtectionPlan".equals(fieldName)) {
+                    deserializedDdosSettings.ddosProtectionPlan = SubResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDdosSettings;
+        });
     }
 }

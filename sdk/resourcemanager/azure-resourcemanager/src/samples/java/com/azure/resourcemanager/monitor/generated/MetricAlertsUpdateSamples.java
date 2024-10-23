@@ -29,16 +29,25 @@ public final class MetricAlertsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAnAlertRule(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getMetricAlerts()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricAlerts()
             .updateWithResponse("gigtest", "chiricutin", new MetricAlertResourcePatch().withTags(mapOf())
-                .withDescription("This is the description of the rule1").withSeverity(3).withEnabled(true)
+                .withDescription("This is the description of the rule1")
+                .withSeverity(3)
+                .withEnabled(true)
                 .withScopes(Arrays.asList(
                     "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme"))
-                .withEvaluationFrequency(Duration.parse("Pt1m")).withWindowSize(Duration.parse("Pt15m"))
-                .withCriteria(new MetricAlertSingleResourceMultipleMetricCriteria().withAllOf(Arrays.asList(
-                    new MetricCriteria().withName("High_CPU_80").withMetricName("\\Processor(_Total)\\% Processor Time")
-                        .withTimeAggregation(AggregationTypeEnum.AVERAGE).withDimensions(Arrays.asList())
-                        .withOperator(Operator.GREATER_THAN).withThreshold(80.5))))
+                .withEvaluationFrequency(Duration.parse("Pt1m"))
+                .withWindowSize(Duration.parse("Pt15m"))
+                .withCriteria(new MetricAlertSingleResourceMultipleMetricCriteria()
+                    .withAllOf(Arrays.asList(new MetricCriteria().withName("High_CPU_80")
+                        .withMetricName("\\Processor(_Total)\\% Processor Time")
+                        .withTimeAggregation(AggregationTypeEnum.AVERAGE)
+                        .withDimensions(Arrays.asList())
+                        .withOperator(Operator.GREATER_THAN)
+                        .withThreshold(80.5))))
                 .withAutoMitigate(true)
                 .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
                     "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")

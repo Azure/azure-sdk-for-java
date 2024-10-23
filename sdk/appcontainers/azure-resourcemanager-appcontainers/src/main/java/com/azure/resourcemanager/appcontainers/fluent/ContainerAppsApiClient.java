@@ -138,20 +138,6 @@ public interface ContainerAppsApiClient {
     ContainerAppsClient getContainerApps();
 
     /**
-     * Gets the ContainerAppsRevisionsClient object to access its operations.
-     * 
-     * @return the ContainerAppsRevisionsClient object.
-     */
-    ContainerAppsRevisionsClient getContainerAppsRevisions();
-
-    /**
-     * Gets the ContainerAppsRevisionReplicasClient object to access its operations.
-     * 
-     * @return the ContainerAppsRevisionReplicasClient object.
-     */
-    ContainerAppsRevisionReplicasClient getContainerAppsRevisionReplicas();
-
-    /**
      * Gets the ContainerAppsBuildsByContainerAppsClient object to access its operations.
      * 
      * @return the ContainerAppsBuildsByContainerAppsClient object.
@@ -171,6 +157,20 @@ public interface ContainerAppsApiClient {
      * @return the ContainerAppsPatchesClient object.
      */
     ContainerAppsPatchesClient getContainerAppsPatches();
+
+    /**
+     * Gets the ContainerAppsRevisionsClient object to access its operations.
+     * 
+     * @return the ContainerAppsRevisionsClient object.
+     */
+    ContainerAppsRevisionsClient getContainerAppsRevisions();
+
+    /**
+     * Gets the ContainerAppsRevisionReplicasClient object to access its operations.
+     * 
+     * @return the ContainerAppsRevisionReplicasClient object.
+     */
+    ContainerAppsRevisionReplicasClient getContainerAppsRevisionReplicas();
 
     /**
      * Gets the ContainerAppsDiagnosticsClient object to access its operations.
@@ -208,6 +208,13 @@ public interface ContainerAppsApiClient {
     DotNetComponentsClient getDotNetComponents();
 
     /**
+     * Gets the FunctionsExtensionsClient object to access its operations.
+     * 
+     * @return the FunctionsExtensionsClient object.
+     */
+    FunctionsExtensionsClient getFunctionsExtensions();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      * 
      * @return the OperationsClient object.
@@ -234,6 +241,13 @@ public interface ContainerAppsApiClient {
      * @return the ResourceProvidersClient object.
      */
     ResourceProvidersClient getResourceProviders();
+
+    /**
+     * Gets the LogicAppsClient object to access its operations.
+     * 
+     * @return the LogicAppsClient object.
+     */
+    LogicAppsClient getLogicApps();
 
     /**
      * Gets the ManagedEnvironmentsClient object to access its operations.
@@ -306,6 +320,13 @@ public interface ContainerAppsApiClient {
     ManagedEnvironmentsStoragesClient getManagedEnvironmentsStorages();
 
     /**
+     * Gets the ContainerAppsSessionPoolsClient object to access its operations.
+     * 
+     * @return the ContainerAppsSessionPoolsClient object.
+     */
+    ContainerAppsSessionPoolsClient getContainerAppsSessionPools();
+
+    /**
      * Gets the ContainerAppsSourceControlsClient object to access its operations.
      * 
      * @return the ContainerAppsSourceControlsClient object.
@@ -325,25 +346,4 @@ public interface ContainerAppsApiClient {
      * @return the ManagedEnvironmentUsagesClient object.
      */
     ManagedEnvironmentUsagesClient getManagedEnvironmentUsages();
-
-    /**
-     * Gets the FunctionsExtensionsClient object to access its operations.
-     * 
-     * @return the FunctionsExtensionsClient object.
-     */
-    FunctionsExtensionsClient getFunctionsExtensions();
-
-    /**
-     * Gets the LogicAppsClient object to access its operations.
-     * 
-     * @return the LogicAppsClient object.
-     */
-    LogicAppsClient getLogicApps();
-
-    /**
-     * Gets the ContainerAppsSessionPoolsClient object to access its operations.
-     * 
-     * @return the ContainerAppsSessionPoolsClient object.
-     */
-    ContainerAppsSessionPoolsClient getContainerAppsSessionPools();
 }

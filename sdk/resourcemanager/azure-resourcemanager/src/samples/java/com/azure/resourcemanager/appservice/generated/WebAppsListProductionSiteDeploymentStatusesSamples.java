@@ -9,7 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WebAppsListProductionSiteDeploymentStatusesSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListSiteDeploymentStatus.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListSiteDeploymentStatus.json
      */
     /**
      * Sample code: List Deployment Status.

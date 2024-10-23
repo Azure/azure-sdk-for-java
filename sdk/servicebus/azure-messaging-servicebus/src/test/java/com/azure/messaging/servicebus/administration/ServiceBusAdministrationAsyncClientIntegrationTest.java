@@ -36,6 +36,7 @@ import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SharedAccessAuthorizationRule;
 import com.azure.messaging.servicebus.administration.models.SqlRuleAction;
 import com.azure.messaging.servicebus.administration.models.SqlRuleFilter;
+import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
 import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
@@ -64,6 +65,7 @@ import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getTopicBaseName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
@@ -154,7 +156,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify(DEFAULT_TIMEOUT);
     }
 
-    //region Create tests
+    //region Create Entity tests
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
@@ -536,7 +538,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
     //endregion
 
-    //region Delete tests
+    //region Delete Entity tests
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
@@ -664,7 +666,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
     //endregion
 
-    //region Get and exists tests
+    //region Get & Exists Entity tests
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
@@ -1061,7 +1063,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
     //endregion
 
-    //region List tests
+    //region List Entity tests
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
@@ -1145,6 +1147,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
     //endregion
 
+    //region Update Entity tests
+
     @ParameterizedTest
     @MethodSource("createHttpClients")
     void updateRuleResponse(HttpClient httpClient) {
@@ -1179,6 +1183,81 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void updateSubscriptionWithRule(HttpClient httpClient) {
+        // Arrange
+        final String userMetadata = "some-metadata-for-testing-subscriptions";
+        final String updatedUserMetadata = "updated-metadata: 1728929824";
+        final Duration updatedAutoDeleteOnIdle = Duration.ofDays(6);
+
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+        final String topicName = getEntityName(getTopicBaseName(), 0);
+        final String subscriptionName = testResourceNamer.randomName("sub", 10);
+        final CreateSubscriptionOptions subscriptionOptions = new CreateSubscriptionOptions()
+            .setMaxDeliveryCount(7)
+            .setLockDuration(Duration.ofSeconds(45))
+            .setUserMetadata(userMetadata);
+
+        final String ruleName = testResourceNamer.randomName("rule", 10);
+        final SqlRuleFilter ruleFilter = new SqlRuleFilter("color='red'");
+        final SqlRuleAction ruleAction = new SqlRuleAction("SET MessageId = 'is-red'");
+        final CreateRuleOptions ruleOptions = new CreateRuleOptions(ruleFilter)
+            .setAction(ruleAction);
+
+        final SubscriptionProperties createdSubscription = client.createSubscription(topicName, subscriptionName,
+            ruleName, subscriptionOptions, ruleOptions).block(DEFAULT_TIMEOUT);
+
+        // Assert created options are correct.
+        assertNotNull(createdSubscription);
+        assertEquals(userMetadata, createdSubscription.getUserMetadata());
+
+        final SubscriptionProperties existing = client.getSubscription(topicName, subscriptionName)
+            .block(DEFAULT_TIMEOUT);
+
+        assertNotNull(existing);
+
+        // Updated existing properties.
+        existing.setUserMetadata(updatedUserMetadata)
+            .setAutoDeleteOnIdle(updatedAutoDeleteOnIdle);
+
+        // Act & Assert
+        StepVerifier.create(client.updateSubscription(existing))
+                .assertNext(contents -> {
+                    assertAreEquals(existing, contents);
+                })
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
+
+        StepVerifier.create(client.getSubscription(topicName, subscriptionName))
+            .assertNext(contents -> {
+                assertAreEquals(existing, contents);
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+
+        StepVerifier.create(client.getRule(topicName, subscriptionName, ruleName))
+            .assertNext(contents -> {
+                assertEquals(ruleName, contents.getName());
+
+                assertNotNull(contents.getFilter());
+                assertInstanceOf(SqlRuleFilter.class, contents.getFilter());
+
+                final SqlRuleFilter actualFilter = (SqlRuleFilter) contents.getFilter();
+                assertEquals(ruleFilter.getSqlExpression(), actualFilter.getSqlExpression());
+
+                assertNotNull(contents.getAction());
+                assertInstanceOf(SqlRuleAction.class, contents.getAction());
+
+                final SqlRuleAction actualAction = (SqlRuleAction) contents.getAction();
+                assertEquals(ruleAction.getSqlExpression(), actualAction.getSqlExpression());
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+    }
+
+    //endregion
 
     private ServiceBusAdministrationAsyncClient createClient(HttpClient httpClient) {
         final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
@@ -1218,5 +1297,23 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             interceptorManager.addSanitizers(TEST_PROXY_SANITIZERS);
             interceptorManager.addMatchers(TEST_PROXY_REQUEST_MATCHERS);
         }
+    }
+
+    private static void assertAreEquals(SubscriptionProperties expected, SubscriptionProperties actual) {
+        assertEquals(expected.getLockDuration(), actual.getLockDuration());
+        assertEquals(expected.isSessionRequired(), actual.isSessionRequired());
+
+        assertEquals(expected.isDeadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
+        assertEquals(expected.isDeadLetteringOnFilterEvaluationExceptions(),
+            actual.isDeadLetteringOnFilterEvaluationExceptions());
+
+        assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
+        assertEquals(expected.isBatchedOperationsEnabled(), actual.isBatchedOperationsEnabled());
+
+        assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
+
+        assertEquals(expected.getForwardTo(), actual.getForwardTo());
+        assertEquals(expected.getForwardDeadLetteredMessagesTo(), actual.getForwardDeadLetteredMessagesTo());
+        assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
     }
 }

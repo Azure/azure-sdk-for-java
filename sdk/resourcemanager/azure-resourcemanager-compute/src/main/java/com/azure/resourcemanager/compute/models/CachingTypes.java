@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Specifies the caching requirements. Possible values are: **None,** **ReadOnly,** **ReadWrite.** The default values
  * are: **None for Standard storage. ReadOnly for Premium storage**.
@@ -42,7 +39,6 @@ public enum CachingTypes {
      * @param value the serialized value to parse.
      * @return the parsed CachingTypes object, or null if unable to parse.
      */
-    @JsonCreator
     public static CachingTypes fromString(String value) {
         if (value == null) {
             return null;
@@ -59,7 +55,6 @@ public enum CachingTypes {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

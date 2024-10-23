@@ -5,42 +5,58 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
-/** Managed identity configuration. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "identityType")
-@JsonTypeName("Managed")
+/**
+ * Managed identity configuration.
+ */
 @Fluent
-public class ManagedIdentity extends IdentityConfiguration {
+public final class ManagedIdentity extends IdentityConfiguration {
+    /*
+     * [Required] Specifies the type of identity framework.
+     */
+    private IdentityConfigurationType identityType = IdentityConfigurationType.MANAGED;
+
     /*
      * Specifies a user-assigned identity by client ID. For system-assigned, do not set this field.
      */
-    @JsonProperty(value = "clientId")
     private UUID clientId;
 
     /*
      * Specifies a user-assigned identity by object ID. For system-assigned, do not set this field.
      */
-    @JsonProperty(value = "objectId")
     private UUID objectId;
 
     /*
      * Specifies a user-assigned identity by ARM resource ID. For system-assigned, do not set this field.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
-    /** Creates an instance of ManagedIdentity class. */
+    /**
+     * Creates an instance of ManagedIdentity class.
+     */
     public ManagedIdentity() {
+    }
+
+    /**
+     * Get the identityType property: [Required] Specifies the type of identity framework.
+     * 
+     * @return the identityType value.
+     */
+    @Override
+    public IdentityConfigurationType identityType() {
+        return this.identityType;
     }
 
     /**
      * Get the clientId property: Specifies a user-assigned identity by client ID. For system-assigned, do not set this
      * field.
-     *
+     * 
      * @return the clientId value.
      */
     public UUID clientId() {
@@ -50,7 +66,7 @@ public class ManagedIdentity extends IdentityConfiguration {
     /**
      * Set the clientId property: Specifies a user-assigned identity by client ID. For system-assigned, do not set this
      * field.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the ManagedIdentity object itself.
      */
@@ -62,7 +78,7 @@ public class ManagedIdentity extends IdentityConfiguration {
     /**
      * Get the objectId property: Specifies a user-assigned identity by object ID. For system-assigned, do not set this
      * field.
-     *
+     * 
      * @return the objectId value.
      */
     public UUID objectId() {
@@ -72,7 +88,7 @@ public class ManagedIdentity extends IdentityConfiguration {
     /**
      * Set the objectId property: Specifies a user-assigned identity by object ID. For system-assigned, do not set this
      * field.
-     *
+     * 
      * @param objectId the objectId value to set.
      * @return the ManagedIdentity object itself.
      */
@@ -84,7 +100,7 @@ public class ManagedIdentity extends IdentityConfiguration {
     /**
      * Get the resourceId property: Specifies a user-assigned identity by ARM resource ID. For system-assigned, do not
      * set this field.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -94,7 +110,7 @@ public class ManagedIdentity extends IdentityConfiguration {
     /**
      * Set the resourceId property: Specifies a user-assigned identity by ARM resource ID. For system-assigned, do not
      * set this field.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the ManagedIdentity object itself.
      */
@@ -105,11 +121,58 @@ public class ManagedIdentity extends IdentityConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("identityType", this.identityType == null ? null : this.identityType.toString());
+        jsonWriter.writeStringField("clientId", Objects.toString(this.clientId, null));
+        jsonWriter.writeStringField("objectId", Objects.toString(this.objectId, null));
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedIdentity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedIdentity.
+     */
+    public static ManagedIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedIdentity deserializedManagedIdentity = new ManagedIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identityType".equals(fieldName)) {
+                    deserializedManagedIdentity.identityType = IdentityConfigurationType.fromString(reader.getString());
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedManagedIdentity.clientId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("objectId".equals(fieldName)) {
+                    deserializedManagedIdentity.objectId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedManagedIdentity.resourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedIdentity;
+        });
     }
 }
