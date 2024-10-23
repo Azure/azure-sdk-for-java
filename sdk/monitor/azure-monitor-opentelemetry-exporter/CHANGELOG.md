@@ -1,14 +1,12 @@
 # Release History
 
-## 1.0.0-beta.31 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.0.0-beta.31 (2024-10-23)
 
 ### Bugs Fixed
+- [Restore missing diagnostic logging of telemetry payload](https://github.com/Azure/azure-sdk-for-java/pull/42451)
 
 ### Other Changes
+- [Update OpenTelemetry SDK to 1.43.0](https://github.com/Azure/azure-sdk-for-java/pull/42493)
 
 ## 1.0.0-beta.30 (2024-10-09)
 
