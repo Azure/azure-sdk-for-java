@@ -17,6 +17,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.ingestion.implementation.Batcher;
 import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesClient;
@@ -29,16 +30,13 @@ import com.azure.monitor.ingestion.models.LogsUploadOptions;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.monitor.ingestion.implementation.Utils.GZIP;
-import static com.azure.monitor.ingestion.implementation.Utils.createThreadPool;
 import static com.azure.monitor.ingestion.implementation.Utils.getConcurrency;
 import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
-import static com.azure.monitor.ingestion.implementation.Utils.registerShutdownHook;
 
 /**
  * <p>This class provides a synchronous client for uploading custom logs to an Azure Monitor Log Analytics workspace.
@@ -99,10 +97,6 @@ public final class LogsIngestionClient implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(LogsIngestionClient.class);
     private final IngestionUsingDataCollectionRulesClient client;
 
-    // dynamic thread pool that scales up and down on demand.
-    private final ExecutorService threadPool;
-    private final Thread shutdownHook;
-
     /**
      * Creates a {@link LogsIngestionClient} that sends requests to the data collection endpoint.
      *
@@ -110,8 +104,6 @@ public final class LogsIngestionClient implements AutoCloseable {
      */
     LogsIngestionClient(IngestionUsingDataCollectionRulesClient client) {
         this.client = client;
-        this.threadPool = createThreadPool();
-        this.shutdownHook = registerShutdownHook(this.threadPool, 5);
     }
 
     /**
@@ -251,7 +243,7 @@ public final class LogsIngestionClient implements AutoCloseable {
         }
 
         try {
-            return threadPool.submit(() -> responseStream).get();
+            return SharedExecutorService.getInstance().submit(() -> responseStream).get();
         } catch (InterruptedException | ExecutionException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
@@ -335,7 +327,5 @@ public final class LogsIngestionClient implements AutoCloseable {
 
     @Override
     public void close() {
-        threadPool.shutdown();
-        Runtime.getRuntime().removeShutdownHook(shutdownHook);
     }
 }

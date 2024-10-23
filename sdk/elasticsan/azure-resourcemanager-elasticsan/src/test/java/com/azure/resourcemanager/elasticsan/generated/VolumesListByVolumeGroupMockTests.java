@@ -23,7 +23,7 @@ public final class VolumesListByVolumeGroupMockTests {
     @Test
     public void testListByVolumeGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"volumeId\":\"x\",\"creationData\":{\"createSource\":\"VolumeSnapshot\",\"sourceId\":\"idoamciodhkha\"},\"sizeGiB\":4852560903522204647,\"storageTarget\":{\"targetIqn\":\"zbonlwnt\",\"targetPortalHostname\":\"gokdwbwhks\",\"targetPortalPort\":2115458799,\"provisioningState\":\"Canceled\",\"status\":\"Unhealthy\"},\"managedBy\":{\"resourceId\":\"tvb\"},\"provisioningState\":\"Creating\"},\"id\":\"frao\",\"name\":\"zkoowtlmnguxawqa\",\"type\":\"dsyuuximerqfob\"}]}";
+            = "{\"value\":[{\"properties\":{\"volumeId\":\"gsfraoyzkoow\",\"creationData\":{\"createSource\":\"Disk\",\"sourceId\":\"ux\"},\"sizeGiB\":8390359388948965260,\"storageTarget\":{\"targetIqn\":\"dsyuuximerqfob\",\"targetPortalHostname\":\"znkbykutwpfhpagm\",\"targetPortalPort\":1165571898,\"provisioningState\":\"Updating\",\"status\":\"Unknown\"},\"managedBy\":{\"resourceId\":\"sd\"},\"provisioningState\":\"Pending\"},\"id\":\"tdlmkkzevd\",\"name\":\"hewpusdsttwv\",\"type\":\"gvbbejdcng\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,11 @@ public final class VolumesListByVolumeGroupMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Volume> response = manager.volumes()
-            .listByVolumeGroup("waezkojvd", "pzfoqoui", "ybxarzgszu", com.azure.core.util.Context.NONE);
+            .listByVolumeGroup("xkhnzbonlwnto", "gokdwbwhks", "zcmrvexztvb", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(VolumeCreateOption.VOLUME_SNAPSHOT,
-            response.iterator().next().creationData().createSource());
-        Assertions.assertEquals("idoamciodhkha", response.iterator().next().creationData().sourceId());
-        Assertions.assertEquals(4852560903522204647L, response.iterator().next().sizeGiB());
-        Assertions.assertEquals("tvb", response.iterator().next().managedBy().resourceId());
+        Assertions.assertEquals(VolumeCreateOption.DISK, response.iterator().next().creationData().createSource());
+        Assertions.assertEquals("ux", response.iterator().next().creationData().sourceId());
+        Assertions.assertEquals(8390359388948965260L, response.iterator().next().sizeGiB());
+        Assertions.assertEquals("sd", response.iterator().next().managedBy().resourceId());
     }
 }

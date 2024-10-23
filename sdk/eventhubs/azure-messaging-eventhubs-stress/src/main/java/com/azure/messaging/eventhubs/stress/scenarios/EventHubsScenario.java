@@ -3,7 +3,10 @@
 
 package com.azure.messaging.eventhubs.stress.scenarios;
 
+import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.stress.util.ScenarioOptions;
 import com.azure.messaging.eventhubs.stress.util.TelemetryHelper;
 import io.opentelemetry.api.trace.Span;
@@ -38,14 +41,13 @@ public abstract class EventHubsScenario implements AutoCloseable {
         return closeable;
     }
 
-    protected Disposable toClose(Disposable closeable) {
+    protected void toClose(Disposable closeable) {
         toClose.add(() -> closeable.dispose());
-        return closeable;
     }
 
     @Override
     public synchronized void close() {
-        if (toClose == null || toClose.size() == 0) {
+        if (toClose.isEmpty()) {
             return;
         }
 
