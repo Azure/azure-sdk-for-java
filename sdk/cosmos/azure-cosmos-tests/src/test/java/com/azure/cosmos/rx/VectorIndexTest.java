@@ -45,7 +45,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-//@Ignore("TODO: Ignore these test cases until the public emulator with vector indexes is released.")
+@Ignore("TODO: Ignore these test cases until the public emulator with vector indexes is released.")
 public class VectorIndexTest extends TestSuiteBase {
     protected static final int TIMEOUT = 30000;
     protected static final int SETUP_TIMEOUT = 20000;
