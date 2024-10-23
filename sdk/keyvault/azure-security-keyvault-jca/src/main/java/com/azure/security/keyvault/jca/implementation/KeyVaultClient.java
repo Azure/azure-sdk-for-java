@@ -43,6 +43,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 import static com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil.getLoginUri;
+import static com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.getCertificateNameFromCertificateItemId;
 import static com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.loadCertificatesFromSecretBundleValue;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.API_VERSION_POSTFIX;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.HTTPS_PREFIX;
@@ -235,11 +236,9 @@ public class KeyVaultClient {
 
             if (certificateListResult != null) {
                 uri = certificateListResult.getNextLink();
-
                 for (CertificateItem certificateItem : certificateListResult.getValue()) {
                     String id = certificateItem.getId();
-                    String alias = id.substring(id.indexOf("certificates") + "certificates".length() + 1);
-
+                    String alias = getCertificateNameFromCertificateItemId(id);
                     result.add(alias);
                 }
             } else {

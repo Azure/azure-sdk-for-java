@@ -1,15 +1,13 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2024-10-30)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
+- Added ImageNotificationContent to send image messgae.
+- Added DocumentNotificationContent to send document message.
+- Added VideoNotificationContent to send video message.
+- Added AudioNotificationContent to  send audio message.
+- Deprecated MediaNotificationContent.
 
 ## 1.0.7 (2024-09-27)
 

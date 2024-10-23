@@ -6,6 +6,8 @@ package com.azure.messaging.eventhubs.stress.util;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
@@ -27,11 +29,20 @@ public final class TestUtils {
     private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
 
     public static EventProcessorClientBuilder getProcessorBuilder(ScenarioOptions options, int prefetchCount) {
-        return new EventProcessorClientBuilder()
+        final EventProcessorClientBuilder builder = new EventProcessorClientBuilder()
             .prefetchCount(prefetchCount == 0 ? 1 : prefetchCount)
             .consumerGroup(options.getEventHubsConsumerGroup())
             .connectionString(options.getEventHubsConnectionString(), options.getEventHubsEventHubName())
             .checkpointStore(new BlobCheckpointStore(getContainerClient(options)));
+
+        if (options.useV2Stack()) {
+            Configuration configuration = new ConfigurationBuilder()
+                .putProperty("com.azure.messaging.eventhubs.v2", "true")
+                .build();
+
+            builder.configuration(configuration);
+        }
+        return builder;
     }
 
     public static BinaryData createMessagePayload(int messageSize) {
@@ -43,10 +54,21 @@ public final class TestUtils {
     }
 
     public static EventHubClientBuilder getBuilder(ScenarioOptions options) {
-        return new EventHubClientBuilder()
+        final EventHubClientBuilder builder = new EventHubClientBuilder()
             .connectionString(options.getEventHubsConnectionString())
             .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(5)))
-            .eventHubName(options.getEventHubsEventHubName());
+            .eventHubName(options.getEventHubsEventHubName())
+            .transportType(options.getAmqpTransportType());
+
+        if (options.useV2Stack()) {
+            Configuration configuration = new ConfigurationBuilder()
+                .putProperty("com.azure.messaging.eventhubs.v2", "true")
+                .build();
+
+            builder.configuration(configuration);
+        }
+
+        return builder;
     }
 
     private static BlobContainerAsyncClient getContainerClient(ScenarioOptions options) {
