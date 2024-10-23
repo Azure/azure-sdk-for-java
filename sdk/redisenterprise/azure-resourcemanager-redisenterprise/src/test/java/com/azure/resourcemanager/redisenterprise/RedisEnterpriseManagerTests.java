@@ -48,6 +48,7 @@ public class RedisEnterpriseManagerTests extends TestProxyTestBase {
         redisEnterpriseManager = RedisEnterpriseManager.configure()
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
