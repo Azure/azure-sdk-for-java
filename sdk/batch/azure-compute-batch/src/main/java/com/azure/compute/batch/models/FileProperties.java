@@ -35,7 +35,7 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
      * The length of the file.
      */
     @Generated
-    private final long contentLength;
+    private final String contentLength;
 
     /*
      * The content type of the file.
@@ -76,7 +76,7 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
      * @return the contentLength value.
      */
     @Generated
-    public long getContentLength() {
+    public String getContentLength() {
         return this.contentLength;
     }
 
@@ -102,18 +102,6 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
     }
 
     /**
-     * Creates an instance of FileProperties class.
-     *
-     * @param lastModified the lastModified value to set.
-     * @param contentLength the contentLength value to set.
-     */
-    @Generated
-    private FileProperties(OffsetDateTime lastModified, long contentLength) {
-        this.lastModified = lastModified;
-        this.contentLength = contentLength;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -122,7 +110,7 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("lastModified",
             this.lastModified == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModified));
-        jsonWriter.writeLongField("contentLength", this.contentLength);
+        jsonWriter.writeStringField("contentLength", this.contentLength);
         jsonWriter.writeStringField("creationTime",
             this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
         jsonWriter.writeStringField("contentType", this.contentType);
@@ -181,5 +169,17 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
             deserializedFileProperties.fileMode = fileMode;
             return deserializedFileProperties;
         });
+    }
+
+    /**
+     * Creates an instance of FileProperties class.
+     *
+     * @param lastModified the lastModified value to set.
+     * @param contentLength the contentLength value to set.
+     */
+    @Generated
+    private FileProperties(OffsetDateTime lastModified, String contentLength) {
+        this.lastModified = lastModified;
+        this.contentLength = contentLength;
     }
 }
