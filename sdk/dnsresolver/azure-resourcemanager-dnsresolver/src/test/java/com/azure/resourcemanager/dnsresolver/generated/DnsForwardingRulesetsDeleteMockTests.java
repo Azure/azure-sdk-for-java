@@ -27,7 +27,8 @@ public final class DnsForwardingRulesetsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.dnsForwardingRulesets().delete("rgjhxb", "dtlwwrlkd", "tncvokot", com.azure.core.util.Context.NONE);
+        manager.dnsForwardingRulesets()
+            .delete("rgzdwmsweyp", "w", "xggicccnxqhuexmk", com.azure.core.util.Context.NONE);
 
     }
 }
