@@ -297,7 +297,7 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
         String cidr = this.addressPrefixes().iterator().next();
         Set<String> ipAddresses = new TreeSet<>();
         if (cidr == null) {
-            return ipAddresses;
+            return ipAddresses; // Should never happen, but just in case
         }
         String takenIPAddress = cidr.split("/")[0];
 
