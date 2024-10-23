@@ -37,13 +37,11 @@ public class ElasticSanManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        elasticSanManager = ElasticSanManager
-            .configure()
+        elasticSanManager = ElasticSanManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -54,10 +52,7 @@ public class ElasticSanManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -87,7 +82,8 @@ public class ElasticSanManagerTests extends TestProxyTestBase {
             elasticSan.refresh();
             Assertions.assertEquals(elasticSan.name(), elasticSanName);
             Assertions.assertEquals(elasticSan.name(), elasticSanManager.elasticSans().getById(elasticSan.id()).name());
-            Assertions.assertTrue(elasticSanManager.elasticSans().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
+            Assertions.assertTrue(
+                elasticSanManager.elasticSans().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
         } finally {
             if (elasticSan != null) {
                 elasticSanManager.elasticSans().deleteById(elasticSan.id());
