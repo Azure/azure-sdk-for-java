@@ -479,8 +479,6 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
         String networkName = generateRandomResourceName("vnet", 10);
         String subnetName = "subnet1";
         String subnet2Name = "subnet2";
-        String nicName = generateRandomResourceName("nic", 10);
-        String nicName2 = generateRandomResourceName("nic", 10);
 
         Network network = networkManager.networks()
             .define(networkName)
@@ -492,37 +490,43 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
 
         Subnet subnet = network.subnets().get(subnetName);
         Set<String> availableIps = subnet.listAvailablePrivateIPAddresses();
-        Assertions.assertTrue(availableIps.size() > 0);
+        Assertions.assertFalse(availableIps.isEmpty());
 
-        String availableIp = availableIps.iterator().next();
-
-        // occupy the available ip address
-        networkManager.networkInterfaces()
-            .define(nicName)
-            .withRegion(Region.US_EAST)
-            .withExistingResourceGroup(rgName)
-            .withExistingPrimaryNetwork(network)
-            .withSubnet(subnetName)
-            .withPrimaryPrivateIPAddressStatic(availableIp)
-            .create();
+        // occupy all available ip addresses
+        for (String ip : availableIps) {
+            networkManager.networkInterfaces()
+                .define(generateRandomResourceName("nic", 10))
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .withExistingPrimaryNetwork(network)
+                .withSubnet(subnetName)
+                .withPrimaryPrivateIPAddressStatic(ip)
+                .create();
+        }
 
         availableIps = subnet.listAvailablePrivateIPAddresses();
-        Assertions.assertFalse(availableIps.contains(availableIp));
+        Assertions.assertTrue(availableIps.isEmpty());
 
-        // address prefixes
+        // define a new subnet with address prefixes
         network.update().defineSubnet(subnet2Name)
             .withAddressPrefixes(Arrays.asList("10.0.0.8/29"))
             .attach()
             .apply();
 
+        network.refresh();
+
+        // verify it does not affect previous subnet's available ip addresses
+        subnet = network.subnets().get(subnetName);
+        Assertions.assertTrue(subnet.listAvailablePrivateIPAddresses().isEmpty());
+
         Subnet subnet2 = network.subnets().get(subnet2Name);
         availableIps = subnet2.listAvailablePrivateIPAddresses();
-        Assertions.assertTrue(availableIps.size() > 0);
+        Assertions.assertFalse(availableIps.isEmpty());
 
         // occupy the available ip address of the second subnet
-        availableIp = availableIps.iterator().next();
+        String availableIp = availableIps.iterator().next();
         networkManager.networkInterfaces()
-            .define(nicName2)
+            .define(generateRandomResourceName("nic", 10))
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgName)
             .withExistingPrimaryNetwork(network)
