@@ -429,10 +429,8 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     public void setMetadataAC(OffsetDateTime modified, String leaseID) {
         Mono<DataLakeRequestConditions> drc = setupFileSystemLeaseAsyncConditionAsync(dataLakeFileSystemAsyncClient,
             leaseID)
-            .flatMap(r -> {
-                List<String> list = convertNulls(r, null);
-                return Mono.just(new DataLakeRequestConditions().setLeaseId(list.get(0)).setIfModifiedSince(modified));
-            });
+            .flatMap(condition -> Mono.just(new DataLakeRequestConditions().setLeaseId(convertNull(condition))
+                .setIfModifiedSince(modified)));
 
         Mono<Response<Void>> response = drc.flatMap(r -> dataLakeFileSystemAsyncClient
             .setMetadataWithResponse(null, r));
@@ -522,10 +520,9 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     public void deleteAC(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
         Mono<DataLakeRequestConditions> drcMono = setupFileSystemLeaseAsyncConditionAsync(dataLakeFileSystemAsyncClient,
             leaseID)
-            .flatMap(r -> {
-                List<String> list = convertNulls(r, null);
+            .flatMap(condition -> {
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(list.get(0))
+                        .setLeaseId(convertNull(condition))
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified);
                 return Mono.just(drc);
@@ -647,10 +644,9 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     public void deleteIfExistsAC(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
         Mono<DataLakeRequestConditions> drcMono = setupFileSystemLeaseAsyncConditionAsync(dataLakeFileSystemAsyncClient,
             leaseID)
-            .flatMap(r -> {
-                List<String> list = convertNulls(r, null);
+            .flatMap(condition -> {
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(list.get(0))
+                        .setLeaseId(convertNull(condition))
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified);
                 return Mono.just(drc);
@@ -789,10 +785,10 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
         Mono<Response<DataLakeFileAsyncClient>> response = client.create()
             .then(Mono.zip(setupPathLeaseCondition(client, leaseID), setupPathMatchCondition(client, match),
                 DataLakeTestBase::convertNulls))
-                    .flatMap(list -> {
+                    .flatMap(conditions -> {
                         DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                            .setLeaseId(list.get(0))
-                            .setIfMatch(list.get(1))
+                            .setLeaseId(conditions.get(0))
+                            .setIfMatch(conditions.get(1))
                             .setIfNoneMatch(noneMatch)
                             .setIfModifiedSince(modified)
                             .setIfUnmodifiedSince(unmodified);
@@ -825,11 +821,11 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
         Mono<Response<DataLakeFileAsyncClient>> response = client.create()
             .then(Mono.zip(setupPathLeaseCondition(client, leaseID), setupPathMatchCondition(client, noneMatch),
                 DataLakeTestBase::convertNulls))
-                    .flatMap(list -> {
+                    .flatMap(conditions -> {
                         DataLakeRequestConditions drc = new DataLakeRequestConditions()
                             .setLeaseId(leaseID)
                             .setIfMatch(match)
-                            .setIfNoneMatch(list.get(1))
+                            .setIfNoneMatch(conditions.get(1))
                             .setIfModifiedSince(modified)
                             .setIfUnmodifiedSince(unmodified);
                         return dataLakeFileSystemAsyncClient.createFileWithResponse(pathName, null, null,
@@ -1327,10 +1323,10 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
 
         Mono<Response<Void>> response = dataLakeFileSystemAsyncClient.createFile(pathName)
             .flatMap(r -> Mono.zip(setupPathLeaseCondition(r, leaseID), setupPathMatchCondition(r, match), DataLakeTestBase::convertNulls))
-                .flatMap(list -> {
+                .flatMap(conditions -> {
                     DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                        .setLeaseId(list.get(0))
-                        .setIfMatch(list.get(1))
+                        .setLeaseId(conditions.get(0))
+                        .setIfMatch(conditions.get(1))
                         .setIfNoneMatch(noneMatch)
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified);
@@ -1349,11 +1345,11 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
         Mono<Response<Void>> response = dataLakeFileSystemAsyncClient.createFile(pathName)
             .flatMap(r -> Mono.zip(setupPathLeaseCondition(r, leaseID), setupPathMatchCondition(r, noneMatch),
                 DataLakeTestBase::convertNulls))
-                    .flatMap(list -> {
+                    .flatMap(conditions -> {
                         DataLakeRequestConditions drc = new DataLakeRequestConditions()
                             .setLeaseId(leaseID)
                             .setIfMatch(match)
-                            .setIfNoneMatch(list.get(1))
+                            .setIfNoneMatch(conditions.get(1))
                             .setIfModifiedSince(modified)
                             .setIfUnmodifiedSince(unmodified);
                         return dataLakeFileSystemAsyncClient.deleteFileWithResponse(pathName, drc);
@@ -1408,10 +1404,10 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
         Mono<Response<Boolean>> response = dataLakeFileSystemAsyncClient.createFile(pathName)
             .flatMap(r -> Mono.zip(setupPathLeaseCondition(r, leaseID), setupPathMatchCondition(r, match),
                 DataLakeTestBase::convertNulls))
-                    .flatMap(list -> {
+                    .flatMap(conditions -> {
                         DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                                .setLeaseId(list.get(0))
-                                .setIfMatch(list.get(1))
+                                .setLeaseId(conditions.get(0))
+                                .setIfMatch(conditions.get(1))
                                 .setIfNoneMatch(noneMatch)
                                 .setIfModifiedSince(modified)
                                 .setIfUnmodifiedSince(unmodified);
@@ -1431,11 +1427,11 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
 
         Mono<Response<Boolean>> response = dataLakeFileSystemAsyncClient.createFile(pathName)
                 .flatMap(r -> Mono.zip(setupPathLeaseCondition(r, leaseID), setupPathMatchCondition(r, noneMatch), DataLakeTestBase::convertNulls))
-                    .flatMap(list -> {
+                    .flatMap(conditions -> {
                         DataLakeRequestConditions drc = new DataLakeRequestConditions()
                             .setLeaseId(leaseID)
                             .setIfMatch(match)
-                            .setIfNoneMatch(list.get(1))
+                            .setIfNoneMatch(conditions.get(1))
                             .setIfModifiedSince(modified)
                             .setIfUnmodifiedSince(unmodified);
                         DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc);
@@ -1546,10 +1542,10 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
 
         Mono<Response<DataLakeDirectoryAsyncClient>> response = client.create()
                 .then(Mono.zip(setupPathLeaseCondition(client, leaseID), setupPathMatchCondition(client, match), DataLakeTestBase::convertNulls))
-                    .flatMap(list -> {
+                    .flatMap(conditions -> {
                         DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                            .setLeaseId(list.get(0))
-                            .setIfMatch(list.get(1))
+                            .setLeaseId(conditions.get(0))
+                            .setIfMatch(conditions.get(1))
                             .setIfNoneMatch(noneMatch)
                             .setIfModifiedSince(modified)
                             .setIfUnmodifiedSince(unmodified);
@@ -1570,11 +1566,11 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
         Mono<Response<DataLakeDirectoryAsyncClient>> response = client.create()
             .then(Mono.zip(setupPathLeaseCondition(client, leaseID),
                 setupPathMatchCondition(client, noneMatch), DataLakeTestBase::convertNulls))
-                    .flatMap(list -> {
+                    .flatMap(conditions -> {
                         DataLakeRequestConditions drc = new DataLakeRequestConditions()
                             .setLeaseId(leaseID)
                             .setIfMatch(match)
-                            .setIfNoneMatch(list.get(1))
+                            .setIfNoneMatch(conditions.get(1))
                             .setIfModifiedSince(modified)
                             .setIfUnmodifiedSince(unmodified);
                         return dataLakeFileSystemAsyncClient.createDirectoryWithResponse(pathName, null,
@@ -2018,10 +2014,10 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
         Mono<Response<Void>> response = dataLakeFileSystemAsyncClient.createDirectory(pathName)
             .flatMap(r -> Mono.zip(setupPathLeaseCondition(r, leaseID), setupPathMatchCondition(r, match),
                 DataLakeTestBase::convertNulls))
-                    .flatMap(list -> {
+                    .flatMap(conditions -> {
                         DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                            .setLeaseId(list.get(0))
-                            .setIfMatch(list.get(1))
+                            .setLeaseId(conditions.get(0))
+                            .setIfMatch(conditions.get(1))
                             .setIfNoneMatch(noneMatch)
                             .setIfModifiedSince(modified)
                             .setIfUnmodifiedSince(unmodified);
@@ -2040,11 +2036,11 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
         Mono<Response<Void>> response = dataLakeFileSystemAsyncClient.createDirectory(pathName)
             .flatMap(r -> Mono.zip(setupPathLeaseCondition(r, leaseID), setupPathMatchCondition(r, noneMatch),
                 DataLakeTestBase::convertNulls))
-                    .flatMap(list -> {
+                    .flatMap(conditions -> {
                         DataLakeRequestConditions drc = new DataLakeRequestConditions()
                             .setLeaseId(leaseID)
                             .setIfMatch(match)
-                            .setIfNoneMatch(list.get(1))
+                            .setIfNoneMatch(conditions.get(1))
                             .setIfModifiedSince(modified)
                             .setIfUnmodifiedSince(unmodified);
                         return dataLakeFileSystemAsyncClient.deleteDirectoryWithResponse(pathName, false, drc);
@@ -2113,10 +2109,10 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
         Mono<Response<Boolean>> response = dataLakeFileSystemAsyncClient.createDirectory(pathName)
             .flatMap(r -> Mono.zip(setupPathLeaseCondition(r, leaseID), setupPathMatchCondition(r, match),
                 DataLakeTestBase::convertNulls))
-                    .flatMap(list -> {
+                    .flatMap(conditions -> {
                         DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                                .setLeaseId(list.get(0))
-                                .setIfMatch(list.get(1))
+                                .setLeaseId(conditions.get(0))
+                                .setIfMatch(conditions.get(1))
                                 .setIfNoneMatch(noneMatch)
                                 .setIfModifiedSince(modified)
                                 .setIfUnmodifiedSince(unmodified);
@@ -2138,11 +2134,11 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
         Mono<Response<Boolean>> response = dataLakeFileSystemAsyncClient.createDirectory(pathName)
             .flatMap(r -> Mono.zip(setupPathLeaseCondition(r, leaseID), setupPathMatchCondition(r, noneMatch),
                 DataLakeTestBase::convertNulls))
-                    .flatMap(list -> {
+                    .flatMap(conditions -> {
                         DataLakeRequestConditions drc = new DataLakeRequestConditions()
                             .setLeaseId(leaseID)
                             .setIfMatch(match)
-                            .setIfNoneMatch(list.get(1))
+                            .setIfNoneMatch(conditions.get(1))
                             .setIfModifiedSince(modified)
                             .setIfUnmodifiedSince(unmodified);
                         DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
@@ -2437,10 +2433,9 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     public void setAccessPolicyAC(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
         Mono<DataLakeRequestConditions> drcMono = setupFileSystemLeaseAsyncConditionAsync(dataLakeFileSystemAsyncClient,
             leaseID)
-            .flatMap(r -> {
-                List<String> list = convertNulls(r, null);
+            .flatMap(condition -> {
                 DataLakeRequestConditions cac = new DataLakeRequestConditions()
-                    .setLeaseId(list.get(0))
+                    .setLeaseId(convertNull(condition))
                     .setIfModifiedSince(modified)
                     .setIfUnmodifiedSince(unmodified);
                 return Mono.just(cac);

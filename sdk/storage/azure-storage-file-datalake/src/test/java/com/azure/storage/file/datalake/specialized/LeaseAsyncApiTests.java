@@ -22,7 +22,6 @@ import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -83,12 +82,11 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
         DataLakeFileAsyncClient fc = createPathClient();
 
         Mono<Response<String>> response = setupPathMatchCondition(fc, match)
-            .flatMap(r -> {
-                List<String> list = convertNulls(null, r);
+            .flatMap(condition -> {
                 RequestConditions mac = new RequestConditions()
                     .setIfModifiedSince(modified)
                     .setIfUnmodifiedSince(unmodified)
-                    .setIfMatch(list.get(1))
+                    .setIfMatch(convertNull(condition))
                     .setIfNoneMatch(noneMatch);
                 return createLeaseAsyncClient(fc).acquireLeaseWithResponse(-1, mac);
             });
@@ -114,13 +112,12 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
         DataLakeFileAsyncClient fc = createPathClient();
 
         Mono<Response<String>> response = setupPathMatchCondition(fc, noneMatch)
-            .flatMap(r -> {
-                List<String> list = convertNulls(null, r);
+            .flatMap(condition -> {
                 RequestConditions mac = new RequestConditions()
                     .setIfModifiedSince(modified)
                     .setIfUnmodifiedSince(unmodified)
                     .setIfMatch(match)
-                    .setIfNoneMatch(list.get(1));
+                    .setIfNoneMatch(convertNull(condition));
                 return createLeaseAsyncClient(fc).acquireLeaseWithResponse(-1, mac);
             });
 
@@ -184,13 +181,13 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
 
         Mono<Response<String>> response = Mono.zip(setupPathLeaseCondition(fc, RECEIVED_LEASE_ID),
             setupPathMatchCondition(fc, match), DataLakeTestBase::convertNulls)
-                .flatMap(list -> {
+                .flatMap(conditions -> {
                     RequestConditions mac = new RequestConditions()
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
-                        .setIfMatch(list.get(1))
+                        .setIfMatch(conditions.get(1))
                         .setIfNoneMatch(noneMatch);
-                    return createLeaseAsyncClient(fc, list.get(0)).renewLeaseWithResponse(mac);
+                    return createLeaseAsyncClient(fc, conditions.get(0)).renewLeaseWithResponse(mac);
                 });
 
         assertAsyncResponseStatusCode(response, 200);
@@ -204,14 +201,14 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
 
         Mono<Response<String>> response = Mono.zip(setupPathLeaseCondition(fc, RECEIVED_LEASE_ID),
             setupPathMatchCondition(fc, noneMatch), DataLakeTestBase::convertNulls)
-                .flatMap(list -> {
+                .flatMap(conditions -> {
                     RequestConditions mac = new RequestConditions()
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
                         .setIfMatch(match)
-                        .setIfNoneMatch(list.get(1));
+                        .setIfNoneMatch(conditions.get(1));
 
-                    return createLeaseAsyncClient(fc, list.get(0)).renewLeaseWithResponse(mac);
+                    return createLeaseAsyncClient(fc, conditions.get(0)).renewLeaseWithResponse(mac);
                 });
 
         StepVerifier.create(response)
@@ -259,13 +256,13 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
 
         Mono<Response<Void>> response = Mono.zip(setupPathLeaseCondition(fc, RECEIVED_LEASE_ID),
             setupPathMatchCondition(fc, match), DataLakeTestBase::convertNulls)
-                .flatMap(list -> {
+                .flatMap(conditions -> {
                     RequestConditions mac = new RequestConditions()
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
-                        .setIfMatch(list.get(1))
+                        .setIfMatch(conditions.get(1))
                         .setIfNoneMatch(noneMatch);
-                    return createLeaseAsyncClient(fc, list.get(0)).releaseLeaseWithResponse(mac);
+                    return createLeaseAsyncClient(fc, conditions.get(0)).releaseLeaseWithResponse(mac);
                 });
 
         assertAsyncResponseStatusCode(response, 200);
@@ -279,14 +276,14 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
 
         Mono<Response<Void>> response = Mono.zip(setupPathLeaseCondition(fc, RECEIVED_LEASE_ID),
             setupPathMatchCondition(fc, noneMatch), DataLakeTestBase::convertNulls)
-                .flatMap(list -> {
+                .flatMap(conditions -> {
                     RequestConditions mac = new RequestConditions()
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
                         .setIfMatch(match)
-                        .setIfNoneMatch(list.get(1));
+                        .setIfNoneMatch(conditions.get(1));
 
-                    return createLeaseAsyncClient(fc, list.get(0)).releaseLeaseWithResponse(mac);
+                    return createLeaseAsyncClient(fc, conditions.get(0)).releaseLeaseWithResponse(mac);
                 });
 
         StepVerifier.create(response)
@@ -340,12 +337,11 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
 
         Mono<Response<Integer>> response = setupPathLeaseCondition(fc, RECEIVED_LEASE_ID)
             .then(setupPathMatchCondition(fc, match))
-                .flatMap(r -> {
-                    List<String> list = convertNulls(null, r);
+                .flatMap(condition -> {
                     RequestConditions mac = new RequestConditions()
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
-                        .setIfMatch(list.get(1))
+                        .setIfMatch(convertNull(condition))
                         .setIfNoneMatch(noneMatch);
                     return createLeaseAsyncClient(fc).breakLeaseWithResponse(null, mac);
                 });
@@ -361,13 +357,12 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
 
         Mono<Response<Integer>> response = setupPathLeaseCondition(fc, RECEIVED_LEASE_ID)
             .then(setupPathMatchCondition(fc, noneMatch))
-                .flatMap(r -> {
-                    List<String> list = convertNulls(null, r);
+                .flatMap(condition -> {
                     RequestConditions mac = new RequestConditions()
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
                         .setIfMatch(match)
-                        .setIfNoneMatch(list.get(1));
+                        .setIfNoneMatch(convertNull(condition));
                     return createLeaseAsyncClient(fc).breakLeaseWithResponse(null, mac);
                 });
 
@@ -419,14 +414,14 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
 
         Mono<Response<String>> response = Mono.zip(setupPathLeaseCondition(fc, RECEIVED_LEASE_ID),
             setupPathMatchCondition(fc, match), DataLakeTestBase::convertNulls)
-                .flatMap(list -> {
+                .flatMap(conditions -> {
                     RequestConditions mac = new RequestConditions()
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
-                        .setIfMatch(list.get(1))
+                        .setIfMatch(conditions.get(1))
                         .setIfNoneMatch(noneMatch);
 
-                    return createLeaseAsyncClient(fc, list.get(0)).changeLeaseWithResponse(testResourceNamer.randomUuid(), mac);
+                    return createLeaseAsyncClient(fc, conditions.get(0)).changeLeaseWithResponse(testResourceNamer.randomUuid(), mac);
                 });
 
         assertAsyncResponseStatusCode(response, 200);
@@ -440,13 +435,12 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
 
         Mono<Response<String>> response = setupPathLeaseCondition(fc, RECEIVED_LEASE_ID)
             .then(setupPathMatchCondition(fc, noneMatch))
-                .flatMap(r -> {
-                    List<String> list = convertNulls(null, r);
+                .flatMap(condition -> {
                     RequestConditions mac = new RequestConditions()
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
                         .setIfMatch(match)
-                        .setIfNoneMatch(list.get(1));
+                        .setIfNoneMatch(convertNull(condition));
                     return createLeaseAsyncClient(fc, RECEIVED_LEASE_ID)
                         .changeLeaseWithResponse(testResourceNamer.randomUuid(), mac);
                 });

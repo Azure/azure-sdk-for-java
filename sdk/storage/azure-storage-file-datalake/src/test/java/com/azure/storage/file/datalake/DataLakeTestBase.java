@@ -51,6 +51,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -554,10 +555,14 @@ public class DataLakeTestBase extends TestProxyTestBase {
         }
     }
 
-    protected static List<String> convertNulls(String lease, String match) {
-        String newLease = "null".equals(lease) ? null : lease;
-        String newMatch = "null".equals(match) ? null : match;
-        return Arrays.asList(newLease, newMatch);
+    protected static List<String> convertNulls(String... conditions) {
+        return Arrays.stream(conditions)
+            .map(condition -> "null".equals(condition) ? null : condition)
+            .collect(Collectors.toList());
+    }
+
+    protected static String convertNull(String condition) {
+        return "null".equals(condition) ? null : condition;
     }
 
     /**

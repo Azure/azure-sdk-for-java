@@ -207,10 +207,10 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
         Mono<Response<PageBlobItem>> response = bc.setTags(t)
             .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match), BlobTestBase::convertNulls))
-                .flatMap(list -> {
+                .flatMap(conditions -> {
                     BlobRequestConditions bac = new BlobRequestConditions()
-                        .setLeaseId(list.get(0))
-                        .setIfMatch(list.get(1))
+                        .setLeaseId(conditions.get(0))
+                        .setIfMatch(conditions.get(1))
                         .setIfNoneMatch(noneMatch)
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
@@ -225,12 +225,11 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void createACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID, String tags) {
-        Mono<Response<PageBlobItem>> response = setupBlobMatchCondition(bc, noneMatch).flatMap(r -> {
-            List<String> list = convertNulls(null, r);
+        Mono<Response<PageBlobItem>> response = setupBlobMatchCondition(bc, noneMatch).flatMap(condition -> {
             BlobRequestConditions bac = new BlobRequestConditions()
                 .setLeaseId(leaseID)
                 .setIfMatch(match)
-                .setIfNoneMatch(list.get(1))
+                .setIfNoneMatch(convertNull(condition))
                 .setIfModifiedSince(modified)
                 .setIfUnmodifiedSince(unmodified)
                 .setTagsConditions(tags);
@@ -452,10 +451,10 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         t.put("foo", "bar");
         Mono<Response<PageBlobItem>> response = bc.setTags(t)
             .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match), BlobTestBase::convertNulls))
-                .flatMap(list -> {
+                .flatMap(conditions -> {
                     PageBlobRequestConditions pac = new PageBlobRequestConditions()
-                        .setLeaseId(list.get(0))
-                        .setIfMatch(list.get(1))
+                        .setLeaseId(conditions.get(0))
+                        .setIfMatch(conditions.get(1))
                         .setIfNoneMatch(noneMatch)
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
@@ -490,11 +489,11 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
                                  String leaseID, Long sequenceNumberLT, Long sequenceNumberLTE, Long sequenceNumberEqual, String tags) {
         Mono<Response<PageBlobItem>> response = Mono.zip(setupBlobLeaseCondition(bc, leaseID),
             setupBlobMatchCondition(bc, noneMatch), BlobTestBase::convertNulls)
-                .flatMap(list -> {
+                .flatMap(conditions -> {
                     PageBlobRequestConditions pac = new PageBlobRequestConditions()
-                        .setLeaseId(list.get(0))
+                        .setLeaseId(conditions.get(0))
                         .setIfMatch(match)
-                        .setIfNoneMatch(list.get(1))
+                        .setIfNoneMatch(conditions.get(1))
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
                         .setIfSequenceNumberLessThan(sequenceNumberLT)
@@ -663,10 +662,10 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .then(sourceURL.create(PageBlobClient.PAGE_BYTES))
             .then(sourceURL.uploadPages(pageRange, Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES)))))
             .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match), BlobTestBase::convertNulls))
-                .flatMap(list -> {
+                .flatMap(conditions -> {
                     PageBlobRequestConditions pac = new PageBlobRequestConditions()
-                        .setLeaseId(list.get(0))
-                        .setIfMatch(list.get(1))
+                        .setLeaseId(conditions.get(0))
+                        .setIfMatch(conditions.get(1))
                         .setIfNoneMatch(noneMatch)
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
@@ -696,12 +695,11 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         Mono<Response<PageBlobItem>> response = sourceURL.create(PageBlobClient.PAGE_BYTES)
             .then(sourceURL.uploadPages(pageRange, Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES)))))
             .then(setupBlobMatchCondition(bc, noneMatch))
-                .flatMap(r -> {
-                    List<String> list = convertNulls(null, r);
+                .flatMap(condition -> {
                     PageBlobRequestConditions pac = new PageBlobRequestConditions()
                         .setLeaseId(leaseID)
                         .setIfMatch(match)
-                        .setIfNoneMatch(list.get(1))
+                        .setIfNoneMatch(convertNull(condition))
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
                         .setIfSequenceNumberLessThan(sequenceNumberLT)
@@ -730,12 +728,11 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         Mono<Response<PageBlobItem>> response = sourceURL.create(PageBlobClient.PAGE_BYTES)
             .then(sourceURL.uploadPages(pageRange, Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES)))))
             .then(setupBlobMatchCondition(sourceURL, sourceIfMatch))
-                .flatMap(r -> {
-                    List<String> list = convertNulls(null, r);
+                .flatMap(condition -> {
                     BlobRequestConditions smac = new BlobRequestConditions()
                         .setIfModifiedSince(sourceIfModifiedSince)
                         .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
-                        .setIfMatch(list.get(1))
+                        .setIfMatch(convertNull(condition))
                         .setIfNoneMatch(sourceIfNoneMatch);
                     String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
                         new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
@@ -766,13 +763,12 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         Mono<Response<PageBlobItem>> response = sourceURL.create(PageBlobClient.PAGE_BYTES)
             .then(sourceURL.uploadPages(pageRange, Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES)))))
             .then(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch))
-                .flatMap(r -> {
-                    List<String> list = convertNulls(null, r);
+                .flatMap(condition -> {
                     BlobRequestConditions smac = new BlobRequestConditions()
                         .setIfModifiedSince(sourceIfModifiedSince)
                         .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
                         .setIfMatch(sourceIfMatch)
-                        .setIfNoneMatch(list.get(1));
+                        .setIfNoneMatch(convertNull(condition));
                     String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
                         new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
 
@@ -830,10 +826,10 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .setEnd(PageBlobClient.PAGE_BYTES - 1), Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES))))
             .then(bc.setTags(t))
             .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match), BlobTestBase::convertNulls))
-            .flatMap(list -> {
+            .flatMap(conditions -> {
                 PageBlobRequestConditions pac = new PageBlobRequestConditions()
-                    .setLeaseId(list.get(0))
-                    .setIfMatch(list.get(1))
+                    .setLeaseId(conditions.get(0))
+                    .setIfMatch(conditions.get(1))
                     .setIfNoneMatch(noneMatch)
                     .setIfModifiedSince(modified)
                     .setIfUnmodifiedSince(unmodified)
@@ -856,11 +852,11 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         Mono<Response<PageBlobItem>> response = bc.uploadPages(new PageRange().setStart(0)
             .setEnd(PageBlobClient.PAGE_BYTES - 1), Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES))))
             .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, noneMatch), BlobTestBase::convertNulls))
-                .flatMap(list -> {
+                .flatMap(conditions -> {
                     PageBlobRequestConditions pac = new PageBlobRequestConditions()
-                        .setLeaseId(list.get(0))
+                        .setLeaseId(conditions.get(0))
                         .setIfMatch(match)
-                        .setIfNoneMatch(list.get(1))
+                        .setIfNoneMatch(conditions.get(1))
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
                         .setIfSequenceNumberLessThan(sequenceNumberLT)
@@ -918,10 +914,10 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
         Mono<Response<PageList>> response = bc.setTags(t)
             .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match), BlobTestBase::convertNulls))
-            .flatMap(list -> {
+            .flatMap(conditions -> {
                 BlobRequestConditions bac = new BlobRequestConditions()
-                    .setLeaseId(list.get(0))
-                    .setIfMatch(list.get(1))
+                    .setLeaseId(conditions.get(0))
+                    .setIfMatch(conditions.get(1))
                     .setIfNoneMatch(noneMatch)
                     .setIfModifiedSince(modified)
                     .setIfUnmodifiedSince(unmodified)
@@ -943,11 +939,11 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
                                     String leaseID, String tags) {
         Mono<Response<PageList>> response =
             Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, noneMatch), BlobTestBase::convertNulls)
-                .flatMap(list -> {
+                .flatMap(conditions -> {
                     BlobRequestConditions bac = new BlobRequestConditions()
-                        .setLeaseId(list.get(0))
+                        .setLeaseId(conditions.get(0))
                         .setIfMatch(match)
-                        .setIfNoneMatch(list.get(1))
+                        .setIfNoneMatch(conditions.get(1))
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
                         .setTagsConditions(tags);
@@ -1063,10 +1059,10 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
         Flux<PageRangeItem> response = bc.setTags(t)
             .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match), BlobTestBase::convertNulls))
-                .flatMapMany(list -> {
+                .flatMapMany(conditions -> {
                     BlobRequestConditions bac = new BlobRequestConditions()
-                        .setLeaseId(list.get(0))
-                        .setIfMatch(list.get(1))
+                        .setLeaseId(conditions.get(0))
+                        .setIfMatch(conditions.get(1))
                         .setIfNoneMatch(noneMatch)
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
@@ -1087,11 +1083,11 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
                                      String leaseID, String tags) {
         Mono<Long> response = Mono.zip(setupBlobLeaseCondition(bc, leaseID),
             setupBlobMatchCondition(bc, noneMatch), BlobTestBase::convertNulls)
-                .flatMap(list -> {
+                .flatMap(conditions -> {
                     BlobRequestConditions bac = new BlobRequestConditions()
-                        .setLeaseId(list.get(0))
+                        .setLeaseId(conditions.get(0))
                         .setIfMatch(match)
-                        .setIfNoneMatch(list.get(1))
+                        .setIfNoneMatch(conditions.get(1))
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
                         .setTagsConditions(tags);
@@ -1211,10 +1207,10 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         Mono<Response<PageList>> response = bc.setTags(t).then(bc.createSnapshot())
             .flatMap(snapId -> Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match),
                 BlobTestBase::convertNulls)
-                    .flatMap(list -> {
+                    .flatMap(conditions -> {
                         BlobRequestConditions bac = new BlobRequestConditions()
-                            .setLeaseId(list.get(0))
-                            .setIfMatch(list.get(1))
+                            .setLeaseId(conditions.get(0))
+                            .setIfMatch(conditions.get(1))
                             .setIfNoneMatch(noneMatch)
                             .setIfModifiedSince(modified)
                             .setIfUnmodifiedSince(unmodified)
@@ -1239,11 +1235,11 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         Mono<Response<PageList>> response = bc.createSnapshot()
             .flatMap(snapId ->
                 Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, noneMatch), BlobTestBase::convertNulls)
-                    .flatMap(list -> {
+                    .flatMap(conditions -> {
                         BlobRequestConditions bac = new BlobRequestConditions()
-                            .setLeaseId(list.get(0))
+                            .setLeaseId(conditions.get(0))
                             .setIfMatch(match)
-                            .setIfNoneMatch(list.get(1))
+                            .setIfNoneMatch(conditions.get(1))
                             .setIfModifiedSince(modified)
                             .setIfUnmodifiedSince(unmodified)
                             .setTagsConditions(tags);
@@ -1391,10 +1387,10 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .flatMapMany(snapId ->
                 bc.setTags(t).then(Mono.zip(setupBlobLeaseCondition(bc, leaseID),
                     setupBlobMatchCondition(bc, match), BlobTestBase::convertNulls))
-                    .flatMap(list -> {
+                    .flatMap(conditions -> {
                         BlobRequestConditions bac = new BlobRequestConditions()
-                            .setLeaseId(list.get(0))
-                            .setIfMatch(list.get(1))
+                            .setLeaseId(conditions.get(0))
+                            .setIfMatch(conditions.get(1))
                             .setIfNoneMatch(noneMatch)
                             .setIfModifiedSince(modified)
                             .setIfUnmodifiedSince(unmodified)
@@ -1417,11 +1413,11 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
                                          String noneMatch, String leaseID, String tags) {
         Mono<Long> response = bc.createSnapshot().flatMap(snapId ->
             Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, noneMatch), BlobTestBase::convertNulls)
-                .flatMap(list -> {
+                .flatMap(conditions -> {
                     BlobRequestConditions bac = new BlobRequestConditions()
-                        .setLeaseId(list.get(0))
+                        .setLeaseId(conditions.get(0))
                         .setIfMatch(match)
-                        .setIfNoneMatch(list.get(1))
+                        .setIfNoneMatch(conditions.get(1))
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
                         .setTagsConditions(tags);
@@ -1482,10 +1478,10 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
         Mono<Response<PageBlobItem>> response = bc.setTags(t)
             .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match), BlobTestBase::convertNulls))
-                .flatMap(list -> {
+                .flatMap(conditions -> {
                     BlobRequestConditions bac = new BlobRequestConditions()
-                        .setLeaseId(list.get(0))
-                        .setIfMatch(list.get(1))
+                        .setLeaseId(conditions.get(0))
+                        .setIfMatch(conditions.get(1))
                         .setIfNoneMatch(noneMatch)
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
@@ -1503,11 +1499,11 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
                              String leaseID, String tags) {
         Mono<Response<PageBlobItem>> response = Mono.zip(setupBlobLeaseCondition(bc, leaseID),
             setupBlobMatchCondition(bc, noneMatch), BlobTestBase::convertNulls)
-                .flatMap(list -> {
+                .flatMap(conditions -> {
                     BlobRequestConditions bac = new BlobRequestConditions()
-                        .setLeaseId(list.get(0))
+                        .setLeaseId(conditions.get(0))
                         .setIfMatch(match)
-                        .setIfNoneMatch(list.get(1))
+                        .setIfNoneMatch(conditions.get(1))
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
                         .setTagsConditions(tags);
@@ -1564,10 +1560,10 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
         Mono<Response<PageBlobItem>> response = bc.setTags(t)
             .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match), BlobTestBase::convertNulls))
-            .flatMap(list -> {
+            .flatMap(conditions -> {
                 BlobRequestConditions bac = new BlobRequestConditions()
-                    .setLeaseId(list.get(0))
-                    .setIfMatch(list.get(1))
+                    .setLeaseId(conditions.get(0))
+                    .setIfMatch(conditions.get(1))
                     .setIfNoneMatch(noneMatch)
                     .setIfModifiedSince(modified)
                     .setIfUnmodifiedSince(unmodified)
@@ -1585,11 +1581,11 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
                                      String leaseID, String tags) {
         Mono<Response<PageBlobItem>> response = Mono.zip(setupBlobLeaseCondition(bc, leaseID),
             setupBlobMatchCondition(bc, noneMatch), BlobTestBase::convertNulls)
-                .flatMap(list -> {
+                .flatMap(conditions -> {
                     BlobRequestConditions bac = new BlobRequestConditions()
-                        .setLeaseId(list.get(0))
+                        .setLeaseId(conditions.get(0))
                         .setIfMatch(match)
-                        .setIfNoneMatch(list.get(1))
+                        .setIfNoneMatch(conditions.get(1))
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
                         .setTagsConditions(tags);
@@ -1703,12 +1699,11 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .flatMap(status -> bc2.setTags(t))
             .then(bc.createSnapshot())
             .flatMap(snapId ->
-                setupBlobMatchCondition(bc2, match).flatMap(r -> {
-                    List<String> list = convertNulls(null, r);
+                setupBlobMatchCondition(bc2, match).flatMap(condition -> {
                     PageBlobCopyIncrementalRequestConditions mac = new PageBlobCopyIncrementalRequestConditions()
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
-                        .setIfMatch(list.get(1))
+                        .setIfMatch(convertNull(condition))
                         .setIfNoneMatch(noneMatch)
                         .setTagsConditions(tags);
                     return bc2.copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(
@@ -1741,13 +1736,12 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             bc2.copyIncremental(bc.getBlobUrl() + "?" + sas, snapId.getSnapshotId())
                 .then(bc.createSnapshot())
                 .flatMap(finalSnapshot ->
-                    setupBlobMatchCondition(bc2, noneMatch).flatMap(r -> {
-                        List<String> list = convertNulls(null, r);
+                    setupBlobMatchCondition(bc2, noneMatch).flatMap(condition -> {
                         PageBlobCopyIncrementalRequestConditions mac = new PageBlobCopyIncrementalRequestConditions()
                             .setIfModifiedSince(modified)
                             .setIfUnmodifiedSince(unmodified)
                             .setIfMatch(match)
-                            .setIfNoneMatch(list.get(1))
+                            .setIfNoneMatch(convertNull(condition))
                             .setTagsConditions(tags);
 
                         return bc2.copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(

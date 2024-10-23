@@ -578,12 +578,11 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
         Mono<Response<Void>> response = sourceURL.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
             .then(setupBlobMatchCondition(sourceURL, sourceIfMatch))
-                .flatMap(r -> {
-                    List<String> list = convertNulls(null, r);
+                .flatMap(condition -> {
                     BlobRequestConditions smac = new BlobRequestConditions()
                         .setIfModifiedSince(sourceIfModifiedSince)
                         .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
-                        .setIfMatch(list.get(1))
+                        .setIfMatch(convertNull(condition))
                         .setIfNoneMatch(sourceIfNoneMatch);
                     return blockBlobAsyncClient.stageBlockFromUrlWithResponse(blockID,
                         sourceURL.getBlobUrl() + "?" + sas, null, null, null, smac);
@@ -613,13 +612,12 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
         Mono<Response<Void>> response = sourceURL.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
             .then(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch))
-                .flatMap(r -> {
-                    List<String> list = convertNulls(null, r);
+                .flatMap(condition -> {
                     BlobRequestConditions smac = new BlobRequestConditions()
                         .setIfModifiedSince(sourceIfModifiedSince)
                         .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
                         .setIfMatch(sourceIfMatch)
-                        .setIfNoneMatch(list.get(1));
+                        .setIfNoneMatch(convertNull(condition));
 
                     return blockBlobAsyncClient.stageBlockFromUrlWithResponse(blockID,
                         sourceURL.getBlobUrl() + "?" + sas, null, null, null, smac);
@@ -794,10 +792,10 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.setTags(t)
             .then(Mono.zip(setupBlobLeaseCondition(blockBlobAsyncClient, leaseID),
                 setupBlobMatchCondition(blockBlobAsyncClient, match), BlobTestBase::convertNulls))
-                    .flatMap(list -> {
+                    .flatMap(conditions -> {
                         BlobRequestConditions bac = new BlobRequestConditions()
-                            .setLeaseId(list.get(0))
-                            .setIfMatch(list.get(1))
+                            .setLeaseId(conditions.get(0))
+                            .setIfMatch(conditions.get(1))
                             .setIfNoneMatch(noneMatch)
                             .setIfModifiedSince(modified)
                             .setIfUnmodifiedSince(unmodified)
@@ -818,11 +816,11 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
         Mono<Response<BlockBlobItem>> response = Mono.zip(setupBlobLeaseCondition(blockBlobAsyncClient, leaseID),
             setupBlobMatchCondition(blockBlobAsyncClient, noneMatch), BlobTestBase::convertNulls)
-                .flatMap(list -> {
+                .flatMap(conditions -> {
                     BlobRequestConditions bac = new BlobRequestConditions()
                         .setLeaseId(leaseID)
                         .setIfMatch(match)
-                        .setIfNoneMatch(list.get(1))
+                        .setIfNoneMatch(conditions.get(1))
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
                         .setTagsConditions(tags);
@@ -1498,10 +1496,10 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.setTags(t)
             .then(Mono.zip(setupBlobLeaseCondition(blockBlobAsyncClient, leaseID),
                 setupBlobMatchCondition(blockBlobAsyncClient, match), BlobTestBase::convertNulls))
-                    .flatMap(list -> {
+                    .flatMap(conditions -> {
                         BlobRequestConditions bac = new BlobRequestConditions()
-                            .setLeaseId(list.get(0))
-                            .setIfMatch(list.get(1))
+                            .setLeaseId(conditions.get(0))
+                            .setIfMatch(conditions.get(1))
                             .setIfNoneMatch(noneMatch)
                             .setIfModifiedSince(modified)
                             .setIfUnmodifiedSince(unmodified)
@@ -1522,11 +1520,11 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
         Mono<Response<BlockBlobItem>> response = Mono.zip(setupBlobLeaseCondition(blockBlobAsyncClient, leaseID),
             setupBlobMatchCondition(blockBlobAsyncClient, noneMatch), BlobTestBase::convertNulls)
-                .flatMap(list -> {
+                .flatMap(conditions -> {
                     BlobRequestConditions bac = new BlobRequestConditions()
                         .setLeaseId(leaseID)
                         .setIfMatch(match)
-                        .setIfNoneMatch(list.get(1))
+                        .setIfNoneMatch(conditions.get(1))
                         .setIfModifiedSince(modified)
                         .setIfUnmodifiedSince(unmodified)
                         .setTagsConditions(tags);
@@ -2203,10 +2201,10 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
             .then(Mono.zip(setupBlobLeaseCondition(blockBlobAsyncClient, leaseID),
                 setupBlobMatchCondition(blockBlobAsyncClient, match), BlobTestBase::convertNulls))
-                    .flatMap(list -> {
+                    .flatMap(conditions -> {
                         BlobRequestConditions requestConditions = new BlobRequestConditions()
-                            .setLeaseId(list.get(0))
-                            .setIfMatch(list.get(1))
+                            .setLeaseId(conditions.get(0))
+                            .setIfMatch(conditions.get(1))
                             .setIfNoneMatch(noneMatch)
                             .setIfModifiedSince(modified)
                             .setIfUnmodifiedSince(unmodified);
@@ -2238,11 +2236,11 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
             .then(Mono.zip(setupBlobLeaseCondition(blockBlobAsyncClient, leaseID),
                 setupBlobMatchCondition(blockBlobAsyncClient, noneMatch), BlobTestBase::convertNulls))
-                    .flatMap(list -> {
+                    .flatMap(conditions -> {
                         BlobRequestConditions requestConditions = new BlobRequestConditions()
-                            .setLeaseId(list.get(0))
+                            .setLeaseId(conditions.get(0))
                             .setIfMatch(match)
-                            .setIfNoneMatch(list.get(1))
+                            .setIfNoneMatch(conditions.get(1))
                             .setIfModifiedSince(modified)
                             .setIfUnmodifiedSince(unmodified);
                         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(10L);
