@@ -177,6 +177,12 @@ private case class ChangeFeedPartitionReader
     }
 
     options.setCustomItemSerializer(itemDeserializer)
+    this.partition.endLsn match {
+      case Some(endLsn) =>
+        ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor
+              .setEndLSN(options, endLsn)
+    }
+
   }
 
   private val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(readSchema)

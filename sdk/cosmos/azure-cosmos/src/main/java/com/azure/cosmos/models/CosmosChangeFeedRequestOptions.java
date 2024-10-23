@@ -205,6 +205,16 @@ public final class CosmosChangeFeedRequestOptions {
         return this.actualRequestOptions.isCompleteAfterAllCurrentChangesRetrieved();
     }
 
+    // This will override setCompleteAfterAllCurrentChangesRetrieved if both used together
+    CosmosChangeFeedRequestOptions setEndLSN(long endLsn) {
+        this.actualRequestOptions.setEndLSN(endLsn);
+        return this;
+    }
+
+    long getEndLSN() {
+        return this.actualRequestOptions.getEndLSN();
+    }
+
     boolean isSplitHandlingDisabled() {
         return this.actualRequestOptions.isSplitHandlingDisabled();
     }
@@ -621,6 +631,16 @@ public final class CosmosChangeFeedRequestOptions {
                 @Override
                 public CosmosChangeFeedRequestOptionsImpl getImpl(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
                     return changeFeedRequestOptions.getImpl();
+                }
+
+                @Override
+                public CosmosChangeFeedRequestOptions setEndLSN(CosmosChangeFeedRequestOptions changeFeedRequestOptions, long endLsn) {
+                    return changeFeedRequestOptions.setEndLSN(endLsn);
+                }
+
+                @Override
+                public long getEndLSN(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
+                    return changeFeedRequestOptions.getEndLSN();
                 }
 
                 @Override

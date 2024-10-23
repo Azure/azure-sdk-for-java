@@ -912,7 +912,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
 
         ArrayList<Mono<CosmosItemResponse<ObjectNode>>> result = new ArrayList<>();
         for (int i = 0; i < docs.size(); i++) {
-            result.add(createdAsyncContainer
+            result.add(container
                 .createItem(docs.get(i)));
         }
 

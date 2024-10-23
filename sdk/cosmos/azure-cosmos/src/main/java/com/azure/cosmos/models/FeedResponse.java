@@ -53,6 +53,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     private CosmosDiagnostics cosmosDiagnostics;
     private QueryInfo queryInfo;
     private QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext;
+    private boolean hasMoreChangesToProcess = true;
 
     FeedResponse(List<T> results, Map<String, String> headers) {
         this(results, headers, false, false, new ConcurrentHashMap<>());
@@ -638,6 +639,12 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
                 public <T> FeedResponse<T> createFeedResponse(List<T> results, Map<String, String> headers,
                                                               CosmosDiagnostics diagnostics) {
                     return new FeedResponse<>(results, headers, diagnostics);
+                }
+
+                @Override
+                public <T> FeedResponse<T> hasMoreChangesToProcess(FeedResponse<T> feedResponse, boolean hasMoreChangesToProcess) {
+                    feedResponse.hasMoreChangesToProcess = hasMoreChangesToProcess;
+                    return feedResponse;
                 }
             });
     }

@@ -30,6 +30,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     private static final int DEFAULT_MAX_ITEM_COUNT = 100;
     private static final int DEFAULT_MAX_PREFETCH_PAGE_COUNT = 1;
     private static final boolean DEFAULT_COMPLETE_AFTER_ALL_CURRENT_CHANGES_RETRIEVED = false;
+    private static final long DEFAULT_END_LSN = -1;
     private final ChangeFeedState continuationState;
     private final FeedRangeInternal feedRangeInternal;
     private final Map<String, Object> properties;
@@ -49,6 +50,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     private String collectionRid;
     private Set<String> keywordIdentifiers;
     private boolean completeAfterAllCurrentChangesRetrieved;
+    private long endLSN;
 
     public CosmosChangeFeedRequestOptionsImpl(CosmosChangeFeedRequestOptionsImpl toBeCloned) {
         this.continuationState = toBeCloned.continuationState;
@@ -70,6 +72,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.partitionKeyDefinition = toBeCloned.partitionKeyDefinition;
         this.keywordIdentifiers = toBeCloned.keywordIdentifiers;
         this.completeAfterAllCurrentChangesRetrieved = toBeCloned.completeAfterAllCurrentChangesRetrieved;
+        this.endLSN = toBeCloned.endLSN;
     }
 
     public CosmosChangeFeedRequestOptionsImpl(
@@ -108,6 +111,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.properties = new HashMap<>();
         this.isSplitHandlingDisabled = false;
         this.completeAfterAllCurrentChangesRetrieved = DEFAULT_COMPLETE_AFTER_ALL_CURRENT_CHANGES_RETRIEVED;
+        this.endLSN = DEFAULT_END_LSN;
     }
 
     public ChangeFeedState getContinuation() {
@@ -361,6 +365,14 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     @Override
     public Set<String> getKeywordIdentifiers() {
         return this.keywordIdentifiers;
+    }
+
+    public void setEndLSN(long endLSN) {
+        this.endLSN = endLSN;
+    }
+
+    public long getEndLSN() {
+        return endLSN;
     }
 
     public boolean isCompleteAfterAllCurrentChangesRetrieved() {
