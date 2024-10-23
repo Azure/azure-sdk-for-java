@@ -9,8 +9,6 @@ import java.io.UncheckedIOException;
 
 public final class MessageDecoder {
     public Object decode(String s) {
-        System.out.println("MessageDecoder.decode: " + s);
-
         try (JsonReader jsonReader = JsonProviders.createReader(s)) {
             return RealtimeServerEvent.fromJson(jsonReader);
         } catch (IOException e) {

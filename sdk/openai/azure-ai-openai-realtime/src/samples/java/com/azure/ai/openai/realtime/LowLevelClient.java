@@ -186,7 +186,7 @@ public class LowLevelClient {
             case "response.done":
                 RealtimeServerEventResponseDone responseDone = (RealtimeServerEventResponseDone) serverEvent;
                 System.out.println("Response done received");
-//                requestUserInput.emitNext(new EndSession(), Sinks.EmitFailureHandler.FAIL_FAST);
+                requestUserInput.emitNext(new EndSession(), Sinks.EmitFailureHandler.FAIL_FAST);
                 // Handle response.done event
                 break;
             case "response.output_item.added":

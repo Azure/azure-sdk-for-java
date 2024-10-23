@@ -25,6 +25,9 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
     private final WebSocketClientHandshaker handshaker;
     private ChannelPromise handshakeFuture;
 
+    // TODO jpalvarezl: not sure if AtomicReference is totally necessary
+    private final AtomicReference<String> textFrameAccumulator = new AtomicReference<>("");
+
     private final AtomicReference<ClientLogger> loggerReference;
     private final MessageDecoder messageDecoder;
     private final Consumer<Object> messageHandler;
@@ -77,12 +80,20 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
             // Text
             TextWebSocketFrame textFrame = (TextWebSocketFrame) frame;
             loggerReference.get().atVerbose().addKeyValue("text", textFrame.text()).log("Received TextWebSocketFrame");
-            Object wpsMessage = messageDecoder.decode(textFrame.text());
             // TODO jpalvarez, accumulate fragments while !frame.isFinalFragment()
             // RFC 6455, Section 5.4 https://www.rfc-editor.org/rfc/rfc6455.html#section-5.4
             // only TextFrames can be fragmented
-            // frame.isFinalFragment();
-            messageHandler.accept(wpsMessage);
+            String completeWpsMessage = textFrameAccumulator.accumulateAndGet(textFrame.text(), String::concat);
+
+            if(frame.isFinalFragment()) {
+                textFrameAccumulator.set("");
+                Object wpsMessage = messageDecoder.decode(completeWpsMessage);
+                messageHandler.accept(wpsMessage);
+            } else {
+                System.out.println("Incomplete frame: " + textFrame.text());
+                System.out.println("Accumulated frame: " + completeWpsMessage);
+
+            }
         } else if (frame instanceof PingWebSocketFrame) {
             // Ping, reply Pong
             loggerReference.get().atVerbose().log("Received PingWebSocketFrame");
