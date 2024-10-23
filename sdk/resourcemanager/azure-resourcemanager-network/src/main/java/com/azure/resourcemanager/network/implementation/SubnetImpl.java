@@ -292,18 +292,28 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
 
     @Override
     public Set<String> listAvailablePrivateIPAddresses() {
-        Set<String> result = Collections.emptySet();
-        if (!CoreUtils.isNullOrEmpty(this.addressPrefixes())) {
-            for (String cidr : this.addressPrefixes()) {
-                Set<String> ipAddressList = listAvailablePrivateIPAddresses(cidr);
-                if (!CoreUtils.isNullOrEmpty(ipAddressList)) {
-                    result = Collections.unmodifiableSet(ipAddressList);
-                    break;
-                }
-            }
+        // According to our test, when doing "checkIpAddressAvailability", backend knows about which subnet the "startIp"
+        // belongs to, thus we only need to use one of the address prefixes.
+        String cidr = this.addressPrefixes().iterator().next();
+        Set<String> ipAddresses = new TreeSet<>();
+        if (cidr == null) {
+            return ipAddresses;
+        }
+        String takenIPAddress = cidr.split("/")[0];
+
+        IpAddressAvailabilityResultInner result =
+            this
+                .parent()
+                .manager()
+                .serviceClient()
+                .getVirtualNetworks()
+                .checkIpAddressAvailability(this.parent().resourceGroupName(), this.parent().name(), takenIPAddress);
+        if (result == null || result.availableIpAddresses() == null) {
+            return ipAddresses;
         }
 
-        return result;
+        ipAddresses.addAll(result.availableIpAddresses());
+        return ipAddresses;
     }
 
     @Override
@@ -361,27 +371,5 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
             this.innerModel().withNatGateway(new SubResource().withId(resourceId));
         }
         return this;
-    }
-
-    private Set<String> listAvailablePrivateIPAddresses(String cidr) {
-        Set<String> ipAddresses = new TreeSet<>();
-        if (cidr == null) {
-            return ipAddresses;
-        }
-        String takenIPAddress = cidr.split("/")[0];
-
-        IpAddressAvailabilityResultInner result =
-            this
-                .parent()
-                .manager()
-                .serviceClient()
-                .getVirtualNetworks()
-                .checkIpAddressAvailability(this.parent().resourceGroupName(), this.parent().name(), takenIPAddress);
-        if (result == null || result.availableIpAddresses() == null) {
-            return ipAddresses;
-        }
-
-        ipAddresses.addAll(result.availableIpAddresses());
-        return ipAddresses;
     }
 }
