@@ -2,8 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
+import com.azure.core.management.Region;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.CoreUtils;
+import com.azure.resourcemanager.network.fluent.models.IpAddressAvailabilityResultInner;
+import com.azure.resourcemanager.network.fluent.models.IpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkSecurityGroupInner;
+import com.azure.resourcemanager.network.fluent.models.RouteTableInner;
+import com.azure.resourcemanager.network.fluent.models.SubnetInner;
 import com.azure.resourcemanager.network.models.Delegation;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
@@ -13,12 +19,6 @@ import com.azure.resourcemanager.network.models.RouteTable;
 import com.azure.resourcemanager.network.models.ServiceEndpointPropertiesFormat;
 import com.azure.resourcemanager.network.models.ServiceEndpointType;
 import com.azure.resourcemanager.network.models.Subnet;
-import com.azure.resourcemanager.network.fluent.models.IpAddressAvailabilityResultInner;
-import com.azure.resourcemanager.network.fluent.models.IpConfigurationInner;
-import com.azure.resourcemanager.network.fluent.models.NetworkSecurityGroupInner;
-import com.azure.resourcemanager.network.fluent.models.RouteTableInner;
-import com.azure.resourcemanager.network.fluent.models.SubnetInner;
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.network.models.VirtualNetworkPrivateEndpointNetworkPolicies;
 import com.azure.resourcemanager.network.models.VirtualNetworkPrivateLinkServiceNetworkPolicies;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
@@ -61,12 +61,23 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
 
     @Override
     public String addressPrefix() {
+        if (!CoreUtils.isNullOrEmpty(this.innerModel().addressPrefixes())) {
+            return this.innerModel().addressPrefixes().iterator().next();
+        }
         return this.innerModel().addressPrefix();
     }
 
     @Override
     public List<String> addressPrefixes() {
-        return CoreUtils.isNullOrEmpty(this.innerModel().addressPrefixes()) ? Collections.emptyList() : new ArrayList<>(this.innerModel().addressPrefixes());
+        if (CoreUtils.isNullOrEmpty(this.innerModel().addressPrefixes())) {
+            if (CoreUtils.isNullOrEmpty(this.innerModel().addressPrefix())) {
+                // shouldn't happen, just in case
+                return Collections.emptyList();
+            } else {
+                return Collections.singletonList(this.innerModel().addressPrefix());
+            }
+        }
+        return new ArrayList<>(this.innerModel().addressPrefixes());
     }
 
     @Override
@@ -281,16 +292,18 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
 
     @Override
     public Set<String> listAvailablePrivateIPAddresses() {
+        Set<String> result = Collections.emptySet();
         if (!CoreUtils.isNullOrEmpty(this.addressPrefixes())) {
             for (String cidr : this.addressPrefixes()) {
                 Set<String> ipAddressList = listAvailablePrivateIPAddresses(cidr);
                 if (!CoreUtils.isNullOrEmpty(ipAddressList)) {
-                    return ipAddressList;
+                    result = Collections.unmodifiableSet(ipAddressList);
+                    break;
                 }
             }
         }
 
-        return listAvailablePrivateIPAddresses(this.addressPrefix());
+        return result;
     }
 
     @Override

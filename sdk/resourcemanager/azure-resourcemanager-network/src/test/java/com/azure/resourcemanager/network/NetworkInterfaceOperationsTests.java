@@ -440,17 +440,17 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             .define(networkName)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
-            .withAddressSpace("10.0.0.0/20")
+            .withAddressSpace("10.0.0.0/28")
             .withSubnet(subnetName, "10.0.0.0/29")
             .create();
 
         Subnet subnet = network.subnets().get(subnetName);
         Assertions.assertNotNull(subnet.addressPrefix());
-        Assertions.assertEquals(0, subnet.addressPrefixes().size());
+        Assertions.assertEquals(1, subnet.addressPrefixes().size());
 
         // update withAddressPrefixes
         network.update().updateSubnet(subnetName)
-            .withAddressPrefixes(Arrays.asList("10.0.1.0/29"))
+            .withAddressPrefixes(Arrays.asList("10.0.0.8/29"))
             .parent()
             .apply();
 
@@ -458,8 +458,8 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
         subnet = network.subnets().get(subnetName);
 
         Assertions.assertEquals(1, subnet.addressPrefixes().size());
-        Assertions.assertEquals("10.0.1.0/29", subnet.addressPrefixes().iterator().next());
-        Assertions.assertNull(subnet.addressPrefix());
+        Assertions.assertEquals("10.0.0.8/29", subnet.addressPrefixes().iterator().next());
+        Assertions.assertNotNull(subnet.addressPrefix());
 
         // update withAddressPrefix
         network.update().updateSubnet(subnetName)
@@ -471,7 +471,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
         subnet = network.subnets().get(subnetName);
 
         Assertions.assertEquals("10.0.0.0/29", subnet.addressPrefix());
-        Assertions.assertEquals(0, subnet.addressPrefixes().size());
+        Assertions.assertEquals(1, subnet.addressPrefixes().size());
     }
 
     @Test
@@ -486,7 +486,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             .define(networkName)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
-            .withAddressSpace("10.0.0.0/20")
+            .withAddressSpace("10.0.0.0/28")
             .withSubnet(subnetName, "10.0.0.0/29")
             .create();
 
@@ -511,7 +511,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
 
         // address prefixes
         network.update().defineSubnet(subnet2Name)
-            .withAddressPrefixes(Arrays.asList("10.0.1.0/29"))
+            .withAddressPrefixes(Arrays.asList("10.0.0.8/29"))
             .attach()
             .apply();
 
