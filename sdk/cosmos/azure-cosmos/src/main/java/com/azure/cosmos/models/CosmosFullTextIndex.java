@@ -26,12 +26,6 @@ public class CosmosFullTextIndex {
     }
 
     /**
-     * Constructor
-     * @param objectNode the object node that represents the full text path.
-     */
-    CosmosFullTextIndex(ObjectNode objectNode) { this.jsonSerializable = new JsonSerializable(objectNode); }
-
-    /**
      * Gets path.
      * @return the path.
      */
@@ -53,19 +47,4 @@ public class CosmosFullTextIndex {
     void populatePropertyBag() { this.jsonSerializable.populatePropertyBag(); }
 
     JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-
-        if (o == null || getClass() != o.getClass()) return false;
-
-        CosmosFullTextIndex that = (CosmosFullTextIndex) o;
-        return Objects.equals(jsonSerializable, that.jsonSerializable);
-    }
-
-    @Override
-    public int hashCode() { return Objects.hash(jsonSerializable); }
-
-
 }

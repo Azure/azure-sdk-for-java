@@ -336,6 +336,7 @@ public final class IndexingPolicy {
      */
     public IndexingPolicy setCosmosFullTextIndexes(List<CosmosFullTextIndex> cosmosFullTextIndexes) {
         this.cosmosFullTextIndexes = cosmosFullTextIndexes;
+        this.jsonSerializable.set(Constants.Properties.FULL_TEXT_SEARCH_PATHS, cosmosFullTextIndexes, CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
     }
 
