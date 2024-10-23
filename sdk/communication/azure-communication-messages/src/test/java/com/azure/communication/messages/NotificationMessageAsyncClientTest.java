@@ -55,8 +55,56 @@ public class NotificationMessageAsyncClientTest extends  CommunicationMessagesTe
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
         StepVerifier
-            .create(messagesClient.send(new MediaNotificationContent(CHANNEL_REGISTRATION_ID,
+            .create(messagesClient.send(new ImageNotificationContent(CHANNEL_REGISTRATION_ID,
                 recipients, "https://wallpapercave.com/wp/wp2163723.jpg")))
+            .assertNext(resp -> {
+                assertEquals(1, resp.getReceipts().size());
+                assertNotNull(resp.getReceipts().get(0).getMessageId());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void shouldSendVideoMessage(HttpClient httpClient) {
+        messagesClient = buildNotificationMessagesAsyncClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+        StepVerifier
+            .create(messagesClient.send(new VideoNotificationContent(CHANNEL_REGISTRATION_ID,
+                recipients, "https://sample-videos.com/video321/mp4/480/big_buck_bunny_480p_1mb.mp4")))
+            .assertNext(resp -> {
+                assertEquals(1, resp.getReceipts().size());
+                assertNotNull(resp.getReceipts().get(0).getMessageId());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void shouldSendAudioMessage(HttpClient httpClient) {
+        messagesClient = buildNotificationMessagesAsyncClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+        StepVerifier
+            .create(messagesClient.send(new AudioNotificationContent(CHANNEL_REGISTRATION_ID,
+                recipients, "https://sample-videos.com/audio/mp3/wave.mp3")))
+            .assertNext(resp -> {
+                assertEquals(1, resp.getReceipts().size());
+                assertNotNull(resp.getReceipts().get(0).getMessageId());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void shouldSendDocumentMessage(HttpClient httpClient) {
+        messagesClient = buildNotificationMessagesAsyncClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+        StepVerifier
+            .create(messagesClient.send(new AudioNotificationContent(CHANNEL_REGISTRATION_ID,
+                recipients, "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf")))
             .assertNext(resp -> {
                 assertEquals(1, resp.getReceipts().size());
                 assertNotNull(resp.getReceipts().get(0).getMessageId());
@@ -145,47 +193,6 @@ public class NotificationMessageAsyncClientTest extends  CommunicationMessagesTe
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void shouldSendMessageTemplateWithQuickAction(HttpClient httpClient) {
         messagesClient = buildNotificationMessagesAsyncClient(httpClient);
-        List<String> recipients = new ArrayList<>();
-        recipients.add(RECIPIENT_IDENTIFIER);
-
-        //Add template parameter type with value in a list
-        List<MessageTemplateValue> messageTemplateValues = new ArrayList<>();
-        messageTemplateValues.add(new MessageTemplateText("Name", "Arif"));
-        messageTemplateValues.add(new MessageTemplateQuickAction("Yes").setPayload("Yes"));
-        messageTemplateValues.add(new MessageTemplateQuickAction("No").setPayload("No"));
-
-        // Add parameter binding for template body in a list
-        List<WhatsAppMessageTemplateBindingsComponent> templateBodyBindings = new ArrayList<>();
-        templateBodyBindings.add(new WhatsAppMessageTemplateBindingsComponent("Name"));
-
-        // Add parameter binding for template buttons in a list
-        List<WhatsAppMessageTemplateBindingsButton> templateButtonBindings = new ArrayList<>();
-        templateButtonBindings.add(new WhatsAppMessageTemplateBindingsButton(WhatsAppMessageButtonSubType.QUICK_REPLY, "Yes"));
-        templateButtonBindings.add(new WhatsAppMessageTemplateBindingsButton(WhatsAppMessageButtonSubType.QUICK_REPLY, "No"));
-
-        MessageTemplateBindings templateBindings = new WhatsAppMessageTemplateBindings()
-            .setBody(templateBodyBindings) // Set the parameter binding for template body
-            .setButtons(templateButtonBindings); // Set the parameter binding for template buttons
-
-        MessageTemplate messageTemplate = new MessageTemplate("sample_issue_resolution", "en_US")
-            .setBindings(templateBindings)
-            .setValues(messageTemplateValues);
-
-        StepVerifier
-            .create(messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID,
-                recipients, messageTemplate)))
-            .assertNext(resp -> {
-                assertNotNull(resp.getReceipts());
-                assertEquals(1, resp.getReceipts().size());
-                assertNotNull(resp.getReceipts().get(0).getMessageId());
-            })
-            .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void shouldSendMessageQuickActionTemplateWithTokenCredential(HttpClient httpClient) {
-        messagesClient = buildNotificationMessagesAsyncClientWithTokenCredential(httpClient);
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
 
