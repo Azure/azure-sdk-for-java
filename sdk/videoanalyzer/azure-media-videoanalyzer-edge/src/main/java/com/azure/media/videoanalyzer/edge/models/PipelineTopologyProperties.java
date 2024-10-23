@@ -5,53 +5,57 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Pipeline topology properties. */
+/**
+ * Pipeline topology properties.
+ */
 @Fluent
-public final class PipelineTopologyProperties {
+public final class PipelineTopologyProperties implements JsonSerializable<PipelineTopologyProperties> {
     /*
-     * An optional description of the pipeline topology. It is recommended that
-     * the expected use of the topology to be described here.
+     * An optional description of the pipeline topology. It is recommended that the expected use of the topology to be
+     * described here.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
-     * List of the topology parameter declarations. Parameters declared here
-     * can be referenced throughout the topology nodes through the use of
-     * "${PARAMETER_NAME}" string pattern. Parameters can have optional default
-     * values and can later be defined in individual instances of the pipeline.
+     * List of the topology parameter declarations. Parameters declared here can be referenced throughout the topology
+     * nodes through the use of "${PARAMETER_NAME}" string pattern. Parameters can have optional default values and can
+     * later be defined in individual instances of the pipeline.
      */
-    @JsonProperty(value = "parameters")
     private List<ParameterDeclaration> parameters;
 
     /*
-     * List of the topology source nodes. Source nodes enable external data to
-     * be ingested by the pipeline.
+     * List of the topology source nodes. Source nodes enable external data to be ingested by the pipeline.
      */
-    @JsonProperty(value = "sources")
     private List<SourceNodeBase> sources;
 
     /*
-     * List of the topology processor nodes. Processor nodes enable pipeline
-     * data to be analyzed, processed or transformed.
+     * List of the topology processor nodes. Processor nodes enable pipeline data to be analyzed, processed or
+     * transformed.
      */
-    @JsonProperty(value = "processors")
     private List<ProcessorNodeBase> processors;
 
     /*
-     * List of the topology sink nodes. Sink nodes allow pipeline data to be
-     * stored or exported.
+     * List of the topology sink nodes. Sink nodes allow pipeline data to be stored or exported.
      */
-    @JsonProperty(value = "sinks")
     private List<SinkNodeBase> sinks;
+
+    /**
+     * Creates an instance of PipelineTopologyProperties class.
+     */
+    public PipelineTopologyProperties() {
+    }
 
     /**
      * Get the description property: An optional description of the pipeline topology. It is recommended that the
      * expected use of the topology to be described here.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -61,7 +65,7 @@ public final class PipelineTopologyProperties {
     /**
      * Set the description property: An optional description of the pipeline topology. It is recommended that the
      * expected use of the topology to be described here.
-     *
+     * 
      * @param description the description value to set.
      * @return the PipelineTopologyProperties object itself.
      */
@@ -74,7 +78,7 @@ public final class PipelineTopologyProperties {
      * Get the parameters property: List of the topology parameter declarations. Parameters declared here can be
      * referenced throughout the topology nodes through the use of "${PARAMETER_NAME}" string pattern. Parameters can
      * have optional default values and can later be defined in individual instances of the pipeline.
-     *
+     * 
      * @return the parameters value.
      */
     public List<ParameterDeclaration> getParameters() {
@@ -85,7 +89,7 @@ public final class PipelineTopologyProperties {
      * Set the parameters property: List of the topology parameter declarations. Parameters declared here can be
      * referenced throughout the topology nodes through the use of "${PARAMETER_NAME}" string pattern. Parameters can
      * have optional default values and can later be defined in individual instances of the pipeline.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the PipelineTopologyProperties object itself.
      */
@@ -97,7 +101,7 @@ public final class PipelineTopologyProperties {
     /**
      * Get the sources property: List of the topology source nodes. Source nodes enable external data to be ingested by
      * the pipeline.
-     *
+     * 
      * @return the sources value.
      */
     public List<SourceNodeBase> getSources() {
@@ -107,7 +111,7 @@ public final class PipelineTopologyProperties {
     /**
      * Set the sources property: List of the topology source nodes. Source nodes enable external data to be ingested by
      * the pipeline.
-     *
+     * 
      * @param sources the sources value to set.
      * @return the PipelineTopologyProperties object itself.
      */
@@ -119,7 +123,7 @@ public final class PipelineTopologyProperties {
     /**
      * Get the processors property: List of the topology processor nodes. Processor nodes enable pipeline data to be
      * analyzed, processed or transformed.
-     *
+     * 
      * @return the processors value.
      */
     public List<ProcessorNodeBase> getProcessors() {
@@ -129,7 +133,7 @@ public final class PipelineTopologyProperties {
     /**
      * Set the processors property: List of the topology processor nodes. Processor nodes enable pipeline data to be
      * analyzed, processed or transformed.
-     *
+     * 
      * @param processors the processors value to set.
      * @return the PipelineTopologyProperties object itself.
      */
@@ -140,7 +144,7 @@ public final class PipelineTopologyProperties {
 
     /**
      * Get the sinks property: List of the topology sink nodes. Sink nodes allow pipeline data to be stored or exported.
-     *
+     * 
      * @return the sinks value.
      */
     public List<SinkNodeBase> getSinks() {
@@ -149,12 +153,66 @@ public final class PipelineTopologyProperties {
 
     /**
      * Set the sinks property: List of the topology sink nodes. Sink nodes allow pipeline data to be stored or exported.
-     *
+     * 
      * @param sinks the sinks value to set.
      * @return the PipelineTopologyProperties object itself.
      */
     public PipelineTopologyProperties setSinks(List<SinkNodeBase> sinks) {
         this.sinks = sinks;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sources", this.sources, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("processors", this.processors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sinks", this.sinks, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PipelineTopologyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PipelineTopologyProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PipelineTopologyProperties.
+     */
+    public static PipelineTopologyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PipelineTopologyProperties deserializedPipelineTopologyProperties = new PipelineTopologyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedPipelineTopologyProperties.description = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    List<ParameterDeclaration> parameters
+                        = reader.readArray(reader1 -> ParameterDeclaration.fromJson(reader1));
+                    deserializedPipelineTopologyProperties.parameters = parameters;
+                } else if ("sources".equals(fieldName)) {
+                    List<SourceNodeBase> sources = reader.readArray(reader1 -> SourceNodeBase.fromJson(reader1));
+                    deserializedPipelineTopologyProperties.sources = sources;
+                } else if ("processors".equals(fieldName)) {
+                    List<ProcessorNodeBase> processors
+                        = reader.readArray(reader1 -> ProcessorNodeBase.fromJson(reader1));
+                    deserializedPipelineTopologyProperties.processors = processors;
+                } else if ("sinks".equals(fieldName)) {
+                    List<SinkNodeBase> sinks = reader.readArray(reader1 -> SinkNodeBase.fromJson(reader1));
+                    deserializedPipelineTopologyProperties.sinks = sinks;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPipelineTopologyProperties;
+        });
     }
 }

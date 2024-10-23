@@ -5,10 +5,11 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,63 +17,63 @@ import java.util.List;
  * over the activationEvaluationWindow, and determines whether to open or close the gate. See
  * https://aka.ms/ava-signalgate for more information.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
-@JsonTypeName("#Microsoft.VideoAnalyzer.SignalGateProcessor")
 @Fluent
 public final class SignalGateProcessor extends ProcessorNodeBase {
     /*
-     * The period of time over which the gate gathers input events before
-     * evaluating them.
+     * Type discriminator for the derived types.
      */
-    @JsonProperty(value = "activationEvaluationWindow")
+    private String type = "#Microsoft.VideoAnalyzer.SignalGateProcessor";
+
+    /*
+     * The period of time over which the gate gathers input events before evaluating them.
+     */
     private String activationEvaluationWindow;
 
     /*
-     * Signal offset once the gate is activated (can be negative). It
-     * determines the how much farther behind of after the signal will be let
-     * through based on the activation time. A negative offset indicates that
-     * data prior the activation time must be included on the signal that is
-     * let through, once the gate is activated. When used upstream of a file or
-     * video sink, this allows for scenarios such as recording buffered media
-     * prior an event, such as: record video 5 seconds prior motions is
-     * detected.
+     * Signal offset once the gate is activated (can be negative). It determines the how much farther behind of after
+     * the signal will be let through based on the activation time. A negative offset indicates that data prior the
+     * activation time must be included on the signal that is let through, once the gate is activated. When used
+     * upstream of a file or video sink, this allows for scenarios such as recording buffered media prior an event, such
+     * as: record video 5 seconds prior motions is detected.
      */
-    @JsonProperty(value = "activationSignalOffset")
     private String activationSignalOffset;
 
     /*
-     * The minimum period for which the gate remains open in the absence of
-     * subsequent triggers (events). When used upstream of a file or video
-     * sink, it determines the minimum length of the recorded video clip.
+     * The minimum period for which the gate remains open in the absence of subsequent triggers (events). When used
+     * upstream of a file or video sink, it determines the minimum length of the recorded video clip.
      */
-    @JsonProperty(value = "minimumActivationTime")
     private String minimumActivationTime;
 
     /*
-     * The maximum period for which the gate remains open in the presence of
-     * subsequent triggers (events). When used upstream of a file or video
-     * sink, it determines the maximum length of the recorded video clip.
+     * The maximum period for which the gate remains open in the presence of subsequent triggers (events). When used
+     * upstream of a file or video sink, it determines the maximum length of the recorded video clip.
      */
-    @JsonProperty(value = "maximumActivationTime")
     private String maximumActivationTime;
 
     /**
      * Creates an instance of SignalGateProcessor class.
-     *
+     * 
      * @param name the name value to set.
      * @param inputs the inputs value to set.
      */
-    @JsonCreator
-    public SignalGateProcessor(
-            @JsonProperty(value = "name", required = true) String name,
-            @JsonProperty(value = "inputs", required = true) List<NodeInput> inputs) {
+    public SignalGateProcessor(String name, List<NodeInput> inputs) {
         super(name, inputs);
+    }
+
+    /**
+     * Get the type property: Type discriminator for the derived types.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
      * Get the activationEvaluationWindow property: The period of time over which the gate gathers input events before
      * evaluating them.
-     *
+     * 
      * @return the activationEvaluationWindow value.
      */
     public String getActivationEvaluationWindow() {
@@ -82,7 +83,7 @@ public final class SignalGateProcessor extends ProcessorNodeBase {
     /**
      * Set the activationEvaluationWindow property: The period of time over which the gate gathers input events before
      * evaluating them.
-     *
+     * 
      * @param activationEvaluationWindow the activationEvaluationWindow value to set.
      * @return the SignalGateProcessor object itself.
      */
@@ -97,7 +98,7 @@ public final class SignalGateProcessor extends ProcessorNodeBase {
      * negative offset indicates that data prior the activation time must be included on the signal that is let through,
      * once the gate is activated. When used upstream of a file or video sink, this allows for scenarios such as
      * recording buffered media prior an event, such as: record video 5 seconds prior motions is detected.
-     *
+     * 
      * @return the activationSignalOffset value.
      */
     public String getActivationSignalOffset() {
@@ -110,7 +111,7 @@ public final class SignalGateProcessor extends ProcessorNodeBase {
      * negative offset indicates that data prior the activation time must be included on the signal that is let through,
      * once the gate is activated. When used upstream of a file or video sink, this allows for scenarios such as
      * recording buffered media prior an event, such as: record video 5 seconds prior motions is detected.
-     *
+     * 
      * @param activationSignalOffset the activationSignalOffset value to set.
      * @return the SignalGateProcessor object itself.
      */
@@ -123,7 +124,7 @@ public final class SignalGateProcessor extends ProcessorNodeBase {
      * Get the minimumActivationTime property: The minimum period for which the gate remains open in the absence of
      * subsequent triggers (events). When used upstream of a file or video sink, it determines the minimum length of the
      * recorded video clip.
-     *
+     * 
      * @return the minimumActivationTime value.
      */
     public String getMinimumActivationTime() {
@@ -134,7 +135,7 @@ public final class SignalGateProcessor extends ProcessorNodeBase {
      * Set the minimumActivationTime property: The minimum period for which the gate remains open in the absence of
      * subsequent triggers (events). When used upstream of a file or video sink, it determines the minimum length of the
      * recorded video clip.
-     *
+     * 
      * @param minimumActivationTime the minimumActivationTime value to set.
      * @return the SignalGateProcessor object itself.
      */
@@ -147,7 +148,7 @@ public final class SignalGateProcessor extends ProcessorNodeBase {
      * Get the maximumActivationTime property: The maximum period for which the gate remains open in the presence of
      * subsequent triggers (events). When used upstream of a file or video sink, it determines the maximum length of the
      * recorded video clip.
-     *
+     * 
      * @return the maximumActivationTime value.
      */
     public String getMaximumActivationTime() {
@@ -158,12 +159,95 @@ public final class SignalGateProcessor extends ProcessorNodeBase {
      * Set the maximumActivationTime property: The maximum period for which the gate remains open in the presence of
      * subsequent triggers (events). When used upstream of a file or video sink, it determines the maximum length of the
      * recorded video clip.
-     *
+     * 
      * @param maximumActivationTime the maximumActivationTime value to set.
      * @return the SignalGateProcessor object itself.
      */
     public SignalGateProcessor setMaximumActivationTime(String maximumActivationTime) {
         this.maximumActivationTime = maximumActivationTime;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("@type", this.type);
+        jsonWriter.writeStringField("activationEvaluationWindow", this.activationEvaluationWindow);
+        jsonWriter.writeStringField("activationSignalOffset", this.activationSignalOffset);
+        jsonWriter.writeStringField("minimumActivationTime", this.minimumActivationTime);
+        jsonWriter.writeStringField("maximumActivationTime", this.maximumActivationTime);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SignalGateProcessor from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SignalGateProcessor if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SignalGateProcessor.
+     */
+    public static SignalGateProcessor fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean nameFound = false;
+            String name = null;
+            boolean inputsFound = false;
+            List<NodeInput> inputs = null;
+            String type = "#Microsoft.VideoAnalyzer.SignalGateProcessor";
+            String activationEvaluationWindow = null;
+            String activationSignalOffset = null;
+            String minimumActivationTime = null;
+            String maximumActivationTime = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("inputs".equals(fieldName)) {
+                    inputs = reader.readArray(reader1 -> NodeInput.fromJson(reader1));
+                    inputsFound = true;
+                } else if ("@type".equals(fieldName)) {
+                    type = reader.getString();
+                } else if ("activationEvaluationWindow".equals(fieldName)) {
+                    activationEvaluationWindow = reader.getString();
+                } else if ("activationSignalOffset".equals(fieldName)) {
+                    activationSignalOffset = reader.getString();
+                } else if ("minimumActivationTime".equals(fieldName)) {
+                    minimumActivationTime = reader.getString();
+                } else if ("maximumActivationTime".equals(fieldName)) {
+                    maximumActivationTime = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (nameFound && inputsFound) {
+                SignalGateProcessor deserializedSignalGateProcessor = new SignalGateProcessor(name, inputs);
+                deserializedSignalGateProcessor.type = type;
+                deserializedSignalGateProcessor.activationEvaluationWindow = activationEvaluationWindow;
+                deserializedSignalGateProcessor.activationSignalOffset = activationSignalOffset;
+                deserializedSignalGateProcessor.minimumActivationTime = minimumActivationTime;
+                deserializedSignalGateProcessor.maximumActivationTime = maximumActivationTime;
+
+                return deserializedSignalGateProcessor;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!nameFound) {
+                missingProperties.add("name");
+            }
+            if (!inputsFound) {
+                missingProperties.add("inputs");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

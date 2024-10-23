@@ -5,34 +5,41 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines how often media is submitted to the extension plugin. */
+/**
+ * Defines how often media is submitted to the extension plugin.
+ */
 @Fluent
-public final class SamplingOptions {
+public final class SamplingOptions implements JsonSerializable<SamplingOptions> {
     /*
-     * When set to 'true', prevents frames without upstream inference data to
-     * be sent to the extension plugin. This is useful to limit the frames sent
-     * to the extension to pre-analyzed frames only. For example, when used
-     * downstream from a motion detector, this can enable for only frames in
-     * which motion has been detected to be further analyzed.
+     * When set to 'true', prevents frames without upstream inference data to be sent to the extension plugin. This is
+     * useful to limit the frames sent to the extension to pre-analyzed frames only. For example, when used downstream
+     * from a motion detector, this can enable for only frames in which motion has been detected to be further analyzed.
      */
-    @JsonProperty(value = "skipSamplesWithoutAnnotation")
     private String skipSamplesWithoutAnnotation;
 
     /*
-     * Maximum rate of samples submitted to the extension. This prevents an
-     * extension plugin to be overloaded with data.
+     * Maximum rate of samples submitted to the extension. This prevents an extension plugin to be overloaded with data.
      */
-    @JsonProperty(value = "maximumSamplesPerSecond")
     private String maximumSamplesPerSecond;
+
+    /**
+     * Creates an instance of SamplingOptions class.
+     */
+    public SamplingOptions() {
+    }
 
     /**
      * Get the skipSamplesWithoutAnnotation property: When set to 'true', prevents frames without upstream inference
      * data to be sent to the extension plugin. This is useful to limit the frames sent to the extension to pre-analyzed
      * frames only. For example, when used downstream from a motion detector, this can enable for only frames in which
      * motion has been detected to be further analyzed.
-     *
+     * 
      * @return the skipSamplesWithoutAnnotation value.
      */
     public String getSkipSamplesWithoutAnnotation() {
@@ -44,7 +51,7 @@ public final class SamplingOptions {
      * data to be sent to the extension plugin. This is useful to limit the frames sent to the extension to pre-analyzed
      * frames only. For example, when used downstream from a motion detector, this can enable for only frames in which
      * motion has been detected to be further analyzed.
-     *
+     * 
      * @param skipSamplesWithoutAnnotation the skipSamplesWithoutAnnotation value to set.
      * @return the SamplingOptions object itself.
      */
@@ -56,7 +63,7 @@ public final class SamplingOptions {
     /**
      * Get the maximumSamplesPerSecond property: Maximum rate of samples submitted to the extension. This prevents an
      * extension plugin to be overloaded with data.
-     *
+     * 
      * @return the maximumSamplesPerSecond value.
      */
     public String getMaximumSamplesPerSecond() {
@@ -66,12 +73,51 @@ public final class SamplingOptions {
     /**
      * Set the maximumSamplesPerSecond property: Maximum rate of samples submitted to the extension. This prevents an
      * extension plugin to be overloaded with data.
-     *
+     * 
      * @param maximumSamplesPerSecond the maximumSamplesPerSecond value to set.
      * @return the SamplingOptions object itself.
      */
     public SamplingOptions setMaximumSamplesPerSecond(String maximumSamplesPerSecond) {
         this.maximumSamplesPerSecond = maximumSamplesPerSecond;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("skipSamplesWithoutAnnotation", this.skipSamplesWithoutAnnotation);
+        jsonWriter.writeStringField("maximumSamplesPerSecond", this.maximumSamplesPerSecond);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SamplingOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SamplingOptions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SamplingOptions.
+     */
+    public static SamplingOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SamplingOptions deserializedSamplingOptions = new SamplingOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("skipSamplesWithoutAnnotation".equals(fieldName)) {
+                    deserializedSamplingOptions.skipSamplesWithoutAnnotation = reader.getString();
+                } else if ("maximumSamplesPerSecond".equals(fieldName)) {
+                    deserializedSamplingOptions.maximumSamplesPerSecond = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSamplingOptions;
+        });
     }
 }

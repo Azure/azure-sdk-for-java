@@ -5,38 +5,45 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines a Spatial Analysis person distance operation eventing configuration. */
+/**
+ * Defines a Spatial Analysis person distance operation eventing configuration.
+ */
 @Fluent
 public final class SpatialAnalysisPersonDistanceEvent extends SpatialAnalysisOperationEventBase {
     /*
      * The event trigger type.
      */
-    @JsonProperty(value = "trigger")
     private SpatialAnalysisPersonDistanceEventTrigger trigger;
 
     /*
      * The event or interval output frequency.
      */
-    @JsonProperty(value = "outputFrequency")
     private String outputFrequency;
 
     /*
      * The minimum distance threshold
      */
-    @JsonProperty(value = "minimumDistanceThreshold")
     private String minimumDistanceThreshold;
 
     /*
      * The maximum distance threshold
      */
-    @JsonProperty(value = "maximumDistanceThreshold")
     private String maximumDistanceThreshold;
 
     /**
+     * Creates an instance of SpatialAnalysisPersonDistanceEvent class.
+     */
+    public SpatialAnalysisPersonDistanceEvent() {
+    }
+
+    /**
      * Get the trigger property: The event trigger type.
-     *
+     * 
      * @return the trigger value.
      */
     public SpatialAnalysisPersonDistanceEventTrigger getTrigger() {
@@ -45,7 +52,7 @@ public final class SpatialAnalysisPersonDistanceEvent extends SpatialAnalysisOpe
 
     /**
      * Set the trigger property: The event trigger type.
-     *
+     * 
      * @param trigger the trigger value to set.
      * @return the SpatialAnalysisPersonDistanceEvent object itself.
      */
@@ -56,7 +63,7 @@ public final class SpatialAnalysisPersonDistanceEvent extends SpatialAnalysisOpe
 
     /**
      * Get the outputFrequency property: The event or interval output frequency.
-     *
+     * 
      * @return the outputFrequency value.
      */
     public String getOutputFrequency() {
@@ -65,7 +72,7 @@ public final class SpatialAnalysisPersonDistanceEvent extends SpatialAnalysisOpe
 
     /**
      * Set the outputFrequency property: The event or interval output frequency.
-     *
+     * 
      * @param outputFrequency the outputFrequency value to set.
      * @return the SpatialAnalysisPersonDistanceEvent object itself.
      */
@@ -76,7 +83,7 @@ public final class SpatialAnalysisPersonDistanceEvent extends SpatialAnalysisOpe
 
     /**
      * Get the minimumDistanceThreshold property: The minimum distance threshold.
-     *
+     * 
      * @return the minimumDistanceThreshold value.
      */
     public String getMinimumDistanceThreshold() {
@@ -85,7 +92,7 @@ public final class SpatialAnalysisPersonDistanceEvent extends SpatialAnalysisOpe
 
     /**
      * Set the minimumDistanceThreshold property: The minimum distance threshold.
-     *
+     * 
      * @param minimumDistanceThreshold the minimumDistanceThreshold value to set.
      * @return the SpatialAnalysisPersonDistanceEvent object itself.
      */
@@ -96,7 +103,7 @@ public final class SpatialAnalysisPersonDistanceEvent extends SpatialAnalysisOpe
 
     /**
      * Get the maximumDistanceThreshold property: The maximum distance threshold.
-     *
+     * 
      * @return the maximumDistanceThreshold value.
      */
     public String getMaximumDistanceThreshold() {
@@ -105,7 +112,7 @@ public final class SpatialAnalysisPersonDistanceEvent extends SpatialAnalysisOpe
 
     /**
      * Set the maximumDistanceThreshold property: The maximum distance threshold.
-     *
+     * 
      * @param maximumDistanceThreshold the maximumDistanceThreshold value to set.
      * @return the SpatialAnalysisPersonDistanceEvent object itself.
      */
@@ -114,17 +121,75 @@ public final class SpatialAnalysisPersonDistanceEvent extends SpatialAnalysisOpe
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SpatialAnalysisPersonDistanceEvent setThreshold(String threshold) {
         super.setThreshold(threshold);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SpatialAnalysisPersonDistanceEvent setFocus(SpatialAnalysisOperationFocus focus) {
         super.setFocus(focus);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("threshold", getThreshold());
+        jsonWriter.writeStringField("focus", getFocus() == null ? null : getFocus().toString());
+        jsonWriter.writeStringField("trigger", this.trigger == null ? null : this.trigger.toString());
+        jsonWriter.writeStringField("outputFrequency", this.outputFrequency);
+        jsonWriter.writeStringField("minimumDistanceThreshold", this.minimumDistanceThreshold);
+        jsonWriter.writeStringField("maximumDistanceThreshold", this.maximumDistanceThreshold);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SpatialAnalysisPersonDistanceEvent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SpatialAnalysisPersonDistanceEvent if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SpatialAnalysisPersonDistanceEvent.
+     */
+    public static SpatialAnalysisPersonDistanceEvent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SpatialAnalysisPersonDistanceEvent deserializedSpatialAnalysisPersonDistanceEvent
+                = new SpatialAnalysisPersonDistanceEvent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("threshold".equals(fieldName)) {
+                    deserializedSpatialAnalysisPersonDistanceEvent.setThreshold(reader.getString());
+                } else if ("focus".equals(fieldName)) {
+                    deserializedSpatialAnalysisPersonDistanceEvent
+                        .setFocus(SpatialAnalysisOperationFocus.fromString(reader.getString()));
+                } else if ("trigger".equals(fieldName)) {
+                    deserializedSpatialAnalysisPersonDistanceEvent.trigger
+                        = SpatialAnalysisPersonDistanceEventTrigger.fromString(reader.getString());
+                } else if ("outputFrequency".equals(fieldName)) {
+                    deserializedSpatialAnalysisPersonDistanceEvent.outputFrequency = reader.getString();
+                } else if ("minimumDistanceThreshold".equals(fieldName)) {
+                    deserializedSpatialAnalysisPersonDistanceEvent.minimumDistanceThreshold = reader.getString();
+                } else if ("maximumDistanceThreshold".equals(fieldName)) {
+                    deserializedSpatialAnalysisPersonDistanceEvent.maximumDistanceThreshold = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSpatialAnalysisPersonDistanceEvent;
+        });
     }
 }
