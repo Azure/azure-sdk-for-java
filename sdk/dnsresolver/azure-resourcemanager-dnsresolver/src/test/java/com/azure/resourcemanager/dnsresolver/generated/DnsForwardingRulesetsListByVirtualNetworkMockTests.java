@@ -22,7 +22,7 @@ public final class DnsForwardingRulesetsListByVirtualNetworkMockTests {
     @Test
     public void testListByVirtualNetwork() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"baaa\",\"properties\":{\"virtualNetworkLink\":{\"id\":\"ayffim\"}}}]}";
+            = "{\"value\":[{\"id\":\"qhl\",\"properties\":{\"virtualNetworkLink\":{\"id\":\"iiojnal\"}}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class DnsForwardingRulesetsListByVirtualNetworkMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<VirtualNetworkDnsForwardingRuleset> response = manager.dnsForwardingRulesets()
-            .listByVirtualNetwork("sofwqmzqalkrmnji", "pxacqqudfn", 1238431927, com.azure.core.util.Context.NONE);
+            .listByVirtualNetwork("dhszfjv", "bgofeljag", 728576378, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("baaa", response.iterator().next().id());
-        Assertions.assertEquals("ayffim", response.iterator().next().virtualNetworkLink().id());
+        Assertions.assertEquals("qhl", response.iterator().next().id());
+        Assertions.assertEquals("iiojnal", response.iterator().next().virtualNetworkLink().id());
     }
 }

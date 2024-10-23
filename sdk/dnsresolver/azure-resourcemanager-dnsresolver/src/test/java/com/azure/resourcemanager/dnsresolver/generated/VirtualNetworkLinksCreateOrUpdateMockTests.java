@@ -24,7 +24,7 @@ public final class VirtualNetworkLinksCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"etag\":\"ho\",\"properties\":{\"virtualNetwork\":{\"id\":\"qzudphq\"},\"metadata\":{\"nwcvtbvkayhmtnv\":\"dkfw\",\"zcjaesgvvsccy\":\"qiatkzwpcnp\",\"hwyg\":\"jguq\",\"semdwzrmu\":\"lvdnkfx\"},\"provisioningState\":\"Succeeded\"},\"id\":\"cqdpsqxqvpsvuoym\",\"name\":\"ccelve\",\"type\":\"rypqlmfeo\"}";
+            = "{\"etag\":\"dyftumrtwna\",\"properties\":{\"virtualNetwork\":{\"id\":\"slbi\"},\"metadata\":{\"qphchqnrnrpxehuw\":\"jgcyztsfmznba\",\"bydvkhbejdz\":\"ykqgaifmvik\"},\"provisioningState\":\"Succeeded\"},\"id\":\"dsrhnjiv\",\"name\":\"lvtno\",\"type\":\"qfzgemjdftul\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,17 +34,16 @@ public final class VirtualNetworkLinksCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         VirtualNetworkLink response = manager.virtualNetworkLinks()
-            .define("rgz")
-            .withExistingDnsForwardingRuleset("lfzxiavrmbzonoki", "rjqc")
-            .withVirtualNetwork(new SubResource().withId("indfpwpjyl"))
-            .withMetadata(mapOf("gofel", "lhflsjcdhszfjvf", "rqmq", "a", "tvsexsowuel", "ldvriiiojnalghfk", "wws",
-                "qhhahhxvrhmzkwpj"))
-            .withIfMatch("syqtfi")
-            .withIfNoneMatch("whbotzingamv")
+            .define("mrsreuzvxurisjnh")
+            .withExistingDnsForwardingRuleset("asdvl", "fwdgzxulucvp")
+            .withVirtualNetwork(new SubResource().withId("xmrhu"))
+            .withMetadata(mapOf("upauut", "pcesutrg"))
+            .withIfMatch("zjxvydfcea")
+            .withIfNoneMatch("vlhv")
             .create();
 
-        Assertions.assertEquals("qzudphq", response.virtualNetwork().id());
-        Assertions.assertEquals("dkfw", response.metadata().get("nwcvtbvkayhmtnv"));
+        Assertions.assertEquals("slbi", response.virtualNetwork().id());
+        Assertions.assertEquals("jgcyztsfmznba", response.metadata().get("qphchqnrnrpxehuw"));
     }
 
     // Use "Map.of" if available
