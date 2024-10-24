@@ -300,9 +300,8 @@ public final class JobProperties {
      */
     public void validate() {
         if (transferType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property transferType in model JobProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property transferType in model JobProperties"));
         }
         if (error() != null) {
             error().validate();

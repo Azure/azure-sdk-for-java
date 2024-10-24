@@ -18,44 +18,35 @@ import org.junit.jupiter.api.Assertions;
 public final class TransferConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TransferConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"transferConfigurationType\":\"TransferUsingFilter\",\"transferFilterDetails\":{\"include\":{\"dataAccountType\":\"StorageAccount\",\"filterFileDetails\":[]}},\"transferAllDetails\":{\"include\":{\"dataAccountType\":\"StorageAccount\",\"transferAllBlobs\":true,\"transferAllFiles\":false}}}")
-                .toObject(TransferConfiguration.class);
+        TransferConfiguration model = BinaryData.fromString(
+            "{\"transferConfigurationType\":\"TransferUsingFilter\",\"transferFilterDetails\":{\"include\":{\"dataAccountType\":\"StorageAccount\",\"filterFileDetails\":[]}},\"transferAllDetails\":{\"include\":{\"dataAccountType\":\"StorageAccount\",\"transferAllBlobs\":true,\"transferAllFiles\":false}}}")
+            .toObject(TransferConfiguration.class);
         Assertions.assertEquals(TransferConfigurationType.TRANSFER_USING_FILTER, model.transferConfigurationType());
-        Assertions
-            .assertEquals(DataAccountType.STORAGE_ACCOUNT, model.transferFilterDetails().include().dataAccountType());
-        Assertions
-            .assertEquals(DataAccountType.STORAGE_ACCOUNT, model.transferAllDetails().include().dataAccountType());
+        Assertions.assertEquals(DataAccountType.STORAGE_ACCOUNT,
+            model.transferFilterDetails().include().dataAccountType());
+        Assertions.assertEquals(DataAccountType.STORAGE_ACCOUNT,
+            model.transferAllDetails().include().dataAccountType());
         Assertions.assertEquals(true, model.transferAllDetails().include().transferAllBlobs());
         Assertions.assertEquals(false, model.transferAllDetails().include().transferAllFiles());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TransferConfiguration model =
-            new TransferConfiguration()
-                .withTransferConfigurationType(TransferConfigurationType.TRANSFER_USING_FILTER)
-                .withTransferFilterDetails(
-                    new TransferConfigurationTransferFilterDetails()
-                        .withInclude(
-                            new TransferFilterDetails()
-                                .withDataAccountType(DataAccountType.STORAGE_ACCOUNT)
-                                .withFilterFileDetails(Arrays.asList())))
-                .withTransferAllDetails(
-                    new TransferConfigurationTransferAllDetails()
-                        .withInclude(
-                            new TransferAllDetails()
-                                .withDataAccountType(DataAccountType.STORAGE_ACCOUNT)
-                                .withTransferAllBlobs(true)
-                                .withTransferAllFiles(false)));
+        TransferConfiguration model
+            = new TransferConfiguration().withTransferConfigurationType(TransferConfigurationType.TRANSFER_USING_FILTER)
+                .withTransferFilterDetails(new TransferConfigurationTransferFilterDetails()
+                    .withInclude(new TransferFilterDetails().withDataAccountType(DataAccountType.STORAGE_ACCOUNT)
+                        .withFilterFileDetails(Arrays.asList())))
+                .withTransferAllDetails(new TransferConfigurationTransferAllDetails()
+                    .withInclude(new TransferAllDetails().withDataAccountType(DataAccountType.STORAGE_ACCOUNT)
+                        .withTransferAllBlobs(true)
+                        .withTransferAllFiles(false)));
         model = BinaryData.fromObject(model).toObject(TransferConfiguration.class);
         Assertions.assertEquals(TransferConfigurationType.TRANSFER_USING_FILTER, model.transferConfigurationType());
-        Assertions
-            .assertEquals(DataAccountType.STORAGE_ACCOUNT, model.transferFilterDetails().include().dataAccountType());
-        Assertions
-            .assertEquals(DataAccountType.STORAGE_ACCOUNT, model.transferAllDetails().include().dataAccountType());
+        Assertions.assertEquals(DataAccountType.STORAGE_ACCOUNT,
+            model.transferFilterDetails().include().dataAccountType());
+        Assertions.assertEquals(DataAccountType.STORAGE_ACCOUNT,
+            model.transferAllDetails().include().dataAccountType());
         Assertions.assertEquals(true, model.transferAllDetails().include().transferAllBlobs());
         Assertions.assertEquals(false, model.transferAllDetails().include().transferAllFiles());
     }
