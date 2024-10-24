@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.{CosmosException, spark}
+import com.azure.cosmos.CosmosException
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.models.FeedResponse
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
@@ -14,9 +14,8 @@ import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
 import scala.util.Random
 import scala.util.control.Breaks
 import scala.concurrent.{Await, ExecutionContext, Future}
-import com.azure.cosmos.implementation.OperationCancelledException
+import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, OperationCancelledException}
 
-import scala.concurrent.duration.FiniteDuration
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -56,6 +55,7 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
   private val lastContinuationToken = new AtomicReference[String](null)
   // scalastyle:on null
   private val retryCount = new AtomicLong(0)
+  private[spark] val hasMoreChangesToProcess = new AtomicReference[Boolean](true)
   private lazy val operationContextString = operationContextAndListener match {
     case Some(o) => if (o.getOperationContext != null) {
       o.getOperationContext.toString
@@ -154,6 +154,10 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
 
       if (hasNext) {
         val feedResponse = feedResponseIterator.next()
+        if (!ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor
+            .getHasMoreChangesToProcess(feedResponse)) {
+          hasMoreChangesToProcess.set(false)
+        }
         if (operationContextAndListener.isDefined) {
           operationContextAndListener.get.getOperationListener.feedResponseProcessedListener(
             operationContextAndListener.get.getOperationContext,

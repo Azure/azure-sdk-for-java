@@ -143,14 +143,16 @@ public final class BridgeInternal {
         QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext,
         boolean useEtagAsContinuation,
         boolean isNoChangesResponse,
-        CosmosDiagnostics cosmosDiagnostics) {
+        CosmosDiagnostics cosmosDiagnostics,
+        Boolean hasMoreChangesToProcess) {
         FeedResponse<T> feedResponseWithQueryMetrics = ModelBridgeInternal.createFeedResponseWithQueryMetrics(
             results,
             headers,
             queryMetricsMap,
             diagnosticsContext,
             useEtagAsContinuation,
-            isNoChangesResponse);
+            isNoChangesResponse,
+            hasMoreChangesToProcess);
 
         ClientSideRequestStatistics requestStatistics;
         if (cosmosDiagnostics != null) {
@@ -176,6 +178,25 @@ public final class BridgeInternal {
         }
 
         return feedResponseWithQueryMetrics;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <T> FeedResponse<T> createFeedResponseWithQueryMetrics(
+        List<T> results,
+        Map<String, String> headers,
+        ConcurrentMap<String, QueryMetrics> queryMetricsMap,
+        QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext,
+        boolean useEtagAsContinuation,
+        boolean isNoChangesResponse,
+        CosmosDiagnostics cosmosDiagnostics) {
+        return createFeedResponseWithQueryMetrics(results,
+            headers,
+            queryMetricsMap,
+            diagnosticsContext,
+            useEtagAsContinuation,
+            isNoChangesResponse,
+            cosmosDiagnostics,
+            null);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

@@ -53,6 +53,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     private CosmosDiagnostics cosmosDiagnostics;
     private QueryInfo queryInfo;
     private QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext;
+    private Boolean hasMoreChangesToProcess;
 
     FeedResponse(List<T> results, Map<String, String> headers) {
         this(results, headers, false, false, new ConcurrentHashMap<>());
@@ -72,9 +73,10 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         Map<String, String> headers,
         ConcurrentMap<String, QueryMetrics> queryMetricsMap,
         boolean useEtagAsContinuation,
-        boolean isNoChanges) {
-
+        boolean isNoChanges,
+        Boolean hasMoreChangesToProcess) {
         this(results, headers, useEtagAsContinuation, isNoChanges, queryMetricsMap);
+        this.hasMoreChangesToProcess = hasMoreChangesToProcess;
     }
 
     FeedResponse(List<T> results, Map<String, String> header, boolean nochanges) {
@@ -164,6 +166,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
                 toBeCloned.queryPlanDiagnosticsContext.getEndTimeUTC(),
                 toBeCloned.queryPlanDiagnosticsContext.getRequestTimeline()) :
             null;
+        this.hasMoreChangesToProcess = toBeCloned.hasMoreChangesToProcess;
     }
 
     /**
@@ -638,6 +641,17 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
                 public <T> FeedResponse<T> createFeedResponse(List<T> results, Map<String, String> headers,
                                                               CosmosDiagnostics diagnostics) {
                     return new FeedResponse<>(results, headers, diagnostics);
+                }
+
+                @Override
+                public <T> FeedResponse<T> setHasMoreChangesToProcess(FeedResponse<T> feedResponse, boolean hasMoreChangesToProcess) {
+                    feedResponse.hasMoreChangesToProcess = hasMoreChangesToProcess;
+                    return feedResponse;
+                }
+
+                @Override
+                public <T> Boolean getHasMoreChangesToProcess(FeedResponse<T> feedResponse) {
+                    return feedResponse.hasMoreChangesToProcess;
                 }
             });
     }

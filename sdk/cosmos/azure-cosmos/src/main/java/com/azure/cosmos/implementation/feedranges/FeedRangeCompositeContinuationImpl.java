@@ -269,11 +269,16 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     }
 
     @Override
-    public <T> boolean hasFetchedAllChangesAvailableNow(FeedResponse<T> response) {
+    public <T> boolean hasFetchedAllChanges(FeedResponse<T> response, Long endLSN) {
+        // if endLSN is not provided, we will use the latest LSN from the session token for available now
+        // if endLSN is provided, we have to use the min of latestLSNFromSessionToken and endLSN in case some partitions
+        // have less changes than others
+        long lastestLSNFromSessionToken = this.getLatestLsnFromSessionToken(response.getSessionToken());
+        long lsn = endLSN != null ? Math.min(endLSN, lastestLSNFromSessionToken)  : lastestLSNFromSessionToken;
         FeedRangeLSNContext feedRangeLSNContext =
             this.updateFeedRangeEndLSNIfAbsent(
                 this.currentToken.getRange(),
-                response.getSessionToken());
+                lsn);
         feedRangeLSNContext.handleLSNFromContinuation(this.currentToken);
 
         // find next token which can fetch more
@@ -282,9 +287,9 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
             this.moveToNextToken();
         } while (
             !this.currentToken.getRange().equals(initialToken) &&
-                this.hasFetchAllChangesAvailableNowForFeedRange(this.currentToken.getRange()));
+                this.hasFetchedAllChangesForFeedRange(this.currentToken.getRange()));
 
-        return this.hasFetchAllChangesAvailableNowForFeedRange(this.currentToken.getRange());
+        return this.hasFetchedAllChangesForFeedRange(this.currentToken.getRange());
     }
 
     @Override
@@ -340,18 +345,18 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
     private FeedRangeLSNContext updateFeedRangeEndLSNIfAbsent(
         Range<String> targetedRange,
-        String sessionToken) {
+        long endLSN) {
         return this.feedRangeLSNContextMap.computeIfAbsent(
             targetedRange,
             (range) -> {
                 return new FeedRangeLSNContext(
                     targetedRange,
-                    this.getLatestLsnFromSessionToken(sessionToken)
+                    endLSN
                 );
             });
     }
 
-    private boolean hasFetchAllChangesAvailableNowForFeedRange(Range<String> range) {
+    private boolean hasFetchedAllChangesForFeedRange(Range<String> range) {
         return this.feedRangeLSNContextMap.containsKey(range) &&
             this.feedRangeLSNContextMap.get(range).hasCompleted;
     }

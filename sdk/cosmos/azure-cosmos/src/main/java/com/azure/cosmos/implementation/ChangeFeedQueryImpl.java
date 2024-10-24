@@ -117,6 +117,10 @@ class ChangeFeedQueryImpl<T> {
             ImplementationBridgeHelpers
                 .CosmosChangeFeedRequestOptionsHelper
                 .getCosmosChangeFeedRequestOptionsAccessor()
+                .getEndLSN(this.options),
+            ImplementationBridgeHelpers
+                .CosmosChangeFeedRequestOptionsHelper
+                .getCosmosChangeFeedRequestOptionsAccessor()
                 .getOperationContext(this.options)
         );
     }

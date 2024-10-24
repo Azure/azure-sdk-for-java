@@ -175,6 +175,10 @@ private case class ChangeFeedPartitionReader
       case ChangeFeedModes.FullFidelity | ChangeFeedModes.AllVersionsAndDeletes =>
         changeFeedItemDeserializerV1
     }
+    this.partition.endLsn.foreach { endLsn =>
+     ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor
+       .setEndLSN(options, endLsn)
+    }
 
     options.setCustomItemSerializer(itemDeserializer)
   }
@@ -244,7 +248,7 @@ private case class ChangeFeedPartitionReader
         assert(node.lsn != "", "Change feed responses must have non empty _lsn.")
         val nextLsn = SparkBridgeImplementationInternal.toLsn(node.lsn)
 
-        nextLsn <= endLsn
+        nextLsn <= endLsn || this.iterator.hasMoreChangesToProcess.get()
     }
   }
 
