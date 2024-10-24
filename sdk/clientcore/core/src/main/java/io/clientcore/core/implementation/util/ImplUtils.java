@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
@@ -39,6 +40,7 @@ import java.util.regex.Pattern;
  * Utility class containing implementation specific methods.
  */
 public final class ImplUtils {
+    private static final ClientLogger LOGGER = new ClientLogger(ImplUtils.class);
     private static final HttpHeaderName RETRY_AFTER_MS_HEADER = HttpHeaderName.fromString("retry-after-ms");
     private static final HttpHeaderName X_MS_RETRY_AFTER_MS_HEADER = HttpHeaderName.fromString("x-ms-retry-after-ms");
     private static final Charset UTF_32BE = Charset.forName("UTF-32BE");
@@ -346,6 +348,29 @@ public final class ImplUtils {
         }
     }
 
+    /**
+     * Gets a {@link Class} from the given {@code className}.
+     * <p>
+     * This method will attempt to load the class from the current thread's context class loader. If the class cannot be
+     * found on the classpath an exception will be thrown. Unlike calling {@link Class#forName(String)} directly, this
+     * utility method doesn't throw a checked exception, rather it throws a {@link RuntimeException}.
+     *
+     * @param <T> The type of class to load.
+     * @param className The name of the class to load.
+     * @return The {@link Class} with the given {@code className}.
+     * @throws RuntimeException If the class cannot be found on the classpath.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Class<? extends T> getClassByName(String className) {
+        Objects.requireNonNull(className, "'className' cannot be null");
+        try {
+            return (Class<? extends T>) Class.forName(className, false, ImplUtils.class.getClassLoader());
+        } catch (ClassNotFoundException e) {
+            throw LOGGER.logThrowableAsError(
+                new RuntimeException("Class '" + className + "' is not found on the classpath.", e));
+        }
+    }
+
     public static final class QueryParameterIterator implements Iterator<Map.Entry<String, String>> {
         private final String queryParameters;
         private final int queryParametersLength;
@@ -518,6 +543,22 @@ public final class ImplUtils {
         }
 
         return null;
+    }
+
+    /**
+     * Fully writes a {@link ByteBuffer} to a {@link WritableByteChannel}.
+     * <p>
+     * This handles scenarios where write operations don't write the entirety of the {@link ByteBuffer} in a single
+     * call.
+     *
+     * @param buffer The {@link ByteBuffer} to write.
+     * @param channel The {@link WritableByteChannel} to write the {@code buffer} to.
+     * @throws IOException If an I/O error occurs while writing to the {@code channel}.
+     */
+    public static void fullyWriteBuffer(ByteBuffer buffer, WritableByteChannel channel) throws IOException {
+        while (buffer.hasRemaining()) {
+            channel.write(buffer);
+        }
     }
 
     /**
