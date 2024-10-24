@@ -20,18 +20,17 @@ public class ReceiveEventsBatchTest extends ServiceBatchTest<EventHubsPerfOption
      */
     public ReceiveEventsBatchTest(EventHubsPerfOptions options) throws IllegalStateException {
         super(options);
-        if(options.getPartitionId() != null) {
+        if (options.getPartitionId() != null) {
             throw new IllegalStateException("Partition Id not required/supported for this test case.");
         }
         eventDataBytes = Util.generateString(options.getMessageSize()).getBytes(StandardCharsets.UTF_8);
     }
 
-
     @Override
     public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
-            .then(Mono.defer(() -> Util.preLoadEvents(eventHubProducerAsyncClient, options.getPartitionId() != null
-                ? String.valueOf(options.getPartitionId()) : null , options.getEvents(), eventDataBytes)));
+        return super.globalSetupAsync().then(Mono.defer(() -> Util.preLoadEvents(eventHubProducerAsyncClient,
+            options.getPartitionId() != null ? String.valueOf(options.getPartitionId()) : null, options.getEvents(),
+            eventDataBytes)));
     }
 
     @Override
@@ -39,9 +38,7 @@ public class ReceiveEventsBatchTest extends ServiceBatchTest<EventHubsPerfOption
         return super.setupAsync().then(Mono.fromCallable(() -> {
             // Setup the service client
             eventHubClientBuilder = new EventHubClientBuilder().connectionString(connectionString, eventHubName);
-            eventHubClientBuilder
-                .prefetchCount(options.getPrefetch())
-                .consumerGroup(options.getConsumerGroup());
+            eventHubClientBuilder.prefetchCount(options.getPrefetch()).consumerGroup(options.getConsumerGroup());
             eventHubConsumerClient = eventHubClientBuilder.buildConsumerClient();
             eventHubConsumerAsyncClient = eventHubClientBuilder.buildAsyncConsumerClient();
             return 1;
@@ -65,17 +62,9 @@ public class ReceiveEventsBatchTest extends ServiceBatchTest<EventHubsPerfOption
     @Override
     public Mono<Integer> runBatchAsync() {
         int receiveCount = options.getCount();
-        return Mono.using(
-            eventHubClientBuilder::buildAsyncConsumerClient,
-            consumerAsyncClient -> consumerAsyncClient.receive(true)
-                .take(receiveCount)
-                .flatMap(message -> {
-                    return Mono.empty();
-                }, 1)
-                .then()
-                .thenReturn(receiveCount),
-            EventHubConsumerAsyncClient::close,
-            true
-        );
+        return Mono.using(eventHubClientBuilder::buildAsyncConsumerClient,
+            consumerAsyncClient -> consumerAsyncClient.receive(true).take(receiveCount).flatMap(message -> {
+                return Mono.empty();
+            }, 1).then().thenReturn(receiveCount), EventHubConsumerAsyncClient::close, true);
     }
 }
