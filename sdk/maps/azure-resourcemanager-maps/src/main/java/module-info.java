@@ -10,10 +10,6 @@ module com.azure.resourcemanager.maps {
     exports com.azure.resourcemanager.maps.fluent.models;
     exports com.azure.resourcemanager.maps.models;
 
-    opens com.azure.resourcemanager.maps.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.maps.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.maps.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.maps.models to com.azure.core, com.fasterxml.jackson.databind;
 }
