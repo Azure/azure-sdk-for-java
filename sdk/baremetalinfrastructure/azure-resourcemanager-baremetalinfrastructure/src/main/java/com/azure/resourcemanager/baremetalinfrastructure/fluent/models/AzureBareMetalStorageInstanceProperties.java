@@ -45,8 +45,8 @@ public final class AzureBareMetalStorageInstanceProperties {
      *     set.
      * @return the AzureBareMetalStorageInstanceProperties object itself.
      */
-    public AzureBareMetalStorageInstanceProperties withAzureBareMetalStorageInstanceUniqueIdentifier(
-        String azureBareMetalStorageInstanceUniqueIdentifier) {
+    public AzureBareMetalStorageInstanceProperties
+        withAzureBareMetalStorageInstanceUniqueIdentifier(String azureBareMetalStorageInstanceUniqueIdentifier) {
         this.azureBareMetalStorageInstanceUniqueIdentifier = azureBareMetalStorageInstanceUniqueIdentifier;
         return this;
     }

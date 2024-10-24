@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Unmanaged file system mounting configuration. */
 @Fluent
 public final class UnmanagedFileSystemReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UnmanagedFileSystemReference.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(UnmanagedFileSystemReference.class);
 
     /*
      * Mount command line. Note, Batch AI will append mount path to the command
@@ -83,16 +84,12 @@ public final class UnmanagedFileSystemReference {
      */
     public void validate() {
         if (mountCommand() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property mountCommand in model UnmanagedFileSystemReference"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property mountCommand in model UnmanagedFileSystemReference"));
         }
         if (relativeMountPath() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property relativeMountPath in model UnmanagedFileSystemReference"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property relativeMountPath in model UnmanagedFileSystemReference"));
         }
     }
 }

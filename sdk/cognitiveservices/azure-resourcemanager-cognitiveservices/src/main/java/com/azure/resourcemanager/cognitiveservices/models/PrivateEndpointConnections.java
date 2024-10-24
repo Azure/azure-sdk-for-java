@@ -21,8 +21,8 @@ public interface PrivateEndpointConnections {
      * @return the private endpoint connections associated with the Cognitive Services account along with {@link
      *     Response}.
      */
-    Response<PrivateEndpointConnectionListResult> listWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<PrivateEndpointConnectionListResult> listWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Gets the private endpoint connections associated with the Cognitive Services account.
@@ -50,8 +50,8 @@ public interface PrivateEndpointConnections {
      * @return the specified private endpoint connection associated with the Cognitive Services account along with
      *     {@link Response}.
      */
-    Response<PrivateEndpointConnection> getWithResponse(
-        String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnection> getWithResponse(String resourceGroupName, String accountName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Gets the specified private endpoint connection associated with the Cognitive Services account.

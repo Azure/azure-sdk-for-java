@@ -38,72 +38,44 @@ public final class CommitmentPlansCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"etag\":\"d\",\"kind\":\"fmjnnawtqa\",\"sku\":{\"name\":\"xuckpggqoweyir\",\"tier\":\"Basic\",\"size\":\"sn\",\"family\":\"fl\",\"capacity\":1354932365},\"tags\":{\"qxpxiwfcngjsaa\":\"zruwn\",\"kv\":\"iixtmkzj\",\"ra\":\"irhgfgrwsdp\",\"ctctbrxkjz\":\"zvzbglbyv\"},\"location\":\"gxffmshkwf\",\"properties\":{\"provisioningState\":\"Moving\",\"commitmentPlanGuid\":\"xwopdbydpizqa\",\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"pxbiygnugjknfs\",\"current\":{\"tier\":\"ttuxuuyilflqoiqu\",\"count\":1236082259,\"quota\":{\"quantity\":9110473532568054590,\"unit\":\"hvsujztc\"},\"startDate\":\"tqjtwhauu\",\"endDate\":\"prnjletlxsmr\"},\"autoRenew\":false,\"next\":{\"tier\":\"ifamowazi\",\"count\":1993625091,\"quota\":{\"quantity\":2469643417462156405,\"unit\":\"dvpiwh\"},\"startDate\":\"szdtmaajquh\",\"endDate\":\"ylr\"},\"last\":{\"tier\":\"ty\",\"count\":406894378,\"quota\":{\"quantity\":351680433091190997,\"unit\":\"ps\"},\"startDate\":\"hckfkyjpmspbps\",\"endDate\":\"fppyogtieyujtvcz\"},\"provisioningIssues\":[\"yxrxmunj\"]},\"id\":\"xvglnkvxlxp\",\"name\":\"glqivbgkcv\",\"type\":\"hpzvuqdflvoniyp\"}";
+        String responseStr
+            = "{\"etag\":\"d\",\"kind\":\"fmjnnawtqa\",\"sku\":{\"name\":\"xuckpggqoweyir\",\"tier\":\"Basic\",\"size\":\"sn\",\"family\":\"fl\",\"capacity\":1354932365},\"tags\":{\"qxpxiwfcngjsaa\":\"zruwn\",\"kv\":\"iixtmkzj\",\"ra\":\"irhgfgrwsdp\",\"ctctbrxkjz\":\"zvzbglbyv\"},\"location\":\"gxffmshkwf\",\"properties\":{\"provisioningState\":\"Moving\",\"commitmentPlanGuid\":\"xwopdbydpizqa\",\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"pxbiygnugjknfs\",\"current\":{\"tier\":\"ttuxuuyilflqoiqu\",\"count\":1236082259,\"quota\":{\"quantity\":9110473532568054590,\"unit\":\"hvsujztc\"},\"startDate\":\"tqjtwhauu\",\"endDate\":\"prnjletlxsmr\"},\"autoRenew\":false,\"next\":{\"tier\":\"ifamowazi\",\"count\":1993625091,\"quota\":{\"quantity\":2469643417462156405,\"unit\":\"dvpiwh\"},\"startDate\":\"szdtmaajquh\",\"endDate\":\"ylr\"},\"last\":{\"tier\":\"ty\",\"count\":406894378,\"quota\":{\"quantity\":351680433091190997,\"unit\":\"ps\"},\"startDate\":\"hckfkyjpmspbps\",\"endDate\":\"fppyogtieyujtvcz\"},\"provisioningIssues\":[\"yxrxmunj\"]},\"id\":\"xvglnkvxlxp\",\"name\":\"glqivbgkcv\",\"type\":\"hpzvuqdflvoniyp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CognitiveServicesManager manager =
-            CognitiveServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CognitiveServicesManager manager = CognitiveServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CommitmentPlan response =
-            manager
-                .commitmentPlans()
-                .createOrUpdateWithResponse(
-                    "irdsvuwcob",
-                    "egstmninwjizci",
-                    "nghgshej",
-                    new CommitmentPlanInner()
-                        .withKind("lxqzvn")
-                        .withSku(
-                            new Sku()
-                                .withName("sbycucrwnamikz")
-                                .withTier(SkuTier.FREE)
-                                .withSize("bsmswziqgf")
-                                .withFamily("okzrus")
-                                .withCapacity(302343226))
-                        .withTags(
-                            mapOf(
-                                "sxjwwixz",
-                                "zznvfbyc",
-                                "noamldsehaohdj",
-                                "umwmxqhnd",
-                                "pelnjetag",
-                                "hflzokxco",
-                                "npbs",
-                                "tsxoatftgz"))
-                        .withLocation("e")
-                        .withProperties(
-                            new CommitmentPlanProperties()
-                                .withCommitmentPlanGuid("srmozihmip")
-                                .withHostingModel(HostingModel.DISCONNECTED_CONTAINER)
-                                .withPlanType("xxpkyjcxc")
-                                .withCurrent(new CommitmentPeriod().withTier("rytfmpcycil").withCount(735394972))
-                                .withAutoRenew(true)
-                                .withNext(new CommitmentPeriod().withTier("xuzvoamktcqi").withCount(1870101856))),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        CommitmentPlan response = manager.commitmentPlans()
+            .createOrUpdateWithResponse("irdsvuwcob", "egstmninwjizci", "nghgshej",
+                new CommitmentPlanInner().withKind("lxqzvn")
+                    .withSku(new Sku().withName("sbycucrwnamikz")
+                        .withTier(SkuTier.FREE)
+                        .withSize("bsmswziqgf")
+                        .withFamily("okzrus")
+                        .withCapacity(302343226))
+                    .withTags(mapOf("sxjwwixz", "zznvfbyc", "noamldsehaohdj", "umwmxqhnd", "pelnjetag", "hflzokxco",
+                        "npbs", "tsxoatftgz"))
+                    .withLocation("e")
+                    .withProperties(new CommitmentPlanProperties().withCommitmentPlanGuid("srmozihmip")
+                        .withHostingModel(HostingModel.DISCONNECTED_CONTAINER)
+                        .withPlanType("xxpkyjcxc")
+                        .withCurrent(new CommitmentPeriod().withTier("rytfmpcycil").withCount(735394972))
+                        .withAutoRenew(true)
+                        .withNext(new CommitmentPeriod().withTier("xuzvoamktcqi").withCount(1870101856))),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("fmjnnawtqa", response.kind());
         Assertions.assertEquals("xuckpggqoweyir", response.sku().name());

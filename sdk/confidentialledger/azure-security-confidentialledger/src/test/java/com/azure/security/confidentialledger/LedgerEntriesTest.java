@@ -28,7 +28,8 @@ public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
         RequestOptions requestOptions = new RequestOptions();
         String transactionId = postLedgerEntry();
 
-        Response<BinaryData> transactionResponse = confidentialLedgerClient.getTransactionStatusWithResponse(transactionId, requestOptions);
+        Response<BinaryData> transactionResponse
+            = confidentialLedgerClient.getTransactionStatusWithResponse(transactionId, requestOptions);
 
         JsonObject transactionResponseBodyJson = transactionResponse.getValue().toObject(JsonObject.class);
 
@@ -38,7 +39,8 @@ public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
         assertTrue(200 == statusCode || 406 == statusCode, "Expected 200, or 206. Actual: " + statusCode);
 
         // Act
-        Response<BinaryData> currentResponse = confidentialLedgerClient.getCurrentLedgerEntryWithResponse(requestOptions);
+        Response<BinaryData> currentResponse
+            = confidentialLedgerClient.getCurrentLedgerEntryWithResponse(requestOptions);
 
         // Assert
         JsonObject currentResponseBodyJson = currentResponse.getValue().toObject(JsonObject.class);
@@ -75,4 +77,3 @@ public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
         });
     }
 }
-

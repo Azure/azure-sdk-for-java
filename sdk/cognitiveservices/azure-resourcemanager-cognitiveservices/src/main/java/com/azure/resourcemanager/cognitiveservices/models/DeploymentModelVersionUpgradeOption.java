@@ -12,12 +12,12 @@ import java.util.Collection;
 public final class DeploymentModelVersionUpgradeOption
     extends ExpandableStringEnum<DeploymentModelVersionUpgradeOption> {
     /** Static value OnceNewDefaultVersionAvailable for DeploymentModelVersionUpgradeOption. */
-    public static final DeploymentModelVersionUpgradeOption ONCE_NEW_DEFAULT_VERSION_AVAILABLE =
-        fromString("OnceNewDefaultVersionAvailable");
+    public static final DeploymentModelVersionUpgradeOption ONCE_NEW_DEFAULT_VERSION_AVAILABLE
+        = fromString("OnceNewDefaultVersionAvailable");
 
     /** Static value OnceCurrentVersionExpired for DeploymentModelVersionUpgradeOption. */
-    public static final DeploymentModelVersionUpgradeOption ONCE_CURRENT_VERSION_EXPIRED =
-        fromString("OnceCurrentVersionExpired");
+    public static final DeploymentModelVersionUpgradeOption ONCE_CURRENT_VERSION_EXPIRED
+        = fromString("OnceCurrentVersionExpired");
 
     /** Static value NoAutoUpgrade for DeploymentModelVersionUpgradeOption. */
     public static final DeploymentModelVersionUpgradeOption NO_AUTO_UPGRADE = fromString("NoAutoUpgrade");

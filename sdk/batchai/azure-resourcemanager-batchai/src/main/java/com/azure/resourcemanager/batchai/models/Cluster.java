@@ -160,11 +160,13 @@ public interface Cluster {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The Cluster definition stages. */
     interface DefinitionStages {
         /** The first stage of the Cluster definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Cluster definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -178,18 +180,14 @@ public interface Cluster {
              */
             WithCreate withExistingWorkspace(String resourceGroupName, String workspaceName);
         }
+
         /**
          * The stage of the Cluster definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithVmSize,
-                DefinitionStages.WithVmPriority,
-                DefinitionStages.WithScaleSettings,
-                DefinitionStages.WithVirtualMachineConfiguration,
-                DefinitionStages.WithNodeSetup,
-                DefinitionStages.WithUserAccountSettings,
-                DefinitionStages.WithSubnet {
+        interface WithCreate extends DefinitionStages.WithVmSize, DefinitionStages.WithVmPriority,
+            DefinitionStages.WithScaleSettings, DefinitionStages.WithVirtualMachineConfiguration,
+            DefinitionStages.WithNodeSetup, DefinitionStages.WithUserAccountSettings, DefinitionStages.WithSubnet {
             /**
              * Executes the create request.
              *
@@ -205,6 +203,7 @@ public interface Cluster {
              */
             Cluster create(Context context);
         }
+
         /** The stage of the Cluster definition allowing to specify vmSize. */
         interface WithVmSize {
             /**
@@ -223,6 +222,7 @@ public interface Cluster {
              */
             WithCreate withVmSize(String vmSize);
         }
+
         /** The stage of the Cluster definition allowing to specify vmPriority. */
         interface WithVmPriority {
             /**
@@ -233,6 +233,7 @@ public interface Cluster {
              */
             WithCreate withVmPriority(VmPriority vmPriority);
         }
+
         /** The stage of the Cluster definition allowing to specify scaleSettings. */
         interface WithScaleSettings {
             /**
@@ -245,6 +246,7 @@ public interface Cluster {
              */
             WithCreate withScaleSettings(ScaleSettings scaleSettings);
         }
+
         /** The stage of the Cluster definition allowing to specify virtualMachineConfiguration. */
         interface WithVirtualMachineConfiguration {
             /**
@@ -257,6 +259,7 @@ public interface Cluster {
              */
             WithCreate withVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration);
         }
+
         /** The stage of the Cluster definition allowing to specify nodeSetup. */
         interface WithNodeSetup {
             /**
@@ -267,6 +270,7 @@ public interface Cluster {
              */
             WithCreate withNodeSetup(NodeSetup nodeSetup);
         }
+
         /** The stage of the Cluster definition allowing to specify userAccountSettings. */
         interface WithUserAccountSettings {
             /**
@@ -279,6 +283,7 @@ public interface Cluster {
              */
             WithCreate withUserAccountSettings(UserAccountSettings userAccountSettings);
         }
+
         /** The stage of the Cluster definition allowing to specify subnet. */
         interface WithSubnet {
             /**
@@ -292,6 +297,7 @@ public interface Cluster {
             WithCreate withSubnet(ResourceId subnet);
         }
     }
+
     /**
      * Begins update for the Cluster resource.
      *
@@ -316,6 +322,7 @@ public interface Cluster {
          */
         Cluster apply(Context context);
     }
+
     /** The Cluster update stages. */
     interface UpdateStages {
         /** The stage of the Cluster update allowing to specify scaleSettings. */
@@ -331,6 +338,7 @@ public interface Cluster {
             Update withScaleSettings(ScaleSettings scaleSettings);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

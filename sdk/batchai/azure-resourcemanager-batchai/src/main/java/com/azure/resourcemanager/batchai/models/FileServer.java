@@ -102,11 +102,13 @@ public interface FileServer {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The FileServer definition stages. */
     interface DefinitionStages {
         /** The first stage of the FileServer definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the FileServer definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -120,15 +122,13 @@ public interface FileServer {
              */
             WithCreate withExistingWorkspace(String resourceGroupName, String workspaceName);
         }
+
         /**
          * The stage of the FileServer definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithVmSize,
-                DefinitionStages.WithSshConfiguration,
-                DefinitionStages.WithDataDisks,
-                DefinitionStages.WithSubnet {
+        interface WithCreate extends DefinitionStages.WithVmSize, DefinitionStages.WithSshConfiguration,
+            DefinitionStages.WithDataDisks, DefinitionStages.WithSubnet {
             /**
              * Executes the create request.
              *
@@ -144,6 +144,7 @@ public interface FileServer {
              */
             FileServer create(Context context);
         }
+
         /** The stage of the FileServer definition allowing to specify vmSize. */
         interface WithVmSize {
             /**
@@ -156,6 +157,7 @@ public interface FileServer {
              */
             WithCreate withVmSize(String vmSize);
         }
+
         /** The stage of the FileServer definition allowing to specify sshConfiguration. */
         interface WithSshConfiguration {
             /**
@@ -166,6 +168,7 @@ public interface FileServer {
              */
             WithCreate withSshConfiguration(SshConfiguration sshConfiguration);
         }
+
         /** The stage of the FileServer definition allowing to specify dataDisks. */
         interface WithDataDisks {
             /**
@@ -176,6 +179,7 @@ public interface FileServer {
              */
             WithCreate withDataDisks(DataDisks dataDisks);
         }
+
         /** The stage of the FileServer definition allowing to specify subnet. */
         interface WithSubnet {
             /**
@@ -189,6 +193,7 @@ public interface FileServer {
             WithCreate withSubnet(ResourceId subnet);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

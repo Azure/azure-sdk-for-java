@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Chainer job settings. */
 @Fluent
 public final class ChainerSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ChainerSettings.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ChainerSettings.class);
 
     /*
      * The python script to execute.
@@ -128,10 +129,8 @@ public final class ChainerSettings {
      */
     public void validate() {
         if (pythonScriptFilePath() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property pythonScriptFilePath in model ChainerSettings"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property pythonScriptFilePath in model ChainerSettings"));
         }
     }
 }
