@@ -7,92 +7,107 @@ package com.azure.analytics.purview.sharing.implementation;
 import com.azure.analytics.purview.sharing.PurviewShareServiceVersion;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
-/** Initializes a new instance of the PurviewShareClient type. */
+/**
+ * Initializes a new instance of the PurviewShareClient type.
+ */
 public final class PurviewShareClientImpl {
-    /** The sharing endpoint of your purview account. Example: https://{accountName}.purview.azure.com/share. */
+    /**
+     * The sharing endpoint of your purview account. Example: https://{accountName}.purview.azure.com/share.
+     */
     private final String endpoint;
 
     /**
      * Gets The sharing endpoint of your purview account. Example: https://{accountName}.purview.azure.com/share.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Service version. */
+    /**
+     * Service version.
+     */
     private final PurviewShareServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public PurviewShareServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The ReceivedSharesImpl object to access its operations. */
+    /**
+     * The ReceivedSharesImpl object to access its operations.
+     */
     private final ReceivedSharesImpl receivedShares;
 
     /**
      * Gets the ReceivedSharesImpl object to access its operations.
-     *
+     * 
      * @return the ReceivedSharesImpl object.
      */
     public ReceivedSharesImpl getReceivedShares() {
         return this.receivedShares;
     }
 
-    /** The SentSharesImpl object to access its operations. */
+    /**
+     * The SentSharesImpl object to access its operations.
+     */
     private final SentSharesImpl sentShares;
 
     /**
      * Gets the SentSharesImpl object to access its operations.
-     *
+     * 
      * @return the SentSharesImpl object.
      */
     public SentSharesImpl getSentShares() {
         return this.sentShares;
     }
 
-    /** The ShareResourcesImpl object to access its operations. */
+    /**
+     * The ShareResourcesImpl object to access its operations.
+     */
     private final ShareResourcesImpl shareResources;
 
     /**
      * Gets the ShareResourcesImpl object to access its operations.
-     *
+     * 
      * @return the ShareResourcesImpl object.
      */
     public ShareResourcesImpl getShareResources() {
@@ -101,48 +116,40 @@ public final class PurviewShareClientImpl {
 
     /**
      * Initializes an instance of PurviewShareClient client.
-     *
+     * 
      * @param endpoint The sharing endpoint of your purview account. Example:
-     *     https://{accountName}.purview.azure.com/share.
+     * https://{accountName}.purview.azure.com/share.
      * @param serviceVersion Service version.
      */
     public PurviewShareClientImpl(String endpoint, PurviewShareServiceVersion serviceVersion) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint,
-                serviceVersion);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
      * Initializes an instance of PurviewShareClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The sharing endpoint of your purview account. Example:
-     *     https://{accountName}.purview.azure.com/share.
+     * https://{accountName}.purview.azure.com/share.
      * @param serviceVersion Service version.
      */
-    public PurviewShareClientImpl(
-            HttpPipeline httpPipeline, String endpoint, PurviewShareServiceVersion serviceVersion) {
+    public PurviewShareClientImpl(HttpPipeline httpPipeline, String endpoint,
+        PurviewShareServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
      * Initializes an instance of PurviewShareClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The sharing endpoint of your purview account. Example:
-     *     https://{accountName}.purview.azure.com/share.
+     * https://{accountName}.purview.azure.com/share.
      * @param serviceVersion Service version.
      */
-    public PurviewShareClientImpl(
-            HttpPipeline httpPipeline,
-            SerializerAdapter serializerAdapter,
-            String endpoint,
-            PurviewShareServiceVersion serviceVersion) {
+    public PurviewShareClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        PurviewShareServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;

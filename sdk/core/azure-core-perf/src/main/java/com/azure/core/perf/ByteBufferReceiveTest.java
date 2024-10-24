@@ -5,6 +5,7 @@ package com.azure.core.perf;
 
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.Response;
 import com.azure.core.perf.core.CorePerfStressOptions;
 import com.azure.core.perf.core.RestProxyTestBase;
 import com.azure.perf.test.core.TestDataCreationHelper;
@@ -38,7 +39,7 @@ public class ByteBufferReceiveTest extends RestProxyTestBase<CorePerfStressOptio
 
     @Override
     public Mono<Void> runAsync() {
-        return service.getRawDataAsync(endpoint, id).flatMapMany(response -> response.getValue()).map(byteBuffer -> {
+        return service.getRawDataAsync(endpoint, id).flatMapMany(Response::getValue).map(byteBuffer -> {
             for (int i = 0; i < byteBuffer.remaining(); i++) {
                 byteBuffer.get();
             }
