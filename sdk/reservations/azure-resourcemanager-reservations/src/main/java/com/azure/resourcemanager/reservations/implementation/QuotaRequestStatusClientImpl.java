@@ -44,8 +44,8 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @param client the instance of the service client containing this operation class.
      */
     QuotaRequestStatusClientImpl(AzureReservationApiImpl client) {
-        this.service =
-            RestProxy.create(QuotaRequestStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(QuotaRequestStatusService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,47 +56,31 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
     @Host("{$host}")
     @ServiceInterface(name = "AzureReservationApiQ")
     public interface QuotaRequestStatusService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimitsRequests/{id}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimitsRequests/{id}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QuotaRequestDetailsInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("providerId") String providerId,
-            @PathParam("location") String location,
-            @PathParam("id") String id,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<QuotaRequestDetailsInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("providerId") String providerId, @PathParam("location") String location,
+            @PathParam("id") String id, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimitsRequests")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimitsRequests")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QuotaRequestDetailsList>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("providerId") String providerId,
-            @PathParam("location") String location,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skiptoken") String skiptoken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<QuotaRequestDetailsList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("providerId") String providerId, @PathParam("location") String location,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top,
+            @QueryParam("$skiptoken") String skiptoken, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QuotaRequestDetailsList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<QuotaRequestDetailsList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -114,13 +98,11 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @return quota request details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<QuotaRequestDetailsInner>> getWithResponseAsync(
-        String subscriptionId, String providerId, String location, String id) {
+    private Mono<Response<QuotaRequestDetailsInner>> getWithResponseAsync(String subscriptionId, String providerId,
+        String location, String id) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -137,18 +119,8 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
         final String apiVersion = "2020-10-25";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            subscriptionId,
-                            apiVersion,
-                            providerId,
-                            location,
-                            id,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), subscriptionId, apiVersion, providerId,
+                location, id, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -168,13 +140,11 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @return quota request details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<QuotaRequestDetailsInner>> getWithResponseAsync(
-        String subscriptionId, String providerId, String location, String id, Context context) {
+    private Mono<Response<QuotaRequestDetailsInner>> getWithResponseAsync(String subscriptionId, String providerId,
+        String location, String id, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -191,8 +161,8 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
         final String apiVersion = "2020-10-25";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(this.client.getEndpoint(), subscriptionId, apiVersion, providerId, location, id, accept, context);
+        return service.get(this.client.getEndpoint(), subscriptionId, apiVersion, providerId, location, id, accept,
+            context);
     }
 
     /**
@@ -210,8 +180,8 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @return quota request details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<QuotaRequestDetailsInner> getAsync(
-        String subscriptionId, String providerId, String location, String id) {
+    private Mono<QuotaRequestDetailsInner> getAsync(String subscriptionId, String providerId, String location,
+        String id) {
         return getWithResponseAsync(subscriptionId, providerId, location, id)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -232,8 +202,8 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @return quota request details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QuotaRequestDetailsInner> getWithResponse(
-        String subscriptionId, String providerId, String location, String id, Context context) {
+    public Response<QuotaRequestDetailsInner> getWithResponse(String subscriptionId, String providerId, String location,
+        String id, Context context) {
         return getWithResponseAsync(subscriptionId, providerId, location, id, context).block();
     }
 
@@ -275,13 +245,11 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @return quota request details along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<QuotaRequestDetailsInner>> listSinglePageAsync(
-        String subscriptionId, String providerId, String location, String filter, Integer top, String skiptoken) {
+    private Mono<PagedResponse<QuotaRequestDetailsInner>> listSinglePageAsync(String subscriptionId, String providerId,
+        String location, String filter, Integer top, String skiptoken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -295,29 +263,10 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
         final String apiVersion = "2020-10-25";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            subscriptionId,
-                            apiVersion,
-                            providerId,
-                            location,
-                            filter,
-                            top,
-                            skiptoken,
-                            accept,
-                            context))
-            .<PagedResponse<QuotaRequestDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), subscriptionId, apiVersion, providerId,
+                location, filter, top, skiptoken, accept, context))
+            .<PagedResponse<QuotaRequestDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -341,19 +290,11 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @return quota request details along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<QuotaRequestDetailsInner>> listSinglePageAsync(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String filter,
-        Integer top,
-        String skiptoken,
-        Context context) {
+    private Mono<PagedResponse<QuotaRequestDetailsInner>> listSinglePageAsync(String subscriptionId, String providerId,
+        String location, String filter, Integer top, String skiptoken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -368,26 +309,10 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                subscriptionId,
-                apiVersion,
-                providerId,
-                location,
-                filter,
-                top,
-                skiptoken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), subscriptionId, apiVersion, providerId, location, filter, top, skiptoken,
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -409,10 +334,9 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @return quota request details as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<QuotaRequestDetailsInner> listAsync(
-        String subscriptionId, String providerId, String location, String filter, Integer top, String skiptoken) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(subscriptionId, providerId, location, filter, top, skiptoken),
+    private PagedFlux<QuotaRequestDetailsInner> listAsync(String subscriptionId, String providerId, String location,
+        String filter, Integer top, String skiptoken) {
+        return new PagedFlux<>(() -> listSinglePageAsync(subscriptionId, providerId, location, filter, top, skiptoken),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -433,8 +357,7 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
         final String filter = null;
         final Integer top = null;
         final String skiptoken = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(subscriptionId, providerId, location, filter, top, skiptoken),
+        return new PagedFlux<>(() -> listSinglePageAsync(subscriptionId, providerId, location, filter, top, skiptoken),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -458,14 +381,8 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @return quota request details as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<QuotaRequestDetailsInner> listAsync(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String filter,
-        Integer top,
-        String skiptoken,
-        Context context) {
+    private PagedFlux<QuotaRequestDetailsInner> listAsync(String subscriptionId, String providerId, String location,
+        String filter, Integer top, String skiptoken, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(subscriptionId, providerId, location, filter, top, skiptoken, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -511,14 +428,8 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @return quota request details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<QuotaRequestDetailsInner> list(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String filter,
-        Integer top,
-        String skiptoken,
-        Context context) {
+    public PagedIterable<QuotaRequestDetailsInner> list(String subscriptionId, String providerId, String location,
+        String filter, Integer top, String skiptoken, Context context) {
         return new PagedIterable<>(listAsync(subscriptionId, providerId, location, filter, top, skiptoken, context));
     }
 
@@ -538,23 +449,13 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<QuotaRequestDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<QuotaRequestDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -575,23 +476,13 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }
