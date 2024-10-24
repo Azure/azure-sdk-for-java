@@ -20,7 +20,8 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
     /*
      * This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine
      * or virtual machine scale set. This will enable the encryption for all the disks including Resource/Temp disk at
-     * host itself.
+     * host itself. For more information on encryption at host requirements, please refer to
+     * https://learn.microsoft.com/azure/virtual-machines/disk-encryption#supported-vm-sizes.
      */
     @Generated
     private final boolean encryptionAtHost;
@@ -56,7 +57,8 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
     /**
      * Get the encryptionAtHost property: This property can be used by user in the request to enable or disable the Host
      * Encryption for the virtual machine or virtual machine scale set. This will enable the encryption for all the
-     * disks including Resource/Temp disk at host itself.
+     * disks including Resource/Temp disk at host itself. For more information on encryption at host requirements,
+     * please refer to https://learn.microsoft.com/azure/virtual-machines/disk-encryption#supported-vm-sizes.
      *
      * @return the encryptionAtHost value.
      */

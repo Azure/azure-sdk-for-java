@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -35,7 +36,7 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
      * The length of the file.
      */
     @Generated
-    private final long contentLength;
+    private final String contentLength;
 
     /*
      * The content type of the file.
@@ -76,7 +77,7 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
      * @return the contentLength value.
      */
     @Generated
-    public long getContentLength() {
+    public String getContentLength() {
         return this.contentLength;
     }
 
@@ -102,18 +103,6 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
     }
 
     /**
-     * Creates an instance of FileProperties class.
-     *
-     * @param lastModified the lastModified value to set.
-     * @param contentLength the contentLength value to set.
-     */
-    @Generated
-    private FileProperties(OffsetDateTime lastModified, long contentLength) {
-        this.lastModified = lastModified;
-        this.contentLength = contentLength;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -122,7 +111,7 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("lastModified",
             this.lastModified == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModified));
-        jsonWriter.writeLongField("contentLength", this.contentLength);
+        jsonWriter.writeStringField("contentLength", this.contentLength);
         jsonWriter.writeStringField("creationTime",
             this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
         jsonWriter.writeStringField("contentType", this.contentType);
@@ -139,11 +128,11 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the FileProperties.
      */
+    @Generated
     public static FileProperties fromJson(JsonReader jsonReader) throws IOException {
-        // TODO: Re-add @Generated tag here and re-generate SDK once the 2024-05-01 Batch Service API is released
         return jsonReader.readObject(reader -> {
             OffsetDateTime lastModified = null;
-            long contentLength = 0L;
+            String contentLength = null;
             OffsetDateTime creationTime = null;
             String contentType = null;
             String fileMode = null;
@@ -151,22 +140,13 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("lastModified".equals(fieldName)) {
-                    lastModified = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    lastModified = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("contentLength".equals(fieldName)) {
-                    if (reader.currentToken() == JsonToken.STRING) {
-                        String contentLengthStr = reader.getString();
-                        try {
-                            contentLength = Long.parseLong(contentLengthStr);
-                        } catch (NumberFormatException e) {
-                            throw new IOException("Expected numeric contentLength, but found: " + contentLengthStr, e);
-                        }
-                    } else if (reader.currentToken() == JsonToken.NUMBER) {
-                        contentLength = reader.getLong();
-                    } else {
-                        throw new IOException("Expected contentLength to be a number or string, but found other type");
-                    }
+                    contentLength = reader.getString();
                 } else if ("creationTime".equals(fieldName)) {
-                    creationTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("contentType".equals(fieldName)) {
                     contentType = reader.getString();
                 } else if ("fileMode".equals(fieldName)) {
@@ -181,5 +161,17 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
             deserializedFileProperties.fileMode = fileMode;
             return deserializedFileProperties;
         });
+    }
+
+    /**
+     * Creates an instance of FileProperties class.
+     *
+     * @param lastModified the lastModified value to set.
+     * @param contentLength the contentLength value to set.
+     */
+    @Generated
+    private FileProperties(OffsetDateTime lastModified, String contentLength) {
+        this.lastModified = lastModified;
+        this.contentLength = contentLength;
     }
 }

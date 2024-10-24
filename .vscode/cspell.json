@@ -444,7 +444,8 @@
         "VMSS",
         "reimaged",
         "isdirectory",
-        "SSDLRS"
+        "SSDLRS",
+        "VMGUEST"
       ]
     },
     {

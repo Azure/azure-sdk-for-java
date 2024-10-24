@@ -92,8 +92,11 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
 
     /*
      * The size of virtual machines in the Pool. All virtual machines in a Pool are the same size. For information about
-     * available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool
-     * (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
+     * available VM sizes, see Sizes for Virtual Machines (Linux)
+     * (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for Virtual Machines
+     * (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports
+     * all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2
+     * series).
      */
     @Generated
     private String vmSize;
@@ -228,7 +231,7 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
 
     /*
      * Utilization and resource usage statistics for the entire lifetime of the Pool. This property is populated only if
-     * the CloudPool was retrieved with an expand clause including the 'stats' attribute; otherwise it is null. The
+     * the BatchPool was retrieved with an expand clause including the 'stats' attribute; otherwise it is null. The
      * statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The
      * typical delay is about 30 minutes.
      */
@@ -379,8 +382,11 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
 
     /**
      * Get the vmSize property: The size of virtual machines in the Pool. All virtual machines in a Pool are the same
-     * size. For information about available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes
-     * in an Azure Batch Pool (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
+     * size. For information about available VM sizes, see Sizes for Virtual Machines (Linux)
+     * (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for Virtual Machines
+     * (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports
+     * all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2
+     * series).
      *
      * @return the vmSize value.
      */
@@ -601,7 +607,7 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
 
     /**
      * Get the stats property: Utilization and resource usage statistics for the entire lifetime of the Pool. This
-     * property is populated only if the CloudPool was retrieved with an expand clause including the 'stats' attribute;
+     * property is populated only if the BatchPool was retrieved with an expand clause including the 'stats' attribute;
      * otherwise it is null. The statistics may not be immediately available. The Batch service performs periodic
      * roll-up of statistics. The typical delay is about 30 minutes.
      *

@@ -8,7 +8,34 @@ import com.azure.core.http.RequestConditions;
  * Optional parameters for deleting a Batch job schedule.
  */
 public class DeleteBatchJobScheduleOptions extends BatchBaseOptions {
+    private Boolean force;
     private RequestConditions requestConditions;
+
+    /**
+     * Gets the value indicating whether to force the deletion of the Batch job schedule.
+     *
+     * <p>If true, the server will delete the job schedule even if the corresponding nodes have not fully processed
+     * the deletion.
+     *
+     * @return The value indicating whether the job schedule deletion is forced.
+     */
+    public Boolean getForce() {
+        return force;
+    }
+
+    /**
+     * Sets the value indicating whether to force the deletion of the Batch job schedule.
+     *
+     * <p>If true, the server will delete the job schedule even if the corresponding nodes have not fully processed
+     * the deletion.
+     *
+     * @param force The value indicating whether to force the deletion.
+     * @return The {@link DeleteBatchJobScheduleOptions} object itself, allowing for method chaining.
+     */
+    public DeleteBatchJobScheduleOptions setForce(Boolean force) {
+        this.force = force;
+        return this;
+    }
 
     /**
      * Gets the HTTP options for conditional requests based on modification time.
@@ -33,5 +60,4 @@ public class DeleteBatchJobScheduleOptions extends BatchBaseOptions {
         this.requestConditions = requestConditions;
         return this;
     }
-
 }

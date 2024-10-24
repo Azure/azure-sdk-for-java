@@ -18,7 +18,7 @@ import java.io.IOException;
 public final class WindowsUserConfiguration implements JsonSerializable<WindowsUserConfiguration> {
 
     /*
-     * The login mode for the user. The default value for VirtualMachineConfiguration Pools is 'batch'.
+     * The login mode for the user. The default is 'batch'.
      */
     @Generated
     private LoginMode loginMode;
@@ -31,8 +31,7 @@ public final class WindowsUserConfiguration implements JsonSerializable<WindowsU
     }
 
     /**
-     * Get the loginMode property: The login mode for the user. The default value for VirtualMachineConfiguration Pools
-     * is 'batch'.
+     * Get the loginMode property: The login mode for the user. The default is 'batch'.
      *
      * @return the loginMode value.
      */
@@ -42,8 +41,7 @@ public final class WindowsUserConfiguration implements JsonSerializable<WindowsU
     }
 
     /**
-     * Set the loginMode property: The login mode for the user. The default value for VirtualMachineConfiguration Pools
-     * is 'batch'.
+     * Set the loginMode property: The login mode for the user. The default is 'batch'.
      *
      * @param loginMode the loginMode value to set.
      * @return the WindowsUserConfiguration object itself.
