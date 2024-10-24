@@ -3,38 +3,43 @@
 
 package com.azure.security.keyvault.jca.implementation.utils;
 
+import com.azure.json.ReadValueCallback;
+import com.azure.security.keyvault.jca.implementation.model.CertificateBundle;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.azure.security.keyvault.jca.implementation.model.CertificateBundle;
-import org.junit.jupiter.api.Test;
-
 /**
- * The JUnit tests for the JsonbJsonConverter class.
+ * The JUnit tests for the {@link JsonConverterUtil} class.
  */
 public class JsonConverterUtilTest {
-
     /**
-     * Test fromJson method.
+     * Test the {@link JsonConverterUtil#fromJson(ReadValueCallback, String)} method.
      */
     @Test
-    public void testFromJson() {
+    public void testFromJson() throws IOException {
         String string = "{ \"cer\": \"cer\" }";
-        CertificateBundle bundle = (CertificateBundle) JsonConverterUtil.fromJson(string, CertificateBundle.class);
+        CertificateBundle bundle = JsonConverterUtil.fromJson(CertificateBundle::fromJson, string);
+
         assertNotNull(bundle);
         assertEquals("cer", bundle.getCer());
     }
 
     /**
      * Test toJson method.
-     *
      */
     @Test
     public void testToJson() {
         CertificateBundle bundle = new CertificateBundle();
+
         bundle.setCer("value");
+
         String string = JsonConverterUtil.toJson(bundle);
+
         assertTrue(string.contains("cer"));
         assertTrue(string.contains("\"value\""));
     }
