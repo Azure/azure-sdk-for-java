@@ -45,9 +45,10 @@ public final class NetworkServiceDesignVersionsListByNetworkServiceDesignGroupMo
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<NetworkServiceDesignVersion> response = manager.networkServiceDesignVersions()
             .listByNetworkServiceDesignGroup("xtwbta", "ypnyghshxc", "lhkgmnsghp", com.azure.core.util.Context.NONE);
@@ -62,11 +63,32 @@ public final class NetworkServiceDesignVersionsListByNetworkServiceDesignGroupMo
         Assertions.assertEquals("p", response.iterator().next().properties().nfvisFromSite().get("uaurkihcir").type());
         Assertions.assertEquals("wqagnepzwa",
             response.iterator().next().properties().resourceElementTemplates().get(0).name());
-        Assertions.assertEquals("sbq", response.iterator().next().properties().resourceElementTemplates().get(0)
-            .dependsOnProfile().installDependsOn().get(0));
-        Assertions.assertEquals("lrrcz", response.iterator().next().properties().resourceElementTemplates().get(0)
-            .dependsOnProfile().uninstallDependsOn().get(0));
-        Assertions.assertEquals("qoyueayfbpcmsplb", response.iterator().next().properties().resourceElementTemplates()
-            .get(0).dependsOnProfile().updateDependsOn().get(0));
+        Assertions.assertEquals("sbq",
+            response.iterator()
+                .next()
+                .properties()
+                .resourceElementTemplates()
+                .get(0)
+                .dependsOnProfile()
+                .installDependsOn()
+                .get(0));
+        Assertions.assertEquals("lrrcz",
+            response.iterator()
+                .next()
+                .properties()
+                .resourceElementTemplates()
+                .get(0)
+                .dependsOnProfile()
+                .uninstallDependsOn()
+                .get(0));
+        Assertions.assertEquals("qoyueayfbpcmsplb",
+            response.iterator()
+                .next()
+                .properties()
+                .resourceElementTemplates()
+                .get(0)
+                .dependsOnProfile()
+                .updateDependsOn()
+                .get(0));
     }
 }

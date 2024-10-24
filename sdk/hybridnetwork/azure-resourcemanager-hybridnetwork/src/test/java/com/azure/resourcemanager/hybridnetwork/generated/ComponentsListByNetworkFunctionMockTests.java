@@ -44,12 +44,13 @@ public final class ComponentsListByNetworkFunctionMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Component> response = manager.components().listByNetworkFunction("axmqeqal", "hjnhgwydyynfsvk",
-            com.azure.core.util.Context.NONE);
+        PagedIterable<Component> response = manager.components()
+            .listByNetworkFunction("axmqeqal", "hjnhgwydyynfsvk", com.azure.core.util.Context.NONE);
 
     }
 }

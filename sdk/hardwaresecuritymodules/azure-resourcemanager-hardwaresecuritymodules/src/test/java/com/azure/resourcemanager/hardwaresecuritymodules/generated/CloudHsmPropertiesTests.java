@@ -21,7 +21,8 @@ public final class CloudHsmPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CloudHsmProperties model = new CloudHsmProperties().withFqdn("kwtmutduqktapspw").withState("uertumk")
+        CloudHsmProperties model = new CloudHsmProperties().withFqdn("kwtmutduqktapspw")
+            .withState("uertumk")
             .withStateMessage("svqwhbmdgbbjfd");
         model = BinaryData.fromObject(model).toObject(CloudHsmProperties.class);
         Assertions.assertEquals("kwtmutduqktapspw", model.fqdn());

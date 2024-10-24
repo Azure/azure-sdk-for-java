@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceConfigurationResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceConfigurationResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"serviceName\":\"WAC\",\"resourceId\":\"ayhuy\",\"port\":5121116175733126512,\"provisioningState\":\"Canceled\"},\"id\":\"po\",\"name\":\"ginuvamih\",\"type\":\"ognarxzxtheotus\"}")
-                .toObject(ServiceConfigurationResourceInner.class);
+        ServiceConfigurationResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"serviceName\":\"WAC\",\"resourceId\":\"ayhuy\",\"port\":5121116175733126512,\"provisioningState\":\"Canceled\"},\"id\":\"po\",\"name\":\"ginuvamih\",\"type\":\"ognarxzxtheotus\"}")
+            .toObject(ServiceConfigurationResourceInner.class);
         Assertions.assertEquals(ServiceName.WAC, model.serviceName());
         Assertions.assertEquals("ayhuy", model.resourceId());
         Assertions.assertEquals(5121116175733126512L, model.port());
@@ -24,9 +22,8 @@ public final class ServiceConfigurationResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceConfigurationResourceInner model =
-            new ServiceConfigurationResourceInner()
-                .withServiceName(ServiceName.WAC)
+        ServiceConfigurationResourceInner model
+            = new ServiceConfigurationResourceInner().withServiceName(ServiceName.WAC)
                 .withResourceId("ayhuy")
                 .withPort(5121116175733126512L);
         model = BinaryData.fromObject(model).toObject(ServiceConfigurationResourceInner.class);

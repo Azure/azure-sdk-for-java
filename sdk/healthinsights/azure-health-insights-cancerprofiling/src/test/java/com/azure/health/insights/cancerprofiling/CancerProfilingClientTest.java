@@ -26,8 +26,9 @@ public class CancerProfilingClientTest extends CancerProfilingClientTestBase {
     @Test
     public void test() {
         testCancerProfilingWithResponse(request -> {
-            BinaryData responseValue = setPlaybackSyncPollerPollInterval(
-                getClient().beginInferCancerProfile(request, new RequestOptions())).getFinalResult();
+            BinaryData responseValue
+                = setPlaybackSyncPollerPollInterval(getClient().beginInferCancerProfile(request, new RequestOptions()))
+                    .getFinalResult();
             OncoPhenotypeResults response = responseValue.toObject(OncoPhenotypeResults.class);
 
             List<OncoPhenotypePatientResult> patients = response.getPatients();

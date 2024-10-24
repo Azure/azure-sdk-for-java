@@ -89,14 +89,16 @@ public final class PublisherImpl implements Publisher, Publisher.Definition, Pub
     }
 
     public Publisher create() {
-        this.innerObject = serviceManager.serviceClient().getPublishers().createOrUpdate(resourceGroupName,
-            publisherName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPublishers()
+            .createOrUpdate(resourceGroupName, publisherName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Publisher create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPublishers().createOrUpdate(resourceGroupName,
-            publisherName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPublishers()
+            .createOrUpdate(resourceGroupName, publisherName, this.innerModel(), context);
         return this;
     }
 
@@ -112,14 +114,18 @@ public final class PublisherImpl implements Publisher, Publisher.Definition, Pub
     }
 
     public Publisher apply() {
-        this.innerObject = serviceManager.serviceClient().getPublishers()
-            .updateWithResponse(resourceGroupName, publisherName, updateParameters, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPublishers()
+            .updateWithResponse(resourceGroupName, publisherName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Publisher apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPublishers()
-            .updateWithResponse(resourceGroupName, publisherName, updateParameters, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPublishers()
+            .updateWithResponse(resourceGroupName, publisherName, updateParameters, context)
+            .getValue();
         return this;
     }
 
@@ -132,14 +138,18 @@ public final class PublisherImpl implements Publisher, Publisher.Definition, Pub
     }
 
     public Publisher refresh() {
-        this.innerObject = serviceManager.serviceClient().getPublishers()
-            .getByResourceGroupWithResponse(resourceGroupName, publisherName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPublishers()
+            .getByResourceGroupWithResponse(resourceGroupName, publisherName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Publisher refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPublishers()
-            .getByResourceGroupWithResponse(resourceGroupName, publisherName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPublishers()
+            .getByResourceGroupWithResponse(resourceGroupName, publisherName, context)
+            .getValue();
         return this;
     }
 
