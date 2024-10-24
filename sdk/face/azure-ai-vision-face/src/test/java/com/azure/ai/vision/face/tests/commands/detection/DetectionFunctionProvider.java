@@ -16,14 +16,22 @@ public class DetectionFunctionProvider extends CommandProvider<FaceClient, FaceA
 
     public static DetectionFunctionProvider[] getFunctionProviders(String path, String url) {
         return new DetectionFunctionProvider[] {
-            new DetectionFunctionProvider("BinaryAndParametersSync", (faceClient, faceAsyncClient) -> new DetectFunctionWithBinaryAndParametersSync(faceClient, path)),
-            new DetectionFunctionProvider("BinaryAndDetectOptionSync", (faceClient, faceAsyncClient) -> new DetectFunctionWithBinaryAndDetectOptionSync(faceClient, path)),
-            new DetectionFunctionProvider("UrlAndParametersSync", (faceClient, faceAsyncClient) -> new DetectFunctionWithUrlAndParametersSync(faceClient, url)),
-            new DetectionFunctionProvider("UrlAndDetectOptionSync", (faceClient, faceAsyncClient) -> new DetectFunctionWithUrlAndDetectOptionSync(faceClient, url)),
-            new DetectionFunctionProvider("BinaryAndParametersAsync", (faceClient, faceAsyncClient) -> new DetectFunctionWithBinaryAndParametersAsync(faceAsyncClient, path)),
-            new DetectionFunctionProvider("BinaryAndDetectOptionAsync", (faceClient, faceAsyncClient) -> new DetectFunctionWithBinaryAndDetectOptionAsync(faceAsyncClient, path)),
-            new DetectionFunctionProvider("UrlAndParametersAsync", (faceClient, faceAsyncClient) -> new DetectFunctionWithUrlAndParametersAsync(faceAsyncClient, url)),
-            new DetectionFunctionProvider("UrlAndDetectOptionAsync", (faceClient, faceAsyncClient) -> new DetectFunctionWithUrlAndDetectOptionAsync(faceAsyncClient, url))
-        };
+            new DetectionFunctionProvider("BinaryAndParametersSync",
+                (faceClient, faceAsyncClient) -> new DetectFunctionWithBinaryAndParametersSync(faceClient, path)),
+            new DetectionFunctionProvider("BinaryAndDetectOptionSync",
+                (faceClient, faceAsyncClient) -> new DetectFunctionWithBinaryAndDetectOptionSync(faceClient, path)),
+            new DetectionFunctionProvider("UrlAndParametersSync",
+                (faceClient, faceAsyncClient) -> new DetectFunctionWithUrlAndParametersSync(faceClient, url)),
+            new DetectionFunctionProvider("UrlAndDetectOptionSync",
+                (faceClient, faceAsyncClient) -> new DetectFunctionWithUrlAndDetectOptionSync(faceClient, url)),
+            new DetectionFunctionProvider("BinaryAndParametersAsync",
+                (faceClient, faceAsyncClient) -> new DetectFunctionWithBinaryAndParametersAsync(faceAsyncClient, path)),
+            new DetectionFunctionProvider("BinaryAndDetectOptionAsync",
+                (faceClient, faceAsyncClient) -> new DetectFunctionWithBinaryAndDetectOptionAsync(faceAsyncClient,
+                    path)),
+            new DetectionFunctionProvider("UrlAndParametersAsync",
+                (faceClient, faceAsyncClient) -> new DetectFunctionWithUrlAndParametersAsync(faceAsyncClient, url)),
+            new DetectionFunctionProvider("UrlAndDetectOptionAsync",
+                (faceClient, faceAsyncClient) -> new DetectFunctionWithUrlAndDetectOptionAsync(faceAsyncClient, url)) };
     }
 }

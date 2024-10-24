@@ -5,7 +5,8 @@ package com.azure.ai.vision.face.tests.commands;
 
 import java.util.function.BiFunction;
 
-public class CommandProvider<TFaceClient, TFaceAsyncClient, TCommand> implements BiFunction<TFaceClient, TFaceAsyncClient, TCommand> {
+public class CommandProvider<TFaceClient, TFaceAsyncClient, TCommand>
+    implements BiFunction<TFaceClient, TFaceAsyncClient, TCommand> {
     private final BiFunction<TFaceClient, TFaceAsyncClient, TCommand> creator;
     private final String tag;
 
