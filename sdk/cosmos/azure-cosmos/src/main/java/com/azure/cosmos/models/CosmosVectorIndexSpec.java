@@ -6,16 +6,24 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Vector Indexes spec for Azure CosmosDB service.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public final class CosmosVectorIndexSpec {
 
     private final JsonSerializable jsonSerializable;
     private String type;
+    private Integer quantizationByteSize;
+    private Integer indexingSearchListSize;
+    private List<String> vectorIndexShardKey;
 
     /**
      * Constructor
@@ -66,6 +74,127 @@ public final class CosmosVectorIndexSpec {
         checkNotNull(type, "cosmosVectorIndexType cannot be null");
         this.type = type;
         this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_TYPE, this.type, CosmosItemSerializer.DEFAULT_SERIALIZER);
+
+        // Reset restricted properties if the type is not DiskANN or QuantizedFlat
+        if (!type.equals(CosmosVectorIndexType.DISK_ANN.toString()) && !type.equals(CosmosVectorIndexType.QUANTIZED_FLAT.toString())) {
+            this.quantizationByteSize = null;
+            this.vectorIndexShardKey = null;
+        }
+        if (!type.equals(CosmosVectorIndexType.DISK_ANN.toString())) {
+            this.indexingSearchListSize = null;
+        }
+        return this;
+    }
+
+    /**
+     * Gets the quantization byte size
+     *
+     * @return quantizationByteSize the number of bytes used in product quantization of the vectors.
+     * A larger value may result in better recall for vector searches at the expense of latency.
+     * This applies to index types DiskANN and quantizedFlat. The allowed range for this parameter
+     * is between 1 and 3.
+     */
+    public Integer getQuantizationByteSize() {
+        if (this.quantizationByteSize == null && validateIndexType(false)) {
+            this.quantizationByteSize = this.jsonSerializable.getInt(Constants.Properties.VECTOR_QUANTIZATION_BYTE_SIZE);
+
+            if (this.quantizationByteSize <= 0) {
+                this.quantizationByteSize = null;
+            }
+        }
+        return this.quantizationByteSize;
+    }
+
+    private Boolean validateIndexType(boolean isIndexingSearchListSize) {
+        String vectorIndexType = this.jsonSerializable.getString(Constants.Properties.VECTOR_INDEX_TYPE);
+        if (!isIndexingSearchListSize) {
+            return vectorIndexType.equals(CosmosVectorIndexType.QUANTIZED_FLAT.toString()) ||
+                vectorIndexType.equals(CosmosVectorIndexType.DISK_ANN.toString());
+        }
+        return vectorIndexType.equals(CosmosVectorIndexType.DISK_ANN.toString());
+    }
+
+    /**
+     * Sets the quantization byte size
+     *
+     * @param quantizationByteSize the number of bytes used in product quantization of the vectors. A larger value may
+     *                             result in better recall for vector searches at the expense of latency. This applies
+     *                             to index types DiskANN and quantizedFlat. The allowed range for this parameter is
+     *                             between 1 and 3.
+     * @return CosmosVectorIndexSpec
+     */
+    public CosmosVectorIndexSpec setQuantizationByteSize(Integer quantizationByteSize) {
+        if (validateIndexType(false) && quantizationByteSize != null) {
+            this.quantizationByteSize = quantizationByteSize;
+            this.jsonSerializable.set(Constants.Properties.VECTOR_QUANTIZATION_BYTE_SIZE, this.quantizationByteSize, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        }
+        return this;
+    }
+
+    /**
+     * Gets the indexing search list size
+     *
+     * @return indexingSearchListSize which represents the size of the candidate list of approximate neighbors stored
+     * while building the DiskANN index as part of the optimization processes. The allowed range for this
+     * parameter is between 25 and 500.
+     */
+    public Integer getIndexingSearchListSize() {
+        if (this.indexingSearchListSize == null && validateIndexType(true)) {
+            this.indexingSearchListSize = this.jsonSerializable.getInt(Constants.Properties.VECTOR_INDEXING_SEARCH_LIST_SIZE);
+
+            if (this.indexingSearchListSize <= 0) {
+                this.indexingSearchListSize = null;
+            }
+        }
+        return this.indexingSearchListSize;
+    }
+
+    /**
+     * Sets the indexing search list size
+     *
+     * @param indexingSearchListSize indexingSearchListSize which represents the size of the candidate list of
+     *                               approximate neighbors stored while building the DiskANN index as part of
+     *                               the optimization processes. The allowed range for this parameter is between
+     *                               25 and 500.
+     * @return CosmosVectorIndexSpec
+     */
+    public CosmosVectorIndexSpec setIndexingSearchListSize(Integer indexingSearchListSize) {
+        if (validateIndexType(true) && indexingSearchListSize != null) {
+            this.indexingSearchListSize = indexingSearchListSize;
+            this.jsonSerializable.set(Constants.Properties.VECTOR_INDEXING_SEARCH_LIST_SIZE, this.indexingSearchListSize, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        }
+        return this;
+    }
+
+    /**
+     * Gets the vector index shard key
+     *
+     * @return vectorIndexShardKey the list of string containing the shard keys used for partitioning the vector
+     * indexes. This applies to index types DiskANN and quantizedFlat.
+     */
+    public List<String> getVectorIndexShardKey() {
+        if (this.vectorIndexShardKey == null && validateIndexType(false)) {
+            this.vectorIndexShardKey = this.jsonSerializable.getList(Constants.Properties.VECTOR_INDEX_SHARD_KEY, String.class);
+
+            if (this.vectorIndexShardKey == null) {
+                this.vectorIndexShardKey = new ArrayList<>();
+            }
+        }
+        return this.vectorIndexShardKey;
+    }
+
+    /**
+     * Sets the vector index shard key
+     *
+     * @param vectorIndexShardKey the list of string containing the shard keys used for partitioning the vector
+     *                            indexes. This applies to index types DiskANN and quantizedFlat.
+     * @return CosmosVectorIndexSpec
+     */
+    public CosmosVectorIndexSpec setVectorIndexShardKey(List<String> vectorIndexShardKey) {
+        if (validateIndexType(true) && vectorIndexShardKey != null) {
+            this.vectorIndexShardKey = vectorIndexShardKey;
+            this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_SHARD_KEY, this.vectorIndexShardKey, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        }
         return this;
     }
 

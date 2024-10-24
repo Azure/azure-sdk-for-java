@@ -18,7 +18,7 @@ public final class CosmosVectorEmbedding {
     @JsonProperty(Constants.Properties.VECTOR_DATA_TYPE)
     private String dataType;
     @JsonProperty(Constants.Properties.VECTOR_DIMENSIONS)
-    private Long dimensions;
+    private Integer dimensions;
     @JsonProperty(Constants.Properties.DISTANCE_FUNCTION)
     private String distanceFunction;
     private JsonSerializable jsonSerializable;
@@ -84,7 +84,7 @@ public final class CosmosVectorEmbedding {
      *
      * @return dimensions
      */
-    public Long getDimensions() {
+    public Integer getDimensions() {
         return dimensions;
     }
 
@@ -94,7 +94,7 @@ public final class CosmosVectorEmbedding {
      * @param dimensions the dimensions for the cosmosVectorEmbedding
      * @return CosmosVectorEmbedding
      */
-    public CosmosVectorEmbedding setDimensions(Long dimensions) {
+    public CosmosVectorEmbedding setDimensions(Integer dimensions) {
         checkNotNull(dimensions, "dimensions cannot be null");
         if (dimensions < 1) {
             throw new IllegalArgumentException("Dimensions for the embedding has to be a long value greater than 0 " +
