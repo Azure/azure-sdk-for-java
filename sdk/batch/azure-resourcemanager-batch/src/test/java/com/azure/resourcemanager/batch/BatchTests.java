@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.batch;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
@@ -27,6 +28,8 @@ import com.azure.resourcemanager.batch.models.ImageReference;
 import com.azure.resourcemanager.batch.models.Pool;
 import com.azure.resourcemanager.batch.models.ScaleSettings;
 import com.azure.resourcemanager.batch.models.VirtualMachineConfiguration;
+import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
@@ -48,16 +51,28 @@ public class BatchTests extends TestProxyTestBase {
     private String resourceGroup = "rg" + randomPadding();
     private BatchManager batchManager;
     private StorageManager storageManager;
+    private ResourceManager resourceManager;
     private boolean testEnv;
 
     @Override
     public void beforeTest() {
+        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+
+        resourceManager = ResourceManager
+            .configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile)
+            .withDefaultSubscription();
+
         batchManager = BatchManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         storageManager = StorageManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -65,7 +80,7 @@ public class BatchTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroup = testResourceGroup;
         } else {
-            storageManager.resourceManager().resourceGroups().define(resourceGroup)
+            resourceManager.resourceGroups().define(resourceGroup)
                 .withRegion(REGION)
                 .create();
         }
@@ -74,7 +89,7 @@ public class BatchTests extends TestProxyTestBase {
     @Override
     protected void afterTest() {
         if (!testEnv) {
-            storageManager.resourceManager().resourceGroups().beginDeleteByName(resourceGroup);
+            resourceManager.resourceGroups().beginDeleteByName(resourceGroup);
         }
     }
 
