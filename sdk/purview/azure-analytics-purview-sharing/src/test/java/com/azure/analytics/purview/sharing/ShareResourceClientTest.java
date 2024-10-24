@@ -31,7 +31,8 @@ public class ShareResourceClientTest extends PurviewShareTestBase {
         PagedIterable<BinaryData> shareResources = super.shareResourcesClient
                 .listShareResources(new RequestOptions());
 
-        String sentShareResource = ((InPlaceSentShare) sentShare).getArtifact().getStoreReference().getReferenceName();
+        String sentShareResource = ((InPlaceSentShare) sentShare).getProperties().getArtifact().getStoreReference()
+            .getReferenceName();
 
         assertTrue(shareResources.stream().findAny().isPresent());
         assertTrue(shareResources.stream().map(binaryData -> binaryData.toObject(ShareResource.class))

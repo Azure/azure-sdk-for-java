@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.azure.analytics.purview.sharing.models.BlobAccountSinkProperties;
 import org.junit.jupiter.api.Test;
 
 import com.azure.analytics.purview.sharing.models.BlobAccountSink;
@@ -48,7 +49,7 @@ class ReceivedShareClientTest extends PurviewShareTestBase {
         assertTrue(receivedShares
                     .stream()
                     .map(binaryData -> binaryData.toObject(InPlaceReceivedShare.class))
-                    .allMatch(share -> share.getShareStatus().equals(ShareStatus.DETACHED)));
+                    .allMatch(share -> share.getProperties().getShareStatus().equals(ShareStatus.DETACHED_SHARE_STATUS)));
     }
 
     @Test
@@ -70,7 +71,7 @@ class ReceivedShareClientTest extends PurviewShareTestBase {
 
         assertNotNull(retrievedShare);
         assertEquals(receivedShare.getId(), retrievedShare.getId());
-        assertEquals(receivedShare.getDisplayName(), retrievedShare.getDisplayName());
+        assertEquals(receivedShare.getProperties().getDisplayName(), retrievedShare.getProperties().getDisplayName());
     }
 
     @Test
@@ -115,13 +116,13 @@ class ReceivedShareClientTest extends PurviewShareTestBase {
                 .setReferenceName(this.consumerStorageAccountResourceId)
                 .setType(ReferenceNameType.ARM_RESOURCE_REFERENCE);
 
-        Sink sink = new BlobAccountSink()
-                .setStoreReference(storeReference)
+        Sink sink = new BlobAccountSink().setStoreReference(storeReference)
+            .setProperties(new BlobAccountSinkProperties()
                 .setContainerName(testResourceNamer.randomName("container", 26))
                 .setFolder(testResourceNamer.randomName("folder", 20))
-                .setMountPath(testResourceNamer.randomName("mountpath", 20));
+                .setMountPath(testResourceNamer.randomName("mountpath", 20)));
 
-        receivedShare.setSink(sink);
+        receivedShare.getProperties().setSink(sink);
 
         SyncPoller<BinaryData, BinaryData> createResponse = setPlaybackSyncPollerPollInterval(
             receivedSharesClient.beginCreateOrReplaceReceivedShare(receivedShare.getId(),

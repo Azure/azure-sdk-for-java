@@ -48,8 +48,7 @@ public class ClinicalMatchingClientTestBase extends TestProxyTestBase {
     private BinaryData getTMRequest() {
         File requestFile = new File(ClinicalMatchingClientTestBase.class.getResource("/ClinicalMatchingClientTest.request.json").getPath());
         try {
-            BinaryData requestBody = BinaryData.fromFile(requestFile.toPath());
-            return requestBody;
+            return BinaryData.fromFile(requestFile.toPath());
         } catch (Exception e) {
             e.printStackTrace();
         }
