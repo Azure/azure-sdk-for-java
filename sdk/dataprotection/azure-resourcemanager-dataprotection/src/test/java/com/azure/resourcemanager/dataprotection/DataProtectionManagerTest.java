@@ -39,6 +39,7 @@ import com.azure.resourcemanager.dataprotection.models.StorageSetting;
 import com.azure.resourcemanager.dataprotection.models.StorageSettingStoreTypes;
 import com.azure.resourcemanager.dataprotection.models.StorageSettingTypes;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -58,16 +59,17 @@ public class DataProtectionManagerTest extends TestProxyTestBase {
         final TokenCredential credential = getIdentityTestCredential(super.interceptorManager);
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
+        resourceManager = ResourceManager
+            .configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile)
+            .withDefaultSubscription();
+
         dataProtectionManager = DataProtectionManager
                 .configure()
                 .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
                 .authenticate(credential, profile);
-
-        resourceManager = ResourceManager
-                .configure()
-                .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-                .authenticate(credential, profile)
-                .withDefaultSubscription();
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
