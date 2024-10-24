@@ -48,9 +48,10 @@ public final class OrganizationsListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AstroManager manager = AstroManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AstroManager manager = AstroManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<OrganizationResource> response = manager.organizations().list(com.azure.core.util.Context.NONE);
 
@@ -85,14 +86,35 @@ public final class OrganizationsListMockTests {
             response.iterator().next().properties().partnerOrganizationProperties().organizationName());
         Assertions.assertEquals("ryocfsfksymdd",
             response.iterator().next().properties().partnerOrganizationProperties().workspaceName());
-        Assertions.assertEquals(SingleSignOnStates.DISABLE, response.iterator().next().properties()
-            .partnerOrganizationProperties().singleSignOnProperties().singleSignOnState());
-        Assertions.assertEquals("iuxhqyudxorr", response.iterator().next().properties().partnerOrganizationProperties()
-            .singleSignOnProperties().enterpriseAppId());
-        Assertions.assertEquals("b", response.iterator().next().properties().partnerOrganizationProperties()
-            .singleSignOnProperties().singleSignOnUrl());
-        Assertions.assertEquals("zvyifqrvkdvj", response.iterator().next().properties().partnerOrganizationProperties()
-            .singleSignOnProperties().aadDomains().get(0));
+        Assertions.assertEquals(SingleSignOnStates.DISABLE,
+            response.iterator()
+                .next()
+                .properties()
+                .partnerOrganizationProperties()
+                .singleSignOnProperties()
+                .singleSignOnState());
+        Assertions.assertEquals("iuxhqyudxorr",
+            response.iterator()
+                .next()
+                .properties()
+                .partnerOrganizationProperties()
+                .singleSignOnProperties()
+                .enterpriseAppId());
+        Assertions.assertEquals("b",
+            response.iterator()
+                .next()
+                .properties()
+                .partnerOrganizationProperties()
+                .singleSignOnProperties()
+                .singleSignOnUrl());
+        Assertions.assertEquals("zvyifqrvkdvj",
+            response.iterator()
+                .next()
+                .properties()
+                .partnerOrganizationProperties()
+                .singleSignOnProperties()
+                .aadDomains()
+                .get(0));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
             response.iterator().next().identity().type());
     }
