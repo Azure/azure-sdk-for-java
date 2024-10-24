@@ -21,7 +21,8 @@ public final class BackupKeyResult implements JsonSerializable<BackupKeyResult> 
     private Base64Url value;
 
     /** Creates an instance of BackupKeyResult class. */
-    public BackupKeyResult() {}
+    public BackupKeyResult() {
+    }
 
     /**
      * Get the value property: The backup blob containing the backed up key.
@@ -50,22 +51,21 @@ public final class BackupKeyResult implements JsonSerializable<BackupKeyResult> 
      * @throws IOException If an error occurs while reading the BackupKeyResult.
      */
     public static BackupKeyResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    BackupKeyResult deserializedBackupKeyResult = new BackupKeyResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            BackupKeyResult deserializedBackupKeyResult = new BackupKeyResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            deserializedBackupKeyResult.value =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    deserializedBackupKeyResult.value
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedBackupKeyResult;
-                });
+            return deserializedBackupKeyResult;
+        });
     }
 }

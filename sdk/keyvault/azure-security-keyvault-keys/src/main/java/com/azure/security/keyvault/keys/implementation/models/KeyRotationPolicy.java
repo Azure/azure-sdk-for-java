@@ -33,7 +33,8 @@ public final class KeyRotationPolicy implements JsonSerializable<KeyRotationPoli
     private KeyRotationPolicyAttributes attributes;
 
     /** Creates an instance of KeyRotationPolicy class. */
-    public KeyRotationPolicy() {}
+    public KeyRotationPolicy() {
+    }
 
     /**
      * Get the id property: The key policy id.
@@ -91,8 +92,8 @@ public final class KeyRotationPolicy implements JsonSerializable<KeyRotationPoli
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField(
-                "lifetimeActions", this.lifetimeActions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("lifetimeActions", this.lifetimeActions,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("attributes", this.attributes);
         return jsonWriter.writeEndObject();
     }
@@ -106,27 +107,26 @@ public final class KeyRotationPolicy implements JsonSerializable<KeyRotationPoli
      * @throws IOException If an error occurs while reading the KeyRotationPolicy.
      */
     public static KeyRotationPolicy fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyRotationPolicy deserializedKeyRotationPolicy = new KeyRotationPolicy();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyRotationPolicy deserializedKeyRotationPolicy = new KeyRotationPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedKeyRotationPolicy.id = reader.getString();
-                        } else if ("lifetimeActions".equals(fieldName)) {
-                            List<LifetimeActions> lifetimeActions =
-                                    reader.readArray(reader1 -> LifetimeActions.fromJson(reader1));
-                            deserializedKeyRotationPolicy.lifetimeActions = lifetimeActions;
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedKeyRotationPolicy.attributes = KeyRotationPolicyAttributes.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedKeyRotationPolicy.id = reader.getString();
+                } else if ("lifetimeActions".equals(fieldName)) {
+                    List<LifetimeActions> lifetimeActions
+                        = reader.readArray(reader1 -> LifetimeActions.fromJson(reader1));
+                    deserializedKeyRotationPolicy.lifetimeActions = lifetimeActions;
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedKeyRotationPolicy.attributes = KeyRotationPolicyAttributes.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyRotationPolicy;
-                });
+            return deserializedKeyRotationPolicy;
+        });
     }
 }

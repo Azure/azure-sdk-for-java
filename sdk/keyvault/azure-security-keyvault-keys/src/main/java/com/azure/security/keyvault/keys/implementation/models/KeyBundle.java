@@ -42,7 +42,8 @@ public class KeyBundle implements JsonSerializable<KeyBundle> {
     private KeyReleasePolicy releasePolicy;
 
     /** Creates an instance of KeyBundle class. */
-    public KeyBundle() {}
+    public KeyBundle() {
+    }
 
     /**
      * Get the key property: The Json web key.
@@ -165,30 +166,29 @@ public class KeyBundle implements JsonSerializable<KeyBundle> {
      * @throws IOException If an error occurs while reading the KeyBundle.
      */
     public static KeyBundle fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyBundle deserializedKeyBundle = new KeyBundle();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyBundle deserializedKeyBundle = new KeyBundle();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("key".equals(fieldName)) {
-                            deserializedKeyBundle.key = JsonWebKey.fromJson(reader);
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedKeyBundle.attributes = KeyAttributes.fromJson(reader);
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedKeyBundle.tags = tags;
-                        } else if ("managed".equals(fieldName)) {
-                            deserializedKeyBundle.managed = reader.getNullable(JsonReader::getBoolean);
-                        } else if ("release_policy".equals(fieldName)) {
-                            deserializedKeyBundle.releasePolicy = KeyReleasePolicy.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("key".equals(fieldName)) {
+                    deserializedKeyBundle.key = JsonWebKey.fromJson(reader);
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedKeyBundle.attributes = KeyAttributes.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedKeyBundle.tags = tags;
+                } else if ("managed".equals(fieldName)) {
+                    deserializedKeyBundle.managed = reader.getNullable(JsonReader::getBoolean);
+                } else if ("release_policy".equals(fieldName)) {
+                    deserializedKeyBundle.releasePolicy = KeyReleasePolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyBundle;
-                });
+            return deserializedKeyBundle;
+        });
     }
 }

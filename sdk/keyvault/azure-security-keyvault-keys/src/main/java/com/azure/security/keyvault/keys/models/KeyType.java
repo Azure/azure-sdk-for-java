@@ -33,7 +33,8 @@ public final class KeyType extends ExpandableStringEnum<KeyType> {
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public KeyType() {}
+    public KeyType() {
+    }
 
     /**
      * Creates or finds a KeyType from its string representation.

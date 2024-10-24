@@ -36,7 +36,8 @@ public final class SecretSetParameters implements JsonSerializable<SecretSetPara
     private SecretAttributes secretAttributes;
 
     /** Creates an instance of SecretSetParameters class. */
-    public SecretSetParameters() {}
+    public SecretSetParameters() {
+    }
 
     /**
      * Get the value property: The value of the secret.
@@ -138,28 +139,27 @@ public final class SecretSetParameters implements JsonSerializable<SecretSetPara
      * @throws IOException If an error occurs while reading the SecretSetParameters.
      */
     public static SecretSetParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    SecretSetParameters deserializedSecretSetParameters = new SecretSetParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            SecretSetParameters deserializedSecretSetParameters = new SecretSetParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            deserializedSecretSetParameters.value = reader.getString();
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedSecretSetParameters.tags = tags;
-                        } else if ("contentType".equals(fieldName)) {
-                            deserializedSecretSetParameters.contentType = reader.getString();
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedSecretSetParameters.secretAttributes = SecretAttributes.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    deserializedSecretSetParameters.value = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSecretSetParameters.tags = tags;
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedSecretSetParameters.contentType = reader.getString();
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedSecretSetParameters.secretAttributes = SecretAttributes.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedSecretSetParameters;
-                });
+            return deserializedSecretSetParameters;
+        });
     }
 }

@@ -35,7 +35,8 @@ public final class CertificateIssuerSetParameters implements JsonSerializable<Ce
     private IssuerAttributes attributes;
 
     /** Creates an instance of CertificateIssuerSetParameters class. */
-    public CertificateIssuerSetParameters() {}
+    public CertificateIssuerSetParameters() {
+    }
 
     /**
      * Get the provider property: The issuer provider.
@@ -137,29 +138,28 @@ public final class CertificateIssuerSetParameters implements JsonSerializable<Ce
      * @throws IOException If an error occurs while reading the CertificateIssuerSetParameters.
      */
     public static CertificateIssuerSetParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CertificateIssuerSetParameters deserializedCertificateIssuerSetParameters =
-                            new CertificateIssuerSetParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CertificateIssuerSetParameters deserializedCertificateIssuerSetParameters
+                = new CertificateIssuerSetParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("provider".equals(fieldName)) {
-                            deserializedCertificateIssuerSetParameters.provider = reader.getString();
-                        } else if ("credentials".equals(fieldName)) {
-                            deserializedCertificateIssuerSetParameters.credentials = IssuerCredentials.fromJson(reader);
-                        } else if ("org_details".equals(fieldName)) {
-                            deserializedCertificateIssuerSetParameters.organizationDetails =
-                                    OrganizationDetails.fromJson(reader);
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedCertificateIssuerSetParameters.attributes = IssuerAttributes.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("provider".equals(fieldName)) {
+                    deserializedCertificateIssuerSetParameters.provider = reader.getString();
+                } else if ("credentials".equals(fieldName)) {
+                    deserializedCertificateIssuerSetParameters.credentials = IssuerCredentials.fromJson(reader);
+                } else if ("org_details".equals(fieldName)) {
+                    deserializedCertificateIssuerSetParameters.organizationDetails
+                        = OrganizationDetails.fromJson(reader);
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedCertificateIssuerSetParameters.attributes = IssuerAttributes.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCertificateIssuerSetParameters;
-                });
+            return deserializedCertificateIssuerSetParameters;
+        });
     }
 }

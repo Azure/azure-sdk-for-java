@@ -40,7 +40,8 @@ public final class KeyAttributes extends Attributes {
     private String hsmPlatform;
 
     /** Creates an instance of KeyAttributes class. */
-    public KeyAttributes() {}
+    public KeyAttributes() {
+    }
 
     /**
      * Get the recoverableDays property: softDelete data retention days. Value should be &gt;=7 and &lt;=90 when
@@ -138,46 +139,44 @@ public final class KeyAttributes extends Attributes {
      * @throws IOException If an error occurs while reading the KeyAttributes.
      */
     public static KeyAttributes fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyAttributes deserializedKeyAttributes = new KeyAttributes();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyAttributes deserializedKeyAttributes = new KeyAttributes();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("enabled".equals(fieldName)) {
-                            deserializedKeyAttributes.setEnabled(reader.getNullable(JsonReader::getBoolean));
-                        } else if ("nbf".equals(fieldName)) {
-                            Long notBefore = reader.getNullable(JsonReader::getLong);
-                            if (notBefore != null) {
-                                deserializedKeyAttributes.setNotBefore(
-                                        OffsetDateTime.ofInstant(Instant.ofEpochSecond(notBefore), ZoneOffset.UTC));
-                            }
-                        } else if ("exp".equals(fieldName)) {
-                            Long expires = reader.getNullable(JsonReader::getLong);
-                            if (expires != null) {
-                                deserializedKeyAttributes.setExpires(
-                                        OffsetDateTime.ofInstant(Instant.ofEpochSecond(expires), ZoneOffset.UTC));
-                            }
-                        } else if ("created".equals(fieldName)) {
-                            deserializedKeyAttributes.setCreated(reader.getNullable(JsonReader::getLong));
-                        } else if ("updated".equals(fieldName)) {
-                            deserializedKeyAttributes.setUpdated(reader.getNullable(JsonReader::getLong));
-                        } else if ("recoverableDays".equals(fieldName)) {
-                            deserializedKeyAttributes.recoverableDays = reader.getNullable(JsonReader::getInt);
-                        } else if ("recoveryLevel".equals(fieldName)) {
-                            deserializedKeyAttributes.recoveryLevel =
-                                    DeletionRecoveryLevel.fromString(reader.getString());
-                        } else if ("exportable".equals(fieldName)) {
-                            deserializedKeyAttributes.exportable = reader.getNullable(JsonReader::getBoolean);
-                        } else if ("hsmPlatform".equals(fieldName)) {
-                            deserializedKeyAttributes.hsmPlatform = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
+                if ("enabled".equals(fieldName)) {
+                    deserializedKeyAttributes.setEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("nbf".equals(fieldName)) {
+                    Long notBefore = reader.getNullable(JsonReader::getLong);
+                    if (notBefore != null) {
+                        deserializedKeyAttributes
+                            .setNotBefore(OffsetDateTime.ofInstant(Instant.ofEpochSecond(notBefore), ZoneOffset.UTC));
                     }
+                } else if ("exp".equals(fieldName)) {
+                    Long expires = reader.getNullable(JsonReader::getLong);
+                    if (expires != null) {
+                        deserializedKeyAttributes
+                            .setExpires(OffsetDateTime.ofInstant(Instant.ofEpochSecond(expires), ZoneOffset.UTC));
+                    }
+                } else if ("created".equals(fieldName)) {
+                    deserializedKeyAttributes.setCreated(reader.getNullable(JsonReader::getLong));
+                } else if ("updated".equals(fieldName)) {
+                    deserializedKeyAttributes.setUpdated(reader.getNullable(JsonReader::getLong));
+                } else if ("recoverableDays".equals(fieldName)) {
+                    deserializedKeyAttributes.recoverableDays = reader.getNullable(JsonReader::getInt);
+                } else if ("recoveryLevel".equals(fieldName)) {
+                    deserializedKeyAttributes.recoveryLevel = DeletionRecoveryLevel.fromString(reader.getString());
+                } else if ("exportable".equals(fieldName)) {
+                    deserializedKeyAttributes.exportable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("hsmPlatform".equals(fieldName)) {
+                    deserializedKeyAttributes.hsmPlatform = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyAttributes;
-                });
+            return deserializedKeyAttributes;
+        });
     }
 }

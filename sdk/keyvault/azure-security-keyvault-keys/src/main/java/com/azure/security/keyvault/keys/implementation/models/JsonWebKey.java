@@ -102,7 +102,8 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
     private Base64Url y;
 
     /** Creates an instance of JsonWebKey class. */
-    public JsonWebKey() {}
+    public JsonWebKey() {
+    }
 
     /**
      * Get the kid property: Key identifier.
@@ -515,8 +516,8 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("kid", this.kid);
         jsonWriter.writeStringField("kty", Objects.toString(this.kty, null));
-        jsonWriter.writeArrayField(
-                "key_ops", this.keyOps, (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        jsonWriter.writeArrayField("key_ops", this.keyOps,
+            (writer, element) -> writer.writeString(Objects.toString(element, null)));
         jsonWriter.writeStringField("n", Objects.toString(this.n, null));
         jsonWriter.writeStringField("e", Objects.toString(this.e, null));
         jsonWriter.writeStringField("d", Objects.toString(this.d, null));
@@ -542,65 +543,64 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * @throws IOException If an error occurs while reading the JsonWebKey.
      */
     public static JsonWebKey fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    JsonWebKey deserializedJsonWebKey = new JsonWebKey();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            JsonWebKey deserializedJsonWebKey = new JsonWebKey();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("kid".equals(fieldName)) {
-                            deserializedJsonWebKey.kid = reader.getString();
-                        } else if ("kty".equals(fieldName)) {
-                            deserializedJsonWebKey.kty = KeyType.fromString(reader.getString());
-                        } else if ("key_ops".equals(fieldName)) {
-                            List<KeyOperation> keyOps =
-                                    reader.readArray(reader1 -> KeyOperation.fromString(reader1.getString()));
-                            deserializedJsonWebKey.keyOps = keyOps;
-                        } else if ("n".equals(fieldName)) {
-                            deserializedJsonWebKey.n =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("e".equals(fieldName)) {
-                            deserializedJsonWebKey.e =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("d".equals(fieldName)) {
-                            deserializedJsonWebKey.d =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("dp".equals(fieldName)) {
-                            deserializedJsonWebKey.dp =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("dq".equals(fieldName)) {
-                            deserializedJsonWebKey.dq =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("qi".equals(fieldName)) {
-                            deserializedJsonWebKey.qi =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("p".equals(fieldName)) {
-                            deserializedJsonWebKey.p =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("q".equals(fieldName)) {
-                            deserializedJsonWebKey.q =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("k".equals(fieldName)) {
-                            deserializedJsonWebKey.k =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("key_hsm".equals(fieldName)) {
-                            deserializedJsonWebKey.t =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("crv".equals(fieldName)) {
-                            deserializedJsonWebKey.crv = KeyCurveName.fromString(reader.getString());
-                        } else if ("x".equals(fieldName)) {
-                            deserializedJsonWebKey.x =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("y".equals(fieldName)) {
-                            deserializedJsonWebKey.y =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("kid".equals(fieldName)) {
+                    deserializedJsonWebKey.kid = reader.getString();
+                } else if ("kty".equals(fieldName)) {
+                    deserializedJsonWebKey.kty = KeyType.fromString(reader.getString());
+                } else if ("key_ops".equals(fieldName)) {
+                    List<KeyOperation> keyOps
+                        = reader.readArray(reader1 -> KeyOperation.fromString(reader1.getString()));
+                    deserializedJsonWebKey.keyOps = keyOps;
+                } else if ("n".equals(fieldName)) {
+                    deserializedJsonWebKey.n
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("e".equals(fieldName)) {
+                    deserializedJsonWebKey.e
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("d".equals(fieldName)) {
+                    deserializedJsonWebKey.d
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("dp".equals(fieldName)) {
+                    deserializedJsonWebKey.dp
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("dq".equals(fieldName)) {
+                    deserializedJsonWebKey.dq
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("qi".equals(fieldName)) {
+                    deserializedJsonWebKey.qi
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("p".equals(fieldName)) {
+                    deserializedJsonWebKey.p
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("q".equals(fieldName)) {
+                    deserializedJsonWebKey.q
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("k".equals(fieldName)) {
+                    deserializedJsonWebKey.k
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("key_hsm".equals(fieldName)) {
+                    deserializedJsonWebKey.t
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("crv".equals(fieldName)) {
+                    deserializedJsonWebKey.crv = KeyCurveName.fromString(reader.getString());
+                } else if ("x".equals(fieldName)) {
+                    deserializedJsonWebKey.x
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("y".equals(fieldName)) {
+                    deserializedJsonWebKey.y
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedJsonWebKey;
-                });
+            return deserializedJsonWebKey;
+        });
     }
 }

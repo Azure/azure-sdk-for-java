@@ -25,7 +25,8 @@ public final class CertificateIssuerItem implements JsonSerializable<Certificate
     private String provider;
 
     /** Creates an instance of CertificateIssuerItem class. */
-    public CertificateIssuerItem() {}
+    public CertificateIssuerItem() {
+    }
 
     /**
      * Get the id property: Certificate Identifier.
@@ -84,23 +85,22 @@ public final class CertificateIssuerItem implements JsonSerializable<Certificate
      * @throws IOException If an error occurs while reading the CertificateIssuerItem.
      */
     public static CertificateIssuerItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CertificateIssuerItem deserializedCertificateIssuerItem = new CertificateIssuerItem();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CertificateIssuerItem deserializedCertificateIssuerItem = new CertificateIssuerItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedCertificateIssuerItem.id = reader.getString();
-                        } else if ("provider".equals(fieldName)) {
-                            deserializedCertificateIssuerItem.provider = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedCertificateIssuerItem.id = reader.getString();
+                } else if ("provider".equals(fieldName)) {
+                    deserializedCertificateIssuerItem.provider = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCertificateIssuerItem;
-                });
+            return deserializedCertificateIssuerItem;
+        });
     }
 }

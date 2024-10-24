@@ -26,7 +26,8 @@ public final class KeyListResult implements JsonSerializable<KeyListResult> {
     private String nextLink;
 
     /** Creates an instance of KeyListResult class. */
-    public KeyListResult() {}
+    public KeyListResult() {
+    }
 
     /**
      * Get the value property: A response message containing a list of keys in the key vault along with a link to the
@@ -62,24 +63,23 @@ public final class KeyListResult implements JsonSerializable<KeyListResult> {
      * @throws IOException If an error occurs while reading the KeyListResult.
      */
     public static KeyListResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyListResult deserializedKeyListResult = new KeyListResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyListResult deserializedKeyListResult = new KeyListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            List<KeyItem> value = reader.readArray(reader1 -> KeyItem.fromJson(reader1));
-                            deserializedKeyListResult.value = value;
-                        } else if ("nextLink".equals(fieldName)) {
-                            deserializedKeyListResult.nextLink = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    List<KeyItem> value = reader.readArray(reader1 -> KeyItem.fromJson(reader1));
+                    deserializedKeyListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedKeyListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyListResult;
-                });
+            return deserializedKeyListResult;
+        });
     }
 }

@@ -35,7 +35,8 @@ public final class DeletedCertificateItem extends CertificateItem {
     private Long deletedDate;
 
     /** Creates an instance of DeletedCertificateItem class. */
-    public DeletedCertificateItem() {}
+    public DeletedCertificateItem() {
+    }
 
     /**
      * Get the recoveryId property: The url of the recovery object, used to identify and recover the deleted
@@ -133,39 +134,37 @@ public final class DeletedCertificateItem extends CertificateItem {
      * @throws IOException If an error occurs while reading the DeletedCertificateItem.
      */
     public static DeletedCertificateItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    DeletedCertificateItem deserializedDeletedCertificateItem = new DeletedCertificateItem();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            DeletedCertificateItem deserializedDeletedCertificateItem = new DeletedCertificateItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedDeletedCertificateItem.setId(reader.getString());
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedDeletedCertificateItem.setAttributes(CertificateAttributes.fromJson(reader));
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedDeletedCertificateItem.setTags(tags);
-                        } else if ("x5t".equals(fieldName)) {
-                            Base64Url x509Thumbprint =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                            if (x509Thumbprint != null) {
-                                deserializedDeletedCertificateItem.setX509Thumbprint(x509Thumbprint.decodedBytes());
-                            }
-                        } else if ("recoveryId".equals(fieldName)) {
-                            deserializedDeletedCertificateItem.recoveryId = reader.getString();
-                        } else if ("scheduledPurgeDate".equals(fieldName)) {
-                            deserializedDeletedCertificateItem.scheduledPurgeDate =
-                                    reader.getNullable(JsonReader::getLong);
-                        } else if ("deletedDate".equals(fieldName)) {
-                            deserializedDeletedCertificateItem.deletedDate = reader.getNullable(JsonReader::getLong);
-                        } else {
-                            reader.skipChildren();
-                        }
+                if ("id".equals(fieldName)) {
+                    deserializedDeletedCertificateItem.setId(reader.getString());
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedDeletedCertificateItem.setAttributes(CertificateAttributes.fromJson(reader));
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDeletedCertificateItem.setTags(tags);
+                } else if ("x5t".equals(fieldName)) {
+                    Base64Url x509Thumbprint
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                    if (x509Thumbprint != null) {
+                        deserializedDeletedCertificateItem.setX509Thumbprint(x509Thumbprint.decodedBytes());
                     }
+                } else if ("recoveryId".equals(fieldName)) {
+                    deserializedDeletedCertificateItem.recoveryId = reader.getString();
+                } else if ("scheduledPurgeDate".equals(fieldName)) {
+                    deserializedDeletedCertificateItem.scheduledPurgeDate = reader.getNullable(JsonReader::getLong);
+                } else if ("deletedDate".equals(fieldName)) {
+                    deserializedDeletedCertificateItem.deletedDate = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedDeletedCertificateItem;
-                });
+            return deserializedDeletedCertificateItem;
+        });
     }
 }

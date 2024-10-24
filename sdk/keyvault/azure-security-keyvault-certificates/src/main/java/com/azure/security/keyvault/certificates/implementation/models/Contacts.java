@@ -27,7 +27,8 @@ public final class Contacts implements JsonSerializable<Contacts> {
     private List<CertificateContact> contactList;
 
     /** Creates an instance of Contacts class. */
-    public Contacts() {}
+    public Contacts() {
+    }
 
     /**
      * Get the id property: Identifier for the contacts collection.
@@ -74,25 +75,24 @@ public final class Contacts implements JsonSerializable<Contacts> {
      * @throws IOException If an error occurs while reading the Contacts.
      */
     public static Contacts fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    Contacts deserializedContacts = new Contacts();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            Contacts deserializedContacts = new Contacts();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedContacts.id = reader.getString();
-                        } else if ("contacts".equals(fieldName)) {
-                            List<CertificateContact> contactList =
-                                    reader.readArray(reader1 -> CertificateContact.fromJson(reader1));
-                            deserializedContacts.contactList = contactList;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedContacts.id = reader.getString();
+                } else if ("contacts".equals(fieldName)) {
+                    List<CertificateContact> contactList
+                        = reader.readArray(reader1 -> CertificateContact.fromJson(reader1));
+                    deserializedContacts.contactList = contactList;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedContacts;
-                });
+            return deserializedContacts;
+        });
     }
 }

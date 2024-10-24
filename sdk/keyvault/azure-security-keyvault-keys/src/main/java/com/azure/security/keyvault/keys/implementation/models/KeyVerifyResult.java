@@ -20,7 +20,8 @@ public final class KeyVerifyResult implements JsonSerializable<KeyVerifyResult> 
     private Boolean value;
 
     /** Creates an instance of KeyVerifyResult class. */
-    public KeyVerifyResult() {}
+    public KeyVerifyResult() {
+    }
 
     /**
      * Get the value property: True if the signature is verified, otherwise false.
@@ -46,21 +47,20 @@ public final class KeyVerifyResult implements JsonSerializable<KeyVerifyResult> 
      * @throws IOException If an error occurs while reading the KeyVerifyResult.
      */
     public static KeyVerifyResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyVerifyResult deserializedKeyVerifyResult = new KeyVerifyResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyVerifyResult deserializedKeyVerifyResult = new KeyVerifyResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            deserializedKeyVerifyResult.value = reader.getNullable(JsonReader::getBoolean);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    deserializedKeyVerifyResult.value = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyVerifyResult;
-                });
+            return deserializedKeyVerifyResult;
+        });
     }
 }

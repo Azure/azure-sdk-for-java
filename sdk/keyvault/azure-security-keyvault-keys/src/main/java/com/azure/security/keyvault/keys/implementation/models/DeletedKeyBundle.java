@@ -33,7 +33,8 @@ public final class DeletedKeyBundle extends KeyBundle {
     private Long deletedDate;
 
     /** Creates an instance of DeletedKeyBundle class. */
-    public DeletedKeyBundle() {}
+    public DeletedKeyBundle() {
+    }
 
     /**
      * Get the recoveryId property: The url of the recovery object, used to identify and recover the deleted key.
@@ -127,36 +128,35 @@ public final class DeletedKeyBundle extends KeyBundle {
      * @throws IOException If an error occurs while reading the DeletedKeyBundle.
      */
     public static DeletedKeyBundle fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    DeletedKeyBundle deserializedDeletedKeyBundle = new DeletedKeyBundle();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            DeletedKeyBundle deserializedDeletedKeyBundle = new DeletedKeyBundle();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("key".equals(fieldName)) {
-                            deserializedDeletedKeyBundle.setKey(JsonWebKey.fromJson(reader));
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedDeletedKeyBundle.setAttributes(KeyAttributes.fromJson(reader));
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedDeletedKeyBundle.setTags(tags);
-                        } else if ("managed".equals(fieldName)) {
-                            deserializedDeletedKeyBundle.setManaged(reader.getNullable(JsonReader::getBoolean));
-                        } else if ("release_policy".equals(fieldName)) {
-                            deserializedDeletedKeyBundle.setReleasePolicy(KeyReleasePolicy.fromJson(reader));
-                        } else if ("recoveryId".equals(fieldName)) {
-                            deserializedDeletedKeyBundle.recoveryId = reader.getString();
-                        } else if ("scheduledPurgeDate".equals(fieldName)) {
-                            deserializedDeletedKeyBundle.scheduledPurgeDate = reader.getNullable(JsonReader::getLong);
-                        } else if ("deletedDate".equals(fieldName)) {
-                            deserializedDeletedKeyBundle.deletedDate = reader.getNullable(JsonReader::getLong);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("key".equals(fieldName)) {
+                    deserializedDeletedKeyBundle.setKey(JsonWebKey.fromJson(reader));
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedDeletedKeyBundle.setAttributes(KeyAttributes.fromJson(reader));
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDeletedKeyBundle.setTags(tags);
+                } else if ("managed".equals(fieldName)) {
+                    deserializedDeletedKeyBundle.setManaged(reader.getNullable(JsonReader::getBoolean));
+                } else if ("release_policy".equals(fieldName)) {
+                    deserializedDeletedKeyBundle.setReleasePolicy(KeyReleasePolicy.fromJson(reader));
+                } else if ("recoveryId".equals(fieldName)) {
+                    deserializedDeletedKeyBundle.recoveryId = reader.getString();
+                } else if ("scheduledPurgeDate".equals(fieldName)) {
+                    deserializedDeletedKeyBundle.scheduledPurgeDate = reader.getNullable(JsonReader::getLong);
+                } else if ("deletedDate".equals(fieldName)) {
+                    deserializedDeletedKeyBundle.deletedDate = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedDeletedKeyBundle;
-                });
+            return deserializedDeletedKeyBundle;
+        });
     }
 }

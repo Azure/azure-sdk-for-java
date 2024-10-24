@@ -25,7 +25,8 @@ public final class LifetimeActions implements JsonSerializable<LifetimeActions> 
     private LifetimeActionsType action;
 
     /** Creates an instance of LifetimeActions class. */
-    public LifetimeActions() {}
+    public LifetimeActions() {
+    }
 
     /**
      * Get the trigger property: The condition that will execute the action.
@@ -84,23 +85,22 @@ public final class LifetimeActions implements JsonSerializable<LifetimeActions> 
      * @throws IOException If an error occurs while reading the LifetimeActions.
      */
     public static LifetimeActions fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    LifetimeActions deserializedLifetimeActions = new LifetimeActions();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            LifetimeActions deserializedLifetimeActions = new LifetimeActions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("trigger".equals(fieldName)) {
-                            deserializedLifetimeActions.trigger = LifetimeActionsTrigger.fromJson(reader);
-                        } else if ("action".equals(fieldName)) {
-                            deserializedLifetimeActions.action = LifetimeActionsType.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("trigger".equals(fieldName)) {
+                    deserializedLifetimeActions.trigger = LifetimeActionsTrigger.fromJson(reader);
+                } else if ("action".equals(fieldName)) {
+                    deserializedLifetimeActions.action = LifetimeActionsType.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedLifetimeActions;
-                });
+            return deserializedLifetimeActions;
+        });
     }
 }

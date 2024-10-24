@@ -30,7 +30,8 @@ public final class IssuerParameters implements JsonSerializable<IssuerParameters
     private Boolean certificateTransparency;
 
     /** Creates an instance of IssuerParameters class. */
-    public IssuerParameters() {}
+    public IssuerParameters() {
+    }
 
     /**
      * Get the name property: Name of the referenced issuer object or reserved names; for example, 'Self' or 'Unknown'.
@@ -114,26 +115,24 @@ public final class IssuerParameters implements JsonSerializable<IssuerParameters
      * @throws IOException If an error occurs while reading the IssuerParameters.
      */
     public static IssuerParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    IssuerParameters deserializedIssuerParameters = new IssuerParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            IssuerParameters deserializedIssuerParameters = new IssuerParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("name".equals(fieldName)) {
-                            deserializedIssuerParameters.name = reader.getString();
-                        } else if ("cty".equals(fieldName)) {
-                            deserializedIssuerParameters.certificateType = reader.getString();
-                        } else if ("cert_transparency".equals(fieldName)) {
-                            deserializedIssuerParameters.certificateTransparency =
-                                    reader.getNullable(JsonReader::getBoolean);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("name".equals(fieldName)) {
+                    deserializedIssuerParameters.name = reader.getString();
+                } else if ("cty".equals(fieldName)) {
+                    deserializedIssuerParameters.certificateType = reader.getString();
+                } else if ("cert_transparency".equals(fieldName)) {
+                    deserializedIssuerParameters.certificateTransparency = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedIssuerParameters;
-                });
+            return deserializedIssuerParameters;
+        });
     }
 }

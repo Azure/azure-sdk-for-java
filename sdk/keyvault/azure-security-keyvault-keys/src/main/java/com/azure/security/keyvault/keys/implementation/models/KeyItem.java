@@ -37,7 +37,8 @@ public class KeyItem implements JsonSerializable<KeyItem> {
     private Boolean managed;
 
     /** Creates an instance of KeyItem class. */
-    public KeyItem() {}
+    public KeyItem() {
+    }
 
     /**
      * Get the kid property: Key identifier.
@@ -139,28 +140,27 @@ public class KeyItem implements JsonSerializable<KeyItem> {
      * @throws IOException If an error occurs while reading the KeyItem.
      */
     public static KeyItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyItem deserializedKeyItem = new KeyItem();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyItem deserializedKeyItem = new KeyItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("kid".equals(fieldName)) {
-                            deserializedKeyItem.kid = reader.getString();
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedKeyItem.attributes = KeyAttributes.fromJson(reader);
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedKeyItem.tags = tags;
-                        } else if ("managed".equals(fieldName)) {
-                            deserializedKeyItem.managed = reader.getNullable(JsonReader::getBoolean);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("kid".equals(fieldName)) {
+                    deserializedKeyItem.kid = reader.getString();
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedKeyItem.attributes = KeyAttributes.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedKeyItem.tags = tags;
+                } else if ("managed".equals(fieldName)) {
+                    deserializedKeyItem.managed = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyItem;
-                });
+            return deserializedKeyItem;
+        });
     }
 }

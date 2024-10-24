@@ -20,7 +20,8 @@ public final class GetRandomBytesRequest implements JsonSerializable<GetRandomBy
     private int count;
 
     /** Creates an instance of GetRandomBytesRequest class. */
-    public GetRandomBytesRequest() {}
+    public GetRandomBytesRequest() {
+    }
 
     /**
      * Get the count property: The requested number of random bytes.
@@ -59,21 +60,20 @@ public final class GetRandomBytesRequest implements JsonSerializable<GetRandomBy
      * @throws IOException If an error occurs while reading the GetRandomBytesRequest.
      */
     public static GetRandomBytesRequest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    GetRandomBytesRequest deserializedGetRandomBytesRequest = new GetRandomBytesRequest();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            GetRandomBytesRequest deserializedGetRandomBytesRequest = new GetRandomBytesRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("count".equals(fieldName)) {
-                            deserializedGetRandomBytesRequest.count = reader.getInt();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("count".equals(fieldName)) {
+                    deserializedGetRandomBytesRequest.count = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedGetRandomBytesRequest;
-                });
+            return deserializedGetRandomBytesRequest;
+        });
     }
 }

@@ -20,7 +20,8 @@ public final class ReleaseKeyResult implements JsonSerializable<ReleaseKeyResult
     private String value;
 
     /** Creates an instance of ReleaseKeyResult class. */
-    public ReleaseKeyResult() {}
+    public ReleaseKeyResult() {
+    }
 
     /**
      * Get the value property: A signed object containing the released key.
@@ -46,21 +47,20 @@ public final class ReleaseKeyResult implements JsonSerializable<ReleaseKeyResult
      * @throws IOException If an error occurs while reading the ReleaseKeyResult.
      */
     public static ReleaseKeyResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    ReleaseKeyResult deserializedReleaseKeyResult = new ReleaseKeyResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            ReleaseKeyResult deserializedReleaseKeyResult = new ReleaseKeyResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            deserializedReleaseKeyResult.value = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    deserializedReleaseKeyResult.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedReleaseKeyResult;
-                });
+            return deserializedReleaseKeyResult;
+        });
     }
 }

@@ -29,7 +29,8 @@ public final class KeySignParameters implements JsonSerializable<KeySignParamete
     private Base64Url value;
 
     /** Creates an instance of KeySignParameters class. */
-    public KeySignParameters() {}
+    public KeySignParameters() {
+    }
 
     /**
      * Get the algorithm property: The signing/verification algorithm identifier. For more information on possible
@@ -98,25 +99,24 @@ public final class KeySignParameters implements JsonSerializable<KeySignParamete
      * @throws IOException If an error occurs while reading the KeySignParameters.
      */
     public static KeySignParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeySignParameters deserializedKeySignParameters = new KeySignParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeySignParameters deserializedKeySignParameters = new KeySignParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("alg".equals(fieldName)) {
-                            deserializedKeySignParameters.algorithm =
-                                    JsonWebKeySignatureAlgorithm.fromString(reader.getString());
-                        } else if ("value".equals(fieldName)) {
-                            deserializedKeySignParameters.value =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("alg".equals(fieldName)) {
+                    deserializedKeySignParameters.algorithm
+                        = JsonWebKeySignatureAlgorithm.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedKeySignParameters.value
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeySignParameters;
-                });
+            return deserializedKeySignParameters;
+        });
     }
 }

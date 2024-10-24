@@ -44,7 +44,8 @@ public final class X509CertificateProperties implements JsonSerializable<X509Cer
     private Integer validityInMonths;
 
     /** Creates an instance of X509CertificateProperties class. */
-    public X509CertificateProperties() {}
+    public X509CertificateProperties() {
+    }
 
     /**
      * Get the subject property: The subject name. Should be a valid X509 distinguished Name.
@@ -152,8 +153,8 @@ public final class X509CertificateProperties implements JsonSerializable<X509Cer
         jsonWriter.writeStringField("subject", this.subject);
         jsonWriter.writeArrayField("ekus", this.ekus, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("sans", this.subjectAlternativeNames);
-        jsonWriter.writeArrayField(
-                "key_usage", this.keyUsage, (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        jsonWriter.writeArrayField("key_usage", this.keyUsage,
+            (writer, element) -> writer.writeString(Objects.toString(element, null)));
         jsonWriter.writeNumberField("validity_months", this.validityInMonths);
         return jsonWriter.writeEndObject();
     }
@@ -167,34 +168,32 @@ public final class X509CertificateProperties implements JsonSerializable<X509Cer
      * @throws IOException If an error occurs while reading the X509CertificateProperties.
      */
     public static X509CertificateProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    X509CertificateProperties deserializedX509CertificateProperties = new X509CertificateProperties();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            X509CertificateProperties deserializedX509CertificateProperties = new X509CertificateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("subject".equals(fieldName)) {
-                            deserializedX509CertificateProperties.subject = reader.getString();
-                        } else if ("ekus".equals(fieldName)) {
-                            List<String> ekus = reader.readArray(reader1 -> reader1.getString());
-                            deserializedX509CertificateProperties.ekus = ekus;
-                        } else if ("sans".equals(fieldName)) {
-                            deserializedX509CertificateProperties.subjectAlternativeNames =
-                                    SubjectAlternativeNames.fromJson(reader);
-                        } else if ("key_usage".equals(fieldName)) {
-                            List<CertificateKeyUsage> keyUsage =
-                                    reader.readArray(reader1 -> CertificateKeyUsage.fromString(reader1.getString()));
-                            deserializedX509CertificateProperties.keyUsage = keyUsage;
-                        } else if ("validity_months".equals(fieldName)) {
-                            deserializedX509CertificateProperties.validityInMonths =
-                                    reader.getNullable(JsonReader::getInt);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("subject".equals(fieldName)) {
+                    deserializedX509CertificateProperties.subject = reader.getString();
+                } else if ("ekus".equals(fieldName)) {
+                    List<String> ekus = reader.readArray(reader1 -> reader1.getString());
+                    deserializedX509CertificateProperties.ekus = ekus;
+                } else if ("sans".equals(fieldName)) {
+                    deserializedX509CertificateProperties.subjectAlternativeNames
+                        = SubjectAlternativeNames.fromJson(reader);
+                } else if ("key_usage".equals(fieldName)) {
+                    List<CertificateKeyUsage> keyUsage
+                        = reader.readArray(reader1 -> CertificateKeyUsage.fromString(reader1.getString()));
+                    deserializedX509CertificateProperties.keyUsage = keyUsage;
+                } else if ("validity_months".equals(fieldName)) {
+                    deserializedX509CertificateProperties.validityInMonths = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedX509CertificateProperties;
-                });
+            return deserializedX509CertificateProperties;
+        });
     }
 }

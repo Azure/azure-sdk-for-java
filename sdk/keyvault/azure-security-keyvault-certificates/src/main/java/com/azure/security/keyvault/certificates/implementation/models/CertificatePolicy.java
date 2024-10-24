@@ -51,7 +51,8 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
     private CertificateAttributes attributes;
 
     /** Creates an instance of CertificatePolicy class. */
-    public CertificatePolicy() {}
+    public CertificatePolicy() {
+    }
 
     /**
      * Get the id property: The certificate id.
@@ -188,8 +189,8 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
         jsonWriter.writeJsonField("key_props", this.keyProperties);
         jsonWriter.writeJsonField("secret_props", this.secretProperties);
         jsonWriter.writeJsonField("x509_props", this.x509CertificateProperties);
-        jsonWriter.writeArrayField(
-                "lifetime_actions", this.lifetimeActions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("lifetime_actions", this.lifetimeActions,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("issuer", this.issuerParameters);
         jsonWriter.writeJsonField("attributes", this.attributes);
         return jsonWriter.writeEndObject();
@@ -204,36 +205,35 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @throws IOException If an error occurs while reading the CertificatePolicy.
      */
     public static CertificatePolicy fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CertificatePolicy deserializedCertificatePolicy = new CertificatePolicy();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CertificatePolicy deserializedCertificatePolicy = new CertificatePolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedCertificatePolicy.id = reader.getString();
-                        } else if ("key_props".equals(fieldName)) {
-                            deserializedCertificatePolicy.keyProperties = KeyProperties.fromJson(reader);
-                        } else if ("secret_props".equals(fieldName)) {
-                            deserializedCertificatePolicy.secretProperties = SecretProperties.fromJson(reader);
-                        } else if ("x509_props".equals(fieldName)) {
-                            deserializedCertificatePolicy.x509CertificateProperties =
-                                    X509CertificateProperties.fromJson(reader);
-                        } else if ("lifetime_actions".equals(fieldName)) {
-                            List<LifetimeAction> lifetimeActions =
-                                    reader.readArray(reader1 -> LifetimeAction.fromJson(reader1));
-                            deserializedCertificatePolicy.lifetimeActions = lifetimeActions;
-                        } else if ("issuer".equals(fieldName)) {
-                            deserializedCertificatePolicy.issuerParameters = IssuerParameters.fromJson(reader);
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedCertificatePolicy.attributes = CertificateAttributes.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedCertificatePolicy.id = reader.getString();
+                } else if ("key_props".equals(fieldName)) {
+                    deserializedCertificatePolicy.keyProperties = KeyProperties.fromJson(reader);
+                } else if ("secret_props".equals(fieldName)) {
+                    deserializedCertificatePolicy.secretProperties = SecretProperties.fromJson(reader);
+                } else if ("x509_props".equals(fieldName)) {
+                    deserializedCertificatePolicy.x509CertificateProperties
+                        = X509CertificateProperties.fromJson(reader);
+                } else if ("lifetime_actions".equals(fieldName)) {
+                    List<LifetimeAction> lifetimeActions
+                        = reader.readArray(reader1 -> LifetimeAction.fromJson(reader1));
+                    deserializedCertificatePolicy.lifetimeActions = lifetimeActions;
+                } else if ("issuer".equals(fieldName)) {
+                    deserializedCertificatePolicy.issuerParameters = IssuerParameters.fromJson(reader);
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedCertificatePolicy.attributes = CertificateAttributes.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCertificatePolicy;
-                });
+            return deserializedCertificatePolicy;
+        });
     }
 }

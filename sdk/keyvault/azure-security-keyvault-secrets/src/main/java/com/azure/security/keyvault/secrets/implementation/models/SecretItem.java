@@ -42,7 +42,8 @@ public class SecretItem implements JsonSerializable<SecretItem> {
     private Boolean managed;
 
     /** Creates an instance of SecretItem class. */
-    public SecretItem() {}
+    public SecretItem() {
+    }
 
     /**
      * Get the id property: Secret identifier.
@@ -165,30 +166,29 @@ public class SecretItem implements JsonSerializable<SecretItem> {
      * @throws IOException If an error occurs while reading the SecretItem.
      */
     public static SecretItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    SecretItem deserializedSecretItem = new SecretItem();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            SecretItem deserializedSecretItem = new SecretItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedSecretItem.id = reader.getString();
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedSecretItem.attributes = SecretAttributes.fromJson(reader);
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedSecretItem.tags = tags;
-                        } else if ("contentType".equals(fieldName)) {
-                            deserializedSecretItem.contentType = reader.getString();
-                        } else if ("managed".equals(fieldName)) {
-                            deserializedSecretItem.managed = reader.getNullable(JsonReader::getBoolean);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedSecretItem.id = reader.getString();
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedSecretItem.attributes = SecretAttributes.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSecretItem.tags = tags;
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedSecretItem.contentType = reader.getString();
+                } else if ("managed".equals(fieldName)) {
+                    deserializedSecretItem.managed = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedSecretItem;
-                });
+            return deserializedSecretItem;
+        });
     }
 }

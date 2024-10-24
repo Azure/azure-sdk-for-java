@@ -22,7 +22,8 @@ public final class LifetimeActionsType implements JsonSerializable<LifetimeActio
     private KeyRotationPolicyAction type;
 
     /** Creates an instance of LifetimeActionsType class. */
-    public LifetimeActionsType() {}
+    public LifetimeActionsType() {
+    }
 
     /**
      * Get the type property: The type of the action. The value should be compared case-insensitively.
@@ -60,22 +61,20 @@ public final class LifetimeActionsType implements JsonSerializable<LifetimeActio
      * @throws IOException If an error occurs while reading the LifetimeActionsType.
      */
     public static LifetimeActionsType fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    LifetimeActionsType deserializedLifetimeActionsType = new LifetimeActionsType();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            LifetimeActionsType deserializedLifetimeActionsType = new LifetimeActionsType();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("type".equals(fieldName)) {
-                            deserializedLifetimeActionsType.type =
-                                    KeyRotationPolicyAction.fromString(reader.getString());
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("type".equals(fieldName)) {
+                    deserializedLifetimeActionsType.type = KeyRotationPolicyAction.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedLifetimeActionsType;
-                });
+            return deserializedLifetimeActionsType;
+        });
     }
 }

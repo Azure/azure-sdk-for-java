@@ -30,7 +30,8 @@ public final class Error implements JsonSerializable<Error> {
     private Error innerError;
 
     /** Creates an instance of Error class. */
-    public Error() {}
+    public Error() {
+    }
 
     /**
      * Get the code property: The error code.
@@ -74,25 +75,24 @@ public final class Error implements JsonSerializable<Error> {
      * @throws IOException If an error occurs while reading the Error.
      */
     public static Error fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    Error deserializedError = new Error();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            Error deserializedError = new Error();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("code".equals(fieldName)) {
-                            deserializedError.code = reader.getString();
-                        } else if ("message".equals(fieldName)) {
-                            deserializedError.message = reader.getString();
-                        } else if ("innererror".equals(fieldName)) {
-                            deserializedError.innerError = Error.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("code".equals(fieldName)) {
+                    deserializedError.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedError.message = reader.getString();
+                } else if ("innererror".equals(fieldName)) {
+                    deserializedError.innerError = Error.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedError;
-                });
+            return deserializedError;
+        });
     }
 }

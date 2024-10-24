@@ -53,7 +53,8 @@ public class SecretBundle implements JsonSerializable<SecretBundle> {
     private Boolean managed;
 
     /** Creates an instance of SecretBundle class. */
-    public SecretBundle() {}
+    public SecretBundle() {
+    }
 
     /**
      * Get the value property: The secret value.
@@ -219,34 +220,33 @@ public class SecretBundle implements JsonSerializable<SecretBundle> {
      * @throws IOException If an error occurs while reading the SecretBundle.
      */
     public static SecretBundle fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    SecretBundle deserializedSecretBundle = new SecretBundle();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            SecretBundle deserializedSecretBundle = new SecretBundle();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            deserializedSecretBundle.value = reader.getString();
-                        } else if ("id".equals(fieldName)) {
-                            deserializedSecretBundle.id = reader.getString();
-                        } else if ("contentType".equals(fieldName)) {
-                            deserializedSecretBundle.contentType = reader.getString();
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedSecretBundle.attributes = SecretAttributes.fromJson(reader);
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedSecretBundle.tags = tags;
-                        } else if ("kid".equals(fieldName)) {
-                            deserializedSecretBundle.kid = reader.getString();
-                        } else if ("managed".equals(fieldName)) {
-                            deserializedSecretBundle.managed = reader.getNullable(JsonReader::getBoolean);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    deserializedSecretBundle.value = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedSecretBundle.id = reader.getString();
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedSecretBundle.contentType = reader.getString();
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedSecretBundle.attributes = SecretAttributes.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSecretBundle.tags = tags;
+                } else if ("kid".equals(fieldName)) {
+                    deserializedSecretBundle.kid = reader.getString();
+                } else if ("managed".equals(fieldName)) {
+                    deserializedSecretBundle.managed = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedSecretBundle;
-                });
+            return deserializedSecretBundle;
+        });
     }
 }

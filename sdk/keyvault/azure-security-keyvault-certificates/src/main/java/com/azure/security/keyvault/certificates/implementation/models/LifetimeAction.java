@@ -25,7 +25,8 @@ public final class LifetimeAction implements JsonSerializable<LifetimeAction> {
     private Action action;
 
     /** Creates an instance of LifetimeAction class. */
-    public LifetimeAction() {}
+    public LifetimeAction() {
+    }
 
     /**
      * Get the trigger property: The condition that will execute the action.
@@ -84,23 +85,22 @@ public final class LifetimeAction implements JsonSerializable<LifetimeAction> {
      * @throws IOException If an error occurs while reading the LifetimeAction.
      */
     public static LifetimeAction fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    LifetimeAction deserializedLifetimeAction = new LifetimeAction();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            LifetimeAction deserializedLifetimeAction = new LifetimeAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("trigger".equals(fieldName)) {
-                            deserializedLifetimeAction.trigger = Trigger.fromJson(reader);
-                        } else if ("action".equals(fieldName)) {
-                            deserializedLifetimeAction.action = Action.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("trigger".equals(fieldName)) {
+                    deserializedLifetimeAction.trigger = Trigger.fromJson(reader);
+                } else if ("action".equals(fieldName)) {
+                    deserializedLifetimeAction.action = Action.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedLifetimeAction;
-                });
+            return deserializedLifetimeAction;
+        });
     }
 }

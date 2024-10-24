@@ -111,10 +111,8 @@ public final class CertificateClientImpl {
      * @param apiVersion Api Version.
      */
     public CertificateClientImpl(String apiVersion) {
-        this(
-                new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                apiVersion);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), apiVersion);
     }
 
     /**
@@ -149,638 +147,458 @@ public final class CertificateClientImpl {
     @ServiceInterface(name = "CertificateClient")
     public interface CertificateClientService {
         @Get("/certificates")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<CertificateListResult>> getCertificates(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @QueryParam("maxresults") Integer maxresults,
-                @QueryParam("includePending") Boolean includePending,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<CertificateListResult>> getCertificates(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("maxresults") Integer maxresults, @QueryParam("includePending") Boolean includePending,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/certificates")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<CertificateListResult> getCertificatesSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @QueryParam("maxresults") Integer maxresults,
-                @QueryParam("includePending") Boolean includePending,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<CertificateListResult> getCertificatesSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("maxresults") Integer maxresults, @QueryParam("includePending") Boolean includePending,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/certificates/{certificate-name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<DeletedCertificateBundle>> deleteCertificate(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<DeletedCertificateBundle>> deleteCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/certificates/{certificate-name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<DeletedCertificateBundle> deleteCertificateSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<DeletedCertificateBundle> deleteCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/certificates/contacts")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<Contacts>> setCertificateContacts(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") Contacts contacts,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Contacts>> setCertificateContacts(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") Contacts contacts,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/certificates/contacts")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<Contacts> setCertificateContactsSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") Contacts contacts,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<Contacts> setCertificateContactsSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") Contacts contacts,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/certificates/contacts")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<Contacts>> getCertificateContacts(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Contacts>> getCertificateContacts(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/certificates/contacts")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<Contacts> getCertificateContactsSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<Contacts> getCertificateContactsSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/certificates/contacts")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<Contacts>> deleteCertificateContacts(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Contacts>> deleteCertificateContacts(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/certificates/contacts")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<Contacts> deleteCertificateContactsSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<Contacts> deleteCertificateContactsSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/certificates/issuers")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
         Mono<Response<CertificateIssuerListResult>> getCertificateIssuers(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @QueryParam("maxresults") Integer maxresults,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @QueryParam("maxresults") Integer maxresults,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/certificates/issuers")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<CertificateIssuerListResult> getCertificateIssuersSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @QueryParam("maxresults") Integer maxresults,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<CertificateIssuerListResult> getCertificateIssuersSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("maxresults") Integer maxresults, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/certificates/issuers/{issuer-name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<IssuerBundle>> setCertificateIssuer(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("issuer-name") String issuerName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CertificateIssuerSetParameters parameter,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<IssuerBundle>> setCertificateIssuer(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("issuer-name") String issuerName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CertificateIssuerSetParameters parameter,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/certificates/issuers/{issuer-name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<IssuerBundle> setCertificateIssuerSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("issuer-name") String issuerName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CertificateIssuerSetParameters parameter,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<IssuerBundle> setCertificateIssuerSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("issuer-name") String issuerName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CertificateIssuerSetParameters parameter,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Patch("/certificates/issuers/{issuer-name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<IssuerBundle>> updateCertificateIssuer(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("issuer-name") String issuerName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CertificateIssuerUpdateParameters parameter,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<IssuerBundle>> updateCertificateIssuer(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("issuer-name") String issuerName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CertificateIssuerUpdateParameters parameter,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Patch("/certificates/issuers/{issuer-name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<IssuerBundle> updateCertificateIssuerSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("issuer-name") String issuerName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CertificateIssuerUpdateParameters parameter,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<IssuerBundle> updateCertificateIssuerSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("issuer-name") String issuerName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CertificateIssuerUpdateParameters parameter,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/certificates/issuers/{issuer-name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<IssuerBundle>> getCertificateIssuer(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("issuer-name") String issuerName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<IssuerBundle>> getCertificateIssuer(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("issuer-name") String issuerName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/certificates/issuers/{issuer-name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<IssuerBundle> getCertificateIssuerSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("issuer-name") String issuerName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<IssuerBundle> getCertificateIssuerSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("issuer-name") String issuerName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/certificates/issuers/{issuer-name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<IssuerBundle>> deleteCertificateIssuer(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("issuer-name") String issuerName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<IssuerBundle>> deleteCertificateIssuer(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("issuer-name") String issuerName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/certificates/issuers/{issuer-name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<IssuerBundle> deleteCertificateIssuerSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("issuer-name") String issuerName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<IssuerBundle> deleteCertificateIssuerSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("issuer-name") String issuerName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/certificates/{certificate-name}/create")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<CertificateOperation>> createCertificate(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CertificateCreateParameters parameters,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<CertificateOperation>> createCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CertificateCreateParameters parameters, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Post("/certificates/{certificate-name}/create")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<CertificateOperation> createCertificateSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CertificateCreateParameters parameters,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<CertificateOperation> createCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CertificateCreateParameters parameters, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Post("/certificates/{certificate-name}/import")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<CertificateBundle>> importCertificate(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CertificateImportParameters parameters,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<CertificateBundle>> importCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CertificateImportParameters parameters, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Post("/certificates/{certificate-name}/import")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<CertificateBundle> importCertificateSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CertificateImportParameters parameters,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<CertificateBundle> importCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CertificateImportParameters parameters, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/certificates/{certificate-name}/versions")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<CertificateListResult>> getCertificateVersions(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("maxresults") Integer maxresults,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<CertificateListResult>> getCertificateVersions(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("maxresults") Integer maxresults,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/certificates/{certificate-name}/versions")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<CertificateListResult> getCertificateVersionsSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("maxresults") Integer maxresults,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<CertificateListResult> getCertificateVersionsSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("maxresults") Integer maxresults,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/certificates/{certificate-name}/policy")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<CertificatePolicy>> getCertificatePolicy(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<CertificatePolicy>> getCertificatePolicy(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/certificates/{certificate-name}/policy")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<CertificatePolicy> getCertificatePolicySync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<CertificatePolicy> getCertificatePolicySync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Patch("/certificates/{certificate-name}/policy")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<CertificatePolicy>> updateCertificatePolicy(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CertificatePolicy certificatePolicy,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<CertificatePolicy>> updateCertificatePolicy(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CertificatePolicy certificatePolicy, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Patch("/certificates/{certificate-name}/policy")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<CertificatePolicy> updateCertificatePolicySync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CertificatePolicy certificatePolicy,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<CertificatePolicy> updateCertificatePolicySync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CertificatePolicy certificatePolicy, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Patch("/certificates/{certificate-name}/{certificate-version}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<CertificateBundle>> updateCertificate(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @PathParam("certificate-version") String certificateVersion,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CertificateUpdateParameters parameters,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<CertificateBundle>> updateCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName,
+            @PathParam("certificate-version") String certificateVersion, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CertificateUpdateParameters parameters, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Patch("/certificates/{certificate-name}/{certificate-version}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<CertificateBundle> updateCertificateSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @PathParam("certificate-version") String certificateVersion,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CertificateUpdateParameters parameters,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<CertificateBundle> updateCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName,
+            @PathParam("certificate-version") String certificateVersion, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CertificateUpdateParameters parameters, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/certificates/{certificate-name}/{certificate-version}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<CertificateBundle>> getCertificate(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @PathParam("certificate-version") String certificateVersion,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<CertificateBundle>> getCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName,
+            @PathParam("certificate-version") String certificateVersion, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/certificates/{certificate-name}/{certificate-version}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<CertificateBundle> getCertificateSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @PathParam("certificate-version") String certificateVersion,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<CertificateBundle> getCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName,
+            @PathParam("certificate-version") String certificateVersion, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Patch("/certificates/{certificate-name}/pending")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<CertificateOperation>> updateCertificateOperation(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CertificateOperationUpdateParameter certificateOperation,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<CertificateOperation>> updateCertificateOperation(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CertificateOperationUpdateParameter certificateOperation,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Patch("/certificates/{certificate-name}/pending")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<CertificateOperation> updateCertificateOperationSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CertificateOperationUpdateParameter certificateOperation,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<CertificateOperation> updateCertificateOperationSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CertificateOperationUpdateParameter certificateOperation,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/certificates/{certificate-name}/pending")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<CertificateOperation>> getCertificateOperation(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<CertificateOperation>> getCertificateOperation(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/certificates/{certificate-name}/pending")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<CertificateOperation> getCertificateOperationSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<CertificateOperation> getCertificateOperationSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/certificates/{certificate-name}/pending")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<CertificateOperation>> deleteCertificateOperation(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<CertificateOperation>> deleteCertificateOperation(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/certificates/{certificate-name}/pending")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<CertificateOperation> deleteCertificateOperationSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<CertificateOperation> deleteCertificateOperationSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/certificates/{certificate-name}/pending/merge")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<CertificateBundle>> mergeCertificate(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CertificateMergeParameters parameters,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<CertificateBundle>> mergeCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CertificateMergeParameters parameters, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Post("/certificates/{certificate-name}/pending/merge")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<CertificateBundle> mergeCertificateSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CertificateMergeParameters parameters,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<CertificateBundle> mergeCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CertificateMergeParameters parameters, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Post("/certificates/{certificate-name}/backup")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<BackupCertificateResult>> backupCertificate(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<BackupCertificateResult>> backupCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/certificates/{certificate-name}/backup")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<BackupCertificateResult> backupCertificateSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<BackupCertificateResult> backupCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/certificates/restore")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<CertificateBundle>> restoreCertificate(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CertificateRestoreParameters parameters,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<CertificateBundle>> restoreCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CertificateRestoreParameters parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/certificates/restore")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<CertificateBundle> restoreCertificateSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CertificateRestoreParameters parameters,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<CertificateBundle> restoreCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CertificateRestoreParameters parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/deletedcertificates")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
         Mono<Response<DeletedCertificateListResult>> getDeletedCertificates(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @QueryParam("maxresults") Integer maxresults,
-                @QueryParam("includePending") Boolean includePending,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @QueryParam("maxresults") Integer maxresults,
+            @QueryParam("includePending") Boolean includePending, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/deletedcertificates")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
         Response<DeletedCertificateListResult> getDeletedCertificatesSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @QueryParam("maxresults") Integer maxresults,
-                @QueryParam("includePending") Boolean includePending,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @QueryParam("maxresults") Integer maxresults,
+            @QueryParam("includePending") Boolean includePending, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/deletedcertificates/{certificate-name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<DeletedCertificateBundle>> getDeletedCertificate(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<DeletedCertificateBundle>> getDeletedCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/deletedcertificates/{certificate-name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<DeletedCertificateBundle> getDeletedCertificateSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<DeletedCertificateBundle> getDeletedCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/deletedcertificates/{certificate-name}")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<Void>> purgeDeletedCertificate(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> purgeDeletedCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/deletedcertificates/{certificate-name}")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<Void> purgeDeletedCertificateSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<Void> purgeDeletedCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/deletedcertificates/{certificate-name}/recover")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<CertificateBundle>> recoverDeletedCertificate(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<CertificateBundle>> recoverDeletedCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/deletedcertificates/{certificate-name}/recover")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<CertificateBundle> recoverDeletedCertificateSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("certificate-name") String certificateName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<CertificateBundle> recoverDeletedCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("certificate-name") String certificateName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
         Mono<Response<CertificateListResult>> getCertificatesNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
         Response<CertificateListResult> getCertificatesNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
         Mono<Response<CertificateIssuerListResult>> getCertificateIssuersNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
         Response<CertificateIssuerListResult> getCertificateIssuersNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
         Mono<Response<CertificateListResult>> getCertificateVersionsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
         Response<CertificateListResult> getCertificateVersionsNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
         Mono<Response<DeletedCertificateListResult>> getDeletedCertificatesNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
         Response<DeletedCertificateListResult> getDeletedCertificatesNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -799,27 +617,14 @@ public final class CertificateClientImpl {
      * @return the certificate list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CertificateItem>> getCertificatesSinglePageAsync(
-            String vaultBaseUrl, Integer maxresults, Boolean includePending) {
+    public Mono<PagedResponse<CertificateItem>> getCertificatesSinglePageAsync(String vaultBaseUrl, Integer maxresults,
+        Boolean includePending) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.getCertificates(
-                                        vaultBaseUrl,
-                                        maxresults,
-                                        includePending,
-                                        this.getApiVersion(),
-                                        accept,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.getCertificates(vaultBaseUrl, maxresults, includePending,
+                this.getApiVersion(), accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -839,19 +644,12 @@ public final class CertificateClientImpl {
      * @return the certificate list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CertificateItem>> getCertificatesSinglePageAsync(
-            String vaultBaseUrl, Integer maxresults, Boolean includePending, Context context) {
+    public Mono<PagedResponse<CertificateItem>> getCertificatesSinglePageAsync(String vaultBaseUrl, Integer maxresults,
+        Boolean includePending, Context context) {
         final String accept = "application/json";
         return service.getCertificates(vaultBaseUrl, maxresults, includePending, this.getApiVersion(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -870,11 +668,10 @@ public final class CertificateClientImpl {
      * @return the certificate list result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CertificateItem> getCertificatesAsync(
-            String vaultBaseUrl, Integer maxresults, Boolean includePending) {
-        return new PagedFlux<>(
-                () -> getCertificatesSinglePageAsync(vaultBaseUrl, maxresults, includePending),
-                nextLink -> getCertificatesNextSinglePageAsync(nextLink, vaultBaseUrl));
+    public PagedFlux<CertificateItem> getCertificatesAsync(String vaultBaseUrl, Integer maxresults,
+        Boolean includePending) {
+        return new PagedFlux<>(() -> getCertificatesSinglePageAsync(vaultBaseUrl, maxresults, includePending),
+            nextLink -> getCertificatesNextSinglePageAsync(nextLink, vaultBaseUrl));
     }
 
     /**
@@ -894,11 +691,10 @@ public final class CertificateClientImpl {
      * @return the certificate list result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CertificateItem> getCertificatesAsync(
-            String vaultBaseUrl, Integer maxresults, Boolean includePending, Context context) {
-        return new PagedFlux<>(
-                () -> getCertificatesSinglePageAsync(vaultBaseUrl, maxresults, includePending, context),
-                nextLink -> getCertificatesNextSinglePageAsync(nextLink, vaultBaseUrl, context));
+    public PagedFlux<CertificateItem> getCertificatesAsync(String vaultBaseUrl, Integer maxresults,
+        Boolean includePending, Context context) {
+        return new PagedFlux<>(() -> getCertificatesSinglePageAsync(vaultBaseUrl, maxresults, includePending, context),
+            nextLink -> getCertificatesNextSinglePageAsync(nextLink, vaultBaseUrl, context));
     }
 
     /**
@@ -917,19 +713,13 @@ public final class CertificateClientImpl {
      * @return the certificate list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<CertificateItem> getCertificatesSinglePage(
-            String vaultBaseUrl, Integer maxresults, Boolean includePending) {
+    public PagedResponse<CertificateItem> getCertificatesSinglePage(String vaultBaseUrl, Integer maxresults,
+        Boolean includePending) {
         final String accept = "application/json";
-        Response<CertificateListResult> res =
-                service.getCertificatesSync(
-                        vaultBaseUrl, maxresults, includePending, this.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<CertificateListResult> res = service.getCertificatesSync(vaultBaseUrl, maxresults, includePending,
+            this.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -949,19 +739,13 @@ public final class CertificateClientImpl {
      * @return the certificate list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<CertificateItem> getCertificatesSinglePage(
-            String vaultBaseUrl, Integer maxresults, Boolean includePending, Context context) {
+    public PagedResponse<CertificateItem> getCertificatesSinglePage(String vaultBaseUrl, Integer maxresults,
+        Boolean includePending, Context context) {
         final String accept = "application/json";
-        Response<CertificateListResult> res =
-                service.getCertificatesSync(
-                        vaultBaseUrl, maxresults, includePending, this.getApiVersion(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<CertificateListResult> res = service.getCertificatesSync(vaultBaseUrl, maxresults, includePending,
+            this.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -980,11 +764,11 @@ public final class CertificateClientImpl {
      * @return the certificate list result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateItem> getCertificates(
-            String vaultBaseUrl, Integer maxresults, Boolean includePending) {
+    public PagedIterable<CertificateItem> getCertificates(String vaultBaseUrl, Integer maxresults,
+        Boolean includePending) {
         return new PagedIterable<>(
-                () -> getCertificatesSinglePage(vaultBaseUrl, maxresults, includePending, Context.NONE),
-                nextLink -> getCertificatesNextSinglePage(nextLink, vaultBaseUrl));
+            () -> getCertificatesSinglePage(vaultBaseUrl, maxresults, includePending, Context.NONE),
+            nextLink -> getCertificatesNextSinglePage(nextLink, vaultBaseUrl));
     }
 
     /**
@@ -1004,11 +788,10 @@ public final class CertificateClientImpl {
      * @return the certificate list result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateItem> getCertificates(
-            String vaultBaseUrl, Integer maxresults, Boolean includePending, Context context) {
-        return new PagedIterable<>(
-                () -> getCertificatesSinglePage(vaultBaseUrl, maxresults, includePending, context),
-                nextLink -> getCertificatesNextSinglePage(nextLink, vaultBaseUrl, context));
+    public PagedIterable<CertificateItem> getCertificates(String vaultBaseUrl, Integer maxresults,
+        Boolean includePending, Context context) {
+        return new PagedIterable<>(() -> getCertificatesSinglePage(vaultBaseUrl, maxresults, includePending, context),
+            nextLink -> getCertificatesNextSinglePage(nextLink, vaultBaseUrl, context));
     }
 
     /**
@@ -1027,13 +810,11 @@ public final class CertificateClientImpl {
      *     when it will be purged along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeletedCertificateBundle>> deleteCertificateWithResponseAsync(
-            String vaultBaseUrl, String certificateName) {
+    public Mono<Response<DeletedCertificateBundle>> deleteCertificateWithResponseAsync(String vaultBaseUrl,
+        String certificateName) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.deleteCertificate(
-                                vaultBaseUrl, certificateName, this.getApiVersion(), accept, context));
+            context -> service.deleteCertificate(vaultBaseUrl, certificateName, this.getApiVersion(), accept, context));
     }
 
     /**
@@ -1053,8 +834,8 @@ public final class CertificateClientImpl {
      *     when it will be purged along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeletedCertificateBundle>> deleteCertificateWithResponseAsync(
-            String vaultBaseUrl, String certificateName, Context context) {
+    public Mono<Response<DeletedCertificateBundle>> deleteCertificateWithResponseAsync(String vaultBaseUrl,
+        String certificateName, Context context) {
         final String accept = "application/json";
         return service.deleteCertificate(vaultBaseUrl, certificateName, this.getApiVersion(), accept, context);
     }
@@ -1077,7 +858,7 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedCertificateBundle> deleteCertificateAsync(String vaultBaseUrl, String certificateName) {
         return deleteCertificateWithResponseAsync(vaultBaseUrl, certificateName)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1097,10 +878,10 @@ public final class CertificateClientImpl {
      *     when it will be purged on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeletedCertificateBundle> deleteCertificateAsync(
-            String vaultBaseUrl, String certificateName, Context context) {
+    public Mono<DeletedCertificateBundle> deleteCertificateAsync(String vaultBaseUrl, String certificateName,
+        Context context) {
         return deleteCertificateWithResponseAsync(vaultBaseUrl, certificateName, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1120,8 +901,8 @@ public final class CertificateClientImpl {
      *     when it will be purged along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeletedCertificateBundle> deleteCertificateWithResponse(
-            String vaultBaseUrl, String certificateName, Context context) {
+    public Response<DeletedCertificateBundle> deleteCertificateWithResponse(String vaultBaseUrl, String certificateName,
+        Context context) {
         final String accept = "application/json";
         return service.deleteCertificateSync(vaultBaseUrl, certificateName, this.getApiVersion(), accept, context);
     }
@@ -1164,8 +945,7 @@ public final class CertificateClientImpl {
     public Mono<Response<Contacts>> setCertificateContactsWithResponseAsync(String vaultBaseUrl, Contacts contacts) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.setCertificateContacts(vaultBaseUrl, this.getApiVersion(), contacts, accept, context));
+            context -> service.setCertificateContacts(vaultBaseUrl, this.getApiVersion(), contacts, accept, context));
     }
 
     /**
@@ -1184,8 +964,8 @@ public final class CertificateClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Contacts>> setCertificateContactsWithResponseAsync(
-            String vaultBaseUrl, Contacts contacts, Context context) {
+    public Mono<Response<Contacts>> setCertificateContactsWithResponseAsync(String vaultBaseUrl, Contacts contacts,
+        Context context) {
         final String accept = "application/json";
         return service.setCertificateContacts(vaultBaseUrl, this.getApiVersion(), contacts, accept, context);
     }
@@ -1206,7 +986,7 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Contacts> setCertificateContactsAsync(String vaultBaseUrl, Contacts contacts) {
         return setCertificateContactsWithResponseAsync(vaultBaseUrl, contacts)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1226,7 +1006,7 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Contacts> setCertificateContactsAsync(String vaultBaseUrl, Contacts contacts, Context context) {
         return setCertificateContactsWithResponseAsync(vaultBaseUrl, contacts, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1244,8 +1024,8 @@ public final class CertificateClientImpl {
      * @return the contacts for the vault certificates along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Contacts> setCertificateContactsWithResponse(
-            String vaultBaseUrl, Contacts contacts, Context context) {
+    public Response<Contacts> setCertificateContactsWithResponse(String vaultBaseUrl, Contacts contacts,
+        Context context) {
         final String accept = "application/json";
         return service.setCertificateContactsSync(vaultBaseUrl, this.getApiVersion(), contacts, accept, context);
     }
@@ -1285,7 +1065,7 @@ public final class CertificateClientImpl {
     public Mono<Response<Contacts>> getCertificateContactsWithResponseAsync(String vaultBaseUrl) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getCertificateContacts(vaultBaseUrl, this.getApiVersion(), accept, context));
+            context -> service.getCertificateContacts(vaultBaseUrl, this.getApiVersion(), accept, context));
     }
 
     /**
@@ -1341,7 +1121,7 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Contacts> getCertificateContactsAsync(String vaultBaseUrl, Context context) {
         return getCertificateContactsWithResponseAsync(vaultBaseUrl, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1397,7 +1177,7 @@ public final class CertificateClientImpl {
     public Mono<Response<Contacts>> deleteCertificateContactsWithResponseAsync(String vaultBaseUrl) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.deleteCertificateContacts(vaultBaseUrl, this.getApiVersion(), accept, context));
+            context -> service.deleteCertificateContacts(vaultBaseUrl, this.getApiVersion(), accept, context));
     }
 
     /**
@@ -1435,7 +1215,7 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Contacts> deleteCertificateContactsAsync(String vaultBaseUrl) {
         return deleteCertificateContactsWithResponseAsync(vaultBaseUrl)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1454,7 +1234,7 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Contacts> deleteCertificateContactsAsync(String vaultBaseUrl, Context context) {
         return deleteCertificateContactsWithResponseAsync(vaultBaseUrl, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1509,22 +1289,13 @@ public final class CertificateClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CertificateIssuerItem>> getCertificateIssuersSinglePageAsync(
-            String vaultBaseUrl, Integer maxresults) {
+    public Mono<PagedResponse<CertificateIssuerItem>> getCertificateIssuersSinglePageAsync(String vaultBaseUrl,
+        Integer maxresults) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context ->
-                                service.getCertificateIssuers(
-                                        vaultBaseUrl, maxresults, this.getApiVersion(), accept, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            context -> service.getCertificateIssuers(vaultBaseUrl, maxresults, this.getApiVersion(), accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -1544,19 +1315,12 @@ public final class CertificateClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CertificateIssuerItem>> getCertificateIssuersSinglePageAsync(
-            String vaultBaseUrl, Integer maxresults, Context context) {
+    public Mono<PagedResponse<CertificateIssuerItem>> getCertificateIssuersSinglePageAsync(String vaultBaseUrl,
+        Integer maxresults, Context context) {
         final String accept = "application/json";
         return service.getCertificateIssuers(vaultBaseUrl, maxresults, this.getApiVersion(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -1575,9 +1339,8 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateIssuerItem> getCertificateIssuersAsync(String vaultBaseUrl, Integer maxresults) {
-        return new PagedFlux<>(
-                () -> getCertificateIssuersSinglePageAsync(vaultBaseUrl, maxresults),
-                nextLink -> getCertificateIssuersNextSinglePageAsync(nextLink, vaultBaseUrl));
+        return new PagedFlux<>(() -> getCertificateIssuersSinglePageAsync(vaultBaseUrl, maxresults),
+            nextLink -> getCertificateIssuersNextSinglePageAsync(nextLink, vaultBaseUrl));
     }
 
     /**
@@ -1596,11 +1359,10 @@ public final class CertificateClientImpl {
      * @return the certificate issuer list result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CertificateIssuerItem> getCertificateIssuersAsync(
-            String vaultBaseUrl, Integer maxresults, Context context) {
-        return new PagedFlux<>(
-                () -> getCertificateIssuersSinglePageAsync(vaultBaseUrl, maxresults, context),
-                nextLink -> getCertificateIssuersNextSinglePageAsync(nextLink, vaultBaseUrl, context));
+    public PagedFlux<CertificateIssuerItem> getCertificateIssuersAsync(String vaultBaseUrl, Integer maxresults,
+        Context context) {
+        return new PagedFlux<>(() -> getCertificateIssuersSinglePageAsync(vaultBaseUrl, maxresults, context),
+            nextLink -> getCertificateIssuersNextSinglePageAsync(nextLink, vaultBaseUrl, context));
     }
 
     /**
@@ -1618,18 +1380,13 @@ public final class CertificateClientImpl {
      * @return the certificate issuer list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<CertificateIssuerItem> getCertificateIssuersSinglePage(
-            String vaultBaseUrl, Integer maxresults) {
+    public PagedResponse<CertificateIssuerItem> getCertificateIssuersSinglePage(String vaultBaseUrl,
+        Integer maxresults) {
         final String accept = "application/json";
-        Response<CertificateIssuerListResult> res =
-                service.getCertificateIssuersSync(vaultBaseUrl, maxresults, this.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<CertificateIssuerListResult> res
+            = service.getCertificateIssuersSync(vaultBaseUrl, maxresults, this.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -1648,18 +1405,13 @@ public final class CertificateClientImpl {
      * @return the certificate issuer list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<CertificateIssuerItem> getCertificateIssuersSinglePage(
-            String vaultBaseUrl, Integer maxresults, Context context) {
+    public PagedResponse<CertificateIssuerItem> getCertificateIssuersSinglePage(String vaultBaseUrl, Integer maxresults,
+        Context context) {
         final String accept = "application/json";
-        Response<CertificateIssuerListResult> res =
-                service.getCertificateIssuersSync(vaultBaseUrl, maxresults, this.getApiVersion(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<CertificateIssuerListResult> res
+            = service.getCertificateIssuersSync(vaultBaseUrl, maxresults, this.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -1678,9 +1430,8 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateIssuerItem> getCertificateIssuers(String vaultBaseUrl, Integer maxresults) {
-        return new PagedIterable<>(
-                () -> getCertificateIssuersSinglePage(vaultBaseUrl, maxresults, Context.NONE),
-                nextLink -> getCertificateIssuersNextSinglePage(nextLink, vaultBaseUrl));
+        return new PagedIterable<>(() -> getCertificateIssuersSinglePage(vaultBaseUrl, maxresults, Context.NONE),
+            nextLink -> getCertificateIssuersNextSinglePage(nextLink, vaultBaseUrl));
     }
 
     /**
@@ -1699,11 +1450,10 @@ public final class CertificateClientImpl {
      * @return the certificate issuer list result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateIssuerItem> getCertificateIssuers(
-            String vaultBaseUrl, Integer maxresults, Context context) {
-        return new PagedIterable<>(
-                () -> getCertificateIssuersSinglePage(vaultBaseUrl, maxresults, context),
-                nextLink -> getCertificateIssuersNextSinglePage(nextLink, vaultBaseUrl, context));
+    public PagedIterable<CertificateIssuerItem> getCertificateIssuers(String vaultBaseUrl, Integer maxresults,
+        Context context) {
+        return new PagedIterable<>(() -> getCertificateIssuersSinglePage(vaultBaseUrl, maxresults, context),
+            nextLink -> getCertificateIssuersNextSinglePage(nextLink, vaultBaseUrl, context));
     }
 
     /**
@@ -1726,23 +1476,17 @@ public final class CertificateClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IssuerBundle>> setCertificateIssuerWithResponseAsync(
-            String vaultBaseUrl,
-            String issuerName,
-            String provider,
-            IssuerCredentials credentials,
-            OrganizationDetails organizationDetails,
-            IssuerAttributes attributes) {
+    public Mono<Response<IssuerBundle>> setCertificateIssuerWithResponseAsync(String vaultBaseUrl, String issuerName,
+        String provider, IssuerCredentials credentials, OrganizationDetails organizationDetails,
+        IssuerAttributes attributes) {
         final String accept = "application/json";
         CertificateIssuerSetParameters parameter = new CertificateIssuerSetParameters();
         parameter.setProvider(provider);
         parameter.setCredentials(credentials);
         parameter.setOrganizationDetails(organizationDetails);
         parameter.setAttributes(attributes);
-        return FluxUtil.withContext(
-                context ->
-                        service.setCertificateIssuer(
-                                vaultBaseUrl, issuerName, this.getApiVersion(), parameter, accept, context));
+        return FluxUtil.withContext(context -> service.setCertificateIssuer(vaultBaseUrl, issuerName,
+            this.getApiVersion(), parameter, accept, context));
     }
 
     /**
@@ -1766,14 +1510,9 @@ public final class CertificateClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IssuerBundle>> setCertificateIssuerWithResponseAsync(
-            String vaultBaseUrl,
-            String issuerName,
-            String provider,
-            IssuerCredentials credentials,
-            OrganizationDetails organizationDetails,
-            IssuerAttributes attributes,
-            Context context) {
+    public Mono<Response<IssuerBundle>> setCertificateIssuerWithResponseAsync(String vaultBaseUrl, String issuerName,
+        String provider, IssuerCredentials credentials, OrganizationDetails organizationDetails,
+        IssuerAttributes attributes, Context context) {
         final String accept = "application/json";
         CertificateIssuerSetParameters parameter = new CertificateIssuerSetParameters();
         parameter.setProvider(provider);
@@ -1802,16 +1541,10 @@ public final class CertificateClientImpl {
      * @return the issuer for Key Vault certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IssuerBundle> setCertificateIssuerAsync(
-            String vaultBaseUrl,
-            String issuerName,
-            String provider,
-            IssuerCredentials credentials,
-            OrganizationDetails organizationDetails,
-            IssuerAttributes attributes) {
-        return setCertificateIssuerWithResponseAsync(
-                        vaultBaseUrl, issuerName, provider, credentials, organizationDetails, attributes)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<IssuerBundle> setCertificateIssuerAsync(String vaultBaseUrl, String issuerName, String provider,
+        IssuerCredentials credentials, OrganizationDetails organizationDetails, IssuerAttributes attributes) {
+        return setCertificateIssuerWithResponseAsync(vaultBaseUrl, issuerName, provider, credentials,
+            organizationDetails, attributes).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1834,17 +1567,11 @@ public final class CertificateClientImpl {
      * @return the issuer for Key Vault certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IssuerBundle> setCertificateIssuerAsync(
-            String vaultBaseUrl,
-            String issuerName,
-            String provider,
-            IssuerCredentials credentials,
-            OrganizationDetails organizationDetails,
-            IssuerAttributes attributes,
-            Context context) {
-        return setCertificateIssuerWithResponseAsync(
-                        vaultBaseUrl, issuerName, provider, credentials, organizationDetails, attributes, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<IssuerBundle> setCertificateIssuerAsync(String vaultBaseUrl, String issuerName, String provider,
+        IssuerCredentials credentials, OrganizationDetails organizationDetails, IssuerAttributes attributes,
+        Context context) {
+        return setCertificateIssuerWithResponseAsync(vaultBaseUrl, issuerName, provider, credentials,
+            organizationDetails, attributes, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1867,22 +1594,17 @@ public final class CertificateClientImpl {
      * @return the issuer for Key Vault certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IssuerBundle> setCertificateIssuerWithResponse(
-            String vaultBaseUrl,
-            String issuerName,
-            String provider,
-            IssuerCredentials credentials,
-            OrganizationDetails organizationDetails,
-            IssuerAttributes attributes,
-            Context context) {
+    public Response<IssuerBundle> setCertificateIssuerWithResponse(String vaultBaseUrl, String issuerName,
+        String provider, IssuerCredentials credentials, OrganizationDetails organizationDetails,
+        IssuerAttributes attributes, Context context) {
         final String accept = "application/json";
         CertificateIssuerSetParameters parameter = new CertificateIssuerSetParameters();
         parameter.setProvider(provider);
         parameter.setCredentials(credentials);
         parameter.setOrganizationDetails(organizationDetails);
         parameter.setAttributes(attributes);
-        return service.setCertificateIssuerSync(
-                vaultBaseUrl, issuerName, this.getApiVersion(), parameter, accept, context);
+        return service.setCertificateIssuerSync(vaultBaseUrl, issuerName, this.getApiVersion(), parameter, accept,
+            context);
     }
 
     /**
@@ -1904,16 +1626,10 @@ public final class CertificateClientImpl {
      * @return the issuer for Key Vault certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IssuerBundle setCertificateIssuer(
-            String vaultBaseUrl,
-            String issuerName,
-            String provider,
-            IssuerCredentials credentials,
-            OrganizationDetails organizationDetails,
-            IssuerAttributes attributes) {
-        return setCertificateIssuerWithResponse(
-                        vaultBaseUrl, issuerName, provider, credentials, organizationDetails, attributes, Context.NONE)
-                .getValue();
+    public IssuerBundle setCertificateIssuer(String vaultBaseUrl, String issuerName, String provider,
+        IssuerCredentials credentials, OrganizationDetails organizationDetails, IssuerAttributes attributes) {
+        return setCertificateIssuerWithResponse(vaultBaseUrl, issuerName, provider, credentials, organizationDetails,
+            attributes, Context.NONE).getValue();
     }
 
     /**
@@ -1935,23 +1651,17 @@ public final class CertificateClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IssuerBundle>> updateCertificateIssuerWithResponseAsync(
-            String vaultBaseUrl,
-            String issuerName,
-            String provider,
-            IssuerCredentials credentials,
-            OrganizationDetails organizationDetails,
-            IssuerAttributes attributes) {
+    public Mono<Response<IssuerBundle>> updateCertificateIssuerWithResponseAsync(String vaultBaseUrl, String issuerName,
+        String provider, IssuerCredentials credentials, OrganizationDetails organizationDetails,
+        IssuerAttributes attributes) {
         final String accept = "application/json";
         CertificateIssuerUpdateParameters parameter = new CertificateIssuerUpdateParameters();
         parameter.setProvider(provider);
         parameter.setCredentials(credentials);
         parameter.setOrganizationDetails(organizationDetails);
         parameter.setAttributes(attributes);
-        return FluxUtil.withContext(
-                context ->
-                        service.updateCertificateIssuer(
-                                vaultBaseUrl, issuerName, this.getApiVersion(), parameter, accept, context));
+        return FluxUtil.withContext(context -> service.updateCertificateIssuer(vaultBaseUrl, issuerName,
+            this.getApiVersion(), parameter, accept, context));
     }
 
     /**
@@ -1974,22 +1684,17 @@ public final class CertificateClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IssuerBundle>> updateCertificateIssuerWithResponseAsync(
-            String vaultBaseUrl,
-            String issuerName,
-            String provider,
-            IssuerCredentials credentials,
-            OrganizationDetails organizationDetails,
-            IssuerAttributes attributes,
-            Context context) {
+    public Mono<Response<IssuerBundle>> updateCertificateIssuerWithResponseAsync(String vaultBaseUrl, String issuerName,
+        String provider, IssuerCredentials credentials, OrganizationDetails organizationDetails,
+        IssuerAttributes attributes, Context context) {
         final String accept = "application/json";
         CertificateIssuerUpdateParameters parameter = new CertificateIssuerUpdateParameters();
         parameter.setProvider(provider);
         parameter.setCredentials(credentials);
         parameter.setOrganizationDetails(organizationDetails);
         parameter.setAttributes(attributes);
-        return service.updateCertificateIssuer(
-                vaultBaseUrl, issuerName, this.getApiVersion(), parameter, accept, context);
+        return service.updateCertificateIssuer(vaultBaseUrl, issuerName, this.getApiVersion(), parameter, accept,
+            context);
     }
 
     /**
@@ -2010,16 +1715,10 @@ public final class CertificateClientImpl {
      * @return the issuer for Key Vault certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IssuerBundle> updateCertificateIssuerAsync(
-            String vaultBaseUrl,
-            String issuerName,
-            String provider,
-            IssuerCredentials credentials,
-            OrganizationDetails organizationDetails,
-            IssuerAttributes attributes) {
-        return updateCertificateIssuerWithResponseAsync(
-                        vaultBaseUrl, issuerName, provider, credentials, organizationDetails, attributes)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<IssuerBundle> updateCertificateIssuerAsync(String vaultBaseUrl, String issuerName, String provider,
+        IssuerCredentials credentials, OrganizationDetails organizationDetails, IssuerAttributes attributes) {
+        return updateCertificateIssuerWithResponseAsync(vaultBaseUrl, issuerName, provider, credentials,
+            organizationDetails, attributes).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2041,17 +1740,11 @@ public final class CertificateClientImpl {
      * @return the issuer for Key Vault certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IssuerBundle> updateCertificateIssuerAsync(
-            String vaultBaseUrl,
-            String issuerName,
-            String provider,
-            IssuerCredentials credentials,
-            OrganizationDetails organizationDetails,
-            IssuerAttributes attributes,
-            Context context) {
-        return updateCertificateIssuerWithResponseAsync(
-                        vaultBaseUrl, issuerName, provider, credentials, organizationDetails, attributes, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<IssuerBundle> updateCertificateIssuerAsync(String vaultBaseUrl, String issuerName, String provider,
+        IssuerCredentials credentials, OrganizationDetails organizationDetails, IssuerAttributes attributes,
+        Context context) {
+        return updateCertificateIssuerWithResponseAsync(vaultBaseUrl, issuerName, provider, credentials,
+            organizationDetails, attributes, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2073,22 +1766,17 @@ public final class CertificateClientImpl {
      * @return the issuer for Key Vault certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IssuerBundle> updateCertificateIssuerWithResponse(
-            String vaultBaseUrl,
-            String issuerName,
-            String provider,
-            IssuerCredentials credentials,
-            OrganizationDetails organizationDetails,
-            IssuerAttributes attributes,
-            Context context) {
+    public Response<IssuerBundle> updateCertificateIssuerWithResponse(String vaultBaseUrl, String issuerName,
+        String provider, IssuerCredentials credentials, OrganizationDetails organizationDetails,
+        IssuerAttributes attributes, Context context) {
         final String accept = "application/json";
         CertificateIssuerUpdateParameters parameter = new CertificateIssuerUpdateParameters();
         parameter.setProvider(provider);
         parameter.setCredentials(credentials);
         parameter.setOrganizationDetails(organizationDetails);
         parameter.setAttributes(attributes);
-        return service.updateCertificateIssuerSync(
-                vaultBaseUrl, issuerName, this.getApiVersion(), parameter, accept, context);
+        return service.updateCertificateIssuerSync(vaultBaseUrl, issuerName, this.getApiVersion(), parameter, accept,
+            context);
     }
 
     /**
@@ -2109,16 +1797,10 @@ public final class CertificateClientImpl {
      * @return the issuer for Key Vault certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IssuerBundle updateCertificateIssuer(
-            String vaultBaseUrl,
-            String issuerName,
-            String provider,
-            IssuerCredentials credentials,
-            OrganizationDetails organizationDetails,
-            IssuerAttributes attributes) {
-        return updateCertificateIssuerWithResponse(
-                        vaultBaseUrl, issuerName, provider, credentials, organizationDetails, attributes, Context.NONE)
-                .getValue();
+    public IssuerBundle updateCertificateIssuer(String vaultBaseUrl, String issuerName, String provider,
+        IssuerCredentials credentials, OrganizationDetails organizationDetails, IssuerAttributes attributes) {
+        return updateCertificateIssuerWithResponse(vaultBaseUrl, issuerName, provider, credentials, organizationDetails,
+            attributes, Context.NONE).getValue();
     }
 
     /**
@@ -2139,8 +1821,7 @@ public final class CertificateClientImpl {
     public Mono<Response<IssuerBundle>> getCertificateIssuerWithResponseAsync(String vaultBaseUrl, String issuerName) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getCertificateIssuer(vaultBaseUrl, issuerName, this.getApiVersion(), accept, context));
+            context -> service.getCertificateIssuer(vaultBaseUrl, issuerName, this.getApiVersion(), accept, context));
     }
 
     /**
@@ -2159,8 +1840,8 @@ public final class CertificateClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IssuerBundle>> getCertificateIssuerWithResponseAsync(
-            String vaultBaseUrl, String issuerName, Context context) {
+    public Mono<Response<IssuerBundle>> getCertificateIssuerWithResponseAsync(String vaultBaseUrl, String issuerName,
+        Context context) {
         final String accept = "application/json";
         return service.getCertificateIssuer(vaultBaseUrl, issuerName, this.getApiVersion(), accept, context);
     }
@@ -2181,7 +1862,7 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IssuerBundle> getCertificateIssuerAsync(String vaultBaseUrl, String issuerName) {
         return getCertificateIssuerWithResponseAsync(vaultBaseUrl, issuerName)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2201,7 +1882,7 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IssuerBundle> getCertificateIssuerAsync(String vaultBaseUrl, String issuerName, Context context) {
         return getCertificateIssuerWithResponseAsync(vaultBaseUrl, issuerName, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2219,8 +1900,8 @@ public final class CertificateClientImpl {
      * @return the issuer for Key Vault certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IssuerBundle> getCertificateIssuerWithResponse(
-            String vaultBaseUrl, String issuerName, Context context) {
+    public Response<IssuerBundle> getCertificateIssuerWithResponse(String vaultBaseUrl, String issuerName,
+        Context context) {
         final String accept = "application/json";
         return service.getCertificateIssuerSync(vaultBaseUrl, issuerName, this.getApiVersion(), accept, context);
     }
@@ -2258,13 +1939,11 @@ public final class CertificateClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IssuerBundle>> deleteCertificateIssuerWithResponseAsync(
-            String vaultBaseUrl, String issuerName) {
+    public Mono<Response<IssuerBundle>> deleteCertificateIssuerWithResponseAsync(String vaultBaseUrl,
+        String issuerName) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteCertificateIssuer(
-                                vaultBaseUrl, issuerName, this.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> service.deleteCertificateIssuer(vaultBaseUrl, issuerName,
+            this.getApiVersion(), accept, context));
     }
 
     /**
@@ -2283,8 +1962,8 @@ public final class CertificateClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IssuerBundle>> deleteCertificateIssuerWithResponseAsync(
-            String vaultBaseUrl, String issuerName, Context context) {
+    public Mono<Response<IssuerBundle>> deleteCertificateIssuerWithResponseAsync(String vaultBaseUrl, String issuerName,
+        Context context) {
         final String accept = "application/json";
         return service.deleteCertificateIssuer(vaultBaseUrl, issuerName, this.getApiVersion(), accept, context);
     }
@@ -2305,7 +1984,7 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IssuerBundle> deleteCertificateIssuerAsync(String vaultBaseUrl, String issuerName) {
         return deleteCertificateIssuerWithResponseAsync(vaultBaseUrl, issuerName)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2325,7 +2004,7 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IssuerBundle> deleteCertificateIssuerAsync(String vaultBaseUrl, String issuerName, Context context) {
         return deleteCertificateIssuerWithResponseAsync(vaultBaseUrl, issuerName, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2343,8 +2022,8 @@ public final class CertificateClientImpl {
      * @return the issuer for Key Vault certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IssuerBundle> deleteCertificateIssuerWithResponse(
-            String vaultBaseUrl, String issuerName, Context context) {
+    public Response<IssuerBundle> deleteCertificateIssuerWithResponse(String vaultBaseUrl, String issuerName,
+        Context context) {
         final String accept = "application/json";
         return service.deleteCertificateIssuerSync(vaultBaseUrl, issuerName, this.getApiVersion(), accept, context);
     }
@@ -2387,21 +2066,16 @@ public final class CertificateClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateOperation>> createCertificateWithResponseAsync(
-            String vaultBaseUrl,
-            String certificateName,
-            CertificatePolicy certificatePolicy,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags) {
+    public Mono<Response<CertificateOperation>> createCertificateWithResponseAsync(String vaultBaseUrl,
+        String certificateName, CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes,
+        Map<String, String> tags) {
         final String accept = "application/json";
         CertificateCreateParameters parameters = new CertificateCreateParameters();
         parameters.setCertificatePolicy(certificatePolicy);
         parameters.setCertificateAttributes(certificateAttributes);
         parameters.setTags(tags);
-        return FluxUtil.withContext(
-                context ->
-                        service.createCertificate(
-                                vaultBaseUrl, certificateName, this.getApiVersion(), parameters, accept, context));
+        return FluxUtil.withContext(context -> service.createCertificate(vaultBaseUrl, certificateName,
+            this.getApiVersion(), parameters, accept, context));
     }
 
     /**
@@ -2425,20 +2099,16 @@ public final class CertificateClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateOperation>> createCertificateWithResponseAsync(
-            String vaultBaseUrl,
-            String certificateName,
-            CertificatePolicy certificatePolicy,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags,
-            Context context) {
+    public Mono<Response<CertificateOperation>> createCertificateWithResponseAsync(String vaultBaseUrl,
+        String certificateName, CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes,
+        Map<String, String> tags, Context context) {
         final String accept = "application/json";
         CertificateCreateParameters parameters = new CertificateCreateParameters();
         parameters.setCertificatePolicy(certificatePolicy);
         parameters.setCertificateAttributes(certificateAttributes);
         parameters.setTags(tags);
-        return service.createCertificate(
-                vaultBaseUrl, certificateName, this.getApiVersion(), parameters, accept, context);
+        return service.createCertificate(vaultBaseUrl, certificateName, this.getApiVersion(), parameters, accept,
+            context);
     }
 
     /**
@@ -2461,15 +2131,10 @@ public final class CertificateClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificateOperation> createCertificateAsync(
-            String vaultBaseUrl,
-            String certificateName,
-            CertificatePolicy certificatePolicy,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags) {
-        return createCertificateWithResponseAsync(
-                        vaultBaseUrl, certificateName, certificatePolicy, certificateAttributes, tags)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<CertificateOperation> createCertificateAsync(String vaultBaseUrl, String certificateName,
+        CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes, Map<String, String> tags) {
+        return createCertificateWithResponseAsync(vaultBaseUrl, certificateName, certificatePolicy,
+            certificateAttributes, tags).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2493,16 +2158,11 @@ public final class CertificateClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificateOperation> createCertificateAsync(
-            String vaultBaseUrl,
-            String certificateName,
-            CertificatePolicy certificatePolicy,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags,
-            Context context) {
-        return createCertificateWithResponseAsync(
-                        vaultBaseUrl, certificateName, certificatePolicy, certificateAttributes, tags, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<CertificateOperation> createCertificateAsync(String vaultBaseUrl, String certificateName,
+        CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes, Map<String, String> tags,
+        Context context) {
+        return createCertificateWithResponseAsync(vaultBaseUrl, certificateName, certificatePolicy,
+            certificateAttributes, tags, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2525,20 +2185,16 @@ public final class CertificateClientImpl {
      * @return a certificate operation is returned in case of asynchronous requests along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateOperation> createCertificateWithResponse(
-            String vaultBaseUrl,
-            String certificateName,
-            CertificatePolicy certificatePolicy,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags,
-            Context context) {
+    public Response<CertificateOperation> createCertificateWithResponse(String vaultBaseUrl, String certificateName,
+        CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes, Map<String, String> tags,
+        Context context) {
         final String accept = "application/json";
         CertificateCreateParameters parameters = new CertificateCreateParameters();
         parameters.setCertificatePolicy(certificatePolicy);
         parameters.setCertificateAttributes(certificateAttributes);
         parameters.setTags(tags);
-        return service.createCertificateSync(
-                vaultBaseUrl, certificateName, this.getApiVersion(), parameters, accept, context);
+        return service.createCertificateSync(vaultBaseUrl, certificateName, this.getApiVersion(), parameters, accept,
+            context);
     }
 
     /**
@@ -2560,15 +2216,10 @@ public final class CertificateClientImpl {
      * @return a certificate operation is returned in case of asynchronous requests.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateOperation createCertificate(
-            String vaultBaseUrl,
-            String certificateName,
-            CertificatePolicy certificatePolicy,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags) {
-        return createCertificateWithResponse(
-                        vaultBaseUrl, certificateName, certificatePolicy, certificateAttributes, tags, Context.NONE)
-                .getValue();
+    public CertificateOperation createCertificate(String vaultBaseUrl, String certificateName,
+        CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes, Map<String, String> tags) {
+        return createCertificateWithResponse(vaultBaseUrl, certificateName, certificatePolicy, certificateAttributes,
+            tags, Context.NONE).getValue();
     }
 
     /**
@@ -2596,14 +2247,9 @@ public final class CertificateClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateBundle>> importCertificateWithResponseAsync(
-            String vaultBaseUrl,
-            String certificateName,
-            String base64EncodedCertificate,
-            String password,
-            CertificatePolicy certificatePolicy,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags) {
+    public Mono<Response<CertificateBundle>> importCertificateWithResponseAsync(String vaultBaseUrl,
+        String certificateName, String base64EncodedCertificate, String password, CertificatePolicy certificatePolicy,
+        CertificateAttributes certificateAttributes, Map<String, String> tags) {
         final String accept = "application/json";
         CertificateImportParameters parameters = new CertificateImportParameters();
         parameters.setBase64EncodedCertificate(base64EncodedCertificate);
@@ -2611,10 +2257,8 @@ public final class CertificateClientImpl {
         parameters.setCertificatePolicy(certificatePolicy);
         parameters.setCertificateAttributes(certificateAttributes);
         parameters.setTags(tags);
-        return FluxUtil.withContext(
-                context ->
-                        service.importCertificate(
-                                vaultBaseUrl, certificateName, this.getApiVersion(), parameters, accept, context));
+        return FluxUtil.withContext(context -> service.importCertificate(vaultBaseUrl, certificateName,
+            this.getApiVersion(), parameters, accept, context));
     }
 
     /**
@@ -2643,15 +2287,9 @@ public final class CertificateClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateBundle>> importCertificateWithResponseAsync(
-            String vaultBaseUrl,
-            String certificateName,
-            String base64EncodedCertificate,
-            String password,
-            CertificatePolicy certificatePolicy,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags,
-            Context context) {
+    public Mono<Response<CertificateBundle>> importCertificateWithResponseAsync(String vaultBaseUrl,
+        String certificateName, String base64EncodedCertificate, String password, CertificatePolicy certificatePolicy,
+        CertificateAttributes certificateAttributes, Map<String, String> tags, Context context) {
         final String accept = "application/json";
         CertificateImportParameters parameters = new CertificateImportParameters();
         parameters.setBase64EncodedCertificate(base64EncodedCertificate);
@@ -2659,8 +2297,8 @@ public final class CertificateClientImpl {
         parameters.setCertificatePolicy(certificatePolicy);
         parameters.setCertificateAttributes(certificateAttributes);
         parameters.setTags(tags);
-        return service.importCertificate(
-                vaultBaseUrl, certificateName, this.getApiVersion(), parameters, accept, context);
+        return service.importCertificate(vaultBaseUrl, certificateName, this.getApiVersion(), parameters, accept,
+            context);
     }
 
     /**
@@ -2688,23 +2326,11 @@ public final class CertificateClientImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificateBundle> importCertificateAsync(
-            String vaultBaseUrl,
-            String certificateName,
-            String base64EncodedCertificate,
-            String password,
-            CertificatePolicy certificatePolicy,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags) {
-        return importCertificateWithResponseAsync(
-                        vaultBaseUrl,
-                        certificateName,
-                        base64EncodedCertificate,
-                        password,
-                        certificatePolicy,
-                        certificateAttributes,
-                        tags)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<CertificateBundle> importCertificateAsync(String vaultBaseUrl, String certificateName,
+        String base64EncodedCertificate, String password, CertificatePolicy certificatePolicy,
+        CertificateAttributes certificateAttributes, Map<String, String> tags) {
+        return importCertificateWithResponseAsync(vaultBaseUrl, certificateName, base64EncodedCertificate, password,
+            certificatePolicy, certificateAttributes, tags).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2733,25 +2359,11 @@ public final class CertificateClientImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificateBundle> importCertificateAsync(
-            String vaultBaseUrl,
-            String certificateName,
-            String base64EncodedCertificate,
-            String password,
-            CertificatePolicy certificatePolicy,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags,
-            Context context) {
-        return importCertificateWithResponseAsync(
-                        vaultBaseUrl,
-                        certificateName,
-                        base64EncodedCertificate,
-                        password,
-                        certificatePolicy,
-                        certificateAttributes,
-                        tags,
-                        context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<CertificateBundle> importCertificateAsync(String vaultBaseUrl, String certificateName,
+        String base64EncodedCertificate, String password, CertificatePolicy certificatePolicy,
+        CertificateAttributes certificateAttributes, Map<String, String> tags, Context context) {
+        return importCertificateWithResponseAsync(vaultBaseUrl, certificateName, base64EncodedCertificate, password,
+            certificatePolicy, certificateAttributes, tags, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2779,15 +2391,9 @@ public final class CertificateClientImpl {
      * @return a certificate bundle consists of a certificate (X509) plus its attributes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateBundle> importCertificateWithResponse(
-            String vaultBaseUrl,
-            String certificateName,
-            String base64EncodedCertificate,
-            String password,
-            CertificatePolicy certificatePolicy,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags,
-            Context context) {
+    public Response<CertificateBundle> importCertificateWithResponse(String vaultBaseUrl, String certificateName,
+        String base64EncodedCertificate, String password, CertificatePolicy certificatePolicy,
+        CertificateAttributes certificateAttributes, Map<String, String> tags, Context context) {
         final String accept = "application/json";
         CertificateImportParameters parameters = new CertificateImportParameters();
         parameters.setBase64EncodedCertificate(base64EncodedCertificate);
@@ -2795,8 +2401,8 @@ public final class CertificateClientImpl {
         parameters.setCertificatePolicy(certificatePolicy);
         parameters.setCertificateAttributes(certificateAttributes);
         parameters.setTags(tags);
-        return service.importCertificateSync(
-                vaultBaseUrl, certificateName, this.getApiVersion(), parameters, accept, context);
+        return service.importCertificateSync(vaultBaseUrl, certificateName, this.getApiVersion(), parameters, accept,
+            context);
     }
 
     /**
@@ -2823,24 +2429,11 @@ public final class CertificateClientImpl {
      * @return a certificate bundle consists of a certificate (X509) plus its attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateBundle importCertificate(
-            String vaultBaseUrl,
-            String certificateName,
-            String base64EncodedCertificate,
-            String password,
-            CertificatePolicy certificatePolicy,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags) {
-        return importCertificateWithResponse(
-                        vaultBaseUrl,
-                        certificateName,
-                        base64EncodedCertificate,
-                        password,
-                        certificatePolicy,
-                        certificateAttributes,
-                        tags,
-                        Context.NONE)
-                .getValue();
+    public CertificateBundle importCertificate(String vaultBaseUrl, String certificateName,
+        String base64EncodedCertificate, String password, CertificatePolicy certificatePolicy,
+        CertificateAttributes certificateAttributes, Map<String, String> tags) {
+        return importCertificateWithResponse(vaultBaseUrl, certificateName, base64EncodedCertificate, password,
+            certificatePolicy, certificateAttributes, tags, Context.NONE).getValue();
     }
 
     /**
@@ -2859,27 +2452,14 @@ public final class CertificateClientImpl {
      * @return the certificate list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CertificateItem>> getCertificateVersionsSinglePageAsync(
-            String vaultBaseUrl, String certificateName, Integer maxresults) {
+    public Mono<PagedResponse<CertificateItem>> getCertificateVersionsSinglePageAsync(String vaultBaseUrl,
+        String certificateName, Integer maxresults) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.getCertificateVersions(
-                                        vaultBaseUrl,
-                                        certificateName,
-                                        maxresults,
-                                        this.getApiVersion(),
-                                        accept,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.getCertificateVersions(vaultBaseUrl, certificateName, maxresults,
+                this.getApiVersion(), accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -2899,20 +2479,13 @@ public final class CertificateClientImpl {
      * @return the certificate list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CertificateItem>> getCertificateVersionsSinglePageAsync(
-            String vaultBaseUrl, String certificateName, Integer maxresults, Context context) {
+    public Mono<PagedResponse<CertificateItem>> getCertificateVersionsSinglePageAsync(String vaultBaseUrl,
+        String certificateName, Integer maxresults, Context context) {
         final String accept = "application/json";
-        return service.getCertificateVersions(
-                        vaultBaseUrl, certificateName, maxresults, this.getApiVersion(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return service
+            .getCertificateVersions(vaultBaseUrl, certificateName, maxresults, this.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -2931,11 +2504,10 @@ public final class CertificateClientImpl {
      * @return the certificate list result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CertificateItem> getCertificateVersionsAsync(
-            String vaultBaseUrl, String certificateName, Integer maxresults) {
-        return new PagedFlux<>(
-                () -> getCertificateVersionsSinglePageAsync(vaultBaseUrl, certificateName, maxresults),
-                nextLink -> getCertificateVersionsNextSinglePageAsync(nextLink, vaultBaseUrl));
+    public PagedFlux<CertificateItem> getCertificateVersionsAsync(String vaultBaseUrl, String certificateName,
+        Integer maxresults) {
+        return new PagedFlux<>(() -> getCertificateVersionsSinglePageAsync(vaultBaseUrl, certificateName, maxresults),
+            nextLink -> getCertificateVersionsNextSinglePageAsync(nextLink, vaultBaseUrl));
     }
 
     /**
@@ -2955,11 +2527,11 @@ public final class CertificateClientImpl {
      * @return the certificate list result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CertificateItem> getCertificateVersionsAsync(
-            String vaultBaseUrl, String certificateName, Integer maxresults, Context context) {
+    public PagedFlux<CertificateItem> getCertificateVersionsAsync(String vaultBaseUrl, String certificateName,
+        Integer maxresults, Context context) {
         return new PagedFlux<>(
-                () -> getCertificateVersionsSinglePageAsync(vaultBaseUrl, certificateName, maxresults, context),
-                nextLink -> getCertificateVersionsNextSinglePageAsync(nextLink, vaultBaseUrl, context));
+            () -> getCertificateVersionsSinglePageAsync(vaultBaseUrl, certificateName, maxresults, context),
+            nextLink -> getCertificateVersionsNextSinglePageAsync(nextLink, vaultBaseUrl, context));
     }
 
     /**
@@ -2978,19 +2550,13 @@ public final class CertificateClientImpl {
      * @return the certificate list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<CertificateItem> getCertificateVersionsSinglePage(
-            String vaultBaseUrl, String certificateName, Integer maxresults) {
+    public PagedResponse<CertificateItem> getCertificateVersionsSinglePage(String vaultBaseUrl, String certificateName,
+        Integer maxresults) {
         final String accept = "application/json";
-        Response<CertificateListResult> res =
-                service.getCertificateVersionsSync(
-                        vaultBaseUrl, certificateName, maxresults, this.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<CertificateListResult> res = service.getCertificateVersionsSync(vaultBaseUrl, certificateName,
+            maxresults, this.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -3010,19 +2576,13 @@ public final class CertificateClientImpl {
      * @return the certificate list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<CertificateItem> getCertificateVersionsSinglePage(
-            String vaultBaseUrl, String certificateName, Integer maxresults, Context context) {
+    public PagedResponse<CertificateItem> getCertificateVersionsSinglePage(String vaultBaseUrl, String certificateName,
+        Integer maxresults, Context context) {
         final String accept = "application/json";
-        Response<CertificateListResult> res =
-                service.getCertificateVersionsSync(
-                        vaultBaseUrl, certificateName, maxresults, this.getApiVersion(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<CertificateListResult> res = service.getCertificateVersionsSync(vaultBaseUrl, certificateName,
+            maxresults, this.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -3041,11 +2601,11 @@ public final class CertificateClientImpl {
      * @return the certificate list result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateItem> getCertificateVersions(
-            String vaultBaseUrl, String certificateName, Integer maxresults) {
+    public PagedIterable<CertificateItem> getCertificateVersions(String vaultBaseUrl, String certificateName,
+        Integer maxresults) {
         return new PagedIterable<>(
-                () -> getCertificateVersionsSinglePage(vaultBaseUrl, certificateName, maxresults, Context.NONE),
-                nextLink -> getCertificateVersionsNextSinglePage(nextLink, vaultBaseUrl));
+            () -> getCertificateVersionsSinglePage(vaultBaseUrl, certificateName, maxresults, Context.NONE),
+            nextLink -> getCertificateVersionsNextSinglePage(nextLink, vaultBaseUrl));
     }
 
     /**
@@ -3065,11 +2625,11 @@ public final class CertificateClientImpl {
      * @return the certificate list result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateItem> getCertificateVersions(
-            String vaultBaseUrl, String certificateName, Integer maxresults, Context context) {
+    public PagedIterable<CertificateItem> getCertificateVersions(String vaultBaseUrl, String certificateName,
+        Integer maxresults, Context context) {
         return new PagedIterable<>(
-                () -> getCertificateVersionsSinglePage(vaultBaseUrl, certificateName, maxresults, context),
-                nextLink -> getCertificateVersionsNextSinglePage(nextLink, vaultBaseUrl, context));
+            () -> getCertificateVersionsSinglePage(vaultBaseUrl, certificateName, maxresults, context),
+            nextLink -> getCertificateVersionsNextSinglePage(nextLink, vaultBaseUrl, context));
     }
 
     /**
@@ -3086,13 +2646,11 @@ public final class CertificateClientImpl {
      * @return management policy for a certificate along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificatePolicy>> getCertificatePolicyWithResponseAsync(
-            String vaultBaseUrl, String certificateName) {
+    public Mono<Response<CertificatePolicy>> getCertificatePolicyWithResponseAsync(String vaultBaseUrl,
+        String certificateName) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getCertificatePolicy(
-                                vaultBaseUrl, certificateName, this.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> service.getCertificatePolicy(vaultBaseUrl, certificateName,
+            this.getApiVersion(), accept, context));
     }
 
     /**
@@ -3110,8 +2668,8 @@ public final class CertificateClientImpl {
      * @return management policy for a certificate along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificatePolicy>> getCertificatePolicyWithResponseAsync(
-            String vaultBaseUrl, String certificateName, Context context) {
+    public Mono<Response<CertificatePolicy>> getCertificatePolicyWithResponseAsync(String vaultBaseUrl,
+        String certificateName, Context context) {
         final String accept = "application/json";
         return service.getCertificatePolicy(vaultBaseUrl, certificateName, this.getApiVersion(), accept, context);
     }
@@ -3132,7 +2690,7 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificatePolicy> getCertificatePolicyAsync(String vaultBaseUrl, String certificateName) {
         return getCertificatePolicyWithResponseAsync(vaultBaseUrl, certificateName)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3150,10 +2708,10 @@ public final class CertificateClientImpl {
      * @return management policy for a certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificatePolicy> getCertificatePolicyAsync(
-            String vaultBaseUrl, String certificateName, Context context) {
+    public Mono<CertificatePolicy> getCertificatePolicyAsync(String vaultBaseUrl, String certificateName,
+        Context context) {
         return getCertificatePolicyWithResponseAsync(vaultBaseUrl, certificateName, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3171,8 +2729,8 @@ public final class CertificateClientImpl {
      * @return management policy for a certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificatePolicy> getCertificatePolicyWithResponse(
-            String vaultBaseUrl, String certificateName, Context context) {
+    public Response<CertificatePolicy> getCertificatePolicyWithResponse(String vaultBaseUrl, String certificateName,
+        Context context) {
         final String accept = "application/json";
         return service.getCertificatePolicySync(vaultBaseUrl, certificateName, this.getApiVersion(), accept, context);
     }
@@ -3210,18 +2768,11 @@ public final class CertificateClientImpl {
      * @return management policy for a certificate along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificatePolicy>> updateCertificatePolicyWithResponseAsync(
-            String vaultBaseUrl, String certificateName, CertificatePolicy certificatePolicy) {
+    public Mono<Response<CertificatePolicy>> updateCertificatePolicyWithResponseAsync(String vaultBaseUrl,
+        String certificateName, CertificatePolicy certificatePolicy) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.updateCertificatePolicy(
-                                vaultBaseUrl,
-                                certificateName,
-                                this.getApiVersion(),
-                                certificatePolicy,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.updateCertificatePolicy(vaultBaseUrl, certificateName,
+            this.getApiVersion(), certificatePolicy, accept, context));
     }
 
     /**
@@ -3240,11 +2791,11 @@ public final class CertificateClientImpl {
      * @return management policy for a certificate along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificatePolicy>> updateCertificatePolicyWithResponseAsync(
-            String vaultBaseUrl, String certificateName, CertificatePolicy certificatePolicy, Context context) {
+    public Mono<Response<CertificatePolicy>> updateCertificatePolicyWithResponseAsync(String vaultBaseUrl,
+        String certificateName, CertificatePolicy certificatePolicy, Context context) {
         final String accept = "application/json";
-        return service.updateCertificatePolicy(
-                vaultBaseUrl, certificateName, this.getApiVersion(), certificatePolicy, accept, context);
+        return service.updateCertificatePolicy(vaultBaseUrl, certificateName, this.getApiVersion(), certificatePolicy,
+            accept, context);
     }
 
     /**
@@ -3262,10 +2813,10 @@ public final class CertificateClientImpl {
      * @return management policy for a certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificatePolicy> updateCertificatePolicyAsync(
-            String vaultBaseUrl, String certificateName, CertificatePolicy certificatePolicy) {
+    public Mono<CertificatePolicy> updateCertificatePolicyAsync(String vaultBaseUrl, String certificateName,
+        CertificatePolicy certificatePolicy) {
         return updateCertificatePolicyWithResponseAsync(vaultBaseUrl, certificateName, certificatePolicy)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3284,10 +2835,10 @@ public final class CertificateClientImpl {
      * @return management policy for a certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificatePolicy> updateCertificatePolicyAsync(
-            String vaultBaseUrl, String certificateName, CertificatePolicy certificatePolicy, Context context) {
+    public Mono<CertificatePolicy> updateCertificatePolicyAsync(String vaultBaseUrl, String certificateName,
+        CertificatePolicy certificatePolicy, Context context) {
         return updateCertificatePolicyWithResponseAsync(vaultBaseUrl, certificateName, certificatePolicy, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3306,11 +2857,11 @@ public final class CertificateClientImpl {
      * @return management policy for a certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificatePolicy> updateCertificatePolicyWithResponse(
-            String vaultBaseUrl, String certificateName, CertificatePolicy certificatePolicy, Context context) {
+    public Response<CertificatePolicy> updateCertificatePolicyWithResponse(String vaultBaseUrl, String certificateName,
+        CertificatePolicy certificatePolicy, Context context) {
         final String accept = "application/json";
-        return service.updateCertificatePolicySync(
-                vaultBaseUrl, certificateName, this.getApiVersion(), certificatePolicy, accept, context);
+        return service.updateCertificatePolicySync(vaultBaseUrl, certificateName, this.getApiVersion(),
+            certificatePolicy, accept, context);
     }
 
     /**
@@ -3328,10 +2879,10 @@ public final class CertificateClientImpl {
      * @return management policy for a certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificatePolicy updateCertificatePolicy(
-            String vaultBaseUrl, String certificateName, CertificatePolicy certificatePolicy) {
+    public CertificatePolicy updateCertificatePolicy(String vaultBaseUrl, String certificateName,
+        CertificatePolicy certificatePolicy) {
         return updateCertificatePolicyWithResponse(vaultBaseUrl, certificateName, certificatePolicy, Context.NONE)
-                .getValue();
+            .getValue();
     }
 
     /**
@@ -3353,28 +2904,16 @@ public final class CertificateClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateBundle>> updateCertificateWithResponseAsync(
-            String vaultBaseUrl,
-            String certificateName,
-            String certificateVersion,
-            CertificatePolicy certificatePolicy,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags) {
+    public Mono<Response<CertificateBundle>> updateCertificateWithResponseAsync(String vaultBaseUrl,
+        String certificateName, String certificateVersion, CertificatePolicy certificatePolicy,
+        CertificateAttributes certificateAttributes, Map<String, String> tags) {
         final String accept = "application/json";
         CertificateUpdateParameters parameters = new CertificateUpdateParameters();
         parameters.setCertificatePolicy(certificatePolicy);
         parameters.setCertificateAttributes(certificateAttributes);
         parameters.setTags(tags);
-        return FluxUtil.withContext(
-                context ->
-                        service.updateCertificate(
-                                vaultBaseUrl,
-                                certificateName,
-                                certificateVersion,
-                                this.getApiVersion(),
-                                parameters,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.updateCertificate(vaultBaseUrl, certificateName,
+            certificateVersion, this.getApiVersion(), parameters, accept, context));
     }
 
     /**
@@ -3397,21 +2936,16 @@ public final class CertificateClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateBundle>> updateCertificateWithResponseAsync(
-            String vaultBaseUrl,
-            String certificateName,
-            String certificateVersion,
-            CertificatePolicy certificatePolicy,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags,
-            Context context) {
+    public Mono<Response<CertificateBundle>> updateCertificateWithResponseAsync(String vaultBaseUrl,
+        String certificateName, String certificateVersion, CertificatePolicy certificatePolicy,
+        CertificateAttributes certificateAttributes, Map<String, String> tags, Context context) {
         final String accept = "application/json";
         CertificateUpdateParameters parameters = new CertificateUpdateParameters();
         parameters.setCertificatePolicy(certificatePolicy);
         parameters.setCertificateAttributes(certificateAttributes);
         parameters.setTags(tags);
-        return service.updateCertificate(
-                vaultBaseUrl, certificateName, certificateVersion, this.getApiVersion(), parameters, accept, context);
+        return service.updateCertificate(vaultBaseUrl, certificateName, certificateVersion, this.getApiVersion(),
+            parameters, accept, context);
     }
 
     /**
@@ -3433,21 +2967,11 @@ public final class CertificateClientImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificateBundle> updateCertificateAsync(
-            String vaultBaseUrl,
-            String certificateName,
-            String certificateVersion,
-            CertificatePolicy certificatePolicy,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags) {
-        return updateCertificateWithResponseAsync(
-                        vaultBaseUrl,
-                        certificateName,
-                        certificateVersion,
-                        certificatePolicy,
-                        certificateAttributes,
-                        tags)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<CertificateBundle> updateCertificateAsync(String vaultBaseUrl, String certificateName,
+        String certificateVersion, CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes,
+        Map<String, String> tags) {
+        return updateCertificateWithResponseAsync(vaultBaseUrl, certificateName, certificateVersion, certificatePolicy,
+            certificateAttributes, tags).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3470,23 +2994,11 @@ public final class CertificateClientImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificateBundle> updateCertificateAsync(
-            String vaultBaseUrl,
-            String certificateName,
-            String certificateVersion,
-            CertificatePolicy certificatePolicy,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags,
-            Context context) {
-        return updateCertificateWithResponseAsync(
-                        vaultBaseUrl,
-                        certificateName,
-                        certificateVersion,
-                        certificatePolicy,
-                        certificateAttributes,
-                        tags,
-                        context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<CertificateBundle> updateCertificateAsync(String vaultBaseUrl, String certificateName,
+        String certificateVersion, CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes,
+        Map<String, String> tags, Context context) {
+        return updateCertificateWithResponseAsync(vaultBaseUrl, certificateName, certificateVersion, certificatePolicy,
+            certificateAttributes, tags, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3508,21 +3020,16 @@ public final class CertificateClientImpl {
      * @return a certificate bundle consists of a certificate (X509) plus its attributes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateBundle> updateCertificateWithResponse(
-            String vaultBaseUrl,
-            String certificateName,
-            String certificateVersion,
-            CertificatePolicy certificatePolicy,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags,
-            Context context) {
+    public Response<CertificateBundle> updateCertificateWithResponse(String vaultBaseUrl, String certificateName,
+        String certificateVersion, CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes,
+        Map<String, String> tags, Context context) {
         final String accept = "application/json";
         CertificateUpdateParameters parameters = new CertificateUpdateParameters();
         parameters.setCertificatePolicy(certificatePolicy);
         parameters.setCertificateAttributes(certificateAttributes);
         parameters.setTags(tags);
-        return service.updateCertificateSync(
-                vaultBaseUrl, certificateName, certificateVersion, this.getApiVersion(), parameters, accept, context);
+        return service.updateCertificateSync(vaultBaseUrl, certificateName, certificateVersion, this.getApiVersion(),
+            parameters, accept, context);
     }
 
     /**
@@ -3543,22 +3050,10 @@ public final class CertificateClientImpl {
      * @return a certificate bundle consists of a certificate (X509) plus its attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateBundle updateCertificate(
-            String vaultBaseUrl,
-            String certificateName,
-            String certificateVersion,
-            CertificatePolicy certificatePolicy,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags) {
-        return updateCertificateWithResponse(
-                        vaultBaseUrl,
-                        certificateName,
-                        certificateVersion,
-                        certificatePolicy,
-                        certificateAttributes,
-                        tags,
-                        Context.NONE)
-                .getValue();
+    public CertificateBundle updateCertificate(String vaultBaseUrl, String certificateName, String certificateVersion,
+        CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes, Map<String, String> tags) {
+        return updateCertificateWithResponse(vaultBaseUrl, certificateName, certificateVersion, certificatePolicy,
+            certificateAttributes, tags, Context.NONE).getValue();
     }
 
     /**
@@ -3577,18 +3072,11 @@ public final class CertificateClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateBundle>> getCertificateWithResponseAsync(
-            String vaultBaseUrl, String certificateName, String certificateVersion) {
+    public Mono<Response<CertificateBundle>> getCertificateWithResponseAsync(String vaultBaseUrl,
+        String certificateName, String certificateVersion) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getCertificate(
-                                vaultBaseUrl,
-                                certificateName,
-                                certificateVersion,
-                                this.getApiVersion(),
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.getCertificate(vaultBaseUrl, certificateName, certificateVersion,
+            this.getApiVersion(), accept, context));
     }
 
     /**
@@ -3608,11 +3096,11 @@ public final class CertificateClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateBundle>> getCertificateWithResponseAsync(
-            String vaultBaseUrl, String certificateName, String certificateVersion, Context context) {
+    public Mono<Response<CertificateBundle>> getCertificateWithResponseAsync(String vaultBaseUrl,
+        String certificateName, String certificateVersion, Context context) {
         final String accept = "application/json";
-        return service.getCertificate(
-                vaultBaseUrl, certificateName, certificateVersion, this.getApiVersion(), accept, context);
+        return service.getCertificate(vaultBaseUrl, certificateName, certificateVersion, this.getApiVersion(), accept,
+            context);
     }
 
     /**
@@ -3630,10 +3118,10 @@ public final class CertificateClientImpl {
      * @return information about a specific certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificateBundle> getCertificateAsync(
-            String vaultBaseUrl, String certificateName, String certificateVersion) {
+    public Mono<CertificateBundle> getCertificateAsync(String vaultBaseUrl, String certificateName,
+        String certificateVersion) {
         return getCertificateWithResponseAsync(vaultBaseUrl, certificateName, certificateVersion)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3652,10 +3140,10 @@ public final class CertificateClientImpl {
      * @return information about a specific certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificateBundle> getCertificateAsync(
-            String vaultBaseUrl, String certificateName, String certificateVersion, Context context) {
+    public Mono<CertificateBundle> getCertificateAsync(String vaultBaseUrl, String certificateName,
+        String certificateVersion, Context context) {
         return getCertificateWithResponseAsync(vaultBaseUrl, certificateName, certificateVersion, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3674,11 +3162,11 @@ public final class CertificateClientImpl {
      * @return information about a specific certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateBundle> getCertificateWithResponse(
-            String vaultBaseUrl, String certificateName, String certificateVersion, Context context) {
+    public Response<CertificateBundle> getCertificateWithResponse(String vaultBaseUrl, String certificateName,
+        String certificateVersion, Context context) {
         final String accept = "application/json";
-        return service.getCertificateSync(
-                vaultBaseUrl, certificateName, certificateVersion, this.getApiVersion(), accept, context);
+        return service.getCertificateSync(vaultBaseUrl, certificateName, certificateVersion, this.getApiVersion(),
+            accept, context);
     }
 
     /**
@@ -3716,20 +3204,13 @@ public final class CertificateClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateOperation>> updateCertificateOperationWithResponseAsync(
-            String vaultBaseUrl, String certificateName, boolean cancellationRequested) {
+    public Mono<Response<CertificateOperation>> updateCertificateOperationWithResponseAsync(String vaultBaseUrl,
+        String certificateName, boolean cancellationRequested) {
         final String accept = "application/json";
         CertificateOperationUpdateParameter certificateOperation = new CertificateOperationUpdateParameter();
         certificateOperation.setCancellationRequested(cancellationRequested);
-        return FluxUtil.withContext(
-                context ->
-                        service.updateCertificateOperation(
-                                vaultBaseUrl,
-                                certificateName,
-                                this.getApiVersion(),
-                                certificateOperation,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.updateCertificateOperation(vaultBaseUrl, certificateName,
+            this.getApiVersion(), certificateOperation, accept, context));
     }
 
     /**
@@ -3749,13 +3230,13 @@ public final class CertificateClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateOperation>> updateCertificateOperationWithResponseAsync(
-            String vaultBaseUrl, String certificateName, boolean cancellationRequested, Context context) {
+    public Mono<Response<CertificateOperation>> updateCertificateOperationWithResponseAsync(String vaultBaseUrl,
+        String certificateName, boolean cancellationRequested, Context context) {
         final String accept = "application/json";
         CertificateOperationUpdateParameter certificateOperation = new CertificateOperationUpdateParameter();
         certificateOperation.setCancellationRequested(cancellationRequested);
-        return service.updateCertificateOperation(
-                vaultBaseUrl, certificateName, this.getApiVersion(), certificateOperation, accept, context);
+        return service.updateCertificateOperation(vaultBaseUrl, certificateName, this.getApiVersion(),
+            certificateOperation, accept, context);
     }
 
     /**
@@ -3774,10 +3255,10 @@ public final class CertificateClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificateOperation> updateCertificateOperationAsync(
-            String vaultBaseUrl, String certificateName, boolean cancellationRequested) {
+    public Mono<CertificateOperation> updateCertificateOperationAsync(String vaultBaseUrl, String certificateName,
+        boolean cancellationRequested) {
         return updateCertificateOperationWithResponseAsync(vaultBaseUrl, certificateName, cancellationRequested)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3797,11 +3278,10 @@ public final class CertificateClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificateOperation> updateCertificateOperationAsync(
-            String vaultBaseUrl, String certificateName, boolean cancellationRequested, Context context) {
-        return updateCertificateOperationWithResponseAsync(
-                        vaultBaseUrl, certificateName, cancellationRequested, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<CertificateOperation> updateCertificateOperationAsync(String vaultBaseUrl, String certificateName,
+        boolean cancellationRequested, Context context) {
+        return updateCertificateOperationWithResponseAsync(vaultBaseUrl, certificateName, cancellationRequested,
+            context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3820,13 +3300,13 @@ public final class CertificateClientImpl {
      * @return a certificate operation is returned in case of asynchronous requests along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateOperation> updateCertificateOperationWithResponse(
-            String vaultBaseUrl, String certificateName, boolean cancellationRequested, Context context) {
+    public Response<CertificateOperation> updateCertificateOperationWithResponse(String vaultBaseUrl,
+        String certificateName, boolean cancellationRequested, Context context) {
         final String accept = "application/json";
         CertificateOperationUpdateParameter certificateOperation = new CertificateOperationUpdateParameter();
         certificateOperation.setCancellationRequested(cancellationRequested);
-        return service.updateCertificateOperationSync(
-                vaultBaseUrl, certificateName, this.getApiVersion(), certificateOperation, accept, context);
+        return service.updateCertificateOperationSync(vaultBaseUrl, certificateName, this.getApiVersion(),
+            certificateOperation, accept, context);
     }
 
     /**
@@ -3844,11 +3324,10 @@ public final class CertificateClientImpl {
      * @return a certificate operation is returned in case of asynchronous requests.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateOperation updateCertificateOperation(
-            String vaultBaseUrl, String certificateName, boolean cancellationRequested) {
-        return updateCertificateOperationWithResponse(
-                        vaultBaseUrl, certificateName, cancellationRequested, Context.NONE)
-                .getValue();
+    public CertificateOperation updateCertificateOperation(String vaultBaseUrl, String certificateName,
+        boolean cancellationRequested) {
+        return updateCertificateOperationWithResponse(vaultBaseUrl, certificateName, cancellationRequested,
+            Context.NONE).getValue();
     }
 
     /**
@@ -3866,13 +3345,11 @@ public final class CertificateClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateOperation>> getCertificateOperationWithResponseAsync(
-            String vaultBaseUrl, String certificateName) {
+    public Mono<Response<CertificateOperation>> getCertificateOperationWithResponseAsync(String vaultBaseUrl,
+        String certificateName) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getCertificateOperation(
-                                vaultBaseUrl, certificateName, this.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> service.getCertificateOperation(vaultBaseUrl, certificateName,
+            this.getApiVersion(), accept, context));
     }
 
     /**
@@ -3891,8 +3368,8 @@ public final class CertificateClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateOperation>> getCertificateOperationWithResponseAsync(
-            String vaultBaseUrl, String certificateName, Context context) {
+    public Mono<Response<CertificateOperation>> getCertificateOperationWithResponseAsync(String vaultBaseUrl,
+        String certificateName, Context context) {
         final String accept = "application/json";
         return service.getCertificateOperation(vaultBaseUrl, certificateName, this.getApiVersion(), accept, context);
     }
@@ -3913,7 +3390,7 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateOperation> getCertificateOperationAsync(String vaultBaseUrl, String certificateName) {
         return getCertificateOperationWithResponseAsync(vaultBaseUrl, certificateName)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3931,10 +3408,10 @@ public final class CertificateClientImpl {
      * @return the creation operation associated with a specified certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificateOperation> getCertificateOperationAsync(
-            String vaultBaseUrl, String certificateName, Context context) {
+    public Mono<CertificateOperation> getCertificateOperationAsync(String vaultBaseUrl, String certificateName,
+        Context context) {
         return getCertificateOperationWithResponseAsync(vaultBaseUrl, certificateName, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3952,11 +3429,11 @@ public final class CertificateClientImpl {
      * @return the creation operation associated with a specified certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateOperation> getCertificateOperationWithResponse(
-            String vaultBaseUrl, String certificateName, Context context) {
+    public Response<CertificateOperation> getCertificateOperationWithResponse(String vaultBaseUrl,
+        String certificateName, Context context) {
         final String accept = "application/json";
-        return service.getCertificateOperationSync(
-                vaultBaseUrl, certificateName, this.getApiVersion(), accept, context);
+        return service.getCertificateOperationSync(vaultBaseUrl, certificateName, this.getApiVersion(), accept,
+            context);
     }
 
     /**
@@ -3992,13 +3469,11 @@ public final class CertificateClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateOperation>> deleteCertificateOperationWithResponseAsync(
-            String vaultBaseUrl, String certificateName) {
+    public Mono<Response<CertificateOperation>> deleteCertificateOperationWithResponseAsync(String vaultBaseUrl,
+        String certificateName) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteCertificateOperation(
-                                vaultBaseUrl, certificateName, this.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> service.deleteCertificateOperation(vaultBaseUrl, certificateName,
+            this.getApiVersion(), accept, context));
     }
 
     /**
@@ -4017,8 +3492,8 @@ public final class CertificateClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateOperation>> deleteCertificateOperationWithResponseAsync(
-            String vaultBaseUrl, String certificateName, Context context) {
+    public Mono<Response<CertificateOperation>> deleteCertificateOperationWithResponseAsync(String vaultBaseUrl,
+        String certificateName, Context context) {
         final String accept = "application/json";
         return service.deleteCertificateOperation(vaultBaseUrl, certificateName, this.getApiVersion(), accept, context);
     }
@@ -4040,7 +3515,7 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateOperation> deleteCertificateOperationAsync(String vaultBaseUrl, String certificateName) {
         return deleteCertificateOperationWithResponseAsync(vaultBaseUrl, certificateName)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4059,10 +3534,10 @@ public final class CertificateClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificateOperation> deleteCertificateOperationAsync(
-            String vaultBaseUrl, String certificateName, Context context) {
+    public Mono<CertificateOperation> deleteCertificateOperationAsync(String vaultBaseUrl, String certificateName,
+        Context context) {
         return deleteCertificateOperationWithResponseAsync(vaultBaseUrl, certificateName, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4080,11 +3555,11 @@ public final class CertificateClientImpl {
      * @return a certificate operation is returned in case of asynchronous requests along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateOperation> deleteCertificateOperationWithResponse(
-            String vaultBaseUrl, String certificateName, Context context) {
+    public Response<CertificateOperation> deleteCertificateOperationWithResponse(String vaultBaseUrl,
+        String certificateName, Context context) {
         final String accept = "application/json";
-        return service.deleteCertificateOperationSync(
-                vaultBaseUrl, certificateName, this.getApiVersion(), accept, context);
+        return service.deleteCertificateOperationSync(vaultBaseUrl, certificateName, this.getApiVersion(), accept,
+            context);
     }
 
     /**
@@ -4123,21 +3598,16 @@ public final class CertificateClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateBundle>> mergeCertificateWithResponseAsync(
-            String vaultBaseUrl,
-            String certificateName,
-            List<byte[]> x509Certificates,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags) {
+    public Mono<Response<CertificateBundle>> mergeCertificateWithResponseAsync(String vaultBaseUrl,
+        String certificateName, List<byte[]> x509Certificates, CertificateAttributes certificateAttributes,
+        Map<String, String> tags) {
         final String accept = "application/json";
         CertificateMergeParameters parameters = new CertificateMergeParameters();
         parameters.setX509Certificates(x509Certificates);
         parameters.setCertificateAttributes(certificateAttributes);
         parameters.setTags(tags);
-        return FluxUtil.withContext(
-                context ->
-                        service.mergeCertificate(
-                                vaultBaseUrl, certificateName, this.getApiVersion(), parameters, accept, context));
+        return FluxUtil.withContext(context -> service.mergeCertificate(vaultBaseUrl, certificateName,
+            this.getApiVersion(), parameters, accept, context));
     }
 
     /**
@@ -4159,20 +3629,16 @@ public final class CertificateClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateBundle>> mergeCertificateWithResponseAsync(
-            String vaultBaseUrl,
-            String certificateName,
-            List<byte[]> x509Certificates,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags,
-            Context context) {
+    public Mono<Response<CertificateBundle>> mergeCertificateWithResponseAsync(String vaultBaseUrl,
+        String certificateName, List<byte[]> x509Certificates, CertificateAttributes certificateAttributes,
+        Map<String, String> tags, Context context) {
         final String accept = "application/json";
         CertificateMergeParameters parameters = new CertificateMergeParameters();
         parameters.setX509Certificates(x509Certificates);
         parameters.setCertificateAttributes(certificateAttributes);
         parameters.setTags(tags);
-        return service.mergeCertificate(
-                vaultBaseUrl, certificateName, this.getApiVersion(), parameters, accept, context);
+        return service.mergeCertificate(vaultBaseUrl, certificateName, this.getApiVersion(), parameters, accept,
+            context);
     }
 
     /**
@@ -4193,15 +3659,10 @@ public final class CertificateClientImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificateBundle> mergeCertificateAsync(
-            String vaultBaseUrl,
-            String certificateName,
-            List<byte[]> x509Certificates,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags) {
-        return mergeCertificateWithResponseAsync(
-                        vaultBaseUrl, certificateName, x509Certificates, certificateAttributes, tags)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<CertificateBundle> mergeCertificateAsync(String vaultBaseUrl, String certificateName,
+        List<byte[]> x509Certificates, CertificateAttributes certificateAttributes, Map<String, String> tags) {
+        return mergeCertificateWithResponseAsync(vaultBaseUrl, certificateName, x509Certificates, certificateAttributes,
+            tags).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4223,16 +3684,11 @@ public final class CertificateClientImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificateBundle> mergeCertificateAsync(
-            String vaultBaseUrl,
-            String certificateName,
-            List<byte[]> x509Certificates,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags,
-            Context context) {
-        return mergeCertificateWithResponseAsync(
-                        vaultBaseUrl, certificateName, x509Certificates, certificateAttributes, tags, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<CertificateBundle> mergeCertificateAsync(String vaultBaseUrl, String certificateName,
+        List<byte[]> x509Certificates, CertificateAttributes certificateAttributes, Map<String, String> tags,
+        Context context) {
+        return mergeCertificateWithResponseAsync(vaultBaseUrl, certificateName, x509Certificates, certificateAttributes,
+            tags, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4253,20 +3709,16 @@ public final class CertificateClientImpl {
      * @return a certificate bundle consists of a certificate (X509) plus its attributes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateBundle> mergeCertificateWithResponse(
-            String vaultBaseUrl,
-            String certificateName,
-            List<byte[]> x509Certificates,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags,
-            Context context) {
+    public Response<CertificateBundle> mergeCertificateWithResponse(String vaultBaseUrl, String certificateName,
+        List<byte[]> x509Certificates, CertificateAttributes certificateAttributes, Map<String, String> tags,
+        Context context) {
         final String accept = "application/json";
         CertificateMergeParameters parameters = new CertificateMergeParameters();
         parameters.setX509Certificates(x509Certificates);
         parameters.setCertificateAttributes(certificateAttributes);
         parameters.setTags(tags);
-        return service.mergeCertificateSync(
-                vaultBaseUrl, certificateName, this.getApiVersion(), parameters, accept, context);
+        return service.mergeCertificateSync(vaultBaseUrl, certificateName, this.getApiVersion(), parameters, accept,
+            context);
     }
 
     /**
@@ -4286,15 +3738,10 @@ public final class CertificateClientImpl {
      * @return a certificate bundle consists of a certificate (X509) plus its attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateBundle mergeCertificate(
-            String vaultBaseUrl,
-            String certificateName,
-            List<byte[]> x509Certificates,
-            CertificateAttributes certificateAttributes,
-            Map<String, String> tags) {
-        return mergeCertificateWithResponse(
-                        vaultBaseUrl, certificateName, x509Certificates, certificateAttributes, tags, Context.NONE)
-                .getValue();
+    public CertificateBundle mergeCertificate(String vaultBaseUrl, String certificateName,
+        List<byte[]> x509Certificates, CertificateAttributes certificateAttributes, Map<String, String> tags) {
+        return mergeCertificateWithResponse(vaultBaseUrl, certificateName, x509Certificates, certificateAttributes,
+            tags, Context.NONE).getValue();
     }
 
     /**
@@ -4312,13 +3759,11 @@ public final class CertificateClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BackupCertificateResult>> backupCertificateWithResponseAsync(
-            String vaultBaseUrl, String certificateName) {
+    public Mono<Response<BackupCertificateResult>> backupCertificateWithResponseAsync(String vaultBaseUrl,
+        String certificateName) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.backupCertificate(
-                                vaultBaseUrl, certificateName, this.getApiVersion(), accept, context));
+            context -> service.backupCertificate(vaultBaseUrl, certificateName, this.getApiVersion(), accept, context));
     }
 
     /**
@@ -4337,8 +3782,8 @@ public final class CertificateClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BackupCertificateResult>> backupCertificateWithResponseAsync(
-            String vaultBaseUrl, String certificateName, Context context) {
+    public Mono<Response<BackupCertificateResult>> backupCertificateWithResponseAsync(String vaultBaseUrl,
+        String certificateName, Context context) {
         final String accept = "application/json";
         return service.backupCertificate(vaultBaseUrl, certificateName, this.getApiVersion(), accept, context);
     }
@@ -4359,7 +3804,7 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BackupCertificateResult> backupCertificateAsync(String vaultBaseUrl, String certificateName) {
         return backupCertificateWithResponseAsync(vaultBaseUrl, certificateName)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4377,10 +3822,10 @@ public final class CertificateClientImpl {
      * @return the backup certificate result, containing the backup blob on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BackupCertificateResult> backupCertificateAsync(
-            String vaultBaseUrl, String certificateName, Context context) {
+    public Mono<BackupCertificateResult> backupCertificateAsync(String vaultBaseUrl, String certificateName,
+        Context context) {
         return backupCertificateWithResponseAsync(vaultBaseUrl, certificateName, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4398,8 +3843,8 @@ public final class CertificateClientImpl {
      * @return the backup certificate result, containing the backup blob along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BackupCertificateResult> backupCertificateWithResponse(
-            String vaultBaseUrl, String certificateName, Context context) {
+    public Response<BackupCertificateResult> backupCertificateWithResponse(String vaultBaseUrl, String certificateName,
+        Context context) {
         final String accept = "application/json";
         return service.backupCertificateSync(vaultBaseUrl, certificateName, this.getApiVersion(), accept, context);
     }
@@ -4437,13 +3882,13 @@ public final class CertificateClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateBundle>> restoreCertificateWithResponseAsync(
-            String vaultBaseUrl, byte[] certificateBundleBackup) {
+    public Mono<Response<CertificateBundle>> restoreCertificateWithResponseAsync(String vaultBaseUrl,
+        byte[] certificateBundleBackup) {
         final String accept = "application/json";
         CertificateRestoreParameters parameters = new CertificateRestoreParameters();
         parameters.setCertificateBundleBackup(certificateBundleBackup);
         return FluxUtil.withContext(
-                context -> service.restoreCertificate(vaultBaseUrl, this.getApiVersion(), parameters, accept, context));
+            context -> service.restoreCertificate(vaultBaseUrl, this.getApiVersion(), parameters, accept, context));
     }
 
     /**
@@ -4462,8 +3907,8 @@ public final class CertificateClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateBundle>> restoreCertificateWithResponseAsync(
-            String vaultBaseUrl, byte[] certificateBundleBackup, Context context) {
+    public Mono<Response<CertificateBundle>> restoreCertificateWithResponseAsync(String vaultBaseUrl,
+        byte[] certificateBundleBackup, Context context) {
         final String accept = "application/json";
         CertificateRestoreParameters parameters = new CertificateRestoreParameters();
         parameters.setCertificateBundleBackup(certificateBundleBackup);
@@ -4487,7 +3932,7 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateBundle> restoreCertificateAsync(String vaultBaseUrl, byte[] certificateBundleBackup) {
         return restoreCertificateWithResponseAsync(vaultBaseUrl, certificateBundleBackup)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4506,10 +3951,10 @@ public final class CertificateClientImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificateBundle> restoreCertificateAsync(
-            String vaultBaseUrl, byte[] certificateBundleBackup, Context context) {
+    public Mono<CertificateBundle> restoreCertificateAsync(String vaultBaseUrl, byte[] certificateBundleBackup,
+        Context context) {
         return restoreCertificateWithResponseAsync(vaultBaseUrl, certificateBundleBackup, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4527,8 +3972,8 @@ public final class CertificateClientImpl {
      * @return a certificate bundle consists of a certificate (X509) plus its attributes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateBundle> restoreCertificateWithResponse(
-            String vaultBaseUrl, byte[] certificateBundleBackup, Context context) {
+    public Response<CertificateBundle> restoreCertificateWithResponse(String vaultBaseUrl,
+        byte[] certificateBundleBackup, Context context) {
         final String accept = "application/json";
         CertificateRestoreParameters parameters = new CertificateRestoreParameters();
         parameters.setCertificateBundleBackup(certificateBundleBackup);
@@ -4571,27 +4016,14 @@ public final class CertificateClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeletedCertificateItem>> getDeletedCertificatesSinglePageAsync(
-            String vaultBaseUrl, Integer maxresults, Boolean includePending) {
+    public Mono<PagedResponse<DeletedCertificateItem>> getDeletedCertificatesSinglePageAsync(String vaultBaseUrl,
+        Integer maxresults, Boolean includePending) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.getDeletedCertificates(
-                                        vaultBaseUrl,
-                                        maxresults,
-                                        includePending,
-                                        this.getApiVersion(),
-                                        accept,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.getDeletedCertificates(vaultBaseUrl, maxresults, includePending,
+                this.getApiVersion(), accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -4613,20 +4045,13 @@ public final class CertificateClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeletedCertificateItem>> getDeletedCertificatesSinglePageAsync(
-            String vaultBaseUrl, Integer maxresults, Boolean includePending, Context context) {
+    public Mono<PagedResponse<DeletedCertificateItem>> getDeletedCertificatesSinglePageAsync(String vaultBaseUrl,
+        Integer maxresults, Boolean includePending, Context context) {
         final String accept = "application/json";
-        return service.getDeletedCertificates(
-                        vaultBaseUrl, maxresults, includePending, this.getApiVersion(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return service
+            .getDeletedCertificates(vaultBaseUrl, maxresults, includePending, this.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -4646,11 +4071,10 @@ public final class CertificateClientImpl {
      * @return a list of certificates that have been deleted in this vault as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeletedCertificateItem> getDeletedCertificatesAsync(
-            String vaultBaseUrl, Integer maxresults, Boolean includePending) {
-        return new PagedFlux<>(
-                () -> getDeletedCertificatesSinglePageAsync(vaultBaseUrl, maxresults, includePending),
-                nextLink -> getDeletedCertificatesNextSinglePageAsync(nextLink, vaultBaseUrl));
+    public PagedFlux<DeletedCertificateItem> getDeletedCertificatesAsync(String vaultBaseUrl, Integer maxresults,
+        Boolean includePending) {
+        return new PagedFlux<>(() -> getDeletedCertificatesSinglePageAsync(vaultBaseUrl, maxresults, includePending),
+            nextLink -> getDeletedCertificatesNextSinglePageAsync(nextLink, vaultBaseUrl));
     }
 
     /**
@@ -4671,11 +4095,11 @@ public final class CertificateClientImpl {
      * @return a list of certificates that have been deleted in this vault as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeletedCertificateItem> getDeletedCertificatesAsync(
-            String vaultBaseUrl, Integer maxresults, Boolean includePending, Context context) {
+    public PagedFlux<DeletedCertificateItem> getDeletedCertificatesAsync(String vaultBaseUrl, Integer maxresults,
+        Boolean includePending, Context context) {
         return new PagedFlux<>(
-                () -> getDeletedCertificatesSinglePageAsync(vaultBaseUrl, maxresults, includePending, context),
-                nextLink -> getDeletedCertificatesNextSinglePageAsync(nextLink, vaultBaseUrl, context));
+            () -> getDeletedCertificatesSinglePageAsync(vaultBaseUrl, maxresults, includePending, context),
+            nextLink -> getDeletedCertificatesNextSinglePageAsync(nextLink, vaultBaseUrl, context));
     }
 
     /**
@@ -4695,19 +4119,13 @@ public final class CertificateClientImpl {
      * @return a list of certificates that have been deleted in this vault along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DeletedCertificateItem> getDeletedCertificatesSinglePage(
-            String vaultBaseUrl, Integer maxresults, Boolean includePending) {
+    public PagedResponse<DeletedCertificateItem> getDeletedCertificatesSinglePage(String vaultBaseUrl,
+        Integer maxresults, Boolean includePending) {
         final String accept = "application/json";
-        Response<DeletedCertificateListResult> res =
-                service.getDeletedCertificatesSync(
-                        vaultBaseUrl, maxresults, includePending, this.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<DeletedCertificateListResult> res = service.getDeletedCertificatesSync(vaultBaseUrl, maxresults,
+            includePending, this.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -4728,19 +4146,13 @@ public final class CertificateClientImpl {
      * @return a list of certificates that have been deleted in this vault along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DeletedCertificateItem> getDeletedCertificatesSinglePage(
-            String vaultBaseUrl, Integer maxresults, Boolean includePending, Context context) {
+    public PagedResponse<DeletedCertificateItem> getDeletedCertificatesSinglePage(String vaultBaseUrl,
+        Integer maxresults, Boolean includePending, Context context) {
         final String accept = "application/json";
-        Response<DeletedCertificateListResult> res =
-                service.getDeletedCertificatesSync(
-                        vaultBaseUrl, maxresults, includePending, this.getApiVersion(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<DeletedCertificateListResult> res = service.getDeletedCertificatesSync(vaultBaseUrl, maxresults,
+            includePending, this.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -4761,11 +4173,11 @@ public final class CertificateClientImpl {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeletedCertificateItem> getDeletedCertificates(
-            String vaultBaseUrl, Integer maxresults, Boolean includePending) {
+    public PagedIterable<DeletedCertificateItem> getDeletedCertificates(String vaultBaseUrl, Integer maxresults,
+        Boolean includePending) {
         return new PagedIterable<>(
-                () -> getDeletedCertificatesSinglePage(vaultBaseUrl, maxresults, includePending, Context.NONE),
-                nextLink -> getDeletedCertificatesNextSinglePage(nextLink, vaultBaseUrl));
+            () -> getDeletedCertificatesSinglePage(vaultBaseUrl, maxresults, includePending, Context.NONE),
+            nextLink -> getDeletedCertificatesNextSinglePage(nextLink, vaultBaseUrl));
     }
 
     /**
@@ -4787,11 +4199,11 @@ public final class CertificateClientImpl {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeletedCertificateItem> getDeletedCertificates(
-            String vaultBaseUrl, Integer maxresults, Boolean includePending, Context context) {
+    public PagedIterable<DeletedCertificateItem> getDeletedCertificates(String vaultBaseUrl, Integer maxresults,
+        Boolean includePending, Context context) {
         return new PagedIterable<>(
-                () -> getDeletedCertificatesSinglePage(vaultBaseUrl, maxresults, includePending, context),
-                nextLink -> getDeletedCertificatesNextSinglePage(nextLink, vaultBaseUrl, context));
+            () -> getDeletedCertificatesSinglePage(vaultBaseUrl, maxresults, includePending, context),
+            nextLink -> getDeletedCertificatesNextSinglePage(nextLink, vaultBaseUrl, context));
     }
 
     /**
@@ -4810,13 +4222,11 @@ public final class CertificateClientImpl {
      *     when it will be purged along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeletedCertificateBundle>> getDeletedCertificateWithResponseAsync(
-            String vaultBaseUrl, String certificateName) {
+    public Mono<Response<DeletedCertificateBundle>> getDeletedCertificateWithResponseAsync(String vaultBaseUrl,
+        String certificateName) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getDeletedCertificate(
-                                vaultBaseUrl, certificateName, this.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> service.getDeletedCertificate(vaultBaseUrl, certificateName,
+            this.getApiVersion(), accept, context));
     }
 
     /**
@@ -4836,8 +4246,8 @@ public final class CertificateClientImpl {
      *     when it will be purged along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeletedCertificateBundle>> getDeletedCertificateWithResponseAsync(
-            String vaultBaseUrl, String certificateName, Context context) {
+    public Mono<Response<DeletedCertificateBundle>> getDeletedCertificateWithResponseAsync(String vaultBaseUrl,
+        String certificateName, Context context) {
         final String accept = "application/json";
         return service.getDeletedCertificate(vaultBaseUrl, certificateName, this.getApiVersion(), accept, context);
     }
@@ -4860,7 +4270,7 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedCertificateBundle> getDeletedCertificateAsync(String vaultBaseUrl, String certificateName) {
         return getDeletedCertificateWithResponseAsync(vaultBaseUrl, certificateName)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4880,10 +4290,10 @@ public final class CertificateClientImpl {
      *     when it will be purged on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeletedCertificateBundle> getDeletedCertificateAsync(
-            String vaultBaseUrl, String certificateName, Context context) {
+    public Mono<DeletedCertificateBundle> getDeletedCertificateAsync(String vaultBaseUrl, String certificateName,
+        Context context) {
         return getDeletedCertificateWithResponseAsync(vaultBaseUrl, certificateName, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4903,8 +4313,8 @@ public final class CertificateClientImpl {
      *     when it will be purged along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeletedCertificateBundle> getDeletedCertificateWithResponse(
-            String vaultBaseUrl, String certificateName, Context context) {
+    public Response<DeletedCertificateBundle> getDeletedCertificateWithResponse(String vaultBaseUrl,
+        String certificateName, Context context) {
         final String accept = "application/json";
         return service.getDeletedCertificateSync(vaultBaseUrl, certificateName, this.getApiVersion(), accept, context);
     }
@@ -4946,10 +4356,8 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> purgeDeletedCertificateWithResponseAsync(String vaultBaseUrl, String certificateName) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.purgeDeletedCertificate(
-                                vaultBaseUrl, certificateName, this.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> service.purgeDeletedCertificate(vaultBaseUrl, certificateName,
+            this.getApiVersion(), accept, context));
     }
 
     /**
@@ -4968,8 +4376,8 @@ public final class CertificateClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> purgeDeletedCertificateWithResponseAsync(
-            String vaultBaseUrl, String certificateName, Context context) {
+    public Mono<Response<Void>> purgeDeletedCertificateWithResponseAsync(String vaultBaseUrl, String certificateName,
+        Context context) {
         final String accept = "application/json";
         return service.purgeDeletedCertificate(vaultBaseUrl, certificateName, this.getApiVersion(), accept, context);
     }
@@ -5011,7 +4419,7 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> purgeDeletedCertificateAsync(String vaultBaseUrl, String certificateName, Context context) {
         return purgeDeletedCertificateWithResponseAsync(vaultBaseUrl, certificateName, context)
-                .flatMap(ignored -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -5030,11 +4438,11 @@ public final class CertificateClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> purgeDeletedCertificateWithResponse(
-            String vaultBaseUrl, String certificateName, Context context) {
+    public Response<Void> purgeDeletedCertificateWithResponse(String vaultBaseUrl, String certificateName,
+        Context context) {
         final String accept = "application/json";
-        return service.purgeDeletedCertificateSync(
-                vaultBaseUrl, certificateName, this.getApiVersion(), accept, context);
+        return service.purgeDeletedCertificateSync(vaultBaseUrl, certificateName, this.getApiVersion(), accept,
+            context);
     }
 
     /**
@@ -5071,13 +4479,11 @@ public final class CertificateClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateBundle>> recoverDeletedCertificateWithResponseAsync(
-            String vaultBaseUrl, String certificateName) {
+    public Mono<Response<CertificateBundle>> recoverDeletedCertificateWithResponseAsync(String vaultBaseUrl,
+        String certificateName) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.recoverDeletedCertificate(
-                                vaultBaseUrl, certificateName, this.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> service.recoverDeletedCertificate(vaultBaseUrl, certificateName,
+            this.getApiVersion(), accept, context));
     }
 
     /**
@@ -5097,8 +4503,8 @@ public final class CertificateClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateBundle>> recoverDeletedCertificateWithResponseAsync(
-            String vaultBaseUrl, String certificateName, Context context) {
+    public Mono<Response<CertificateBundle>> recoverDeletedCertificateWithResponseAsync(String vaultBaseUrl,
+        String certificateName, Context context) {
         final String accept = "application/json";
         return service.recoverDeletedCertificate(vaultBaseUrl, certificateName, this.getApiVersion(), accept, context);
     }
@@ -5121,7 +4527,7 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateBundle> recoverDeletedCertificateAsync(String vaultBaseUrl, String certificateName) {
         return recoverDeletedCertificateWithResponseAsync(vaultBaseUrl, certificateName)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -5141,10 +4547,10 @@ public final class CertificateClientImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificateBundle> recoverDeletedCertificateAsync(
-            String vaultBaseUrl, String certificateName, Context context) {
+    public Mono<CertificateBundle> recoverDeletedCertificateAsync(String vaultBaseUrl, String certificateName,
+        Context context) {
         return recoverDeletedCertificateWithResponseAsync(vaultBaseUrl, certificateName, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -5163,11 +4569,11 @@ public final class CertificateClientImpl {
      * @return a certificate bundle consists of a certificate (X509) plus its attributes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateBundle> recoverDeletedCertificateWithResponse(
-            String vaultBaseUrl, String certificateName, Context context) {
+    public Response<CertificateBundle> recoverDeletedCertificateWithResponse(String vaultBaseUrl,
+        String certificateName, Context context) {
         final String accept = "application/json";
-        return service.recoverDeletedCertificateSync(
-                vaultBaseUrl, certificateName, this.getApiVersion(), accept, context);
+        return service.recoverDeletedCertificateSync(vaultBaseUrl, certificateName, this.getApiVersion(), accept,
+            context);
     }
 
     /**
@@ -5201,19 +4607,12 @@ public final class CertificateClientImpl {
      * @return the certificate list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CertificateItem>> getCertificatesNextSinglePageAsync(
-            String nextLink, String vaultBaseUrl) {
+    public Mono<PagedResponse<CertificateItem>> getCertificatesNextSinglePageAsync(String nextLink,
+        String vaultBaseUrl) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getCertificatesNext(nextLink, vaultBaseUrl, accept, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -5229,19 +4628,12 @@ public final class CertificateClientImpl {
      * @return the certificate list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CertificateItem>> getCertificatesNextSinglePageAsync(
-            String nextLink, String vaultBaseUrl, Context context) {
+    public Mono<PagedResponse<CertificateItem>> getCertificatesNextSinglePageAsync(String nextLink, String vaultBaseUrl,
+        Context context) {
         final String accept = "application/json";
         return service.getCertificatesNext(nextLink, vaultBaseUrl, accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -5258,15 +4650,10 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<CertificateItem> getCertificatesNextSinglePage(String nextLink, String vaultBaseUrl) {
         final String accept = "application/json";
-        Response<CertificateListResult> res =
-                service.getCertificatesNextSync(nextLink, vaultBaseUrl, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<CertificateListResult> res
+            = service.getCertificatesNextSync(nextLink, vaultBaseUrl, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -5282,17 +4669,12 @@ public final class CertificateClientImpl {
      * @return the certificate list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<CertificateItem> getCertificatesNextSinglePage(
-            String nextLink, String vaultBaseUrl, Context context) {
+    public PagedResponse<CertificateItem> getCertificatesNextSinglePage(String nextLink, String vaultBaseUrl,
+        Context context) {
         final String accept = "application/json";
         Response<CertificateListResult> res = service.getCertificatesNextSync(nextLink, vaultBaseUrl, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -5308,20 +4690,13 @@ public final class CertificateClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CertificateIssuerItem>> getCertificateIssuersNextSinglePageAsync(
-            String nextLink, String vaultBaseUrl) {
+    public Mono<PagedResponse<CertificateIssuerItem>> getCertificateIssuersNextSinglePageAsync(String nextLink,
+        String vaultBaseUrl) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context -> service.getCertificateIssuersNext(nextLink, vaultBaseUrl, accept, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.getCertificateIssuersNext(nextLink, vaultBaseUrl, accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -5338,19 +4713,12 @@ public final class CertificateClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CertificateIssuerItem>> getCertificateIssuersNextSinglePageAsync(
-            String nextLink, String vaultBaseUrl, Context context) {
+    public Mono<PagedResponse<CertificateIssuerItem>> getCertificateIssuersNextSinglePageAsync(String nextLink,
+        String vaultBaseUrl, Context context) {
         final String accept = "application/json";
         return service.getCertificateIssuersNext(nextLink, vaultBaseUrl, accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -5365,18 +4733,13 @@ public final class CertificateClientImpl {
      * @return the certificate issuer list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<CertificateIssuerItem> getCertificateIssuersNextSinglePage(
-            String nextLink, String vaultBaseUrl) {
+    public PagedResponse<CertificateIssuerItem> getCertificateIssuersNextSinglePage(String nextLink,
+        String vaultBaseUrl) {
         final String accept = "application/json";
-        Response<CertificateIssuerListResult> res =
-                service.getCertificateIssuersNextSync(nextLink, vaultBaseUrl, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<CertificateIssuerListResult> res
+            = service.getCertificateIssuersNextSync(nextLink, vaultBaseUrl, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -5392,18 +4755,13 @@ public final class CertificateClientImpl {
      * @return the certificate issuer list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<CertificateIssuerItem> getCertificateIssuersNextSinglePage(
-            String nextLink, String vaultBaseUrl, Context context) {
+    public PagedResponse<CertificateIssuerItem> getCertificateIssuersNextSinglePage(String nextLink,
+        String vaultBaseUrl, Context context) {
         final String accept = "application/json";
-        Response<CertificateIssuerListResult> res =
-                service.getCertificateIssuersNextSync(nextLink, vaultBaseUrl, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<CertificateIssuerListResult> res
+            = service.getCertificateIssuersNextSync(nextLink, vaultBaseUrl, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -5418,20 +4776,13 @@ public final class CertificateClientImpl {
      * @return the certificate list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CertificateItem>> getCertificateVersionsNextSinglePageAsync(
-            String nextLink, String vaultBaseUrl) {
+    public Mono<PagedResponse<CertificateItem>> getCertificateVersionsNextSinglePageAsync(String nextLink,
+        String vaultBaseUrl) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context -> service.getCertificateVersionsNext(nextLink, vaultBaseUrl, accept, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.getCertificateVersionsNext(nextLink, vaultBaseUrl, accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -5447,19 +4798,12 @@ public final class CertificateClientImpl {
      * @return the certificate list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<CertificateItem>> getCertificateVersionsNextSinglePageAsync(
-            String nextLink, String vaultBaseUrl, Context context) {
+    public Mono<PagedResponse<CertificateItem>> getCertificateVersionsNextSinglePageAsync(String nextLink,
+        String vaultBaseUrl, Context context) {
         final String accept = "application/json";
         return service.getCertificateVersionsNext(nextLink, vaultBaseUrl, accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -5476,15 +4820,10 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<CertificateItem> getCertificateVersionsNextSinglePage(String nextLink, String vaultBaseUrl) {
         final String accept = "application/json";
-        Response<CertificateListResult> res =
-                service.getCertificateVersionsNextSync(nextLink, vaultBaseUrl, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<CertificateListResult> res
+            = service.getCertificateVersionsNextSync(nextLink, vaultBaseUrl, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -5500,18 +4839,13 @@ public final class CertificateClientImpl {
      * @return the certificate list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<CertificateItem> getCertificateVersionsNextSinglePage(
-            String nextLink, String vaultBaseUrl, Context context) {
+    public PagedResponse<CertificateItem> getCertificateVersionsNextSinglePage(String nextLink, String vaultBaseUrl,
+        Context context) {
         final String accept = "application/json";
-        Response<CertificateListResult> res =
-                service.getCertificateVersionsNextSync(nextLink, vaultBaseUrl, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<CertificateListResult> res
+            = service.getCertificateVersionsNextSync(nextLink, vaultBaseUrl, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -5527,20 +4861,13 @@ public final class CertificateClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeletedCertificateItem>> getDeletedCertificatesNextSinglePageAsync(
-            String nextLink, String vaultBaseUrl) {
+    public Mono<PagedResponse<DeletedCertificateItem>> getDeletedCertificatesNextSinglePageAsync(String nextLink,
+        String vaultBaseUrl) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context -> service.getDeletedCertificatesNext(nextLink, vaultBaseUrl, accept, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.getDeletedCertificatesNext(nextLink, vaultBaseUrl, accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -5557,19 +4884,12 @@ public final class CertificateClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeletedCertificateItem>> getDeletedCertificatesNextSinglePageAsync(
-            String nextLink, String vaultBaseUrl, Context context) {
+    public Mono<PagedResponse<DeletedCertificateItem>> getDeletedCertificatesNextSinglePageAsync(String nextLink,
+        String vaultBaseUrl, Context context) {
         final String accept = "application/json";
         return service.getDeletedCertificatesNext(nextLink, vaultBaseUrl, accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -5584,18 +4904,13 @@ public final class CertificateClientImpl {
      * @return a list of certificates that have been deleted in this vault along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DeletedCertificateItem> getDeletedCertificatesNextSinglePage(
-            String nextLink, String vaultBaseUrl) {
+    public PagedResponse<DeletedCertificateItem> getDeletedCertificatesNextSinglePage(String nextLink,
+        String vaultBaseUrl) {
         final String accept = "application/json";
-        Response<DeletedCertificateListResult> res =
-                service.getDeletedCertificatesNextSync(nextLink, vaultBaseUrl, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<DeletedCertificateListResult> res
+            = service.getDeletedCertificatesNextSync(nextLink, vaultBaseUrl, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -5611,17 +4926,12 @@ public final class CertificateClientImpl {
      * @return a list of certificates that have been deleted in this vault along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DeletedCertificateItem> getDeletedCertificatesNextSinglePage(
-            String nextLink, String vaultBaseUrl, Context context) {
+    public PagedResponse<DeletedCertificateItem> getDeletedCertificatesNextSinglePage(String nextLink,
+        String vaultBaseUrl, Context context) {
         final String accept = "application/json";
-        Response<DeletedCertificateListResult> res =
-                service.getDeletedCertificatesNextSync(nextLink, vaultBaseUrl, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<DeletedCertificateListResult> res
+            = service.getDeletedCertificatesNextSync(nextLink, vaultBaseUrl, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 }

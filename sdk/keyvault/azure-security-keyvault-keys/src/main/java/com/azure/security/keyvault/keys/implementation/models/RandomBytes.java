@@ -23,7 +23,8 @@ public final class RandomBytes implements JsonSerializable<RandomBytes> {
     private Base64Url value;
 
     /** Creates an instance of RandomBytes class. */
-    public RandomBytes() {}
+    public RandomBytes() {
+    }
 
     /**
      * Get the value property: The bytes encoded as a base64url string.
@@ -69,22 +70,21 @@ public final class RandomBytes implements JsonSerializable<RandomBytes> {
      * @throws IOException If an error occurs while reading the RandomBytes.
      */
     public static RandomBytes fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    RandomBytes deserializedRandomBytes = new RandomBytes();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            RandomBytes deserializedRandomBytes = new RandomBytes();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            deserializedRandomBytes.value =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    deserializedRandomBytes.value
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedRandomBytes;
-                });
+            return deserializedRandomBytes;
+        });
     }
 }

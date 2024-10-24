@@ -23,7 +23,8 @@ public final class SecretRestoreParameters implements JsonSerializable<SecretRes
     private Base64Url secretBundleBackup;
 
     /** Creates an instance of SecretRestoreParameters class. */
-    public SecretRestoreParameters() {}
+    public SecretRestoreParameters() {
+    }
 
     /**
      * Get the secretBundleBackup property: The backup blob associated with a secret bundle.
@@ -69,22 +70,21 @@ public final class SecretRestoreParameters implements JsonSerializable<SecretRes
      * @throws IOException If an error occurs while reading the SecretRestoreParameters.
      */
     public static SecretRestoreParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    SecretRestoreParameters deserializedSecretRestoreParameters = new SecretRestoreParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            SecretRestoreParameters deserializedSecretRestoreParameters = new SecretRestoreParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            deserializedSecretRestoreParameters.secretBundleBackup =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    deserializedSecretRestoreParameters.secretBundleBackup
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedSecretRestoreParameters;
-                });
+            return deserializedSecretRestoreParameters;
+        });
     }
 }

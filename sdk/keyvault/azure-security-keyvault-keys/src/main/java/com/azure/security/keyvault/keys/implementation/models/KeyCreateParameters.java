@@ -61,7 +61,8 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
     private KeyReleasePolicy releasePolicy;
 
     /** Creates an instance of KeyCreateParameters class. */
-    public KeyCreateParameters() {}
+    public KeyCreateParameters() {
+    }
 
     /**
      * Get the kty property: JsonWebKey Key Type (kty), as defined in
@@ -231,8 +232,8 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
         jsonWriter.writeStringField("kty", Objects.toString(this.kty, null));
         jsonWriter.writeNumberField("key_size", this.keySize);
         jsonWriter.writeNumberField("public_exponent", this.publicExponent);
-        jsonWriter.writeArrayField(
-                "key_ops", this.keyOps, (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        jsonWriter.writeArrayField("key_ops", this.keyOps,
+            (writer, element) -> writer.writeString(Objects.toString(element, null)));
         jsonWriter.writeJsonField("attributes", this.keyAttributes);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("crv", Objects.toString(this.crv, null));
@@ -250,38 +251,37 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
      * @throws IOException If an error occurs while reading the KeyCreateParameters.
      */
     public static KeyCreateParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyCreateParameters deserializedKeyCreateParameters = new KeyCreateParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyCreateParameters deserializedKeyCreateParameters = new KeyCreateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("kty".equals(fieldName)) {
-                            deserializedKeyCreateParameters.kty = KeyType.fromString(reader.getString());
-                        } else if ("key_size".equals(fieldName)) {
-                            deserializedKeyCreateParameters.keySize = reader.getNullable(JsonReader::getInt);
-                        } else if ("public_exponent".equals(fieldName)) {
-                            deserializedKeyCreateParameters.publicExponent = reader.getNullable(JsonReader::getInt);
-                        } else if ("key_ops".equals(fieldName)) {
-                            List<KeyOperation> keyOps =
-                                    reader.readArray(reader1 -> KeyOperation.fromString(reader1.getString()));
-                            deserializedKeyCreateParameters.keyOps = keyOps;
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedKeyCreateParameters.keyAttributes = KeyAttributes.fromJson(reader);
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedKeyCreateParameters.tags = tags;
-                        } else if ("crv".equals(fieldName)) {
-                            deserializedKeyCreateParameters.crv = KeyCurveName.fromString(reader.getString());
-                        } else if ("release_policy".equals(fieldName)) {
-                            deserializedKeyCreateParameters.releasePolicy = KeyReleasePolicy.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("kty".equals(fieldName)) {
+                    deserializedKeyCreateParameters.kty = KeyType.fromString(reader.getString());
+                } else if ("key_size".equals(fieldName)) {
+                    deserializedKeyCreateParameters.keySize = reader.getNullable(JsonReader::getInt);
+                } else if ("public_exponent".equals(fieldName)) {
+                    deserializedKeyCreateParameters.publicExponent = reader.getNullable(JsonReader::getInt);
+                } else if ("key_ops".equals(fieldName)) {
+                    List<KeyOperation> keyOps
+                        = reader.readArray(reader1 -> KeyOperation.fromString(reader1.getString()));
+                    deserializedKeyCreateParameters.keyOps = keyOps;
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedKeyCreateParameters.keyAttributes = KeyAttributes.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedKeyCreateParameters.tags = tags;
+                } else if ("crv".equals(fieldName)) {
+                    deserializedKeyCreateParameters.crv = KeyCurveName.fromString(reader.getString());
+                } else if ("release_policy".equals(fieldName)) {
+                    deserializedKeyCreateParameters.releasePolicy = KeyReleasePolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyCreateParameters;
-                });
+            return deserializedKeyCreateParameters;
+        });
     }
 }

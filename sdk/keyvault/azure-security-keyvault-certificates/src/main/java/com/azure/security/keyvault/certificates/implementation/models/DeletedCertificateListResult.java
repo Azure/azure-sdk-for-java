@@ -27,7 +27,8 @@ public final class DeletedCertificateListResult implements JsonSerializable<Dele
     private String nextLink;
 
     /** Creates an instance of DeletedCertificateListResult class. */
-    public DeletedCertificateListResult() {}
+    public DeletedCertificateListResult() {
+    }
 
     /**
      * Get the value property: A response message containing a list of deleted certificates in the vault along with a
@@ -63,26 +64,24 @@ public final class DeletedCertificateListResult implements JsonSerializable<Dele
      * @throws IOException If an error occurs while reading the DeletedCertificateListResult.
      */
     public static DeletedCertificateListResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    DeletedCertificateListResult deserializedDeletedCertificateListResult =
-                            new DeletedCertificateListResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            DeletedCertificateListResult deserializedDeletedCertificateListResult = new DeletedCertificateListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            List<DeletedCertificateItem> value =
-                                    reader.readArray(reader1 -> DeletedCertificateItem.fromJson(reader1));
-                            deserializedDeletedCertificateListResult.value = value;
-                        } else if ("nextLink".equals(fieldName)) {
-                            deserializedDeletedCertificateListResult.nextLink = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    List<DeletedCertificateItem> value
+                        = reader.readArray(reader1 -> DeletedCertificateItem.fromJson(reader1));
+                    deserializedDeletedCertificateListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDeletedCertificateListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedDeletedCertificateListResult;
-                });
+            return deserializedDeletedCertificateListResult;
+        });
     }
 }

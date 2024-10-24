@@ -32,7 +32,8 @@ public final class CertificateMergeParameters implements JsonSerializable<Certif
     private Map<String, String> tags;
 
     /** Creates an instance of CertificateMergeParameters class. */
-    public CertificateMergeParameters() {}
+    public CertificateMergeParameters() {
+    }
 
     /**
      * Get the x509Certificates property: The certificate or the certificate chain to merge.
@@ -113,29 +114,27 @@ public final class CertificateMergeParameters implements JsonSerializable<Certif
      * @throws IOException If an error occurs while reading the CertificateMergeParameters.
      */
     public static CertificateMergeParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CertificateMergeParameters deserializedCertificateMergeParameters =
-                            new CertificateMergeParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CertificateMergeParameters deserializedCertificateMergeParameters = new CertificateMergeParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("x5c".equals(fieldName)) {
-                            List<byte[]> x509Certificates = reader.readArray(reader1 -> reader1.getBinary());
-                            deserializedCertificateMergeParameters.x509Certificates = x509Certificates;
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedCertificateMergeParameters.certificateAttributes =
-                                    CertificateAttributes.fromJson(reader);
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedCertificateMergeParameters.tags = tags;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("x5c".equals(fieldName)) {
+                    List<byte[]> x509Certificates = reader.readArray(reader1 -> reader1.getBinary());
+                    deserializedCertificateMergeParameters.x509Certificates = x509Certificates;
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedCertificateMergeParameters.certificateAttributes
+                        = CertificateAttributes.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCertificateMergeParameters.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCertificateMergeParameters;
-                });
+            return deserializedCertificateMergeParameters;
+        });
     }
 }

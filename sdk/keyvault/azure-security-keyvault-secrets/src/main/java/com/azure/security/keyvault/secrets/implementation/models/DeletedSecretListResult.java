@@ -27,7 +27,8 @@ public final class DeletedSecretListResult implements JsonSerializable<DeletedSe
     private String nextLink;
 
     /** Creates an instance of DeletedSecretListResult class. */
-    public DeletedSecretListResult() {}
+    public DeletedSecretListResult() {
+    }
 
     /**
      * Get the value property: A response message containing a list of the deleted secrets in the vault along with a
@@ -63,25 +64,23 @@ public final class DeletedSecretListResult implements JsonSerializable<DeletedSe
      * @throws IOException If an error occurs while reading the DeletedSecretListResult.
      */
     public static DeletedSecretListResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    DeletedSecretListResult deserializedDeletedSecretListResult = new DeletedSecretListResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            DeletedSecretListResult deserializedDeletedSecretListResult = new DeletedSecretListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            List<DeletedSecretItem> value =
-                                    reader.readArray(reader1 -> DeletedSecretItem.fromJson(reader1));
-                            deserializedDeletedSecretListResult.value = value;
-                        } else if ("nextLink".equals(fieldName)) {
-                            deserializedDeletedSecretListResult.nextLink = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    List<DeletedSecretItem> value = reader.readArray(reader1 -> DeletedSecretItem.fromJson(reader1));
+                    deserializedDeletedSecretListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDeletedSecretListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedDeletedSecretListResult;
-                });
+            return deserializedDeletedSecretListResult;
+        });
     }
 }

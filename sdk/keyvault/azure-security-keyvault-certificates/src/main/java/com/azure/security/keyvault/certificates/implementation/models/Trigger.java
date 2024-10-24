@@ -26,7 +26,8 @@ public final class Trigger implements JsonSerializable<Trigger> {
     private Integer daysBeforeExpiry;
 
     /** Creates an instance of Trigger class. */
-    public Trigger() {}
+    public Trigger() {
+    }
 
     /**
      * Get the lifetimePercentage property: Percentage of lifetime at which to trigger. Value should be between 1 and
@@ -91,23 +92,22 @@ public final class Trigger implements JsonSerializable<Trigger> {
      * @throws IOException If an error occurs while reading the Trigger.
      */
     public static Trigger fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    Trigger deserializedTrigger = new Trigger();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            Trigger deserializedTrigger = new Trigger();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("lifetime_percentage".equals(fieldName)) {
-                            deserializedTrigger.lifetimePercentage = reader.getNullable(JsonReader::getInt);
-                        } else if ("days_before_expiry".equals(fieldName)) {
-                            deserializedTrigger.daysBeforeExpiry = reader.getNullable(JsonReader::getInt);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("lifetime_percentage".equals(fieldName)) {
+                    deserializedTrigger.lifetimePercentage = reader.getNullable(JsonReader::getInt);
+                } else if ("days_before_expiry".equals(fieldName)) {
+                    deserializedTrigger.daysBeforeExpiry = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedTrigger;
-                });
+            return deserializedTrigger;
+        });
     }
 }

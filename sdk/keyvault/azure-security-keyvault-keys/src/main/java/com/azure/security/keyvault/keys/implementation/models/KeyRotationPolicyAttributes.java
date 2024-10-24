@@ -34,7 +34,8 @@ public final class KeyRotationPolicyAttributes implements JsonSerializable<KeyRo
     private Long updated;
 
     /** Creates an instance of KeyRotationPolicyAttributes class. */
-    public KeyRotationPolicyAttributes() {}
+    public KeyRotationPolicyAttributes() {
+    }
 
     /**
      * Get the expiryTime property: The expiryTime will be applied on the new key version. It should be at least 28
@@ -100,26 +101,24 @@ public final class KeyRotationPolicyAttributes implements JsonSerializable<KeyRo
      * @throws IOException If an error occurs while reading the KeyRotationPolicyAttributes.
      */
     public static KeyRotationPolicyAttributes fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyRotationPolicyAttributes deserializedKeyRotationPolicyAttributes =
-                            new KeyRotationPolicyAttributes();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyRotationPolicyAttributes deserializedKeyRotationPolicyAttributes = new KeyRotationPolicyAttributes();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("expiryTime".equals(fieldName)) {
-                            deserializedKeyRotationPolicyAttributes.expiryTime = reader.getString();
-                        } else if ("created".equals(fieldName)) {
-                            deserializedKeyRotationPolicyAttributes.created = reader.getNullable(JsonReader::getLong);
-                        } else if ("updated".equals(fieldName)) {
-                            deserializedKeyRotationPolicyAttributes.updated = reader.getNullable(JsonReader::getLong);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("expiryTime".equals(fieldName)) {
+                    deserializedKeyRotationPolicyAttributes.expiryTime = reader.getString();
+                } else if ("created".equals(fieldName)) {
+                    deserializedKeyRotationPolicyAttributes.created = reader.getNullable(JsonReader::getLong);
+                } else if ("updated".equals(fieldName)) {
+                    deserializedKeyRotationPolicyAttributes.updated = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyRotationPolicyAttributes;
-                });
+            return deserializedKeyRotationPolicyAttributes;
+        });
     }
 }

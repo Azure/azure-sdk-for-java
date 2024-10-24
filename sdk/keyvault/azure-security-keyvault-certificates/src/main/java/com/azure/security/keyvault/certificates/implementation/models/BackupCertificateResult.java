@@ -21,7 +21,8 @@ public final class BackupCertificateResult implements JsonSerializable<BackupCer
     private Base64Url value;
 
     /** Creates an instance of BackupCertificateResult class. */
-    public BackupCertificateResult() {}
+    public BackupCertificateResult() {
+    }
 
     /**
      * Get the value property: The backup blob containing the backed up certificate.
@@ -50,22 +51,21 @@ public final class BackupCertificateResult implements JsonSerializable<BackupCer
      * @throws IOException If an error occurs while reading the BackupCertificateResult.
      */
     public static BackupCertificateResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    BackupCertificateResult deserializedBackupCertificateResult = new BackupCertificateResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            BackupCertificateResult deserializedBackupCertificateResult = new BackupCertificateResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            deserializedBackupCertificateResult.value =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    deserializedBackupCertificateResult.value
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedBackupCertificateResult;
-                });
+            return deserializedBackupCertificateResult;
+        });
     }
 }

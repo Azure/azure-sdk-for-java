@@ -63,7 +63,8 @@ public class CertificateBundle implements JsonSerializable<CertificateBundle> {
     private Map<String, String> tags;
 
     /** Creates an instance of CertificateBundle class. */
-    public CertificateBundle() {}
+    public CertificateBundle() {
+    }
 
     /**
      * Get the id property: The certificate id.
@@ -269,39 +270,38 @@ public class CertificateBundle implements JsonSerializable<CertificateBundle> {
      * @throws IOException If an error occurs while reading the CertificateBundle.
      */
     public static CertificateBundle fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CertificateBundle deserializedCertificateBundle = new CertificateBundle();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CertificateBundle deserializedCertificateBundle = new CertificateBundle();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedCertificateBundle.id = reader.getString();
-                        } else if ("kid".equals(fieldName)) {
-                            deserializedCertificateBundle.kid = reader.getString();
-                        } else if ("sid".equals(fieldName)) {
-                            deserializedCertificateBundle.sid = reader.getString();
-                        } else if ("x5t".equals(fieldName)) {
-                            deserializedCertificateBundle.x509Thumbprint =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("policy".equals(fieldName)) {
-                            deserializedCertificateBundle.policy = CertificatePolicy.fromJson(reader);
-                        } else if ("cer".equals(fieldName)) {
-                            deserializedCertificateBundle.cer = reader.getBinary();
-                        } else if ("contentType".equals(fieldName)) {
-                            deserializedCertificateBundle.contentType = reader.getString();
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedCertificateBundle.attributes = CertificateAttributes.fromJson(reader);
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedCertificateBundle.tags = tags;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedCertificateBundle.id = reader.getString();
+                } else if ("kid".equals(fieldName)) {
+                    deserializedCertificateBundle.kid = reader.getString();
+                } else if ("sid".equals(fieldName)) {
+                    deserializedCertificateBundle.sid = reader.getString();
+                } else if ("x5t".equals(fieldName)) {
+                    deserializedCertificateBundle.x509Thumbprint
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedCertificateBundle.policy = CertificatePolicy.fromJson(reader);
+                } else if ("cer".equals(fieldName)) {
+                    deserializedCertificateBundle.cer = reader.getBinary();
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedCertificateBundle.contentType = reader.getString();
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedCertificateBundle.attributes = CertificateAttributes.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCertificateBundle.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCertificateBundle;
-                });
+            return deserializedCertificateBundle;
+        });
     }
 }

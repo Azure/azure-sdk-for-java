@@ -41,7 +41,8 @@ public final class KeyImportParameters implements JsonSerializable<KeyImportPara
     private KeyReleasePolicy releasePolicy;
 
     /** Creates an instance of KeyImportParameters class. */
-    public KeyImportParameters() {}
+    public KeyImportParameters() {
+    }
 
     /**
      * Get the hsm property: Whether to import as a hardware key (HSM) or software key.
@@ -164,30 +165,29 @@ public final class KeyImportParameters implements JsonSerializable<KeyImportPara
      * @throws IOException If an error occurs while reading the KeyImportParameters.
      */
     public static KeyImportParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyImportParameters deserializedKeyImportParameters = new KeyImportParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyImportParameters deserializedKeyImportParameters = new KeyImportParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("key".equals(fieldName)) {
-                            deserializedKeyImportParameters.key = JsonWebKey.fromJson(reader);
-                        } else if ("Hsm".equals(fieldName)) {
-                            deserializedKeyImportParameters.hsm = reader.getNullable(JsonReader::getBoolean);
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedKeyImportParameters.keyAttributes = KeyAttributes.fromJson(reader);
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedKeyImportParameters.tags = tags;
-                        } else if ("release_policy".equals(fieldName)) {
-                            deserializedKeyImportParameters.releasePolicy = KeyReleasePolicy.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("key".equals(fieldName)) {
+                    deserializedKeyImportParameters.key = JsonWebKey.fromJson(reader);
+                } else if ("Hsm".equals(fieldName)) {
+                    deserializedKeyImportParameters.hsm = reader.getNullable(JsonReader::getBoolean);
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedKeyImportParameters.keyAttributes = KeyAttributes.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedKeyImportParameters.tags = tags;
+                } else if ("release_policy".equals(fieldName)) {
+                    deserializedKeyImportParameters.releasePolicy = KeyReleasePolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyImportParameters;
-                });
+            return deserializedKeyImportParameters;
+        });
     }
 }

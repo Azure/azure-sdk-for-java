@@ -30,7 +30,8 @@ public final class CertificateContact implements JsonSerializable<CertificateCon
     private String phone;
 
     /** Creates an instance of CertificateContact class. */
-    public CertificateContact() {}
+    public CertificateContact() {
+    }
 
     /**
      * Get the email property: Email address.
@@ -110,25 +111,24 @@ public final class CertificateContact implements JsonSerializable<CertificateCon
      * @throws IOException If an error occurs while reading the CertificateContact.
      */
     public static CertificateContact fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CertificateContact deserializedCertificateContact = new CertificateContact();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CertificateContact deserializedCertificateContact = new CertificateContact();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("email".equals(fieldName)) {
-                            deserializedCertificateContact.email = reader.getString();
-                        } else if ("name".equals(fieldName)) {
-                            deserializedCertificateContact.name = reader.getString();
-                        } else if ("phone".equals(fieldName)) {
-                            deserializedCertificateContact.phone = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("email".equals(fieldName)) {
+                    deserializedCertificateContact.email = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCertificateContact.name = reader.getString();
+                } else if ("phone".equals(fieldName)) {
+                    deserializedCertificateContact.phone = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCertificateContact;
-                });
+            return deserializedCertificateContact;
+        });
     }
 }

@@ -26,7 +26,8 @@ public final class SecretListResult implements JsonSerializable<SecretListResult
     private String nextLink;
 
     /** Creates an instance of SecretListResult class. */
-    public SecretListResult() {}
+    public SecretListResult() {
+    }
 
     /**
      * Get the value property: A response message containing a list of secrets in the key vault along with a link to the
@@ -62,24 +63,23 @@ public final class SecretListResult implements JsonSerializable<SecretListResult
      * @throws IOException If an error occurs while reading the SecretListResult.
      */
     public static SecretListResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    SecretListResult deserializedSecretListResult = new SecretListResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            SecretListResult deserializedSecretListResult = new SecretListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            List<SecretItem> value = reader.readArray(reader1 -> SecretItem.fromJson(reader1));
-                            deserializedSecretListResult.value = value;
-                        } else if ("nextLink".equals(fieldName)) {
-                            deserializedSecretListResult.nextLink = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    List<SecretItem> value = reader.readArray(reader1 -> SecretItem.fromJson(reader1));
+                    deserializedSecretListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSecretListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedSecretListResult;
-                });
+            return deserializedSecretListResult;
+        });
     }
 }

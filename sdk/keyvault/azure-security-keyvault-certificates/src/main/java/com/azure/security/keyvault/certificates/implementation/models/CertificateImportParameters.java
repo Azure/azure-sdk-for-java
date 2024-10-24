@@ -42,7 +42,8 @@ public final class CertificateImportParameters implements JsonSerializable<Certi
     private Map<String, String> tags;
 
     /** Creates an instance of CertificateImportParameters class. */
-    public CertificateImportParameters() {}
+    public CertificateImportParameters() {
+    }
 
     /**
      * Get the base64EncodedCertificate property: Base64 encoded representation of the certificate object to import.
@@ -169,33 +170,30 @@ public final class CertificateImportParameters implements JsonSerializable<Certi
      * @throws IOException If an error occurs while reading the CertificateImportParameters.
      */
     public static CertificateImportParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CertificateImportParameters deserializedCertificateImportParameters =
-                            new CertificateImportParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CertificateImportParameters deserializedCertificateImportParameters = new CertificateImportParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            deserializedCertificateImportParameters.base64EncodedCertificate = reader.getString();
-                        } else if ("pwd".equals(fieldName)) {
-                            deserializedCertificateImportParameters.password = reader.getString();
-                        } else if ("policy".equals(fieldName)) {
-                            deserializedCertificateImportParameters.certificatePolicy =
-                                    CertificatePolicy.fromJson(reader);
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedCertificateImportParameters.certificateAttributes =
-                                    CertificateAttributes.fromJson(reader);
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedCertificateImportParameters.tags = tags;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    deserializedCertificateImportParameters.base64EncodedCertificate = reader.getString();
+                } else if ("pwd".equals(fieldName)) {
+                    deserializedCertificateImportParameters.password = reader.getString();
+                } else if ("policy".equals(fieldName)) {
+                    deserializedCertificateImportParameters.certificatePolicy = CertificatePolicy.fromJson(reader);
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedCertificateImportParameters.certificateAttributes
+                        = CertificateAttributes.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCertificateImportParameters.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCertificateImportParameters;
-                });
+            return deserializedCertificateImportParameters;
+        });
     }
 }

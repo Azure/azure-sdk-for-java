@@ -27,7 +27,8 @@ public final class KeyCurveName extends ExpandableStringEnum<KeyCurveName> {
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public KeyCurveName() {}
+    public KeyCurveName() {
+    }
 
     /**
      * Creates or finds a KeyCurveName from its string representation.

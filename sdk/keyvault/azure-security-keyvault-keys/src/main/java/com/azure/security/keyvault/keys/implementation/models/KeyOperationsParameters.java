@@ -43,7 +43,8 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
     private Base64Url tag;
 
     /** Creates an instance of KeyOperationsParameters class. */
-    public KeyOperationsParameters() {}
+    public KeyOperationsParameters() {
+    }
 
     /**
      * Get the algorithm property: algorithm identifier.
@@ -196,34 +197,33 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
      * @throws IOException If an error occurs while reading the KeyOperationsParameters.
      */
     public static KeyOperationsParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyOperationsParameters deserializedKeyOperationsParameters = new KeyOperationsParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyOperationsParameters deserializedKeyOperationsParameters = new KeyOperationsParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("alg".equals(fieldName)) {
-                            deserializedKeyOperationsParameters.algorithm =
-                                    JsonWebKeyEncryptionAlgorithm.fromString(reader.getString());
-                        } else if ("value".equals(fieldName)) {
-                            deserializedKeyOperationsParameters.value =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("iv".equals(fieldName)) {
-                            deserializedKeyOperationsParameters.iv =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("aad".equals(fieldName)) {
-                            deserializedKeyOperationsParameters.aad =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("tag".equals(fieldName)) {
-                            deserializedKeyOperationsParameters.tag =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("alg".equals(fieldName)) {
+                    deserializedKeyOperationsParameters.algorithm
+                        = JsonWebKeyEncryptionAlgorithm.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedKeyOperationsParameters.value
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("iv".equals(fieldName)) {
+                    deserializedKeyOperationsParameters.iv
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("aad".equals(fieldName)) {
+                    deserializedKeyOperationsParameters.aad
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("tag".equals(fieldName)) {
+                    deserializedKeyOperationsParameters.tag
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyOperationsParameters;
-                });
+            return deserializedKeyOperationsParameters;
+        });
     }
 }

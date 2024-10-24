@@ -32,9 +32,8 @@ public final class CertificateUtil {
     private static final String BEGIN_CERTIFICATE = "-----BEGIN CERTIFICATE-----";
     private static final String END_CERTIFICATE = "-----END CERTIFICATE-----";
 
-    public static Certificate[] loadCertificatesFromSecretBundleValue(String string)
-        throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException,
-        PKCSException {
+    public static Certificate[] loadCertificatesFromSecretBundleValue(String string) throws CertificateException,
+        IOException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException, PKCSException {
         if (string.contains(BEGIN_CERTIFICATE)) {
             return loadCertificatesFromSecretBundleValuePem(string);
         } else {
@@ -99,7 +98,8 @@ public final class CertificateUtil {
 
     public static Certificate[] loadX509CertificatesFromFile(InputStream inputStream) throws CertificateException {
         CertificateFactory factory = CertificateFactory.getInstance("X.509");
-        return factory.generateCertificates(inputStream).stream()
+        return factory.generateCertificates(inputStream)
+            .stream()
             .map(o -> (Certificate) o)
             .collect(Collectors.toList())
             .toArray(new Certificate[0]);
