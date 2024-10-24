@@ -43,7 +43,7 @@ OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 You can also set the connection string in the code:
 ```java readme-sample-autoconfigure
 AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-AzureMonitorAutoconfigure.customize(sdkBuilder);
+AzureMonitorAutoconfigure.customize(sdkBuilder, "{connection-string}");
 OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 ```
 
