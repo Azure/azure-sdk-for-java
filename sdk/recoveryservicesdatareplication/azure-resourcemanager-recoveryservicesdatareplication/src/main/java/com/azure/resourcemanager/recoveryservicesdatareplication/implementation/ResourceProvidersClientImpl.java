@@ -42,8 +42,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(DataReplicationMgmtClientImpl client) {
-        this.service =
-            RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -54,33 +54,25 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @Host("{$host}")
     @ServiceInterface(name = "DataReplicationMgmtC")
     public interface ResourceProvidersService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DataReplication/locations/{location}/checkNameAvailability")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DataReplication/locations/{location}/checkNameAvailability")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckNameAvailabilityResponseModelInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CheckNameAvailabilityModel body,
-            @HeaderParam("Accept") String accept,
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CheckNameAvailabilityModel body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/deployments/{deploymentId}/preflight")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/deployments/{deploymentId}/preflight")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentPreflightModelInner>> deploymentPreflight(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DeploymentPreflightModelInner>> deploymentPreflight(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("deploymentId") String deploymentId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentId") String deploymentId,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DeploymentPreflightModelInner body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") DeploymentPreflightModelInner body, @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -98,19 +90,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityResponseModelInner>> checkNameAvailabilityWithResponseAsync(
-        String location, CheckNameAvailabilityModel body) {
+    private Mono<Response<CheckNameAvailabilityResponseModelInner>>
+        checkNameAvailabilityWithResponseAsync(String location, CheckNameAvailabilityModel body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -120,17 +108,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.checkNameAvailability(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), location, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -149,19 +128,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityResponseModelInner>> checkNameAvailabilityWithResponseAsync(
-        String location, CheckNameAvailabilityModel body, Context context) {
+    private Mono<Response<CheckNameAvailabilityResponseModelInner>>
+        checkNameAvailabilityWithResponseAsync(String location, CheckNameAvailabilityModel body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -171,15 +146,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                location,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
+            this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -213,8 +181,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return check name availability response model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityResponseModelInner> checkNameAvailabilityWithResponse(
-        String location, CheckNameAvailabilityModel body, Context context) {
+    public Response<CheckNameAvailabilityResponseModelInner> checkNameAvailabilityWithResponse(String location,
+        CheckNameAvailabilityModel body, Context context) {
         return checkNameAvailabilityWithResponseAsync(location, body, context).block();
     }
 
@@ -247,19 +215,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return deployment preflight model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeploymentPreflightModelInner>> deploymentPreflightWithResponseAsync(
-        String resourceGroupName, String deploymentId, DeploymentPreflightModelInner body) {
+    private Mono<Response<DeploymentPreflightModelInner>> deploymentPreflightWithResponseAsync(String resourceGroupName,
+        String deploymentId, DeploymentPreflightModelInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -274,17 +238,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .deploymentPreflight(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            deploymentId,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+                context -> service.deploymentPreflight(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, deploymentId, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -301,19 +256,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return deployment preflight model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeploymentPreflightModelInner>> deploymentPreflightWithResponseAsync(
-        String resourceGroupName, String deploymentId, DeploymentPreflightModelInner body, Context context) {
+    private Mono<Response<DeploymentPreflightModelInner>> deploymentPreflightWithResponseAsync(String resourceGroupName,
+        String deploymentId, DeploymentPreflightModelInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -327,16 +278,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .deploymentPreflight(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                deploymentId,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.deploymentPreflight(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, deploymentId, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -350,8 +293,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return deployment preflight model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeploymentPreflightModelInner> deploymentPreflightAsync(
-        String resourceGroupName, String deploymentId) {
+    private Mono<DeploymentPreflightModelInner> deploymentPreflightAsync(String resourceGroupName,
+        String deploymentId) {
         final DeploymentPreflightModelInner body = null;
         return deploymentPreflightWithResponseAsync(resourceGroupName, deploymentId, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -370,8 +313,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return deployment preflight model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeploymentPreflightModelInner> deploymentPreflightWithResponse(
-        String resourceGroupName, String deploymentId, DeploymentPreflightModelInner body, Context context) {
+    public Response<DeploymentPreflightModelInner> deploymentPreflightWithResponse(String resourceGroupName,
+        String deploymentId, DeploymentPreflightModelInner body, Context context) {
         return deploymentPreflightWithResponseAsync(resourceGroupName, deploymentId, body, context).block();
     }
 
