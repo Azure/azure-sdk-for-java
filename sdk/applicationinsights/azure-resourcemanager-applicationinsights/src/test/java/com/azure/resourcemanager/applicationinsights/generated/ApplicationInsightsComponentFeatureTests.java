@@ -10,11 +10,9 @@ import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsC
 public final class ApplicationInsightsComponentFeatureTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationInsightsComponentFeature model =
-            BinaryData
-                .fromString(
-                    "{\"FeatureName\":\"qw\",\"MeterId\":\"mdgbbjfdd\",\"MeterRateFrequency\":\"bmbexppbhtqqro\",\"ResouceId\":\"p\",\"IsHidden\":false,\"Capabilities\":[{\"Name\":\"bquxigjy\",\"Description\":\"zjaoyfhrtxil\",\"Value\":\"rkujy\",\"Unit\":\"l\",\"MeterId\":\"uvfqawrlyxwj\",\"MeterRateFrequency\":\"prbnwbxgjvtbv\"},{\"Name\":\"sszdnru\",\"Description\":\"guhmuouqfpr\",\"Value\":\"wbnguitnwui\",\"Unit\":\"a\",\"MeterId\":\"ufizuckyf\",\"MeterRateFrequency\":\"rfidfvzwdz\"}],\"Title\":\"tymw\",\"IsMainFeature\":true,\"SupportedAddonFeatures\":\"fthwxmnteiwa\"}")
-                .toObject(ApplicationInsightsComponentFeature.class);
+        ApplicationInsightsComponentFeature model = BinaryData.fromString(
+            "{\"FeatureName\":\"qw\",\"MeterId\":\"mdgbbjfdd\",\"MeterRateFrequency\":\"bmbexppbhtqqro\",\"ResouceId\":\"p\",\"IsHidden\":false,\"Capabilities\":[{\"Name\":\"bquxigjy\",\"Description\":\"zjaoyfhrtxil\",\"Value\":\"rkujy\",\"Unit\":\"l\",\"MeterId\":\"uvfqawrlyxwj\",\"MeterRateFrequency\":\"prbnwbxgjvtbv\"},{\"Name\":\"sszdnru\",\"Description\":\"guhmuouqfpr\",\"Value\":\"wbnguitnwui\",\"Unit\":\"a\",\"MeterId\":\"ufizuckyf\",\"MeterRateFrequency\":\"rfidfvzwdz\"}],\"Title\":\"tymw\",\"IsMainFeature\":true,\"SupportedAddonFeatures\":\"fthwxmnteiwa\"}")
+            .toObject(ApplicationInsightsComponentFeature.class);
     }
 
     @org.junit.jupiter.api.Test

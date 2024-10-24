@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationInsightsComponentDataVolumeCapTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationInsightsComponentDataVolumeCap model =
-            BinaryData
-                .fromString(
-                    "{\"Cap\":85.262695,\"ResetTime\":727267147,\"WarningThreshold\":1154463022,\"StopSendNotificationWhenHitThreshold\":true,\"StopSendNotificationWhenHitCap\":true,\"MaxHistoryCap\":5.3407373}")
-                .toObject(ApplicationInsightsComponentDataVolumeCap.class);
+        ApplicationInsightsComponentDataVolumeCap model = BinaryData.fromString(
+            "{\"Cap\":85.262695,\"ResetTime\":727267147,\"WarningThreshold\":1154463022,\"StopSendNotificationWhenHitThreshold\":true,\"StopSendNotificationWhenHitCap\":true,\"MaxHistoryCap\":5.3407373}")
+            .toObject(ApplicationInsightsComponentDataVolumeCap.class);
         Assertions.assertEquals(85.262695F, model.cap());
         Assertions.assertEquals(1154463022, model.warningThreshold());
         Assertions.assertEquals(true, model.stopSendNotificationWhenHitThreshold());
@@ -24,9 +22,8 @@ public final class ApplicationInsightsComponentDataVolumeCapTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationInsightsComponentDataVolumeCap model =
-            new ApplicationInsightsComponentDataVolumeCap()
-                .withCap(85.262695F)
+        ApplicationInsightsComponentDataVolumeCap model
+            = new ApplicationInsightsComponentDataVolumeCap().withCap(85.262695F)
                 .withWarningThreshold(1154463022)
                 .withStopSendNotificationWhenHitThreshold(true)
                 .withStopSendNotificationWhenHitCap(true);

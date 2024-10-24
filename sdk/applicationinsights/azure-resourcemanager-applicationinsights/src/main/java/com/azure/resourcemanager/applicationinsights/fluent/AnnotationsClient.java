@@ -47,8 +47,8 @@ public interface AnnotationsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AnnotationInner> list(
-        String resourceGroupName, String resourceName, String start, String end, Context context);
+    PagedIterable<AnnotationInner> list(String resourceGroupName, String resourceName, String start, String end,
+        Context context);
 
     /**
      * Create an Annotation of an Application Insights component.
@@ -65,8 +65,8 @@ public interface AnnotationsClient {
      * @return array of Annotation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<AnnotationInner>> createWithResponse(
-        String resourceGroupName, String resourceName, AnnotationInner annotationProperties, Context context);
+    Response<List<AnnotationInner>> createWithResponse(String resourceGroupName, String resourceName,
+        AnnotationInner annotationProperties, Context context);
 
     /**
      * Create an Annotation of an Application Insights component.
@@ -97,8 +97,8 @@ public interface AnnotationsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String annotationId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String annotationId,
+        Context context);
 
     /**
      * Delete an Annotation of an Application Insights component.
@@ -127,8 +127,8 @@ public interface AnnotationsClient {
      * @return the annotation for given id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<AnnotationInner>> getWithResponse(
-        String resourceGroupName, String resourceName, String annotationId, Context context);
+    Response<List<AnnotationInner>> getWithResponse(String resourceGroupName, String resourceName, String annotationId,
+        Context context);
 
     /**
      * Get the annotation for given id.

@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"ev\",\"display\":{\"provider\":\"gz\",\"resource\":\"u\",\"operation\":\"mvfaxkffeiith\"}},{\"name\":\"m\",\"display\":{\"provider\":\"v\",\"resource\":\"xmzsbbzogg\",\"operation\":\"rxwburv\"}}],\"nextLink\":\"xjnspy\"}")
-                .toObject(OperationListResult.class);
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"ev\",\"display\":{\"provider\":\"gz\",\"resource\":\"u\",\"operation\":\"mvfaxkffeiith\"}},{\"name\":\"m\",\"display\":{\"provider\":\"v\",\"resource\":\"xmzsbbzogg\",\"operation\":\"rxwburv\"}}],\"nextLink\":\"xjnspy\"}")
+            .toObject(OperationListResult.class);
         Assertions.assertEquals("ev", model.value().get(0).name());
         Assertions.assertEquals("gz", model.value().get(0).display().provider());
         Assertions.assertEquals("u", model.value().get(0).display().resource());
@@ -28,26 +26,15 @@ public final class OperationListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationListResult model =
-            new OperationListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new OperationInner()
-                                .withName("ev")
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withProvider("gz")
-                                        .withResource("u")
-                                        .withOperation("mvfaxkffeiith")),
-                            new OperationInner()
-                                .withName("m")
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withProvider("v")
-                                        .withResource("xmzsbbzogg")
-                                        .withOperation("rxwburv"))))
-                .withNextLink("xjnspy");
+        OperationListResult model = new OperationListResult()
+            .withValue(Arrays.asList(
+                new OperationInner().withName("ev")
+                    .withDisplay(
+                        new OperationDisplay().withProvider("gz").withResource("u").withOperation("mvfaxkffeiith")),
+                new OperationInner().withName("m")
+                    .withDisplay(
+                        new OperationDisplay().withProvider("v").withResource("xmzsbbzogg").withOperation("rxwburv"))))
+            .withNextLink("xjnspy");
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
         Assertions.assertEquals("ev", model.value().get(0).name());
         Assertions.assertEquals("gz", model.value().get(0).display().provider());

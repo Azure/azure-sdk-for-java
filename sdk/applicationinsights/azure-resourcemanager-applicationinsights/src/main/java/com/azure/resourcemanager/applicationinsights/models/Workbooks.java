@@ -72,13 +72,8 @@ public interface Workbooks {
      * @return all Workbooks defined within a specified resource group and category as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<Workbook> listByResourceGroup(
-        String resourceGroupName,
-        CategoryType category,
-        List<String> tags,
-        String sourceId,
-        Boolean canFetchContent,
-        Context context);
+    PagedIterable<Workbook> listByResourceGroup(String resourceGroupName, CategoryType category, List<String> tags,
+        String sourceId, Boolean canFetchContent, Context context);
 
     /**
      * Get a single workbook by its resourceName.
@@ -94,8 +89,8 @@ public interface Workbooks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single workbook by its resourceName along with {@link Response}.
      */
-    Response<Workbook> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Boolean canFetchContent, Context context);
+    Response<Workbook> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Boolean canFetchContent, Context context);
 
     /**
      * Get a single workbook by its resourceName.
@@ -178,8 +173,8 @@ public interface Workbooks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single workbook revision defined by its revisionId along with {@link Response}.
      */
-    Response<Workbook> revisionGetWithResponse(
-        String resourceGroupName, String resourceName, String revisionId, Context context);
+    Response<Workbook> revisionGetWithResponse(String resourceGroupName, String resourceName, String revisionId,
+        Context context);
 
     /**
      * Get a single workbook revision defined by its revisionId.

@@ -10,10 +10,6 @@ module com.azure.resourcemanager.applicationinsights {
     exports com.azure.resourcemanager.applicationinsights.fluent.models;
     exports com.azure.resourcemanager.applicationinsights.models;
 
-    opens com.azure.resourcemanager.applicationinsights.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.applicationinsights.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.applicationinsights.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.applicationinsights.models to com.azure.core, com.fasterxml.jackson.databind;
 }

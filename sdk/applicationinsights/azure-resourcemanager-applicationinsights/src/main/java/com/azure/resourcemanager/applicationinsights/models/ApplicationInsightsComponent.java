@@ -283,12 +283,8 @@ public interface ApplicationInsightsComponent {
     ApplicationInsightsComponentInner innerModel();
 
     /** The entirety of the ApplicationInsightsComponent definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithKind,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithKind, DefinitionStages.WithCreate {
     }
 
     /** The ApplicationInsightsComponent definition stages. */
@@ -347,22 +343,13 @@ public interface ApplicationInsightsComponent {
          * for the resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithEtag,
-                DefinitionStages.WithApplicationType,
-                DefinitionStages.WithFlowType,
-                DefinitionStages.WithRequestSource,
-                DefinitionStages.WithHockeyAppId,
-                DefinitionStages.WithSamplingPercentage,
-                DefinitionStages.WithRetentionInDays,
-                DefinitionStages.WithDisableIpMasking,
-                DefinitionStages.WithImmediatePurgeDataOn30Days,
-                DefinitionStages.WithWorkspaceResourceId,
-                DefinitionStages.WithPublicNetworkAccessForIngestion,
-                DefinitionStages.WithPublicNetworkAccessForQuery,
-                DefinitionStages.WithIngestionMode,
-                DefinitionStages.WithDisableLocalAuth,
-                DefinitionStages.WithForceCustomerStorageForProfiler {
+            extends DefinitionStages.WithTags, DefinitionStages.WithEtag, DefinitionStages.WithApplicationType,
+            DefinitionStages.WithFlowType, DefinitionStages.WithRequestSource, DefinitionStages.WithHockeyAppId,
+            DefinitionStages.WithSamplingPercentage, DefinitionStages.WithRetentionInDays,
+            DefinitionStages.WithDisableIpMasking, DefinitionStages.WithImmediatePurgeDataOn30Days,
+            DefinitionStages.WithWorkspaceResourceId, DefinitionStages.WithPublicNetworkAccessForIngestion,
+            DefinitionStages.WithPublicNetworkAccessForQuery, DefinitionStages.WithIngestionMode,
+            DefinitionStages.WithDisableLocalAuth, DefinitionStages.WithForceCustomerStorageForProfiler {
             /**
              * Executes the create request.
              *
