@@ -674,7 +674,7 @@ public final class IndexersImpl {
         Boolean disableCacheReprocessingChangeDetection, RequestOptions requestOptions) {
         return createOrUpdateWithResponseAsync(indexerName, indexer, ifMatch, ifNoneMatch,
             skipIndexerResetRequirementForCache, disableCacheReprocessingChangeDetection, requestOptions)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -701,7 +701,7 @@ public final class IndexersImpl {
         Boolean disableCacheReprocessingChangeDetection, RequestOptions requestOptions, Context context) {
         return createOrUpdateWithResponseAsync(indexerName, indexer, ifMatch, ifNoneMatch,
             skipIndexerResetRequirementForCache, disableCacheReprocessingChangeDetection, requestOptions, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -761,7 +761,7 @@ public final class IndexersImpl {
         RequestOptions requestOptions) {
         return createOrUpdateWithResponse(indexerName, indexer, ifMatch, ifNoneMatch,
             skipIndexerResetRequirementForCache, disableCacheReprocessingChangeDetection, requestOptions, Context.NONE)
-            .getValue();
+                .getValue();
     }
 
     /**

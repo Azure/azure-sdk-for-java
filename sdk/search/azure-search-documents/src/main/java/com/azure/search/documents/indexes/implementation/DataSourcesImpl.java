@@ -269,7 +269,7 @@ public final class DataSourcesImpl {
         Boolean skipIndexerResetRequirementForCache, RequestOptions requestOptions, Context context) {
         return createOrUpdateWithResponseAsync(dataSourceName, dataSource, ifMatch, ifNoneMatch,
             skipIndexerResetRequirementForCache, requestOptions, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
