@@ -50,15 +50,17 @@ public final class PrivateEndpointConnectionsUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NotificationHubsManager manager = NotificationHubsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        NotificationHubsManager manager = NotificationHubsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PrivateEndpointConnectionResource response
-            = manager.privateEndpointConnections().update("dbodacizsjqlhkrr", "bdeibqipqk", "hvxndzwmkrefajpj",
+        PrivateEndpointConnectionResource response = manager.privateEndpointConnections()
+            .update("dbodacizsjqlhkrr", "bdeibqipqk", "hvxndzwmkrefajpj",
                 new PrivateEndpointConnectionResourceInner().withProperties(new PrivateEndpointConnectionProperties()
                     .withProvisioningState(PrivateEndpointConnectionProvisioningState.CREATING)
-                    .withPrivateEndpoint(new RemotePrivateEndpointConnection()).withPrivateLinkServiceConnectionState(
+                    .withPrivateEndpoint(new RemotePrivateEndpointConnection())
+                    .withPrivateLinkServiceConnectionState(
                         new RemotePrivateLinkServiceConnectionState().withStatus(PrivateLinkConnectionStatus.PENDING))),
                 com.azure.core.util.Context.NONE);
 
