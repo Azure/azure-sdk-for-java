@@ -11,6 +11,7 @@ import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.CommunicationUserIdentifierConverter;
+import com.azure.communication.callautomation.implementation.converters.MicrosoftTeamsAppIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.PhoneNumberIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.AnswerCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.CallIntelligenceOptionsInternal;
@@ -23,6 +24,7 @@ import com.azure.communication.callautomation.implementation.models.MediaStreami
 import com.azure.communication.callautomation.implementation.models.MediaStreamingConfigurationInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingContentTypeInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingTransportTypeInternal;
+import com.azure.communication.callautomation.implementation.models.MicrosoftTeamsAppIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.RedirectCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RejectCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.TranscriptionConfigurationInternal;
@@ -39,6 +41,7 @@ import com.azure.communication.callautomation.models.RejectCallOptions;
 import com.azure.communication.callautomation.models.TranscriptionOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -80,9 +83,13 @@ public final class CallAutomationAsyncClient {
     private final HttpPipeline httpPipelineInternal;
     private final String resourceUrl;
     private final CommunicationUserIdentifierModel sourceIdentity;
+    private final MicrosoftTeamsAppIdentifierModel oPSSourceIdentity;
     private final CallAutomationEventProcessor eventProcessor;
 
-    CallAutomationAsyncClient(AzureCommunicationCallAutomationServiceImpl callServiceClient, CommunicationUserIdentifier sourceIdentity, CallAutomationEventProcessor eventProcessor) {
+    CallAutomationAsyncClient(AzureCommunicationCallAutomationServiceImpl callServiceClient,
+                              CommunicationUserIdentifier sourceIdentity,
+                              MicrosoftTeamsAppIdentifier oPSSourceIdentity,
+                              CallAutomationEventProcessor eventProcessor) {
         this.callConnectionsInternal = callServiceClient.getCallConnections();
         this.azureCommunicationCallAutomationServiceInternal = callServiceClient;
         this.callRecordingsInternal = callServiceClient.getCallRecordings();
@@ -94,6 +101,7 @@ public final class CallAutomationAsyncClient {
         this.httpPipelineInternal = callServiceClient.getHttpPipeline();
         this.resourceUrl = callServiceClient.getEndpoint();
         this.sourceIdentity = sourceIdentity == null ? null : CommunicationUserIdentifierConverter.convert(sourceIdentity);
+        this.oPSSourceIdentity = oPSSourceIdentity == null ? null : MicrosoftTeamsAppIdentifierConverter.convert(oPSSourceIdentity);
     }
 
     /**
@@ -110,6 +118,14 @@ public final class CallAutomationAsyncClient {
      */
     public CommunicationUserIdentifier getSourceIdentity() {
         return sourceIdentity == null ? null : CommunicationUserIdentifierConverter.convert(sourceIdentity);
+    }
+
+    /**
+     * Get OPS Source Identity that is used for create OPS call
+     * @return {@link CommunicationUserIdentifier} represent source
+     */
+    public MicrosoftTeamsAppIdentifier getOPSSourceIdentity() {
+        return oPSSourceIdentity == null ? null : MicrosoftTeamsAppIdentifierConverter.convert(oPSSourceIdentity);
     }
 
     //region Pre-call Actions
@@ -215,6 +231,7 @@ public final class CallAutomationAsyncClient {
             .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(createCallOptions.getCallInvite().getSourceCallerIdNumber()))
             .setSourceDisplayName(createCallOptions.getCallInvite().getSourceDisplayName())
             .setSource(sourceIdentity)
+            .setOpsSource(oPSSourceIdentity)
             .setTargets(targetsModel)
             .setCallbackUri(createCallOptions.getCallbackUrl())
             .setCallIntelligenceOptions(callIntelligenceOptionsInternal)
@@ -257,6 +274,7 @@ public final class CallAutomationAsyncClient {
             .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(createCallGroupOptions.getSourceCallIdNumber()))
             .setSourceDisplayName(createCallGroupOptions.getSourceDisplayName())
             .setSource(sourceIdentity)
+            .setOpsSource(oPSSourceIdentity)
             .setTargets(targetsModel)
             .setCallbackUri(createCallGroupOptions.getCallbackUrl())
             .setCallIntelligenceOptions(callIntelligenceOptionsInternal)
