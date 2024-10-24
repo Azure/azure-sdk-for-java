@@ -10,9 +10,6 @@ import java.util.Collection;
 /** Defines values for CallLocatorKind. */
 public final class CallLocatorKind extends ExpandableStringEnum<CallLocatorKind> {
 
-    /** Static value unknown for CallLocatorKindInternal. */
-    public static final CallLocatorKind UNKNOWN = fromString("unknown");
-
     /** Static value groupCallLocator for CallLocatorKind. */
     public static final CallLocatorKind GROUP_CALL_LOCATOR = fromString("groupCallLocator");
 
