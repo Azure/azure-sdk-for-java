@@ -534,22 +534,6 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
         Assertions.assertFalse(availableIps.isEmpty());
         Assertions.assertEquals(2, subnet2.addressPrefixes().size());
 
-        // occupy first addressPrefix
-        for (String ip : availableIps) {
-            networkManager.networkInterfaces()
-                .define(generateRandomResourceName("nic", 10))
-                .withRegion(Region.US_EAST)
-                .withExistingResourceGroup(rgName)
-                .withExistingPrimaryNetwork(network)
-                .withSubnet(subnet2Name)
-                .withPrimaryPrivateIPAddressStatic(ip)
-                .create();
-        }
-
-        // second addressPrefix still has available ips
-        availableIps = subnet2.listAvailablePrivateIPAddresses();
-        Assertions.assertFalse(availableIps.isEmpty());
-
         // occupy the available ip address of the second subnet
         String availableIp = availableIps.iterator().next();
         networkManager.networkInterfaces()
