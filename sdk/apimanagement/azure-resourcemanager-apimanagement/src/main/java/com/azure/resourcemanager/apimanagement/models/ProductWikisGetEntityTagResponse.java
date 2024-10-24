@@ -19,11 +19,7 @@ public final class ProductWikisGetEntityTagResponse extends ResponseBase<Product
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ProductWikisGetEntityTagResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        Void value,
+    public ProductWikisGetEntityTagResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value,
         ProductWikisGetEntityTagHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }

@@ -48,10 +48,8 @@ public final class GatewayKeyRegenerationRequestContract {
      */
     public void validate() {
         if (keyType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyType in model GatewayKeyRegenerationRequestContract"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property keyType in model GatewayKeyRegenerationRequestContract"));
         }
     }
 

@@ -44,14 +44,8 @@ public interface ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReportRecordContractInner> listByApi(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context);
+    PagedIterable<ReportRecordContractInner> listByApi(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, String orderby, Context context);
 
     /**
      * Lists report records by User.
@@ -105,14 +99,8 @@ public interface ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReportRecordContractInner> listByUser(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context);
+    PagedIterable<ReportRecordContractInner> listByUser(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, String orderby, Context context);
 
     /**
      * Lists report records by API Operations.
@@ -137,8 +125,8 @@ public interface ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReportRecordContractInner> listByOperation(
-        String resourceGroupName, String serviceName, String filter);
+    PagedIterable<ReportRecordContractInner> listByOperation(String resourceGroupName, String serviceName,
+        String filter);
 
     /**
      * Lists report records by API Operations.
@@ -167,14 +155,8 @@ public interface ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReportRecordContractInner> listByOperation(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context);
+    PagedIterable<ReportRecordContractInner> listByOperation(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, String orderby, Context context);
 
     /**
      * Lists report records by Product.
@@ -226,14 +208,8 @@ public interface ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReportRecordContractInner> listByProduct(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context);
+    PagedIterable<ReportRecordContractInner> listByProduct(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, String orderby, Context context);
 
     /**
      * Lists report records by geography.
@@ -284,8 +260,8 @@ public interface ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReportRecordContractInner> listByGeo(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<ReportRecordContractInner> listByGeo(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Lists report records by subscription.
@@ -309,8 +285,8 @@ public interface ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReportRecordContractInner> listBySubscription(
-        String resourceGroupName, String serviceName, String filter);
+    PagedIterable<ReportRecordContractInner> listBySubscription(String resourceGroupName, String serviceName,
+        String filter);
 
     /**
      * Lists report records by subscription.
@@ -338,14 +314,8 @@ public interface ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReportRecordContractInner> listBySubscription(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context);
+    PagedIterable<ReportRecordContractInner> listBySubscription(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, String orderby, Context context);
 
     /**
      * Lists report records by Time.
@@ -372,8 +342,8 @@ public interface ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReportRecordContractInner> listByTime(
-        String resourceGroupName, String serviceName, String filter, Duration interval);
+    PagedIterable<ReportRecordContractInner> listByTime(String resourceGroupName, String serviceName, String filter,
+        Duration interval);
 
     /**
      * Lists report records by Time.
@@ -404,15 +374,8 @@ public interface ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReportRecordContractInner> listByTime(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Duration interval,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context);
+    PagedIterable<ReportRecordContractInner> listByTime(String resourceGroupName, String serviceName, String filter,
+        Duration interval, Integer top, Integer skip, String orderby, Context context);
 
     /**
      * Lists report records by Request.
@@ -430,8 +393,8 @@ public interface ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RequestReportRecordContractInner> listByRequest(
-        String resourceGroupName, String serviceName, String filter);
+    PagedIterable<RequestReportRecordContractInner> listByRequest(String resourceGroupName, String serviceName,
+        String filter);
 
     /**
      * Lists report records by Request.
@@ -452,6 +415,6 @@ public interface ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RequestReportRecordContractInner> listByRequest(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<RequestReportRecordContractInner> listByRequest(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, Context context);
 }

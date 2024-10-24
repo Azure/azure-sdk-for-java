@@ -19,8 +19,8 @@ public final class BackendsGetEntityTagResponse extends ResponseBase<BackendsGet
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public BackendsGetEntityTagResponse(
-        HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, BackendsGetEntityTagHeaders headers) {
+    public BackendsGetEntityTagResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value,
+        BackendsGetEntityTagHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

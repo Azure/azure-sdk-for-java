@@ -11,11 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class TagDescriptionBasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TagDescriptionBaseProperties model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"jmtbd\",\"externalDocsUrl\":\"cqguef\",\"externalDocsDescription\":\"ompheqdur\"}")
-                .toObject(TagDescriptionBaseProperties.class);
+        TagDescriptionBaseProperties model = BinaryData
+            .fromString(
+                "{\"description\":\"jmtbd\",\"externalDocsUrl\":\"cqguef\",\"externalDocsDescription\":\"ompheqdur\"}")
+            .toObject(TagDescriptionBaseProperties.class);
         Assertions.assertEquals("jmtbd", model.description());
         Assertions.assertEquals("cqguef", model.externalDocsUrl());
         Assertions.assertEquals("ompheqdur", model.externalDocsDescription());
@@ -23,11 +22,9 @@ public final class TagDescriptionBasePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagDescriptionBaseProperties model =
-            new TagDescriptionBaseProperties()
-                .withDescription("jmtbd")
-                .withExternalDocsUrl("cqguef")
-                .withExternalDocsDescription("ompheqdur");
+        TagDescriptionBaseProperties model = new TagDescriptionBaseProperties().withDescription("jmtbd")
+            .withExternalDocsUrl("cqguef")
+            .withExternalDocsDescription("ompheqdur");
         model = BinaryData.fromObject(model).toObject(TagDescriptionBaseProperties.class);
         Assertions.assertEquals("jmtbd", model.description());
         Assertions.assertEquals("cqguef", model.externalDocsUrl());

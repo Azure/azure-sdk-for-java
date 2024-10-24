@@ -21,12 +21,8 @@ public final class DocumentationsGetResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public DocumentationsGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        DocumentationContractInner value,
-        DocumentationsGetHeaders headers) {
+    public DocumentationsGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        DocumentationContractInner value, DocumentationsGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

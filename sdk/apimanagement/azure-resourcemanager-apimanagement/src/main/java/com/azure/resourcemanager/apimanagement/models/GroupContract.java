@@ -109,12 +109,8 @@ public interface GroupContract {
          * The stage of the GroupContract definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithDisplayName,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithType,
-                DefinitionStages.WithExternalId,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithDisplayName, DefinitionStages.WithDescription,
+            DefinitionStages.WithType, DefinitionStages.WithExternalId, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -201,12 +197,8 @@ public interface GroupContract {
     GroupContract.Update update();
 
     /** The template for GroupContract update. */
-    interface Update
-        extends UpdateStages.WithDisplayName,
-            UpdateStages.WithDescription,
-            UpdateStages.WithType,
-            UpdateStages.WithExternalId,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithDisplayName, UpdateStages.WithDescription, UpdateStages.WithType,
+        UpdateStages.WithExternalId, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

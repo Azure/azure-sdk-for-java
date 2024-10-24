@@ -35,8 +35,8 @@ public interface Caches {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Caches list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<CacheContract> listByService(
-        String resourceGroupName, String serviceName, Integer top, Integer skip, Context context);
+    PagedIterable<CacheContract> listByService(String resourceGroupName, String serviceName, Integer top, Integer skip,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the Cache specified by its identifier.
@@ -51,8 +51,8 @@ public interface Caches {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Cache specified by its identifier.
      */
-    CachesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String cacheId, Context context);
+    CachesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName, String cacheId,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the Cache specified by its identifier.
@@ -80,8 +80,8 @@ public interface Caches {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the Cache specified by its identifier.
      */
-    Response<CacheContract> getWithResponse(
-        String resourceGroupName, String serviceName, String cacheId, Context context);
+    Response<CacheContract> getWithResponse(String resourceGroupName, String serviceName, String cacheId,
+        Context context);
 
     /**
      * Gets the details of the Cache specified by its identifier.
@@ -112,8 +112,8 @@ public interface Caches {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String cacheId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String cacheId, String ifMatch,
+        Context context);
 
     /**
      * Deletes specific Cache.

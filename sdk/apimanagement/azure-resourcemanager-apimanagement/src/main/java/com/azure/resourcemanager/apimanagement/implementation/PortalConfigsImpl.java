@@ -24,21 +24,18 @@ public final class PortalConfigsImpl implements PortalConfigs {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public PortalConfigsImpl(
-        PortalConfigsClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public PortalConfigsImpl(PortalConfigsClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<PortalConfigCollection> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, Context context) {
-        Response<PortalConfigCollectionInner> inner =
-            this.serviceClient().listByServiceWithResponse(resourceGroupName, serviceName, context);
+    public Response<PortalConfigCollection> listByServiceWithResponse(String resourceGroupName, String serviceName,
+        Context context) {
+        Response<PortalConfigCollectionInner> inner
+            = this.serviceClient().listByServiceWithResponse(resourceGroupName, serviceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PortalConfigCollectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -54,8 +51,8 @@ public final class PortalConfigsImpl implements PortalConfigs {
         }
     }
 
-    public PortalConfigsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String portalConfigId, Context context) {
+    public PortalConfigsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String portalConfigId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, portalConfigId, context);
     }
 
@@ -63,15 +60,12 @@ public final class PortalConfigsImpl implements PortalConfigs {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, portalConfigId);
     }
 
-    public Response<PortalConfigContract> getWithResponse(
-        String resourceGroupName, String serviceName, String portalConfigId, Context context) {
-        PortalConfigsGetResponse inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, portalConfigId, context);
+    public Response<PortalConfigContract> getWithResponse(String resourceGroupName, String serviceName,
+        String portalConfigId, Context context) {
+        PortalConfigsGetResponse inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serviceName, portalConfigId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PortalConfigContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -90,25 +84,18 @@ public final class PortalConfigsImpl implements PortalConfigs {
     public PortalConfigContract getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String portalConfigId = Utils.getValueFromIdByName(id, "portalconfigs");
         if (portalConfigId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'portalconfigs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'portalconfigs'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serviceName, portalConfigId, Context.NONE).getValue();
     }
@@ -116,25 +103,18 @@ public final class PortalConfigsImpl implements PortalConfigs {
     public Response<PortalConfigContract> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String portalConfigId = Utils.getValueFromIdByName(id, "portalconfigs");
         if (portalConfigId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'portalconfigs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'portalconfigs'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serviceName, portalConfigId, context);
     }

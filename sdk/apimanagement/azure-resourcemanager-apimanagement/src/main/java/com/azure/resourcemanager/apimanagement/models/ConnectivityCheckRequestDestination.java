@@ -74,10 +74,8 @@ public final class ConnectivityCheckRequestDestination {
      */
     public void validate() {
         if (address() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property address in model ConnectivityCheckRequestDestination"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property address in model ConnectivityCheckRequestDestination"));
         }
     }
 

@@ -21,12 +21,8 @@ public final class CertificatesRefreshSecretResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public CertificatesRefreshSecretResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        CertificateContractInner value,
-        CertificatesRefreshSecretHeaders headers) {
+    public CertificatesRefreshSecretResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        CertificateContractInner value, CertificatesRefreshSecretHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

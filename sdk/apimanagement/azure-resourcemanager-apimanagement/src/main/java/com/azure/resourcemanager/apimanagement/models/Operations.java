@@ -47,13 +47,6 @@ public interface Operations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<TagResourceContract> listByTags(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean includeNotTaggedOperations,
-        Context context);
+    PagedIterable<TagResourceContract> listByTags(String resourceGroupName, String serviceName, String apiId,
+        String filter, Integer top, Integer skip, Boolean includeNotTaggedOperations, Context context);
 }

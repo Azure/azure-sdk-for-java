@@ -8,10 +8,8 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayHostnameConfigurationContractInner;
 import com.azure.resourcemanager.apimanagement.models.GatewayHostnameConfigurationContract;
 
-public final class GatewayHostnameConfigurationContractImpl
-    implements GatewayHostnameConfigurationContract,
-        GatewayHostnameConfigurationContract.Definition,
-        GatewayHostnameConfigurationContract.Update {
+public final class GatewayHostnameConfigurationContractImpl implements GatewayHostnameConfigurationContract,
+    GatewayHostnameConfigurationContract.Definition, GatewayHostnameConfigurationContract.Update {
     private GatewayHostnameConfigurationContractInner innerObject;
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
@@ -76,8 +74,8 @@ public final class GatewayHostnameConfigurationContractImpl
 
     private String updateIfMatch;
 
-    public GatewayHostnameConfigurationContractImpl withExistingGateway(
-        String resourceGroupName, String serviceName, String gatewayId) {
+    public GatewayHostnameConfigurationContractImpl withExistingGateway(String resourceGroupName, String serviceName,
+        String gatewayId) {
         this.resourceGroupName = resourceGroupName;
         this.serviceName = serviceName;
         this.gatewayId = gatewayId;
@@ -85,29 +83,25 @@ public final class GatewayHostnameConfigurationContractImpl
     }
 
     public GatewayHostnameConfigurationContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGatewayHostnameConfigurations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, gatewayId, hcId, this.innerModel(), createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGatewayHostnameConfigurations()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, gatewayId, hcId, this.innerModel(),
+                createIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public GatewayHostnameConfigurationContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGatewayHostnameConfigurations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, gatewayId, hcId, this.innerModel(), createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGatewayHostnameConfigurations()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, gatewayId, hcId, this.innerModel(),
+                createIfMatch, context)
+            .getValue();
         return this;
     }
 
-    GatewayHostnameConfigurationContractImpl(
-        String name, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    GatewayHostnameConfigurationContractImpl(String name,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = new GatewayHostnameConfigurationContractInner();
         this.serviceManager = serviceManager;
         this.hcId = name;
@@ -120,29 +114,24 @@ public final class GatewayHostnameConfigurationContractImpl
     }
 
     public GatewayHostnameConfigurationContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGatewayHostnameConfigurations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, gatewayId, hcId, this.innerModel(), updateIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGatewayHostnameConfigurations()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, gatewayId, hcId, this.innerModel(),
+                updateIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public GatewayHostnameConfigurationContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGatewayHostnameConfigurations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, gatewayId, hcId, this.innerModel(), updateIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGatewayHostnameConfigurations()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, gatewayId, hcId, this.innerModel(),
+                updateIfMatch, context)
+            .getValue();
         return this;
     }
 
-    GatewayHostnameConfigurationContractImpl(
-        GatewayHostnameConfigurationContractInner innerObject,
+    GatewayHostnameConfigurationContractImpl(GatewayHostnameConfigurationContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -153,22 +142,18 @@ public final class GatewayHostnameConfigurationContractImpl
     }
 
     public GatewayHostnameConfigurationContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGatewayHostnameConfigurations()
-                .getWithResponse(resourceGroupName, serviceName, gatewayId, hcId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGatewayHostnameConfigurations()
+            .getWithResponse(resourceGroupName, serviceName, gatewayId, hcId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public GatewayHostnameConfigurationContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGatewayHostnameConfigurations()
-                .getWithResponse(resourceGroupName, serviceName, gatewayId, hcId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGatewayHostnameConfigurations()
+            .getWithResponse(resourceGroupName, serviceName, gatewayId, hcId, context)
+            .getValue();
         return this;
     }
 

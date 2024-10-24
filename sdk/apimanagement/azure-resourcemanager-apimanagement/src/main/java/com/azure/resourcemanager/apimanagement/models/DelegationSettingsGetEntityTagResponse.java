@@ -20,12 +20,8 @@ public final class DelegationSettingsGetEntityTagResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public DelegationSettingsGetEntityTagResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        Void value,
-        DelegationSettingsGetEntityTagHeaders headers) {
+    public DelegationSettingsGetEntityTagResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        Void value, DelegationSettingsGetEntityTagHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

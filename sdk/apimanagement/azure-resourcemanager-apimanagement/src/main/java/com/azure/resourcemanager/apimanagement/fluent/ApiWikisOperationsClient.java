@@ -44,12 +44,6 @@ public interface ApiWikisOperationsClient {
      * @return the wikis for an API specified by its identifier as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WikiContractInner> list(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<WikiContractInner> list(String resourceGroupName, String serviceName, String apiId, String filter,
+        Integer top, Integer skip, Context context);
 }

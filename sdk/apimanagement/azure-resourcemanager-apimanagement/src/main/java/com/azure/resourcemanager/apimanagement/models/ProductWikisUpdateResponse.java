@@ -20,12 +20,8 @@ public final class ProductWikisUpdateResponse extends ResponseBase<ProductWikisU
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ProductWikisUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        WikiContractInner value,
-        ProductWikisUpdateHeaders headers) {
+    public ProductWikisUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        WikiContractInner value, ProductWikisUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

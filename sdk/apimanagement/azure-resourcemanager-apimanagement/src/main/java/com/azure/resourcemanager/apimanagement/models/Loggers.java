@@ -40,8 +40,8 @@ public interface Loggers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Logger list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<LoggerContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<LoggerContract> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the logger specified by its identifier.
@@ -55,8 +55,8 @@ public interface Loggers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the logger specified by its identifier.
      */
-    LoggersGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String loggerId, Context context);
+    LoggersGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName, String loggerId,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the logger specified by its identifier.
@@ -82,8 +82,8 @@ public interface Loggers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the logger specified by its identifier.
      */
-    Response<LoggerContract> getWithResponse(
-        String resourceGroupName, String serviceName, String loggerId, Context context);
+    Response<LoggerContract> getWithResponse(String resourceGroupName, String serviceName, String loggerId,
+        Context context);
 
     /**
      * Gets the details of the logger specified by its identifier.
@@ -112,8 +112,8 @@ public interface Loggers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String loggerId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String loggerId, String ifMatch,
+        Context context);
 
     /**
      * Deletes the specified logger.

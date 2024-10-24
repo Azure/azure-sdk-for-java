@@ -57,15 +57,8 @@ public interface ApisClient {
      * @return paged API list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ApiContractInner> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String tags,
-        Boolean expandApiVersionSet,
-        Context context);
+    PagedIterable<ApiContractInner> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, String tags, Boolean expandApiVersionSet, Context context);
 
     /**
      * Gets the entity state (Etag) version of the API specified by its identifier.
@@ -81,8 +74,8 @@ public interface ApisClient {
      * @return the entity state (Etag) version of the API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApisGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, Context context);
+    ApisGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName, String apiId,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the API specified by its identifier.
@@ -143,8 +136,8 @@ public interface ApisClient {
      * @return the {@link SyncPoller} for polling of aPI details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ApiContractInner>, ApiContractInner> beginCreateOrUpdate(
-        String resourceGroupName, String serviceName, String apiId, ApiCreateOrUpdateParameter parameters);
+    SyncPoller<PollResult<ApiContractInner>, ApiContractInner> beginCreateOrUpdate(String resourceGroupName,
+        String serviceName, String apiId, ApiCreateOrUpdateParameter parameters);
 
     /**
      * Creates new or updates existing specified API of the API Management service instance.
@@ -162,13 +155,8 @@ public interface ApisClient {
      * @return the {@link SyncPoller} for polling of aPI details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ApiContractInner>, ApiContractInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        ApiCreateOrUpdateParameter parameters,
-        String ifMatch,
-        Context context);
+    SyncPoller<PollResult<ApiContractInner>, ApiContractInner> beginCreateOrUpdate(String resourceGroupName,
+        String serviceName, String apiId, ApiCreateOrUpdateParameter parameters, String ifMatch, Context context);
 
     /**
      * Creates new or updates existing specified API of the API Management service instance.
@@ -184,8 +172,8 @@ public interface ApisClient {
      * @return aPI details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String apiId, ApiCreateOrUpdateParameter parameters);
+    ApiContractInner createOrUpdate(String resourceGroupName, String serviceName, String apiId,
+        ApiCreateOrUpdateParameter parameters);
 
     /**
      * Creates new or updates existing specified API of the API Management service instance.
@@ -203,13 +191,8 @@ public interface ApisClient {
      * @return aPI details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        ApiCreateOrUpdateParameter parameters,
-        String ifMatch,
-        Context context);
+    ApiContractInner createOrUpdate(String resourceGroupName, String serviceName, String apiId,
+        ApiCreateOrUpdateParameter parameters, String ifMatch, Context context);
 
     /**
      * Updates the specified API of the API Management service instance.
@@ -228,13 +211,8 @@ public interface ApisClient {
      * @return aPI details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApisUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String ifMatch,
-        ApiUpdateContract parameters,
-        Context context);
+    ApisUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String apiId, String ifMatch,
+        ApiUpdateContract parameters, Context context);
 
     /**
      * Updates the specified API of the API Management service instance.
@@ -252,8 +230,8 @@ public interface ApisClient {
      * @return aPI details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiContractInner update(
-        String resourceGroupName, String serviceName, String apiId, String ifMatch, ApiUpdateContract parameters);
+    ApiContractInner update(String resourceGroupName, String serviceName, String apiId, String ifMatch,
+        ApiUpdateContract parameters);
 
     /**
      * Deletes the specified API of the API Management service instance.
@@ -272,13 +250,8 @@ public interface ApisClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String ifMatch,
-        Boolean deleteRevisions,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String ifMatch,
+        Boolean deleteRevisions, Context context);
 
     /**
      * Deletes the specified API of the API Management service instance.
@@ -332,12 +305,6 @@ public interface ApisClient {
      * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TagResourceContractInner> listByTags(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean includeNotTaggedApis,
-        Context context);
+    PagedIterable<TagResourceContractInner> listByTags(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Boolean includeNotTaggedApis, Context context);
 }

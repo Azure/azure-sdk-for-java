@@ -21,12 +21,8 @@ public final class GraphQLApiResolverPoliciesGetResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public GraphQLApiResolverPoliciesGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        PolicyContractInner value,
-        GraphQLApiResolverPoliciesGetHeaders headers) {
+    public GraphQLApiResolverPoliciesGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        PolicyContractInner value, GraphQLApiResolverPoliciesGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

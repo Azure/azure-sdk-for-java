@@ -16,8 +16,7 @@ public final class ConnectivityCheckResponseImpl implements ConnectivityCheckRes
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    ConnectivityCheckResponseImpl(
-        ConnectivityCheckResponseInner innerObject,
+    ConnectivityCheckResponseImpl(ConnectivityCheckResponseInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

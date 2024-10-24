@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GroupContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GroupContractInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"displayName\":\"kyypzkgxfxfmy\",\"description\":\"sdbpokszanmh\",\"builtIn\":false,\"type\":\"custom\",\"externalId\":\"diuwki\"},\"id\":\"kskw\",\"name\":\"tsdetjygowifcq\",\"type\":\"olzkgys\"}")
-                .toObject(GroupContractInner.class);
+        GroupContractInner model = BinaryData.fromString(
+            "{\"properties\":{\"displayName\":\"kyypzkgxfxfmy\",\"description\":\"sdbpokszanmh\",\"builtIn\":false,\"type\":\"custom\",\"externalId\":\"diuwki\"},\"id\":\"kskw\",\"name\":\"tsdetjygowifcq\",\"type\":\"olzkgys\"}")
+            .toObject(GroupContractInner.class);
         Assertions.assertEquals("kyypzkgxfxfmy", model.displayName());
         Assertions.assertEquals("sdbpokszanmh", model.description());
         Assertions.assertEquals(GroupType.CUSTOM, model.typePropertiesType());
@@ -25,12 +23,10 @@ public final class GroupContractInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupContractInner model =
-            new GroupContractInner()
-                .withDisplayName("kyypzkgxfxfmy")
-                .withDescription("sdbpokszanmh")
-                .withTypePropertiesType(GroupType.CUSTOM)
-                .withExternalId("diuwki");
+        GroupContractInner model = new GroupContractInner().withDisplayName("kyypzkgxfxfmy")
+            .withDescription("sdbpokszanmh")
+            .withTypePropertiesType(GroupType.CUSTOM)
+            .withExternalId("diuwki");
         model = BinaryData.fromObject(model).toObject(GroupContractInner.class);
         Assertions.assertEquals("kyypzkgxfxfmy", model.displayName());
         Assertions.assertEquals("sdbpokszanmh", model.description());

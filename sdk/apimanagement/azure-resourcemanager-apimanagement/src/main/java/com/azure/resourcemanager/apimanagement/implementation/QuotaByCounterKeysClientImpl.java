@@ -42,8 +42,8 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
      * @param client the instance of the service client containing this operation class.
      */
     QuotaByCounterKeysClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy.create(QuotaByCounterKeysService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(QuotaByCounterKeysService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -54,36 +54,25 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientQ")
     public interface QuotaByCounterKeysService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/quotas/{quotaCounterKey}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/quotas/{quotaCounterKey}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QuotaCounterCollectionInner>> listByService(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("quotaCounterKey") String quotaCounterKey,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<QuotaCounterCollectionInner>> listByService(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("quotaCounterKey") String quotaCounterKey, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/quotas/{quotaCounterKey}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/quotas/{quotaCounterKey}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QuotaCounterCollectionInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("quotaCounterKey") String quotaCounterKey,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<QuotaCounterCollectionInner>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("quotaCounterKey") String quotaCounterKey, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") QuotaCounterValueUpdateContract parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -103,13 +92,11 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<QuotaCounterCollectionInner>> listByServiceWithResponseAsync(
-        String resourceGroupName, String serviceName, String quotaCounterKey) {
+    private Mono<Response<QuotaCounterCollectionInner>> listByServiceWithResponseAsync(String resourceGroupName,
+        String serviceName, String quotaCounterKey) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -123,25 +110,13 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
                 .error(new IllegalArgumentException("Parameter quotaCounterKey is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByService(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            quotaCounterKey,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.listByService(this.client.getEndpoint(), resourceGroupName, serviceName,
+                quotaCounterKey, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -163,13 +138,11 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<QuotaCounterCollectionInner>> listByServiceWithResponseAsync(
-        String resourceGroupName, String serviceName, String quotaCounterKey, Context context) {
+    private Mono<Response<QuotaCounterCollectionInner>> listByServiceWithResponseAsync(String resourceGroupName,
+        String serviceName, String quotaCounterKey, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -183,23 +156,13 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
                 .error(new IllegalArgumentException("Parameter quotaCounterKey is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByService(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                quotaCounterKey,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.listByService(this.client.getEndpoint(), resourceGroupName, serviceName, quotaCounterKey,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -218,8 +181,8 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
      * @return paged Quota Counter list representation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<QuotaCounterCollectionInner> listByServiceAsync(
-        String resourceGroupName, String serviceName, String quotaCounterKey) {
+    private Mono<QuotaCounterCollectionInner> listByServiceAsync(String resourceGroupName, String serviceName,
+        String quotaCounterKey) {
         return listByServiceWithResponseAsync(resourceGroupName, serviceName, quotaCounterKey)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -241,8 +204,8 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
      * @return paged Quota Counter list representation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QuotaCounterCollectionInner> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, String quotaCounterKey, Context context) {
+    public Response<QuotaCounterCollectionInner> listByServiceWithResponse(String resourceGroupName, String serviceName,
+        String quotaCounterKey, Context context) {
         return listByServiceWithResponseAsync(resourceGroupName, serviceName, quotaCounterKey, context).block();
     }
 
@@ -262,8 +225,8 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
      * @return paged Quota Counter list representation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public QuotaCounterCollectionInner listByService(
-        String resourceGroupName, String serviceName, String quotaCounterKey) {
+    public QuotaCounterCollectionInner listByService(String resourceGroupName, String serviceName,
+        String quotaCounterKey) {
         return listByServiceWithResponse(resourceGroupName, serviceName, quotaCounterKey, Context.NONE).getValue();
     }
 
@@ -285,16 +248,11 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<QuotaCounterCollectionInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String quotaCounterKey,
-        QuotaCounterValueUpdateContract parameters) {
+    private Mono<Response<QuotaCounterCollectionInner>> updateWithResponseAsync(String resourceGroupName,
+        String serviceName, String quotaCounterKey, QuotaCounterValueUpdateContract parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -308,10 +266,8 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
                 .error(new IllegalArgumentException("Parameter quotaCounterKey is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -321,18 +277,8 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            quotaCounterKey,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), resourceGroupName, serviceName, quotaCounterKey,
+                    this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -355,17 +301,11 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<QuotaCounterCollectionInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String quotaCounterKey,
-        QuotaCounterValueUpdateContract parameters,
-        Context context) {
+    private Mono<Response<QuotaCounterCollectionInner>> updateWithResponseAsync(String resourceGroupName,
+        String serviceName, String quotaCounterKey, QuotaCounterValueUpdateContract parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -379,10 +319,8 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
                 .error(new IllegalArgumentException("Parameter quotaCounterKey is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -391,17 +329,8 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                quotaCounterKey,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, serviceName, quotaCounterKey,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -421,11 +350,8 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
      * @return paged Quota Counter list representation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<QuotaCounterCollectionInner> updateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String quotaCounterKey,
-        QuotaCounterValueUpdateContract parameters) {
+    private Mono<QuotaCounterCollectionInner> updateAsync(String resourceGroupName, String serviceName,
+        String quotaCounterKey, QuotaCounterValueUpdateContract parameters) {
         return updateWithResponseAsync(resourceGroupName, serviceName, quotaCounterKey, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -448,12 +374,8 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
      * @return paged Quota Counter list representation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QuotaCounterCollectionInner> updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String quotaCounterKey,
-        QuotaCounterValueUpdateContract parameters,
-        Context context) {
+    public Response<QuotaCounterCollectionInner> updateWithResponse(String resourceGroupName, String serviceName,
+        String quotaCounterKey, QuotaCounterValueUpdateContract parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, serviceName, quotaCounterKey, parameters, context).block();
     }
 
@@ -474,10 +396,7 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
      * @return paged Quota Counter list representation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public QuotaCounterCollectionInner update(
-        String resourceGroupName,
-        String serviceName,
-        String quotaCounterKey,
+    public QuotaCounterCollectionInner update(String resourceGroupName, String serviceName, String quotaCounterKey,
         QuotaCounterValueUpdateContract parameters) {
         return updateWithResponse(resourceGroupName, serviceName, quotaCounterKey, parameters, Context.NONE).getValue();
     }

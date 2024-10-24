@@ -21,12 +21,8 @@ public final class DiagnosticsCreateOrUpdateResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public DiagnosticsCreateOrUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        DiagnosticContractInner value,
-        DiagnosticsCreateOrUpdateHeaders headers) {
+    public DiagnosticsCreateOrUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        DiagnosticContractInner value, DiagnosticsCreateOrUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

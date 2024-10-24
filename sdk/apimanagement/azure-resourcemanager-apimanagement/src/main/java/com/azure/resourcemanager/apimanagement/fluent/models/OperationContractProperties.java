@@ -147,22 +147,16 @@ public final class OperationContractProperties extends OperationEntityBaseContra
     public void validate() {
         super.validate();
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model OperationContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property displayName in model OperationContractProperties"));
         }
         if (method() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property method in model OperationContractProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property method in model OperationContractProperties"));
         }
         if (urlTemplate() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property urlTemplate in model OperationContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property urlTemplate in model OperationContractProperties"));
         }
     }
 

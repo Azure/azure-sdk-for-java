@@ -51,12 +51,6 @@ public interface ProductSubscriptionsClient {
      * @return paged Subscriptions list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SubscriptionContractInner> list(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<SubscriptionContractInner> list(String resourceGroupName, String serviceName, String productId,
+        String filter, Integer top, Integer skip, Context context);
 }

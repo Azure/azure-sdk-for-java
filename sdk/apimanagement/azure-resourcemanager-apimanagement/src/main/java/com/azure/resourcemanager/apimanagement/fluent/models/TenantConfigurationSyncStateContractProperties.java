@@ -206,8 +206,8 @@ public final class TenantConfigurationSyncStateContractProperties {
      * @param configurationChangeDate the configurationChangeDate value to set.
      * @return the TenantConfigurationSyncStateContractProperties object itself.
      */
-    public TenantConfigurationSyncStateContractProperties withConfigurationChangeDate(
-        OffsetDateTime configurationChangeDate) {
+    public TenantConfigurationSyncStateContractProperties
+        withConfigurationChangeDate(OffsetDateTime configurationChangeDate) {
         this.configurationChangeDate = configurationChangeDate;
         return this;
     }
