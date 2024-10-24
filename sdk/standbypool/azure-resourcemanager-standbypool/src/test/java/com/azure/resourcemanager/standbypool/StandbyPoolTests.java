@@ -20,6 +20,8 @@ import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
 import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolElasticityProfile;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResource;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceProperties;
@@ -47,6 +49,7 @@ public class StandbyPoolTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
     private static final Region REGION = Region.US_WEST2;
     private String resourceGroupName = "rg" + randomPadding();
+    private ResourceManager resourceManager;
     private StandbyPoolManager standbyPoolManager;
     private ComputeManager computeManager;
 
@@ -55,14 +58,21 @@ public class StandbyPoolTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
+        resourceManager = ResourceManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile)
+            .withDefaultSubscription();
+
         standbyPoolManager = StandbyPoolManager
                 .configure()
                 .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
                 .authenticate(credential, profile);
 
         computeManager = ComputeManager
                 .configure()
                 .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
                 .authenticate(credential, profile);
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
@@ -71,7 +81,7 @@ public class StandbyPoolTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            computeManager.resourceManager().resourceGroups()
+            resourceManager.resourceGroups()
                     .define(resourceGroupName)
                     .withRegion(REGION)
                     .create();
@@ -81,7 +91,7 @@ public class StandbyPoolTests extends TestProxyTestBase {
     @Override
     protected void afterTest() {
         if (!testEnv) {
-            computeManager.resourceManager().resourceGroups().beginDeleteByName(resourceGroupName);
+            resourceManager.resourceGroups().beginDeleteByName(resourceGroupName);
         }
     }
 
