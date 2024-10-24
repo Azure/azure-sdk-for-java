@@ -290,9 +290,8 @@ if (!detachedReceivedShare.isPresent()) {
     return;
 }
 
-String receivedShareId = new ObjectMapper().readValue(detachedReceivedShare.get().toString(), ObjectNode.class)
-    .get("id")
-    .textValue();
+String receivedShareId = detachedReceivedShare.map(binaryData -> binaryData.toObject(ReceivedShare.class).getId())
+    .orElse(null);
 
 InPlaceReceivedShare receivedShare = new InPlaceReceivedShare()
     .setProperties(new InPlaceReceivedShareProperties().setDisplayName("my-received-share"));
