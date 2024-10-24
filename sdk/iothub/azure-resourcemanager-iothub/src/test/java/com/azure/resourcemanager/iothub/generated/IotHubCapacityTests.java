@@ -10,11 +10,9 @@ import com.azure.resourcemanager.iothub.models.IotHubCapacity;
 public final class IotHubCapacityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IotHubCapacity model =
-            BinaryData
-                .fromString(
-                    "{\"minimum\":7155833165465337925,\"maximum\":7252038308965637311,\"default\":3647688567520643313,\"scaleType\":\"Manual\"}")
-                .toObject(IotHubCapacity.class);
+        IotHubCapacity model = BinaryData.fromString(
+            "{\"minimum\":7155833165465337925,\"maximum\":7252038308965637311,\"default\":3647688567520643313,\"scaleType\":\"Manual\"}")
+            .toObject(IotHubCapacity.class);
     }
 
     @org.junit.jupiter.api.Test
