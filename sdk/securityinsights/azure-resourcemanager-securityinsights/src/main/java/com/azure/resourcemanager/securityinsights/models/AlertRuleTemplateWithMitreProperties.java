@@ -5,27 +5,48 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Alert rule template with MITRE property bag. */
+/**
+ * Alert rule template with MITRE property bag.
+ */
 @Fluent
 public class AlertRuleTemplateWithMitreProperties extends AlertRuleTemplatePropertiesBase {
     /*
      * The tactics of the alert rule
      */
-    @JsonProperty(value = "tactics")
     private List<AttackTactic> tactics;
 
     /*
      * The techniques of the alert rule
      */
-    @JsonProperty(value = "techniques")
     private List<String> techniques;
+
+    /*
+     * The time that this alert rule template has been added.
+     */
+    private OffsetDateTime createdDateUtc;
+
+    /*
+     * The last time that this alert rule template has been updated.
+     */
+    private OffsetDateTime lastUpdatedDateUtc;
+
+    /**
+     * Creates an instance of AlertRuleTemplateWithMitreProperties class.
+     */
+    public AlertRuleTemplateWithMitreProperties() {
+    }
 
     /**
      * Get the tactics property: The tactics of the alert rule.
-     *
+     * 
      * @return the tactics value.
      */
     public List<AttackTactic> tactics() {
@@ -34,7 +55,7 @@ public class AlertRuleTemplateWithMitreProperties extends AlertRuleTemplatePrope
 
     /**
      * Set the tactics property: The tactics of the alert rule.
-     *
+     * 
      * @param tactics the tactics value to set.
      * @return the AlertRuleTemplateWithMitreProperties object itself.
      */
@@ -45,7 +66,7 @@ public class AlertRuleTemplateWithMitreProperties extends AlertRuleTemplatePrope
 
     /**
      * Get the techniques property: The techniques of the alert rule.
-     *
+     * 
      * @return the techniques value.
      */
     public List<String> techniques() {
@@ -54,7 +75,7 @@ public class AlertRuleTemplateWithMitreProperties extends AlertRuleTemplatePrope
 
     /**
      * Set the techniques property: The techniques of the alert rule.
-     *
+     * 
      * @param techniques the techniques value to set.
      * @return the AlertRuleTemplateWithMitreProperties object itself.
      */
@@ -63,37 +84,67 @@ public class AlertRuleTemplateWithMitreProperties extends AlertRuleTemplatePrope
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the createdDateUtc property: The time that this alert rule template has been added.
+     * 
+     * @return the createdDateUtc value.
+     */
     @Override
-    public AlertRuleTemplateWithMitreProperties withAlertRulesCreatedByTemplateCount(
-        Integer alertRulesCreatedByTemplateCount) {
+    public OffsetDateTime createdDateUtc() {
+        return this.createdDateUtc;
+    }
+
+    /**
+     * Get the lastUpdatedDateUtc property: The last time that this alert rule template has been updated.
+     * 
+     * @return the lastUpdatedDateUtc value.
+     */
+    @Override
+    public OffsetDateTime lastUpdatedDateUtc() {
+        return this.lastUpdatedDateUtc;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AlertRuleTemplateWithMitreProperties
+        withAlertRulesCreatedByTemplateCount(Integer alertRulesCreatedByTemplateCount) {
         super.withAlertRulesCreatedByTemplateCount(alertRulesCreatedByTemplateCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AlertRuleTemplateWithMitreProperties withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AlertRuleTemplateWithMitreProperties withDisplayName(String displayName) {
         super.withDisplayName(displayName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AlertRuleTemplateWithMitreProperties withRequiredDataConnectors(
-        List<AlertRuleTemplateDataSource> requiredDataConnectors) {
+    public AlertRuleTemplateWithMitreProperties
+        withRequiredDataConnectors(List<AlertRuleTemplateDataSource> requiredDataConnectors) {
         super.withRequiredDataConnectors(requiredDataConnectors);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AlertRuleTemplateWithMitreProperties withStatus(TemplateStatus status) {
         super.withStatus(status);
@@ -102,11 +153,83 @@ public class AlertRuleTemplateWithMitreProperties extends AlertRuleTemplatePrope
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (requiredDataConnectors() != null) {
+            requiredDataConnectors().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("alertRulesCreatedByTemplateCount", alertRulesCreatedByTemplateCount());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("displayName", displayName());
+        jsonWriter.writeArrayField("requiredDataConnectors", requiredDataConnectors(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("status", status() == null ? null : status().toString());
+        jsonWriter.writeArrayField("tactics", this.tactics,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("techniques", this.techniques, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertRuleTemplateWithMitreProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertRuleTemplateWithMitreProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AlertRuleTemplateWithMitreProperties.
+     */
+    public static AlertRuleTemplateWithMitreProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertRuleTemplateWithMitreProperties deserializedAlertRuleTemplateWithMitreProperties
+                = new AlertRuleTemplateWithMitreProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("alertRulesCreatedByTemplateCount".equals(fieldName)) {
+                    deserializedAlertRuleTemplateWithMitreProperties
+                        .withAlertRulesCreatedByTemplateCount(reader.getNullable(JsonReader::getInt));
+                } else if ("lastUpdatedDateUTC".equals(fieldName)) {
+                    deserializedAlertRuleTemplateWithMitreProperties.lastUpdatedDateUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("createdDateUTC".equals(fieldName)) {
+                    deserializedAlertRuleTemplateWithMitreProperties.createdDateUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedAlertRuleTemplateWithMitreProperties.withDescription(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedAlertRuleTemplateWithMitreProperties.withDisplayName(reader.getString());
+                } else if ("requiredDataConnectors".equals(fieldName)) {
+                    List<AlertRuleTemplateDataSource> requiredDataConnectors
+                        = reader.readArray(reader1 -> AlertRuleTemplateDataSource.fromJson(reader1));
+                    deserializedAlertRuleTemplateWithMitreProperties.withRequiredDataConnectors(requiredDataConnectors);
+                } else if ("status".equals(fieldName)) {
+                    deserializedAlertRuleTemplateWithMitreProperties
+                        .withStatus(TemplateStatus.fromString(reader.getString()));
+                } else if ("tactics".equals(fieldName)) {
+                    List<AttackTactic> tactics
+                        = reader.readArray(reader1 -> AttackTactic.fromString(reader1.getString()));
+                    deserializedAlertRuleTemplateWithMitreProperties.tactics = tactics;
+                } else if ("techniques".equals(fieldName)) {
+                    List<String> techniques = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAlertRuleTemplateWithMitreProperties.techniques = techniques;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertRuleTemplateWithMitreProperties;
+        });
     }
 }

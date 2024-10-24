@@ -33,11 +33,30 @@ public final class AppConfigurationKeyValueSelector {
     public static final String LABEL_SEPARATOR = ",";
 
     @NotNull
+    /**
+     * Key filter to use when loading configurations. The default value is
+     * "/application/". The key filter is used to filter configurations by key.
+     * The key filter must be a non-null string that does not contain an asterisk.
+     */
     private String keyFilter = "";
 
+    /**
+     * Label filter to use when loading configurations. The label filter is used to
+     * filter configurations by label. If the label filter is not set, the default
+     * value is the current active Spring profiles. If no active profiles are set,
+     * then all configurations with no label are loaded. The label filter must be a
+     * non-null string that does not contain an asterisk.
+     */
     private String labelFilter;
 
+    /**
+     * Snapshot name to use when loading configurations. The snapshot name is used
+     * to load configurations from a snapshot. If the snapshot name is set, the key
+     * and label filters must not be set. The snapshot name must be a non-null
+     * string that does not contain an asterisk.
+     */
     private String snapshotName = "";
+
     /**
      * @return the keyFilter
      */
@@ -55,8 +74,10 @@ public final class AppConfigurationKeyValueSelector {
     }
 
     /**
-     * @param profiles List of current Spring profiles to default to using is null label is set.
-     * @return List of reversed label values, which are split by the separator, the latter label has higher priority
+     * @param profiles List of current Spring profiles to default to using is null
+     *                 label is set.
+     * @return List of reversed label values, which are split by the separator, the
+     *         latter label has higher priority
      */
     public String[] getLabelFilter(List<String> profiles) {
         if (labelFilter == null && profiles.size() > 0) {

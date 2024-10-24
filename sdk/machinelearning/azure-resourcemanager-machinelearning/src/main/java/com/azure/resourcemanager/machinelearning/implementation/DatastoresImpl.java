@@ -13,8 +13,8 @@ import com.azure.resourcemanager.machinelearning.fluent.DatastoresClient;
 import com.azure.resourcemanager.machinelearning.fluent.models.DatastoreInner;
 import com.azure.resourcemanager.machinelearning.fluent.models.DatastoreSecretsInner;
 import com.azure.resourcemanager.machinelearning.models.Datastore;
-import com.azure.resourcemanager.machinelearning.models.DatastoreSecrets;
 import com.azure.resourcemanager.machinelearning.models.Datastores;
+import com.azure.resourcemanager.machinelearning.models.DatastoreSecrets;
 import java.util.List;
 
 public final class DatastoresImpl implements Datastores {
@@ -24,47 +24,27 @@ public final class DatastoresImpl implements Datastores {
 
     private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
-    public DatastoresImpl(
-        DatastoresClient innerClient, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
+    public DatastoresImpl(DatastoresClient innerClient,
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Datastore> list(String resourceGroupName, String workspaceName) {
         PagedIterable<DatastoreInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new DatastoreImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DatastoreImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Datastore> list(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        Integer count,
-        Boolean isDefault,
-        List<String> names,
-        String searchText,
-        String orderBy,
-        Boolean orderByAsc,
+    public PagedIterable<Datastore> list(String resourceGroupName, String workspaceName, String skip, Integer count,
+        Boolean isDefault, List<String> names, String searchText, String orderBy, Boolean orderByAsc, Context context) {
+        PagedIterable<DatastoreInner> inner = this.serviceClient()
+            .list(resourceGroupName, workspaceName, skip, count, isDefault, names, searchText, orderBy, orderByAsc,
+                context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DatastoreImpl(inner1, this.manager()));
+    }
+
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String name,
         Context context) {
-        PagedIterable<DatastoreInner> inner =
-            this
-                .serviceClient()
-                .list(
-                    resourceGroupName,
-                    workspaceName,
-                    skip,
-                    count,
-                    isDefault,
-                    names,
-                    searchText,
-                    orderBy,
-                    orderByAsc,
-                    context);
-        return Utils.mapPage(inner, inner1 -> new DatastoreImpl(inner1, this.manager()));
-    }
-
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String name, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, name, context);
     }
 
@@ -72,15 +52,12 @@ public final class DatastoresImpl implements Datastores {
         this.serviceClient().delete(resourceGroupName, workspaceName, name);
     }
 
-    public Response<Datastore> getWithResponse(
-        String resourceGroupName, String workspaceName, String name, Context context) {
-        Response<DatastoreInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, name, context);
+    public Response<Datastore> getWithResponse(String resourceGroupName, String workspaceName, String name,
+        Context context) {
+        Response<DatastoreInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, name, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DatastoreImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -96,15 +73,12 @@ public final class DatastoresImpl implements Datastores {
         }
     }
 
-    public Response<DatastoreSecrets> listSecretsWithResponse(
-        String resourceGroupName, String workspaceName, String name, Context context) {
-        Response<DatastoreSecretsInner> inner =
-            this.serviceClient().listSecretsWithResponse(resourceGroupName, workspaceName, name, context);
+    public Response<DatastoreSecrets> listSecretsWithResponse(String resourceGroupName, String workspaceName,
+        String name, Context context) {
+        Response<DatastoreSecretsInner> inner
+            = this.serviceClient().listSecretsWithResponse(resourceGroupName, workspaceName, name, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DatastoreSecretsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -121,105 +95,77 @@ public final class DatastoresImpl implements Datastores {
     }
 
     public Datastore getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "datastores");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "datastores");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'datastores'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'datastores'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, name, Context.NONE).getValue();
     }
 
     public Response<Datastore> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "datastores");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "datastores");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'datastores'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'datastores'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, name, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "datastores");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "datastores");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'datastores'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'datastores'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, workspaceName, name, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "datastores");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "datastores");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'datastores'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'datastores'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, workspaceName, name, context);
     }

@@ -14,5 +14,5 @@ module com.azure.identity {
     exports com.azure.identity;
     exports com.azure.identity.implementation to com.azure.identity.broker;
     opens com.azure.identity to com.azure.identity.broker;
-    opens com.azure.identity.implementation to com.fasterxml.jackson.databind, com.azure.identity.broker, com.azure.core;
+    opens com.azure.identity.implementation to com.azure.identity.broker, com.azure.core;
 }

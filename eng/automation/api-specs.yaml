@@ -13,6 +13,8 @@ azure-kusto:
   service: kusto
 azurelargeinstance:
   service: largeinstance
+azurestackhci/Microsoft.AzureStackHCI/StackHCI:
+  service: azurestackhci
 cdn:
   suffix: generated
 compute:
@@ -96,6 +98,8 @@ postgresqlhsc:
   service: cosmosdbforpostgresql
 privatedns:
   suffix: generated
+redhatopenshift/Microsoft.RedHatOpenShift/openshiftclusters:
+  service: redhatopenshift
 redis:
   suffix: generated
 resources:

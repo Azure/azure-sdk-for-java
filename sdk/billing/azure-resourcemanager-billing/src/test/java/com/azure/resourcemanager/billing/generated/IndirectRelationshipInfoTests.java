@@ -11,26 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class IndirectRelationshipInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IndirectRelationshipInfo model =
-            BinaryData
-                .fromString(
-                    "{\"billingAccountName\":\"bdkvwrwjf\",\"billingProfileName\":\"snhu\",\"displayName\":\"eltmrldhugjzzdat\"}")
-                .toObject(IndirectRelationshipInfo.class);
-        Assertions.assertEquals("bdkvwrwjf", model.billingAccountName());
-        Assertions.assertEquals("snhu", model.billingProfileName());
-        Assertions.assertEquals("eltmrldhugjzzdat", model.displayName());
+        IndirectRelationshipInfo model = BinaryData.fromString(
+            "{\"billingAccountName\":\"fbebrjcxer\",\"billingProfileName\":\"wutttxfvjrbi\",\"displayName\":\"hxepcyvahfnlj\"}")
+            .toObject(IndirectRelationshipInfo.class);
+        Assertions.assertEquals("fbebrjcxer", model.billingAccountName());
+        Assertions.assertEquals("wutttxfvjrbi", model.billingProfileName());
+        Assertions.assertEquals("hxepcyvahfnlj", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IndirectRelationshipInfo model =
-            new IndirectRelationshipInfo()
-                .withBillingAccountName("bdkvwrwjf")
-                .withBillingProfileName("snhu")
-                .withDisplayName("eltmrldhugjzzdat");
+        IndirectRelationshipInfo model = new IndirectRelationshipInfo().withBillingAccountName("fbebrjcxer")
+            .withBillingProfileName("wutttxfvjrbi")
+            .withDisplayName("hxepcyvahfnlj");
         model = BinaryData.fromObject(model).toObject(IndirectRelationshipInfo.class);
-        Assertions.assertEquals("bdkvwrwjf", model.billingAccountName());
-        Assertions.assertEquals("snhu", model.billingProfileName());
-        Assertions.assertEquals("eltmrldhugjzzdat", model.displayName());
+        Assertions.assertEquals("fbebrjcxer", model.billingAccountName());
+        Assertions.assertEquals("wutttxfvjrbi", model.billingProfileName());
+        Assertions.assertEquals("hxepcyvahfnlj", model.displayName());
     }
 }

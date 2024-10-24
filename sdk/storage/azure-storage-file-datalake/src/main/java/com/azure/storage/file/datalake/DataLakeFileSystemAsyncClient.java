@@ -778,8 +778,8 @@ public class DataLakeFileSystemAsyncClient {
 
         return StorageImplUtils.applyOptionalTimeout(
             this.azureDataLakeStorage.getFileSystems().listPathsWithResponseAsync(options.isRecursive(), null, null,
-                marker, options.getPath(), options.getMaxResults(),
-                options.isUserPrincipalNameReturned(),  Context.NONE), timeout);
+                marker, options.getPath(), options.getMaxResults(), options.isUserPrincipalNameReturned(),
+                Context.NONE), timeout);
     }
 
     /**
@@ -868,9 +868,8 @@ public class DataLakeFileSystemAsyncClient {
         context = context == null ? Context.NONE : context;
 
         return StorageImplUtils.applyOptionalTimeout(
-            this.blobDataLakeStorageFs.getFileSystems().listBlobHierarchySegmentWithResponseAsync(
-                prefix, null, marker, maxResults,
-                null, ListBlobsShowOnly.DELETED, null, null, context), timeout);
+            this.blobDataLakeStorageFs.getFileSystems().listBlobHierarchySegmentWithResponseAsync(prefix, null, marker,
+                maxResults, null, ListBlobsShowOnly.DELETED, null, null, context), timeout);
     }
 
     /**

@@ -4,8 +4,8 @@
 package com.azure.monitor.opentelemetry.exporter.implementation;
 
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.AbstractTelemetryBuilder;
+import com.azure.monitor.opentelemetry.exporter.implementation.builders.ExceptionDetailBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.ExceptionTelemetryBuilder;
-import com.azure.monitor.opentelemetry.exporter.implementation.builders.Exceptions;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.MessageTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.RemoteDependencyTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.RequestTelemetryBuilder;
@@ -36,6 +36,7 @@ import java.util.function.Consumer;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.MappingsBuilder.MappingType.SPAN;
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -767,9 +768,7 @@ public final class SpanDataMapper {
                     if (stacktrace != null && !shouldSuppress.test(span, event)) {
                         String exceptionLogged = span.getAttributes().get(AiSemanticAttributes.LOGGED_EXCEPTION);
                         if (!stacktrace.equals(exceptionLogged)) {
-                            consumer.accept(createExceptionTelemetryItem(
-                                event.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE), span, operationName,
-                                sampleRate));
+                            consumer.accept(createExceptionTelemetryItem(event, span, operationName, sampleRate));
                         }
                     }
                 }
@@ -800,7 +799,7 @@ public final class SpanDataMapper {
         }
     }
 
-    private TelemetryItem createExceptionTelemetryItem(String errorStack, SpanData span, @Nullable String operationName,
+    private TelemetryItem createExceptionTelemetryItem(EventData event, SpanData span, @Nullable String operationName,
         @Nullable Double sampleRate) {
 
         ExceptionTelemetryBuilder telemetryBuilder = ExceptionTelemetryBuilder.create();
@@ -814,15 +813,31 @@ public final class SpanDataMapper {
         } else {
             setOperationName(telemetryBuilder, span.getAttributes());
         }
-        setTime(telemetryBuilder, span.getEndEpochNanos());
+        setTime(telemetryBuilder, event.getEpochNanos());
         setSampleRate(telemetryBuilder, sampleRate);
 
+        // TODO (trask) should this map the span attributes or the event attributes?
         MAPPINGS.map(span.getAttributes(), telemetryBuilder);
 
         // set exception-specific properties
-        telemetryBuilder.setExceptions(Exceptions.minimalParse(errorStack));
+        String errorStack = event.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE);
+        setExceptions(errorStack, event.getAttributes(), telemetryBuilder);
 
         return telemetryBuilder.build();
+    }
+
+    static void setExceptions(String stack, Attributes attributes, ExceptionTelemetryBuilder telemetryBuilder) {
+        ExceptionDetailBuilder builder = new ExceptionDetailBuilder();
+        String type = attributes.get(SemanticAttributes.EXCEPTION_TYPE);
+        if (type != null && !type.isEmpty()) {
+            builder.setTypeName(type);
+        }
+        String message = attributes.get(SemanticAttributes.EXCEPTION_MESSAGE);
+        if (message != null && !message.isEmpty()) {
+            builder.setMessage(message);
+        }
+        builder.setStack(stack);
+        telemetryBuilder.setExceptions(singletonList(builder));
     }
 
     public static <T> T getStableOrOldAttribute(Attributes attributes, AttributeKey<T> stable, AttributeKey<T> old) {

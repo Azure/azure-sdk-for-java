@@ -3,10 +3,8 @@
 
 package com.azure.security.keyvault.jca.implementation.certificates;
 
-import static java.util.logging.Level.INFO;
-import static java.util.logging.Level.WARNING;
+import org.apache.commons.codec.digest.DigestUtils;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,8 +13,6 @@ import java.security.Key;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,7 +22,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-import org.apache.commons.codec.digest.DigestUtils;
+
+import static com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.loadX509CertificateFromFile;
+import static com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.loadX509CertificatesFromFile;
+import static java.util.logging.Level.INFO;
+import static java.util.logging.Level.WARNING;
 
 /**
  * Store certificates loaded from file system.
@@ -51,6 +51,11 @@ public final class SpecificPathCertificates implements AzureCertificates {
     private final Map<String, Certificate> certificates = new HashMap<>();
 
     /**
+     * Stores the certificate chains by alias.
+     */
+    private final Map<String, Certificate[]> certificateChains = new HashMap<>();
+
+    /**
      * Stores the specific path certificate keys by alias.
      */
     private final Map<String, Key> certificateKeys = new HashMap<>();
@@ -67,6 +72,15 @@ public final class SpecificPathCertificates implements AzureCertificates {
         return certificates;
     }
 
+    /**
+     * Get certificate chains.
+     * @return certificate chains
+     */
+    @Override
+    public Map<String, Certificate[]> getCertificateChains() {
+        return certificateChains;
+    }
+
     @Override
     public Map<String, Key> getCertificateKeys() {
         return certificateKeys;
@@ -76,6 +90,7 @@ public final class SpecificPathCertificates implements AzureCertificates {
     public void deleteEntry(String alias) {
         aliases.remove(alias);
         certificates.remove(alias);
+        certificateChains.remove(alias);
         certificateKeys.remove(alias);
     }
 
@@ -103,23 +118,23 @@ public final class SpecificPathCertificates implements AzureCertificates {
         }
         aliases.add(alias);
         certificates.put(alias, certificate);
+        certificateChains.put(alias, new Certificate[]{certificate});
     }
 
     /**
      * If the file can be parsed into a certificate, add it to the list
      *
-     * @param file file which try to parsed into a certificate
+     * @param file file which try to parse into a certificate
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     private void setCertificateByFile(File file) throws IOException {
-        X509Certificate certificate;
-        try (InputStream inputStream = new FileInputStream(file);
-            BufferedInputStream bytes = new BufferedInputStream(inputStream)) {
+        Certificate certificate;
+        try (InputStream inputStream = new FileInputStream(file)) {
             String alias = toCertificateAlias(file);
-            CertificateFactory cf = CertificateFactory.getInstance("X.509");
-            certificate = (X509Certificate) cf.generateCertificate(bytes);
+            certificate = loadX509CertificateFromFile(inputStream);
             if (certificate != null) {
                 setCertificateEntry(alias, certificate);
+                certificateChains.put(alias, loadX509CertificatesFromFile(inputStream));
                 LOGGER.log(INFO, "Load certificate from specific path. alias = {0}, thumbprint = {1}, file = {2}",
                     new Object[]{alias, getThumbprint(certificate), file.getName()});
             }

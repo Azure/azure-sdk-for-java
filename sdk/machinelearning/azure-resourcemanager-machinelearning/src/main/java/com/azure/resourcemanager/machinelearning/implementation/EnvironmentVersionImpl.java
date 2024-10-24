@@ -7,6 +7,7 @@ package com.azure.resourcemanager.machinelearning.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.fluent.models.EnvironmentVersionInner;
+import com.azure.resourcemanager.machinelearning.models.DestinationAsset;
 import com.azure.resourcemanager.machinelearning.models.EnvironmentVersion;
 import com.azure.resourcemanager.machinelearning.models.EnvironmentVersionProperties;
 
@@ -64,28 +65,24 @@ public final class EnvironmentVersionImpl
     }
 
     public EnvironmentVersion create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironmentVersions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, name, version, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironmentVersions()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public EnvironmentVersion create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironmentVersions()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironmentVersions()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    EnvironmentVersionImpl(
-        String name, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
+    EnvironmentVersionImpl(String name,
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = new EnvironmentVersionInner();
         this.serviceManager = serviceManager;
         this.version = name;
@@ -96,55 +93,54 @@ public final class EnvironmentVersionImpl
     }
 
     public EnvironmentVersion apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironmentVersions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, name, version, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironmentVersions()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public EnvironmentVersion apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironmentVersions()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironmentVersions()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    EnvironmentVersionImpl(
-        EnvironmentVersionInner innerObject,
+    EnvironmentVersionImpl(EnvironmentVersionInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "environments");
-        this.version = Utils.getValueFromIdByName(innerObject.id(), "versions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "environments");
+        this.version = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "versions");
     }
 
     public EnvironmentVersion refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironmentVersions()
-                .getWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironmentVersions()
+            .getWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE)
+            .getValue();
         return this;
     }
 
     public EnvironmentVersion refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironmentVersions()
-                .getWithResponse(resourceGroupName, workspaceName, name, version, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironmentVersions()
+            .getWithResponse(resourceGroupName, workspaceName, name, version, context)
+            .getValue();
         return this;
+    }
+
+    public void publish(DestinationAsset body) {
+        serviceManager.environmentVersions().publish(resourceGroupName, workspaceName, name, version, body);
+    }
+
+    public void publish(DestinationAsset body, Context context) {
+        serviceManager.environmentVersions().publish(resourceGroupName, workspaceName, name, version, body, context);
     }
 
     public EnvironmentVersionImpl withProperties(EnvironmentVersionProperties properties) {

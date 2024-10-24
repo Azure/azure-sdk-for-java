@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.machinelearning.fluent.models.DatastoreSecretsInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
-/** Datastore SAS secrets. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "secretsType")
-@JsonTypeName("Sas")
+/**
+ * Datastore SAS secrets.
+ */
 @Fluent
 public final class SasDatastoreSecrets extends DatastoreSecretsInner {
     /*
+     * [Required] Credential type used to authentication with storage.
+     */
+    private SecretsType secretsType = SecretsType.SAS;
+
+    /*
      * Storage container SAS token.
      */
-    @JsonProperty(value = "sasToken")
     private String sasToken;
 
-    /** Creates an instance of SasDatastoreSecrets class. */
+    /**
+     * Creates an instance of SasDatastoreSecrets class.
+     */
     public SasDatastoreSecrets() {
     }
 
     /**
+     * Get the secretsType property: [Required] Credential type used to authentication with storage.
+     * 
+     * @return the secretsType value.
+     */
+    @Override
+    public SecretsType secretsType() {
+        return this.secretsType;
+    }
+
+    /**
      * Get the sasToken property: Storage container SAS token.
-     *
+     * 
      * @return the sasToken value.
      */
     public String sasToken() {
@@ -36,7 +53,7 @@ public final class SasDatastoreSecrets extends DatastoreSecretsInner {
 
     /**
      * Set the sasToken property: Storage container SAS token.
-     *
+     * 
      * @param sasToken the sasToken value to set.
      * @return the SasDatastoreSecrets object itself.
      */
@@ -47,11 +64,50 @@ public final class SasDatastoreSecrets extends DatastoreSecretsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("secretsType", this.secretsType == null ? null : this.secretsType.toString());
+        jsonWriter.writeStringField("sasToken", this.sasToken);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SasDatastoreSecrets from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SasDatastoreSecrets if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SasDatastoreSecrets.
+     */
+    public static SasDatastoreSecrets fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SasDatastoreSecrets deserializedSasDatastoreSecrets = new SasDatastoreSecrets();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("secretsType".equals(fieldName)) {
+                    deserializedSasDatastoreSecrets.secretsType = SecretsType.fromString(reader.getString());
+                } else if ("sasToken".equals(fieldName)) {
+                    deserializedSasDatastoreSecrets.sasToken = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSasDatastoreSecrets;
+        });
     }
 }

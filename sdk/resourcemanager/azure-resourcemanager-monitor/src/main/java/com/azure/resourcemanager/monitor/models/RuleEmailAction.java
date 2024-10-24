@@ -5,36 +5,49 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Specifies the action to send email when the rule condition is evaluated. The discriminator is always RuleEmailAction
  * in this case.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
-@JsonTypeName("Microsoft.Azure.Management.Insights.Models.RuleEmailAction")
 @Fluent
 public final class RuleEmailAction extends RuleAction {
+    /*
+     * specifies the type of the action. There are two types of actions: RuleEmailAction and RuleWebhookAction.
+     */
+    private String odataType = "Microsoft.Azure.Management.Insights.Models.RuleEmailAction";
+
     /*
      * Whether the administrators (service and co-administrators) of the service should be notified when the alert is
      * activated.
      */
-    @JsonProperty(value = "sendToServiceOwners")
     private Boolean sendToServiceOwners;
 
     /*
      * the list of administrator's custom email addresses to notify of the activation of the alert.
      */
-    @JsonProperty(value = "customEmails")
     private List<String> customEmails;
 
     /**
      * Creates an instance of RuleEmailAction class.
      */
     public RuleEmailAction() {
+    }
+
+    /**
+     * Get the odataType property: specifies the type of the action. There are two types of actions: RuleEmailAction and
+     * RuleWebhookAction.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
     }
 
     /**
@@ -89,5 +102,48 @@ public final class RuleEmailAction extends RuleAction {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("odata.type", this.odataType);
+        jsonWriter.writeBooleanField("sendToServiceOwners", this.sendToServiceOwners);
+        jsonWriter.writeArrayField("customEmails", this.customEmails, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RuleEmailAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RuleEmailAction if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RuleEmailAction.
+     */
+    public static RuleEmailAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RuleEmailAction deserializedRuleEmailAction = new RuleEmailAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("odata.type".equals(fieldName)) {
+                    deserializedRuleEmailAction.odataType = reader.getString();
+                } else if ("sendToServiceOwners".equals(fieldName)) {
+                    deserializedRuleEmailAction.sendToServiceOwners = reader.getNullable(JsonReader::getBoolean);
+                } else if ("customEmails".equals(fieldName)) {
+                    List<String> customEmails = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRuleEmailAction.customEmails = customEmails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRuleEmailAction;
+        });
     }
 }

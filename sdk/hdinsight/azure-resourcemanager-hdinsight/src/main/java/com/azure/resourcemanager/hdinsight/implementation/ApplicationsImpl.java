@@ -23,32 +23,29 @@ public final class ApplicationsImpl implements Applications {
 
     private final com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager;
 
-    public ApplicationsImpl(
-        ApplicationsClient innerClient, com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
+    public ApplicationsImpl(ApplicationsClient innerClient,
+        com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Application> listByCluster(String resourceGroupName, String clusterName) {
         PagedIterable<ApplicationInner> inner = this.serviceClient().listByCluster(resourceGroupName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Application> listByCluster(String resourceGroupName, String clusterName, Context context) {
-        PagedIterable<ApplicationInner> inner =
-            this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
+        PagedIterable<ApplicationInner> inner
+            = this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
     }
 
-    public Response<Application> getWithResponse(
-        String resourceGroupName, String clusterName, String applicationName, Context context) {
-        Response<ApplicationInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, clusterName, applicationName, context);
+    public Response<Application> getWithResponse(String resourceGroupName, String clusterName, String applicationName,
+        Context context) {
+        Response<ApplicationInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, clusterName, applicationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplicationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -72,30 +69,23 @@ public final class ApplicationsImpl implements Applications {
         this.serviceClient().delete(resourceGroupName, clusterName, applicationName, context);
     }
 
-    public Response<AsyncOperationResult> getAzureAsyncOperationStatusWithResponse(
-        String resourceGroupName, String clusterName, String applicationName, String operationId, Context context) {
-        Response<AsyncOperationResultInner> inner =
-            this
-                .serviceClient()
-                .getAzureAsyncOperationStatusWithResponse(
-                    resourceGroupName, clusterName, applicationName, operationId, context);
+    public Response<AsyncOperationResult> getAzureAsyncOperationStatusWithResponse(String resourceGroupName,
+        String clusterName, String applicationName, String operationId, Context context) {
+        Response<AsyncOperationResultInner> inner = this.serviceClient()
+            .getAzureAsyncOperationStatusWithResponse(resourceGroupName, clusterName, applicationName, operationId,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AsyncOperationResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public AsyncOperationResult getAzureAsyncOperationStatus(
-        String resourceGroupName, String clusterName, String applicationName, String operationId) {
-        AsyncOperationResultInner inner =
-            this
-                .serviceClient()
-                .getAzureAsyncOperationStatus(resourceGroupName, clusterName, applicationName, operationId);
+    public AsyncOperationResult getAzureAsyncOperationStatus(String resourceGroupName, String clusterName,
+        String applicationName, String operationId) {
+        AsyncOperationResultInner inner = this.serviceClient()
+            .getAzureAsyncOperationStatus(resourceGroupName, clusterName, applicationName, operationId);
         if (inner != null) {
             return new AsyncOperationResultImpl(inner, this.manager());
         } else {
@@ -104,105 +94,77 @@ public final class ApplicationsImpl implements Applications {
     }
 
     public Application getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String applicationName = Utils.getValueFromIdByName(id, "applications");
+        String applicationName = ResourceManagerUtils.getValueFromIdByName(id, "applications");
         if (applicationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
         }
         return this.getWithResponse(resourceGroupName, clusterName, applicationName, Context.NONE).getValue();
     }
 
     public Response<Application> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String applicationName = Utils.getValueFromIdByName(id, "applications");
+        String applicationName = ResourceManagerUtils.getValueFromIdByName(id, "applications");
         if (applicationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
         }
         return this.getWithResponse(resourceGroupName, clusterName, applicationName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String applicationName = Utils.getValueFromIdByName(id, "applications");
+        String applicationName = ResourceManagerUtils.getValueFromIdByName(id, "applications");
         if (applicationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
         }
         this.delete(resourceGroupName, clusterName, applicationName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String applicationName = Utils.getValueFromIdByName(id, "applications");
+        String applicationName = ResourceManagerUtils.getValueFromIdByName(id, "applications");
         if (applicationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
         }
         this.delete(resourceGroupName, clusterName, applicationName, context);
     }

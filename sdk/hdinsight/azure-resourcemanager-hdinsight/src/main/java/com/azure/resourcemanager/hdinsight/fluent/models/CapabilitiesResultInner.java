@@ -5,50 +5,51 @@
 package com.azure.resourcemanager.hdinsight.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hdinsight.models.QuotaCapability;
 import com.azure.resourcemanager.hdinsight.models.RegionsCapability;
 import com.azure.resourcemanager.hdinsight.models.VersionsCapability;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The Get Capabilities operation response. */
+/**
+ * The Get Capabilities operation response.
+ */
 @Fluent
-public final class CapabilitiesResultInner {
+public final class CapabilitiesResultInner implements JsonSerializable<CapabilitiesResultInner> {
     /*
      * The version capability.
      */
-    @JsonProperty(value = "versions")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, VersionsCapability> versions;
 
     /*
      * The virtual machine size compatibility features.
      */
-    @JsonProperty(value = "regions")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, RegionsCapability> regions;
 
     /*
      * The capability features.
      */
-    @JsonProperty(value = "features")
     private List<String> features;
 
     /*
      * The quota capability.
      */
-    @JsonProperty(value = "quota", access = JsonProperty.Access.WRITE_ONLY)
     private QuotaCapability quota;
 
-    /** Creates an instance of CapabilitiesResultInner class. */
+    /**
+     * Creates an instance of CapabilitiesResultInner class.
+     */
     public CapabilitiesResultInner() {
     }
 
     /**
      * Get the versions property: The version capability.
-     *
+     * 
      * @return the versions value.
      */
     public Map<String, VersionsCapability> versions() {
@@ -57,7 +58,7 @@ public final class CapabilitiesResultInner {
 
     /**
      * Set the versions property: The version capability.
-     *
+     * 
      * @param versions the versions value to set.
      * @return the CapabilitiesResultInner object itself.
      */
@@ -68,7 +69,7 @@ public final class CapabilitiesResultInner {
 
     /**
      * Get the regions property: The virtual machine size compatibility features.
-     *
+     * 
      * @return the regions value.
      */
     public Map<String, RegionsCapability> regions() {
@@ -77,7 +78,7 @@ public final class CapabilitiesResultInner {
 
     /**
      * Set the regions property: The virtual machine size compatibility features.
-     *
+     * 
      * @param regions the regions value to set.
      * @return the CapabilitiesResultInner object itself.
      */
@@ -88,7 +89,7 @@ public final class CapabilitiesResultInner {
 
     /**
      * Get the features property: The capability features.
-     *
+     * 
      * @return the features value.
      */
     public List<String> features() {
@@ -97,7 +98,7 @@ public final class CapabilitiesResultInner {
 
     /**
      * Set the features property: The capability features.
-     *
+     * 
      * @param features the features value to set.
      * @return the CapabilitiesResultInner object itself.
      */
@@ -108,7 +109,7 @@ public final class CapabilitiesResultInner {
 
     /**
      * Get the quota property: The quota capability.
-     *
+     * 
      * @return the quota value.
      */
     public QuotaCapability quota() {
@@ -117,32 +118,75 @@ public final class CapabilitiesResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (versions() != null) {
-            versions()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            versions().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (regions() != null) {
-            regions()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            regions().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (quota() != null) {
             quota().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("versions", this.versions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("regions", this.regions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("features", this.features, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CapabilitiesResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CapabilitiesResultInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CapabilitiesResultInner.
+     */
+    public static CapabilitiesResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CapabilitiesResultInner deserializedCapabilitiesResultInner = new CapabilitiesResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("versions".equals(fieldName)) {
+                    Map<String, VersionsCapability> versions
+                        = reader.readMap(reader1 -> VersionsCapability.fromJson(reader1));
+                    deserializedCapabilitiesResultInner.versions = versions;
+                } else if ("regions".equals(fieldName)) {
+                    Map<String, RegionsCapability> regions
+                        = reader.readMap(reader1 -> RegionsCapability.fromJson(reader1));
+                    deserializedCapabilitiesResultInner.regions = regions;
+                } else if ("features".equals(fieldName)) {
+                    List<String> features = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCapabilitiesResultInner.features = features;
+                } else if ("quota".equals(fieldName)) {
+                    deserializedCapabilitiesResultInner.quota = QuotaCapability.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCapabilitiesResultInner;
+        });
     }
 }

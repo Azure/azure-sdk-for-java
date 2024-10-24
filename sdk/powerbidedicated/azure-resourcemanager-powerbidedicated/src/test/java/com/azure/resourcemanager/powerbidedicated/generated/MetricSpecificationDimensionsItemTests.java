@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class MetricSpecificationDimensionsItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricSpecificationDimensionsItem model =
-            BinaryData
-                .fromString("{\"name\":\"evfyexfwhybcib\",\"displayName\":\"vdcsitynn\"}")
+        MetricSpecificationDimensionsItem model
+            = BinaryData.fromString("{\"name\":\"wkuofoskghsauu\",\"displayName\":\"jmvxie\"}")
                 .toObject(MetricSpecificationDimensionsItem.class);
-        Assertions.assertEquals("vdcsitynn", model.displayName());
+        Assertions.assertEquals("jmvxie", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricSpecificationDimensionsItem model = new MetricSpecificationDimensionsItem().withDisplayName("vdcsitynn");
+        MetricSpecificationDimensionsItem model = new MetricSpecificationDimensionsItem().withDisplayName("jmvxie");
         model = BinaryData.fromObject(model).toObject(MetricSpecificationDimensionsItem.class);
-        Assertions.assertEquals("vdcsitynn", model.displayName());
+        Assertions.assertEquals("jmvxie", model.displayName());
     }
 }

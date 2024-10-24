@@ -10,6 +10,7 @@
   <version>1.0.0</version><!-- Need not change for every release-->
 
   <modules>
-      <module>azure-health-deidentification</module>
+    <module>azure-health-deidentification</module>
+    <module>azure-resourcemanager-healthdataaiservices</module>
   </modules>
 </project>

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.edgeorder.fluent.models.ProductFamilyInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list of product families. */
+/**
+ * The list of product families.
+ */
 @Fluent
-public final class ProductFamilies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductFamilies.class);
-
+public final class ProductFamilies implements JsonSerializable<ProductFamilies> {
     /*
      * List of product families.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ProductFamilyInner> value;
 
     /*
      * Link for the next set of product families.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of ProductFamilies class.
+     */
+    public ProductFamilies() {
+    }
+
+    /**
      * Get the value property: List of product families.
-     *
+     * 
      * @return the value value.
      */
     public List<ProductFamilyInner> value() {
@@ -39,7 +45,7 @@ public final class ProductFamilies {
 
     /**
      * Get the nextLink property: Link for the next set of product families.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +54,7 @@ public final class ProductFamilies {
 
     /**
      * Set the nextLink property: Link for the next set of product families.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ProductFamilies object itself.
      */
@@ -59,12 +65,51 @@ public final class ProductFamilies {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProductFamilies from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProductFamilies if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProductFamilies.
+     */
+    public static ProductFamilies fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProductFamilies deserializedProductFamilies = new ProductFamilies();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ProductFamilyInner> value = reader.readArray(reader1 -> ProductFamilyInner.fromJson(reader1));
+                    deserializedProductFamilies.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedProductFamilies.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProductFamilies;
+        });
     }
 }

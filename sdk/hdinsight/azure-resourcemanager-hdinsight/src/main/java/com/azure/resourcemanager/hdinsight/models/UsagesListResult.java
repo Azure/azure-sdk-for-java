@@ -7,18 +7,20 @@ package com.azure.resourcemanager.hdinsight.models;
 import com.azure.resourcemanager.hdinsight.fluent.models.UsagesListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of UsagesListResult. */
+/**
+ * An immutable client-side representation of UsagesListResult.
+ */
 public interface UsagesListResult {
     /**
      * Gets the value property: The list of usages.
-     *
+     * 
      * @return the value value.
      */
     List<Usage> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.hdinsight.fluent.models.UsagesListResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     UsagesListResultInner innerModel();

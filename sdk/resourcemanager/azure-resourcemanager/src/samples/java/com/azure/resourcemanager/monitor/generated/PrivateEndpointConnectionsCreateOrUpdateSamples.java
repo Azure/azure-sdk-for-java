@@ -24,11 +24,14 @@ public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
      */
     public static void
         approveOrRejectAPrivateEndpointConnectionWithAGivenName(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getPrivateEndpointConnections().createOrUpdate(
-            "MyResourceGroup", "MyPrivateLinkScope", "private-endpoint-connection-name",
-            new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                    .withDescription("Approved by johndoe@contoso.com")),
-            com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getPrivateEndpointConnections()
+            .createOrUpdate("MyResourceGroup", "MyPrivateLinkScope", "private-endpoint-connection-name",
+                new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
+                    new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                        .withDescription("Approved by johndoe@contoso.com")),
+                com.azure.core.util.Context.NONE);
     }
 }

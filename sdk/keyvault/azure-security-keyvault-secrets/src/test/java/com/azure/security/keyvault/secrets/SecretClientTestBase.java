@@ -71,9 +71,13 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
         TokenCredential credential;
 
         if (interceptorManager.isLiveMode()) {
-            credential = new AzurePowerShellCredentialBuilder().additionallyAllowedTenants("*").build();
+            credential = new AzurePowerShellCredentialBuilder()
+                .additionallyAllowedTenants("*")
+                .build();
         } else if (interceptorManager.isRecordMode()) {
-            credential = new DefaultAzureCredentialBuilder().additionallyAllowedTenants("*").build();
+            credential = new DefaultAzureCredentialBuilder()
+                .additionallyAllowedTenants("*")
+                .build();
         } else {
             credential = new MockTokenCredential();
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();

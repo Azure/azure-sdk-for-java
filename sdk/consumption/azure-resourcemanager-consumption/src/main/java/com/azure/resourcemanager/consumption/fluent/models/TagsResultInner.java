@@ -6,34 +6,53 @@ package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.consumption.models.Tag;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A resource listing all tags. */
+/**
+ * A resource listing all tags.
+ */
 @Fluent
 public final class TagsResultInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagsResultInner.class);
-
     /*
      * The properties of the tag.
      */
-    @JsonProperty(value = "properties")
     private TagProperties innerProperties;
 
     /*
-     * eTag of the resource. To handle concurrent update scenario, this field
-     * will be used to determine whether the user is updating the latest
-     * version or not.
+     * eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user
+     * is updating the latest version or not.
      */
-    @JsonProperty(value = "eTag")
     private String etag;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of TagsResultInner class.
+     */
+    public TagsResultInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of the tag.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TagProperties innerProperties() {
@@ -43,7 +62,7 @@ public final class TagsResultInner extends ProxyResource {
     /**
      * Get the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
      * determine whether the user is updating the latest version or not.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -53,7 +72,7 @@ public final class TagsResultInner extends ProxyResource {
     /**
      * Set the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
      * determine whether the user is updating the latest version or not.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the TagsResultInner object itself.
      */
@@ -63,8 +82,38 @@ public final class TagsResultInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the tags property: A list of Tag.
-     *
+     * 
      * @return the tags value.
      */
     public List<Tag> tags() {
@@ -73,7 +122,7 @@ public final class TagsResultInner extends ProxyResource {
 
     /**
      * Set the tags property: A list of Tag.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the TagsResultInner object itself.
      */
@@ -87,7 +136,7 @@ public final class TagsResultInner extends ProxyResource {
 
     /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -96,7 +145,7 @@ public final class TagsResultInner extends ProxyResource {
 
     /**
      * Get the previousLink property: The link (url) to the previous page of results.
-     *
+     * 
      * @return the previousLink value.
      */
     public String previousLink() {
@@ -105,12 +154,58 @@ public final class TagsResultInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("eTag", this.etag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TagsResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TagsResultInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TagsResultInner.
+     */
+    public static TagsResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TagsResultInner deserializedTagsResultInner = new TagsResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTagsResultInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedTagsResultInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedTagsResultInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedTagsResultInner.innerProperties = TagProperties.fromJson(reader);
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedTagsResultInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTagsResultInner;
+        });
     }
 }

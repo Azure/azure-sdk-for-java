@@ -4,22 +4,183 @@
 
 package com.azure.resourcemanager.servicelinker.models;
 
-import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
-/** The authentication info when authType is systemAssignedIdentity. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authType")
-@JsonTypeName("systemAssignedIdentity")
-@Immutable
+/**
+ * The authentication info when authType is systemAssignedIdentity.
+ */
+@Fluent
 public final class SystemAssignedIdentityAuthInfo extends AuthInfoBase {
+    /*
+     * The authentication type.
+     */
+    private AuthType authType = AuthType.SYSTEM_ASSIGNED_IDENTITY;
+
+    /*
+     * Indicates whether to clean up previous operation when Linker is updating or deleting
+     */
+    private DeleteOrUpdateBehavior deleteOrUpdateBehavior;
+
+    /*
+     * Optional, this value specifies the Azure role to be assigned
+     */
+    private List<String> roles;
+
+    /*
+     * Username created in the database which is mapped to a user in AAD.
+     */
+    private String username;
+
+    /**
+     * Creates an instance of SystemAssignedIdentityAuthInfo class.
+     */
+    public SystemAssignedIdentityAuthInfo() {
+    }
+
+    /**
+     * Get the authType property: The authentication type.
+     * 
+     * @return the authType value.
+     */
+    @Override
+    public AuthType authType() {
+        return this.authType;
+    }
+
+    /**
+     * Get the deleteOrUpdateBehavior property: Indicates whether to clean up previous operation when Linker is updating
+     * or deleting.
+     * 
+     * @return the deleteOrUpdateBehavior value.
+     */
+    public DeleteOrUpdateBehavior deleteOrUpdateBehavior() {
+        return this.deleteOrUpdateBehavior;
+    }
+
+    /**
+     * Set the deleteOrUpdateBehavior property: Indicates whether to clean up previous operation when Linker is updating
+     * or deleting.
+     * 
+     * @param deleteOrUpdateBehavior the deleteOrUpdateBehavior value to set.
+     * @return the SystemAssignedIdentityAuthInfo object itself.
+     */
+    public SystemAssignedIdentityAuthInfo withDeleteOrUpdateBehavior(DeleteOrUpdateBehavior deleteOrUpdateBehavior) {
+        this.deleteOrUpdateBehavior = deleteOrUpdateBehavior;
+        return this;
+    }
+
+    /**
+     * Get the roles property: Optional, this value specifies the Azure role to be assigned.
+     * 
+     * @return the roles value.
+     */
+    public List<String> roles() {
+        return this.roles;
+    }
+
+    /**
+     * Set the roles property: Optional, this value specifies the Azure role to be assigned.
+     * 
+     * @param roles the roles value to set.
+     * @return the SystemAssignedIdentityAuthInfo object itself.
+     */
+    public SystemAssignedIdentityAuthInfo withRoles(List<String> roles) {
+        this.roles = roles;
+        return this;
+    }
+
+    /**
+     * Get the username property: Username created in the database which is mapped to a user in AAD.
+     * 
+     * @return the username value.
+     */
+    public String username() {
+        return this.username;
+    }
+
+    /**
+     * Set the username property: Username created in the database which is mapped to a user in AAD.
+     * 
+     * @param username the username value to set.
+     * @return the SystemAssignedIdentityAuthInfo object itself.
+     */
+    public SystemAssignedIdentityAuthInfo withUsername(String username) {
+        this.username = username;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SystemAssignedIdentityAuthInfo withAuthMode(AuthMode authMode) {
+        super.withAuthMode(authMode);
+        return this;
+    }
+
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authMode", authMode() == null ? null : authMode().toString());
+        jsonWriter.writeStringField("authType", this.authType == null ? null : this.authType.toString());
+        jsonWriter.writeStringField("deleteOrUpdateBehavior",
+            this.deleteOrUpdateBehavior == null ? null : this.deleteOrUpdateBehavior.toString());
+        jsonWriter.writeArrayField("roles", this.roles, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("userName", this.username);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SystemAssignedIdentityAuthInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SystemAssignedIdentityAuthInfo if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SystemAssignedIdentityAuthInfo.
+     */
+    public static SystemAssignedIdentityAuthInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SystemAssignedIdentityAuthInfo deserializedSystemAssignedIdentityAuthInfo
+                = new SystemAssignedIdentityAuthInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authMode".equals(fieldName)) {
+                    deserializedSystemAssignedIdentityAuthInfo.withAuthMode(AuthMode.fromString(reader.getString()));
+                } else if ("authType".equals(fieldName)) {
+                    deserializedSystemAssignedIdentityAuthInfo.authType = AuthType.fromString(reader.getString());
+                } else if ("deleteOrUpdateBehavior".equals(fieldName)) {
+                    deserializedSystemAssignedIdentityAuthInfo.deleteOrUpdateBehavior
+                        = DeleteOrUpdateBehavior.fromString(reader.getString());
+                } else if ("roles".equals(fieldName)) {
+                    List<String> roles = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSystemAssignedIdentityAuthInfo.roles = roles;
+                } else if ("userName".equals(fieldName)) {
+                    deserializedSystemAssignedIdentityAuthInfo.username = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSystemAssignedIdentityAuthInfo;
+        });
     }
 }

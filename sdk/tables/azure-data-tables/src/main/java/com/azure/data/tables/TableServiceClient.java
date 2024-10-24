@@ -29,7 +29,6 @@ import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableQueryResponse;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
-import com.azure.data.tables.implementation.models.TableServiceStats;
 import com.azure.data.tables.implementation.models.TablesQueryHeaders;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableItem;
@@ -415,7 +414,6 @@ public final class TableServiceClient {
     }
 
     Response<TableClient> createTableWithResponse(String tableName, Context context) {
-        context = TableUtils.setContext(context, true);
         final TableProperties properties = new TableProperties().setTableName(tableName);
 
         return new SimpleResponse<>(implementation.getTables()
@@ -424,7 +422,8 @@ public final class TableServiceClient {
     }
 
     /**
-     * Creates a table within the Tables service if the table does not already exist.
+     * Creates a table within the Tables service if the table does not already exist. If the table already exists, a
+     * {@link TableClient} for the existing table is returned.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a table if it does not already exist. Prints out the details of the created table.</p>
@@ -448,7 +447,8 @@ public final class TableServiceClient {
     }
 
     /**
-     * Creates a table within the Tables service if the table does not already exist.
+     * Creates a table within the Tables service if the table does not already exist. If the table already exists, a
+     * {@link TableClient} for the existing table is returned.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a table if it does not already exist. Prints out the details of the {@link Response HTTP response}
@@ -477,11 +477,12 @@ public final class TableServiceClient {
     public Response<TableClient> createTableIfNotExistsWithResponse(String tableName, Duration timeout,
                                                                     Context context) {
         Supplier<Response<TableClient>> callable = () -> createTableIfNotExistsWithResponse(tableName, context);
-        return callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger, true);
+        Response<TableClient> returnedResponse = callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger, true);
+        return returnedResponse.getValue() == null ? new SimpleResponse<>(returnedResponse.getRequest(),
+            returnedResponse.getStatusCode(), returnedResponse.getHeaders(), getTableClient(tableName)) : returnedResponse;
     }
 
     Response<TableClient> createTableIfNotExistsWithResponse(String tableName, Context context) {
-        context = TableUtils.setContext(context, true);
         final TableProperties properties = new TableProperties().setTableName(tableName);
 
         return new SimpleResponse<>(implementation.getTables()
@@ -559,7 +560,6 @@ public final class TableServiceClient {
     }
 
     Response<Void> deleteTableWithResponse(String tableName, Context context) {
-        context = TableUtils.setContext(context, true);
         return new SimpleResponse<>(
             implementation.getTables().deleteWithResponse(tableName, null, context), null);
     }
@@ -637,7 +637,6 @@ public final class TableServiceClient {
     }
 
     private PagedResponse<TableItem> listTables(String nextTableName, Context context, ListTablesOptions options) {
-        context = TableUtils.setContext(context, true);
         QueryOptions queryOptions = new QueryOptions()
             .setFilter(options.getFilter())
             .setTop(options.getTop())
@@ -723,10 +722,7 @@ public final class TableServiceClient {
     }
 
     Response<TableServiceProperties> getPropertiesWithResponse(Context context) {
-        context = TableUtils.setContext(context, true);
-        Response<com.azure.data.tables.implementation.models.TableServiceProperties> response =
-            this.implementation.getServices().getPropertiesWithResponse(null, null, context);
-        return new SimpleResponse<>(response, TableUtils.toTableServiceProperties(response.getValue()));
+        return this.implementation.getServices().getPropertiesWithResponse(null, null, context);
     }
 
     /**
@@ -819,10 +815,7 @@ public final class TableServiceClient {
     }
 
     Response<Void> setPropertiesWithResponse(TableServiceProperties tableServiceProperties, Context context) {
-        context = TableUtils.setContext(context, true);
-        return new SimpleResponse<>(this.implementation.getServices()
-            .setPropertiesWithResponse(TableUtils.toImplTableServiceProperties(tableServiceProperties), null,
-                null, context), null);
+        return this.implementation.getServices().setPropertiesWithResponse(tableServiceProperties, null, null, context);
     }
 
     /**
@@ -886,10 +879,6 @@ public final class TableServiceClient {
 
 
     Response<TableServiceStatistics> getStatisticsWithResponse(Context context) {
-        context = TableUtils.setContext(context, true);
-        Response<TableServiceStats> response = this.implementation.getServices().getStatisticsWithResponse(
-            null, null, context);
-        return new SimpleResponse<>(response, TableUtils.toTableServiceStatistics(response.getValue()));
+        return this.implementation.getServices().getStatisticsWithResponse(null, null, context);
     }
-
 }

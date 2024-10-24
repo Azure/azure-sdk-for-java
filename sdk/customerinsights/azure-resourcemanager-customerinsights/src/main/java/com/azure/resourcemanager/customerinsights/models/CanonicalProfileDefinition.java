@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Definition of canonical profile. */
+/**
+ * Definition of canonical profile.
+ */
 @Fluent
-public final class CanonicalProfileDefinition {
+public final class CanonicalProfileDefinition implements JsonSerializable<CanonicalProfileDefinition> {
     /*
      * Canonical profile ID.
      */
-    @JsonProperty(value = "canonicalProfileId")
     private Integer canonicalProfileId;
 
     /*
      * Properties of the canonical profile.
      */
-    @JsonProperty(value = "properties")
     private List<CanonicalProfileDefinitionPropertiesItem> properties;
 
-    /** Creates an instance of CanonicalProfileDefinition class. */
+    /**
+     * Creates an instance of CanonicalProfileDefinition class.
+     */
     public CanonicalProfileDefinition() {
     }
 
     /**
      * Get the canonicalProfileId property: Canonical profile ID.
-     *
+     * 
      * @return the canonicalProfileId value.
      */
     public Integer canonicalProfileId() {
@@ -38,7 +44,7 @@ public final class CanonicalProfileDefinition {
 
     /**
      * Set the canonicalProfileId property: Canonical profile ID.
-     *
+     * 
      * @param canonicalProfileId the canonicalProfileId value to set.
      * @return the CanonicalProfileDefinition object itself.
      */
@@ -49,7 +55,7 @@ public final class CanonicalProfileDefinition {
 
     /**
      * Get the properties property: Properties of the canonical profile.
-     *
+     * 
      * @return the properties value.
      */
     public List<CanonicalProfileDefinitionPropertiesItem> properties() {
@@ -58,7 +64,7 @@ public final class CanonicalProfileDefinition {
 
     /**
      * Set the properties property: Properties of the canonical profile.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the CanonicalProfileDefinition object itself.
      */
@@ -69,12 +75,53 @@ public final class CanonicalProfileDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("canonicalProfileId", this.canonicalProfileId);
+        jsonWriter.writeArrayField("properties", this.properties, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CanonicalProfileDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CanonicalProfileDefinition if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CanonicalProfileDefinition.
+     */
+    public static CanonicalProfileDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CanonicalProfileDefinition deserializedCanonicalProfileDefinition = new CanonicalProfileDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("canonicalProfileId".equals(fieldName)) {
+                    deserializedCanonicalProfileDefinition.canonicalProfileId = reader.getNullable(JsonReader::getInt);
+                } else if ("properties".equals(fieldName)) {
+                    List<CanonicalProfileDefinitionPropertiesItem> properties
+                        = reader.readArray(reader1 -> CanonicalProfileDefinitionPropertiesItem.fromJson(reader1));
+                    deserializedCanonicalProfileDefinition.properties = properties;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCanonicalProfileDefinition;
+        });
     }
 }

@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class QuotaInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaInfo model = BinaryData.fromString("{\"coresUsed\":1416358219}").toObject(QuotaInfo.class);
-        Assertions.assertEquals(1416358219, model.coresUsed());
+        QuotaInfo model = BinaryData.fromString("{\"coresUsed\":1712324120}").toObject(QuotaInfo.class);
+        Assertions.assertEquals(1712324120, model.coresUsed());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaInfo model = new QuotaInfo().withCoresUsed(1416358219);
+        QuotaInfo model = new QuotaInfo().withCoresUsed(1712324120);
         model = BinaryData.fromObject(model).toObject(QuotaInfo.class);
-        Assertions.assertEquals(1416358219, model.coresUsed());
+        Assertions.assertEquals(1712324120, model.coresUsed());
     }
 }

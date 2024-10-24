@@ -10,14 +10,14 @@ import com.azure.resourcemanager.datafactory.fluent.models.DynamicsCrmEntityData
 public final class DynamicsCrmEntityDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DynamicsCrmEntityDatasetTypeProperties model = BinaryData.fromString("{\"entityName\":\"dataxjkhtupsv\"}")
+        DynamicsCrmEntityDatasetTypeProperties model = BinaryData.fromString("{\"entityName\":\"dataykkbxktxbbwl\"}")
             .toObject(DynamicsCrmEntityDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DynamicsCrmEntityDatasetTypeProperties model
-            = new DynamicsCrmEntityDatasetTypeProperties().withEntityName("dataxjkhtupsv");
+            = new DynamicsCrmEntityDatasetTypeProperties().withEntityName("dataykkbxktxbbwl");
         model = BinaryData.fromObject(model).toObject(DynamicsCrmEntityDatasetTypeProperties.class);
     }
 }

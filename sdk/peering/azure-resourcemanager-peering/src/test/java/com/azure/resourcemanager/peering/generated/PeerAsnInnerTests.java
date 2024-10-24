@@ -15,39 +15,33 @@ import org.junit.jupiter.api.Assertions;
 public final class PeerAsnInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeerAsnInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"peerAsn\":1465460192,\"peerContactDetail\":[{\"role\":\"Other\",\"email\":\"vdjwzrlovm\",\"phone\":\"whijcoejctbza\"},{\"role\":\"Noc\",\"email\":\"y\",\"phone\":\"kbfkg\"},{\"role\":\"Noc\",\"email\":\"exxppofmxaxcfjp\",\"phone\":\"dtocj\"},{\"role\":\"Policy\",\"email\":\"pmouexhdz\",\"phone\":\"bqe\"}],\"peerName\":\"nxqbzvddn\",\"validationState\":\"None\",\"errorMessage\":\"eic\"},\"id\":\"twnpzaoqvuhrhcf\",\"name\":\"cyddglmjthjqk\",\"type\":\"pyeicxm\"}")
-                .toObject(PeerAsnInner.class);
-        Assertions.assertEquals(1465460192, model.peerAsn());
+        PeerAsnInner model = BinaryData.fromString(
+            "{\"properties\":{\"peerAsn\":1261399302,\"peerContactDetail\":[{\"role\":\"Other\",\"email\":\"mcl\",\"phone\":\"ijcoejctb\"},{\"role\":\"Noc\",\"email\":\"qsycbkbfkgu\",\"phone\":\"kexxppof\"},{\"role\":\"Policy\",\"email\":\"c\",\"phone\":\"pg\"},{\"role\":\"Policy\",\"email\":\"c\",\"phone\":\"xhvpmoue\"}],\"peerName\":\"dzxibqeojnxqbzvd\",\"validationState\":\"None\",\"errorMessage\":\"ndei\"},\"id\":\"btwnpzaoqvuhrhcf\",\"name\":\"cyddglmjthjqk\",\"type\":\"pyeicxm\"}")
+            .toObject(PeerAsnInner.class);
+        Assertions.assertEquals(1261399302, model.peerAsn());
         Assertions.assertEquals(Role.OTHER, model.peerContactDetail().get(0).role());
-        Assertions.assertEquals("vdjwzrlovm", model.peerContactDetail().get(0).email());
-        Assertions.assertEquals("whijcoejctbza", model.peerContactDetail().get(0).phone());
-        Assertions.assertEquals("nxqbzvddn", model.peerName());
+        Assertions.assertEquals("mcl", model.peerContactDetail().get(0).email());
+        Assertions.assertEquals("ijcoejctb", model.peerContactDetail().get(0).phone());
+        Assertions.assertEquals("dzxibqeojnxqbzvd", model.peerName());
         Assertions.assertEquals(ValidationState.NONE, model.validationState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeerAsnInner model =
-            new PeerAsnInner()
-                .withPeerAsn(1465460192)
-                .withPeerContactDetail(
-                    Arrays
-                        .asList(
-                            new ContactDetail().withRole(Role.OTHER).withEmail("vdjwzrlovm").withPhone("whijcoejctbza"),
-                            new ContactDetail().withRole(Role.NOC).withEmail("y").withPhone("kbfkg"),
-                            new ContactDetail().withRole(Role.NOC).withEmail("exxppofmxaxcfjp").withPhone("dtocj"),
-                            new ContactDetail().withRole(Role.POLICY).withEmail("pmouexhdz").withPhone("bqe")))
-                .withPeerName("nxqbzvddn")
-                .withValidationState(ValidationState.NONE);
+        PeerAsnInner model = new PeerAsnInner().withPeerAsn(1261399302)
+            .withPeerContactDetail(
+                Arrays.asList(new ContactDetail().withRole(Role.OTHER).withEmail("mcl").withPhone("ijcoejctb"),
+                    new ContactDetail().withRole(Role.NOC).withEmail("qsycbkbfkgu").withPhone("kexxppof"),
+                    new ContactDetail().withRole(Role.POLICY).withEmail("c").withPhone("pg"),
+                    new ContactDetail().withRole(Role.POLICY).withEmail("c").withPhone("xhvpmoue")))
+            .withPeerName("dzxibqeojnxqbzvd")
+            .withValidationState(ValidationState.NONE);
         model = BinaryData.fromObject(model).toObject(PeerAsnInner.class);
-        Assertions.assertEquals(1465460192, model.peerAsn());
+        Assertions.assertEquals(1261399302, model.peerAsn());
         Assertions.assertEquals(Role.OTHER, model.peerContactDetail().get(0).role());
-        Assertions.assertEquals("vdjwzrlovm", model.peerContactDetail().get(0).email());
-        Assertions.assertEquals("whijcoejctbza", model.peerContactDetail().get(0).phone());
-        Assertions.assertEquals("nxqbzvddn", model.peerName());
+        Assertions.assertEquals("mcl", model.peerContactDetail().get(0).email());
+        Assertions.assertEquals("ijcoejctb", model.peerContactDetail().get(0).phone());
+        Assertions.assertEquals("dzxibqeojnxqbzvd", model.peerName());
         Assertions.assertEquals(ValidationState.NONE, model.validationState());
     }
 }

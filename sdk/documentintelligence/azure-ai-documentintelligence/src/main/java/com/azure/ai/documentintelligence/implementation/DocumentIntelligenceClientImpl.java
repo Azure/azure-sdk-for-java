@@ -167,8 +167,7 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> analyzeDocument(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/documentModels/{modelId}:analyze")
         @ExpectedResponses({ 202 })
@@ -178,8 +177,7 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> analyzeDocumentSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/documentModels/{modelId}:analyzeBatch")
         @ExpectedResponses({ 202 })
@@ -189,8 +187,7 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> analyzeBatchDocuments(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/documentModels/{modelId}:analyzeBatch")
         @ExpectedResponses({ 202 })
@@ -200,8 +197,7 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> analyzeBatchDocumentsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/documentModels/{modelId}/analyzeResults/{resultId}/pdf")
         @ExpectedResponses({ 200 })
@@ -211,7 +207,7 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAnalyzeResultPdf(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            @PathParam("resultId") String resultId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("resultId") String resultId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/documentModels/{modelId}/analyzeResults/{resultId}/pdf")
@@ -222,7 +218,7 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAnalyzeResultPdfSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            @PathParam("resultId") String resultId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("resultId") String resultId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/documentModels/{modelId}/analyzeResults/{resultId}/figures/{figureId}")
@@ -234,7 +230,7 @@ public final class DocumentIntelligenceClientImpl {
         Mono<Response<BinaryData>> getAnalyzeResultFigure(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
             @PathParam("resultId") String resultId, @PathParam("figureId") String figureId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/documentModels/{modelId}/analyzeResults/{resultId}/figures/{figureId}")
         @ExpectedResponses({ 200 })
@@ -245,7 +241,7 @@ public final class DocumentIntelligenceClientImpl {
         Response<BinaryData> getAnalyzeResultFigureSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
             @PathParam("resultId") String resultId, @PathParam("figureId") String figureId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/documentClassifiers/{classifierId}:analyze")
         @ExpectedResponses({ 202 })
@@ -255,7 +251,7 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> classifyDocument(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("classifierId") String classifierId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData classifyRequest, RequestOptions requestOptions, Context context);
 
         @Post("/documentClassifiers/{classifierId}:analyze")
@@ -266,7 +262,7 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> classifyDocumentSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("classifierId") String classifierId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData classifyRequest, RequestOptions requestOptions, Context context);
     }
 
@@ -293,14 +289,24 @@ public final class DocumentIntelligenceClientImpl {
      * the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -312,7 +318,6 @@ public final class DocumentIntelligenceClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> analyzeDocumentWithResponseAsync(String modelId, RequestOptions requestOptions) {
-        final String contentType = "application/json";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -321,7 +326,7 @@ public final class DocumentIntelligenceClientImpl {
             }
         });
         return FluxUtil.withContext(context -> service.analyzeDocument(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), modelId, contentType, accept, requestOptionsLocal, context));
+            this.getServiceVersion().getVersion(), modelId, accept, requestOptionsLocal, context));
     }
 
     /**
@@ -347,14 +352,24 @@ public final class DocumentIntelligenceClientImpl {
      * the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -366,7 +381,6 @@ public final class DocumentIntelligenceClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<Void> analyzeDocumentWithResponse(String modelId, RequestOptions requestOptions) {
-        final String contentType = "application/json";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -374,8 +388,8 @@ public final class DocumentIntelligenceClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return service.analyzeDocumentSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId,
-            contentType, accept, requestOptionsLocal, Context.NONE);
+        return service.analyzeDocumentSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId, accept,
+            requestOptionsLocal, Context.NONE);
     }
 
     /**
@@ -401,14 +415,24 @@ public final class DocumentIntelligenceClientImpl {
      * the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -456,14 +480,24 @@ public final class DocumentIntelligenceClientImpl {
      * the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -511,14 +545,24 @@ public final class DocumentIntelligenceClientImpl {
      * the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -568,14 +612,24 @@ public final class DocumentIntelligenceClientImpl {
      * the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -625,9 +679,18 @@ public final class DocumentIntelligenceClientImpl {
      * the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
@@ -641,7 +704,8 @@ public final class DocumentIntelligenceClientImpl {
      *     resultPrefix: String (Optional)
      *     overwriteExisting: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -653,7 +717,6 @@ public final class DocumentIntelligenceClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> analyzeBatchDocumentsWithResponseAsync(String modelId, RequestOptions requestOptions) {
-        final String contentType = "application/json";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -662,7 +725,7 @@ public final class DocumentIntelligenceClientImpl {
             }
         });
         return FluxUtil.withContext(context -> service.analyzeBatchDocuments(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), modelId, contentType, accept, requestOptionsLocal, context));
+            this.getServiceVersion().getVersion(), modelId, accept, requestOptionsLocal, context));
     }
 
     /**
@@ -688,9 +751,18 @@ public final class DocumentIntelligenceClientImpl {
      * the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
@@ -704,7 +776,8 @@ public final class DocumentIntelligenceClientImpl {
      *     resultPrefix: String (Optional)
      *     overwriteExisting: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -716,7 +789,6 @@ public final class DocumentIntelligenceClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<Void> analyzeBatchDocumentsWithResponse(String modelId, RequestOptions requestOptions) {
-        final String contentType = "application/json";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -725,7 +797,7 @@ public final class DocumentIntelligenceClientImpl {
             }
         });
         return service.analyzeBatchDocumentsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId,
-            contentType, accept, requestOptionsLocal, Context.NONE);
+            accept, requestOptionsLocal, Context.NONE);
     }
 
     /**
@@ -751,9 +823,18 @@ public final class DocumentIntelligenceClientImpl {
      * the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
@@ -767,7 +848,8 @@ public final class DocumentIntelligenceClientImpl {
      *     resultPrefix: String (Optional)
      *     overwriteExisting: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -816,9 +898,18 @@ public final class DocumentIntelligenceClientImpl {
      * the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
@@ -832,7 +923,8 @@ public final class DocumentIntelligenceClientImpl {
      *     resultPrefix: String (Optional)
      *     overwriteExisting: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -881,9 +973,18 @@ public final class DocumentIntelligenceClientImpl {
      * the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
@@ -897,7 +998,8 @@ public final class DocumentIntelligenceClientImpl {
      *     resultPrefix: String (Optional)
      *     overwriteExisting: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -947,9 +1049,18 @@ public final class DocumentIntelligenceClientImpl {
      * the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
@@ -963,7 +1074,8 @@ public final class DocumentIntelligenceClientImpl {
      *     resultPrefix: String (Optional)
      *     overwriteExisting: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -994,9 +1106,11 @@ public final class DocumentIntelligenceClientImpl {
      * Gets the generated searchable PDF output from document analysis.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
@@ -1011,7 +1125,7 @@ public final class DocumentIntelligenceClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAnalyzeResultPdfWithResponseAsync(String modelId, String resultId,
         RequestOptions requestOptions) {
-        final String accept = "application/pdf, application/json";
+        final String accept = "application/pdf";
         return FluxUtil.withContext(context -> service.getAnalyzeResultPdf(this.getEndpoint(),
             this.getServiceVersion().getVersion(), modelId, resultId, accept, requestOptions, context));
     }
@@ -1020,9 +1134,11 @@ public final class DocumentIntelligenceClientImpl {
      * Gets the generated searchable PDF output from document analysis.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
@@ -1036,7 +1152,7 @@ public final class DocumentIntelligenceClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAnalyzeResultPdfWithResponse(String modelId, String resultId,
         RequestOptions requestOptions) {
-        final String accept = "application/pdf, application/json";
+        final String accept = "application/pdf";
         return service.getAnalyzeResultPdfSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId,
             resultId, accept, requestOptions, Context.NONE);
     }
@@ -1045,9 +1161,11 @@ public final class DocumentIntelligenceClientImpl {
      * Gets the generated cropped image of specified figure from document analysis.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
@@ -1063,7 +1181,7 @@ public final class DocumentIntelligenceClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAnalyzeResultFigureWithResponseAsync(String modelId, String resultId,
         String figureId, RequestOptions requestOptions) {
-        final String accept = "image/png, application/json";
+        final String accept = "image/png";
         return FluxUtil.withContext(context -> service.getAnalyzeResultFigure(this.getEndpoint(),
             this.getServiceVersion().getVersion(), modelId, resultId, figureId, accept, requestOptions, context));
     }
@@ -1072,9 +1190,11 @@ public final class DocumentIntelligenceClientImpl {
      * Gets the generated cropped image of specified figure from document analysis.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
@@ -1089,7 +1209,7 @@ public final class DocumentIntelligenceClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAnalyzeResultFigureWithResponse(String modelId, String resultId, String figureId,
         RequestOptions requestOptions) {
-        final String accept = "image/png, application/json";
+        final String accept = "image/png";
         return service.getAnalyzeResultFigureSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId,
             resultId, figureId, accept, requestOptions, Context.NONE);
     }
@@ -1110,12 +1230,14 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
@@ -1152,12 +1274,14 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
@@ -1193,12 +1317,14 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
@@ -1241,12 +1367,14 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
@@ -1289,12 +1417,14 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
@@ -1338,12 +1468,14 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.

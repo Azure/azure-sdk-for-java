@@ -5,43 +5,49 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The last operation on ComputeInstance. */
+/**
+ * The last operation on ComputeInstance.
+ */
 @Fluent
-public final class ComputeInstanceLastOperation {
+public final class ComputeInstanceLastOperation implements JsonSerializable<ComputeInstanceLastOperation> {
     /*
      * Name of the last operation.
      */
-    @JsonProperty(value = "operationName")
     private OperationName operationName;
 
     /*
      * Time of the last operation.
      */
-    @JsonProperty(value = "operationTime")
     private OffsetDateTime operationTime;
 
     /*
      * Operation status.
      */
-    @JsonProperty(value = "operationStatus")
     private OperationStatus operationStatus;
 
     /*
      * Trigger of operation.
      */
-    @JsonProperty(value = "operationTrigger")
     private OperationTrigger operationTrigger;
 
-    /** Creates an instance of ComputeInstanceLastOperation class. */
+    /**
+     * Creates an instance of ComputeInstanceLastOperation class.
+     */
     public ComputeInstanceLastOperation() {
     }
 
     /**
      * Get the operationName property: Name of the last operation.
-     *
+     * 
      * @return the operationName value.
      */
     public OperationName operationName() {
@@ -50,7 +56,7 @@ public final class ComputeInstanceLastOperation {
 
     /**
      * Set the operationName property: Name of the last operation.
-     *
+     * 
      * @param operationName the operationName value to set.
      * @return the ComputeInstanceLastOperation object itself.
      */
@@ -61,7 +67,7 @@ public final class ComputeInstanceLastOperation {
 
     /**
      * Get the operationTime property: Time of the last operation.
-     *
+     * 
      * @return the operationTime value.
      */
     public OffsetDateTime operationTime() {
@@ -70,7 +76,7 @@ public final class ComputeInstanceLastOperation {
 
     /**
      * Set the operationTime property: Time of the last operation.
-     *
+     * 
      * @param operationTime the operationTime value to set.
      * @return the ComputeInstanceLastOperation object itself.
      */
@@ -81,7 +87,7 @@ public final class ComputeInstanceLastOperation {
 
     /**
      * Get the operationStatus property: Operation status.
-     *
+     * 
      * @return the operationStatus value.
      */
     public OperationStatus operationStatus() {
@@ -90,7 +96,7 @@ public final class ComputeInstanceLastOperation {
 
     /**
      * Set the operationStatus property: Operation status.
-     *
+     * 
      * @param operationStatus the operationStatus value to set.
      * @return the ComputeInstanceLastOperation object itself.
      */
@@ -101,7 +107,7 @@ public final class ComputeInstanceLastOperation {
 
     /**
      * Get the operationTrigger property: Trigger of operation.
-     *
+     * 
      * @return the operationTrigger value.
      */
     public OperationTrigger operationTrigger() {
@@ -110,7 +116,7 @@ public final class ComputeInstanceLastOperation {
 
     /**
      * Set the operationTrigger property: Trigger of operation.
-     *
+     * 
      * @param operationTrigger the operationTrigger value to set.
      * @return the ComputeInstanceLastOperation object itself.
      */
@@ -121,9 +127,61 @@ public final class ComputeInstanceLastOperation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operationName", this.operationName == null ? null : this.operationName.toString());
+        jsonWriter.writeStringField("operationTime",
+            this.operationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.operationTime));
+        jsonWriter.writeStringField("operationStatus",
+            this.operationStatus == null ? null : this.operationStatus.toString());
+        jsonWriter.writeStringField("operationTrigger",
+            this.operationTrigger == null ? null : this.operationTrigger.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComputeInstanceLastOperation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComputeInstanceLastOperation if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ComputeInstanceLastOperation.
+     */
+    public static ComputeInstanceLastOperation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComputeInstanceLastOperation deserializedComputeInstanceLastOperation = new ComputeInstanceLastOperation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operationName".equals(fieldName)) {
+                    deserializedComputeInstanceLastOperation.operationName
+                        = OperationName.fromString(reader.getString());
+                } else if ("operationTime".equals(fieldName)) {
+                    deserializedComputeInstanceLastOperation.operationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("operationStatus".equals(fieldName)) {
+                    deserializedComputeInstanceLastOperation.operationStatus
+                        = OperationStatus.fromString(reader.getString());
+                } else if ("operationTrigger".equals(fieldName)) {
+                    deserializedComputeInstanceLastOperation.operationTrigger
+                        = OperationTrigger.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedComputeInstanceLastOperation;
+        });
     }
 }

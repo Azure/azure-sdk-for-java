@@ -252,8 +252,8 @@ public final class ShareServiceAsyncClient {
 
         BiFunction<String, Integer, Mono<PagedResponse<ShareItem>>> retriever =
             (nextMarker, pageSize) -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getServices()
-                    .listSharesSegmentSinglePageAsync(
-                        prefix, nextMarker, pageSize == null ? maxResultsPerPage : pageSize, include, null, context)
+                    .listSharesSegmentSinglePageAsync(prefix, nextMarker,
+                        pageSize == null ? maxResultsPerPage : pageSize, include, null, context)
                     .map(response -> {
                         List<ShareItem> value = response.getValue() == null
                             ? Collections.emptyList()
@@ -854,6 +854,6 @@ public final class ShareServiceAsyncClient {
         String deletedShareName, String deletedShareVersion, Context context) {
         return this.azureFileStorageClient.getShares().restoreWithResponseAsync(
             deletedShareName, null, null, deletedShareName, deletedShareVersion, context)
-        .map(response -> new SimpleResponse<>(response, getShareAsyncClient(deletedShareName)));
+            .map(response -> new SimpleResponse<>(response, getShareAsyncClient(deletedShareName)));
     }
 }

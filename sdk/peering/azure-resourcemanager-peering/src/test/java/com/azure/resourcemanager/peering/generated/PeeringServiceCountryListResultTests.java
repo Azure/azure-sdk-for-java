@@ -13,21 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class PeeringServiceCountryListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeeringServiceCountryListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"id\":\"cmgyud\",\"name\":\"ytlmoyrxvwfud\",\"type\":\"pz\"}],\"nextLink\":\"xhdzhlrqjbhckf\"}")
-                .toObject(PeeringServiceCountryListResult.class);
-        Assertions.assertEquals("xhdzhlrqjbhckf", model.nextLink());
+        PeeringServiceCountryListResult model = BinaryData.fromString(
+            "{\"value\":[{\"id\":\"ovawjvzunlu\",\"name\":\"hnnpr\",\"type\":\"xipeilpjzuaejx\"},{\"id\":\"ultskzbbtdz\",\"name\":\"mv\",\"type\":\"ekg\"}],\"nextLink\":\"ozuhkfp\"}")
+            .toObject(PeeringServiceCountryListResult.class);
+        Assertions.assertEquals("ozuhkfp", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeeringServiceCountryListResult model =
-            new PeeringServiceCountryListResult()
-                .withValue(Arrays.asList(new PeeringServiceCountryInner()))
-                .withNextLink("xhdzhlrqjbhckf");
+        PeeringServiceCountryListResult model = new PeeringServiceCountryListResult()
+            .withValue(Arrays.asList(new PeeringServiceCountryInner(), new PeeringServiceCountryInner()))
+            .withNextLink("ozuhkfp");
         model = BinaryData.fromObject(model).toObject(PeeringServiceCountryListResult.class);
-        Assertions.assertEquals("xhdzhlrqjbhckf", model.nextLink());
+        Assertions.assertEquals("ozuhkfp", model.nextLink());
     }
 }

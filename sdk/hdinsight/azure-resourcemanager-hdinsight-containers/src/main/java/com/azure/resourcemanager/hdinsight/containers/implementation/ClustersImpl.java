@@ -16,8 +16,9 @@ import com.azure.resourcemanager.hdinsight.containers.fluent.models.ServiceConfi
 import com.azure.resourcemanager.hdinsight.containers.models.Cluster;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterInstanceViewResult;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterResizeData;
-import com.azure.resourcemanager.hdinsight.containers.models.ClusterUpgrade;
 import com.azure.resourcemanager.hdinsight.containers.models.Clusters;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterUpgrade;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterUpgradeRollback;
 import com.azure.resourcemanager.hdinsight.containers.models.ServiceConfigResult;
 
 public final class ClustersImpl implements Clusters {
@@ -59,8 +60,31 @@ public final class ClustersImpl implements Clusters {
 
     public Cluster upgrade(String resourceGroupName, String clusterPoolName, String clusterName,
         ClusterUpgrade clusterUpgradeRequest, Context context) {
-        ClusterInner inner = this.serviceClient().upgrade(resourceGroupName, clusterPoolName, clusterName,
-            clusterUpgradeRequest, context);
+        ClusterInner inner = this.serviceClient()
+            .upgrade(resourceGroupName, clusterPoolName, clusterName, clusterUpgradeRequest, context);
+        if (inner != null) {
+            return new ClusterImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Cluster upgradeManualRollback(String resourceGroupName, String clusterPoolName, String clusterName,
+        ClusterUpgradeRollback clusterRollbackUpgradeRequest) {
+        ClusterInner inner = this.serviceClient()
+            .upgradeManualRollback(resourceGroupName, clusterPoolName, clusterName, clusterRollbackUpgradeRequest);
+        if (inner != null) {
+            return new ClusterImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Cluster upgradeManualRollback(String resourceGroupName, String clusterPoolName, String clusterName,
+        ClusterUpgradeRollback clusterRollbackUpgradeRequest, Context context) {
+        ClusterInner inner = this.serviceClient()
+            .upgradeManualRollback(resourceGroupName, clusterPoolName, clusterName, clusterRollbackUpgradeRequest,
+                context);
         if (inner != null) {
             return new ClusterImpl(inner, this.manager());
         } else {
@@ -81,8 +105,8 @@ public final class ClustersImpl implements Clusters {
 
     public Cluster resize(String resourceGroupName, String clusterPoolName, String clusterName,
         ClusterResizeData clusterResizeRequest, Context context) {
-        ClusterInner inner = this.serviceClient().resize(resourceGroupName, clusterPoolName, clusterName,
-            clusterResizeRequest, context);
+        ClusterInner inner = this.serviceClient()
+            .resize(resourceGroupName, clusterPoolName, clusterName, clusterResizeRequest, context);
         if (inner != null) {
             return new ClusterImpl(inner, this.manager());
         } else {

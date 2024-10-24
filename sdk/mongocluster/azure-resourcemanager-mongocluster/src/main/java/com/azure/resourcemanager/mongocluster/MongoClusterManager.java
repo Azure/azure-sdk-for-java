@@ -11,8 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -23,18 +23,20 @@ import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mongocluster.fluent.DocumentDBClient;
-import com.azure.resourcemanager.mongocluster.implementation.DocumentDBClientBuilder;
+import com.azure.resourcemanager.mongocluster.fluent.MongoClusterManagementClient;
 import com.azure.resourcemanager.mongocluster.implementation.FirewallRulesImpl;
+import com.azure.resourcemanager.mongocluster.implementation.MongoClusterManagementClientBuilder;
 import com.azure.resourcemanager.mongocluster.implementation.MongoClustersImpl;
 import com.azure.resourcemanager.mongocluster.implementation.OperationsImpl;
 import com.azure.resourcemanager.mongocluster.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.mongocluster.implementation.PrivateLinksImpl;
+import com.azure.resourcemanager.mongocluster.implementation.ReplicasImpl;
 import com.azure.resourcemanager.mongocluster.models.FirewallRules;
 import com.azure.resourcemanager.mongocluster.models.MongoClusters;
 import com.azure.resourcemanager.mongocluster.models.Operations;
 import com.azure.resourcemanager.mongocluster.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.mongocluster.models.PrivateLinks;
+import com.azure.resourcemanager.mongocluster.models.Replicas;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -58,12 +60,14 @@ public final class MongoClusterManager {
 
     private PrivateLinks privateLinks;
 
-    private final DocumentDBClient clientObject;
+    private Replicas replicas;
+
+    private final MongoClusterManagementClient clientObject;
 
     private MongoClusterManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new DocumentDBClientBuilder().pipeline(httpPipeline)
+        this.clientObject = new MongoClusterManagementClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
@@ -330,12 +334,24 @@ public final class MongoClusterManager {
     }
 
     /**
-     * Gets wrapped service client DocumentDBClient providing direct access to the underlying auto-generated API
-     * implementation, based on Azure REST API.
+     * Gets the resource collection API of Replicas.
      * 
-     * @return Wrapped service client DocumentDBClient.
+     * @return Resource collection API of Replicas.
      */
-    public DocumentDBClient serviceClient() {
+    public Replicas replicas() {
+        if (this.replicas == null) {
+            this.replicas = new ReplicasImpl(clientObject.getReplicas(), this);
+        }
+        return replicas;
+    }
+
+    /**
+     * Gets wrapped service client MongoClusterManagementClient providing direct access to the underlying auto-generated
+     * API implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client MongoClusterManagementClient.
+     */
+    public MongoClusterManagementClient serviceClient() {
         return this.clientObject;
     }
 }

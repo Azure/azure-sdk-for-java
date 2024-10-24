@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.specialized.cryptography;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.implementation.Constants;
 
@@ -13,6 +14,8 @@ final class CryptographyConstants {
     static final String ENCRYPTION_PROTOCOL_V1 = "1.0";
 
     static final String ENCRYPTION_PROTOCOL_V2 = "2.0";
+
+    static final String ENCRYPTION_PROTOCOL_V2_1 = "2.1";
 
     static final String AGENT_METADATA_KEY = "EncryptionLibrary";
 
@@ -30,18 +33,14 @@ final class CryptographyConstants {
 
     static final String ENCRYPTION_DATA_KEY = "encryptiondata";
 
-    static final String ENCRYPTION_METADATA_HEADER = Constants.HeaderConstants.X_MS_META + "-"
-        + ENCRYPTION_DATA_KEY;
+    static final HttpHeaderName ENCRYPTION_METADATA_HEADER
+        = HttpHeaderName.fromString(Constants.HeaderConstants.X_MS_META + "-" + ENCRYPTION_DATA_KEY);
 
     static final String ENCRYPTION_MODE = "FullBlob";
 
     static final int ENCRYPTION_BLOCK_SIZE = 16;
 
-    static final String RANGE_HEADER = "x-ms-range";
-
-    static final String CONTENT_RANGE = "Content-Range";
-
-    static final String CONTENT_LENGTH = "Content-Length";
+    static final HttpHeaderName RANGE_HEADER = HttpHeaderName.fromString("x-ms-range");
 
     static final int NONCE_LENGTH = 12;
 

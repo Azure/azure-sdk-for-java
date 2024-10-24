@@ -28,7 +28,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+        <version>3.6.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>add-data-source</id>
@@ -61,7 +61,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <configuration>
           <!-- Added to override the -snippetpath arg which is not applicable here-->
           <additionalOptions>-maxLineLength 120</additionalOptions>
@@ -92,7 +92,7 @@
         <dependency>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-batch</artifactId>
-          <version>11.2.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-batch;current} -->
+          <version>11.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-batch;current} -->
         </dependency>
         <dependency>
           <groupId>com.microsoft.azure</groupId>
@@ -109,14 +109,6 @@
           <artifactId>azure-eventhubs-extensions</artifactId>
           <version>3.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs-extensions;current} -->
         </dependency>
-        <!-- Storage is excluded from Spotbugs report as it collides with the storage library
-             dependency in eventhubs code. This issue is under investigation.
-              Issue Link: https://github.com/Azure/azure-sdk-for-java/issues/3096 -->
-        <!--dependency>
-            <groupId>com.microsoft.azure</groupId>
-            <artifactId>azure-storage-blob</artifactId>
-            <version>11.0.2</version> {x-version-update;com.microsoft.azure:azure-storage-blob;current}
-        </dependency-->
         <dependency>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-servicebus</artifactId>

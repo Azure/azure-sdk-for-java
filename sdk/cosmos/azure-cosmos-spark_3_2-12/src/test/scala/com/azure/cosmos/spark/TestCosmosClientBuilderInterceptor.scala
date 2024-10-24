@@ -5,8 +5,8 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.CosmosClientBuilder
 
 class TestCosmosClientBuilderInterceptor extends CosmosClientBuilderInterceptor {
-  override def process(cosmosClientBuilder: CosmosClientBuilder): CosmosClientBuilder = {
-    TestCosmosClientBuilderInterceptor.callback(cosmosClientBuilder)
+  override def getClientBuilderInterceptor(configs: Map[String, String]): Option[CosmosClientBuilder => CosmosClientBuilder] = {
+    Some(TestCosmosClientBuilderInterceptor.callback)
   }
 }
 

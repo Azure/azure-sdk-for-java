@@ -44,12 +44,36 @@ public class ResponseValidationPolicyBuilder {
      *
      * @param headerName The header to validate.
      * @return This policy.
+     * @deprecated Use {@link  #addOptionalEcho(HttpHeaderName)} instead.
      */
+    @Deprecated
     public ResponseValidationPolicyBuilder addOptionalEcho(String headerName) {
         assertions.add((httpResponse, logger) -> {
             HttpHeaderName httpHeaderName = HttpHeaderName.fromString(headerName);
             String requestHeaderValue = httpResponse.getRequest().getHeaders().getValue(httpHeaderName);
             String responseHeaderValue = httpResponse.getHeaders().getValue(httpHeaderName);
+            if (responseHeaderValue != null && !responseHeaderValue.equals(requestHeaderValue)) {
+                throw logger.logExceptionAsError(new RuntimeException(String.format(
+                    "Unexpected header value. Expected response to echo `%s: %s`. Got value `%s`.",
+                    headerName, requestHeaderValue, responseHeaderValue
+                )));
+            }
+        });
+
+        return this;
+    }
+
+    /**
+     * Fluently applies an optional validation to this policy where, if the response contains the given header, asserts
+     * its value is an echo of the value provided in the request.
+     *
+     * @param headerName The header to validate.
+     * @return This policy.
+     */
+    public ResponseValidationPolicyBuilder addOptionalEcho(HttpHeaderName headerName) {
+        assertions.add((httpResponse, logger) -> {
+            String requestHeaderValue = httpResponse.getRequest().getHeaders().getValue(headerName);
+            String responseHeaderValue = httpResponse.getHeaders().getValue(headerName);
             if (responseHeaderValue != null && !responseHeaderValue.equals(requestHeaderValue)) {
                 throw logger.logExceptionAsError(new RuntimeException(String.format(
                     "Unexpected header value. Expected response to echo `%s: %s`. Got value `%s`.",

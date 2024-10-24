@@ -7,81 +7,83 @@ package com.azure.resourcemanager.billing.models;
 import com.azure.resourcemanager.billing.fluent.models.InvoiceSectionWithCreateSubPermissionInner;
 import java.util.List;
 
-/** An immutable client-side representation of InvoiceSectionWithCreateSubPermission. */
+/**
+ * An immutable client-side representation of InvoiceSectionWithCreateSubPermission.
+ */
 public interface InvoiceSectionWithCreateSubPermission {
     /**
-     * Gets the invoiceSectionId property: The ID of the invoice section.
-     *
-     * @return the invoiceSectionId value.
-     */
-    String invoiceSectionId();
-
-    /**
-     * Gets the invoiceSectionDisplayName property: The name of the invoice section.
-     *
-     * @return the invoiceSectionDisplayName value.
-     */
-    String invoiceSectionDisplayName();
-
-    /**
-     * Gets the invoiceSectionSystemId property: The system generated unique identifier for an invoice section.
-     *
-     * @return the invoiceSectionSystemId value.
-     */
-    String invoiceSectionSystemId();
-
-    /**
-     * Gets the billingProfileId property: The ID of the billing profile for the invoice section.
-     *
-     * @return the billingProfileId value.
-     */
-    String billingProfileId();
-
-    /**
-     * Gets the billingProfileDisplayName property: The name of the billing profile for the invoice section.
-     *
+     * Gets the billingProfileDisplayName property: The name of the billing profile.
+     * 
      * @return the billingProfileDisplayName value.
      */
     String billingProfileDisplayName();
 
     /**
+     * Gets the billingProfileId property: The fully qualified ID that uniquely identifies a billing profile.
+     * 
+     * @return the billingProfileId value.
+     */
+    String billingProfileId();
+
+    /**
+     * Gets the billingProfileSystemId property: The system generated unique identifier for a billing profile.
+     * 
+     * @return the billingProfileSystemId value.
+     */
+    String billingProfileSystemId();
+
+    /**
      * Gets the billingProfileStatus property: The status of the billing profile.
-     *
+     * 
      * @return the billingProfileStatus value.
      */
     BillingProfileStatus billingProfileStatus();
 
     /**
      * Gets the billingProfileStatusReasonCode property: Reason for the specified billing profile status.
-     *
+     * 
      * @return the billingProfileStatusReasonCode value.
      */
-    StatusReasonCodeForBillingProfile billingProfileStatusReasonCode();
+    BillingProfileStatusReasonCode billingProfileStatusReasonCode();
 
     /**
      * Gets the billingProfileSpendingLimit property: The billing profile spending limit.
-     *
+     * 
      * @return the billingProfileSpendingLimit value.
      */
-    SpendingLimitForBillingProfile billingProfileSpendingLimit();
-
-    /**
-     * Gets the billingProfileSystemId property: The system generated unique identifier for a billing profile.
-     *
-     * @return the billingProfileSystemId value.
-     */
-    String billingProfileSystemId();
+    SpendingLimit billingProfileSpendingLimit();
 
     /**
      * Gets the enabledAzurePlans property: Enabled azure plans for the associated billing profile.
-     *
+     * 
      * @return the enabledAzurePlans value.
      */
     List<AzurePlan> enabledAzurePlans();
 
     /**
+     * Gets the invoiceSectionDisplayName property: The name of the invoice section.
+     * 
+     * @return the invoiceSectionDisplayName value.
+     */
+    String invoiceSectionDisplayName();
+
+    /**
+     * Gets the invoiceSectionId property: The fully qualified ID that uniquely identifies an invoice section.
+     * 
+     * @return the invoiceSectionId value.
+     */
+    String invoiceSectionId();
+
+    /**
+     * Gets the invoiceSectionSystemId property: The system generated unique identifier for an invoice section.
+     * 
+     * @return the invoiceSectionSystemId value.
+     */
+    String invoiceSectionSystemId();
+
+    /**
      * Gets the inner com.azure.resourcemanager.billing.fluent.models.InvoiceSectionWithCreateSubPermissionInner object.
-     *
+     * 
      * @return the inner object.
      */
     InvoiceSectionWithCreateSubPermissionInner innerModel();

@@ -6,39 +6,29 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A WebLinkedService that uses basic authentication to communicate with an HTTP endpoint.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "authenticationType",
-    defaultImpl = WebBasicAuthentication.class,
-    visible = true)
-@JsonTypeName("Basic")
 @Fluent
 public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties {
     /*
      * Type of authentication used to connect to the web table source.
      */
-    @JsonTypeId
-    @JsonProperty(value = "authenticationType", required = true)
     private WebAuthenticationType authenticationType = WebAuthenticationType.BASIC;
 
     /*
      * User name for Basic authentication. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "username", required = true)
     private Object username;
 
     /*
      * The password for Basic authentication.
      */
-    @JsonProperty(value = "password", required = true)
     private SecretBase password;
 
     /**
@@ -131,4 +121,52 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WebBasicAuthentication.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("url", url());
+        jsonWriter.writeUntypedField("username", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebBasicAuthentication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebBasicAuthentication if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebBasicAuthentication.
+     */
+    public static WebBasicAuthentication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebBasicAuthentication deserializedWebBasicAuthentication = new WebBasicAuthentication();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedWebBasicAuthentication.withUrl(reader.readUntyped());
+                } else if ("username".equals(fieldName)) {
+                    deserializedWebBasicAuthentication.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedWebBasicAuthentication.password = SecretBase.fromJson(reader);
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedWebBasicAuthentication.authenticationType
+                        = WebAuthenticationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebBasicAuthentication;
+        });
+    }
 }

@@ -6,39 +6,46 @@ package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The parameters to provide for the Kik channel. */
+/**
+ * The parameters to provide for the Kik channel.
+ */
 @Fluent
-public final class KikChannelProperties {
+public final class KikChannelProperties implements JsonSerializable<KikChannelProperties> {
     /*
      * The Kik user name
      */
-    @JsonProperty(value = "userName", required = true)
     private String username;
 
     /*
-     * Kik API key. Value only returned through POST to the action Channel List
-     * API, otherwise empty.
+     * Kik API key. Value only returned through POST to the action Channel List API, otherwise empty.
      */
-    @JsonProperty(value = "apiKey")
     private String apiKey;
 
     /*
      * Whether this channel is validated for the bot
      */
-    @JsonProperty(value = "isValidated")
     private Boolean isValidated;
 
     /*
      * Whether this channel is enabled for the bot
      */
-    @JsonProperty(value = "isEnabled", required = true)
     private boolean isEnabled;
 
     /**
+     * Creates an instance of KikChannelProperties class.
+     */
+    public KikChannelProperties() {
+    }
+
+    /**
      * Get the username property: The Kik user name.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -47,7 +54,7 @@ public final class KikChannelProperties {
 
     /**
      * Set the username property: The Kik user name.
-     *
+     * 
      * @param username the username value to set.
      * @return the KikChannelProperties object itself.
      */
@@ -59,7 +66,7 @@ public final class KikChannelProperties {
     /**
      * Get the apiKey property: Kik API key. Value only returned through POST to the action Channel List API, otherwise
      * empty.
-     *
+     * 
      * @return the apiKey value.
      */
     public String apiKey() {
@@ -69,7 +76,7 @@ public final class KikChannelProperties {
     /**
      * Set the apiKey property: Kik API key. Value only returned through POST to the action Channel List API, otherwise
      * empty.
-     *
+     * 
      * @param apiKey the apiKey value to set.
      * @return the KikChannelProperties object itself.
      */
@@ -80,7 +87,7 @@ public final class KikChannelProperties {
 
     /**
      * Get the isValidated property: Whether this channel is validated for the bot.
-     *
+     * 
      * @return the isValidated value.
      */
     public Boolean isValidated() {
@@ -89,7 +96,7 @@ public final class KikChannelProperties {
 
     /**
      * Set the isValidated property: Whether this channel is validated for the bot.
-     *
+     * 
      * @param isValidated the isValidated value to set.
      * @return the KikChannelProperties object itself.
      */
@@ -100,7 +107,7 @@ public final class KikChannelProperties {
 
     /**
      * Get the isEnabled property: Whether this channel is enabled for the bot.
-     *
+     * 
      * @return the isEnabled value.
      */
     public boolean isEnabled() {
@@ -109,7 +116,7 @@ public final class KikChannelProperties {
 
     /**
      * Set the isEnabled property: Whether this channel is enabled for the bot.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the KikChannelProperties object itself.
      */
@@ -120,16 +127,61 @@ public final class KikChannelProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (username() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property username in model KikChannelProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property username in model KikChannelProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(KikChannelProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userName", this.username);
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeStringField("apiKey", this.apiKey);
+        jsonWriter.writeBooleanField("isValidated", this.isValidated);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KikChannelProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KikChannelProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KikChannelProperties.
+     */
+    public static KikChannelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KikChannelProperties deserializedKikChannelProperties = new KikChannelProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userName".equals(fieldName)) {
+                    deserializedKikChannelProperties.username = reader.getString();
+                } else if ("isEnabled".equals(fieldName)) {
+                    deserializedKikChannelProperties.isEnabled = reader.getBoolean();
+                } else if ("apiKey".equals(fieldName)) {
+                    deserializedKikChannelProperties.apiKey = reader.getString();
+                } else if ("isValidated".equals(fieldName)) {
+                    deserializedKikChannelProperties.isValidated = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKikChannelProperties;
+        });
+    }
 }

@@ -375,7 +375,8 @@ public class ShareAsyncClient {
             .createNoCustomHeadersWithResponseAsync(shareName, null, options.getMetadata(), options.getQuotaInGb(),
                 options.getAccessTier(), enabledProtocol, options.getRootSquash(),
                 options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
-                options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(), context)
+                options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
+                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), context)
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -626,7 +627,7 @@ public class ShareAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getShares().deleteNoCustomHeadersWithResponseAsync(shareName, snapshot, null,
             ModelHelper.toDeleteSnapshotsOptionType(options.getDeleteSnapshotsOptions()),
-            requestConditions.getLeaseId(), context);
+                requestConditions.getLeaseId(), context);
     }
 
     /**
@@ -940,8 +941,9 @@ public class ShareAsyncClient {
         return azureFileStorageClient.getShares().setPropertiesNoCustomHeadersWithResponseAsync(shareName, null,
             options.getQuotaInGb(), options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(),
             options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
-            options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(), context)
-            .map(ModelHelper::mapToShareInfoResponse);
+            options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
+            options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), context)
+                .map(ModelHelper::mapToShareInfoResponse);
     }
 
     /**
@@ -2135,11 +2137,12 @@ public class ShareAsyncClient {
     Mono<Response<String>> createPermissionWithResponse(String filePermission, FilePermissionFormat filePermissionFormat,
                                                         Context context) {
         // NOTE: Should we check for null or empty?
-        SharePermission sharePermission = new SharePermission().setPermission(filePermission).setFormat(filePermissionFormat);
+        SharePermission sharePermission = new SharePermission().setPermission(filePermission)
+            .setFormat(filePermissionFormat);
         return azureFileStorageClient.getShares()
-                .createPermissionWithResponseAsync(shareName, sharePermission, null, context)
-                .map(response -> new SimpleResponse<>(response,
-                        response.getDeserializedHeaders().getXMsFilePermissionKey()));
+            .createPermissionWithResponseAsync(shareName, sharePermission, null, context)
+            .map(response -> new SimpleResponse<>(response,
+                response.getDeserializedHeaders().getXMsFilePermissionKey()));
     }
 
     /**

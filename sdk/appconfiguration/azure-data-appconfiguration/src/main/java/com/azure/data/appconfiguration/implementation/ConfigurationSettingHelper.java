@@ -13,13 +13,15 @@ import java.time.OffsetDateTime;
 public final class ConfigurationSettingHelper {
     private static ConfigurationSettingAccessor accessor;
 
-    private ConfigurationSettingHelper() { }
+    private ConfigurationSettingHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link ConfigurationSetting} instance.
      */
     public interface ConfigurationSettingAccessor {
         ConfigurationSetting setReadOnly(ConfigurationSetting setting, boolean readOnly);
+
         ConfigurationSetting setLastModified(ConfigurationSetting setting, OffsetDateTime lastModified);
     }
 

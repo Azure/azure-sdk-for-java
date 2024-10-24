@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets or sets the agent registration key name - primary or secondary. */
+/**
+ * Gets or sets the agent registration key name - primary or secondary.
+ */
 public final class AgentRegistrationKeyName extends ExpandableStringEnum<AgentRegistrationKeyName> {
-    /** Static value primary for AgentRegistrationKeyName. */
+    /**
+     * Static value primary for AgentRegistrationKeyName.
+     */
     public static final AgentRegistrationKeyName PRIMARY = fromString("primary");
 
-    /** Static value secondary for AgentRegistrationKeyName. */
+    /**
+     * Static value secondary for AgentRegistrationKeyName.
+     */
     public static final AgentRegistrationKeyName SECONDARY = fromString("secondary");
 
     /**
+     * Creates a new instance of AgentRegistrationKeyName value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AgentRegistrationKeyName() {
+    }
+
+    /**
      * Creates or finds a AgentRegistrationKeyName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AgentRegistrationKeyName.
      */
-    @JsonCreator
     public static AgentRegistrationKeyName fromString(String name) {
         return fromString(name, AgentRegistrationKeyName.class);
     }
 
     /**
      * Gets known AgentRegistrationKeyName values.
-     *
+     * 
      * @return known AgentRegistrationKeyName values.
      */
     public static Collection<AgentRegistrationKeyName> values() {

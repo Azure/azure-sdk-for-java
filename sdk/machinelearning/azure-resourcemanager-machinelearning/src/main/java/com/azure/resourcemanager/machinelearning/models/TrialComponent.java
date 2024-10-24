@@ -6,57 +6,57 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Trial component definition. */
+/**
+ * Trial component definition.
+ */
 @Fluent
-public final class TrialComponent {
+public final class TrialComponent implements JsonSerializable<TrialComponent> {
     /*
      * ARM resource ID of the code asset.
      */
-    @JsonProperty(value = "codeId")
     private String codeId;
 
     /*
      * [Required] The command to execute on startup of the job. eg. "python train.py"
      */
-    @JsonProperty(value = "command", required = true)
     private String command;
-
-    /*
-     * Distribution configuration of the job. If set, this should be one of Mpi, Tensorflow, PyTorch, or null.
-     */
-    @JsonProperty(value = "distribution")
-    private DistributionConfiguration distribution;
 
     /*
      * [Required] The ARM resource ID of the Environment specification for the job.
      */
-    @JsonProperty(value = "environmentId", required = true)
     private String environmentId;
 
     /*
      * Environment variables included in the job.
      */
-    @JsonProperty(value = "environmentVariables")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> environmentVariables;
+
+    /*
+     * Distribution configuration of the job. If set, this should be one of Mpi, Tensorflow, PyTorch, or null.
+     */
+    private DistributionConfiguration distribution;
 
     /*
      * Compute Resource configuration for the job.
      */
-    @JsonProperty(value = "resources")
     private JobResourceConfiguration resources;
 
-    /** Creates an instance of TrialComponent class. */
+    /**
+     * Creates an instance of TrialComponent class.
+     */
     public TrialComponent() {
     }
 
     /**
      * Get the codeId property: ARM resource ID of the code asset.
-     *
+     * 
      * @return the codeId value.
      */
     public String codeId() {
@@ -65,7 +65,7 @@ public final class TrialComponent {
 
     /**
      * Set the codeId property: ARM resource ID of the code asset.
-     *
+     * 
      * @param codeId the codeId value to set.
      * @return the TrialComponent object itself.
      */
@@ -76,7 +76,7 @@ public final class TrialComponent {
 
     /**
      * Get the command property: [Required] The command to execute on startup of the job. eg. "python train.py".
-     *
+     * 
      * @return the command value.
      */
     public String command() {
@@ -85,7 +85,7 @@ public final class TrialComponent {
 
     /**
      * Set the command property: [Required] The command to execute on startup of the job. eg. "python train.py".
-     *
+     * 
      * @param command the command value to set.
      * @return the TrialComponent object itself.
      */
@@ -95,30 +95,8 @@ public final class TrialComponent {
     }
 
     /**
-     * Get the distribution property: Distribution configuration of the job. If set, this should be one of Mpi,
-     * Tensorflow, PyTorch, or null.
-     *
-     * @return the distribution value.
-     */
-    public DistributionConfiguration distribution() {
-        return this.distribution;
-    }
-
-    /**
-     * Set the distribution property: Distribution configuration of the job. If set, this should be one of Mpi,
-     * Tensorflow, PyTorch, or null.
-     *
-     * @param distribution the distribution value to set.
-     * @return the TrialComponent object itself.
-     */
-    public TrialComponent withDistribution(DistributionConfiguration distribution) {
-        this.distribution = distribution;
-        return this;
-    }
-
-    /**
      * Get the environmentId property: [Required] The ARM resource ID of the Environment specification for the job.
-     *
+     * 
      * @return the environmentId value.
      */
     public String environmentId() {
@@ -127,7 +105,7 @@ public final class TrialComponent {
 
     /**
      * Set the environmentId property: [Required] The ARM resource ID of the Environment specification for the job.
-     *
+     * 
      * @param environmentId the environmentId value to set.
      * @return the TrialComponent object itself.
      */
@@ -138,7 +116,7 @@ public final class TrialComponent {
 
     /**
      * Get the environmentVariables property: Environment variables included in the job.
-     *
+     * 
      * @return the environmentVariables value.
      */
     public Map<String, String> environmentVariables() {
@@ -147,7 +125,7 @@ public final class TrialComponent {
 
     /**
      * Set the environmentVariables property: Environment variables included in the job.
-     *
+     * 
      * @param environmentVariables the environmentVariables value to set.
      * @return the TrialComponent object itself.
      */
@@ -157,8 +135,30 @@ public final class TrialComponent {
     }
 
     /**
+     * Get the distribution property: Distribution configuration of the job. If set, this should be one of Mpi,
+     * Tensorflow, PyTorch, or null.
+     * 
+     * @return the distribution value.
+     */
+    public DistributionConfiguration distribution() {
+        return this.distribution;
+    }
+
+    /**
+     * Set the distribution property: Distribution configuration of the job. If set, this should be one of Mpi,
+     * Tensorflow, PyTorch, or null.
+     * 
+     * @param distribution the distribution value to set.
+     * @return the TrialComponent object itself.
+     */
+    public TrialComponent withDistribution(DistributionConfiguration distribution) {
+        this.distribution = distribution;
+        return this;
+    }
+
+    /**
      * Get the resources property: Compute Resource configuration for the job.
-     *
+     * 
      * @return the resources value.
      */
     public JobResourceConfiguration resources() {
@@ -167,7 +167,7 @@ public final class TrialComponent {
 
     /**
      * Set the resources property: Compute Resource configuration for the job.
-     *
+     * 
      * @param resources the resources value to set.
      * @return the TrialComponent object itself.
      */
@@ -178,22 +178,20 @@ public final class TrialComponent {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (command() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property command in model TrialComponent"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property command in model TrialComponent"));
+        }
+        if (environmentId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property environmentId in model TrialComponent"));
         }
         if (distribution() != null) {
             distribution().validate();
-        }
-        if (environmentId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property environmentId in model TrialComponent"));
         }
         if (resources() != null) {
             resources().validate();
@@ -201,4 +199,58 @@ public final class TrialComponent {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TrialComponent.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("command", this.command);
+        jsonWriter.writeStringField("environmentId", this.environmentId);
+        jsonWriter.writeStringField("codeId", this.codeId);
+        jsonWriter.writeMapField("environmentVariables", this.environmentVariables,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("distribution", this.distribution);
+        jsonWriter.writeJsonField("resources", this.resources);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrialComponent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrialComponent if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TrialComponent.
+     */
+    public static TrialComponent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrialComponent deserializedTrialComponent = new TrialComponent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("command".equals(fieldName)) {
+                    deserializedTrialComponent.command = reader.getString();
+                } else if ("environmentId".equals(fieldName)) {
+                    deserializedTrialComponent.environmentId = reader.getString();
+                } else if ("codeId".equals(fieldName)) {
+                    deserializedTrialComponent.codeId = reader.getString();
+                } else if ("environmentVariables".equals(fieldName)) {
+                    Map<String, String> environmentVariables = reader.readMap(reader1 -> reader1.getString());
+                    deserializedTrialComponent.environmentVariables = environmentVariables;
+                } else if ("distribution".equals(fieldName)) {
+                    deserializedTrialComponent.distribution = DistributionConfiguration.fromJson(reader);
+                } else if ("resources".equals(fieldName)) {
+                    deserializedTrialComponent.resources = JobResourceConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrialComponent;
+        });
+    }
 }

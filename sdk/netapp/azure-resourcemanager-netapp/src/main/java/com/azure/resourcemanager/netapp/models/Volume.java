@@ -96,8 +96,9 @@ public interface Volume {
 
     /**
      * Gets the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for
-     * LargeVolume on exceptional basis. Specified in bytes.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * expressed in bytes as multiples of 1 GiB.
      * 
      * @return the usageThreshold value.
      */
@@ -162,11 +163,20 @@ public interface Volume {
     String subnetId();
 
     /**
-     * Gets the networkFeatures property: Network features available to the volume, or current state of update.
+     * Gets the networkFeatures property: The original value of the network features type available to the volume at the
+     * time it was created.
      * 
      * @return the networkFeatures value.
      */
     NetworkFeatures networkFeatures();
+
+    /**
+     * Gets the effectiveNetworkFeatures property: The effective value of the network features type available to the
+     * volume, or current effective state of update.
+     * 
+     * @return the effectiveNetworkFeatures value.
+     */
+    NetworkFeatures effectiveNetworkFeatures();
 
     /**
      * Gets the networkSiblingSetId property: Network Sibling Set ID for the the group of volumes sharing networking
@@ -594,12 +604,14 @@ public interface Volume {
         interface WithUsageThreshold {
             /**
              * Specifies the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is
-             * a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for
-             * LargeVolume or 2400Tib for LargeVolume on exceptional basis. Specified in bytes..
+             * a soft quota used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
+             * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to
+             * 2400GiB to 2400TiB. Values expressed in bytes as multiples of 1 GiB..
              * 
              * @param usageThreshold Maximum storage quota allowed for a file system in bytes. This is a soft quota used
-             * for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for
-             * LargeVolume on exceptional basis. Specified in bytes.
+             * for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+             * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
+             * Values expressed in bytes as multiples of 1 GiB.
              * @return the next definition stage.
              */
             WithSubnetId withUsageThreshold(long usageThreshold);
@@ -768,10 +780,11 @@ public interface Volume {
          */
         interface WithNetworkFeatures {
             /**
-             * Specifies the networkFeatures property: Network features available to the volume, or current state of
-             * update..
+             * Specifies the networkFeatures property: The original value of the network features type available to the
+             * volume at the time it was created..
              * 
-             * @param networkFeatures Network features available to the volume, or current state of update.
+             * @param networkFeatures The original value of the network features type available to the volume at the
+             * time it was created.
              * @return the next definition stage.
              */
             WithCreate withNetworkFeatures(NetworkFeatures networkFeatures);
@@ -1272,12 +1285,14 @@ public interface Volume {
         interface WithUsageThreshold {
             /**
              * Specifies the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is
-             * a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for
-             * LargeVolume or 2400Tib for LargeVolume on exceptional basis. Specified in bytes..
+             * a soft quota used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
+             * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to
+             * 2400GiB to 2400TiB. Values expressed in bytes as multiples of 1 GiB..
              * 
              * @param usageThreshold Maximum storage quota allowed for a file system in bytes. This is a soft quota used
-             * for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for
-             * LargeVolume on exceptional basis. Specified in bytes.
+             * for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+             * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
+             * Values expressed in bytes as multiples of 1 GiB.
              * @return the next definition stage.
              */
             Update withUsageThreshold(Long usageThreshold);
@@ -1807,6 +1822,105 @@ public interface Volume {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void reInitializeReplication(Context context);
+
+    /**
+     * Start Cluster peering
+     * 
+     * Starts peering the external cluster for this migration volume.
+     * 
+     * @param body Cluster peer request object supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about cluster peering process.
+     */
+    ClusterPeerCommandResponse peerExternalCluster(PeerClusterForVolumeMigrationRequest body);
+
+    /**
+     * Start Cluster peering
+     * 
+     * Starts peering the external cluster for this migration volume.
+     * 
+     * @param body Cluster peer request object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about cluster peering process.
+     */
+    ClusterPeerCommandResponse peerExternalCluster(PeerClusterForVolumeMigrationRequest body, Context context);
+
+    /**
+     * Start migration process
+     * 
+     * Starts SVM peering and returns a command to be run on the external ONTAP to accept it. Once the SVM have been
+     * peered a SnapMirror will be created.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about svm peering process.
+     */
+    SvmPeerCommandResponse authorizeExternalReplication();
+
+    /**
+     * Start migration process
+     * 
+     * Starts SVM peering and returns a command to be run on the external ONTAP to accept it. Once the SVM have been
+     * peered a SnapMirror will be created.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about svm peering process.
+     */
+    SvmPeerCommandResponse authorizeExternalReplication(Context context);
+
+    /**
+     * Finalize migration process
+     * 
+     * Finalizes the migration of an external volume by releasing the replication and breaking the external cluster
+     * peering if no other migration is active.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void finalizeExternalReplication();
+
+    /**
+     * Finalize migration process
+     * 
+     * Finalizes the migration of an external volume by releasing the replication and breaking the external cluster
+     * peering if no other migration is active.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void finalizeExternalReplication(Context context);
+
+    /**
+     * Perform a replication transfer
+     * 
+     * Performs an adhoc replication transfer on a volume with volumeType Migration.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void performReplicationTransfer();
+
+    /**
+     * Perform a replication transfer
+     * 
+     * Performs an adhoc replication transfer on a volume with volumeType Migration.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void performReplicationTransfer(Context context);
 
     /**
      * Change pool for volume

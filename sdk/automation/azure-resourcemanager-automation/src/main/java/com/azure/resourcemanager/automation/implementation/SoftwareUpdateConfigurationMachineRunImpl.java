@@ -17,8 +17,7 @@ public final class SoftwareUpdateConfigurationMachineRunImpl implements Software
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    SoftwareUpdateConfigurationMachineRunImpl(
-        SoftwareUpdateConfigurationMachineRunInner innerObject,
+    SoftwareUpdateConfigurationMachineRunImpl(SoftwareUpdateConfigurationMachineRunInner innerObject,
         com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

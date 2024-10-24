@@ -6,19 +6,22 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.fluent.models.LogProfileResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Represents a collection of log profiles.
  */
 @Fluent
-public final class LogProfileCollection {
+public final class LogProfileCollection implements JsonSerializable<LogProfileCollection> {
     /*
      * the values of the log profiles.
      */
-    @JsonProperty(value = "value", required = true)
     private List<LogProfileResourceInner> value;
 
     /**
@@ -54,12 +57,51 @@ public final class LogProfileCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model LogProfileCollection"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model LogProfileCollection"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LogProfileCollection.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogProfileCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogProfileCollection if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LogProfileCollection.
+     */
+    public static LogProfileCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogProfileCollection deserializedLogProfileCollection = new LogProfileCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<LogProfileResourceInner> value
+                        = reader.readArray(reader1 -> LogProfileResourceInner.fromJson(reader1));
+                    deserializedLogProfileCollection.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogProfileCollection;
+        });
+    }
 }

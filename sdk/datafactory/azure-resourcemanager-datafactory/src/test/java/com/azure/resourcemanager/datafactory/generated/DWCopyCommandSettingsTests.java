@@ -16,26 +16,23 @@ public final class DWCopyCommandSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DWCopyCommandSettings model = BinaryData.fromString(
-            "{\"defaultValues\":[{\"columnName\":\"datapdcbhe\",\"defaultValue\":\"datautuaysxhfupvq\"},{\"columnName\":\"dataqlafi\",\"defaultValue\":\"dataw\"},{\"columnName\":\"dataipuyefhhdrmg\",\"defaultValue\":\"datafgyxkgqwmpghxpcx\"}],\"additionalOptions\":{\"dhx\":\"nkxhc\"}}")
+            "{\"defaultValues\":[{\"columnName\":\"dataxregbssqthcyw\",\"defaultValue\":\"dataqxprsocfxlrzj\"},{\"columnName\":\"dataflizmul\",\"defaultValue\":\"dataaulwlzekygnepj\"},{\"columnName\":\"dataxqdrphiyxjq\",\"defaultValue\":\"datanpztlac\"},{\"columnName\":\"datafzsf\",\"defaultValue\":\"dataa\"}],\"additionalOptions\":{\"hsorca\":\"rwviovv\",\"oigzwedfteratv\":\"kfh\"}}")
             .toObject(DWCopyCommandSettings.class);
-        Assertions.assertEquals("nkxhc", model.additionalOptions().get("dhx"));
+        Assertions.assertEquals("rwviovv", model.additionalOptions().get("hsorca"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DWCopyCommandSettings model
-            = new DWCopyCommandSettings()
-                .withDefaultValues(
-                    Arrays
-                        .asList(
-                            new DWCopyCommandDefaultValue().withColumnName("datapdcbhe")
-                                .withDefaultValue("datautuaysxhfupvq"),
-                            new DWCopyCommandDefaultValue().withColumnName("dataqlafi").withDefaultValue("dataw"),
-                            new DWCopyCommandDefaultValue().withColumnName("dataipuyefhhdrmg")
-                                .withDefaultValue("datafgyxkgqwmpghxpcx")))
-                .withAdditionalOptions(mapOf("dhx", "nkxhc"));
+        DWCopyCommandSettings model = new DWCopyCommandSettings()
+            .withDefaultValues(Arrays.asList(
+                new DWCopyCommandDefaultValue().withColumnName("dataxregbssqthcyw")
+                    .withDefaultValue("dataqxprsocfxlrzj"),
+                new DWCopyCommandDefaultValue().withColumnName("dataflizmul").withDefaultValue("dataaulwlzekygnepj"),
+                new DWCopyCommandDefaultValue().withColumnName("dataxqdrphiyxjq").withDefaultValue("datanpztlac"),
+                new DWCopyCommandDefaultValue().withColumnName("datafzsf").withDefaultValue("dataa")))
+            .withAdditionalOptions(mapOf("hsorca", "rwviovv", "oigzwedfteratv", "kfh"));
         model = BinaryData.fromObject(model).toObject(DWCopyCommandSettings.class);
-        Assertions.assertEquals("nkxhc", model.additionalOptions().get("dhx"));
+        Assertions.assertEquals("rwviovv", model.additionalOptions().get("hsorca"));
     }
 
     // Use "Map.of" if available

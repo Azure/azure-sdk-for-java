@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VmSizePropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VmSizeProperty model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"ydxtqm\",\"cores\":323647852,\"dataDiskStorageTier\":\"orgguf\",\"label\":\"aomtbghhavgrvkff\",\"maxDataDiskCount\":5595663447131926478,\"memoryInMb\":3841332379064621298,\"supportedByVirtualMachines\":true,\"supportedByWebWorkerRoles\":true,\"virtualMachineResourceDiskSizeInMb\":6764739063385765952,\"webWorkerResourceDiskSizeInMb\":7551905176757776284}")
-                .toObject(VmSizeProperty.class);
+        VmSizeProperty model = BinaryData.fromString(
+            "{\"name\":\"ydxtqm\",\"cores\":323647852,\"dataDiskStorageTier\":\"orgguf\",\"label\":\"aomtbghhavgrvkff\",\"maxDataDiskCount\":5595663447131926478,\"memoryInMb\":3841332379064621298,\"supportedByVirtualMachines\":true,\"supportedByWebWorkerRoles\":true,\"virtualMachineResourceDiskSizeInMb\":6764739063385765952,\"webWorkerResourceDiskSizeInMb\":7551905176757776284}")
+            .toObject(VmSizeProperty.class);
         Assertions.assertEquals("ydxtqm", model.name());
         Assertions.assertEquals(323647852, model.cores());
         Assertions.assertEquals("orgguf", model.dataDiskStorageTier());
@@ -30,18 +28,16 @@ public final class VmSizePropertyTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VmSizeProperty model =
-            new VmSizeProperty()
-                .withName("ydxtqm")
-                .withCores(323647852)
-                .withDataDiskStorageTier("orgguf")
-                .withLabel("aomtbghhavgrvkff")
-                .withMaxDataDiskCount(5595663447131926478L)
-                .withMemoryInMb(3841332379064621298L)
-                .withSupportedByVirtualMachines(true)
-                .withSupportedByWebWorkerRoles(true)
-                .withVirtualMachineResourceDiskSizeInMb(6764739063385765952L)
-                .withWebWorkerResourceDiskSizeInMb(7551905176757776284L);
+        VmSizeProperty model = new VmSizeProperty().withName("ydxtqm")
+            .withCores(323647852)
+            .withDataDiskStorageTier("orgguf")
+            .withLabel("aomtbghhavgrvkff")
+            .withMaxDataDiskCount(5595663447131926478L)
+            .withMemoryInMb(3841332379064621298L)
+            .withSupportedByVirtualMachines(true)
+            .withSupportedByWebWorkerRoles(true)
+            .withVirtualMachineResourceDiskSizeInMb(6764739063385765952L)
+            .withWebWorkerResourceDiskSizeInMb(7551905176757776284L);
         model = BinaryData.fromObject(model).toObject(VmSizeProperty.class);
         Assertions.assertEquals("ydxtqm", model.name());
         Assertions.assertEquals(323647852, model.cores());

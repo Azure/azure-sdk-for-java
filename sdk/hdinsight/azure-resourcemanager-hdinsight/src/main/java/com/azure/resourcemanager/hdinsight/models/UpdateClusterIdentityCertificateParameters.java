@@ -5,36 +5,42 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The update cluster identity certificate request parameters. */
+/**
+ * The update cluster identity certificate request parameters.
+ */
 @Fluent
-public final class UpdateClusterIdentityCertificateParameters {
+public final class UpdateClusterIdentityCertificateParameters
+    implements JsonSerializable<UpdateClusterIdentityCertificateParameters> {
     /*
      * The application id.
      */
-    @JsonProperty(value = "applicationId")
     private String applicationId;
 
     /*
      * The certificate in base64 encoded format.
      */
-    @JsonProperty(value = "certificate")
     private String certificate;
 
     /*
      * The password of the certificate.
      */
-    @JsonProperty(value = "certificatePassword")
     private String certificatePassword;
 
-    /** Creates an instance of UpdateClusterIdentityCertificateParameters class. */
+    /**
+     * Creates an instance of UpdateClusterIdentityCertificateParameters class.
+     */
     public UpdateClusterIdentityCertificateParameters() {
     }
 
     /**
      * Get the applicationId property: The application id.
-     *
+     * 
      * @return the applicationId value.
      */
     public String applicationId() {
@@ -43,7 +49,7 @@ public final class UpdateClusterIdentityCertificateParameters {
 
     /**
      * Set the applicationId property: The application id.
-     *
+     * 
      * @param applicationId the applicationId value to set.
      * @return the UpdateClusterIdentityCertificateParameters object itself.
      */
@@ -54,7 +60,7 @@ public final class UpdateClusterIdentityCertificateParameters {
 
     /**
      * Get the certificate property: The certificate in base64 encoded format.
-     *
+     * 
      * @return the certificate value.
      */
     public String certificate() {
@@ -63,7 +69,7 @@ public final class UpdateClusterIdentityCertificateParameters {
 
     /**
      * Set the certificate property: The certificate in base64 encoded format.
-     *
+     * 
      * @param certificate the certificate value to set.
      * @return the UpdateClusterIdentityCertificateParameters object itself.
      */
@@ -74,7 +80,7 @@ public final class UpdateClusterIdentityCertificateParameters {
 
     /**
      * Get the certificatePassword property: The password of the certificate.
-     *
+     * 
      * @return the certificatePassword value.
      */
     public String certificatePassword() {
@@ -83,7 +89,7 @@ public final class UpdateClusterIdentityCertificateParameters {
 
     /**
      * Set the certificatePassword property: The password of the certificate.
-     *
+     * 
      * @param certificatePassword the certificatePassword value to set.
      * @return the UpdateClusterIdentityCertificateParameters object itself.
      */
@@ -94,9 +100,52 @@ public final class UpdateClusterIdentityCertificateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("applicationId", this.applicationId);
+        jsonWriter.writeStringField("certificate", this.certificate);
+        jsonWriter.writeStringField("certificatePassword", this.certificatePassword);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateClusterIdentityCertificateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateClusterIdentityCertificateParameters if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateClusterIdentityCertificateParameters.
+     */
+    public static UpdateClusterIdentityCertificateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateClusterIdentityCertificateParameters deserializedUpdateClusterIdentityCertificateParameters
+                = new UpdateClusterIdentityCertificateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("applicationId".equals(fieldName)) {
+                    deserializedUpdateClusterIdentityCertificateParameters.applicationId = reader.getString();
+                } else if ("certificate".equals(fieldName)) {
+                    deserializedUpdateClusterIdentityCertificateParameters.certificate = reader.getString();
+                } else if ("certificatePassword".equals(fieldName)) {
+                    deserializedUpdateClusterIdentityCertificateParameters.certificatePassword = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateClusterIdentityCertificateParameters;
+        });
     }
 }

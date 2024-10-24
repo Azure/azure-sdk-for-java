@@ -11,7 +11,7 @@ public final class NodeTypeAvailableSkuInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NodeTypeAvailableSkuInner model = BinaryData.fromString(
-            "{\"resourceType\":\"gaojf\",\"sku\":{\"name\":\"cotmr\",\"tier\":\"irctymoxoftpipiw\"},\"capacity\":{\"minimum\":422952763,\"maximum\":1967043899,\"default\":481120097,\"scaleType\":\"None\"}}")
+            "{\"resourceType\":\"hyaomtbghhavgr\",\"sku\":{\"name\":\"fo\",\"tier\":\"zh\"},\"capacity\":{\"minimum\":1224652239,\"maximum\":779819591,\"default\":1575038550,\"scaleType\":\"Automatic\"}}")
             .toObject(NodeTypeAvailableSkuInner.class);
     }
 

@@ -10,11 +10,10 @@ import com.azure.resourcemanager.machinelearning.models.SystemService;
 public final class SystemServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SystemService model =
-            BinaryData
-                .fromString(
-                    "{\"systemServiceType\":\"gcgbjb\",\"publicIpAddress\":\"lfgtdysnaquflqbc\",\"version\":\"hamzjrwdkqze\"}")
-                .toObject(SystemService.class);
+        SystemService model = BinaryData
+            .fromString(
+                "{\"systemServiceType\":\"lpzbtzuykykipf\",\"publicIpAddress\":\"yepfn\",\"version\":\"mbezacfpztg\"}")
+            .toObject(SystemService.class);
     }
 
     @org.junit.jupiter.api.Test

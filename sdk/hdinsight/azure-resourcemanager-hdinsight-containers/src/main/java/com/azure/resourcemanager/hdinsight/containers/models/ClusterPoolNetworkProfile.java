@@ -6,43 +6,40 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Cluster pool networking configuration.
  */
 @Fluent
-public class ClusterPoolNetworkProfile {
+public class ClusterPoolNetworkProfile implements JsonSerializable<ClusterPoolNetworkProfile> {
     /*
      * Cluster pool subnet resource id.
      */
-    @JsonProperty(value = "subnetId", required = true)
     private String subnetId;
 
     /*
-     * The outbound (egress) routing method.
-     * 
      * This can only be set at cluster pool creation time and cannot be changed later.
      */
-    @JsonProperty(value = "outboundType")
     private OutboundType outboundType;
 
     /*
-     * ClusterPool is based on AKS cluster. AKS cluster exposes the API server to public internet by default. If you
-     * set this property to true, a private AKS cluster will be created, and it will use private apiserver, which is
-     * not exposed to public internet.
+     * ClusterPool is based on AKS cluster. AKS cluster exposes the API server to public internet by default. If you set
+     * this property to true, a private AKS cluster will be created, and it will use private apiserver, which is not
+     * exposed to public internet.
      */
-    @JsonProperty(value = "enablePrivateApiServer")
     private Boolean enablePrivateApiServer;
 
     /*
-     * The IP ranges authorized to access the AKS API server.
-     * 
      * IP ranges are specified in CIDR format, e.g. 137.117.106.88/29. This feature is not compatible with private AKS
      * clusters. So you cannot set enablePrivateApiServer to true and apiServerAuthorizedIpRanges at the same time.
+     * Currently, this property is not supported and please don't use it.
      */
-    @JsonProperty(value = "apiServerAuthorizedIpRanges")
     private List<String> apiServerAuthorizedIpRanges;
 
     /**
@@ -72,9 +69,7 @@ public class ClusterPoolNetworkProfile {
     }
 
     /**
-     * Get the outboundType property: The outbound (egress) routing method.
-     * 
-     * This can only be set at cluster pool creation time and cannot be changed later.
+     * Get the outboundType property: This can only be set at cluster pool creation time and cannot be changed later.
      * 
      * @return the outboundType value.
      */
@@ -83,9 +78,7 @@ public class ClusterPoolNetworkProfile {
     }
 
     /**
-     * Set the outboundType property: The outbound (egress) routing method.
-     * 
-     * This can only be set at cluster pool creation time and cannot be changed later.
+     * Set the outboundType property: This can only be set at cluster pool creation time and cannot be changed later.
      * 
      * @param outboundType the outboundType value to set.
      * @return the ClusterPoolNetworkProfile object itself.
@@ -120,10 +113,9 @@ public class ClusterPoolNetworkProfile {
     }
 
     /**
-     * Get the apiServerAuthorizedIpRanges property: The IP ranges authorized to access the AKS API server.
-     * 
-     * IP ranges are specified in CIDR format, e.g. 137.117.106.88/29. This feature is not compatible with private AKS
-     * clusters. So you cannot set enablePrivateApiServer to true and apiServerAuthorizedIpRanges at the same time.
+     * Get the apiServerAuthorizedIpRanges property: IP ranges are specified in CIDR format, e.g. 137.117.106.88/29.
+     * This feature is not compatible with private AKS clusters. So you cannot set enablePrivateApiServer to true and
+     * apiServerAuthorizedIpRanges at the same time. Currently, this property is not supported and please don't use it.
      * 
      * @return the apiServerAuthorizedIpRanges value.
      */
@@ -132,10 +124,9 @@ public class ClusterPoolNetworkProfile {
     }
 
     /**
-     * Set the apiServerAuthorizedIpRanges property: The IP ranges authorized to access the AKS API server.
-     * 
-     * IP ranges are specified in CIDR format, e.g. 137.117.106.88/29. This feature is not compatible with private AKS
-     * clusters. So you cannot set enablePrivateApiServer to true and apiServerAuthorizedIpRanges at the same time.
+     * Set the apiServerAuthorizedIpRanges property: IP ranges are specified in CIDR format, e.g. 137.117.106.88/29.
+     * This feature is not compatible with private AKS clusters. So you cannot set enablePrivateApiServer to true and
+     * apiServerAuthorizedIpRanges at the same time. Currently, this property is not supported and please don't use it.
      * 
      * @param apiServerAuthorizedIpRanges the apiServerAuthorizedIpRanges value to set.
      * @return the ClusterPoolNetworkProfile object itself.
@@ -152,10 +143,60 @@ public class ClusterPoolNetworkProfile {
      */
     public void validate() {
         if (subnetId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property subnetId in model ClusterPoolNetworkProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property subnetId in model ClusterPoolNetworkProfile"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ClusterPoolNetworkProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        jsonWriter.writeStringField("outboundType", this.outboundType == null ? null : this.outboundType.toString());
+        jsonWriter.writeBooleanField("enablePrivateApiServer", this.enablePrivateApiServer);
+        jsonWriter.writeArrayField("apiServerAuthorizedIpRanges", this.apiServerAuthorizedIpRanges,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterPoolNetworkProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterPoolNetworkProfile if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterPoolNetworkProfile.
+     */
+    public static ClusterPoolNetworkProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterPoolNetworkProfile deserializedClusterPoolNetworkProfile = new ClusterPoolNetworkProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnetId".equals(fieldName)) {
+                    deserializedClusterPoolNetworkProfile.subnetId = reader.getString();
+                } else if ("outboundType".equals(fieldName)) {
+                    deserializedClusterPoolNetworkProfile.outboundType = OutboundType.fromString(reader.getString());
+                } else if ("enablePrivateApiServer".equals(fieldName)) {
+                    deserializedClusterPoolNetworkProfile.enablePrivateApiServer
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("apiServerAuthorizedIpRanges".equals(fieldName)) {
+                    List<String> apiServerAuthorizedIpRanges = reader.readArray(reader1 -> reader1.getString());
+                    deserializedClusterPoolNetworkProfile.apiServerAuthorizedIpRanges = apiServerAuthorizedIpRanges;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterPoolNetworkProfile;
+        });
+    }
 }

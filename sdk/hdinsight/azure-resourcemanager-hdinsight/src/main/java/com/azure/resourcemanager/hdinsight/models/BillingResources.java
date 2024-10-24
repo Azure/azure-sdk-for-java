@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The billing resources. */
+/**
+ * The billing resources.
+ */
 @Fluent
-public final class BillingResources {
+public final class BillingResources implements JsonSerializable<BillingResources> {
     /*
      * The region or location.
      */
-    @JsonProperty(value = "region")
     private String region;
 
     /*
      * The billing meter information.
      */
-    @JsonProperty(value = "billingMeters")
     private List<BillingMeters> billingMeters;
 
     /*
      * The managed disk billing information.
      */
-    @JsonProperty(value = "diskBillingMeters")
     private List<DiskBillingMeters> diskBillingMeters;
 
-    /** Creates an instance of BillingResources class. */
+    /**
+     * Creates an instance of BillingResources class.
+     */
     public BillingResources() {
     }
 
     /**
      * Get the region property: The region or location.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -44,7 +49,7 @@ public final class BillingResources {
 
     /**
      * Set the region property: The region or location.
-     *
+     * 
      * @param region the region value to set.
      * @return the BillingResources object itself.
      */
@@ -55,7 +60,7 @@ public final class BillingResources {
 
     /**
      * Get the billingMeters property: The billing meter information.
-     *
+     * 
      * @return the billingMeters value.
      */
     public List<BillingMeters> billingMeters() {
@@ -64,7 +69,7 @@ public final class BillingResources {
 
     /**
      * Set the billingMeters property: The billing meter information.
-     *
+     * 
      * @param billingMeters the billingMeters value to set.
      * @return the BillingResources object itself.
      */
@@ -75,7 +80,7 @@ public final class BillingResources {
 
     /**
      * Get the diskBillingMeters property: The managed disk billing information.
-     *
+     * 
      * @return the diskBillingMeters value.
      */
     public List<DiskBillingMeters> diskBillingMeters() {
@@ -84,7 +89,7 @@ public final class BillingResources {
 
     /**
      * Set the diskBillingMeters property: The managed disk billing information.
-     *
+     * 
      * @param diskBillingMeters the diskBillingMeters value to set.
      * @return the BillingResources object itself.
      */
@@ -95,7 +100,7 @@ public final class BillingResources {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -105,5 +110,51 @@ public final class BillingResources {
         if (diskBillingMeters() != null) {
             diskBillingMeters().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("region", this.region);
+        jsonWriter.writeArrayField("billingMeters", this.billingMeters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("diskBillingMeters", this.diskBillingMeters,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BillingResources from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BillingResources if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BillingResources.
+     */
+    public static BillingResources fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BillingResources deserializedBillingResources = new BillingResources();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("region".equals(fieldName)) {
+                    deserializedBillingResources.region = reader.getString();
+                } else if ("billingMeters".equals(fieldName)) {
+                    List<BillingMeters> billingMeters = reader.readArray(reader1 -> BillingMeters.fromJson(reader1));
+                    deserializedBillingResources.billingMeters = billingMeters;
+                } else if ("diskBillingMeters".equals(fieldName)) {
+                    List<DiskBillingMeters> diskBillingMeters
+                        = reader.readArray(reader1 -> DiskBillingMeters.fromJson(reader1));
+                    deserializedBillingResources.diskBillingMeters = diskBillingMeters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBillingResources;
+        });
     }
 }

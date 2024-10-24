@@ -14,6 +14,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.resources.fluentcore.policy.AuxiliaryAuthenticationPolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -59,7 +60,9 @@ public class AuxiliaryAuthenticationPolicyTests {
         TokenCredential first = new MockTokenCredential("abc");
         TokenCredential second = new MockTokenCredential("def");
         new HttpPipelineBuilder()
-            .policies(new AuxiliaryAuthenticationPolicy(AzureEnvironment.AZURE, first, second), new CheckAuxiliaryAuthenticationHeaderPolicy())
+            .policies(new AuxiliaryAuthenticationPolicy(AzureEnvironment.AZURE, first, second),
+                new CheckAuxiliaryAuthenticationHeaderPolicy())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .build()
             .send(new HttpRequest(HttpMethod.GET, "https://httpbin.org"))
             .block();

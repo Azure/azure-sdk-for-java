@@ -24,7 +24,7 @@ private  trait AsyncItemWriter {
    * Don't wait for any remaining work but signal to the writer the ungraceful close
    * Should not throw any exceptions
    */
-  def abort(): Unit
+  def abort(shouldThrow: Boolean): Unit
 
   private[spark] def getETag(objectNode: ObjectNode) = {
     val eTagField = objectNode.get(CosmosConstants.Properties.ETag)

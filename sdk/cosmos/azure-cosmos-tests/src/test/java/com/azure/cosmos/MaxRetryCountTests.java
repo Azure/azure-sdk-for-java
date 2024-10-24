@@ -49,6 +49,7 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -202,9 +203,10 @@ public class MaxRetryCountTests extends TestSuiteBase {
 
             DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
 
-            Map<String, String> writeRegionMap = this.getRegionMap(databaseAccount, true);
+            AccountLevelLocationContext accountLevelWriteableLocationContext = getAccountLevelLocationContext(databaseAccount, true);
+            validate(accountLevelWriteableLocationContext, true);
 
-            this.writeableRegions = new ArrayList<>(writeRegionMap.keySet());
+            this.writeableRegions = accountLevelWriteableLocationContext.serviceOrderedWriteableRegions;
             assertThat(this.writeableRegions).isNotNull();
             assertThat(this.writeableRegions.size()).isGreaterThanOrEqualTo(2);
 
@@ -584,7 +586,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
         final Integer SESSION_TOKEN_MISMATCH_MAX_BACKOFF_FIVE_HUNDRED_MS = 500;
         final Integer SESSION_TOKEN_MISMATCH_MAX_BACKOFF_FIVE_SECONDS = 5000;
 
-        return new Object[][] {
+        Object[][] testConfigs_readMaxRetryCount_readSessionNotAvailable = new Object[][] {
             // CONFIG description
             // new Object[] {
             //    TestId - name identifying the test case
@@ -594,6 +596,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
             //    Failure injection callback
             //    Status code/sub status code validation callback
             //    maxExpectedRetryCount
+            //    Should inject preferred regions
             // },
 
             // This test injects 404/1002 across all regions for the read operation after the initial creation
@@ -709,6 +712,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
                 SESSION_TOKEN_MISMATCH_MAX_BACKOFF_DEFAULT, // DEFAULT is 500 ms
             },
         };
+
+        return addBooleanFlagsToAllTestConfigs(testConfigs_readMaxRetryCount_readSessionNotAvailable);
     }
 
     @DataProvider(name = "readMaxRetryCount_retryWith")
@@ -718,7 +723,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
         final int DEFAULT_INITIAL_BACKOFF_TIME_MS = 10;
         final int DEFAULT_BACK_OFF_MULTIPLIER = 2;
 
-        return new Object[][] {
+        Object[][] testConfigs_readMaxRetryCount_retryWith = new Object[][] {
             // CONFIG description
             // new Object[] {
             //    TestId - name identifying the test case
@@ -729,6 +734,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
             //    Failure injection callback
             //    Status code/sub status code validation callback
             //    maxExpectedRetryCount
+            //    Should inject preferred regions
             // },
 
             // This test injects 449/0 across all regions for the read operation after the initial creation
@@ -769,6 +775,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
                 ),
             }
         };
+
+        return addBooleanFlagsToAllTestConfigs(testConfigs_readMaxRetryCount_retryWith);
     }
 
     @DataProvider(name = "readMaxRetryCount_serverGone")
@@ -778,7 +786,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
         final int DEFAULT_INITIAL_BACKOFF_TIME_IN_MS = 1000;
         final int DEFAULT_BACK_OFF_MULTIPLIER = 2;
 
-        return new Object[][] {
+        Object[][] testConfigs_readMaxRetryCount_serverGone = new Object[][] {
             // CONFIG description
             // new Object[] {
             //    TestId - name identifying the test case
@@ -858,6 +866,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
                     )
             }
         };
+
+        return addBooleanFlagsToAllTestConfigs(testConfigs_readMaxRetryCount_serverGone);
     }
 
     @DataProvider(name = "readMaxRetryCount_transitTimeout")
@@ -868,7 +878,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
         final int DEFAULT_BACK_OFF_MULTIPLIER = 2;
 
         // TODO: add max networkRequestTimeout test
-        return new Object[][] {
+        Object[][] testConfigs_readMaxRetryCount_transitTimeout = new Object[][] {
             // CONFIG description
             // new Object[] {
             //    TestId - name identifying the test case
@@ -881,6 +891,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
             //    Failure injection callback
             //    Status code/sub status code validation callback
             //    maxExpectedRetryCount
+            //    Should inject preferred regions
             // },
 
             // This test injects transient timeout across all regions for the read operation after the initial creation
@@ -984,6 +995,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
                     )
             }
         };
+
+        return addBooleanFlagsToAllTestConfigs(testConfigs_readMaxRetryCount_transitTimeout);
     }
 
     @DataProvider(name = "readMaxRetryCount_serverTimeout")
@@ -993,7 +1006,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
         final int DEFAULT_INITIAL_BACKOFF_TIME_IN_MS = 1000;
         final int DEFAULT_BACK_OFF_MULTIPLIER = 2;
 
-        return new Object[][] {
+        Object[][] testConfigs_readMaxRetryCount_serverTimeout = new Object[][] {
             // CONFIG description
             // new Object[] {
             //    TestId - name identifying the test case
@@ -1081,11 +1094,13 @@ public class MaxRetryCountTests extends TestSuiteBase {
                     )
             }
         };
+
+        return addBooleanFlagsToAllTestConfigs(testConfigs_readMaxRetryCount_serverTimeout);
     }
 
     @DataProvider(name = "readMaxRetryCount_serverServiceUnavailable")
     public Object[][] testConfigs_readMaxRetryCount_serverServiceUnavailable() {
-        return new Object[][] {
+         Object[][] testConfigs_readMaxRetryCount_serverServiceUnavailable = new Object[][] {
             // CONFIG description
             // new Object[] {
             //    TestId - name identifying the test case
@@ -1097,6 +1112,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
             //    Failure injection callback
             //    Status code/sub status code validation callback
             //    maxExpectedRetryCount
+            //    Should inject preferred regions
             // },
 
             // This test injects server generated 503/0 across all regions for the read operation after the initial creation
@@ -1147,6 +1163,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
                             operationType) * (1 + this.writeableRegions.size()))
             }
         };
+
+        return addBooleanFlagsToAllTestConfigs(testConfigs_readMaxRetryCount_serverServiceUnavailable);
     }
 
     @DataProvider(name = "readMaxRetryCount_serverRequestRateTooLarge")
@@ -1154,7 +1172,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
         final ThrottlingRetryOptions customizedThrottlingRetryOptions =
             new ThrottlingRetryOptions().setMaxRetryAttemptsOnThrottledRequests(2).setMaxRetryWaitTime(Duration.ofSeconds(2));
 
-        return new Object[][] {
+        Object[][] testConfigs_readMaxRetryCount_serverRequestRateTooLarge = new Object[][] {
             // CONFIG description
             // new Object[] {
             //    TestId - name identifying the test case
@@ -1239,11 +1257,13 @@ public class MaxRetryCountTests extends TestSuiteBase {
                             defaultThrottlingRetryOptions))
             }
         };
+
+        return addBooleanFlagsToAllTestConfigs(testConfigs_readMaxRetryCount_serverRequestRateTooLarge);
     }
 
     @DataProvider(name = "readMaxRetryCount_serverInternalServerError")
     public Object[][] testConfigs_readMaxRetryCount_serverInternalServerError() {
-        return new Object[][] {
+        Object[][] testConfigs_readMaxRetryCount_serverInternalServerError = new Object[][] {
             // CONFIG description
             // new Object[] {
             //    TestId - name identifying the test case
@@ -1255,6 +1275,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
             //    Failure injection callback
             //    Status code/sub status code validation callback
             //    maxExpectedRetryCount
+            //    Should preferred regions be injected into client
             // },
 
             // This test injects server generated 500/0 across all regions for the read operation after the initial creation
@@ -1299,6 +1320,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
                         expectedMaxNumberOfRetriesForServerInternalServerError(consistencyLevel, operationType))
             }
         };
+
+        return addBooleanFlagsToAllTestConfigs(testConfigs_readMaxRetryCount_serverInternalServerError);
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_readSessionNotAvailable")
@@ -1313,7 +1336,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
         Integer maxRetriesInLocalRegion,
         Integer sessionTokenRetriesWaitTime,
         Integer sessionTokenRetriesInitialBackoff,
-        Integer sessionTokenRetriesMaxBackoff) {
+        Integer sessionTokenRetriesMaxBackoff,
+        boolean shouldInjectPreferredRegions) {
 
         final int TWO_REGIONS = 2;
 
@@ -1416,7 +1440,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
                 0,
                 false,
                 ConnectionMode.DIRECT,
-                defaultThrottlingRetryOptions);
+                defaultThrottlingRetryOptions,
+                shouldInjectPreferredRegions);
         } finally {
             System.clearProperty(Configs.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED);
         }
@@ -1431,7 +1456,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
         String readItemDocumentIdOverride,
         BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
         BiConsumer<Integer, Integer> validateStatusCode,
-        Consumer<Integer> maxExpectedRequestCountValidation) {
+        Consumer<Integer> maxExpectedRequestCountValidation,
+        boolean shouldInjectPreferredRegions) {
 
         final int ONE_REGION = 1; // there is no cross region retry for 449
         Function<ItemOperationInvocationParameters, CosmosResponseWrapper> readItemCallback =
@@ -1496,7 +1522,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
             0,
             false,
             ConnectionMode.DIRECT,
-            defaultThrottlingRetryOptions);
+            defaultThrottlingRetryOptions,
+            shouldInjectPreferredRegions);
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_serverGone")
@@ -1509,7 +1536,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
         String readItemDocumentIdOverride,
         BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
         BiConsumer<Integer, Integer> validateStatusCode,
-        TriConsumer<Integer, ConsistencyLevel, OperationType> maxExpectedRequestCountValidation) {
+        TriConsumer<Integer, ConsistencyLevel, OperationType> maxExpectedRequestCountValidation,
+        boolean shouldInjectPreferredRegions) {
 
         final int ONE_REGION = 1;
         final int TWO_REGIONS = 2;
@@ -1584,7 +1612,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
             0,
             false,
             ConnectionMode.DIRECT,
-            defaultThrottlingRetryOptions);
+            defaultThrottlingRetryOptions,
+            shouldInjectPreferredRegions);
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_transitTimeout")
@@ -1598,7 +1627,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
         String readItemDocumentIdOverride,
         BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
         BiConsumer<Integer, Integer> validateStatusCode,
-        TriConsumer<Integer, ConsistencyLevel, OperationType> maxExpectedRequestCountValidation) {
+        TriConsumer<Integer, ConsistencyLevel, OperationType> maxExpectedRequestCountValidation,
+        boolean shouldInjectPreferredRegions) {
 
         final int ONE_REGION = 1;
         final int TWO_REGIONS = 2;
@@ -1673,7 +1703,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
             0,
             false,
             ConnectionMode.DIRECT,
-            defaultThrottlingRetryOptions);
+            defaultThrottlingRetryOptions,
+            shouldInjectPreferredRegions);
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_serverTimeout")
@@ -1686,7 +1717,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
         String readItemDocumentIdOverride,
         BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
         BiConsumer<Integer, Integer> validateStatusCode,
-        TriConsumer<Integer, ConsistencyLevel, OperationType> maxExpectedRequestCountValidation) {
+        TriConsumer<Integer, ConsistencyLevel, OperationType> maxExpectedRequestCountValidation,
+        boolean shouldInjectPreferredRegions) {
 
         final int ONE_REGION = 1;
         final int TWO_REGIONS = 2;
@@ -1763,7 +1795,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
             0,
             false,
             ConnectionMode.DIRECT,
-            defaultThrottlingRetryOptions);
+            defaultThrottlingRetryOptions,
+            shouldInjectPreferredRegions);
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_serverServiceUnavailable")
@@ -1776,7 +1809,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
         String readItemDocumentIdOverride,
         BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
         BiConsumer<Integer, Integer> validateStatusCode,
-        TriConsumer<Integer, ConsistencyLevel, OperationType> maxExpectedRequestCountValidation) {
+        TriConsumer<Integer, ConsistencyLevel, OperationType> maxExpectedRequestCountValidation,
+        boolean shouldInjectPreferredRegions) {
 
         final int ONE_REGION = 1;
         final int TWO_REGIONS = 2;
@@ -1851,7 +1885,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
             0,
             false,
             ConnectionMode.DIRECT,
-            defaultThrottlingRetryOptions);
+            defaultThrottlingRetryOptions,
+            shouldInjectPreferredRegions);
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_serverInternalServerError")
@@ -1864,7 +1899,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
         String readItemDocumentIdOverride,
         BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
         BiConsumer<Integer, Integer> validateStatusCode,
-        TriConsumer<Integer, ConsistencyLevel, OperationType> maxExpectedRequestCountValidation) {
+        TriConsumer<Integer, ConsistencyLevel, OperationType> maxExpectedRequestCountValidation,
+        boolean shouldInjectPreferredRegions) {
 
         final int ONE_REGION = 1;
         Function<ItemOperationInvocationParameters, CosmosResponseWrapper> readItemCallback =
@@ -1930,7 +1966,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
             0,
             false,
             ConnectionMode.DIRECT,
-            defaultThrottlingRetryOptions);
+            defaultThrottlingRetryOptions,
+            shouldInjectPreferredRegions);
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_serverRequestRateTooLarge")
@@ -1944,7 +1981,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
         String readItemDocumentIdOverride,
         BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
         BiConsumer<Integer, Integer> validateStatusCode,
-        TriConsumer<Integer, ConsistencyLevel, OperationType> maxExpectedRequestCountValidation) {
+        TriConsumer<Integer, ConsistencyLevel, OperationType> maxExpectedRequestCountValidation,
+        boolean shouldInjectPreferredRegions) {
 
         final int ONE_REGION = 1;
         Function<ItemOperationInvocationParameters, CosmosResponseWrapper> readItemCallback =
@@ -2010,7 +2048,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
             0,
             false,
             ConnectionMode.DIRECT,
-            throttlingRetryOptions);
+            throttlingRetryOptions,
+            shouldInjectPreferredRegions);
     }
 
     // Once validate the algorithm by using the e2e tests, this is a quick method to only log the max count
@@ -2369,7 +2408,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
         int numberOfOtherDocumentsWithSamePk,
         boolean clearContainerBeforeExecution,
         ConnectionMode connectionMode,
-        ThrottlingRetryOptions throttlingRetryOptions) {
+        ThrottlingRetryOptions throttlingRetryOptions,
+        boolean shouldInjectPreferredRegions) {
 
         logger.info("START {}", testCaseId);
 
@@ -2379,7 +2419,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
             nonIdempotentWriteRetriesEnabled,
             connectionMode,
             networkRequestTimeout,
-            throttlingRetryOptions);
+            throttlingRetryOptions,
+            shouldInjectPreferredRegions);
 
         try {
 
@@ -2524,7 +2565,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
         Boolean nonIdempotentWriteRetriesEnabled,
         ConnectionMode connectionMode,
         Duration networkRequestTimeout,
-        ThrottlingRetryOptions throttlingRetryOptions) {
+        ThrottlingRetryOptions throttlingRetryOptions,
+        Boolean shouldInjectPreferredRegions) {
 
         CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
             .diagnosticsHandler(new CosmosDiagnosticsLogger());
@@ -2539,7 +2581,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
             .consistencyLevel(ConsistencyLevel.SESSION)
-            .preferredRegions(preferredRegions)
+            .preferredRegions(shouldInjectPreferredRegions ? preferredRegions : Collections.emptyList())
             .sessionRetryOptions(retryOptionsBuilder.build())
             .multipleWriteRegionsEnabled(true)
             .clientTelemetryConfig(telemetryConfig);
@@ -2607,6 +2649,63 @@ public class MaxRetryCountTests extends TestSuiteBase {
         }
     }
 
+    private Object[][] addBooleanFlagsToAllTestConfigs(Object[][] testConfigs) {
+        List<List<Object>> intermediateTestConfigList = new ArrayList<>();
+        boolean[] possibleBooleans = new boolean[]{true, false};
+
+        for (boolean possibleBoolean : possibleBooleans) {
+            for (Object[] testConfigForSingleTest : testConfigs) {
+                List<Object> testConfigForSingleTestAsMutableList = new ArrayList<>(Arrays.asList(testConfigForSingleTest));
+                testConfigForSingleTestAsMutableList.add(possibleBoolean);
+                intermediateTestConfigList.add(testConfigForSingleTestAsMutableList);
+            }
+        }
+
+        testConfigs = intermediateTestConfigList.stream()
+            .map(l -> l.stream().toArray(Object[]::new))
+            .toArray(Object[][]::new);
+
+        return testConfigs;
+    }
+
+    private AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {
+        Iterator<DatabaseAccountLocation> locationIterator =
+            writeOnly ? databaseAccount.getWritableLocations().iterator() : databaseAccount.getReadableLocations().iterator();
+
+        List<String> serviceOrderedReadableRegions = new ArrayList<>();
+        List<String> serviceOrderedWriteableRegions = new ArrayList<>();
+        Map<String, String> regionMap = new ConcurrentHashMap<>();
+
+        while (locationIterator.hasNext()) {
+            DatabaseAccountLocation accountLocation = locationIterator.next();
+            regionMap.put(accountLocation.getName(), accountLocation.getEndpoint());
+
+            if (writeOnly) {
+                serviceOrderedWriteableRegions.add(accountLocation.getName());
+            } else {
+                serviceOrderedReadableRegions.add(accountLocation.getName());
+            }
+        }
+
+        return new AccountLevelLocationContext(
+            serviceOrderedReadableRegions,
+            serviceOrderedWriteableRegions,
+            regionMap);
+    }
+
+    private static void validate(AccountLevelLocationContext accountLevelLocationContext, boolean isWriteOnly) {
+
+        assertThat(accountLevelLocationContext).isNotNull();
+
+        if (isWriteOnly) {
+            assertThat(accountLevelLocationContext.serviceOrderedWriteableRegions).isNotNull();
+            assertThat(accountLevelLocationContext.serviceOrderedWriteableRegions.size()).isGreaterThanOrEqualTo(1);
+        } else {
+            assertThat(accountLevelLocationContext.serviceOrderedReadableRegions).isNotNull();
+            assertThat(accountLevelLocationContext.serviceOrderedReadableRegions.size()).isGreaterThanOrEqualTo(1);
+        }
+    }
+
     private static class CosmosResponseWrapper {
         private final CosmosDiagnosticsContext[] diagnosticsContexts;
         private final Integer statusCode;
@@ -2659,5 +2758,21 @@ public class MaxRetryCountTests extends TestSuiteBase {
 
         public List<Pair<String, String>> otherDocumentIdAndPkValuePairs;
         public Boolean nonIdempotentWriteRetriesEnabled;
+    }
+
+    private static class AccountLevelLocationContext {
+        private final List<String> serviceOrderedReadableRegions;
+        private final List<String> serviceOrderedWriteableRegions;
+        private final Map<String, String> regionNameToEndpoint;
+
+        public AccountLevelLocationContext(
+            List<String> serviceOrderedReadableRegions,
+            List<String> serviceOrderedWriteableRegions,
+            Map<String, String> regionNameToEndpoint) {
+
+            this.serviceOrderedReadableRegions = serviceOrderedReadableRegions;
+            this.serviceOrderedWriteableRegions = serviceOrderedWriteableRegions;
+            this.regionNameToEndpoint = regionNameToEndpoint;
+        }
     }
 }

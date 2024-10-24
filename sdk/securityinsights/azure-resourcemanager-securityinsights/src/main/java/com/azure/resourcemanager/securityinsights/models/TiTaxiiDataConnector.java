@@ -5,34 +5,118 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.DataConnectorInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.TiTaxiiDataConnectorProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Data connector to pull Threat intelligence data from TAXII 2.0/2.1 server. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("ThreatIntelligenceTaxii")
+/**
+ * Data connector to pull Threat intelligence data from TAXII 2.0/2.1 server.
+ */
 @Fluent
 public final class TiTaxiiDataConnector extends DataConnectorInner {
     /*
+     * The data connector kind
+     */
+    private DataConnectorKind kind = DataConnectorKind.THREAT_INTELLIGENCE_TAXII;
+
+    /*
      * Threat intelligence TAXII data connector properties.
      */
-    @JsonProperty(value = "properties")
     private TiTaxiiDataConnectorProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of TiTaxiiDataConnector class.
+     */
+    public TiTaxiiDataConnector() {
+    }
+
+    /**
+     * Get the kind property: The data connector kind.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public DataConnectorKind kind() {
+        return this.kind;
+    }
 
     /**
      * Get the innerProperties property: Threat intelligence TAXII data connector properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TiTaxiiDataConnectorProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TiTaxiiDataConnector withEtag(String etag) {
         super.withEtag(etag);
@@ -41,7 +125,7 @@ public final class TiTaxiiDataConnector extends DataConnectorInner {
 
     /**
      * Get the workspaceId property: The workspace id.
-     *
+     * 
      * @return the workspaceId value.
      */
     public String workspaceId() {
@@ -50,7 +134,7 @@ public final class TiTaxiiDataConnector extends DataConnectorInner {
 
     /**
      * Set the workspaceId property: The workspace id.
-     *
+     * 
      * @param workspaceId the workspaceId value to set.
      * @return the TiTaxiiDataConnector object itself.
      */
@@ -64,7 +148,7 @@ public final class TiTaxiiDataConnector extends DataConnectorInner {
 
     /**
      * Get the friendlyName property: The friendly name for the TAXII server.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -73,7 +157,7 @@ public final class TiTaxiiDataConnector extends DataConnectorInner {
 
     /**
      * Set the friendlyName property: The friendly name for the TAXII server.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the TiTaxiiDataConnector object itself.
      */
@@ -87,7 +171,7 @@ public final class TiTaxiiDataConnector extends DataConnectorInner {
 
     /**
      * Get the taxiiServer property: The API root for the TAXII server.
-     *
+     * 
      * @return the taxiiServer value.
      */
     public String taxiiServer() {
@@ -96,7 +180,7 @@ public final class TiTaxiiDataConnector extends DataConnectorInner {
 
     /**
      * Set the taxiiServer property: The API root for the TAXII server.
-     *
+     * 
      * @param taxiiServer the taxiiServer value to set.
      * @return the TiTaxiiDataConnector object itself.
      */
@@ -110,7 +194,7 @@ public final class TiTaxiiDataConnector extends DataConnectorInner {
 
     /**
      * Get the collectionId property: The collection id of the TAXII server.
-     *
+     * 
      * @return the collectionId value.
      */
     public String collectionId() {
@@ -119,7 +203,7 @@ public final class TiTaxiiDataConnector extends DataConnectorInner {
 
     /**
      * Set the collectionId property: The collection id of the TAXII server.
-     *
+     * 
      * @param collectionId the collectionId value to set.
      * @return the TiTaxiiDataConnector object itself.
      */
@@ -133,7 +217,7 @@ public final class TiTaxiiDataConnector extends DataConnectorInner {
 
     /**
      * Get the username property: The userName for the TAXII server.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -142,7 +226,7 @@ public final class TiTaxiiDataConnector extends DataConnectorInner {
 
     /**
      * Set the username property: The userName for the TAXII server.
-     *
+     * 
      * @param username the username value to set.
      * @return the TiTaxiiDataConnector object itself.
      */
@@ -156,7 +240,7 @@ public final class TiTaxiiDataConnector extends DataConnectorInner {
 
     /**
      * Get the password property: The password for the TAXII server.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -165,7 +249,7 @@ public final class TiTaxiiDataConnector extends DataConnectorInner {
 
     /**
      * Set the password property: The password for the TAXII server.
-     *
+     * 
      * @param password the password value to set.
      * @return the TiTaxiiDataConnector object itself.
      */
@@ -179,7 +263,7 @@ public final class TiTaxiiDataConnector extends DataConnectorInner {
 
     /**
      * Get the taxiiLookbackPeriod property: The lookback period for the TAXII server.
-     *
+     * 
      * @return the taxiiLookbackPeriod value.
      */
     public OffsetDateTime taxiiLookbackPeriod() {
@@ -188,7 +272,7 @@ public final class TiTaxiiDataConnector extends DataConnectorInner {
 
     /**
      * Set the taxiiLookbackPeriod property: The lookback period for the TAXII server.
-     *
+     * 
      * @param taxiiLookbackPeriod the taxiiLookbackPeriod value to set.
      * @return the TiTaxiiDataConnector object itself.
      */
@@ -202,7 +286,7 @@ public final class TiTaxiiDataConnector extends DataConnectorInner {
 
     /**
      * Get the pollingFrequency property: The polling frequency for the TAXII server.
-     *
+     * 
      * @return the pollingFrequency value.
      */
     public PollingFrequency pollingFrequency() {
@@ -211,7 +295,7 @@ public final class TiTaxiiDataConnector extends DataConnectorInner {
 
     /**
      * Set the pollingFrequency property: The polling frequency for the TAXII server.
-     *
+     * 
      * @param pollingFrequency the pollingFrequency value to set.
      * @return the TiTaxiiDataConnector object itself.
      */
@@ -225,7 +309,7 @@ public final class TiTaxiiDataConnector extends DataConnectorInner {
 
     /**
      * Get the dataTypes property: The available data types for Threat Intelligence TAXII data connector.
-     *
+     * 
      * @return the dataTypes value.
      */
     public TiTaxiiDataConnectorDataTypes dataTypes() {
@@ -234,7 +318,7 @@ public final class TiTaxiiDataConnector extends DataConnectorInner {
 
     /**
      * Set the dataTypes property: The available data types for Threat Intelligence TAXII data connector.
-     *
+     * 
      * @param dataTypes the dataTypes value to set.
      * @return the TiTaxiiDataConnector object itself.
      */
@@ -248,7 +332,7 @@ public final class TiTaxiiDataConnector extends DataConnectorInner {
 
     /**
      * Get the tenantId property: The tenant id to connect to, and get the data from.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -257,7 +341,7 @@ public final class TiTaxiiDataConnector extends DataConnectorInner {
 
     /**
      * Set the tenantId property: The tenant id to connect to, and get the data from.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the TiTaxiiDataConnector object itself.
      */
@@ -271,14 +355,64 @@ public final class TiTaxiiDataConnector extends DataConnectorInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TiTaxiiDataConnector from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TiTaxiiDataConnector if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TiTaxiiDataConnector.
+     */
+    public static TiTaxiiDataConnector fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TiTaxiiDataConnector deserializedTiTaxiiDataConnector = new TiTaxiiDataConnector();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTiTaxiiDataConnector.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedTiTaxiiDataConnector.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedTiTaxiiDataConnector.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedTiTaxiiDataConnector.withEtag(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedTiTaxiiDataConnector.systemData = SystemData.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedTiTaxiiDataConnector.kind = DataConnectorKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedTiTaxiiDataConnector.innerProperties = TiTaxiiDataConnectorProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTiTaxiiDataConnector;
+        });
     }
 }

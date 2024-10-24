@@ -13,27 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class InstanceTypeSchemaResourcesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InstanceTypeSchemaResources model =
-            BinaryData
-                .fromString(
-                    "{\"requests\":{\"wnwvroevytlyokr\":\"bannovvoxczytp\",\"o\":\"rouuxvnsasbcry\",\"xnazpmkml\":\"izrxklob\"},\"limits\":{\"zxlioh\":\"vfxzopjh\",\"dtfgxqbawpcbb\":\"d\",\"ofyuicd\":\"zqcyknap\",\"ybww\":\"zb\"}}")
-                .toObject(InstanceTypeSchemaResources.class);
-        Assertions.assertEquals("bannovvoxczytp", model.requests().get("wnwvroevytlyokr"));
-        Assertions.assertEquals("vfxzopjh", model.limits().get("zxlioh"));
+        InstanceTypeSchemaResources model = BinaryData.fromString(
+            "{\"requests\":{\"mdlgy\":\"mw\",\"gnqfqqdlcvmyol\":\"ixokwtjawhv\",\"nzyzawatuwqko\":\"aymjchtvsnvlaq\",\"wgwima\":\"bczothymgobllms\"},\"limits\":{\"vkhgv\":\"akhtmhobcyanrfvq\",\"ymhcctopuo\":\"ogxkfnaoa\",\"hquhczygxvhajp\":\"yrnskb\"}}")
+            .toObject(InstanceTypeSchemaResources.class);
+        Assertions.assertEquals("mw", model.requests().get("mdlgy"));
+        Assertions.assertEquals("akhtmhobcyanrfvq", model.limits().get("vkhgv"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InstanceTypeSchemaResources model =
-            new InstanceTypeSchemaResources()
-                .withRequests(
-                    mapOf("wnwvroevytlyokr", "bannovvoxczytp", "o", "rouuxvnsasbcry", "xnazpmkml", "izrxklob"))
-                .withLimits(mapOf("zxlioh", "vfxzopjh", "dtfgxqbawpcbb", "d", "ofyuicd", "zqcyknap", "ybww", "zb"));
+        InstanceTypeSchemaResources model = new InstanceTypeSchemaResources()
+            .withRequests(mapOf("mdlgy", "mw", "gnqfqqdlcvmyol", "ixokwtjawhv", "nzyzawatuwqko", "aymjchtvsnvlaq",
+                "wgwima", "bczothymgobllms"))
+            .withLimits(mapOf("vkhgv", "akhtmhobcyanrfvq", "ymhcctopuo", "ogxkfnaoa", "hquhczygxvhajp", "yrnskb"));
         model = BinaryData.fromObject(model).toObject(InstanceTypeSchemaResources.class);
-        Assertions.assertEquals("bannovvoxczytp", model.requests().get("wnwvroevytlyokr"));
-        Assertions.assertEquals("vfxzopjh", model.limits().get("zxlioh"));
+        Assertions.assertEquals("mw", model.requests().get("mdlgy"));
+        Assertions.assertEquals("akhtmhobcyanrfvq", model.limits().get("vkhgv"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

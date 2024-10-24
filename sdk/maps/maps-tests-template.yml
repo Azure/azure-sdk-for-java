@@ -28,7 +28,6 @@ extends:
     stages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
-          UseFederatedAuth: true
           Clouds: ${{ parameters.Clouds }}
           TestMode: ${{ parameters.TestMode }}
           Artifacts:

@@ -14,25 +14,27 @@ public final class KafkaProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         KafkaProfile model = BinaryData.fromString(
-            "{\"enableKRaft\":true,\"enablePublicEndpoints\":true,\"remoteStorageUri\":\"kzjancuxrhdwbav\",\"diskStorage\":{\"dataDiskSize\":1605187994,\"dataDiskType\":\"Premium_SSD_v2_LRS\"},\"clusterIdentity\":{\"msiResourceId\":\"wd\",\"msiClientId\":\"swzts\",\"msiObjectId\":\"bpg\"},\"connectivityEndpoints\":{\"bootstrapServerEndpoint\":\"txhp\",\"brokerEndpoints\":[\"zpfzabglc\",\"hxw\"]}}")
+            "{\"enableKRaft\":true,\"enablePublicEndpoints\":false,\"remoteStorageUri\":\"kthumaqolbgycdui\",\"diskStorage\":{\"dataDiskSize\":178501813,\"dataDiskType\":\"Premium_SSD_LRS\"},\"connectivityEndpoints\":{\"bootstrapServerEndpoint\":\"cym\",\"brokerEndpoints\":[\"l\",\"ssl\",\"lfmmdnbbglzpswi\"]}}")
             .toObject(KafkaProfile.class);
         Assertions.assertEquals(true, model.enableKRaft());
-        Assertions.assertEquals(true, model.enablePublicEndpoints());
-        Assertions.assertEquals("kzjancuxrhdwbav", model.remoteStorageUri());
-        Assertions.assertEquals(1605187994, model.diskStorage().dataDiskSize());
-        Assertions.assertEquals(DataDiskType.PREMIUM_SSD_V2_LRS, model.diskStorage().dataDiskType());
+        Assertions.assertEquals(false, model.enablePublicEndpoints());
+        Assertions.assertEquals("kthumaqolbgycdui", model.remoteStorageUri());
+        Assertions.assertEquals(178501813, model.diskStorage().dataDiskSize());
+        Assertions.assertEquals(DataDiskType.PREMIUM_SSD_LRS, model.diskStorage().dataDiskType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KafkaProfile model = new KafkaProfile().withEnableKRaft(true).withEnablePublicEndpoints(true)
-            .withRemoteStorageUri("kzjancuxrhdwbav").withDiskStorage(new DiskStorageProfile()
-                .withDataDiskSize(1605187994).withDataDiskType(DataDiskType.PREMIUM_SSD_V2_LRS));
+        KafkaProfile model = new KafkaProfile().withEnableKRaft(true)
+            .withEnablePublicEndpoints(false)
+            .withRemoteStorageUri("kthumaqolbgycdui")
+            .withDiskStorage(
+                new DiskStorageProfile().withDataDiskSize(178501813).withDataDiskType(DataDiskType.PREMIUM_SSD_LRS));
         model = BinaryData.fromObject(model).toObject(KafkaProfile.class);
         Assertions.assertEquals(true, model.enableKRaft());
-        Assertions.assertEquals(true, model.enablePublicEndpoints());
-        Assertions.assertEquals("kzjancuxrhdwbav", model.remoteStorageUri());
-        Assertions.assertEquals(1605187994, model.diskStorage().dataDiskSize());
-        Assertions.assertEquals(DataDiskType.PREMIUM_SSD_V2_LRS, model.diskStorage().dataDiskType());
+        Assertions.assertEquals(false, model.enablePublicEndpoints());
+        Assertions.assertEquals("kthumaqolbgycdui", model.remoteStorageUri());
+        Assertions.assertEquals(178501813, model.diskStorage().dataDiskSize());
+        Assertions.assertEquals(DataDiskType.PREMIUM_SSD_LRS, model.diskStorage().dataDiskType());
     }
 }

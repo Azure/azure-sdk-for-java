@@ -39,7 +39,8 @@ public class ComputeNode {
      * when another Compute Node becomes available. Possible values include:
      * 'idle', 'rebooting', 'reimaging', 'running', 'unusable', 'creating',
      * 'starting', 'waitingForStartTask', 'startTaskFailed', 'unknown',
-     * 'leavingPool', 'offline', 'preempted', 'upgradingOS'.
+     * 'leavingPool', 'offline', 'preempted', 'upgradingOS', 'deallocated',
+     * 'deallocating'.
      */
     @JsonProperty(value = "state")
     private ComputeNodeState state;
@@ -249,7 +250,7 @@ public class ComputeNode {
     }
 
     /**
-     * Get the Spot/Low-priority Compute Node has been preempted. Tasks which were running on the Compute Node when it was preempted will be rescheduled when another Compute Node becomes available. Possible values include: 'idle', 'rebooting', 'reimaging', 'running', 'unusable', 'creating', 'starting', 'waitingForStartTask', 'startTaskFailed', 'unknown', 'leavingPool', 'offline', 'preempted', 'upgradingOS'.
+     * Get the Spot/Low-priority Compute Node has been preempted. Tasks which were running on the Compute Node when it was preempted will be rescheduled when another Compute Node becomes available. Possible values include: 'idle', 'rebooting', 'reimaging', 'running', 'unusable', 'creating', 'starting', 'waitingForStartTask', 'startTaskFailed', 'unknown', 'leavingPool', 'offline', 'preempted', 'upgradingOS', 'deallocated', 'deallocating'.
      *
      * @return the state value
      */
@@ -258,7 +259,7 @@ public class ComputeNode {
     }
 
     /**
-     * Set the Spot/Low-priority Compute Node has been preempted. Tasks which were running on the Compute Node when it was preempted will be rescheduled when another Compute Node becomes available. Possible values include: 'idle', 'rebooting', 'reimaging', 'running', 'unusable', 'creating', 'starting', 'waitingForStartTask', 'startTaskFailed', 'unknown', 'leavingPool', 'offline', 'preempted', 'upgradingOS'.
+     * Set the Spot/Low-priority Compute Node has been preempted. Tasks which were running on the Compute Node when it was preempted will be rescheduled when another Compute Node becomes available. Possible values include: 'idle', 'rebooting', 'reimaging', 'running', 'unusable', 'creating', 'starting', 'waitingForStartTask', 'startTaskFailed', 'unknown', 'leavingPool', 'offline', 'preempted', 'upgradingOS', 'deallocated', 'deallocating'.
      *
      * @param state the state value to set
      * @return the ComputeNode object itself.

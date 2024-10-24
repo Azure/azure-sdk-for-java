@@ -127,17 +127,7 @@ public class LogDataMapper {
         Attributes attributes = log.getAttributes();
         MAPPINGS.map(attributes, telemetryBuilder);
 
-        List<ExceptionDetailBuilder> builders = Exceptions.minimalParse(stack);
-        ExceptionDetailBuilder exceptionDetailBuilder = builders.get(0);
-        String type = log.getAttributes().get(SemanticAttributes.EXCEPTION_TYPE);
-        if (type != null && !type.isEmpty()) {
-            exceptionDetailBuilder.setTypeName(type);
-        }
-        String message = log.getAttributes().get(SemanticAttributes.EXCEPTION_MESSAGE);
-        if (message != null && !message.isEmpty()) {
-            exceptionDetailBuilder.setMessage(message);
-        }
-        telemetryBuilder.setExceptions(builders);
+        SpanDataMapper.setExceptions(stack, log.getAttributes(), telemetryBuilder);
         telemetryBuilder.setSeverityLevel(toSeverityLevel(log.getSeverity()));
 
         // set exception-specific properties

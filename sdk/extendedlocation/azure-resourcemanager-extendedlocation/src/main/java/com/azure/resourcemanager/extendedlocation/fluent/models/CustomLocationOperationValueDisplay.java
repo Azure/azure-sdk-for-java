@@ -5,38 +5,47 @@
 package com.azure.resourcemanager.extendedlocation.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes the properties of a Custom Locations Operation Value Display. */
+/**
+ * Describes the properties of a Custom Locations Operation Value Display.
+ */
 @Immutable
-public final class CustomLocationOperationValueDisplay {
+public final class CustomLocationOperationValueDisplay
+    implements JsonSerializable<CustomLocationOperationValueDisplay> {
     /*
      * The description of the operation.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * The display name of the compute operation.
      */
-    @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
 
     /*
      * The resource provider for the operation.
      */
-    @JsonProperty(value = "provider", access = JsonProperty.Access.WRITE_ONLY)
     private String provider;
 
     /*
      * The display name of the resource the operation applies to.
      */
-    @JsonProperty(value = "resource", access = JsonProperty.Access.WRITE_ONLY)
     private String resource;
 
     /**
+     * Creates an instance of CustomLocationOperationValueDisplay class.
+     */
+    public CustomLocationOperationValueDisplay() {
+    }
+
+    /**
      * Get the description property: The description of the operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -45,7 +54,7 @@ public final class CustomLocationOperationValueDisplay {
 
     /**
      * Get the operation property: The display name of the compute operation.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -54,7 +63,7 @@ public final class CustomLocationOperationValueDisplay {
 
     /**
      * Get the provider property: The resource provider for the operation.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -63,7 +72,7 @@ public final class CustomLocationOperationValueDisplay {
 
     /**
      * Get the resource property: The display name of the resource the operation applies to.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -72,9 +81,51 @@ public final class CustomLocationOperationValueDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomLocationOperationValueDisplay from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomLocationOperationValueDisplay if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomLocationOperationValueDisplay.
+     */
+    public static CustomLocationOperationValueDisplay fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomLocationOperationValueDisplay deserializedCustomLocationOperationValueDisplay
+                = new CustomLocationOperationValueDisplay();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedCustomLocationOperationValueDisplay.description = reader.getString();
+                } else if ("operation".equals(fieldName)) {
+                    deserializedCustomLocationOperationValueDisplay.operation = reader.getString();
+                } else if ("provider".equals(fieldName)) {
+                    deserializedCustomLocationOperationValueDisplay.provider = reader.getString();
+                } else if ("resource".equals(fieldName)) {
+                    deserializedCustomLocationOperationValueDisplay.resource = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomLocationOperationValueDisplay;
+        });
     }
 }

@@ -5,32 +5,105 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Forecasting seasonality. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "mode",
-    defaultImpl = Seasonality.class)
-@JsonTypeName("Seasonality")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Auto", value = AutoSeasonality.class),
-    @JsonSubTypes.Type(name = "Custom", value = CustomSeasonality.class)
-})
+/**
+ * Forecasting seasonality.
+ */
 @Immutable
-public class Seasonality {
-    /** Creates an instance of Seasonality class. */
+public class Seasonality implements JsonSerializable<Seasonality> {
+    /*
+     * [Required] Seasonality mode.
+     */
+    private SeasonalityMode mode = SeasonalityMode.fromString("Seasonality");
+
+    /**
+     * Creates an instance of Seasonality class.
+     */
     public Seasonality() {
     }
 
     /**
+     * Get the mode property: [Required] Seasonality mode.
+     * 
+     * @return the mode value.
+     */
+    public SeasonalityMode mode() {
+        return this.mode;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Seasonality from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Seasonality if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Seasonality.
+     */
+    public static Seasonality fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("mode".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Auto".equals(discriminatorValue)) {
+                    return AutoSeasonality.fromJson(readerToUse.reset());
+                } else if ("Custom".equals(discriminatorValue)) {
+                    return CustomSeasonality.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static Seasonality fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Seasonality deserializedSeasonality = new Seasonality();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mode".equals(fieldName)) {
+                    deserializedSeasonality.mode = SeasonalityMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSeasonality;
+        });
     }
 }

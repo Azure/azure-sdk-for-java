@@ -55,9 +55,9 @@ public final class VolumeInner extends Resource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -65,9 +65,9 @@ public final class VolumeInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of VolumeInner class.
@@ -123,13 +123,13 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -143,13 +143,13 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -227,8 +227,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for
-     * LargeVolume on exceptional basis. Specified in bytes.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * expressed in bytes as multiples of 1 GiB.
      * 
      * @return the usageThreshold value.
      */
@@ -238,8 +239,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for
-     * LargeVolume on exceptional basis. Specified in bytes.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * expressed in bytes as multiples of 1 GiB.
      * 
      * @param usageThreshold the usageThreshold value to set.
      * @return the VolumeInner object itself.
@@ -413,7 +415,8 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the networkFeatures property: Network features available to the volume, or current state of update.
+     * Get the networkFeatures property: The original value of the network features type available to the volume at the
+     * time it was created.
      * 
      * @return the networkFeatures value.
      */
@@ -422,7 +425,8 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the networkFeatures property: Network features available to the volume, or current state of update.
+     * Set the networkFeatures property: The original value of the network features type available to the volume at the
+     * time it was created.
      * 
      * @param networkFeatures the networkFeatures value to set.
      * @return the VolumeInner object itself.
@@ -433,6 +437,16 @@ public final class VolumeInner extends Resource {
         }
         this.innerProperties().withNetworkFeatures(networkFeatures);
         return this;
+    }
+
+    /**
+     * Get the effectiveNetworkFeatures property: The effective value of the network features type available to the
+     * volume, or current effective state of update.
+     * 
+     * @return the effectiveNetworkFeatures value.
+     */
+    public NetworkFeatures effectiveNetworkFeatures() {
+        return this.innerProperties() == null ? null : this.innerProperties().effectiveNetworkFeatures();
     }
 
     /**

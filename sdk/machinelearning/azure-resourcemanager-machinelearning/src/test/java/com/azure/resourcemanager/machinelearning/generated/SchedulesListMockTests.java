@@ -6,73 +6,43 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.Schedule;
 import com.azure.resourcemanager.machinelearning.models.ScheduleListViewType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SchedulesListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"displayName\":\"oujtcp\",\"isEnabled\":true,\"trigger\":{\"triggerType\":\"TriggerBase\",\"endTime\":\"lyogzbasjckakik\",\"startTime\":\"ajmnvb\",\"timeZone\":\"mnkrqdyc\"},\"action\":{\"actionType\":\"ScheduleActionBase\"},\"provisioningState\":\"Deleting\",\"description\":\"kxx\",\"tags\":{\"bcgsa\":\"qr\",\"qedft\":\"daypx\",\"kt\":\"igmj\"},\"properties\":{\"brtzfliqntnoeg\":\"yvzixmusiidiv\",\"daiex\":\"oqpuclidyt\",\"fgivfiypf\":\"sapygiioukaffz\",\"u\":\"wyzjsixorvigrxmp\"}},\"id\":\"ekbpqghxdpg\",\"name\":\"hfimlyxd\",\"type\":\"ixjudbiac\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"action\":{\"actionType\":\"ScheduleActionBase\"},\"displayName\":\"ygnbknhjgclxaxwc\",\"isEnabled\":false,\"provisioningState\":\"Failed\",\"trigger\":{\"triggerType\":\"TriggerBase\",\"endTime\":\"dzkucszghdoaqip\",\"startTime\":\"xclfrs\",\"timeZone\":\"rnmuvwvpuofddtbf\"},\"description\":\"kjcnginxdvmaoyq\",\"properties\":{\"txoqxtdn\":\"gyxzmxynofxl\"},\"tags\":{\"nivdqtkyk\":\"sjirkrpskcjhmmof\"}},\"id\":\"xnlsf\",\"name\":\"nyscaccpt\",\"type\":\"zetxygxxiceecvj\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MachineLearningManager manager = MachineLearningManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Schedule> response = manager.schedules()
+            .list("nhhvp", "ukourqviyf", "segwez", ScheduleListViewType.ALL, com.azure.core.util.Context.NONE);
 
-        MachineLearningManager manager =
-            MachineLearningManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Schedule> response =
-            manager
-                .schedules()
-                .list("jezbfsjwfczgl", "vbgukbs", "bw", ScheduleListViewType.ALL, com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("kjcnginxdvmaoyq", response.iterator().next().properties().description());
-        Assertions.assertEquals("gyxzmxynofxl", response.iterator().next().properties().properties().get("txoqxtdn"));
-        Assertions.assertEquals("sjirkrpskcjhmmof", response.iterator().next().properties().tags().get("nivdqtkyk"));
-        Assertions.assertEquals("ygnbknhjgclxaxwc", response.iterator().next().properties().displayName());
-        Assertions.assertEquals(false, response.iterator().next().properties().isEnabled());
-        Assertions.assertEquals("dzkucszghdoaqip", response.iterator().next().properties().trigger().endTime());
-        Assertions.assertEquals("xclfrs", response.iterator().next().properties().trigger().startTime());
-        Assertions.assertEquals("rnmuvwvpuofddtbf", response.iterator().next().properties().trigger().timeZone());
+        Assertions.assertEquals("kxx", response.iterator().next().properties().description());
+        Assertions.assertEquals("qr", response.iterator().next().properties().tags().get("bcgsa"));
+        Assertions.assertEquals("yvzixmusiidiv",
+            response.iterator().next().properties().properties().get("brtzfliqntnoeg"));
+        Assertions.assertEquals("oujtcp", response.iterator().next().properties().displayName());
+        Assertions.assertEquals(true, response.iterator().next().properties().isEnabled());
+        Assertions.assertEquals("lyogzbasjckakik", response.iterator().next().properties().trigger().endTime());
+        Assertions.assertEquals("ajmnvb", response.iterator().next().properties().trigger().startTime());
+        Assertions.assertEquals("mnkrqdyc", response.iterator().next().properties().trigger().timeZone());
     }
 }

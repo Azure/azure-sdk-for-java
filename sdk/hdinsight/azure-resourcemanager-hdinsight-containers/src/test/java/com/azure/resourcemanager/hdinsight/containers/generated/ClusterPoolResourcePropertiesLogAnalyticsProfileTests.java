@@ -12,18 +12,18 @@ public final class ClusterPoolResourcePropertiesLogAnalyticsProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterPoolResourcePropertiesLogAnalyticsProfile model
-            = BinaryData.fromString("{\"enabled\":false,\"workspaceId\":\"gbwjzrnf\"}")
+            = BinaryData.fromString("{\"enabled\":false,\"workspaceId\":\"sgcbac\"}")
                 .toObject(ClusterPoolResourcePropertiesLogAnalyticsProfile.class);
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("gbwjzrnf", model.workspaceId());
+        Assertions.assertEquals("sgcbac", model.workspaceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterPoolResourcePropertiesLogAnalyticsProfile model
-            = new ClusterPoolResourcePropertiesLogAnalyticsProfile().withEnabled(false).withWorkspaceId("gbwjzrnf");
+            = new ClusterPoolResourcePropertiesLogAnalyticsProfile().withEnabled(false).withWorkspaceId("sgcbac");
         model = BinaryData.fromObject(model).toObject(ClusterPoolResourcePropertiesLogAnalyticsProfile.class);
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("gbwjzrnf", model.workspaceId());
+        Assertions.assertEquals("sgcbac", model.workspaceId());
     }
 }

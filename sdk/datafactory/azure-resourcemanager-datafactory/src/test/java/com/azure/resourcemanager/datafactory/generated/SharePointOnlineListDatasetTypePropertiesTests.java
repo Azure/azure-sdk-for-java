@@ -10,14 +10,14 @@ import com.azure.resourcemanager.datafactory.fluent.models.SharePointOnlineListD
 public final class SharePointOnlineListDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SharePointOnlineListDatasetTypeProperties model = BinaryData.fromString("{\"listName\":\"datajomeq\"}")
+        SharePointOnlineListDatasetTypeProperties model = BinaryData.fromString("{\"listName\":\"datagba\"}")
             .toObject(SharePointOnlineListDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SharePointOnlineListDatasetTypeProperties model
-            = new SharePointOnlineListDatasetTypeProperties().withListName("datajomeq");
+            = new SharePointOnlineListDatasetTypeProperties().withListName("datagba");
         model = BinaryData.fromObject(model).toObject(SharePointOnlineListDatasetTypeProperties.class);
     }
 }

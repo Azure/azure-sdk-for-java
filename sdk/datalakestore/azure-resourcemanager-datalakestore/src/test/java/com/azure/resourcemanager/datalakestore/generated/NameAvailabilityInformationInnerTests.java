@@ -10,9 +10,8 @@ import com.azure.resourcemanager.datalakestore.fluent.models.NameAvailabilityInf
 public final class NameAvailabilityInformationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NameAvailabilityInformationInner model =
-            BinaryData
-                .fromString("{\"nameAvailable\":true,\"reason\":\"onpc\",\"message\":\"ocohslkevleg\"}")
+        NameAvailabilityInformationInner model
+            = BinaryData.fromString("{\"nameAvailable\":true,\"reason\":\"asxazjpqyegualhb\",\"message\":\"hejjz\"}")
                 .toObject(NameAvailabilityInformationInner.class);
     }
 

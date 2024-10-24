@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enum to determine the type of data. */
+/**
+ * Enum to determine the type of data.
+ */
 public final class DataType extends ExpandableStringEnum<DataType> {
-    /** Static value uri_file for DataType. */
+    /**
+     * Static value uri_file for DataType.
+     */
     public static final DataType URI_FILE = fromString("uri_file");
 
-    /** Static value uri_folder for DataType. */
+    /**
+     * Static value uri_folder for DataType.
+     */
     public static final DataType URI_FOLDER = fromString("uri_folder");
 
-    /** Static value mltable for DataType. */
+    /**
+     * Static value mltable for DataType.
+     */
     public static final DataType MLTABLE = fromString("mltable");
 
     /**
      * Creates a new instance of DataType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class DataType extends ExpandableStringEnum<DataType> {
 
     /**
      * Creates or finds a DataType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DataType.
      */
-    @JsonCreator
     public static DataType fromString(String name) {
         return fromString(name, DataType.class);
     }
 
     /**
      * Gets known DataType values.
-     *
+     * 
      * @return known DataType values.
      */
     public static Collection<DataType> values() {

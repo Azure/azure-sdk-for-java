@@ -13,19 +13,27 @@ import com.azure.perf.test.core.PerfStressTest;
 
 /**
  * Base class for Azure App Configuration performance tests.
+ *
+ * @param <TOptions> The type of stress options.
  */
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
-    private static final String CONFIGURATION_ERROR = "Configuration %s must be set in either environment variables "
-                                                          + "or system properties.%n";
+    private static final String CONFIGURATION_ERROR
+        = "Configuration %s must be set in either environment variables " + "or system properties.%n";
 
+    /**
+     * The synchronous configuration client.
+     */
     protected final ConfigurationClient configurationClient;
+
+    /**
+     * The asynchronous configuration client.
+     */
     protected final ConfigurationAsyncClient configurationAsyncClient;
 
     /**
      * The base class for Azure App Configuration tests.
      *
      * @param options the configurable options for performing perf testing on this class.
-     *
      * @throws RuntimeException if "AZURE_APPCONFIG_CONNECTION_STRING" is null or empty.
      */
     public ServiceTest(TOptions options) {
@@ -39,6 +47,6 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         ConfigurationClientBuilder builder = new ConfigurationClientBuilder().connectionString(connectionString);
 
         this.configurationClient = builder.buildClient();
-        this.configurationAsyncClient  = builder.buildAsyncClient();
+        this.configurationAsyncClient = builder.buildAsyncClient();
     }
 }

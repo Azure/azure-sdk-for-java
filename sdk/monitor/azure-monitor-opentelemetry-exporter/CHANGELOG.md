@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.29 (Unreleased)
+## 1.0.0-beta.31 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,36 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.30 (2024-10-09)
+
+### Bugs Fixed
+
+- [Fixed a regression in 1.0.0-beta.29 where exception type name was not exported](https://github.com/Azure/azure-sdk-for-java/pull/42241)
+
+## 1.0.0-beta.29 (2024-10-02)
+
+### Breaking Changes
+
+⚠️⚠️ The `AzureMonitorExporterBuilder` class has been replaced with the `AzureMonitorExporter` class ([41705](https://github.com/Azure/azure-sdk-for-java/pull/41705) and [42134](https://github.com/Azure/azure-sdk-for-java/pull/42134)):
+
+```java
+AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
+AzureMonitorExporter.customize(sdkBuilder);
+OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
+```
+
+See the [Readme](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-opentelemetry-exporter) for more details
+
+### Bugs Fixed
+- [Fix a race condition RejectedExecutionException](https://github.com/Azure/azure-sdk-for-java/pull/41927)
+- [Fix a bug where post requests to Live Metrics returned http 400 due to malformed json](https://github.com/Azure/azure-sdk-for-java/pull/42147)
+
+### Other Changes
+- [Better populate exception type name and message from span events](https://github.com/Azure/azure-sdk-for-java/pull/41397)
+- [Update OpenTelemetry SDK to 1.42.1](https://github.com/Azure/azure-sdk-for-java/pull/41931))
+- [Improve the error message for null connection string](https://github.com/Azure/azure-sdk-for-java/pull/42034)
+- [Update message in case of connection failure](https://github.com/Azure/azure-sdk-for-java/pull/42103)
 
 ## 1.0.0-beta.28 (2024-08-08)
 

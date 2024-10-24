@@ -11,7 +11,7 @@ public final class NodeTypeSkuCapacityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NodeTypeSkuCapacity model = BinaryData
-            .fromString("{\"minimum\":866301348,\"maximum\":572300163,\"default\":1872766965,\"scaleType\":\"None\"}")
+            .fromString("{\"minimum\":405575644,\"maximum\":1049573139,\"default\":638105494,\"scaleType\":\"None\"}")
             .toObject(NodeTypeSkuCapacity.class);
     }
 

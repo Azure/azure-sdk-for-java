@@ -6,18 +6,20 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.resourcemanager.machinelearning.fluent.models.DeploymentLogsInner;
 
-/** An immutable client-side representation of DeploymentLogs. */
+/**
+ * An immutable client-side representation of DeploymentLogs.
+ */
 public interface DeploymentLogs {
     /**
      * Gets the content property: The retrieved online deployment logs.
-     *
+     * 
      * @return the content value.
      */
     String content();
 
     /**
      * Gets the inner com.azure.resourcemanager.machinelearning.fluent.models.DeploymentLogsInner object.
-     *
+     * 
      * @return the inner object.
      */
     DeploymentLogsInner innerModel();

@@ -4,7 +4,7 @@
     xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
   <Match>
     <Bug pattern="EI_EXPOSE_REP2" />
-    <Class name="com.azure.core.http.vertx.VertxAsyncHttpClientBuilder" />
+    <Class name="com.azure.core.http.vertx.VertxHttpClientBuilder" />
     <Or>
       <Method name="configuration" />
       <Method name="httpClientOptions" />
@@ -20,7 +20,7 @@
   <Match>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE" />
     <And>
-      <Class name="com.azure.core.http.vertx.VertxAsyncHttpClient" />
+      <Class name="com.azure.core.http.vertx.VertxHttpClient" />
       <Method name="sendSync" />
     </And>
   </Match>

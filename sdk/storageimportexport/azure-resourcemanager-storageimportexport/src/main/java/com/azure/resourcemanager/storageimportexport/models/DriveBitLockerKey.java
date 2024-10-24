@@ -6,25 +6,27 @@ package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.resourcemanager.storageimportexport.fluent.models.DriveBitLockerKeyInner;
 
-/** An immutable client-side representation of DriveBitLockerKey. */
+/**
+ * An immutable client-side representation of DriveBitLockerKey.
+ */
 public interface DriveBitLockerKey {
     /**
      * Gets the bitLockerKey property: BitLocker recovery key or password.
-     *
+     * 
      * @return the bitLockerKey value.
      */
     String bitLockerKey();
 
     /**
      * Gets the driveId property: Drive ID.
-     *
+     * 
      * @return the driveId value.
      */
     String driveId();
 
     /**
      * Gets the inner com.azure.resourcemanager.storageimportexport.fluent.models.DriveBitLockerKeyInner object.
-     *
+     * 
      * @return the inner object.
      */
     DriveBitLockerKeyInner innerModel();

@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class PrivateEndpointConnectionsCreateSamples {
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/
      * PrivateEndpointConnections_Create_MaximumSet_Gen.json
      */
     /**
@@ -24,16 +24,20 @@ public final class PrivateEndpointConnectionsCreateSamples {
      */
     public static void
         privateEndpointConnectionsCreateMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager.privateEndpointConnections().define("privateendpointconnectionname")
+        manager.privateEndpointConnections()
+            .define("privateendpointconnectionname")
             .withExistingElasticSan("resourcegroupname", "elasticsanname")
             .withPrivateLinkServiceConnectionState(
                 new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                    .withDescription("dxl").withActionsRequired("jhjdpwvyzipggtn"))
-            .withPrivateEndpoint(new PrivateEndpoint()).withGroupIds(Arrays.asList("jdwrzpemdjrpiwzvy")).create();
+                    .withDescription("dxl")
+                    .withActionsRequired("jhjdpwvyzipggtn"))
+            .withPrivateEndpoint(new PrivateEndpoint())
+            .withGroupIds(Arrays.asList("jdwrzpemdjrpiwzvy"))
+            .create();
     }
 
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/
      * PrivateEndpointConnections_Create_MinimumSet_Gen.json
      */
     /**
@@ -43,8 +47,10 @@ public final class PrivateEndpointConnectionsCreateSamples {
      */
     public static void
         privateEndpointConnectionsCreateMinimumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager.privateEndpointConnections().define("privateendpointconnectionname")
+        manager.privateEndpointConnections()
+            .define("privateendpointconnectionname")
             .withExistingElasticSan("resourcegroupname", "elasticsanname")
-            .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()).create();
+            .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState())
+            .create();
     }
 }

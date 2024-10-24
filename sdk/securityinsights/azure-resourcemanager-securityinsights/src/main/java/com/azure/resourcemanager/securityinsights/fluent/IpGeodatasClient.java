@@ -10,24 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.securityinsights.fluent.models.EnrichmentIpGeodataInner;
 
-/** An instance of this class provides access to all the operations defined in IpGeodatasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IpGeodatasClient.
+ */
 public interface IpGeodatasClient {
     /**
      * Get geodata for a single IP address.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipAddress IP address (v4 or v6) to be enriched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return geodata for a single IP address.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    EnrichmentIpGeodataInner get(String resourceGroupName, String ipAddress);
-
-    /**
-     * Get geodata for a single IP address.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipAddress IP address (v4 or v6) to be enriched.
      * @param context The context to associate with this operation.
@@ -38,4 +27,17 @@ public interface IpGeodatasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<EnrichmentIpGeodataInner> getWithResponse(String resourceGroupName, String ipAddress, Context context);
+
+    /**
+     * Get geodata for a single IP address.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ipAddress IP address (v4 or v6) to be enriched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return geodata for a single IP address.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EnrichmentIpGeodataInner get(String resourceGroupName, String ipAddress);
 }

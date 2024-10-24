@@ -5,25 +5,31 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Strictly used in update requests. */
+/**
+ * Strictly used in update requests.
+ */
 @Fluent
 public final class PartialMinimalTrackedResourceWithSku extends PartialMinimalTrackedResource {
     /*
      * Sku details required for ARM contract for Autoscaling.
      */
-    @JsonProperty(value = "sku")
     private PartialSku sku;
 
-    /** Creates an instance of PartialMinimalTrackedResourceWithSku class. */
+    /**
+     * Creates an instance of PartialMinimalTrackedResourceWithSku class.
+     */
     public PartialMinimalTrackedResourceWithSku() {
     }
 
     /**
      * Get the sku property: Sku details required for ARM contract for Autoscaling.
-     *
+     * 
      * @return the sku value.
      */
     public PartialSku sku() {
@@ -32,7 +38,7 @@ public final class PartialMinimalTrackedResourceWithSku extends PartialMinimalTr
 
     /**
      * Set the sku property: Sku details required for ARM contract for Autoscaling.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the PartialMinimalTrackedResourceWithSku object itself.
      */
@@ -41,7 +47,9 @@ public final class PartialMinimalTrackedResourceWithSku extends PartialMinimalTr
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PartialMinimalTrackedResourceWithSku withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -50,7 +58,7 @@ public final class PartialMinimalTrackedResourceWithSku extends PartialMinimalTr
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -59,5 +67,46 @@ public final class PartialMinimalTrackedResourceWithSku extends PartialMinimalTr
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartialMinimalTrackedResourceWithSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartialMinimalTrackedResourceWithSku if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PartialMinimalTrackedResourceWithSku.
+     */
+    public static PartialMinimalTrackedResourceWithSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartialMinimalTrackedResourceWithSku deserializedPartialMinimalTrackedResourceWithSku
+                = new PartialMinimalTrackedResourceWithSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPartialMinimalTrackedResourceWithSku.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedPartialMinimalTrackedResourceWithSku.sku = PartialSku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartialMinimalTrackedResourceWithSku;
+        });
     }
 }

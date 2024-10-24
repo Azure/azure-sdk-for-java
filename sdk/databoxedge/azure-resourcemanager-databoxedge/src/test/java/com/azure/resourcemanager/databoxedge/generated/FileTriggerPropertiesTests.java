@@ -13,26 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class FileTriggerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FileTriggerProperties model =
-            BinaryData
-                .fromString(
-                    "{\"sourceInfo\":{\"shareId\":\"uwjuetaeburuvdmo\"},\"sinkInfo\":{\"roleId\":\"s\"},\"customContextTag\":\"l\"}")
-                .toObject(FileTriggerProperties.class);
-        Assertions.assertEquals("uwjuetaeburuvdmo", model.sourceInfo().shareId());
-        Assertions.assertEquals("s", model.sinkInfo().roleId());
-        Assertions.assertEquals("l", model.customContextTag());
+        FileTriggerProperties model = BinaryData.fromString(
+            "{\"sourceInfo\":{\"shareId\":\"odn\"},\"sinkInfo\":{\"roleId\":\"zxltjcvn\"},\"customContextTag\":\"tiugcxnav\"}")
+            .toObject(FileTriggerProperties.class);
+        Assertions.assertEquals("odn", model.sourceInfo().shareId());
+        Assertions.assertEquals("zxltjcvn", model.sinkInfo().roleId());
+        Assertions.assertEquals("tiugcxnav", model.customContextTag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileTriggerProperties model =
-            new FileTriggerProperties()
-                .withSourceInfo(new FileSourceInfo().withShareId("uwjuetaeburuvdmo"))
-                .withSinkInfo(new RoleSinkInfo().withRoleId("s"))
-                .withCustomContextTag("l");
+        FileTriggerProperties model
+            = new FileTriggerProperties().withSourceInfo(new FileSourceInfo().withShareId("odn"))
+                .withSinkInfo(new RoleSinkInfo().withRoleId("zxltjcvn"))
+                .withCustomContextTag("tiugcxnav");
         model = BinaryData.fromObject(model).toObject(FileTriggerProperties.class);
-        Assertions.assertEquals("uwjuetaeburuvdmo", model.sourceInfo().shareId());
-        Assertions.assertEquals("s", model.sinkInfo().roleId());
-        Assertions.assertEquals("l", model.customContextTag());
+        Assertions.assertEquals("odn", model.sourceInfo().shareId());
+        Assertions.assertEquals("zxltjcvn", model.sinkInfo().roleId());
+        Assertions.assertEquals("tiugcxnav", model.customContextTag());
     }
 }

@@ -6,84 +6,81 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Edifact agreement framing settings. */
+/**
+ * The Edifact agreement framing settings.
+ */
 @Fluent
-public final class EdifactFramingSettings {
+public final class EdifactFramingSettings implements JsonSerializable<EdifactFramingSettings> {
     /*
      * The service code list directory version.
      */
-    @JsonProperty(value = "serviceCodeListDirectoryVersion")
     private String serviceCodeListDirectoryVersion;
 
     /*
      * The character encoding.
      */
-    @JsonProperty(value = "characterEncoding")
     private String characterEncoding;
 
     /*
      * The protocol version.
      */
-    @JsonProperty(value = "protocolVersion", required = true)
     private int protocolVersion;
 
     /*
      * The data element separator.
      */
-    @JsonProperty(value = "dataElementSeparator", required = true)
     private int dataElementSeparator;
 
     /*
      * The component separator.
      */
-    @JsonProperty(value = "componentSeparator", required = true)
     private int componentSeparator;
 
     /*
      * The segment terminator.
      */
-    @JsonProperty(value = "segmentTerminator", required = true)
     private int segmentTerminator;
 
     /*
      * The release indicator.
      */
-    @JsonProperty(value = "releaseIndicator", required = true)
     private int releaseIndicator;
 
     /*
      * The repetition separator.
      */
-    @JsonProperty(value = "repetitionSeparator", required = true)
     private int repetitionSeparator;
 
     /*
      * The EDIFACT frame setting characterSet.
      */
-    @JsonProperty(value = "characterSet", required = true)
     private EdifactCharacterSet characterSet;
 
     /*
      * The EDIFACT frame setting decimal indicator.
      */
-    @JsonProperty(value = "decimalPointIndicator", required = true)
     private EdifactDecimalIndicator decimalPointIndicator;
 
     /*
      * The EDIFACT frame setting segment terminator suffix.
      */
-    @JsonProperty(value = "segmentTerminatorSuffix", required = true)
     private SegmentTerminatorSuffix segmentTerminatorSuffix;
 
-    /** Creates an instance of EdifactFramingSettings class. */
+    /**
+     * Creates an instance of EdifactFramingSettings class.
+     */
     public EdifactFramingSettings() {
     }
 
     /**
      * Get the serviceCodeListDirectoryVersion property: The service code list directory version.
-     *
+     * 
      * @return the serviceCodeListDirectoryVersion value.
      */
     public String serviceCodeListDirectoryVersion() {
@@ -92,7 +89,7 @@ public final class EdifactFramingSettings {
 
     /**
      * Set the serviceCodeListDirectoryVersion property: The service code list directory version.
-     *
+     * 
      * @param serviceCodeListDirectoryVersion the serviceCodeListDirectoryVersion value to set.
      * @return the EdifactFramingSettings object itself.
      */
@@ -103,7 +100,7 @@ public final class EdifactFramingSettings {
 
     /**
      * Get the characterEncoding property: The character encoding.
-     *
+     * 
      * @return the characterEncoding value.
      */
     public String characterEncoding() {
@@ -112,7 +109,7 @@ public final class EdifactFramingSettings {
 
     /**
      * Set the characterEncoding property: The character encoding.
-     *
+     * 
      * @param characterEncoding the characterEncoding value to set.
      * @return the EdifactFramingSettings object itself.
      */
@@ -123,7 +120,7 @@ public final class EdifactFramingSettings {
 
     /**
      * Get the protocolVersion property: The protocol version.
-     *
+     * 
      * @return the protocolVersion value.
      */
     public int protocolVersion() {
@@ -132,7 +129,7 @@ public final class EdifactFramingSettings {
 
     /**
      * Set the protocolVersion property: The protocol version.
-     *
+     * 
      * @param protocolVersion the protocolVersion value to set.
      * @return the EdifactFramingSettings object itself.
      */
@@ -143,7 +140,7 @@ public final class EdifactFramingSettings {
 
     /**
      * Get the dataElementSeparator property: The data element separator.
-     *
+     * 
      * @return the dataElementSeparator value.
      */
     public int dataElementSeparator() {
@@ -152,7 +149,7 @@ public final class EdifactFramingSettings {
 
     /**
      * Set the dataElementSeparator property: The data element separator.
-     *
+     * 
      * @param dataElementSeparator the dataElementSeparator value to set.
      * @return the EdifactFramingSettings object itself.
      */
@@ -163,7 +160,7 @@ public final class EdifactFramingSettings {
 
     /**
      * Get the componentSeparator property: The component separator.
-     *
+     * 
      * @return the componentSeparator value.
      */
     public int componentSeparator() {
@@ -172,7 +169,7 @@ public final class EdifactFramingSettings {
 
     /**
      * Set the componentSeparator property: The component separator.
-     *
+     * 
      * @param componentSeparator the componentSeparator value to set.
      * @return the EdifactFramingSettings object itself.
      */
@@ -183,7 +180,7 @@ public final class EdifactFramingSettings {
 
     /**
      * Get the segmentTerminator property: The segment terminator.
-     *
+     * 
      * @return the segmentTerminator value.
      */
     public int segmentTerminator() {
@@ -192,7 +189,7 @@ public final class EdifactFramingSettings {
 
     /**
      * Set the segmentTerminator property: The segment terminator.
-     *
+     * 
      * @param segmentTerminator the segmentTerminator value to set.
      * @return the EdifactFramingSettings object itself.
      */
@@ -203,7 +200,7 @@ public final class EdifactFramingSettings {
 
     /**
      * Get the releaseIndicator property: The release indicator.
-     *
+     * 
      * @return the releaseIndicator value.
      */
     public int releaseIndicator() {
@@ -212,7 +209,7 @@ public final class EdifactFramingSettings {
 
     /**
      * Set the releaseIndicator property: The release indicator.
-     *
+     * 
      * @param releaseIndicator the releaseIndicator value to set.
      * @return the EdifactFramingSettings object itself.
      */
@@ -223,7 +220,7 @@ public final class EdifactFramingSettings {
 
     /**
      * Get the repetitionSeparator property: The repetition separator.
-     *
+     * 
      * @return the repetitionSeparator value.
      */
     public int repetitionSeparator() {
@@ -232,7 +229,7 @@ public final class EdifactFramingSettings {
 
     /**
      * Set the repetitionSeparator property: The repetition separator.
-     *
+     * 
      * @param repetitionSeparator the repetitionSeparator value to set.
      * @return the EdifactFramingSettings object itself.
      */
@@ -243,7 +240,7 @@ public final class EdifactFramingSettings {
 
     /**
      * Get the characterSet property: The EDIFACT frame setting characterSet.
-     *
+     * 
      * @return the characterSet value.
      */
     public EdifactCharacterSet characterSet() {
@@ -252,7 +249,7 @@ public final class EdifactFramingSettings {
 
     /**
      * Set the characterSet property: The EDIFACT frame setting characterSet.
-     *
+     * 
      * @param characterSet the characterSet value to set.
      * @return the EdifactFramingSettings object itself.
      */
@@ -263,7 +260,7 @@ public final class EdifactFramingSettings {
 
     /**
      * Get the decimalPointIndicator property: The EDIFACT frame setting decimal indicator.
-     *
+     * 
      * @return the decimalPointIndicator value.
      */
     public EdifactDecimalIndicator decimalPointIndicator() {
@@ -272,7 +269,7 @@ public final class EdifactFramingSettings {
 
     /**
      * Set the decimalPointIndicator property: The EDIFACT frame setting decimal indicator.
-     *
+     * 
      * @param decimalPointIndicator the decimalPointIndicator value to set.
      * @return the EdifactFramingSettings object itself.
      */
@@ -283,7 +280,7 @@ public final class EdifactFramingSettings {
 
     /**
      * Get the segmentTerminatorSuffix property: The EDIFACT frame setting segment terminator suffix.
-     *
+     * 
      * @return the segmentTerminatorSuffix value.
      */
     public SegmentTerminatorSuffix segmentTerminatorSuffix() {
@@ -292,7 +289,7 @@ public final class EdifactFramingSettings {
 
     /**
      * Set the segmentTerminatorSuffix property: The EDIFACT frame setting segment terminator suffix.
-     *
+     * 
      * @param segmentTerminatorSuffix the segmentTerminatorSuffix value to set.
      * @return the EdifactFramingSettings object itself.
      */
@@ -303,29 +300,98 @@ public final class EdifactFramingSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (characterSet() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property characterSet in model EdifactFramingSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property characterSet in model EdifactFramingSettings"));
         }
         if (decimalPointIndicator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property decimalPointIndicator in model EdifactFramingSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property decimalPointIndicator in model EdifactFramingSettings"));
         }
         if (segmentTerminatorSuffix() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property segmentTerminatorSuffix in model EdifactFramingSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property segmentTerminatorSuffix in model EdifactFramingSettings"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EdifactFramingSettings.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("protocolVersion", this.protocolVersion);
+        jsonWriter.writeIntField("dataElementSeparator", this.dataElementSeparator);
+        jsonWriter.writeIntField("componentSeparator", this.componentSeparator);
+        jsonWriter.writeIntField("segmentTerminator", this.segmentTerminator);
+        jsonWriter.writeIntField("releaseIndicator", this.releaseIndicator);
+        jsonWriter.writeIntField("repetitionSeparator", this.repetitionSeparator);
+        jsonWriter.writeStringField("characterSet", this.characterSet == null ? null : this.characterSet.toString());
+        jsonWriter.writeStringField("decimalPointIndicator",
+            this.decimalPointIndicator == null ? null : this.decimalPointIndicator.toString());
+        jsonWriter.writeStringField("segmentTerminatorSuffix",
+            this.segmentTerminatorSuffix == null ? null : this.segmentTerminatorSuffix.toString());
+        jsonWriter.writeStringField("serviceCodeListDirectoryVersion", this.serviceCodeListDirectoryVersion);
+        jsonWriter.writeStringField("characterEncoding", this.characterEncoding);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EdifactFramingSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EdifactFramingSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EdifactFramingSettings.
+     */
+    public static EdifactFramingSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EdifactFramingSettings deserializedEdifactFramingSettings = new EdifactFramingSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protocolVersion".equals(fieldName)) {
+                    deserializedEdifactFramingSettings.protocolVersion = reader.getInt();
+                } else if ("dataElementSeparator".equals(fieldName)) {
+                    deserializedEdifactFramingSettings.dataElementSeparator = reader.getInt();
+                } else if ("componentSeparator".equals(fieldName)) {
+                    deserializedEdifactFramingSettings.componentSeparator = reader.getInt();
+                } else if ("segmentTerminator".equals(fieldName)) {
+                    deserializedEdifactFramingSettings.segmentTerminator = reader.getInt();
+                } else if ("releaseIndicator".equals(fieldName)) {
+                    deserializedEdifactFramingSettings.releaseIndicator = reader.getInt();
+                } else if ("repetitionSeparator".equals(fieldName)) {
+                    deserializedEdifactFramingSettings.repetitionSeparator = reader.getInt();
+                } else if ("characterSet".equals(fieldName)) {
+                    deserializedEdifactFramingSettings.characterSet
+                        = EdifactCharacterSet.fromString(reader.getString());
+                } else if ("decimalPointIndicator".equals(fieldName)) {
+                    deserializedEdifactFramingSettings.decimalPointIndicator
+                        = EdifactDecimalIndicator.fromString(reader.getString());
+                } else if ("segmentTerminatorSuffix".equals(fieldName)) {
+                    deserializedEdifactFramingSettings.segmentTerminatorSuffix
+                        = SegmentTerminatorSuffix.fromString(reader.getString());
+                } else if ("serviceCodeListDirectoryVersion".equals(fieldName)) {
+                    deserializedEdifactFramingSettings.serviceCodeListDirectoryVersion = reader.getString();
+                } else if ("characterEncoding".equals(fieldName)) {
+                    deserializedEdifactFramingSettings.characterEncoding = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEdifactFramingSettings;
+        });
+    }
 }

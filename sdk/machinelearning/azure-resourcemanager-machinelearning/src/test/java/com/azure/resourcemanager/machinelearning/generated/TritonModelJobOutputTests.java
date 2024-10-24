@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class TritonModelJobOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TritonModelJobOutput model =
-            BinaryData
-                .fromString(
-                    "{\"jobOutputType\":\"triton_model\",\"mode\":\"ReadWriteMount\",\"uri\":\"vkolrupjovmo\",\"description\":\"ayeb\"}")
-                .toObject(TritonModelJobOutput.class);
-        Assertions.assertEquals("ayeb", model.description());
-        Assertions.assertEquals(OutputDeliveryMode.READ_WRITE_MOUNT, model.mode());
-        Assertions.assertEquals("vkolrupjovmo", model.uri());
+        TritonModelJobOutput model = BinaryData.fromString(
+            "{\"jobOutputType\":\"triton_model\",\"uri\":\"ljknnkynkstdtfwh\",\"mode\":\"Upload\",\"description\":\"fxaqjyihjcwwv\"}")
+            .toObject(TritonModelJobOutput.class);
+        Assertions.assertEquals("fxaqjyihjcwwv", model.description());
+        Assertions.assertEquals("ljknnkynkstdtfwh", model.uri());
+        Assertions.assertEquals(OutputDeliveryMode.UPLOAD, model.mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TritonModelJobOutput model =
-            new TritonModelJobOutput()
-                .withDescription("ayeb")
-                .withMode(OutputDeliveryMode.READ_WRITE_MOUNT)
-                .withUri("vkolrupjovmo");
+        TritonModelJobOutput model = new TritonModelJobOutput().withDescription("fxaqjyihjcwwv")
+            .withUri("ljknnkynkstdtfwh")
+            .withMode(OutputDeliveryMode.UPLOAD);
         model = BinaryData.fromObject(model).toObject(TritonModelJobOutput.class);
-        Assertions.assertEquals("ayeb", model.description());
-        Assertions.assertEquals(OutputDeliveryMode.READ_WRITE_MOUNT, model.mode());
-        Assertions.assertEquals("vkolrupjovmo", model.uri());
+        Assertions.assertEquals("fxaqjyihjcwwv", model.description());
+        Assertions.assertEquals("ljknnkynkstdtfwh", model.uri());
+        Assertions.assertEquals(OutputDeliveryMode.UPLOAD, model.mode());
     }
 }

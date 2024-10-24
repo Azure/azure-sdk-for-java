@@ -20,7 +20,10 @@ public final class DataCollectionRuleAssociationsListByRuleSamples {
      */
     public static void
         listAssociationsForSpecifiedDataCollectionRule(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getDataCollectionRuleAssociations()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getDataCollectionRuleAssociations()
             .listByRule("myResourceGroup", "myCollectionRule", com.azure.core.util.Context.NONE);
     }
 }

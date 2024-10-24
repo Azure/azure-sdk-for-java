@@ -9,6 +9,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.fluent.models.ComponentVersionInner;
 import com.azure.resourcemanager.machinelearning.models.ComponentVersion;
 import com.azure.resourcemanager.machinelearning.models.ComponentVersionProperties;
+import com.azure.resourcemanager.machinelearning.models.DestinationAsset;
 
 public final class ComponentVersionImpl
     implements ComponentVersion, ComponentVersion.Definition, ComponentVersion.Update {
@@ -64,23 +65,19 @@ public final class ComponentVersionImpl
     }
 
     public ComponentVersion create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getComponentVersions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, name, version, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getComponentVersions()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ComponentVersion create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getComponentVersions()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getComponentVersions()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -95,55 +92,54 @@ public final class ComponentVersionImpl
     }
 
     public ComponentVersion apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getComponentVersions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, name, version, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getComponentVersions()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ComponentVersion apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getComponentVersions()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getComponentVersions()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ComponentVersionImpl(
-        ComponentVersionInner innerObject,
+    ComponentVersionImpl(ComponentVersionInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "components");
-        this.version = Utils.getValueFromIdByName(innerObject.id(), "versions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "components");
+        this.version = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "versions");
     }
 
     public ComponentVersion refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getComponentVersions()
-                .getWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getComponentVersions()
+            .getWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ComponentVersion refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getComponentVersions()
-                .getWithResponse(resourceGroupName, workspaceName, name, version, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getComponentVersions()
+            .getWithResponse(resourceGroupName, workspaceName, name, version, context)
+            .getValue();
         return this;
+    }
+
+    public void publish(DestinationAsset body) {
+        serviceManager.componentVersions().publish(resourceGroupName, workspaceName, name, version, body);
+    }
+
+    public void publish(DestinationAsset body, Context context) {
+        serviceManager.componentVersions().publish(resourceGroupName, workspaceName, name, version, body, context);
     }
 
     public ComponentVersionImpl withProperties(ComponentVersionProperties properties) {

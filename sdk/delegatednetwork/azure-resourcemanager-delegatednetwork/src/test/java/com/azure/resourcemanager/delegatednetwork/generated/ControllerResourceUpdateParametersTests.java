@@ -13,22 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class ControllerResourceUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ControllerResourceUpdateParameters model =
-            BinaryData
-                .fromString("{\"tags\":{\"kuksjtxukcdm\":\"rkdtmlxh\",\"yrlhmwhfpmrqobm\":\"arcryuanzwuxzdxt\"}}")
-                .toObject(ControllerResourceUpdateParameters.class);
+        ControllerResourceUpdateParameters model = BinaryData
+            .fromString("{\"tags\":{\"kuksjtxukcdm\":\"rkdtmlxh\",\"yrlhmwhfpmrqobm\":\"arcryuanzwuxzdxt\"}}")
+            .toObject(ControllerResourceUpdateParameters.class);
         Assertions.assertEquals("rkdtmlxh", model.tags().get("kuksjtxukcdm"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ControllerResourceUpdateParameters model =
-            new ControllerResourceUpdateParameters()
-                .withTags(mapOf("kuksjtxukcdm", "rkdtmlxh", "yrlhmwhfpmrqobm", "arcryuanzwuxzdxt"));
+        ControllerResourceUpdateParameters model = new ControllerResourceUpdateParameters()
+            .withTags(mapOf("kuksjtxukcdm", "rkdtmlxh", "yrlhmwhfpmrqobm", "arcryuanzwuxzdxt"));
         model = BinaryData.fromObject(model).toObject(ControllerResourceUpdateParameters.class);
         Assertions.assertEquals("rkdtmlxh", model.tags().get("kuksjtxukcdm"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The rule criteria that defines the conditions of the scheduled query rule.
  */
 @Fluent
-public final class ScheduledQueryRuleCriteria {
+public final class ScheduledQueryRuleCriteria implements JsonSerializable<ScheduledQueryRuleCriteria> {
     /*
      * A list of conditions to evaluate against the specified scopes
      */
-    @JsonProperty(value = "allOf")
     private List<Condition> allOf;
 
     /**
@@ -54,5 +57,42 @@ public final class ScheduledQueryRuleCriteria {
         if (allOf() != null) {
             allOf().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("allOf", this.allOf, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduledQueryRuleCriteria from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduledQueryRuleCriteria if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduledQueryRuleCriteria.
+     */
+    public static ScheduledQueryRuleCriteria fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduledQueryRuleCriteria deserializedScheduledQueryRuleCriteria = new ScheduledQueryRuleCriteria();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allOf".equals(fieldName)) {
+                    List<Condition> allOf = reader.readArray(reader1 -> Condition.fromJson(reader1));
+                    deserializedScheduledQueryRuleCriteria.allOf = allOf;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduledQueryRuleCriteria;
+        });
     }
 }

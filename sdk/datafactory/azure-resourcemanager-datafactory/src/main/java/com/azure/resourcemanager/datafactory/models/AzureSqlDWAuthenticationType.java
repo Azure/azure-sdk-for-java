@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -49,7 +48,6 @@ public final class AzureSqlDWAuthenticationType extends ExpandableStringEnum<Azu
      * @param name a name to look for.
      * @return the corresponding AzureSqlDWAuthenticationType.
      */
-    @JsonCreator
     public static AzureSqlDWAuthenticationType fromString(String name) {
         return fromString(name, AzureSqlDWAuthenticationType.class);
     }

@@ -11,26 +11,26 @@ public final class AzureDataLakeStoreReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureDataLakeStoreReadSettings model = BinaryData.fromString(
-            "{\"type\":\"AzureDataLakeStoreReadSettings\",\"recursive\":\"datachgjonrhdib\",\"wildcardFolderPath\":\"datapd\",\"wildcardFileName\":\"datatmeou\",\"fileListPath\":\"datavkcnqonjbbhw\",\"listAfter\":\"datallzykzpjjdsl\",\"listBefore\":\"datayejsgbpjjnblbkak\",\"enablePartitionDiscovery\":\"datavwbd\",\"partitionRootPath\":\"dataddctkjc\",\"deleteFilesAfterCompletion\":\"dataxdir\",\"modifiedDatetimeStart\":\"dataqilsbabqtjch\",\"modifiedDatetimeEnd\":\"datafwe\",\"maxConcurrentConnections\":\"dataeiyem\",\"disableMetricsCollection\":\"datapszekdqqwcspf\",\"\":{\"oslqgsdqnqqzq\":\"datadqym\"}}")
+            "{\"type\":\"AzureDataLakeStoreReadSettings\",\"recursive\":\"datayosig\",\"wildcardFolderPath\":\"datanykjxq\",\"wildcardFileName\":\"datapeqgedpizjqp\",\"fileListPath\":\"dataturdiv\",\"listAfter\":\"datakwma\",\"listBefore\":\"dataxoqakvutedet\",\"enablePartitionDiscovery\":\"datakqud\",\"partitionRootPath\":\"datawcwjacdbkcehxahn\",\"deleteFilesAfterCompletion\":\"databav\",\"modifiedDatetimeStart\":\"datalfefbbv\",\"modifiedDatetimeEnd\":\"datalnnpafufwrerbnd\",\"maxConcurrentConnections\":\"datazfnstlavmdc\",\"disableMetricsCollection\":\"dataemvaajyitpyz\",\"\":{\"hvbvjyfdwaupjozg\":\"datahkswurzaqubr\",\"mxznfoa\":\"datayocgwkphilyznbbc\",\"ei\":\"datasjwiswznlbbht\",\"sazgnyf\":\"datafizbehvqaghltn\"}}")
             .toObject(AzureDataLakeStoreReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureDataLakeStoreReadSettings model
-            = new AzureDataLakeStoreReadSettings().withMaxConcurrentConnections("dataeiyem")
-                .withDisableMetricsCollection("datapszekdqqwcspf")
-                .withRecursive("datachgjonrhdib")
-                .withWildcardFolderPath("datapd")
-                .withWildcardFileName("datatmeou")
-                .withFileListPath("datavkcnqonjbbhw")
-                .withListAfter("datallzykzpjjdsl")
-                .withListBefore("datayejsgbpjjnblbkak")
-                .withEnablePartitionDiscovery("datavwbd")
-                .withPartitionRootPath("dataddctkjc")
-                .withDeleteFilesAfterCompletion("dataxdir")
-                .withModifiedDatetimeStart("dataqilsbabqtjch")
-                .withModifiedDatetimeEnd("datafwe");
+            = new AzureDataLakeStoreReadSettings().withMaxConcurrentConnections("datazfnstlavmdc")
+                .withDisableMetricsCollection("dataemvaajyitpyz")
+                .withRecursive("datayosig")
+                .withWildcardFolderPath("datanykjxq")
+                .withWildcardFileName("datapeqgedpizjqp")
+                .withFileListPath("dataturdiv")
+                .withListAfter("datakwma")
+                .withListBefore("dataxoqakvutedet")
+                .withEnablePartitionDiscovery("datakqud")
+                .withPartitionRootPath("datawcwjacdbkcehxahn")
+                .withDeleteFilesAfterCompletion("databav")
+                .withModifiedDatetimeStart("datalfefbbv")
+                .withModifiedDatetimeEnd("datalnnpafufwrerbnd");
         model = BinaryData.fromObject(model).toObject(AzureDataLakeStoreReadSettings.class);
     }
 }

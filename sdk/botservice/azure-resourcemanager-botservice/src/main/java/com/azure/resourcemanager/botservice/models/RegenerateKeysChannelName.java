@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.botservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for RegenerateKeysChannelName. */
+/**
+ * Defines values for RegenerateKeysChannelName.
+ */
 public enum RegenerateKeysChannelName {
-    /** Enum value WebChatChannel. */
+    /**
+     * Enum value WebChatChannel.
+     */
     WEB_CHAT_CHANNEL("WebChatChannel"),
 
-    /** Enum value DirectLineChannel. */
+    /**
+     * Enum value DirectLineChannel.
+     */
     DIRECT_LINE_CHANNEL("DirectLineChannel");
 
-    /** The actual serialized value for a RegenerateKeysChannelName instance. */
+    /**
+     * The actual serialized value for a RegenerateKeysChannelName instance.
+     */
     private final String value;
 
     RegenerateKeysChannelName(String value) {
@@ -24,12 +29,14 @@ public enum RegenerateKeysChannelName {
 
     /**
      * Parses a serialized value to a RegenerateKeysChannelName instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed RegenerateKeysChannelName object, or null if unable to parse.
      */
-    @JsonCreator
     public static RegenerateKeysChannelName fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RegenerateKeysChannelName[] items = RegenerateKeysChannelName.values();
         for (RegenerateKeysChannelName item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +46,9 @@ public enum RegenerateKeysChannelName {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

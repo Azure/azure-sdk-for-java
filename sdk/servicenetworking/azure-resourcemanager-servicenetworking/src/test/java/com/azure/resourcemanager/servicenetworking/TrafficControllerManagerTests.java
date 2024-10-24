@@ -9,7 +9,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-public class TrafficControllerManagerTests extends TestBase {
+public class TrafficControllerManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
     private static final Region REGION = Region.US_EAST;
     private String resourceGroupName = "rg" + randomPadding();
@@ -34,13 +34,11 @@ public class TrafficControllerManagerTests extends TestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        trafficControllerManager = TrafficControllerManager
-            .configure()
+        trafficControllerManager = TrafficControllerManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -51,10 +49,7 @@ public class TrafficControllerManagerTests extends TestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -71,16 +66,21 @@ public class TrafficControllerManagerTests extends TestBase {
         TrafficController trafficController = null;
         try {
             String interfaceName = "interface" + randomPadding();
-            // @embedStart
+            // @embedmeStart
             trafficController = trafficControllerManager.trafficControllerInterfaces()
                 .define(interfaceName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             Assertions.assertEquals(interfaceName, trafficController.name());
-            Assertions.assertEquals(trafficController.name(), trafficControllerManager.trafficControllerInterfaces().getById(trafficController.id()).name());
-            Assertions.assertTrue(trafficControllerManager.trafficControllerInterfaces().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
+            Assertions.assertEquals(trafficController.name(),
+                trafficControllerManager.trafficControllerInterfaces().getById(trafficController.id()).name());
+            Assertions.assertTrue(trafficControllerManager.trafficControllerInterfaces()
+                .listByResourceGroup(resourceGroupName)
+                .stream()
+                .findAny()
+                .isPresent());
         } finally {
             if (trafficController != null) {
                 trafficControllerManager.trafficControllerInterfaces().deleteById(trafficController.id());

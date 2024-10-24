@@ -24,10 +24,22 @@ public final class FluidRelayServersImpl implements FluidRelayServers {
 
     private final com.azure.resourcemanager.fluidrelay.FluidRelayManager serviceManager;
 
-    public FluidRelayServersImpl(
-        FluidRelayServersClient innerClient, com.azure.resourcemanager.fluidrelay.FluidRelayManager serviceManager) {
+    public FluidRelayServersImpl(FluidRelayServersClient innerClient,
+        com.azure.resourcemanager.fluidrelay.FluidRelayManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<FluidRelayServer> getByResourceGroupWithResponse(String resourceGroup, String fluidRelayServerName,
+        Context context) {
+        Response<FluidRelayServerInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroup, fluidRelayServerName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new FluidRelayServerImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public FluidRelayServer getByResourceGroup(String resourceGroup, String fluidRelayServerName) {
@@ -39,33 +51,31 @@ public final class FluidRelayServersImpl implements FluidRelayServers {
         }
     }
 
-    public Response<FluidRelayServer> getByResourceGroupWithResponse(
-        String resourceGroup, String fluidRelayServerName, Context context) {
-        Response<FluidRelayServerInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroup, fluidRelayServerName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new FluidRelayServerImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroup, String fluidRelayServerName,
+        Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroup, fluidRelayServerName, context);
     }
 
     public void deleteByResourceGroup(String resourceGroup, String fluidRelayServerName) {
         this.serviceClient().delete(resourceGroup, fluidRelayServerName);
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroup, String fluidRelayServerName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroup, fluidRelayServerName, context);
+    public Response<FluidRelayServerKeys> regenerateKeyWithResponse(String resourceGroup, String fluidRelayServerName,
+        RegenerateKeyRequest parameters, Context context) {
+        Response<FluidRelayServerKeysInner> inner
+            = this.serviceClient().regenerateKeyWithResponse(resourceGroup, fluidRelayServerName, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new FluidRelayServerKeysImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public FluidRelayServerKeys regenerateKey(
-        String resourceGroup, String fluidRelayServerName, RegenerateKeyRequest parameters) {
-        FluidRelayServerKeysInner inner =
-            this.serviceClient().regenerateKey(resourceGroup, fluidRelayServerName, parameters);
+    public FluidRelayServerKeys regenerateKey(String resourceGroup, String fluidRelayServerName,
+        RegenerateKeyRequest parameters) {
+        FluidRelayServerKeysInner inner
+            = this.serviceClient().regenerateKey(resourceGroup, fluidRelayServerName, parameters);
         if (inner != null) {
             return new FluidRelayServerKeysImpl(inner, this.manager());
         } else {
@@ -73,15 +83,12 @@ public final class FluidRelayServersImpl implements FluidRelayServers {
         }
     }
 
-    public Response<FluidRelayServerKeys> regenerateKeyWithResponse(
-        String resourceGroup, String fluidRelayServerName, RegenerateKeyRequest parameters, Context context) {
-        Response<FluidRelayServerKeysInner> inner =
-            this.serviceClient().regenerateKeyWithResponse(resourceGroup, fluidRelayServerName, parameters, context);
+    public Response<FluidRelayServerKeys> listKeysWithResponse(String resourceGroup, String fluidRelayServerName,
+        Context context) {
+        Response<FluidRelayServerKeysInner> inner
+            = this.serviceClient().listKeysWithResponse(resourceGroup, fluidRelayServerName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new FluidRelayServerKeysImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -97,123 +104,80 @@ public final class FluidRelayServersImpl implements FluidRelayServers {
         }
     }
 
-    public Response<FluidRelayServerKeys> listKeysWithResponse(
-        String resourceGroup, String fluidRelayServerName, Context context) {
-        Response<FluidRelayServerKeysInner> inner =
-            this.serviceClient().listKeysWithResponse(resourceGroup, fluidRelayServerName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new FluidRelayServerKeysImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<FluidRelayServer> list() {
         PagedIterable<FluidRelayServerInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new FluidRelayServerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FluidRelayServerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<FluidRelayServer> list(Context context) {
         PagedIterable<FluidRelayServerInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new FluidRelayServerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FluidRelayServerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<FluidRelayServer> listByResourceGroup(String resourceGroup) {
         PagedIterable<FluidRelayServerInner> inner = this.serviceClient().listByResourceGroup(resourceGroup);
-        return Utils.mapPage(inner, inner1 -> new FluidRelayServerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FluidRelayServerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<FluidRelayServer> listByResourceGroup(String resourceGroup, Context context) {
         PagedIterable<FluidRelayServerInner> inner = this.serviceClient().listByResourceGroup(resourceGroup, context);
-        return Utils.mapPage(inner, inner1 -> new FluidRelayServerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FluidRelayServerImpl(inner1, this.manager()));
     }
 
     public FluidRelayServer getById(String id) {
-        String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroup = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fluidRelayServerName = Utils.getValueFromIdByName(id, "fluidRelayServers");
+        String fluidRelayServerName = ResourceManagerUtils.getValueFromIdByName(id, "fluidRelayServers");
         if (fluidRelayServerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'fluidRelayServers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fluidRelayServers'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroup, fluidRelayServerName, Context.NONE).getValue();
     }
 
     public Response<FluidRelayServer> getByIdWithResponse(String id, Context context) {
-        String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroup = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fluidRelayServerName = Utils.getValueFromIdByName(id, "fluidRelayServers");
+        String fluidRelayServerName = ResourceManagerUtils.getValueFromIdByName(id, "fluidRelayServers");
         if (fluidRelayServerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'fluidRelayServers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fluidRelayServers'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroup, fluidRelayServerName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroup = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fluidRelayServerName = Utils.getValueFromIdByName(id, "fluidRelayServers");
+        String fluidRelayServerName = ResourceManagerUtils.getValueFromIdByName(id, "fluidRelayServers");
         if (fluidRelayServerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'fluidRelayServers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fluidRelayServers'.", id)));
         }
-        this.deleteWithResponse(resourceGroup, fluidRelayServerName, Context.NONE);
+        this.deleteByResourceGroupWithResponse(resourceGroup, fluidRelayServerName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroup = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fluidRelayServerName = Utils.getValueFromIdByName(id, "fluidRelayServers");
+        String fluidRelayServerName = ResourceManagerUtils.getValueFromIdByName(id, "fluidRelayServers");
         if (fluidRelayServerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'fluidRelayServers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fluidRelayServers'.", id)));
         }
-        return this.deleteWithResponse(resourceGroup, fluidRelayServerName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroup, fluidRelayServerName, context);
     }
 
     private FluidRelayServersClient serviceClient() {

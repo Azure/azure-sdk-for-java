@@ -80,7 +80,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> batchGet(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary")
@@ -90,7 +90,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> batchGetSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary")
@@ -99,7 +99,8 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> create(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
+        Mono<Response<BinaryData>> create(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary")
@@ -108,7 +109,8 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createSync(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
+        Response<BinaryData> createSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary/categories")
@@ -118,8 +120,8 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createCategories(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary/categories")
         @ExpectedResponses({ 200 })
@@ -128,8 +130,8 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createCategoriesSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary/category")
         @ExpectedResponses({ 200 })
@@ -138,8 +140,8 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createCategory(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary/category")
         @ExpectedResponses({ 200 })
@@ -148,8 +150,8 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createCategorySync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/category/{categoryId}")
         @ExpectedResponses({ 200 })
@@ -158,7 +160,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCategory(@HostParam("endpoint") String endpoint,
-            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
+            @PathParam("categoryId") String categoryId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/category/{categoryId}")
@@ -168,7 +170,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getCategorySync(@HostParam("endpoint") String endpoint,
-            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
+            @PathParam("categoryId") String categoryId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/glossary/category/{categoryId}")
@@ -178,8 +180,9 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateCategory(@HostParam("endpoint") String endpoint,
-            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @PathParam("categoryId") String categoryId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/glossary/category/{categoryId}")
         @ExpectedResponses({ 200 })
@@ -188,8 +191,9 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateCategorySync(@HostParam("endpoint") String endpoint,
-            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @PathParam("categoryId") String categoryId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/glossary/category/{categoryId}")
         @ExpectedResponses({ 204 })
@@ -198,7 +202,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteCategory(@HostParam("endpoint") String endpoint,
-            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
+            @PathParam("categoryId") String categoryId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/glossary/category/{categoryId}")
@@ -208,7 +212,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteCategorySync(@HostParam("endpoint") String endpoint,
-            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
+            @PathParam("categoryId") String categoryId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/glossary/category/{categoryId}/partial")
@@ -218,8 +222,9 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> partialUpdateCategory(@HostParam("endpoint") String endpoint,
-            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @PathParam("categoryId") String categoryId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/glossary/category/{categoryId}/partial")
         @ExpectedResponses({ 200 })
@@ -228,8 +233,9 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> partialUpdateCategorySync(@HostParam("endpoint") String endpoint,
-            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @PathParam("categoryId") String categoryId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/category/{categoryId}/related")
         @ExpectedResponses({ 200 })
@@ -238,7 +244,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getRelatedCategories(@HostParam("endpoint") String endpoint,
-            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
+            @PathParam("categoryId") String categoryId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/category/{categoryId}/related")
@@ -248,7 +254,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getRelatedCategoriesSync(@HostParam("endpoint") String endpoint,
-            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
+            @PathParam("categoryId") String categoryId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/category/{categoryId}/terms")
@@ -258,7 +264,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCategoryTerms(@HostParam("endpoint") String endpoint,
-            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
+            @PathParam("categoryId") String categoryId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/category/{categoryId}/terms")
@@ -268,7 +274,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getCategoryTermsSync(@HostParam("endpoint") String endpoint,
-            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
+            @PathParam("categoryId") String categoryId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary/term")
@@ -278,8 +284,8 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createTerm(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary/term")
         @ExpectedResponses({ 200 })
@@ -288,8 +294,8 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createTermSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/term/{termId}")
         @ExpectedResponses({ 200 })
@@ -299,7 +305,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getTerm(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("termId") String termId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/term/{termId}")
         @ExpectedResponses({ 200 })
@@ -309,7 +315,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getTermSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("termId") String termId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/glossary/term/{termId}")
         @ExpectedResponses({ 200 })
@@ -319,8 +325,8 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateTerm(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("termId") String termId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/glossary/term/{termId}")
         @ExpectedResponses({ 200 })
@@ -330,8 +336,8 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateTermSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("termId") String termId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/glossary/term/{termId}")
         @ExpectedResponses({ 204 })
@@ -340,7 +346,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteTerm(@HostParam("endpoint") String endpoint, @PathParam("termId") String termId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/glossary/term/{termId}")
         @ExpectedResponses({ 204 })
@@ -349,7 +355,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteTermSync(@HostParam("endpoint") String endpoint, @PathParam("termId") String termId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/glossary/term/{termId}/partial")
         @ExpectedResponses({ 200 })
@@ -359,8 +365,8 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> partialUpdateTerm(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("termId") String termId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/glossary/term/{termId}/partial")
         @ExpectedResponses({ 200 })
@@ -370,8 +376,8 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> partialUpdateTermSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("termId") String termId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary/terms")
         @ExpectedResponses({ 200 })
@@ -380,8 +386,9 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createTerms(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary/terms")
         @ExpectedResponses({ 200 })
@@ -390,8 +397,9 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createTermsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/terms/{termId}/assignedEntities")
         @ExpectedResponses({ 200 })
@@ -400,7 +408,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getEntitiesAssignedWithTerm(@HostParam("endpoint") String endpoint,
-            @PathParam("termId") String termId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("termId") String termId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/atlas/v2/glossary/terms/{termId}/assignedEntities")
@@ -410,7 +418,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getEntitiesAssignedWithTermSync(@HostParam("endpoint") String endpoint,
-            @PathParam("termId") String termId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("termId") String termId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Post("/atlas/v2/glossary/terms/{termId}/assignedEntities")
@@ -420,8 +428,9 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> assignTermToEntities(@HostParam("endpoint") String endpoint,
-            @PathParam("termId") String termId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @PathParam("termId") String termId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary/terms/{termId}/assignedEntities")
         @ExpectedResponses({ 204 })
@@ -430,8 +439,9 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> assignTermToEntitiesSync(@HostParam("endpoint") String endpoint,
-            @PathParam("termId") String termId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @PathParam("termId") String termId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/glossary/terms/{termId}/assignedEntities")
         @ExpectedResponses({ 204 })
@@ -440,8 +450,9 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteTermAssignmentFromEntities(@HostParam("endpoint") String endpoint,
-            @PathParam("termId") String termId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @PathParam("termId") String termId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/glossary/terms/{termId}/assignedEntities")
         @ExpectedResponses({ 204 })
@@ -450,8 +461,9 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteTermAssignmentFromEntitiesSync(@HostParam("endpoint") String endpoint,
-            @PathParam("termId") String termId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @PathParam("termId") String termId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/terms/{termId}/related")
         @ExpectedResponses({ 200 })
@@ -461,7 +473,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getRelatedTerms(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("termId") String termId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/terms/{termId}/related")
         @ExpectedResponses({ 200 })
@@ -471,7 +483,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getRelatedTermsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("termId") String termId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/{glossaryId}")
         @ExpectedResponses({ 200 })
@@ -480,7 +492,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint,
-            @PathParam("glossaryId") String glossaryId, @HeaderParam("accept") String accept,
+            @PathParam("glossaryId") String glossaryId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/{glossaryId}")
@@ -490,7 +502,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSync(@HostParam("endpoint") String endpoint, @PathParam("glossaryId") String glossaryId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/glossary/{glossaryId}")
         @ExpectedResponses({ 200 })
@@ -500,8 +512,8 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> update(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("glossaryId") String glossaryId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/glossary/{glossaryId}")
         @ExpectedResponses({ 200 })
@@ -511,8 +523,8 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("glossaryId") String glossaryId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/glossary/{glossaryId}")
         @ExpectedResponses({ 204 })
@@ -521,7 +533,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint, @PathParam("glossaryId") String glossaryId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/glossary/{glossaryId}")
         @ExpectedResponses({ 204 })
@@ -530,7 +542,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @PathParam("glossaryId") String glossaryId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/{glossaryId}/categories")
         @ExpectedResponses({ 200 })
@@ -539,7 +551,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCategories(@HostParam("endpoint") String endpoint,
-            @PathParam("glossaryId") String glossaryId, @HeaderParam("accept") String accept,
+            @PathParam("glossaryId") String glossaryId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/{glossaryId}/categories")
@@ -549,7 +561,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getCategoriesSync(@HostParam("endpoint") String endpoint,
-            @PathParam("glossaryId") String glossaryId, @HeaderParam("accept") String accept,
+            @PathParam("glossaryId") String glossaryId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/{glossaryId}/categories/headers")
@@ -559,7 +571,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCategoriesHeaders(@HostParam("endpoint") String endpoint,
-            @PathParam("glossaryId") String glossaryId, @HeaderParam("accept") String accept,
+            @PathParam("glossaryId") String glossaryId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/{glossaryId}/categories/headers")
@@ -569,7 +581,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getCategoriesHeadersSync(@HostParam("endpoint") String endpoint,
-            @PathParam("glossaryId") String glossaryId, @HeaderParam("accept") String accept,
+            @PathParam("glossaryId") String glossaryId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/{glossaryId}/detailed")
@@ -580,7 +592,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDetailed(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("glossaryId") String glossaryId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/{glossaryId}/detailed")
         @ExpectedResponses({ 200 })
@@ -590,7 +602,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDetailedSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("glossaryId") String glossaryId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/glossary/{glossaryId}/partial")
         @ExpectedResponses({ 200 })
@@ -600,8 +612,8 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> partialUpdate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("glossaryId") String glossaryId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/glossary/{glossaryId}/partial")
         @ExpectedResponses({ 200 })
@@ -611,8 +623,8 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> partialUpdateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("glossaryId") String glossaryId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/{glossaryId}/terms")
         @ExpectedResponses({ 200 })
@@ -622,7 +634,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getTerms(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("glossaryId") String glossaryId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/{glossaryId}/terms")
         @ExpectedResponses({ 200 })
@@ -632,7 +644,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getTermsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("glossaryId") String glossaryId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/{glossaryId}/terms/headers")
         @ExpectedResponses({ 200 })
@@ -641,7 +653,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getTermHeaders(@HostParam("endpoint") String endpoint,
-            @PathParam("glossaryId") String glossaryId, @HeaderParam("accept") String accept,
+            @PathParam("glossaryId") String glossaryId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/{glossaryId}/terms/headers")
@@ -651,7 +663,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getTermHeadersSync(@HostParam("endpoint") String endpoint,
-            @PathParam("glossaryId") String glossaryId, @HeaderParam("accept") String accept,
+            @PathParam("glossaryId") String glossaryId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
     }
 
@@ -672,7 +684,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -728,7 +741,8 @@ public final class GlossariesImpl {
      *         usage: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -761,7 +775,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -817,7 +832,8 @@ public final class GlossariesImpl {
      *         usage: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -837,7 +853,8 @@ public final class GlossariesImpl {
      * Create a glossary.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -891,11 +908,13 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -949,7 +968,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -961,16 +981,18 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.create(this.client.getEndpoint(), accept, body, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.create(this.client.getEndpoint(), contentType, accept, body, requestOptions, context));
     }
 
     /**
      * Create a glossary.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1024,11 +1046,13 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1082,7 +1106,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1094,15 +1119,17 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createWithResponse(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), accept, body, requestOptions, Context.NONE);
+        return service.createSync(this.client.getEndpoint(), contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
      * Create glossary category in bulk.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -1162,11 +1189,13 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -1226,7 +1255,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body An array of glossary category definitions to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1239,16 +1269,18 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createCategoriesWithResponseAsync(BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createCategories(this.client.getEndpoint(), accept, body, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createCategories(this.client.getEndpoint(), contentType, accept,
+            body, requestOptions, context));
     }
 
     /**
      * Create glossary category in bulk.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -1308,11 +1340,13 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -1372,7 +1406,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body An array of glossary category definitions to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1384,15 +1419,18 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createCategoriesWithResponse(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createCategoriesSync(this.client.getEndpoint(), accept, body, requestOptions, Context.NONE);
+        return service.createCategoriesSync(this.client.getEndpoint(), contentType, accept, body, requestOptions,
+            Context.NONE);
     }
 
     /**
      * Create a glossary category.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1450,11 +1488,13 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1512,7 +1552,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1524,16 +1565,18 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createCategoryWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createCategory(this.client.getEndpoint(), accept, body, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createCategory(this.client.getEndpoint(), contentType, accept,
+            body, requestOptions, context));
     }
 
     /**
      * Create a glossary category.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1591,11 +1634,13 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1653,7 +1698,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1665,15 +1711,18 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createCategoryWithResponse(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createCategorySync(this.client.getEndpoint(), accept, body, requestOptions, Context.NONE);
+        return service.createCategorySync(this.client.getEndpoint(), contentType, accept, body, requestOptions,
+            Context.NONE);
     }
 
     /**
      * Get specific glossary category by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1731,7 +1780,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1753,7 +1803,8 @@ public final class GlossariesImpl {
      * Get specific glossary category by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1811,7 +1862,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1831,7 +1883,8 @@ public final class GlossariesImpl {
      * Update the given glossary category by its GUID.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1889,11 +1942,13 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1951,7 +2006,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param body Body parameter.
@@ -1965,16 +2021,18 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateCategoryWithResponseAsync(String categoryId, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateCategory(this.client.getEndpoint(), categoryId, accept,
-            body, requestOptions, context));
+        return FluxUtil.withContext(context -> service.updateCategory(this.client.getEndpoint(), categoryId,
+            contentType, accept, body, requestOptions, context));
     }
 
     /**
      * Update the given glossary category by its GUID.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -2032,11 +2090,13 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -2094,7 +2154,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param body Body parameter.
@@ -2108,9 +2169,10 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateCategoryWithResponse(String categoryId, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateCategorySync(this.client.getEndpoint(), categoryId, accept, body, requestOptions,
-            Context.NONE);
+        return service.updateCategorySync(this.client.getEndpoint(), categoryId, contentType, accept, body,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -2153,15 +2215,18 @@ public final class GlossariesImpl {
      * updating shortDescription and longDescription for category.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -2219,7 +2284,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -2234,9 +2300,10 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateCategoryWithResponseAsync(String categoryId, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.partialUpdateCategory(this.client.getEndpoint(), categoryId,
-            accept, body, requestOptions, context));
+            contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -2244,15 +2311,18 @@ public final class GlossariesImpl {
      * updating shortDescription and longDescription for category.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -2310,7 +2380,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -2325,9 +2396,10 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateCategoryWithResponse(String categoryId, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.partialUpdateCategorySync(this.client.getEndpoint(), categoryId, accept, body, requestOptions,
-            Context.NONE);
+        return service.partialUpdateCategorySync(this.client.getEndpoint(), categoryId, contentType, accept, body,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -2344,7 +2416,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String (Required): [
      *          (Required){
@@ -2356,7 +2429,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2389,7 +2463,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String (Required): [
      *          (Required){
@@ -2401,7 +2476,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2431,7 +2507,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         description: String (Optional)
@@ -2443,7 +2520,8 @@ public final class GlossariesImpl {
      *         termGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2475,7 +2553,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         description: String (Optional)
@@ -2487,7 +2566,8 @@ public final class GlossariesImpl {
      *         termGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2515,7 +2595,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -2674,11 +2755,13 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -2837,7 +2920,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2849,9 +2933,10 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createTermWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createTerm(this.client.getEndpoint(), accept, body, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createTerm(this.client.getEndpoint(), contentType, accept, body,
+            requestOptions, context));
     }
 
     /**
@@ -2865,7 +2950,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -3024,11 +3110,13 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -3187,7 +3275,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3199,15 +3288,18 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createTermWithResponse(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createTermSync(this.client.getEndpoint(), accept, body, requestOptions, Context.NONE);
+        return service.createTermSync(this.client.getEndpoint(), contentType, accept, body, requestOptions,
+            Context.NONE);
     }
 
     /**
      * Get a specific glossary term by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -3366,7 +3458,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3388,7 +3481,8 @@ public final class GlossariesImpl {
      * Get a specific glossary term by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -3547,7 +3641,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3575,7 +3670,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -3734,11 +3830,13 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -3897,7 +3995,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body Body parameter.
@@ -3911,9 +4010,10 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateTermWithResponseAsync(String termId, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updateTerm(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), termId, accept, body, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), termId, contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -3927,7 +4027,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -4086,11 +4187,13 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -4249,7 +4352,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body Body parameter.
@@ -4262,9 +4366,10 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateTermWithResponse(String termId, BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateTermSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), termId,
-            accept, body, requestOptions, Context.NONE);
+            contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -4314,15 +4419,18 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -4481,7 +4589,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -4496,9 +4605,10 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateTermWithResponseAsync(String termId, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.partialUpdateTerm(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), termId, accept, body, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), termId, contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -4513,15 +4623,18 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -4680,7 +4793,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -4695,9 +4809,10 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateTermWithResponse(String termId, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.partialUpdateTermSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            termId, accept, body, requestOptions, Context.NONE);
+            termId, contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -4711,7 +4826,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -4872,11 +4988,13 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -5037,7 +5155,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body An array of glossary term definitions to be created in bulk.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5049,9 +5168,10 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createTermsWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createTerms(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, body, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -5065,7 +5185,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -5226,11 +5347,13 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -5391,7 +5514,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body An array of glossary term definitions to be created in bulk.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5403,9 +5527,10 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createTermsWithResponse(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createTermsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), accept,
-            body, requestOptions, Context.NONE);
+        return service.createTermsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -5422,7 +5547,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -5444,7 +5570,8 @@ public final class GlossariesImpl {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5476,7 +5603,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -5498,7 +5626,8 @@ public final class GlossariesImpl {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5524,7 +5653,8 @@ public final class GlossariesImpl {
      * is an alternative to assign a term to multiple entities.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -5546,7 +5676,8 @@ public final class GlossariesImpl {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body An array of related object IDs to which the term has to be associated.
@@ -5560,9 +5691,10 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> assignTermToEntitiesWithResponseAsync(String termId, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.assignTermToEntities(this.client.getEndpoint(), termId, accept,
-            body, requestOptions, context));
+        return FluxUtil.withContext(context -> service.assignTermToEntities(this.client.getEndpoint(), termId,
+            contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -5574,7 +5706,8 @@ public final class GlossariesImpl {
      * is an alternative to assign a term to multiple entities.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -5596,7 +5729,8 @@ public final class GlossariesImpl {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body An array of related object IDs to which the term has to be associated.
@@ -5610,16 +5744,18 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> assignTermToEntitiesWithResponse(String termId, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.assignTermToEntitiesSync(this.client.getEndpoint(), termId, accept, body, requestOptions,
-            Context.NONE);
+        return service.assignTermToEntitiesSync(this.client.getEndpoint(), termId, contentType, accept, body,
+            requestOptions, Context.NONE);
     }
 
     /**
      * Delete the term assignment for the given list of related objects.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -5641,7 +5777,8 @@ public final class GlossariesImpl {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body An array of related object IDs from which the term has to be dissociated.
@@ -5655,16 +5792,18 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTermAssignmentFromEntitiesWithResponseAsync(String termId, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteTermAssignmentFromEntities(this.client.getEndpoint(),
-            termId, accept, body, requestOptions, context));
+            termId, contentType, accept, body, requestOptions, context));
     }
 
     /**
      * Delete the term assignment for the given list of related objects.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -5686,7 +5825,8 @@ public final class GlossariesImpl {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body An array of related object IDs from which the term has to be dissociated.
@@ -5700,9 +5840,10 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTermAssignmentFromEntitiesWithResponse(String termId, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.deleteTermAssignmentFromEntitiesSync(this.client.getEndpoint(), termId, accept, body,
-            requestOptions, Context.NONE);
+        return service.deleteTermAssignmentFromEntitiesSync(this.client.getEndpoint(), termId, contentType, accept,
+            body, requestOptions, Context.NONE);
     }
 
     /**
@@ -5719,7 +5860,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String (Required): [
      *          (Required){
@@ -5733,7 +5875,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5765,7 +5908,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String (Required): [
      *          (Required){
@@ -5779,7 +5923,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5800,7 +5945,8 @@ public final class GlossariesImpl {
      * Get a specific Glossary by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -5854,7 +6000,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5875,7 +6022,8 @@ public final class GlossariesImpl {
      * Get a specific Glossary by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -5929,7 +6077,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5956,7 +6105,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -6010,11 +6160,13 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -6068,7 +6220,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param body Body parameter.
@@ -6082,9 +6235,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateWithResponseAsync(String glossaryId, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), glossaryId, accept, body, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.update(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+                glossaryId, contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -6098,7 +6253,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -6152,11 +6308,13 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -6210,7 +6368,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param body Body parameter.
@@ -6223,9 +6382,10 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateWithResponse(String glossaryId, BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), glossaryId,
-            accept, body, requestOptions, Context.NONE);
+            contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -6279,7 +6439,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -6339,7 +6500,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6371,7 +6533,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -6431,7 +6594,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6461,7 +6625,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         categoryGuid: String (Optional)
@@ -6471,7 +6636,8 @@ public final class GlossariesImpl {
      *         relationGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6504,7 +6670,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         categoryGuid: String (Optional)
@@ -6514,7 +6681,8 @@ public final class GlossariesImpl {
      *         relationGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6542,7 +6710,8 @@ public final class GlossariesImpl {
      * GET /datamap/api/atlas/v2/glossary/{glossaryId}/categories.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -6757,7 +6926,8 @@ public final class GlossariesImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6786,7 +6956,8 @@ public final class GlossariesImpl {
      * GET /datamap/api/atlas/v2/glossary/{glossaryId}/categories.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -7001,7 +7172,8 @@ public final class GlossariesImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -7036,15 +7208,18 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -7098,7 +7273,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -7113,9 +7289,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateWithResponseAsync(String glossaryId, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.partialUpdate(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), glossaryId, accept, body, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.partialUpdate(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+                glossaryId, contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -7136,15 +7314,18 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -7198,7 +7379,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -7213,9 +7395,10 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateWithResponse(String glossaryId, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.partialUpdateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            glossaryId, accept, body, requestOptions, Context.NONE);
+            glossaryId, contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -7232,7 +7415,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -7393,7 +7577,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -7425,7 +7610,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -7586,7 +7772,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -7617,7 +7804,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         description: String (Optional)
@@ -7629,7 +7817,8 @@ public final class GlossariesImpl {
      *         termGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -7662,7 +7851,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         description: String (Optional)
@@ -7674,7 +7864,8 @@ public final class GlossariesImpl {
      *         termGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

@@ -6,25 +6,27 @@ package com.azure.resourcemanager.automation.models;
 
 import com.azure.resourcemanager.automation.fluent.models.RunbookDraftUndoEditResultInner;
 
-/** An immutable client-side representation of RunbookDraftUndoEditResult. */
+/**
+ * An immutable client-side representation of RunbookDraftUndoEditResult.
+ */
 public interface RunbookDraftUndoEditResult {
     /**
      * Gets the statusCode property: The statusCode property.
-     *
+     * 
      * @return the statusCode value.
      */
     HttpStatusCode statusCode();
 
     /**
      * Gets the requestId property: The requestId property.
-     *
+     * 
      * @return the requestId value.
      */
     String requestId();
 
     /**
      * Gets the inner com.azure.resourcemanager.automation.fluent.models.RunbookDraftUndoEditResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     RunbookDraftUndoEditResultInner innerModel();

@@ -17,6 +17,5 @@ extends:
         groupId: com.azure
         safeName: azuretables
     ServiceDirectory: tables
-    UseFederatedAuth: true
     TimeoutInMinutes: 60
     MaxParallel: 14

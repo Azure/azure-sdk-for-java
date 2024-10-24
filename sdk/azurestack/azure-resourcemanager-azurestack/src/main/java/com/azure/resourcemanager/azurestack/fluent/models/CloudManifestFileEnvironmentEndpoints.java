@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.azurestack.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Cloud specific environment endpoints for AzureStack deployment. */
+/**
+ * Cloud specific environment endpoints for AzureStack deployment.
+ */
 @Fluent
-public final class CloudManifestFileEnvironmentEndpoints {
+public final class CloudManifestFileEnvironmentEndpoints
+    implements JsonSerializable<CloudManifestFileEnvironmentEndpoints> {
     /*
      * ARM endpoint.
      */
-    @JsonProperty(value = "customCloudArmEndpoint")
     private String customCloudArmEndpoint;
 
     /*
      * Dsms endpoint.
      */
-    @JsonProperty(value = "externalDsmsEndpoint")
     private String externalDsmsEndpoint;
 
-    /** Creates an instance of CloudManifestFileEnvironmentEndpoints class. */
+    /**
+     * Creates an instance of CloudManifestFileEnvironmentEndpoints class.
+     */
     public CloudManifestFileEnvironmentEndpoints() {
     }
 
     /**
      * Get the customCloudArmEndpoint property: ARM endpoint.
-     *
+     * 
      * @return the customCloudArmEndpoint value.
      */
     public String customCloudArmEndpoint() {
@@ -37,7 +44,7 @@ public final class CloudManifestFileEnvironmentEndpoints {
 
     /**
      * Set the customCloudArmEndpoint property: ARM endpoint.
-     *
+     * 
      * @param customCloudArmEndpoint the customCloudArmEndpoint value to set.
      * @return the CloudManifestFileEnvironmentEndpoints object itself.
      */
@@ -48,7 +55,7 @@ public final class CloudManifestFileEnvironmentEndpoints {
 
     /**
      * Get the externalDsmsEndpoint property: Dsms endpoint.
-     *
+     * 
      * @return the externalDsmsEndpoint value.
      */
     public String externalDsmsEndpoint() {
@@ -57,7 +64,7 @@ public final class CloudManifestFileEnvironmentEndpoints {
 
     /**
      * Set the externalDsmsEndpoint property: Dsms endpoint.
-     *
+     * 
      * @param externalDsmsEndpoint the externalDsmsEndpoint value to set.
      * @return the CloudManifestFileEnvironmentEndpoints object itself.
      */
@@ -68,9 +75,49 @@ public final class CloudManifestFileEnvironmentEndpoints {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("customCloudArmEndpoint", this.customCloudArmEndpoint);
+        jsonWriter.writeStringField("externalDsmsEndpoint", this.externalDsmsEndpoint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudManifestFileEnvironmentEndpoints from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudManifestFileEnvironmentEndpoints if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CloudManifestFileEnvironmentEndpoints.
+     */
+    public static CloudManifestFileEnvironmentEndpoints fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudManifestFileEnvironmentEndpoints deserializedCloudManifestFileEnvironmentEndpoints
+                = new CloudManifestFileEnvironmentEndpoints();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("customCloudArmEndpoint".equals(fieldName)) {
+                    deserializedCloudManifestFileEnvironmentEndpoints.customCloudArmEndpoint = reader.getString();
+                } else if ("externalDsmsEndpoint".equals(fieldName)) {
+                    deserializedCloudManifestFileEnvironmentEndpoints.externalDsmsEndpoint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudManifestFileEnvironmentEndpoints;
+        });
     }
 }

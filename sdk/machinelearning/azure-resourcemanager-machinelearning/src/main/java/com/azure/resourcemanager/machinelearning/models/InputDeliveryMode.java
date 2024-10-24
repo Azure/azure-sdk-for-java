@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enum to determine the input data delivery mode. */
+/**
+ * Enum to determine the input data delivery mode.
+ */
 public final class InputDeliveryMode extends ExpandableStringEnum<InputDeliveryMode> {
-    /** Static value ReadOnlyMount for InputDeliveryMode. */
+    /**
+     * Static value ReadOnlyMount for InputDeliveryMode.
+     */
     public static final InputDeliveryMode READ_ONLY_MOUNT = fromString("ReadOnlyMount");
 
-    /** Static value ReadWriteMount for InputDeliveryMode. */
+    /**
+     * Static value ReadWriteMount for InputDeliveryMode.
+     */
     public static final InputDeliveryMode READ_WRITE_MOUNT = fromString("ReadWriteMount");
 
-    /** Static value Download for InputDeliveryMode. */
+    /**
+     * Static value Download for InputDeliveryMode.
+     */
     public static final InputDeliveryMode DOWNLOAD = fromString("Download");
 
-    /** Static value Direct for InputDeliveryMode. */
+    /**
+     * Static value Direct for InputDeliveryMode.
+     */
     public static final InputDeliveryMode DIRECT = fromString("Direct");
 
-    /** Static value EvalMount for InputDeliveryMode. */
+    /**
+     * Static value EvalMount for InputDeliveryMode.
+     */
     public static final InputDeliveryMode EVAL_MOUNT = fromString("EvalMount");
 
-    /** Static value EvalDownload for InputDeliveryMode. */
+    /**
+     * Static value EvalDownload for InputDeliveryMode.
+     */
     public static final InputDeliveryMode EVAL_DOWNLOAD = fromString("EvalDownload");
 
     /**
      * Creates a new instance of InputDeliveryMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class InputDeliveryMode extends ExpandableStringEnum<InputDeliveryM
 
     /**
      * Creates or finds a InputDeliveryMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding InputDeliveryMode.
      */
-    @JsonCreator
     public static InputDeliveryMode fromString(String name) {
         return fromString(name, InputDeliveryMode.class);
     }
 
     /**
      * Gets known InputDeliveryMode values.
-     *
+     * 
      * @return known InputDeliveryMode values.
      */
     public static Collection<InputDeliveryMode> values() {

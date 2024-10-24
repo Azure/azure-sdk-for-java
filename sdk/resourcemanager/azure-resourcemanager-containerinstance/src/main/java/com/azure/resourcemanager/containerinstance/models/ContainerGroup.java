@@ -11,6 +11,7 @@ import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -20,6 +21,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure Container Group. */
@@ -1309,6 +1311,13 @@ public interface ContainerGroup
                 WithLogAnalytics,
                 Creatable<ContainerGroup>,
                 Resource.DefinitionWithTags<WithCreate> {
+
+            /**
+             * Begins creating the deployment resource.
+             *
+             * @return the accepted create operation
+             */
+            Accepted<ContainerGroup> beginCreate();
         }
     }
 

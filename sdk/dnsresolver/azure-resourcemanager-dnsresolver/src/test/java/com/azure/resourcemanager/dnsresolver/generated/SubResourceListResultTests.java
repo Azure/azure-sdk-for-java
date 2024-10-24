@@ -9,23 +9,21 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dnsresolver.models.SubResourceListResult;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SubResourceListResultTests {
-    @Test
-    public void testDeserialize() {
-        SubResourceListResult model =
-            BinaryData
-                .fromString("{\"value\":[{\"id\":\"pewr\"}],\"nextLink\":\"mwvvjektcxsenhw\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SubResourceListResult model
+            = BinaryData.fromString("{\"value\":[{\"id\":\"uosvmkfssxqukk\"}],\"nextLink\":\"l\"}")
                 .toObject(SubResourceListResult.class);
-        Assertions.assertEquals("pewr", model.value().get(0).id());
+        Assertions.assertEquals("uosvmkfssxqukk", model.value().get(0).id());
     }
 
-    @Test
-    public void testSerialize() {
-        SubResourceListResult model =
-            new SubResourceListResult().withValue(Arrays.asList(new SubResource().withId("pewr")));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SubResourceListResult model
+            = new SubResourceListResult().withValue(Arrays.asList(new SubResource().withId("uosvmkfssxqukk")));
         model = BinaryData.fromObject(model).toObject(SubResourceListResult.class);
-        Assertions.assertEquals("pewr", model.value().get(0).id());
+        Assertions.assertEquals("uosvmkfssxqukk", model.value().get(0).id());
     }
 }

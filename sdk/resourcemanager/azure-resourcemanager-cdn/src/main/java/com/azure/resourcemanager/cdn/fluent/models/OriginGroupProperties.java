@@ -5,12 +5,15 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.HealthProbeParameters;
 import com.azure.resourcemanager.cdn.models.OriginGroupProvisioningState;
 import com.azure.resourcemanager.cdn.models.OriginGroupResourceState;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.ResponseBasedOriginErrorDetectionParameters;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -21,13 +24,11 @@ public final class OriginGroupProperties extends OriginGroupUpdatePropertiesPara
     /*
      * Resource status of the origin group.
      */
-    @JsonProperty(value = "resourceState", access = JsonProperty.Access.WRITE_ONLY)
     private OriginGroupResourceState resourceState;
 
     /*
      * Provisioning status of the origin group.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private OriginGroupProvisioningState provisioningState;
 
     /**
@@ -101,5 +102,61 @@ public final class OriginGroupProperties extends OriginGroupUpdatePropertiesPara
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("healthProbeSettings", healthProbeSettings());
+        jsonWriter.writeArrayField("origins", origins(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("trafficRestorationTimeToHealedOrNewEndpointsInMinutes",
+            trafficRestorationTimeToHealedOrNewEndpointsInMinutes());
+        jsonWriter.writeJsonField("responseBasedOriginErrorDetectionSettings",
+            responseBasedOriginErrorDetectionSettings());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OriginGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OriginGroupProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OriginGroupProperties.
+     */
+    public static OriginGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OriginGroupProperties deserializedOriginGroupProperties = new OriginGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("healthProbeSettings".equals(fieldName)) {
+                    deserializedOriginGroupProperties.withHealthProbeSettings(HealthProbeParameters.fromJson(reader));
+                } else if ("origins".equals(fieldName)) {
+                    List<ResourceReference> origins = reader.readArray(reader1 -> ResourceReference.fromJson(reader1));
+                    deserializedOriginGroupProperties.withOrigins(origins);
+                } else if ("trafficRestorationTimeToHealedOrNewEndpointsInMinutes".equals(fieldName)) {
+                    deserializedOriginGroupProperties.withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
+                        reader.getNullable(JsonReader::getInt));
+                } else if ("responseBasedOriginErrorDetectionSettings".equals(fieldName)) {
+                    deserializedOriginGroupProperties.withResponseBasedOriginErrorDetectionSettings(
+                        ResponseBasedOriginErrorDetectionParameters.fromJson(reader));
+                } else if ("resourceState".equals(fieldName)) {
+                    deserializedOriginGroupProperties.resourceState
+                        = OriginGroupResourceState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedOriginGroupProperties.provisioningState
+                        = OriginGroupProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOriginGroupProperties;
+        });
     }
 }

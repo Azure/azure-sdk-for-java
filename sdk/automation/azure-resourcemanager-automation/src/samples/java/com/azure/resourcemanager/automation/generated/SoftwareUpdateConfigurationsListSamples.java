@@ -4,41 +4,39 @@
 
 package com.azure.resourcemanager.automation.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for SoftwareUpdateConfigurations List. */
+/**
+ * Samples for SoftwareUpdateConfigurations List.
+ */
 public final class SoftwareUpdateConfigurationsListSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfiguration/listSoftwareUpdateConfigurations.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/
+     * softwareUpdateConfiguration/listSoftwareUpdateConfigurations.json
      */
     /**
      * Sample code: List software update configurations.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void listSoftwareUpdateConfigurations(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.softwareUpdateConfigurations().listWithResponse("mygroup", "myaccount", null, null, Context.NONE);
+    public static void
+        listSoftwareUpdateConfigurations(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.softwareUpdateConfigurations()
+            .listWithResponse("mygroup", "myaccount", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfiguration/listSoftwareUpdateConfigurationsByVm.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/
+     * softwareUpdateConfiguration/listSoftwareUpdateConfigurationsByVm.json
      */
     /**
      * Sample code: List software update configurations Targeting a specific azure virtual machine.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listSoftwareUpdateConfigurationsTargetingASpecificAzureVirtualMachine(
         com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .softwareUpdateConfigurations()
-            .listWithResponse(
-                "mygroup",
-                "myaccount",
-                null,
-                "properties/updateConfiguration/azureVirtualMachines/any(m: m eq"
-                    + " '/subscriptions/1a7d4044-286c-4acb-969a-96639265bf2e/resourceGroups/myresources/providers/Microsoft.Compute/virtualMachines/vm-01')",
-                Context.NONE);
+        manager.softwareUpdateConfigurations()
+            .listWithResponse("mygroup", "myaccount", null,
+                "properties/updateConfiguration/azureVirtualMachines/any(m: m eq '/subscriptions/1a7d4044-286c-4acb-969a-96639265bf2e/resourceGroups/myresources/providers/Microsoft.Compute/virtualMachines/vm-01')",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -5,38 +5,44 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentSkuCapacity;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentSkuDefinitionSku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The integration service environment sku definition. */
+/**
+ * The integration service environment sku definition.
+ */
 @Fluent
-public final class IntegrationServiceEnvironmentSkuDefinitionInner {
+public final class IntegrationServiceEnvironmentSkuDefinitionInner
+    implements JsonSerializable<IntegrationServiceEnvironmentSkuDefinitionInner> {
     /*
      * The resource type.
      */
-    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /*
      * The sku.
      */
-    @JsonProperty(value = "sku")
     private IntegrationServiceEnvironmentSkuDefinitionSku sku;
 
     /*
      * The sku capacity.
      */
-    @JsonProperty(value = "capacity")
     private IntegrationServiceEnvironmentSkuCapacity capacity;
 
-    /** Creates an instance of IntegrationServiceEnvironmentSkuDefinitionInner class. */
+    /**
+     * Creates an instance of IntegrationServiceEnvironmentSkuDefinitionInner class.
+     */
     public IntegrationServiceEnvironmentSkuDefinitionInner() {
     }
 
     /**
      * Get the resourceType property: The resource type.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -45,7 +51,7 @@ public final class IntegrationServiceEnvironmentSkuDefinitionInner {
 
     /**
      * Set the resourceType property: The resource type.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the IntegrationServiceEnvironmentSkuDefinitionInner object itself.
      */
@@ -56,7 +62,7 @@ public final class IntegrationServiceEnvironmentSkuDefinitionInner {
 
     /**
      * Get the sku property: The sku.
-     *
+     * 
      * @return the sku value.
      */
     public IntegrationServiceEnvironmentSkuDefinitionSku sku() {
@@ -65,7 +71,7 @@ public final class IntegrationServiceEnvironmentSkuDefinitionInner {
 
     /**
      * Set the sku property: The sku.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the IntegrationServiceEnvironmentSkuDefinitionInner object itself.
      */
@@ -76,7 +82,7 @@ public final class IntegrationServiceEnvironmentSkuDefinitionInner {
 
     /**
      * Get the capacity property: The sku capacity.
-     *
+     * 
      * @return the capacity value.
      */
     public IntegrationServiceEnvironmentSkuCapacity capacity() {
@@ -85,19 +91,19 @@ public final class IntegrationServiceEnvironmentSkuDefinitionInner {
 
     /**
      * Set the capacity property: The sku capacity.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the IntegrationServiceEnvironmentSkuDefinitionInner object itself.
      */
-    public IntegrationServiceEnvironmentSkuDefinitionInner withCapacity(
-        IntegrationServiceEnvironmentSkuCapacity capacity) {
+    public IntegrationServiceEnvironmentSkuDefinitionInner
+        withCapacity(IntegrationServiceEnvironmentSkuCapacity capacity) {
         this.capacity = capacity;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -107,5 +113,50 @@ public final class IntegrationServiceEnvironmentSkuDefinitionInner {
         if (capacity() != null) {
             capacity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationServiceEnvironmentSkuDefinitionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationServiceEnvironmentSkuDefinitionInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IntegrationServiceEnvironmentSkuDefinitionInner.
+     */
+    public static IntegrationServiceEnvironmentSkuDefinitionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationServiceEnvironmentSkuDefinitionInner deserializedIntegrationServiceEnvironmentSkuDefinitionInner
+                = new IntegrationServiceEnvironmentSkuDefinitionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentSkuDefinitionInner.resourceType = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentSkuDefinitionInner.sku
+                        = IntegrationServiceEnvironmentSkuDefinitionSku.fromJson(reader);
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentSkuDefinitionInner.capacity
+                        = IntegrationServiceEnvironmentSkuCapacity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationServiceEnvironmentSkuDefinitionInner;
+        });
     }
 }

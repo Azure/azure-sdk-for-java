@@ -60,22 +60,18 @@ public final class JobBaseImpl implements JobBase, JobBase.Definition, JobBase.U
     }
 
     public JobBase create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobs()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, id, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, id, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public JobBase create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobs()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, id, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, id, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -90,51 +86,43 @@ public final class JobBaseImpl implements JobBase, JobBase.Definition, JobBase.U
     }
 
     public JobBase apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobs()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, id, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, id, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public JobBase apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobs()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, id, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, id, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    JobBaseImpl(
-        JobBaseInner innerObject, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
+    JobBaseImpl(JobBaseInner innerObject,
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.id = Utils.getValueFromIdByName(innerObject.id(), "jobs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.id = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "jobs");
     }
 
     public JobBase refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobs()
-                .getWithResponse(resourceGroupName, workspaceName, id, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .getWithResponse(resourceGroupName, workspaceName, id, Context.NONE)
+            .getValue();
         return this;
     }
 
     public JobBase refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobs()
-                .getWithResponse(resourceGroupName, workspaceName, id, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .getWithResponse(resourceGroupName, workspaceName, id, context)
+            .getValue();
         return this;
     }
 

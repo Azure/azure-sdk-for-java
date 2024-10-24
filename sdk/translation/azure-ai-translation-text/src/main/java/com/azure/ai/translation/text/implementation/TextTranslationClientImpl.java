@@ -163,7 +163,7 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSupportedLanguages(@HostParam("Endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/languages")
@@ -173,7 +173,7 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSupportedLanguagesSync(@HostParam("Endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/translate")
@@ -184,8 +184,9 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> translate(@HostParam("Endpoint") String endpoint,
             @QueryParam(value = "to", multipleQueryParams = true) List<String> targetLanguages,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/translate")
         @ExpectedResponses({ 200 })
@@ -195,8 +196,9 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> translateSync(@HostParam("Endpoint") String endpoint,
             @QueryParam(value = "to", multipleQueryParams = true) List<String> targetLanguages,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/transliterate")
         @ExpectedResponses({ 200 })
@@ -207,8 +209,8 @@ public final class TextTranslationClientImpl {
         Mono<Response<BinaryData>> transliterate(@HostParam("Endpoint") String endpoint,
             @QueryParam("language") String language, @QueryParam("fromScript") String sourceLanguageScript,
             @QueryParam("toScript") String targetLanguageScript, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/transliterate")
         @ExpectedResponses({ 200 })
@@ -219,8 +221,8 @@ public final class TextTranslationClientImpl {
         Response<BinaryData> transliterateSync(@HostParam("Endpoint") String endpoint,
             @QueryParam("language") String language, @QueryParam("fromScript") String sourceLanguageScript,
             @QueryParam("toScript") String targetLanguageScript, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/breaksentence")
         @ExpectedResponses({ 200 })
@@ -229,8 +231,9 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> findSentenceBoundaries(@HostParam("Endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/breaksentence")
         @ExpectedResponses({ 200 })
@@ -239,8 +242,9 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> findSentenceBoundariesSync(@HostParam("Endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/dictionary/lookup")
         @ExpectedResponses({ 200 })
@@ -250,8 +254,9 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> lookupDictionaryEntries(@HostParam("Endpoint") String endpoint,
             @QueryParam("from") String sourceLanguage, @QueryParam("to") String targetLanguage,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/dictionary/lookup")
         @ExpectedResponses({ 200 })
@@ -261,8 +266,9 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> lookupDictionaryEntriesSync(@HostParam("Endpoint") String endpoint,
             @QueryParam("from") String sourceLanguage, @QueryParam("to") String targetLanguage,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/dictionary/examples")
         @ExpectedResponses({ 200 })
@@ -272,8 +278,9 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> lookupDictionaryExamples(@HostParam("Endpoint") String endpoint,
             @QueryParam("from") String sourceLanguage, @QueryParam("to") String targetLanguage,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/dictionary/examples")
         @ExpectedResponses({ 200 })
@@ -283,8 +290,9 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> lookupDictionaryExamplesSync(@HostParam("Endpoint") String endpoint,
             @QueryParam("from") String sourceLanguage, @QueryParam("to") String targetLanguage,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -322,7 +330,8 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     translation (Optional): {
      *         String (Required): {
@@ -369,7 +378,8 @@ public final class TextTranslationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -421,7 +431,8 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     translation (Optional): {
      *         String (Required): {
@@ -468,7 +479,8 @@ public final class TextTranslationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -546,17 +558,20 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         detectedLanguage (Optional): {
@@ -589,7 +604,8 @@ public final class TextTranslationClientImpl {
      *         }
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param targetLanguages Specifies the language of the output text. The target language must be one of the
      * supported languages included
@@ -607,11 +623,12 @@ public final class TextTranslationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> translateWithResponseAsync(List<String> targetLanguages, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         List<String> targetLanguagesConverted
             = targetLanguages.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil.withContext(context -> service.translate(this.getEndpoint(), targetLanguagesConverted,
-            this.getServiceVersion().getVersion(), accept, body, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -675,17 +692,20 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         detectedLanguage (Optional): {
@@ -718,7 +738,8 @@ public final class TextTranslationClientImpl {
      *         }
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param targetLanguages Specifies the language of the output text. The target language must be one of the
      * supported languages included
@@ -736,11 +757,12 @@ public final class TextTranslationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> translateWithResponse(List<String> targetLanguages, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         List<String> targetLanguagesConverted
             = targetLanguages.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return service.translateSync(this.getEndpoint(), targetLanguagesConverted,
-            this.getServiceVersion().getVersion(), accept, body, requestOptions, Context.NONE);
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -755,24 +777,28 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *         script: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param language Specifies the language of the text to convert from one script to another.
      * Possible languages are listed in the transliteration scope obtained by querying the service
@@ -794,9 +820,11 @@ public final class TextTranslationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> transliterateWithResponseAsync(String language, String sourceLanguageScript,
         String targetLanguageScript, BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.transliterate(this.getEndpoint(), language, sourceLanguageScript,
-            targetLanguageScript, this.getServiceVersion().getVersion(), accept, body, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.transliterate(this.getEndpoint(), language, sourceLanguageScript, targetLanguageScript,
+                this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -811,24 +839,28 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *         script: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param language Specifies the language of the text to convert from one script to another.
      * Possible languages are listed in the transliteration scope obtained by querying the service
@@ -850,9 +882,10 @@ public final class TextTranslationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> transliterateWithResponse(String language, String sourceLanguageScript,
         String targetLanguageScript, BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.transliterateSync(this.getEndpoint(), language, sourceLanguageScript, targetLanguageScript,
-            this.getServiceVersion().getVersion(), accept, body, requestOptions, Context.NONE);
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -877,17 +910,20 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         detectedLanguage (Optional): {
@@ -899,7 +935,8 @@ public final class TextTranslationClientImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -912,9 +949,10 @@ public final class TextTranslationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> findSentenceBoundariesWithResponseAsync(BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.findSentenceBoundaries(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, body, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -939,17 +977,20 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         detectedLanguage (Optional): {
@@ -961,7 +1002,8 @@ public final class TextTranslationClientImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -973,9 +1015,10 @@ public final class TextTranslationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> findSentenceBoundariesWithResponse(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.findSentenceBoundariesSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            body, requestOptions, Context.NONE);
+        return service.findSentenceBoundariesSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -990,17 +1033,20 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         normalizedSource: String (Required)
@@ -1024,7 +1070,8 @@ public final class TextTranslationClientImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param sourceLanguage Specifies the language of the input text.
      * The source language must be one of the supported languages included in the dictionary scope.
@@ -1041,9 +1088,10 @@ public final class TextTranslationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> lookupDictionaryEntriesWithResponseAsync(String sourceLanguage,
         String targetLanguage, BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.lookupDictionaryEntries(this.getEndpoint(), sourceLanguage,
-            targetLanguage, this.getServiceVersion().getVersion(), accept, body, requestOptions, context));
+            targetLanguage, this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -1058,17 +1106,20 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         normalizedSource: String (Required)
@@ -1092,7 +1143,8 @@ public final class TextTranslationClientImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param sourceLanguage Specifies the language of the input text.
      * The source language must be one of the supported languages included in the dictionary scope.
@@ -1109,9 +1161,10 @@ public final class TextTranslationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> lookupDictionaryEntriesWithResponse(String sourceLanguage, String targetLanguage,
         BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.lookupDictionaryEntriesSync(this.getEndpoint(), sourceLanguage, targetLanguage,
-            this.getServiceVersion().getVersion(), accept, body, requestOptions, Context.NONE);
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -1126,18 +1179,21 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *         translation: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         normalizedSource: String (Required)
@@ -1154,7 +1210,8 @@ public final class TextTranslationClientImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param sourceLanguage Specifies the language of the input text.
      * The source language must be one of the supported languages included in the dictionary scope.
@@ -1171,9 +1228,10 @@ public final class TextTranslationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> lookupDictionaryExamplesWithResponseAsync(String sourceLanguage,
         String targetLanguage, BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.lookupDictionaryExamples(this.getEndpoint(), sourceLanguage,
-            targetLanguage, this.getServiceVersion().getVersion(), accept, body, requestOptions, context));
+            targetLanguage, this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -1188,18 +1246,21 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *         translation: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         normalizedSource: String (Required)
@@ -1216,7 +1277,8 @@ public final class TextTranslationClientImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param sourceLanguage Specifies the language of the input text.
      * The source language must be one of the supported languages included in the dictionary scope.
@@ -1233,8 +1295,9 @@ public final class TextTranslationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> lookupDictionaryExamplesWithResponse(String sourceLanguage, String targetLanguage,
         BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.lookupDictionaryExamplesSync(this.getEndpoint(), sourceLanguage, targetLanguage,
-            this.getServiceVersion().getVersion(), accept, body, requestOptions, Context.NONE);
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, Context.NONE);
     }
 }

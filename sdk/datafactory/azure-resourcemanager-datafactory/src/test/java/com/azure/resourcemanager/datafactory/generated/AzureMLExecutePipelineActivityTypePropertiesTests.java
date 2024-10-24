@@ -11,21 +11,21 @@ public final class AzureMLExecutePipelineActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMLExecutePipelineActivityTypeProperties model = BinaryData.fromString(
-            "{\"mlPipelineId\":\"datapdtzugwurvpcwy\",\"mlPipelineEndpointId\":\"dataqikouravdqe\",\"version\":\"datawgpmademlo\",\"experimentName\":\"dataayk\",\"mlPipelineParameters\":\"datakk\",\"dataPathAssignments\":\"datafhgdvg\",\"mlParentRunId\":\"dataun\",\"continueOnStepFailure\":\"datatz\"}")
+            "{\"mlPipelineId\":\"datavjyqhcowou\",\"mlPipelineEndpointId\":\"datahltnyvig\",\"version\":\"dataxhjpsgprlmp\",\"experimentName\":\"dataaiakyflr\",\"mlPipelineParameters\":\"datav\",\"dataPathAssignments\":\"datakdciyidzb\",\"mlParentRunId\":\"datawlxxw\",\"continueOnStepFailure\":\"dataz\"}")
             .toObject(AzureMLExecutePipelineActivityTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureMLExecutePipelineActivityTypeProperties model
-            = new AzureMLExecutePipelineActivityTypeProperties().withMlPipelineId("datapdtzugwurvpcwy")
-                .withMlPipelineEndpointId("dataqikouravdqe")
-                .withVersion("datawgpmademlo")
-                .withExperimentName("dataayk")
-                .withMlPipelineParameters("datakk")
-                .withDataPathAssignments("datafhgdvg")
-                .withMlParentRunId("dataun")
-                .withContinueOnStepFailure("datatz");
+            = new AzureMLExecutePipelineActivityTypeProperties().withMlPipelineId("datavjyqhcowou")
+                .withMlPipelineEndpointId("datahltnyvig")
+                .withVersion("dataxhjpsgprlmp")
+                .withExperimentName("dataaiakyflr")
+                .withMlPipelineParameters("datav")
+                .withDataPathAssignments("datakdciyidzb")
+                .withMlParentRunId("datawlxxw")
+                .withContinueOnStepFailure("dataz");
         model = BinaryData.fromObject(model).toObject(AzureMLExecutePipelineActivityTypeProperties.class);
     }
 }

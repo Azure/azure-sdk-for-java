@@ -1,18 +1,18 @@
 {
   "networkCallRecords" : [ {
     "Method" : "HEAD",
-    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-autoOSUpgradeRollingUpgrade?api-version=2024-02-01.19.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-autoOSUpgradeRollingUpgrade?api-version=2024-07-01.20.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-07-01.20.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 29 Mar 2024 07:43:09 GMT",
+      "date" : "Fri, 06 Sep 2024 22:00:33 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "2e8be6b6-cb1e-4fe4-8e4b-3ccc1d235d5b",
+      "client-request-id" : "66ddb1ff-8a5c-4f05-9dc9-808ed927035c",
       "retry-after" : "0",
-      "request-id" : "76a8b95f-3874-4e43-a01e-070fafcfa4f4",
+      "request-id" : "97965894-cdab-4c7f-8c7f-3236ad656a4c",
       "StatusCode" : "404",
       "dataserviceversion" : "3.0",
       "Body" : "",
@@ -20,65 +20,65 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools?api-version=2024-02-01.19.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools?api-version=2024-07-01.20.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-07-01.20.0)",
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 29 Mar 2024 07:43:10 GMT",
+      "date" : "Fri, 06 Sep 2024 22:00:33 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "dataserviceid" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-autoOSUpgradeRollingUpgrade",
       "retry-after" : "0",
-      "request-id" : "900dc357-2644-4927-993e-694029e098db",
+      "request-id" : "e27ab73e-2634-46d0-8e12-bf0e893a83ef",
       "StatusCode" : "201",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Fri, 29 Mar 2024 07:43:10 GMT",
+      "last-modified" : "Fri, 06 Sep 2024 22:00:34 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "ba491aa8-2045-430d-a3bf-fba3fd525125",
-      "etag" : "0x8DC4FC3E1C6434F",
+      "client-request-id" : "0cf36dc5-5f05-4a5a-a0d5-b26758792bd6",
+      "etag" : "0x8DCCEBF552E1521",
       "location" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-autoOSUpgradeRollingUpgrade",
       "dataserviceversion" : "3.0",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-autoOSUpgradeRollingUpgrade?api-version=2024-02-01.19.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-autoOSUpgradeRollingUpgrade?api-version=2024-07-01.20.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-07-01.20.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 29 Mar 2024 07:43:10 GMT",
+      "date" : "Fri, 06 Sep 2024 22:00:33 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "f9df6b75-5ac9-437d-bcdb-3e99fa9ea994",
+      "request-id" : "4e821940-e71e-41b9-b1b7-5bd78469667b",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Fri, 29 Mar 2024 07:43:10 GMT",
+      "last-modified" : "Fri, 06 Sep 2024 22:00:34 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "c903195d-cf78-40e1-a7e8-8a84bf522e33",
+      "client-request-id" : "0be94dea-5150-4334-9bec-25dd1fa978f3",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DC4FC3E1C6434F",
+      "etag" : "0x8DCCEBF552E1521",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-autoOSUpgradeRollingUpgrade\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-autoOSUpgradeRollingUpgrade\",\"eTag\":\"0x8DC4FC3E1C6434F\",\"lastModified\":\"2024-03-29T07:43:10.4851791Z\",\"creationTime\":\"2024-03-29T07:43:10.4851777Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-29T07:43:10.4851777Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-29T07:43:10.4851792Z\",\"vmSize\":\"standard_d2s_v3\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"nodePlacementConfiguration\":{\r\n      \"policy\":\"Zonal\"\r\n    }\r\n  },\"upgradePolicy\":{\r\n    \"mode\":\"automatic\",\"automaticOSUpgradePolicy\":{\r\n      \"disableAutomaticRollback\":true,\"enableAutomaticOSUpgrade\":true,\"useRollingUpgradePolicy\":true,\"osRollingUpgradeDeferral\":true\r\n    },\"rollingUpgradePolicy\":{\r\n      \"enableCrossZoneUpgrade\":true,\"maxBatchInstancePercent\":20,\"maxUnhealthyInstancePercent\":20,\"maxUnhealthyUpgradedInstancePercent\":20,\"pauseTimeBetweenBatches\":\"PT5S\",\"prioritizeUnhealthyInstances\":false,\"rollbackFailedInstancesOnPolicyBreach\":false\r\n    }\r\n  }\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-autoOSUpgradeRollingUpgrade\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-autoOSUpgradeRollingUpgrade\",\"eTag\":\"0x8DCCEBF552E1521\",\"lastModified\":\"2024-09-06T22:00:34.2926625Z\",\"creationTime\":\"2024-09-06T22:00:34.2926609Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-09-06T22:00:34.2926609Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-09-06T22:00:34.2926626Z\",\"vmSize\":\"standard_d2s_v3\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"nodePlacementConfiguration\":{\r\n      \"policy\":\"Zonal\"\r\n    }\r\n  },\"upgradePolicy\":{\r\n    \"mode\":\"automatic\",\"automaticOSUpgradePolicy\":{\r\n      \"disableAutomaticRollback\":true,\"enableAutomaticOSUpgrade\":true,\"useRollingUpgradePolicy\":true,\"osRollingUpgradeDeferral\":true\r\n    },\"rollingUpgradePolicy\":{\r\n      \"enableCrossZoneUpgrade\":true,\"maxBatchInstancePercent\":20,\"maxUnhealthyInstancePercent\":20,\"maxUnhealthyUpgradedInstancePercent\":20,\"pauseTimeBetweenBatches\":\"PT5S\",\"prioritizeUnhealthyInstances\":false,\"rollbackFailedInstancesOnPolicyBreach\":false\r\n    }\r\n  }\r\n}"
     }
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-autoOSUpgradeRollingUpgrade?api-version=2024-02-01.19.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-autoOSUpgradeRollingUpgrade?api-version=2024-07-01.20.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-07-01.20.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 29 Mar 2024 07:43:10 GMT",
-      "last-modified" : "Fri, 29 Mar 2024 07:43:10 GMT",
+      "date" : "Fri, 06 Sep 2024 22:00:33 GMT",
+      "last-modified" : "Fri, 06 Sep 2024 22:00:34 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "b541a2fe-bbdb-4c32-b37e-8ca5f5712d4f",
-      "etag" : "0x8DC4FC3E1C6434F",
+      "client-request-id" : "e9c9e170-e9aa-4596-a58e-71b929976026",
+      "etag" : "0x8DCCEBF552E1521",
       "retry-after" : "0",
-      "request-id" : "257071bc-7616-474a-bf6d-527c97b8f039",
+      "request-id" : "a57aa1fa-6194-46c8-b376-7fe23408fd26",
       "StatusCode" : "200",
       "dataserviceversion" : "3.0",
       "Body" : "",
@@ -86,18 +86,18 @@
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-autoOSUpgradeRollingUpgrade?api-version=2024-02-01.19.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-autoOSUpgradeRollingUpgrade?api-version=2024-07-01.20.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-07-01.20.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 29 Mar 2024 07:43:11 GMT",
+      "date" : "Fri, 06 Sep 2024 22:00:34 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "0aa859fd-d3a5-4faa-b153-e5c25a2aa08d",
+      "client-request-id" : "a7941176-5c8d-418c-8d80-88288763dfdd",
       "retry-after" : "0",
-      "request-id" : "0e7b9fdc-aa01-4dbc-abb1-c670410e6bb4",
+      "request-id" : "fa888b46-3e70-4e1c-93ed-87b601141879",
       "StatusCode" : "202",
       "dataserviceversion" : "3.0",
       "Body" : "",

@@ -69,7 +69,7 @@ public final class ImageVersionsClientImpl implements ImageVersionsClient {
         Mono<Response<ImageVersionListResult>> listByImage(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("imageName") String imageName,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -77,7 +77,7 @@ public final class ImageVersionsClientImpl implements ImageVersionsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ImageVersionListResult>> listByImageNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**

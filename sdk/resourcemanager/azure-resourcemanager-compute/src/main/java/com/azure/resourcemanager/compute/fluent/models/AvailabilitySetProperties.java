@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
+import com.azure.resourcemanager.compute.models.ScheduledEventsPolicy;
 import java.io.IOException;
 import java.util.List;
 
@@ -44,6 +45,12 @@ public final class AvailabilitySetProperties implements JsonSerializable<Availab
      * The resource status information.
      */
     private List<InstanceViewStatus> statuses;
+
+    /*
+     * Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets Scheduled Event related configurations
+     * for the availability set.
+     */
+    private ScheduledEventsPolicy scheduledEventsPolicy;
 
     /**
      * Creates an instance of AvailabilitySetProperties class.
@@ -143,6 +150,28 @@ public final class AvailabilitySetProperties implements JsonSerializable<Availab
     }
 
     /**
+     * Get the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the availability set.
+     * 
+     * @return the scheduledEventsPolicy value.
+     */
+    public ScheduledEventsPolicy scheduledEventsPolicy() {
+        return this.scheduledEventsPolicy;
+    }
+
+    /**
+     * Set the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the availability set.
+     * 
+     * @param scheduledEventsPolicy the scheduledEventsPolicy value to set.
+     * @return the AvailabilitySetProperties object itself.
+     */
+    public AvailabilitySetProperties withScheduledEventsPolicy(ScheduledEventsPolicy scheduledEventsPolicy) {
+        this.scheduledEventsPolicy = scheduledEventsPolicy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -150,6 +179,9 @@ public final class AvailabilitySetProperties implements JsonSerializable<Availab
     public void validate() {
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
+        }
+        if (scheduledEventsPolicy() != null) {
+            scheduledEventsPolicy().validate();
         }
     }
 
@@ -164,6 +196,7 @@ public final class AvailabilitySetProperties implements JsonSerializable<Availab
         jsonWriter.writeArrayField("virtualMachines", this.virtualMachines,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("proximityPlacementGroup", this.proximityPlacementGroup);
+        jsonWriter.writeJsonField("scheduledEventsPolicy", this.scheduledEventsPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -197,6 +230,9 @@ public final class AvailabilitySetProperties implements JsonSerializable<Availab
                     List<InstanceViewStatus> statuses
                         = reader.readArray(reader1 -> InstanceViewStatus.fromJson(reader1));
                     deserializedAvailabilitySetProperties.statuses = statuses;
+                } else if ("scheduledEventsPolicy".equals(fieldName)) {
+                    deserializedAvailabilitySetProperties.scheduledEventsPolicy
+                        = ScheduledEventsPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

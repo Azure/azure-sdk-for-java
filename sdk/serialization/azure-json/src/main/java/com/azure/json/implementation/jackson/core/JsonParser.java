@@ -10,9 +10,7 @@ package com.azure.json.implementation.jackson.core;
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Iterator;
 
-import com.azure.json.implementation.jackson.core.async.NonBlockingInputFeeder;
 import com.azure.json.implementation.jackson.core.exc.InputCoercionException;
 import com.azure.json.implementation.jackson.core.type.TypeReference;
 import com.azure.json.implementation.jackson.core.util.JacksonFeatureSet;
@@ -27,12 +25,12 @@ import com.azure.json.implementation.jackson.core.util.RequestPayload;
  */
 @SuppressWarnings("cast")
 public abstract class JsonParser implements Closeable, Versioned {
-    private final static int MIN_BYTE_I = (int) Byte.MIN_VALUE;
+    private final static int MIN_BYTE_I = Byte.MIN_VALUE;
     // as per [JACKSON-804], allow range up to and including 255
-    private final static int MAX_BYTE_I = (int) 255;
+    private final static int MAX_BYTE_I = 255;
 
-    private final static int MIN_SHORT_I = (int) Short.MIN_VALUE;
-    private final static int MAX_SHORT_I = (int) Short.MAX_VALUE;
+    private final static int MIN_SHORT_I = Short.MIN_VALUE;
+    private final static int MAX_SHORT_I = Short.MAX_VALUE;
 
     /**
      * Enumeration of possible "native" (optimal) types that can be
@@ -40,7 +38,7 @@ public abstract class JsonParser implements Closeable, Versioned {
      */
     public enum NumberType {
         INT, LONG, BIG_INTEGER, FLOAT, DOUBLE, BIG_DECIMAL
-    };
+    }
 
     /**
      * Default set of {@link StreamReadCapability}ies that may be used as
@@ -351,7 +349,7 @@ public abstract class JsonParser implements Closeable, Versioned {
             return flags;
         }
 
-        private Feature(boolean defaultState) {
+        Feature(boolean defaultState) {
             _mask = (1 << ordinal());
             _defaultState = defaultState;
         }
@@ -377,7 +375,7 @@ public abstract class JsonParser implements Closeable, Versioned {
 
     /**
      * Bit flag composed of bits that indicate which
-     * {@link com.azure.json.implementation.jackson.core.JsonParser.Feature}s
+     * {@link Feature}s
      * are enabled.
      */
     protected int _features;
@@ -439,40 +437,6 @@ public abstract class JsonParser implements Closeable, Versioned {
      */
     public Object getInputSource() {
         return null;
-    }
-
-    /**
-     * Sets the payload to be passed if {@link JsonParseException} is thrown.
-     *
-     * @param payload Payload to pass
-     *
-     * @since 2.8
-     */
-    public void setRequestPayloadOnError(RequestPayload payload) {
-        _requestPayload = payload;
-    }
-
-    /**
-     * Sets the byte[] request payload and the charset
-     *
-     * @param payload Payload to pass
-     * @param charset Character encoding for (lazily) decoding payload
-     *
-     * @since 2.8
-     */
-    public void setRequestPayloadOnError(byte[] payload, String charset) {
-        _requestPayload = (payload == null) ? null : new RequestPayload(payload, charset);
-    }
-
-    /**
-     * Sets the String request payload
-     *
-     * @param payload Payload to pass
-     *
-     * @since 2.8
-     */
-    public void setRequestPayloadOnError(String payload) {
-        _requestPayload = (payload == null) ? null : new RequestPayload(payload);
     }
 
     /*
@@ -547,38 +511,6 @@ public abstract class JsonParser implements Closeable, Versioned {
     }
 
     /**
-     * Method that can be called to determine if this parser instance
-     * uses non-blocking ("asynchronous") input access for decoding or not.
-     * Access mode is determined by earlier calls via {@link JsonFactory};
-     * it may not be changed after construction.
-     *<p>
-     * If non-blocking decoding is (@code true}, it is possible to call
-     * {@link #getNonBlockingInputFeeder()} to obtain object to use
-     * for feeding input; otherwise (<code>false</code> returned)
-     * input is read by blocking
-     *
-     * @return True if this is a non-blocking ("asynchronous") parser
-     *
-     * @since 2.9
-     */
-    public boolean canParseAsync() {
-        return false;
-    }
-
-    /**
-     * Method that will either return a feeder instance (if parser uses
-     * non-blocking, aka asynchronous access); or <code>null</code> for
-     * parsers that use blocking I/O.
-     *
-     * @return Input feeder to use with non-blocking (async) parsing
-     *
-     * @since 2.9
-     */
-    public NonBlockingInputFeeder getNonBlockingInputFeeder() {
-        return null;
-    }
-
-    /**
      * Accessor for getting metadata on capabilities of this parser, based on
      * underlying data format being read (directly or indirectly).
      *
@@ -619,12 +551,12 @@ public abstract class JsonParser implements Closeable, Versioned {
      * {@link Feature#AUTO_CLOSE_SOURCE} is enabled.
      * Whether parser owns the input source depends on factory
      * method that was used to construct instance (so check
-     * {@link com.azure.json.implementation.jackson.core.JsonFactory} for details,
+     * {@link JsonFactory} for details,
      * but the general
      * idea is that if caller passes in closable resource (such
      * as {@link InputStream} or {@link Reader}) parser does NOT
      * own the source; but if it passes a reference (such as
-     * {@link java.io.File} or {@link java.net.URL} and creates
+     * {@link File} or {@link java.net.URL} and creates
      * stream or reader it does own them.
      *
      * @throws IOException if there is either an underlying I/O problem
@@ -789,47 +721,6 @@ public abstract class JsonParser implements Closeable, Versioned {
      * /**********************************************************
      */
 
-    /**
-     * Method that can be called to push back any content that
-     * has been read but not consumed by the parser. This is usually
-     * done after reading all content of interest using parser.
-     * Content is released by writing it to given stream if possible;
-     * if underlying input is byte-based it can released, if not (char-based)
-     * it can not.
-     *
-     * @param out OutputStream to which buffered, undecoded content is written to
-     *
-     * @return -1 if the underlying content source is not byte based
-     *    (that is, input can not be sent to {@link OutputStream};
-     *    otherwise number of bytes released (0 if there was nothing to release)
-     *
-     * @throws IOException if write to stream threw exception
-     */
-    public int releaseBuffered(OutputStream out) throws IOException {
-        return -1;
-    }
-
-    /**
-     * Method that can be called to push back any content that
-     * has been read but not consumed by the parser.
-     * This is usually
-     * done after reading all content of interest using parser.
-     * Content is released by writing it to given writer if possible;
-     * if underlying input is char-based it can released, if not (byte-based)
-     * it can not.
-     *
-     * @param w Writer to which buffered but unprocessed content is written to
-     *
-     * @return -1 if the underlying content source is not char-based
-     *    (that is, input can not be sent to {@link Writer};
-     *    otherwise number of chars released (0 if there was nothing to release)
-     *
-     * @throws IOException if write using Writer threw exception
-     */
-    public int releaseBuffered(Writer w) throws IOException {
-        return -1;
-    }
-
     /*
      * /***************************************************
      * /* Public API, configuration
@@ -953,18 +844,6 @@ public abstract class JsonParser implements Closeable, Versioned {
     }
 
     /**
-     * Bulk access method for getting state of all {@link FormatFeature}s, format-specific
-     * on/off configuration settings.
-     *
-     * @return Bit mask that defines current states of all standard {@link FormatFeature}s.
-     *
-     * @since 2.6
-     */
-    public int getFormatFeatures() {
-        return 0;
-    }
-
-    /**
      * Bulk set method for (re)setting states of {@link FormatFeature}s,
      * by specifying values (set / clear) along with a mask, to determine
      * which features to change, if any.
@@ -1029,151 +908,6 @@ public abstract class JsonParser implements Closeable, Versioned {
     public abstract JsonToken nextValue() throws IOException;
 
     /**
-     * Method that fetches next token (as if calling {@link #nextToken}) and
-     * verifies whether it is {@link JsonToken#FIELD_NAME} with specified name
-     * and returns result of that comparison.
-     * It is functionally equivalent to:
-     *<pre>
-     *  return (nextToken() == JsonToken.FIELD_NAME) &amp;&amp; str.getValue().equals(getCurrentName());
-     *</pre>
-     * but may be faster for parser to verify, and can therefore be used if caller
-     * expects to get such a property name from input next.
-     *
-     * @param str Property name to compare next token to (if next token is
-     *   <code>JsonToken.FIELD_NAME</code>)
-     *
-     * @return {@code True} if parser advanced to {@code JsonToken.FIELD_NAME} with
-     *    specified name; {@code false} otherwise (different token or non-matching name)
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public boolean nextFieldName(SerializableString str) throws IOException {
-        return (nextToken() == JsonToken.FIELD_NAME) && str.getValue().equals(getCurrentName());
-    }
-
-    /**
-     * Method that fetches next token (as if calling {@link #nextToken}) and
-     * verifies whether it is {@link JsonToken#FIELD_NAME}; if it is,
-     * returns same as {@link #getCurrentName()}, otherwise null.
-     *
-     * @return Name of the the {@code JsonToken.FIELD_NAME} parser advanced to, if any;
-     *   {@code null} if next token is of some other type
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     *
-     * @since 2.5
-     */
-    public String nextFieldName() throws IOException {
-        return (nextToken() == JsonToken.FIELD_NAME) ? getCurrentName() : null;
-    }
-
-    /**
-     * Method that fetches next token (as if calling {@link #nextToken}) and
-     * if it is {@link JsonToken#VALUE_STRING} returns contained String value;
-     * otherwise returns null.
-     * It is functionally equivalent to:
-     *<pre>
-     *  return (nextToken() == JsonToken.VALUE_STRING) ? getText() : null;
-     *</pre>
-     * but may be faster for parser to process, and can therefore be used if caller
-     * expects to get a String value next from input.
-     *
-     * @return Text value of the {@code JsonToken.VALUE_STRING} token parser advanced
-     *   to; or {@code null} if next token is of some other type
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public String nextTextValue() throws IOException {
-        return (nextToken() == JsonToken.VALUE_STRING) ? getText() : null;
-    }
-
-    /**
-     * Method that fetches next token (as if calling {@link #nextToken}) and
-     * if it is {@link JsonToken#VALUE_NUMBER_INT} returns 32-bit int value;
-     * otherwise returns specified default value
-     * It is functionally equivalent to:
-     *<pre>
-     *  return (nextToken() == JsonToken.VALUE_NUMBER_INT) ? getIntValue() : defaultValue;
-     *</pre>
-     * but may be faster for parser to process, and can therefore be used if caller
-     * expects to get an int value next from input.
-     *<p>
-     * NOTE: value checks are performed similar to {@link #getIntValue()}
-     *
-     * @param defaultValue Value to return if next token is NOT of type {@code JsonToken.VALUE_NUMBER_INT}
-     *
-     * @return Integer ({@code int}) value of the {@code JsonToken.VALUE_NUMBER_INT} token parser advanced
-     *   to; or {@code defaultValue} if next token is of some other type
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     * @throws InputCoercionException if integer number does not fit in Java {@code int}
-     */
-    public int nextIntValue(int defaultValue) throws IOException {
-        return (nextToken() == JsonToken.VALUE_NUMBER_INT) ? getIntValue() : defaultValue;
-    }
-
-    /**
-     * Method that fetches next token (as if calling {@link #nextToken}) and
-     * if it is {@link JsonToken#VALUE_NUMBER_INT} returns 64-bit long value;
-     * otherwise returns specified default value
-     * It is functionally equivalent to:
-     *<pre>
-     *  return (nextToken() == JsonToken.VALUE_NUMBER_INT) ? getLongValue() : defaultValue;
-     *</pre>
-     * but may be faster for parser to process, and can therefore be used if caller
-     * expects to get a long value next from input.
-     *<p>
-     * NOTE: value checks are performed similar to {@link #getLongValue()}
-     *
-     * @param defaultValue Value to return if next token is NOT of type {@code JsonToken.VALUE_NUMBER_INT}
-     *
-     * @return {@code long} value of the {@code JsonToken.VALUE_NUMBER_INT} token parser advanced
-     *   to; or {@code defaultValue} if next token is of some other type
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     * @throws InputCoercionException if integer number does not fit in Java {@code long}
-     */
-    public long nextLongValue(long defaultValue) throws IOException {
-        return (nextToken() == JsonToken.VALUE_NUMBER_INT) ? getLongValue() : defaultValue;
-    }
-
-    /**
-     * Method that fetches next token (as if calling {@link #nextToken}) and
-     * if it is {@link JsonToken#VALUE_TRUE} or {@link JsonToken#VALUE_FALSE}
-     * returns matching Boolean value; otherwise return null.
-     * It is functionally equivalent to:
-     *<pre>
-     *  JsonToken t = nextToken();
-     *  if (t == JsonToken.VALUE_TRUE) return Boolean.TRUE;
-     *  if (t == JsonToken.VALUE_FALSE) return Boolean.FALSE;
-     *  return null;
-     *</pre>
-     * but may be faster for parser to process, and can therefore be used if caller
-     * expects to get a Boolean value next from input.
-     *
-     * @return {@code Boolean} value of the {@code JsonToken.VALUE_TRUE} or {@code JsonToken.VALUE_FALSE}
-     *   token parser advanced to; or {@code null} if next token is of some other type
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public Boolean nextBooleanValue() throws IOException {
-        JsonToken t = nextToken();
-        if (t == JsonToken.VALUE_TRUE) {
-            return Boolean.TRUE;
-        }
-        if (t == JsonToken.VALUE_FALSE) {
-            return Boolean.FALSE;
-        }
-        return null;
-    }
-
-    /**
      * Method that will skip all child tokens of an array or
      * object token that the parser currently points to,
      * iff stream points to
@@ -1212,7 +946,7 @@ public abstract class JsonParser implements Closeable, Versioned {
      * @since 2.8
      */
     public void finishToken() throws IOException {
-        ; // nothing
+        // nothing
     }
 
     /*
@@ -1629,7 +1363,7 @@ public abstract class JsonParser implements Closeable, Versioned {
      * for floating-point numbers value returned may be {@link BigDecimal}
      * if the underlying format does not store floating-point numbers using
      * native representation: for example, textual formats represent numbers
-     * as Strings (which are 10-based), and conversion to {@link java.lang.Double}
+     * as Strings (which are 10-based), and conversion to {@link Double}
      * is potentially lossy operation.
      *<p>
      * Default implementation simply returns {@link #getNumberValue()}
@@ -1943,27 +1677,6 @@ public abstract class JsonParser implements Closeable, Versioned {
     }
 
     /**
-     * Method that can be used as an alternative to {@link #getBigIntegerValue()},
-     * especially when value can be large. The main difference (beyond method
-     * of returning content using {@link OutputStream} instead of as byte array)
-     * is that content will NOT remain accessible after method returns: any content
-     * processed will be consumed and is not buffered in any way. If caller needs
-     * buffering, it has to implement it.
-     *
-     * @param out Output stream to use for passing decoded binary data
-     *
-     * @return Number of bytes that were decoded and written via {@link OutputStream}
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     *
-     * @since 2.1
-     */
-    public int readBinaryValue(OutputStream out) throws IOException {
-        return readBinaryValue(Base64Variants.getDefaultVariant(), out);
-    }
-
-    /**
      * Similar to {@link #readBinaryValue(OutputStream)} but allows explicitly
      * specifying base64 variant to use.
      *
@@ -2162,7 +1875,7 @@ public abstract class JsonParser implements Closeable, Versioned {
 
     /**
      * Method that will try to convert value of current token to a
-     * {@link java.lang.String}.
+     * {@link String}.
      * JSON Strings map naturally; scalar values get converted to
      * their textual representation.
      * If representation can not be converted to a String value (including structured types
@@ -2182,7 +1895,7 @@ public abstract class JsonParser implements Closeable, Versioned {
 
     /**
      * Method that will try to convert value of current token to a
-     * {@link java.lang.String}.
+     * {@link String}.
      * JSON Strings map naturally; scalar values get converted to
      * their textual representation.
      * If representation can not be converted to a String value (including structured types
@@ -2297,7 +2010,7 @@ public abstract class JsonParser implements Closeable, Versioned {
     /**
      * Method to deserialize JSON content into a non-container
      * type (it can be an array type, however): typically a bean, array
-     * or a wrapper type (like {@link java.lang.Boolean}).
+     * or a wrapper type (like {@link Boolean}).
      * <b>Note</b>: method can only be called if the parser has
      * an object codec assigned; this is true for parsers constructed
      * by <code>MappingJsonFactory</code> (from "jackson-databind" jar)
@@ -2362,61 +2075,6 @@ public abstract class JsonParser implements Closeable, Versioned {
         return (T) _codec().readValue(this, valueTypeRef);
     }
 
-    /**
-     * Method for reading sequence of Objects from parser stream,
-     * all with same specified value type.
-     *
-     * @param <T> Nominal type parameter for value type
-     *
-     * @param valueType Java type to read content as (passed to ObjectCodec that
-     *    deserializes content)
-     *
-     * @return Iterator for reading multiple Java values from content
-     *
-     * @throws IOException if there is either an underlying I/O problem or decoding
-     *    issue at format layer
-     */
-    public <T> Iterator<T> readValuesAs(Class<T> valueType) throws IOException {
-        return _codec().readValues(this, valueType);
-    }
-
-    /**
-     * Method for reading sequence of Objects from parser stream,
-     * all with same specified value type.
-     *
-     * @param <T> Nominal type parameter for value type
-     *
-     * @param valueTypeRef Java type to read content as (passed to ObjectCodec that
-     *    deserializes content)
-     *
-     * @return Iterator for reading multiple Java values from content
-     *
-     * @throws IOException if there is either an underlying I/O problem or decoding
-     *    issue at format layer
-     */
-    public <T> Iterator<T> readValuesAs(TypeReference<T> valueTypeRef) throws IOException {
-        return _codec().readValues(this, valueTypeRef);
-    }
-
-    /**
-     * Method to deserialize JSON content into equivalent "tree model",
-     * represented by root {@link TreeNode} of resulting model.
-     * For JSON Arrays it will an array node (with child nodes),
-     * for objects object node (with child nodes), and for other types
-     * matching leaf node type. Empty or whitespace documents are null.
-     *
-     * @param <T> Nominal type parameter for result node type (to reduce need for casting)
-     *
-     * @return root of the document, or null if empty or whitespace.
-     *
-     * @throws IOException if there is either an underlying I/O problem or decoding
-     *    issue at format layer
-     */
-    @SuppressWarnings("unchecked")
-    public <T extends TreeNode> T readValueAsTree() throws IOException {
-        return (T) _codec().readTree(this);
-    }
-
     protected ObjectCodec _codec() {
         ObjectCodec c = getCodec();
         if (c == null) {
@@ -2453,50 +2111,4 @@ public abstract class JsonParser implements Closeable, Versioned {
         throw new UnsupportedOperationException("Operation not supported by parser of type " + getClass().getName());
     }
 
-    /**
-     * Helper method for constructing {@link JsonParseException}
-     * based on current state of the parser.
-     *
-     * @param msg Base exception message to construct exception with
-     *
-     * @return Read exception (of type {@link JsonParseException}) constructed
-     *
-     * @since 2.13
-     */
-    protected JsonParseException _constructReadException(String msg) {
-        // In 3.0 will be actual `StreamReadException`...
-        return _constructError(msg);
-    }
-
-    protected JsonParseException _constructReadException(String msg, Object arg) {
-        return _constructReadException(String.format(msg, arg));
-    }
-
-    protected JsonParseException _constructReadException(String msg, Object arg1, Object arg2) {
-        return _constructReadException(String.format(msg, arg1, arg2));
-    }
-
-    protected JsonParseException _constructReadException(String msg, Object arg1, Object arg2, Object arg3) {
-        return _constructReadException(String.format(msg, arg1, arg2, arg3));
-    }
-
-    /**
-     * Helper method for constructing {@link JsonParseException}
-     * based on current state of the parser and indicating that the given
-     * {@link Throwable} is the root cause.
-     *
-     * @param msg Base exception message to construct exception with
-     * @param t Root cause to assign
-     *
-     * @return Read exception (of type {@link JsonParseException}) constructed
-     *
-     * @since 2.13
-     */
-    protected JsonParseException _constructReadException(String msg, Throwable t) {
-        JsonParseException e = new JsonParseException(this, msg, t);
-        if (_requestPayload != null) {
-            e = e.withRequestPayload(_requestPayload);
-        }
-        return e;
-    }
 }

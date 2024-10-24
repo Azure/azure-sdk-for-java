@@ -37,21 +37,19 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.azure.ai.documentintelligence.TestUtils.DEFAULT_TIMEOUT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class DocumentModelAdministrationAsyncClientTest extends DocumentAdministrationClientTestBase {
-    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
-
     private DocumentIntelligenceAdministrationAsyncClient client;
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {

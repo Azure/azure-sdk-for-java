@@ -36,7 +36,8 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
 
         try {
             PagedIterable<DocumentStatus> response = getDocumentTranslationClient()
-                    .getDocumentsStatus(translationStatus.getId(), null, null, null, succeededStatusList, null, null, null);
+                    .getDocumentsStatus(translationStatus.getId(), null, null, null, succeededStatusList, null, null,
+                            null);
             for (DocumentStatus d : response) {
                 String status = d.getStatus().toString();
                 assertTrue(succeededStatusList.contains(status));
@@ -103,7 +104,8 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         // Asserting that only the last document is returned
         try {
             PagedIterable<DocumentStatus> response = documentTranslationClient
-                    .getDocumentsStatus(translationStatus.getId(), null, null, null, null, getDateTimeOffset(testCreatedOnDateTimes.get(4)), null, null);
+                    .getDocumentsStatus(translationStatus.getId(), null, null, null, null,
+                            getDateTimeOffset(testCreatedOnDateTimes.get(4)), null, null);
             int itemCount = 0;
             for (DocumentStatus d : response) {
                 itemCount += 1;
@@ -117,7 +119,8 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         // Asserting that the last 3 docs are returned
         try {
             PagedIterable<DocumentStatus> response = documentTranslationClient
-                    .getDocumentsStatus(translationStatus.getId(), null, null, null, null, getDateTimeOffset(testCreatedOnDateTimes.get(2)), null, null);
+                    .getDocumentsStatus(translationStatus.getId(), null, null, null, null,
+                            getDateTimeOffset(testCreatedOnDateTimes.get(2)), null, null);
             int itemCount = 0;
             for (DocumentStatus d : response) {
                 itemCount += 1;
@@ -154,7 +157,8 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         // Asserting that only the first document is returned
         try {
             PagedIterable<DocumentStatus> response = documentTranslationClient
-                    .getDocumentsStatus(translationStatus.getId(), null, null, null, null, null, getDateTimeOffset(testCreatedOnDateTimes.get(0)), null);
+                    .getDocumentsStatus(translationStatus.getId(), null, null, null, null, null,
+                            getDateTimeOffset(testCreatedOnDateTimes.get(0)), null);
             int itemCount = 0;
             for (DocumentStatus d : response) {
                 itemCount += 1;
@@ -168,7 +172,8 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         // Asserting that the first 4/5 docs are returned
         try {
             PagedIterable<DocumentStatus> response = documentTranslationClient
-                    .getDocumentsStatus(translationStatus.getId(), null, null, null, null, null, getDateTimeOffset(testCreatedOnDateTimes.get(3)), null);
+                    .getDocumentsStatus(translationStatus.getId(), null, null, null, null, null,
+                            getDateTimeOffset(testCreatedOnDateTimes.get(3)), null);
             int itemCount = 0;
             for (DocumentStatus d : response) {
                 itemCount += 1;
@@ -219,8 +224,9 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         targetInputs.add(targetInput);
         BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, Void> poller = setPlaybackSyncPollerPollInterval(documentTranslationClient
-            .beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
+                documentTranslationClient
+                        .beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
         TranslationStatus translationStatus = poller.waitForCompletion().getValue();

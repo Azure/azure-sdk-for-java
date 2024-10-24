@@ -15,8 +15,8 @@ public final class UsagesListResultImpl implements UsagesListResult {
 
     private final com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager;
 
-    UsagesListResultImpl(
-        UsagesListResultInner innerObject, com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
+    UsagesListResultImpl(UsagesListResultInner innerObject,
+        com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -34,28 +34,42 @@ public final class ScheduledQueryRulesCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateAScheduledQueryRuleOnSubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getScheduledQueryRules()
-            .createOrUpdateWithResponse("QueryResourceGroupName", "perf", new ScheduledQueryRuleResourceInner()
-                .withLocation("eastus").withDescription("Performance rule").withSeverity(AlertSeverity.FOUR)
-                .withEnabled(true).withScopes(Arrays.asList("/subscriptions/aaf177ed-1330-a9f2-80ea-fd3d7783b147"))
-                .withEvaluationFrequency(Duration.parse("PT5M")).withWindowSize(Duration.parse("PT10M"))
-                .withTargetResourceTypes(Arrays.asList("Microsoft.Compute/virtualMachines"))
-                .withCriteria(new ScheduledQueryRuleCriteria().withAllOf(Arrays.asList(new Condition()
-                    .withQuery("Perf | where ObjectName == \"Processor\"").withTimeAggregation(TimeAggregation.AVERAGE)
-                    .withMetricMeasureColumn("% Processor Time").withResourceIdColumn("resourceId")
-                    .withDimensions(Arrays.asList(
-                        new Dimension().withName("ComputerIp").withOperator(DimensionOperator.EXCLUDE)
-                            .withValues(Arrays.asList("192.168.1.1")),
-                        new Dimension().withName("OSType").withOperator(DimensionOperator.INCLUDE)
-                            .withValues(Arrays.asList("*"))))
-                    .withOperator(ConditionOperator.GREATER_THAN).withThreshold(70.0D)
-                    .withFailingPeriods(new ConditionFailingPeriods()
-                        .withNumberOfEvaluationPeriods(1L).withMinFailingPeriodsToAlert(1L)))))
-                .withMuteActionsDuration(Duration.parse("PT30M"))
-                .withActions(new Actions().withActionGroups(Arrays.asList(
-                    "/subscriptions/1cf177ed-1330-4692-80ea-fd3d7783b147/resourcegroups/sqrapi/providers/microsoft.insights/actiongroups/myactiongroup"))
-                    .withCustomProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))
-                .withCheckWorkspaceAlertsStorageConfigured(true).withSkipQueryValidation(true).withAutoMitigate(true),
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getScheduledQueryRules()
+            .createOrUpdateWithResponse("QueryResourceGroupName", "perf",
+                new ScheduledQueryRuleResourceInner().withLocation("eastus")
+                    .withDescription("Performance rule")
+                    .withSeverity(AlertSeverity.FOUR)
+                    .withEnabled(true)
+                    .withScopes(Arrays.asList("/subscriptions/aaf177ed-1330-a9f2-80ea-fd3d7783b147"))
+                    .withEvaluationFrequency(Duration.parse("PT5M"))
+                    .withWindowSize(Duration.parse("PT10M"))
+                    .withTargetResourceTypes(Arrays.asList("Microsoft.Compute/virtualMachines"))
+                    .withCriteria(new ScheduledQueryRuleCriteria()
+                        .withAllOf(Arrays.asList(new Condition().withQuery("Perf | where ObjectName == \"Processor\"")
+                            .withTimeAggregation(TimeAggregation.AVERAGE)
+                            .withMetricMeasureColumn("% Processor Time")
+                            .withResourceIdColumn("resourceId")
+                            .withDimensions(Arrays.asList(
+                                new Dimension().withName("ComputerIp")
+                                    .withOperator(DimensionOperator.EXCLUDE)
+                                    .withValues(Arrays.asList("192.168.1.1")),
+                                new Dimension().withName("OSType")
+                                    .withOperator(DimensionOperator.INCLUDE)
+                                    .withValues(Arrays.asList("*"))))
+                            .withOperator(ConditionOperator.GREATER_THAN)
+                            .withThreshold(70.0D)
+                            .withFailingPeriods(new ConditionFailingPeriods().withNumberOfEvaluationPeriods(1L)
+                                .withMinFailingPeriodsToAlert(1L)))))
+                    .withMuteActionsDuration(Duration.parse("PT30M"))
+                    .withActions(new Actions().withActionGroups(Arrays.asList(
+                        "/subscriptions/1cf177ed-1330-4692-80ea-fd3d7783b147/resourcegroups/sqrapi/providers/microsoft.insights/actiongroups/myactiongroup"))
+                        .withCustomProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))
+                    .withCheckWorkspaceAlertsStorageConfigured(true)
+                    .withSkipQueryValidation(true)
+                    .withAutoMitigate(true),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -70,25 +84,35 @@ public final class ScheduledQueryRulesCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateAScheduledQueryRuleOnResourceGroupS(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getScheduledQueryRules().createOrUpdateWithResponse(
-            "QueryResourceGroupName", "heartbeat",
-            new ScheduledQueryRuleResourceInner().withLocation("eastus").withDescription("Health check rule")
-                .withSeverity(AlertSeverity.FOUR).withEnabled(true)
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getScheduledQueryRules()
+            .createOrUpdateWithResponse("QueryResourceGroupName", "heartbeat", new ScheduledQueryRuleResourceInner()
+                .withLocation("eastus")
+                .withDescription("Health check rule")
+                .withSeverity(AlertSeverity.FOUR)
+                .withEnabled(true)
                 .withScopes(Arrays
                     .asList("/subscriptions/aaf177ed-1330-a9f2-80ea-fd3d7783b147/resourceGroups/scopeResourceGroup1"))
-                .withEvaluationFrequency(Duration.parse("PT5M")).withWindowSize(Duration.parse("PT10M"))
+                .withEvaluationFrequency(Duration.parse("PT5M"))
+                .withWindowSize(Duration.parse("PT10M"))
                 .withTargetResourceTypes(Arrays.asList("Microsoft.Compute/virtualMachines"))
-                .withCriteria(new ScheduledQueryRuleCriteria().withAllOf(Arrays.asList(new Condition()
-                    .withQuery("Heartbeat").withTimeAggregation(TimeAggregation.COUNT).withDimensions(Arrays.asList())
-                    .withOperator(ConditionOperator.GREATER_THAN).withThreshold(360.0D)
-                    .withFailingPeriods(new ConditionFailingPeriods()
-                        .withNumberOfEvaluationPeriods(1L).withMinFailingPeriodsToAlert(1L)))))
+                .withCriteria(
+                    new ScheduledQueryRuleCriteria().withAllOf(Arrays.asList(new Condition().withQuery("Heartbeat")
+                        .withTimeAggregation(TimeAggregation.COUNT)
+                        .withDimensions(Arrays.asList())
+                        .withOperator(ConditionOperator.GREATER_THAN)
+                        .withThreshold(360.0D)
+                        .withFailingPeriods(new ConditionFailingPeriods().withNumberOfEvaluationPeriods(1L)
+                            .withMinFailingPeriodsToAlert(1L)))))
                 .withMuteActionsDuration(Duration.parse("PT30M"))
                 .withActions(new Actions().withActionGroups(Arrays.asList(
                     "/subscriptions/1cf177ed-1330-4692-80ea-fd3d7783b147/resourcegroups/sqrapi/providers/microsoft.insights/actiongroups/myactiongroup"))
                     .withCustomProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))
-                .withCheckWorkspaceAlertsStorageConfigured(true).withSkipQueryValidation(true).withAutoMitigate(true),
-            com.azure.core.util.Context.NONE);
+                .withCheckWorkspaceAlertsStorageConfigured(true)
+                .withSkipQueryValidation(true)
+                .withAutoMitigate(true), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -102,30 +126,42 @@ public final class ScheduledQueryRulesCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateAScheduledQueryRuleForSingleResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getScheduledQueryRules().createOrUpdateWithResponse(
-            "QueryResourceGroupName", "perf",
-            new ScheduledQueryRuleResourceInner().withLocation("eastus").withDescription("Performance rule")
-                .withSeverity(AlertSeverity.FOUR).withEnabled(true)
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getScheduledQueryRules()
+            .createOrUpdateWithResponse("QueryResourceGroupName", "perf", new ScheduledQueryRuleResourceInner()
+                .withLocation("eastus")
+                .withDescription("Performance rule")
+                .withSeverity(AlertSeverity.FOUR)
+                .withEnabled(true)
                 .withScopes(Arrays.asList(
                     "/subscriptions/aaf177ed-1330-a9f2-80ea-fd3d7783b147/resourceGroups/scopeResourceGroup1/providers/Microsoft.Compute/virtualMachines/vm1"))
-                .withEvaluationFrequency(Duration.parse("PT5M")).withWindowSize(Duration.parse("PT10M"))
-                .withCriteria(new ScheduledQueryRuleCriteria().withAllOf(Arrays.asList(new Condition()
-                    .withQuery("Perf | where ObjectName == \"Processor\"").withTimeAggregation(TimeAggregation.AVERAGE)
-                    .withMetricMeasureColumn("% Processor Time").withResourceIdColumn("resourceId")
-                    .withDimensions(Arrays.asList(
-                        new Dimension().withName("ComputerIp").withOperator(DimensionOperator.EXCLUDE)
-                            .withValues(Arrays.asList("192.168.1.1")),
-                        new Dimension().withName("OSType").withOperator(DimensionOperator.INCLUDE)
-                            .withValues(Arrays.asList("*"))))
-                    .withOperator(ConditionOperator.GREATER_THAN).withThreshold(70.0D)
-                    .withFailingPeriods(new ConditionFailingPeriods()
-                        .withNumberOfEvaluationPeriods(1L).withMinFailingPeriodsToAlert(1L)))))
+                .withEvaluationFrequency(Duration.parse("PT5M"))
+                .withWindowSize(Duration.parse("PT10M"))
+                .withCriteria(new ScheduledQueryRuleCriteria()
+                    .withAllOf(Arrays.asList(new Condition().withQuery("Perf | where ObjectName == \"Processor\"")
+                        .withTimeAggregation(TimeAggregation.AVERAGE)
+                        .withMetricMeasureColumn("% Processor Time")
+                        .withResourceIdColumn("resourceId")
+                        .withDimensions(Arrays.asList(
+                            new Dimension().withName("ComputerIp")
+                                .withOperator(DimensionOperator.EXCLUDE)
+                                .withValues(Arrays.asList("192.168.1.1")),
+                            new Dimension().withName("OSType")
+                                .withOperator(DimensionOperator.INCLUDE)
+                                .withValues(Arrays.asList("*"))))
+                        .withOperator(ConditionOperator.GREATER_THAN)
+                        .withThreshold(70.0D)
+                        .withFailingPeriods(new ConditionFailingPeriods().withNumberOfEvaluationPeriods(1L)
+                            .withMinFailingPeriodsToAlert(1L)))))
                 .withMuteActionsDuration(Duration.parse("PT30M"))
                 .withActions(new Actions().withActionGroups(Arrays.asList(
                     "/subscriptions/1cf177ed-1330-4692-80ea-fd3d7783b147/resourcegroups/sqrapi/providers/microsoft.insights/actiongroups/myactiongroup"))
                     .withCustomProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))
-                .withCheckWorkspaceAlertsStorageConfigured(true).withSkipQueryValidation(true).withAutoMitigate(true),
-            com.azure.core.util.Context.NONE);
+                .withCheckWorkspaceAlertsStorageConfigured(true)
+                .withSkipQueryValidation(true)
+                .withAutoMitigate(true), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

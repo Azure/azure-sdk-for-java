@@ -14,24 +14,25 @@ public final class ClusterPoolResourcePropertiesNetworkProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterPoolResourcePropertiesNetworkProfile model = BinaryData.fromString(
-            "{\"subnetId\":\"jrwzox\",\"outboundType\":\"loadBalancer\",\"enablePrivateApiServer\":true,\"apiServerAuthorizedIpRanges\":[\"uwfzitonpe\",\"fpjkjlxofp\",\"vhpfxxypininmay\",\"uybbkpodep\"]}")
+            "{\"subnetId\":\"feusnhut\",\"outboundType\":\"loadBalancer\",\"enablePrivateApiServer\":false,\"apiServerAuthorizedIpRanges\":[\"dhugjzzdatqxhocd\",\"eablg\",\"huticndvkao\",\"wyiftyhxhur\"]}")
             .toObject(ClusterPoolResourcePropertiesNetworkProfile.class);
-        Assertions.assertEquals("jrwzox", model.subnetId());
+        Assertions.assertEquals("feusnhut", model.subnetId());
         Assertions.assertEquals(OutboundType.LOAD_BALANCER, model.outboundType());
-        Assertions.assertEquals(true, model.enablePrivateApiServer());
-        Assertions.assertEquals("uwfzitonpe", model.apiServerAuthorizedIpRanges().get(0));
+        Assertions.assertEquals(false, model.enablePrivateApiServer());
+        Assertions.assertEquals("dhugjzzdatqxhocd", model.apiServerAuthorizedIpRanges().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterPoolResourcePropertiesNetworkProfile model = new ClusterPoolResourcePropertiesNetworkProfile()
-            .withSubnetId("jrwzox").withOutboundType(OutboundType.LOAD_BALANCER).withEnablePrivateApiServer(true)
-            .withApiServerAuthorizedIpRanges(
-                Arrays.asList("uwfzitonpe", "fpjkjlxofp", "vhpfxxypininmay", "uybbkpodep"));
+            .withSubnetId("feusnhut")
+            .withOutboundType(OutboundType.LOAD_BALANCER)
+            .withEnablePrivateApiServer(false)
+            .withApiServerAuthorizedIpRanges(Arrays.asList("dhugjzzdatqxhocd", "eablg", "huticndvkao", "wyiftyhxhur"));
         model = BinaryData.fromObject(model).toObject(ClusterPoolResourcePropertiesNetworkProfile.class);
-        Assertions.assertEquals("jrwzox", model.subnetId());
+        Assertions.assertEquals("feusnhut", model.subnetId());
         Assertions.assertEquals(OutboundType.LOAD_BALANCER, model.outboundType());
-        Assertions.assertEquals(true, model.enablePrivateApiServer());
-        Assertions.assertEquals("uwfzitonpe", model.apiServerAuthorizedIpRanges().get(0));
+        Assertions.assertEquals(false, model.enablePrivateApiServer());
+        Assertions.assertEquals("dhugjzzdatqxhocd", model.apiServerAuthorizedIpRanges().get(0));
     }
 }

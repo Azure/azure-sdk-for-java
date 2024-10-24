@@ -6,80 +6,56 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
+import com.azure.resourcemanager.machinelearning.models.EmailNotificationEnableType;
 import com.azure.resourcemanager.machinelearning.models.JobBase;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class JobsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"jobType\":\"JobBaseProperties\",\"displayName\":\"jvzlgclia\",\"status\":\"NotStarted\",\"experimentName\":\"vihy\",\"services\":{\"ka\":{\"jobServiceType\":\"oxexvt\",\"port\":2028703772,\"endpoint\":\"ymgkirfzvtzrq\",\"status\":\"lipmuufsek\",\"errorMessage\":\"pufhwpkpejfszw\",\"properties\":{\"jcnzfajptjhwrnw\":\"swbrsmf\"},\"nodes\":{\"nodesValueType\":\"Nodes\"}}},\"computeId\":\"afjcdccqjaefrzq\",\"isArchived\":false,\"identity\":{\"identityType\":\"IdentityConfiguration\"},\"componentId\":\"gidrxdykjchz\",\"notificationSetting\":{\"emails\":[\"pq\",\"pgbssjqjjtcvdz\",\"tsdlp\"],\"emailOn\":[\"JobFailed\",\"JobFailed\",\"JobFailed\"],\"webhooks\":{\"nqfnz\":{\"webhookType\":\"Webhook\",\"eventType\":\"ppnjzbuvmfsfru\"},\"fepsoz\":{\"webhookType\":\"Webhook\",\"eventType\":\"ppnularnupprd\"}}},\"description\":\"xoyan\",\"tags\":{\"taqjhokhi\":\"euewaauxkvruryyq\",\"kikdatbwyarqt\":\"ghpvjqp\",\"pzdgyilwuiklbjl\":\"bjblhefqwirnx\",\"csddplg\":\"bxo\"},\"properties\":{\"oke\":\"via\",\"uosc\":\"cmadyoctmd\"}},\"id\":\"wbestntoeteu\",\"name\":\"gdgbzftsbpef\",\"type\":\"f\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"jobType\":\"JobBaseProperties\",\"componentId\":\"tvzjyi\",\"computeId\":\"bqrvvbqv\",\"displayName\":\"mpe\",\"experimentName\":\"xgiqasifubn\",\"identity\":{\"identityType\":\"IdentityConfiguration\"},\"isArchived\":true,\"services\":{},\"status\":\"Completed\",\"description\":\"jnxjkht\",\"properties\":{\"xfwkz\":\"vyouweui\",\"kqytkztadopgfzdg\":\"smsfbevyllznf\"},\"tags\":{\"svloyyhigq\":\"yc\"}},\"id\":\"juqwqajq\",\"name\":\"zxpixhyo\",\"type\":\"pnfdbgsosciene\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MachineLearningManager manager = MachineLearningManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<JobBase> response = manager.jobs()
+            .list("olqqpa", "zpzmojupqlus", "kzdnotgyowis", "fifmitqvypkiqlou", "zbceimsco", ListViewType.ALL,
+                "naehllwqmraihe", com.azure.core.util.Context.NONE);
 
-        MachineLearningManager manager =
-            MachineLearningManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<JobBase> response =
-            manager
-                .jobs()
-                .list(
-                    "hrbkhtmqowi",
-                    "asfgqgucyhfaimqv",
-                    "ruozkgyfp",
-                    "oehgfmqmskkixvlz",
-                    "xplhpeva",
-                    ListViewType.ALL,
-                    com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("jnxjkht", response.iterator().next().properties().description());
-        Assertions.assertEquals("vyouweui", response.iterator().next().properties().properties().get("xfwkz"));
-        Assertions.assertEquals("yc", response.iterator().next().properties().tags().get("svloyyhigq"));
-        Assertions.assertEquals("tvzjyi", response.iterator().next().properties().componentId());
-        Assertions.assertEquals("bqrvvbqv", response.iterator().next().properties().computeId());
-        Assertions.assertEquals("mpe", response.iterator().next().properties().displayName());
-        Assertions.assertEquals("xgiqasifubn", response.iterator().next().properties().experimentName());
-        Assertions.assertEquals(true, response.iterator().next().properties().isArchived());
+        Assertions.assertEquals("xoyan", response.iterator().next().properties().description());
+        Assertions.assertEquals("euewaauxkvruryyq", response.iterator().next().properties().tags().get("taqjhokhi"));
+        Assertions.assertEquals("via", response.iterator().next().properties().properties().get("oke"));
+        Assertions.assertEquals("jvzlgclia", response.iterator().next().properties().displayName());
+        Assertions.assertEquals("vihy", response.iterator().next().properties().experimentName());
+        Assertions.assertEquals("oxexvt",
+            response.iterator().next().properties().services().get("ka").jobServiceType());
+        Assertions.assertEquals(2028703772, response.iterator().next().properties().services().get("ka").port());
+        Assertions.assertEquals("ymgkirfzvtzrq",
+            response.iterator().next().properties().services().get("ka").endpoint());
+        Assertions.assertEquals("swbrsmf",
+            response.iterator().next().properties().services().get("ka").properties().get("jcnzfajptjhwrnw"));
+        Assertions.assertEquals("afjcdccqjaefrzq", response.iterator().next().properties().computeId());
+        Assertions.assertEquals(false, response.iterator().next().properties().isArchived());
+        Assertions.assertEquals("gidrxdykjchz", response.iterator().next().properties().componentId());
+        Assertions.assertEquals("pq", response.iterator().next().properties().notificationSetting().emails().get(0));
+        Assertions.assertEquals(EmailNotificationEnableType.JOB_FAILED,
+            response.iterator().next().properties().notificationSetting().emailOn().get(0));
+        Assertions.assertEquals("ppnjzbuvmfsfru",
+            response.iterator().next().properties().notificationSetting().webhooks().get("nqfnz").eventType());
     }
 }

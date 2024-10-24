@@ -30,7 +30,6 @@ import com.azure.data.tables.implementation.TransactionalBatchImpl;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
-import com.azure.data.tables.implementation.models.SignedIdentifier;
 import com.azure.data.tables.implementation.models.TableEntityQueryResponse;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
@@ -473,7 +472,6 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<TableItem>> createTableWithResponse(Context context) {
-        context = TableUtils.setContext(context);
         final TableProperties properties = new TableProperties().setTableName(tableName);
 
         try {
@@ -535,8 +533,6 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<Void>> deleteTableWithResponse(Context context) {
-        context = TableUtils.setContext(context);
-
         try {
             return tablesImplementation.getTables().deleteWithResponseAsync(tableName, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
@@ -612,8 +608,6 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<Void>> createEntityWithResponse(TableEntity entity, Context context) {
-        context = TableUtils.setContext(context);
-
         if (entity == null) {
             return monoError(logger, new IllegalArgumentException("'entity' cannot be null."));
         }
@@ -706,8 +700,6 @@ public final class TableAsyncClient {
 
     Mono<Response<Void>> upsertEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
                                                   Context context) {
-        context = TableUtils.setContext(context);
-
         if (entity == null) {
             return monoError(logger, new IllegalArgumentException("'entity' cannot be null."));
         }
@@ -864,8 +856,6 @@ public final class TableAsyncClient {
 
     Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
                                                   boolean ifUnchanged, Context context) {
-        context = TableUtils.setContext(context);
-
         if (entity == null) {
             return monoError(logger, new IllegalArgumentException("'entity' cannot be null."));
         }
@@ -996,7 +986,6 @@ public final class TableAsyncClient {
 
     Mono<Response<Void>> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, boolean ifUnchanged,
                                                   Context context) {
-        context = TableUtils.setContext(context);
         eTag = ifUnchanged ? eTag : "*";
 
         if (partitionKey == null || rowKey == null) {
@@ -1117,7 +1106,6 @@ public final class TableAsyncClient {
     private <T extends TableEntity> Mono<PagedResponse<T>> listEntities(String nextPartitionKey, String nextRowKey,
                                                                         Context context, ListEntitiesOptions options,
                                                                         Class<T> resultType) {
-        context = TableUtils.setContext(context);
         String select = null;
 
         if (options.getSelect() != null) {
@@ -1345,16 +1333,12 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<TableAccessPolicies>> getAccessPoliciesWithResponse(Context context) {
-        context = TableUtils.setContext(context);
-
         try {
             return tablesImplementation.getTables()
                 .getAccessPolicyWithResponseAsync(tableName, null, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> new SimpleResponse<>(response,
-                    new TableAccessPolicies(response.getValue() == null ? null : response.getValue().items().stream()
-                        .map(TableUtils::toTableSignedIdentifier)
-                        .collect(Collectors.toList()))));
+                    new TableAccessPolicies(response.getValue() == null ? null : response.getValue().items())));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -1445,46 +1429,34 @@ public final class TableAsyncClient {
 
     Mono<Response<Void>> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
                                                        Context context) {
-        context = TableUtils.setContext(context);
-        List<SignedIdentifier> signedIdentifiers = null;
-
         /*
-        We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
-        OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
-        allows for proper serialization with no real detriment to users as sub-second precision on active time for
-        signed identifiers is not really necessary.
+         * We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
+         * OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
+         * allows for proper serialization with no real detriment to users as sub-second precision on active time for
+         * signed identifiers is not really necessary.
          */
         if (tableSignedIdentifiers != null) {
-            signedIdentifiers = tableSignedIdentifiers.stream()
-                .map(tableSignedIdentifier -> {
-                    SignedIdentifier signedIdentifier = TableUtils.toSignedIdentifier(tableSignedIdentifier);
-
-                    if (signedIdentifier != null) {
-                        if (signedIdentifier.getAccessPolicy() != null
-                            && signedIdentifier.getAccessPolicy().getStart() != null) {
-
-                            signedIdentifier.getAccessPolicy()
-                                .setStart(signedIdentifier.getAccessPolicy()
-                                    .getStart().truncatedTo(ChronoUnit.SECONDS));
-                        }
-
-                        if (signedIdentifier.getAccessPolicy() != null
-                            && signedIdentifier.getAccessPolicy().getExpiry() != null) {
-
-                            signedIdentifier.getAccessPolicy()
-                                .setExpiry(signedIdentifier.getAccessPolicy()
-                                    .getExpiry().truncatedTo(ChronoUnit.SECONDS));
-                        }
+            for (TableSignedIdentifier signedIdentifier : tableSignedIdentifiers) {
+                if (signedIdentifier != null && signedIdentifier.getAccessPolicy() != null) {
+                    if (signedIdentifier.getAccessPolicy().getStartsOn() != null) {
+                        signedIdentifier.getAccessPolicy()
+                            .setStartsOn(signedIdentifier.getAccessPolicy()
+                                .getStartsOn().truncatedTo(ChronoUnit.SECONDS));
                     }
 
-                    return signedIdentifier;
-                })
-                .collect(Collectors.toList());
+                    if (signedIdentifier.getAccessPolicy().getExpiresOn() != null) {
+
+                        signedIdentifier.getAccessPolicy()
+                            .setExpiresOn(signedIdentifier.getAccessPolicy()
+                                .getExpiresOn().truncatedTo(ChronoUnit.SECONDS));
+                    }
+                }
+            }
         }
 
         try {
             return tablesImplementation.getTables()
-                .setAccessPolicyWithResponseAsync(tableName, null, null, signedIdentifiers, context)
+                .setAccessPolicyWithResponseAsync(tableName, null, null, tableSignedIdentifiers, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> new SimpleResponse<>(response, response.getValue()));
         } catch (RuntimeException e) {
@@ -1673,8 +1645,6 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<TableTransactionResult>> submitTransactionWithResponse(List<TableTransactionAction> transactionActions, Context context) {
-        Context finalContext = TableUtils.setContext(context);
-
         if (transactionActions.isEmpty()) {
             return monoError(logger,
                 new IllegalArgumentException("A transaction must contain at least one operation."));
@@ -1727,7 +1697,7 @@ public final class TableAsyncClient {
                 .publishOn(Schedulers.boundedElastic())
                 .flatMap(body ->
                     transactionalBatchImplementation.submitTransactionalBatchWithRestResponseAsync(body, null,
-                        finalContext).zipWith(Mono.just(body)))
+                        context).zipWith(Mono.just(body)))
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .flatMap(pair -> parseResponse(pair.getT2(), pair.getT1()))
                 .map(response ->

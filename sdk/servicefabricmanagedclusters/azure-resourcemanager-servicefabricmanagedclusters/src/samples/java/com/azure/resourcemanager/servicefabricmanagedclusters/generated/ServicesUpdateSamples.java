@@ -14,8 +14,8 @@ import java.util.Map;
 public final class ServicesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/stable/2024-04-01/examples/
-     * ServicePatchOperation_example.json
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * examples/ServicePatchOperation_example.json
      */
     /**
      * Sample code: Patch a service.

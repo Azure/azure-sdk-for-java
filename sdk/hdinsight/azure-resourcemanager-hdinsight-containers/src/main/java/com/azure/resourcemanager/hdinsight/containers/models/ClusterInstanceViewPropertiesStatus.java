@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Status of the instance view.
@@ -52,5 +56,49 @@ public final class ClusterInstanceViewPropertiesStatus extends ClusterInstanceVi
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ready", ready());
+        jsonWriter.writeStringField("reason", reason());
+        jsonWriter.writeStringField("message", message());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterInstanceViewPropertiesStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterInstanceViewPropertiesStatus if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterInstanceViewPropertiesStatus.
+     */
+    public static ClusterInstanceViewPropertiesStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterInstanceViewPropertiesStatus deserializedClusterInstanceViewPropertiesStatus
+                = new ClusterInstanceViewPropertiesStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ready".equals(fieldName)) {
+                    deserializedClusterInstanceViewPropertiesStatus.withReady(reader.getString());
+                } else if ("reason".equals(fieldName)) {
+                    deserializedClusterInstanceViewPropertiesStatus.withReason(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedClusterInstanceViewPropertiesStatus.withMessage(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterInstanceViewPropertiesStatus;
+        });
     }
 }

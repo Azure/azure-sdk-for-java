@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.peering.fluent.models.PeeringInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The paginated list of peerings. */
+/**
+ * The paginated list of peerings.
+ */
 @Fluent
-public final class PeeringListResult {
+public final class PeeringListResult implements JsonSerializable<PeeringListResult> {
     /*
      * The list of peerings.
      */
-    @JsonProperty(value = "value")
     private List<PeeringInner> value;
 
     /*
      * The link to fetch the next page of peerings.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of PeeringListResult class. */
+    /**
+     * Creates an instance of PeeringListResult class.
+     */
     public PeeringListResult() {
     }
 
     /**
      * Get the value property: The list of peerings.
-     *
+     * 
      * @return the value value.
      */
     public List<PeeringInner> value() {
@@ -39,7 +45,7 @@ public final class PeeringListResult {
 
     /**
      * Set the value property: The list of peerings.
-     *
+     * 
      * @param value the value value to set.
      * @return the PeeringListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class PeeringListResult {
 
     /**
      * Get the nextLink property: The link to fetch the next page of peerings.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class PeeringListResult {
 
     /**
      * Set the nextLink property: The link to fetch the next page of peerings.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PeeringListResult object itself.
      */
@@ -70,12 +76,52 @@ public final class PeeringListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeeringListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeeringListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PeeringListResult.
+     */
+    public static PeeringListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeeringListResult deserializedPeeringListResult = new PeeringListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PeeringInner> value = reader.readArray(reader1 -> PeeringInner.fromJson(reader1));
+                    deserializedPeeringListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPeeringListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeeringListResult;
+        });
     }
 }

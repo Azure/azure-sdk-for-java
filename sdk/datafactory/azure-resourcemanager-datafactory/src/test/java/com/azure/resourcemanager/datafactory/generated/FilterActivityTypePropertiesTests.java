@@ -13,19 +13,19 @@ public final class FilterActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FilterActivityTypeProperties model
-            = BinaryData.fromString("{\"items\":{\"value\":\"cqewxcwry\"},\"condition\":{\"value\":\"wmvcxyuem\"}}")
+            = BinaryData.fromString("{\"items\":{\"value\":\"nqsybwjvifgjztzh\"},\"condition\":{\"value\":\"hyqj\"}}")
                 .toObject(FilterActivityTypeProperties.class);
-        Assertions.assertEquals("cqewxcwry", model.items().value());
-        Assertions.assertEquals("wmvcxyuem", model.condition().value());
+        Assertions.assertEquals("nqsybwjvifgjztzh", model.items().value());
+        Assertions.assertEquals("hyqj", model.condition().value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FilterActivityTypeProperties model
-            = new FilterActivityTypeProperties().withItems(new Expression().withValue("cqewxcwry"))
-                .withCondition(new Expression().withValue("wmvcxyuem"));
+            = new FilterActivityTypeProperties().withItems(new Expression().withValue("nqsybwjvifgjztzh"))
+                .withCondition(new Expression().withValue("hyqj"));
         model = BinaryData.fromObject(model).toObject(FilterActivityTypeProperties.class);
-        Assertions.assertEquals("cqewxcwry", model.items().value());
-        Assertions.assertEquals("wmvcxyuem", model.condition().value());
+        Assertions.assertEquals("nqsybwjvifgjztzh", model.items().value());
+        Assertions.assertEquals("hyqj", model.condition().value());
     }
 }

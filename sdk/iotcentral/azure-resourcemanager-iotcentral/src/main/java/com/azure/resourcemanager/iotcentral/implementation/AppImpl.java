@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotcentral.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.iotcentral.fluent.models.AppInner;
 import com.azure.resourcemanager.iotcentral.fluent.models.PrivateEndpointConnectionInner;
@@ -59,6 +60,10 @@ public final class AppImpl implements App, App.Definition, App.Update {
         return this.innerModel().identity();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
@@ -94,12 +99,9 @@ public final class AppImpl implements App, App.Definition, App.Update {
     public List<PrivateEndpointConnection> privateEndpointConnections() {
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -111,6 +113,10 @@ public final class AppImpl implements App, App.Definition, App.Update {
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public AppInner innerModel() {
@@ -131,20 +137,16 @@ public final class AppImpl implements App, App.Definition, App.Update {
     }
 
     public App create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApps()
-                .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getApps()
+            .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public App create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApps()
-                .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getApps()
+            .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), context);
         return this;
     }
 
@@ -159,47 +161,39 @@ public final class AppImpl implements App, App.Definition, App.Update {
     }
 
     public App apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApps()
-                .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getApps()
+            .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public App apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApps()
-                .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getApps()
+            .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), context);
         return this;
     }
 
     AppImpl(AppInner innerObject, com.azure.resourcemanager.iotcentral.IotCentralManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "iotApps");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "iotApps");
     }
 
     public App refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApps()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApps()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public App refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApps()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApps()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
+            .getValue();
         return this;
     }
 

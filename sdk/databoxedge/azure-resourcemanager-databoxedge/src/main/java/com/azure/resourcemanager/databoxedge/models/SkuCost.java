@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The metadata for retrieving price info. */
+/**
+ * The metadata for retrieving price info.
+ */
 @Immutable
-public final class SkuCost {
+public final class SkuCost implements JsonSerializable<SkuCost> {
     /*
      * Used for querying price from commerce.
      */
-    @JsonProperty(value = "meterId", access = JsonProperty.Access.WRITE_ONLY)
     private String meterId;
 
     /*
      * The cost quantity.
      */
-    @JsonProperty(value = "quantity", access = JsonProperty.Access.WRITE_ONLY)
     private Long quantity;
 
     /*
      * Restriction of the SKU for the location/zone
      */
-    @JsonProperty(value = "extendedUnit", access = JsonProperty.Access.WRITE_ONLY)
     private String extendedUnit;
 
-    /** Creates an instance of SkuCost class. */
+    /**
+     * Creates an instance of SkuCost class.
+     */
     public SkuCost() {
     }
 
     /**
      * Get the meterId property: Used for querying price from commerce.
-     *
+     * 
      * @return the meterId value.
      */
     public String meterId() {
@@ -43,7 +48,7 @@ public final class SkuCost {
 
     /**
      * Get the quantity property: The cost quantity.
-     *
+     * 
      * @return the quantity value.
      */
     public Long quantity() {
@@ -52,7 +57,7 @@ public final class SkuCost {
 
     /**
      * Get the extendedUnit property: Restriction of the SKU for the location/zone.
-     *
+     * 
      * @return the extendedUnit value.
      */
     public String extendedUnit() {
@@ -61,9 +66,48 @@ public final class SkuCost {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuCost from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuCost if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the SkuCost.
+     */
+    public static SkuCost fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuCost deserializedSkuCost = new SkuCost();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("meterId".equals(fieldName)) {
+                    deserializedSkuCost.meterId = reader.getString();
+                } else if ("quantity".equals(fieldName)) {
+                    deserializedSkuCost.quantity = reader.getNullable(JsonReader::getLong);
+                } else if ("extendedUnit".equals(fieldName)) {
+                    deserializedSkuCost.extendedUnit = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuCost;
+        });
     }
 }

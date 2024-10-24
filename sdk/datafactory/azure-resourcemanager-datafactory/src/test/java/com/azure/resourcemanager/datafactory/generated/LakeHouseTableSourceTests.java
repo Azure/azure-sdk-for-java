@@ -11,19 +11,19 @@ public final class LakeHouseTableSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LakeHouseTableSource model = BinaryData.fromString(
-            "{\"type\":\"LakeHouseTableSource\",\"timestampAsOf\":\"dataiwcgcwmshlpq\",\"versionAsOf\":\"dataxhdwjfxopzclka\",\"additionalColumns\":\"datauomga\",\"sourceRetryCount\":\"datac\",\"sourceRetryWait\":\"datajjfmzv\",\"maxConcurrentConnections\":\"databflyzc\",\"disableMetricsCollection\":\"datamlybsy\",\"\":{\"bt\":\"datanvtvbfpuml\"}}")
+            "{\"type\":\"LakeHouseTableSource\",\"timestampAsOf\":\"dataddwgozrdglkmgc\",\"versionAsOf\":\"datakrldfoidyhcwc\",\"additionalColumns\":\"datayuusexenywwkdxq\",\"sourceRetryCount\":\"dataysxpaap\",\"sourceRetryWait\":\"datahdqvcifwk\",\"maxConcurrentConnections\":\"dataytvxrtocadtnmqr\",\"disableMetricsCollection\":\"dataecjixcy\",\"\":{\"r\":\"dataii\",\"kvluuessu\":\"databt\",\"sfbkrtpu\":\"datazfrwmctrngjqc\"}}")
             .toObject(LakeHouseTableSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LakeHouseTableSource model = new LakeHouseTableSource().withSourceRetryCount("datac")
-            .withSourceRetryWait("datajjfmzv")
-            .withMaxConcurrentConnections("databflyzc")
-            .withDisableMetricsCollection("datamlybsy")
-            .withTimestampAsOf("dataiwcgcwmshlpq")
-            .withVersionAsOf("dataxhdwjfxopzclka")
-            .withAdditionalColumns("datauomga");
+        LakeHouseTableSource model = new LakeHouseTableSource().withSourceRetryCount("dataysxpaap")
+            .withSourceRetryWait("datahdqvcifwk")
+            .withMaxConcurrentConnections("dataytvxrtocadtnmqr")
+            .withDisableMetricsCollection("dataecjixcy")
+            .withTimestampAsOf("dataddwgozrdglkmgc")
+            .withVersionAsOf("datakrldfoidyhcwc")
+            .withAdditionalColumns("datayuusexenywwkdxq");
         model = BinaryData.fromObject(model).toObject(LakeHouseTableSource.class);
     }
 }

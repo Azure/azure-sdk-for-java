@@ -275,7 +275,7 @@ class VirtualMachineImpl
             .getVirtualMachines()
             .deallocateAsync(this.resourceGroupName(), this.name())
             // Refresh after deallocate to ensure the inner is updatable (due to a change in behavior in Managed Disks)
-            .map(aVoid -> this.refreshAsync())
+            .then(this.refreshAsync())
             .then();
     }
 
@@ -292,7 +292,7 @@ class VirtualMachineImpl
             .getVirtualMachines()
             .deallocateAsync(this.resourceGroupName(), this.name(), hibernate)
             // Refresh after deallocate to ensure the inner is updatable (due to a change in behavior in Managed Disks)
-            .map(aVoid -> this.refreshAsync())
+            .then(this.refreshAsync())
             .then();
     }
 
@@ -399,7 +399,7 @@ class VirtualMachineImpl
             .serviceClient()
             .getVirtualMachines()
             .convertToManagedDisksAsync(this.resourceGroupName(), this.name())
-            .flatMap(aVoid -> refreshAsync())
+            .then(refreshAsync())
             .then();
     }
 
@@ -1603,20 +1603,36 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl enableHibernation() {
-        if (this.innerModel().additionalCapabilities() == null) {
-            this.innerModel().withAdditionalCapabilities(new AdditionalCapabilities());
-        }
+        ensureAdditionalCapabilities();
         this.innerModel().additionalCapabilities().withHibernationEnabled(true);
         return this;
     }
 
     @Override
     public VirtualMachineImpl disableHibernation() {
+        ensureAdditionalCapabilities();
+        this.innerModel().additionalCapabilities().withHibernationEnabled(false);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl enableUltraSsd() {
+        ensureAdditionalCapabilities();
+        this.innerModel().additionalCapabilities().withUltraSsdEnabled(true);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl disableUltraSsd() {
+        ensureAdditionalCapabilities();
+        this.innerModel().additionalCapabilities().withUltraSsdEnabled(false);
+        return this;
+    }
+
+    public void ensureAdditionalCapabilities() {
         if (this.innerModel().additionalCapabilities() == null) {
             this.innerModel().withAdditionalCapabilities(new AdditionalCapabilities());
         }
-        this.innerModel().additionalCapabilities().withHibernationEnabled(false);
-        return this;
     }
 
     // GETTERS
@@ -1982,6 +1998,12 @@ class VirtualMachineImpl
     }
 
     @Override
+    public boolean isUltraSsdEnabled() {
+        return this.innerModel().additionalCapabilities() != null
+            && ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().additionalCapabilities().ultraSsdEnabled());
+    }
+
+    @Override
     public SecurityTypes securityType() {
         SecurityProfile securityProfile = this.innerModel().securityProfile();
         if (securityProfile == null) {
@@ -2175,6 +2197,9 @@ class VirtualMachineImpl
                 .serviceClient()
                 .getVirtualMachines()
                 .updateAsync(resourceGroupName(), vmName, updateParameter)
+                .onErrorResume(e -> refreshAsync()
+                        .onErrorComplete() // ignore refresh error
+                        .then(Mono.error(e)))
                 .map(
                     virtualMachineInner -> {
                         reset(virtualMachineInner);

@@ -15,23 +15,22 @@ public final class DataFlowReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataFlowReference model = BinaryData.fromString(
-            "{\"type\":\"DataFlowReference\",\"referenceName\":\"otz\",\"datasetParameters\":\"datad\",\"parameters\":{\"qiuasigrows\":\"datalgry\",\"equygdjboqgrmtq\":\"datac\",\"uawvcmjzk\":\"datakqevadrmmw\",\"zugamxzkrrcoiis\":\"dataiidisczskoswoqiq\"},\"\":{\"u\":\"datanppcce\",\"f\":\"datatdsbezax\",\"y\":\"datakzxuiz\"}}")
+            "{\"type\":\"DataFlowReference\",\"referenceName\":\"eqir\",\"datasetParameters\":\"datajclykcg\",\"parameters\":{\"punettepdjxq\":\"datapjlvczuoda\"},\"\":{\"uiylpc\":\"dataoy\",\"vesk\":\"dataaewse\",\"fn\":\"dataxegqphr\",\"bcbcpz\":\"datahctmjtsgh\"}}")
             .toObject(DataFlowReference.class);
         Assertions.assertEquals(DataFlowReferenceType.DATA_FLOW_REFERENCE, model.type());
-        Assertions.assertEquals("otz", model.referenceName());
+        Assertions.assertEquals("eqir", model.referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataFlowReference model = new DataFlowReference().withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
-            .withReferenceName("otz")
-            .withDatasetParameters("datad")
-            .withParameters(mapOf("qiuasigrows", "datalgry", "equygdjboqgrmtq", "datac", "uawvcmjzk", "datakqevadrmmw",
-                "zugamxzkrrcoiis", "dataiidisczskoswoqiq"))
+            .withReferenceName("eqir")
+            .withDatasetParameters("datajclykcg")
+            .withParameters(mapOf("punettepdjxq", "datapjlvczuoda"))
             .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(DataFlowReference.class);
         Assertions.assertEquals(DataFlowReferenceType.DATA_FLOW_REFERENCE, model.type());
-        Assertions.assertEquals("otz", model.referenceName());
+        Assertions.assertEquals("eqir", model.referenceName());
     }
 
     // Use "Map.of" if available

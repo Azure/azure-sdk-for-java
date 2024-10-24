@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.DhcpOptions;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
+import com.azure.resourcemanager.network.models.PrivateEndpointVNetPolicies;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkBgpCommunities;
 import com.azure.resourcemanager.network.models.VirtualNetworkEncryption;
@@ -46,14 +47,14 @@ public final class VirtualNetworkInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of VirtualNetworkInner class.
@@ -120,16 +121,6 @@ public final class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
      * 
      * @return the type value.
@@ -137,6 +128,16 @@ public final class VirtualNetworkInner extends Resource {
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -447,6 +448,30 @@ public final class VirtualNetworkInner extends Resource {
      */
     public List<FlowLogInner> flowLogs() {
         return this.innerProperties() == null ? null : this.innerProperties().flowLogs();
+    }
+
+    /**
+     * Get the privateEndpointVNetPolicies property: Private Endpoint VNet Policies.
+     * 
+     * @return the privateEndpointVNetPolicies value.
+     */
+    public PrivateEndpointVNetPolicies privateEndpointVNetPolicies() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointVNetPolicies();
+    }
+
+    /**
+     * Set the privateEndpointVNetPolicies property: Private Endpoint VNet Policies.
+     * 
+     * @param privateEndpointVNetPolicies the privateEndpointVNetPolicies value to set.
+     * @return the VirtualNetworkInner object itself.
+     */
+    public VirtualNetworkInner
+        withPrivateEndpointVNetPolicies(PrivateEndpointVNetPolicies privateEndpointVNetPolicies) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkPropertiesFormat();
+        }
+        this.innerProperties().withPrivateEndpointVNetPolicies(privateEndpointVNetPolicies);
+        return this;
     }
 
     /**

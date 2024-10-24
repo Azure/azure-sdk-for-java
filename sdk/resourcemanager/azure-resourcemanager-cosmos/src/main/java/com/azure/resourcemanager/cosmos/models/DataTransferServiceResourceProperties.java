@@ -31,14 +31,14 @@ public final class DataTransferServiceResourceProperties extends ServiceResource
     private List<DataTransferRegionalServiceResource> locations;
 
     /*
-     * Time of the last state change (ISO-8601 format).
-     */
-    private OffsetDateTime creationTime;
-
-    /*
      * Describes the status of a service.
      */
     private ServiceStatus status;
+
+    /*
+     * Time of the last state change (ISO-8601 format).
+     */
+    private OffsetDateTime creationTime;
 
     /**
      * Creates an instance of DataTransferServiceResourceProperties class.
@@ -66,16 +66,6 @@ public final class DataTransferServiceResourceProperties extends ServiceResource
     }
 
     /**
-     * Get the creationTime property: Time of the last state change (ISO-8601 format).
-     * 
-     * @return the creationTime value.
-     */
-    @Override
-    public OffsetDateTime creationTime() {
-        return this.creationTime;
-    }
-
-    /**
      * Get the status property: Describes the status of a service.
      * 
      * @return the status value.
@@ -83,6 +73,16 @@ public final class DataTransferServiceResourceProperties extends ServiceResource
     @Override
     public ServiceStatus status() {
         return this.status;
+    }
+
+    /**
+     * Get the creationTime property: Time of the last state change (ISO-8601 format).
+     * 
+     * @return the creationTime value.
+     */
+    @Override
+    public OffsetDateTime creationTime() {
+        return this.creationTime;
     }
 
     /**
@@ -110,7 +110,6 @@ public final class DataTransferServiceResourceProperties extends ServiceResource
      */
     @Override
     public void validate() {
-        super.validate();
         if (locations() != null) {
             locations().forEach(e -> e.validate());
         }

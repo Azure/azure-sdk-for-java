@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ssh username, password, and ssh public key. */
+/**
+ * The ssh username, password, and ssh public key.
+ */
 @Fluent
-public final class LinuxOperatingSystemProfile {
+public final class LinuxOperatingSystemProfile implements JsonSerializable<LinuxOperatingSystemProfile> {
     /*
      * The username.
      */
-    @JsonProperty(value = "username")
     private String username;
 
     /*
      * The password.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * The SSH profile.
      */
-    @JsonProperty(value = "sshProfile")
     private SshProfile sshProfile;
 
-    /** Creates an instance of LinuxOperatingSystemProfile class. */
+    /**
+     * Creates an instance of LinuxOperatingSystemProfile class.
+     */
     public LinuxOperatingSystemProfile() {
     }
 
     /**
      * Get the username property: The username.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -43,7 +48,7 @@ public final class LinuxOperatingSystemProfile {
 
     /**
      * Set the username property: The username.
-     *
+     * 
      * @param username the username value to set.
      * @return the LinuxOperatingSystemProfile object itself.
      */
@@ -54,7 +59,7 @@ public final class LinuxOperatingSystemProfile {
 
     /**
      * Get the password property: The password.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -63,7 +68,7 @@ public final class LinuxOperatingSystemProfile {
 
     /**
      * Set the password property: The password.
-     *
+     * 
      * @param password the password value to set.
      * @return the LinuxOperatingSystemProfile object itself.
      */
@@ -74,7 +79,7 @@ public final class LinuxOperatingSystemProfile {
 
     /**
      * Get the sshProfile property: The SSH profile.
-     *
+     * 
      * @return the sshProfile value.
      */
     public SshProfile sshProfile() {
@@ -83,7 +88,7 @@ public final class LinuxOperatingSystemProfile {
 
     /**
      * Set the sshProfile property: The SSH profile.
-     *
+     * 
      * @param sshProfile the sshProfile value to set.
      * @return the LinuxOperatingSystemProfile object itself.
      */
@@ -94,12 +99,54 @@ public final class LinuxOperatingSystemProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sshProfile() != null) {
             sshProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeJsonField("sshProfile", this.sshProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinuxOperatingSystemProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinuxOperatingSystemProfile if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinuxOperatingSystemProfile.
+     */
+    public static LinuxOperatingSystemProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinuxOperatingSystemProfile deserializedLinuxOperatingSystemProfile = new LinuxOperatingSystemProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("username".equals(fieldName)) {
+                    deserializedLinuxOperatingSystemProfile.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedLinuxOperatingSystemProfile.password = reader.getString();
+                } else if ("sshProfile".equals(fieldName)) {
+                    deserializedLinuxOperatingSystemProfile.sshProfile = SshProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinuxOperatingSystemProfile;
+        });
     }
 }

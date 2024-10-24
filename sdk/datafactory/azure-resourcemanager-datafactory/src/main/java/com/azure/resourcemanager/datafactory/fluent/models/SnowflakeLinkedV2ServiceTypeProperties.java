@@ -6,92 +6,84 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.azure.resourcemanager.datafactory.models.SnowflakeAuthenticationType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Snowflake linked service properties.
  */
 @Fluent
-public final class SnowflakeLinkedV2ServiceTypeProperties {
+public final class SnowflakeLinkedV2ServiceTypeProperties
+    implements JsonSerializable<SnowflakeLinkedV2ServiceTypeProperties> {
     /*
      * The account identifier of your Snowflake account, e.g. xy12345.east-us-2.azure
      */
-    @JsonProperty(value = "accountIdentifier", required = true)
     private Object accountIdentifier;
 
     /*
      * The name of the Snowflake user.
      */
-    @JsonProperty(value = "user")
     private Object user;
 
     /*
      * The Azure key vault secret reference of password in connection string.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
      * The name of the Snowflake database.
      */
-    @JsonProperty(value = "database", required = true)
     private Object database;
 
     /*
      * The name of the Snowflake warehouse.
      */
-    @JsonProperty(value = "warehouse", required = true)
     private Object warehouse;
 
     /*
      * The type used for authentication. Type: string.
      */
-    @JsonProperty(value = "authenticationType")
     private SnowflakeAuthenticationType authenticationType;
 
     /*
      * The client ID of the application registered in Azure Active Directory for AADServicePrincipal authentication.
      */
-    @JsonProperty(value = "clientId")
     private Object clientId;
 
     /*
      * The Azure key vault secret reference of client secret for AADServicePrincipal authentication.
      */
-    @JsonProperty(value = "clientSecret")
     private SecretBase clientSecret;
 
     /*
      * The tenant ID of the application registered in Azure Active Directory for AADServicePrincipal authentication.
      */
-    @JsonProperty(value = "tenantId")
     private Object tenantId;
 
     /*
      * The scope of the application registered in Azure Active Directory for AADServicePrincipal authentication.
      */
-    @JsonProperty(value = "scope")
     private Object scope;
 
     /*
      * The Azure key vault secret reference of privateKey for KeyPair auth.
      */
-    @JsonProperty(value = "privateKey")
     private SecretBase privateKey;
 
     /*
      * The Azure key vault secret reference of private key password for KeyPair auth with encrypted private key.
      */
-    @JsonProperty(value = "privateKeyPassphrase")
     private SecretBase privateKeyPassphrase;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -411,4 +403,81 @@ public final class SnowflakeLinkedV2ServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SnowflakeLinkedV2ServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("accountIdentifier", this.accountIdentifier);
+        jsonWriter.writeUntypedField("database", this.database);
+        jsonWriter.writeUntypedField("warehouse", this.warehouse);
+        jsonWriter.writeUntypedField("user", this.user);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        jsonWriter.writeUntypedField("clientId", this.clientId);
+        jsonWriter.writeJsonField("clientSecret", this.clientSecret);
+        jsonWriter.writeUntypedField("tenantId", this.tenantId);
+        jsonWriter.writeUntypedField("scope", this.scope);
+        jsonWriter.writeJsonField("privateKey", this.privateKey);
+        jsonWriter.writeJsonField("privateKeyPassphrase", this.privateKeyPassphrase);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnowflakeLinkedV2ServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnowflakeLinkedV2ServiceTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SnowflakeLinkedV2ServiceTypeProperties.
+     */
+    public static SnowflakeLinkedV2ServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SnowflakeLinkedV2ServiceTypeProperties deserializedSnowflakeLinkedV2ServiceTypeProperties
+                = new SnowflakeLinkedV2ServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountIdentifier".equals(fieldName)) {
+                    deserializedSnowflakeLinkedV2ServiceTypeProperties.accountIdentifier = reader.readUntyped();
+                } else if ("database".equals(fieldName)) {
+                    deserializedSnowflakeLinkedV2ServiceTypeProperties.database = reader.readUntyped();
+                } else if ("warehouse".equals(fieldName)) {
+                    deserializedSnowflakeLinkedV2ServiceTypeProperties.warehouse = reader.readUntyped();
+                } else if ("user".equals(fieldName)) {
+                    deserializedSnowflakeLinkedV2ServiceTypeProperties.user = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedSnowflakeLinkedV2ServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedSnowflakeLinkedV2ServiceTypeProperties.authenticationType
+                        = SnowflakeAuthenticationType.fromString(reader.getString());
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedSnowflakeLinkedV2ServiceTypeProperties.clientId = reader.readUntyped();
+                } else if ("clientSecret".equals(fieldName)) {
+                    deserializedSnowflakeLinkedV2ServiceTypeProperties.clientSecret = SecretBase.fromJson(reader);
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedSnowflakeLinkedV2ServiceTypeProperties.tenantId = reader.readUntyped();
+                } else if ("scope".equals(fieldName)) {
+                    deserializedSnowflakeLinkedV2ServiceTypeProperties.scope = reader.readUntyped();
+                } else if ("privateKey".equals(fieldName)) {
+                    deserializedSnowflakeLinkedV2ServiceTypeProperties.privateKey = SecretBase.fromJson(reader);
+                } else if ("privateKeyPassphrase".equals(fieldName)) {
+                    deserializedSnowflakeLinkedV2ServiceTypeProperties.privateKeyPassphrase
+                        = SecretBase.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedSnowflakeLinkedV2ServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSnowflakeLinkedV2ServiceTypeProperties;
+        });
+    }
 }

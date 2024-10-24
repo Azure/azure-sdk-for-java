@@ -34,8 +34,7 @@ import java.util.List;
  *
  * <!-- src_embed com.azure.identity.credential.intellijcredential.construct -->
  * <pre>
- * TokenCredential intelliJCredential = new IntelliJCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential intelliJCredential = new IntelliJCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.intellijcredential.construct -->
  *
@@ -77,7 +76,10 @@ public class IntelliJCredentialBuilder extends CredentialBuilderBase<VisualStudi
      * @param databasePath the path to the KeePass database.
      * @throws IllegalArgumentException if {@code databasePath} is either not specified or is empty.
      * @return An updated instance of this builder with the KeePass database path set as specified.
+     * @deprecated Support for older Azure Toolkit for IntelliJ versions was
+     * <a href="https://aka.ms/azsdk/java/identity/intellij-credential-update">removed in 1.14.0.</a>
      */
+    @Deprecated
     public IntelliJCredentialBuilder keePassDatabasePath(String databasePath) {
         if (CoreUtils.isNullOrEmpty(databasePath)) {
             throw LOGGER.logExceptionAsError(

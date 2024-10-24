@@ -6,91 +6,87 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The X12 agreement protocol settings. */
+/**
+ * The X12 agreement protocol settings.
+ */
 @Fluent
-public final class X12ProtocolSettings {
+public final class X12ProtocolSettings implements JsonSerializable<X12ProtocolSettings> {
     /*
      * The X12 validation settings.
      */
-    @JsonProperty(value = "validationSettings", required = true)
     private X12ValidationSettings validationSettings;
 
     /*
      * The X12 framing settings.
      */
-    @JsonProperty(value = "framingSettings", required = true)
     private X12FramingSettings framingSettings;
 
     /*
      * The X12 envelope settings.
      */
-    @JsonProperty(value = "envelopeSettings", required = true)
     private X12EnvelopeSettings envelopeSettings;
 
     /*
      * The X12 acknowledgment settings.
      */
-    @JsonProperty(value = "acknowledgementSettings", required = true)
     private X12AcknowledgementSettings acknowledgementSettings;
 
     /*
      * The X12 message filter.
      */
-    @JsonProperty(value = "messageFilter", required = true)
     private X12MessageFilter messageFilter;
 
     /*
      * The X12 security settings.
      */
-    @JsonProperty(value = "securitySettings", required = true)
     private X12SecuritySettings securitySettings;
 
     /*
      * The X12 processing settings.
      */
-    @JsonProperty(value = "processingSettings", required = true)
     private X12ProcessingSettings processingSettings;
 
     /*
      * The X12 envelope override settings.
      */
-    @JsonProperty(value = "envelopeOverrides")
     private List<X12EnvelopeOverride> envelopeOverrides;
 
     /*
      * The X12 validation override settings.
      */
-    @JsonProperty(value = "validationOverrides")
     private List<X12ValidationOverride> validationOverrides;
 
     /*
      * The X12 message filter list.
      */
-    @JsonProperty(value = "messageFilterList")
     private List<X12MessageIdentifier> messageFilterList;
 
     /*
      * The X12 schema references.
      */
-    @JsonProperty(value = "schemaReferences", required = true)
     private List<X12SchemaReference> schemaReferences;
 
     /*
      * The X12 delimiter override settings.
      */
-    @JsonProperty(value = "x12DelimiterOverrides")
     private List<X12DelimiterOverrides> x12DelimiterOverrides;
 
-    /** Creates an instance of X12ProtocolSettings class. */
+    /**
+     * Creates an instance of X12ProtocolSettings class.
+     */
     public X12ProtocolSettings() {
     }
 
     /**
      * Get the validationSettings property: The X12 validation settings.
-     *
+     * 
      * @return the validationSettings value.
      */
     public X12ValidationSettings validationSettings() {
@@ -99,7 +95,7 @@ public final class X12ProtocolSettings {
 
     /**
      * Set the validationSettings property: The X12 validation settings.
-     *
+     * 
      * @param validationSettings the validationSettings value to set.
      * @return the X12ProtocolSettings object itself.
      */
@@ -110,7 +106,7 @@ public final class X12ProtocolSettings {
 
     /**
      * Get the framingSettings property: The X12 framing settings.
-     *
+     * 
      * @return the framingSettings value.
      */
     public X12FramingSettings framingSettings() {
@@ -119,7 +115,7 @@ public final class X12ProtocolSettings {
 
     /**
      * Set the framingSettings property: The X12 framing settings.
-     *
+     * 
      * @param framingSettings the framingSettings value to set.
      * @return the X12ProtocolSettings object itself.
      */
@@ -130,7 +126,7 @@ public final class X12ProtocolSettings {
 
     /**
      * Get the envelopeSettings property: The X12 envelope settings.
-     *
+     * 
      * @return the envelopeSettings value.
      */
     public X12EnvelopeSettings envelopeSettings() {
@@ -139,7 +135,7 @@ public final class X12ProtocolSettings {
 
     /**
      * Set the envelopeSettings property: The X12 envelope settings.
-     *
+     * 
      * @param envelopeSettings the envelopeSettings value to set.
      * @return the X12ProtocolSettings object itself.
      */
@@ -150,7 +146,7 @@ public final class X12ProtocolSettings {
 
     /**
      * Get the acknowledgementSettings property: The X12 acknowledgment settings.
-     *
+     * 
      * @return the acknowledgementSettings value.
      */
     public X12AcknowledgementSettings acknowledgementSettings() {
@@ -159,7 +155,7 @@ public final class X12ProtocolSettings {
 
     /**
      * Set the acknowledgementSettings property: The X12 acknowledgment settings.
-     *
+     * 
      * @param acknowledgementSettings the acknowledgementSettings value to set.
      * @return the X12ProtocolSettings object itself.
      */
@@ -170,7 +166,7 @@ public final class X12ProtocolSettings {
 
     /**
      * Get the messageFilter property: The X12 message filter.
-     *
+     * 
      * @return the messageFilter value.
      */
     public X12MessageFilter messageFilter() {
@@ -179,7 +175,7 @@ public final class X12ProtocolSettings {
 
     /**
      * Set the messageFilter property: The X12 message filter.
-     *
+     * 
      * @param messageFilter the messageFilter value to set.
      * @return the X12ProtocolSettings object itself.
      */
@@ -190,7 +186,7 @@ public final class X12ProtocolSettings {
 
     /**
      * Get the securitySettings property: The X12 security settings.
-     *
+     * 
      * @return the securitySettings value.
      */
     public X12SecuritySettings securitySettings() {
@@ -199,7 +195,7 @@ public final class X12ProtocolSettings {
 
     /**
      * Set the securitySettings property: The X12 security settings.
-     *
+     * 
      * @param securitySettings the securitySettings value to set.
      * @return the X12ProtocolSettings object itself.
      */
@@ -210,7 +206,7 @@ public final class X12ProtocolSettings {
 
     /**
      * Get the processingSettings property: The X12 processing settings.
-     *
+     * 
      * @return the processingSettings value.
      */
     public X12ProcessingSettings processingSettings() {
@@ -219,7 +215,7 @@ public final class X12ProtocolSettings {
 
     /**
      * Set the processingSettings property: The X12 processing settings.
-     *
+     * 
      * @param processingSettings the processingSettings value to set.
      * @return the X12ProtocolSettings object itself.
      */
@@ -230,7 +226,7 @@ public final class X12ProtocolSettings {
 
     /**
      * Get the envelopeOverrides property: The X12 envelope override settings.
-     *
+     * 
      * @return the envelopeOverrides value.
      */
     public List<X12EnvelopeOverride> envelopeOverrides() {
@@ -239,7 +235,7 @@ public final class X12ProtocolSettings {
 
     /**
      * Set the envelopeOverrides property: The X12 envelope override settings.
-     *
+     * 
      * @param envelopeOverrides the envelopeOverrides value to set.
      * @return the X12ProtocolSettings object itself.
      */
@@ -250,7 +246,7 @@ public final class X12ProtocolSettings {
 
     /**
      * Get the validationOverrides property: The X12 validation override settings.
-     *
+     * 
      * @return the validationOverrides value.
      */
     public List<X12ValidationOverride> validationOverrides() {
@@ -259,7 +255,7 @@ public final class X12ProtocolSettings {
 
     /**
      * Set the validationOverrides property: The X12 validation override settings.
-     *
+     * 
      * @param validationOverrides the validationOverrides value to set.
      * @return the X12ProtocolSettings object itself.
      */
@@ -270,7 +266,7 @@ public final class X12ProtocolSettings {
 
     /**
      * Get the messageFilterList property: The X12 message filter list.
-     *
+     * 
      * @return the messageFilterList value.
      */
     public List<X12MessageIdentifier> messageFilterList() {
@@ -279,7 +275,7 @@ public final class X12ProtocolSettings {
 
     /**
      * Set the messageFilterList property: The X12 message filter list.
-     *
+     * 
      * @param messageFilterList the messageFilterList value to set.
      * @return the X12ProtocolSettings object itself.
      */
@@ -290,7 +286,7 @@ public final class X12ProtocolSettings {
 
     /**
      * Get the schemaReferences property: The X12 schema references.
-     *
+     * 
      * @return the schemaReferences value.
      */
     public List<X12SchemaReference> schemaReferences() {
@@ -299,7 +295,7 @@ public final class X12ProtocolSettings {
 
     /**
      * Set the schemaReferences property: The X12 schema references.
-     *
+     * 
      * @param schemaReferences the schemaReferences value to set.
      * @return the X12ProtocolSettings object itself.
      */
@@ -310,7 +306,7 @@ public final class X12ProtocolSettings {
 
     /**
      * Get the x12DelimiterOverrides property: The X12 delimiter override settings.
-     *
+     * 
      * @return the x12DelimiterOverrides value.
      */
     public List<X12DelimiterOverrides> x12DelimiterOverrides() {
@@ -319,7 +315,7 @@ public final class X12ProtocolSettings {
 
     /**
      * Set the x12DelimiterOverrides property: The X12 delimiter override settings.
-     *
+     * 
      * @param x12DelimiterOverrides the x12DelimiterOverrides value to set.
      * @return the X12ProtocolSettings object itself.
      */
@@ -330,63 +326,56 @@ public final class X12ProtocolSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (validationSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property validationSettings in model X12ProtocolSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property validationSettings in model X12ProtocolSettings"));
         } else {
             validationSettings().validate();
         }
         if (framingSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property framingSettings in model X12ProtocolSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property framingSettings in model X12ProtocolSettings"));
         } else {
             framingSettings().validate();
         }
         if (envelopeSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property envelopeSettings in model X12ProtocolSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property envelopeSettings in model X12ProtocolSettings"));
         } else {
             envelopeSettings().validate();
         }
         if (acknowledgementSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property acknowledgementSettings in model X12ProtocolSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property acknowledgementSettings in model X12ProtocolSettings"));
         } else {
             acknowledgementSettings().validate();
         }
         if (messageFilter() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property messageFilter in model X12ProtocolSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property messageFilter in model X12ProtocolSettings"));
         } else {
             messageFilter().validate();
         }
         if (securitySettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property securitySettings in model X12ProtocolSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property securitySettings in model X12ProtocolSettings"));
         } else {
             securitySettings().validate();
         }
         if (processingSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property processingSettings in model X12ProtocolSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property processingSettings in model X12ProtocolSettings"));
         } else {
             processingSettings().validate();
         }
@@ -400,10 +389,9 @@ public final class X12ProtocolSettings {
             messageFilterList().forEach(e -> e.validate());
         }
         if (schemaReferences() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property schemaReferences in model X12ProtocolSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property schemaReferences in model X12ProtocolSettings"));
         } else {
             schemaReferences().forEach(e -> e.validate());
         }
@@ -413,4 +401,90 @@ public final class X12ProtocolSettings {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(X12ProtocolSettings.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("validationSettings", this.validationSettings);
+        jsonWriter.writeJsonField("framingSettings", this.framingSettings);
+        jsonWriter.writeJsonField("envelopeSettings", this.envelopeSettings);
+        jsonWriter.writeJsonField("acknowledgementSettings", this.acknowledgementSettings);
+        jsonWriter.writeJsonField("messageFilter", this.messageFilter);
+        jsonWriter.writeJsonField("securitySettings", this.securitySettings);
+        jsonWriter.writeJsonField("processingSettings", this.processingSettings);
+        jsonWriter.writeArrayField("schemaReferences", this.schemaReferences,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("envelopeOverrides", this.envelopeOverrides,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("validationOverrides", this.validationOverrides,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("messageFilterList", this.messageFilterList,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("x12DelimiterOverrides", this.x12DelimiterOverrides,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of X12ProtocolSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of X12ProtocolSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the X12ProtocolSettings.
+     */
+    public static X12ProtocolSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            X12ProtocolSettings deserializedX12ProtocolSettings = new X12ProtocolSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("validationSettings".equals(fieldName)) {
+                    deserializedX12ProtocolSettings.validationSettings = X12ValidationSettings.fromJson(reader);
+                } else if ("framingSettings".equals(fieldName)) {
+                    deserializedX12ProtocolSettings.framingSettings = X12FramingSettings.fromJson(reader);
+                } else if ("envelopeSettings".equals(fieldName)) {
+                    deserializedX12ProtocolSettings.envelopeSettings = X12EnvelopeSettings.fromJson(reader);
+                } else if ("acknowledgementSettings".equals(fieldName)) {
+                    deserializedX12ProtocolSettings.acknowledgementSettings
+                        = X12AcknowledgementSettings.fromJson(reader);
+                } else if ("messageFilter".equals(fieldName)) {
+                    deserializedX12ProtocolSettings.messageFilter = X12MessageFilter.fromJson(reader);
+                } else if ("securitySettings".equals(fieldName)) {
+                    deserializedX12ProtocolSettings.securitySettings = X12SecuritySettings.fromJson(reader);
+                } else if ("processingSettings".equals(fieldName)) {
+                    deserializedX12ProtocolSettings.processingSettings = X12ProcessingSettings.fromJson(reader);
+                } else if ("schemaReferences".equals(fieldName)) {
+                    List<X12SchemaReference> schemaReferences
+                        = reader.readArray(reader1 -> X12SchemaReference.fromJson(reader1));
+                    deserializedX12ProtocolSettings.schemaReferences = schemaReferences;
+                } else if ("envelopeOverrides".equals(fieldName)) {
+                    List<X12EnvelopeOverride> envelopeOverrides
+                        = reader.readArray(reader1 -> X12EnvelopeOverride.fromJson(reader1));
+                    deserializedX12ProtocolSettings.envelopeOverrides = envelopeOverrides;
+                } else if ("validationOverrides".equals(fieldName)) {
+                    List<X12ValidationOverride> validationOverrides
+                        = reader.readArray(reader1 -> X12ValidationOverride.fromJson(reader1));
+                    deserializedX12ProtocolSettings.validationOverrides = validationOverrides;
+                } else if ("messageFilterList".equals(fieldName)) {
+                    List<X12MessageIdentifier> messageFilterList
+                        = reader.readArray(reader1 -> X12MessageIdentifier.fromJson(reader1));
+                    deserializedX12ProtocolSettings.messageFilterList = messageFilterList;
+                } else if ("x12DelimiterOverrides".equals(fieldName)) {
+                    List<X12DelimiterOverrides> x12DelimiterOverrides
+                        = reader.readArray(reader1 -> X12DelimiterOverrides.fromJson(reader1));
+                    deserializedX12ProtocolSettings.x12DelimiterOverrides = x12DelimiterOverrides;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedX12ProtocolSettings;
+        });
+    }
 }

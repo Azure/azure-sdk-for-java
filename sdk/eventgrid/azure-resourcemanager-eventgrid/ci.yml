@@ -35,7 +35,6 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: eventgrid
-    JavadocSafeJavaBuildVersion: '1.21'
     Artifacts:
       - name: azure-resourcemanager-eventgrid
         groupId: com.azure.resourcemanager

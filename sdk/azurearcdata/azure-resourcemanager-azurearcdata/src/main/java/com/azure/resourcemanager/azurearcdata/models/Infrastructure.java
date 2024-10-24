@@ -4,30 +4,43 @@
 
 package com.azure.resourcemanager.azurearcdata.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The infrastructure the data controller is running on. */
+/**
+ * The infrastructure the data controller is running on.
+ */
 public enum Infrastructure {
-    /** Enum value azure. */
+    /**
+     * Enum value azure.
+     */
     AZURE("azure"),
 
-    /** Enum value gcp. */
+    /**
+     * Enum value gcp.
+     */
     GCP("gcp"),
 
-    /** Enum value aws. */
+    /**
+     * Enum value aws.
+     */
     AWS("aws"),
 
-    /** Enum value alibaba. */
+    /**
+     * Enum value alibaba.
+     */
     ALIBABA("alibaba"),
 
-    /** Enum value onpremises. */
+    /**
+     * Enum value onpremises.
+     */
     ONPREMISES("onpremises"),
 
-    /** Enum value other. */
+    /**
+     * Enum value other.
+     */
     OTHER("other");
 
-    /** The actual serialized value for a Infrastructure instance. */
+    /**
+     * The actual serialized value for a Infrastructure instance.
+     */
     private final String value;
 
     Infrastructure(String value) {
@@ -36,11 +49,10 @@ public enum Infrastructure {
 
     /**
      * Parses a serialized value to a Infrastructure instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed Infrastructure object, or null if unable to parse.
      */
-    @JsonCreator
     public static Infrastructure fromString(String value) {
         if (value == null) {
             return null;
@@ -54,8 +66,9 @@ public enum Infrastructure {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

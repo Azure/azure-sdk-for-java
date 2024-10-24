@@ -19,10 +19,15 @@ public class OpenAICustomizations extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         // remove unused class (no reference to them, after partial-update)
-        customization.getRawEditor().removeFile("src/main/java/com/azure/ai/openai/models/FileDetails.java");
-        customization.getRawEditor().removeFile("src/main/java/com/azure/ai/openai/implementation/MultipartFormDataHelper.java");
+        removeMultipartFormDataFiles(customization, logger);
         customizeEmbeddingEncodingFormatClass(customization, logger);
         customizeEmbeddingsOptions(customization, logger);
+    }
+
+    private void removeMultipartFormDataFiles(LibraryCustomization customization, Logger logger) {
+        logger.info("Removing FileDetails and MultipartFormDataHelper classes");
+        customization.getRawEditor().removeFile("src/main/java/com/azure/ai/openai/models/FileDetails.java");
+        customization.getRawEditor().removeFile("src/main/java/com/azure/ai/openai/implementation/MultipartFormDataHelper.java");
     }
 
     private void customizeEmbeddingEncodingFormatClass(LibraryCustomization customization, Logger logger) {

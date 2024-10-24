@@ -6,73 +6,44 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.ModelVersion;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ModelVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"flavors\":{\"wcaicd\":{\"data\":{\"aptexzylqhew\":\"suyqvmxnavxzp\",\"wggmitdwolfmfaz\":\"cchexczrmyn\"}},\"nyhivhyujqxyfb\":{\"data\":{\"wohddli\":\"tzf\",\"evuuk\":\"kkosqpliegemtnb\",\"tlrbzqtu\":\"diksncrz\",\"ftohdlpcixpx\":\"gajfa\"}},\"mcivhwwhyej\":{\"data\":{\"ohgcnr\":\"ylayabrdnovuduww\"}},\"dispasxwiicfsbj\":{\"data\":{\"fsqbcfqaqoveqowq\":\"dfcfyzwkmr\"}}},\"modelType\":\"adndowkxq\",\"modelUri\":\"sax\",\"jobName\":\"ieehpvqfifrr\",\"provisioningState\":\"Deleting\",\"stage\":\"gjgyovcpgqiism\",\"isArchived\":false,\"isAnonymous\":false,\"description\":\"oykrbk\",\"tags\":{\"mtrhwwdfncquty\":\"cmjkron\",\"mepbmogtfpksk\":\"zhzlvkmirnvdbza\",\"rlyynkgnychu\":\"syoh\",\"oeodgnu\":\"hngwtbhjgli\"},\"properties\":{\"mfixtyavv\":\"fgtw\",\"o\":\"xjqdj\"}},\"id\":\"gegwxjgkrppmvno\",\"name\":\"t\",\"type\":\"qciqawhkdk\"}";
 
-        String responseStr =
-            "{\"properties\":{\"flavors\":{},\"jobName\":\"yrkqa\",\"modelType\":\"fajfreprfvmki\",\"modelUri\":\"teyrqshi\",\"isAnonymous\":false,\"isArchived\":true,\"description\":\"pylblfsprrwc\",\"properties\":{\"rdytzfslxizhq\":\"mtcvvf\",\"cdiiisklbonx\":\"kmgobliqe\"},\"tags\":{\"wkosnyxigf\":\"jxvtrkfkgenjqnnp\",\"kwopswnyinxupr\":\"ujjcxgdqmrlhn\",\"uekdcpvu\":\"xyxwjezbfqplo\"}},\"id\":\"rsvjmnsvujnjktv\",\"name\":\"lefcjis\",\"type\":\"pkdbx\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MachineLearningManager manager = MachineLearningManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ModelVersion response = manager.modelVersions()
+            .getWithResponse("j", "fkjd", "lqtqjabwtk", "jytvq", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        MachineLearningManager manager =
-            MachineLearningManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ModelVersion response =
-            manager
-                .modelVersions()
-                .getWithResponse(
-                    "jqyowaadc", "dazabundtse", "kaupwhlz", "ckremgjlmsvdorsi", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("pylblfsprrwc", response.properties().description());
-        Assertions.assertEquals("mtcvvf", response.properties().properties().get("rdytzfslxizhq"));
-        Assertions.assertEquals("jxvtrkfkgenjqnnp", response.properties().tags().get("wkosnyxigf"));
+        Assertions.assertEquals("oykrbk", response.properties().description());
+        Assertions.assertEquals("cmjkron", response.properties().tags().get("mtrhwwdfncquty"));
+        Assertions.assertEquals("fgtw", response.properties().properties().get("mfixtyavv"));
+        Assertions.assertEquals(false, response.properties().isArchived());
         Assertions.assertEquals(false, response.properties().isAnonymous());
-        Assertions.assertEquals(true, response.properties().isArchived());
-        Assertions.assertEquals("yrkqa", response.properties().jobName());
-        Assertions.assertEquals("fajfreprfvmki", response.properties().modelType());
-        Assertions.assertEquals("teyrqshi", response.properties().modelUri());
+        Assertions.assertEquals("suyqvmxnavxzp",
+            response.properties().flavors().get("wcaicd").data().get("aptexzylqhew"));
+        Assertions.assertEquals("adndowkxq", response.properties().modelType());
+        Assertions.assertEquals("sax", response.properties().modelUri());
+        Assertions.assertEquals("ieehpvqfifrr", response.properties().jobName());
+        Assertions.assertEquals("gjgyovcpgqiism", response.properties().stage());
     }
 }

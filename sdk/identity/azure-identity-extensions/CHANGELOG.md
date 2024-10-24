@@ -2,14 +2,11 @@
 
 ## 1.2.0-beta.2 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded `mysql-connector-j` from `8.0.33` to version `9.0.0`.
 
 ## 1.1.17 (2024-06-25)
 

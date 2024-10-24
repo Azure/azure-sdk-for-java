@@ -4,22 +4,26 @@
 package com.azure.perf.test.core;
 
 import com.beust.jcommander.JCommander;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.TreeMap;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 /**
@@ -112,14 +116,7 @@ public class PerfStressProgram {
      */
     public static void run(Class<?> testClass, PerfStressOptions options) {
         System.out.println("=== Options ===");
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
-            mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
-            mapper.writeValue(System.out, options);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        printOptions(options);
 
         System.out.println();
         System.out.println();
@@ -163,7 +160,10 @@ public class PerfStressProgram {
                 }
 
                 if (options.getWarmup() > 0) {
-                    runTests(tests, options.isSync(), options.getParallel(), options.getWarmup(), "Warmup");
+                    runTests(tests, options.isSync(), options.isCompletableFuture(), options.isExecutorService(),
+                        options.isVirtualThread(),
+                        options.getParallel(),
+                        options.getWarmup(), "Warmup");
                 }
 
                 for (int i = 0; i < options.getIterations(); i++) {
@@ -171,7 +171,8 @@ public class PerfStressProgram {
                     if (options.getIterations() > 1) {
                         title += " " + (i + 1);
                     }
-                    runTests(tests, options.isSync(), options.getParallel(), options.getDuration(), title);
+                    runTests(tests, options.isSync(), options.isCompletableFuture(), options.isExecutorService(),
+                        startedPlayback, options.getParallel(), options.getDuration(), title);
                 }
             } finally {
                 try {
@@ -209,18 +210,70 @@ public class PerfStressProgram {
         }
     }
 
+    private static void printOptions(PerfStressOptions options) {
+        try {
+            Map<String, Object> parameters = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+            for (Method method : options.getClass().getMethods()) {
+                String methodName = method.getName();
+                if ((!methodName.startsWith("get") && !methodName.startsWith("is"))
+                    || methodName.equals("getClass")) {
+                    continue;
+                }
+
+                String parameterName = convertMethodName(methodName);
+                parameters.put(parameterName, method.invoke(options));
+            }
+
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append('{').append(System.lineSeparator());
+            AtomicBoolean first = new AtomicBoolean(true);
+            parameters.forEach((key, value) -> writeKeyValue(key, value, stringBuilder, first));
+            stringBuilder.append(System.lineSeparator()).append('}');
+            System.out.println(stringBuilder);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static String convertMethodName(String methodName) {
+        return methodName.startsWith("is")
+            ? Character.toLowerCase(methodName.charAt(2)) + methodName.substring(3)
+            : Character.toLowerCase(methodName.charAt(3)) + methodName.substring(4);
+    }
+
+    private static void writeKeyValue(String key, Object value, StringBuilder sb, AtomicBoolean first) {
+        if (!first.get()) {
+            sb.append(',').append(System.lineSeparator());
+        }
+
+        sb.append("  ").append(key);
+        if (value instanceof String) {
+            sb.append(": \"").append(value).append('"');
+        } else {
+            sb.append(": ").append(value);
+        }
+
+        first.set(false);
+    }
+
     /**
      * Runs the performance tests passed to be executed.
      *
      * @param tests the performance tests to be executed.
      * @param sync indicate if synchronous test should be run.
+     * @param completableFuture indicate if completable future test should be run.
+     * @param executorService indicate if executor service test should be run.
+     * @param virtualThread indicate if virtual thread test should be run.
      * @param parallel the number of parallel threads to run the performance test on.
      * @param durationSeconds the duration for which performance test should be run on.
      * @param title the title of the performance tests.
+     *
      * @throws RuntimeException if the execution fails.
      * @throws IllegalStateException if zero operations completed of the performance test.
      */
-    public static void runTests(PerfTestBase<?>[] tests, boolean sync, int parallel, int durationSeconds, String title) {
+    public static void runTests(PerfTestBase<?>[] tests, boolean sync, boolean completableFuture,
+                                boolean executorService, boolean virtualThread, int parallel, int durationSeconds,
+                                String title) {
 
         long endNanoTime = System.nanoTime() + ((long) durationSeconds * 1000000000);
 
@@ -249,6 +302,37 @@ public class PerfStressProgram {
                 forkJoinPool.invokeAll(operations);
 
                 forkJoinPool.awaitQuiescence(durationSeconds + 1, TimeUnit.SECONDS);
+            } else if (completableFuture) {
+                List<CompletableFuture<Void>> futures = new LinkedList<>();
+                for (PerfTestBase<?> test : tests) {
+                    futures.add(test.runAllAsyncWithCompletableFuture(endNanoTime));
+                }
+                CompletableFuture<Void> allFutures =
+                    CompletableFuture.allOf(futures.toArray(new CompletableFuture<?>[0]));
+                allFutures.get(); // Wait for all futures to complete
+            } else if (executorService) {
+                // when updated to concurrentTaskLimit, the performance drops?
+                ExecutorService executor = Executors.newFixedThreadPool(tests.length);
+                try {
+                    for (PerfTestBase<?> test : tests) {
+                        Runnable task = test.runAllAsyncWithExecutorService(endNanoTime);
+                        executor.submit(task);
+                    }
+                } finally {
+                    executor.shutdown();
+                    try {
+                        if (!executor.awaitTermination(durationSeconds + 1, TimeUnit.SECONDS)) {
+                            executor.shutdownNow();
+                        }
+                    } catch (InterruptedException e) {
+                        executor.shutdownNow();
+                        Thread.currentThread().interrupt();
+                    }
+                }
+            } else if (virtualThread) {
+                for (PerfTestBase<?> test : tests) {
+                    test.runAllAsyncWithVirtualThread(endNanoTime);
+                }
             } else {
                 // Exceptions like OutOfMemoryError are handled differently by the default Reactor schedulers. Instead of terminating the
                 // Flux, the Flux will hang and the exception is only sent to the thread's uncaughtExceptionHandler and the Reactor

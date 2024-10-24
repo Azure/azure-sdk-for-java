@@ -112,22 +112,18 @@ public final class FluidRelayServerImpl
     }
 
     public FluidRelayServer create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFluidRelayServers()
-                .createOrUpdateWithResponse(resourceGroup, fluidRelayServerName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFluidRelayServers()
+            .createOrUpdateWithResponse(resourceGroup, fluidRelayServerName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public FluidRelayServer create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFluidRelayServers()
-                .createOrUpdateWithResponse(resourceGroup, fluidRelayServerName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFluidRelayServers()
+            .createOrUpdateWithResponse(resourceGroup, fluidRelayServerName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -143,69 +139,60 @@ public final class FluidRelayServerImpl
     }
 
     public FluidRelayServer apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFluidRelayServers()
-                .updateWithResponse(resourceGroup, fluidRelayServerName, updateResource, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFluidRelayServers()
+            .updateWithResponse(resourceGroup, fluidRelayServerName, updateResource, Context.NONE)
+            .getValue();
         return this;
     }
 
     public FluidRelayServer apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFluidRelayServers()
-                .updateWithResponse(resourceGroup, fluidRelayServerName, updateResource, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFluidRelayServers()
+            .updateWithResponse(resourceGroup, fluidRelayServerName, updateResource, context)
+            .getValue();
         return this;
     }
 
-    FluidRelayServerImpl(
-        FluidRelayServerInner innerObject, com.azure.resourcemanager.fluidrelay.FluidRelayManager serviceManager) {
+    FluidRelayServerImpl(FluidRelayServerInner innerObject,
+        com.azure.resourcemanager.fluidrelay.FluidRelayManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroup = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.fluidRelayServerName = Utils.getValueFromIdByName(innerObject.id(), "fluidRelayServers");
+        this.resourceGroup = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.fluidRelayServerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "fluidRelayServers");
     }
 
     public FluidRelayServer refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFluidRelayServers()
-                .getByResourceGroupWithResponse(resourceGroup, fluidRelayServerName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFluidRelayServers()
+            .getByResourceGroupWithResponse(resourceGroup, fluidRelayServerName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public FluidRelayServer refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFluidRelayServers()
-                .getByResourceGroupWithResponse(resourceGroup, fluidRelayServerName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFluidRelayServers()
+            .getByResourceGroupWithResponse(resourceGroup, fluidRelayServerName, context)
+            .getValue();
         return this;
+    }
+
+    public Response<FluidRelayServerKeys> regenerateKeyWithResponse(RegenerateKeyRequest parameters, Context context) {
+        return serviceManager.fluidRelayServers()
+            .regenerateKeyWithResponse(resourceGroup, fluidRelayServerName, parameters, context);
     }
 
     public FluidRelayServerKeys regenerateKey(RegenerateKeyRequest parameters) {
         return serviceManager.fluidRelayServers().regenerateKey(resourceGroup, fluidRelayServerName, parameters);
     }
 
-    public Response<FluidRelayServerKeys> regenerateKeyWithResponse(RegenerateKeyRequest parameters, Context context) {
-        return serviceManager
-            .fluidRelayServers()
-            .regenerateKeyWithResponse(resourceGroup, fluidRelayServerName, parameters, context);
+    public Response<FluidRelayServerKeys> listKeysWithResponse(Context context) {
+        return serviceManager.fluidRelayServers().listKeysWithResponse(resourceGroup, fluidRelayServerName, context);
     }
 
     public FluidRelayServerKeys listKeys() {
         return serviceManager.fluidRelayServers().listKeys(resourceGroup, fluidRelayServerName);
-    }
-
-    public Response<FluidRelayServerKeys> listKeysWithResponse(Context context) {
-        return serviceManager.fluidRelayServers().listKeysWithResponse(resourceGroup, fluidRelayServerName, context);
     }
 
     public FluidRelayServerImpl withRegion(Region location) {

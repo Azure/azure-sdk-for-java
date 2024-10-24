@@ -17,7 +17,6 @@ import com.azure.ai.openai.assistants.models.CreateRunOptions;
 import com.azure.ai.openai.assistants.models.FileDeletionStatus;
 import com.azure.ai.openai.assistants.models.FileDetails;
 import com.azure.ai.openai.assistants.models.FilePurpose;
-import com.azure.ai.openai.assistants.models.FileSearchToolDefinition;
 import com.azure.ai.openai.assistants.models.FunctionDefinition;
 import com.azure.ai.openai.assistants.models.FunctionToolDefinition;
 import com.azure.ai.openai.assistants.models.MessageRole;
@@ -212,18 +211,6 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     void createRunRunner(Consumer<CreateRunOptions> testRunner, String assistantId) {
         testRunner.accept(new CreateRunOptions(assistantId));
-    }
-
-    void createRetrievalRunner(BiConsumer<FileDetails, AssistantCreationOptions> testRunner) {
-        FileDetails fileDetails = new FileDetails(
-            BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt")), "java_sdk_tests_assistants.txt");
-
-        AssistantCreationOptions assistantOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
-            .setName("Java SDK Retrieval Sample")
-            .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
-            .setTools(Arrays.asList(new FileSearchToolDefinition()));
-
-        testRunner.accept(fileDetails, assistantOptions);
     }
 
     void createFunctionToolCallRunner(BiConsumer<AssistantCreationOptions, AssistantThreadCreationOptions> testRunner) {

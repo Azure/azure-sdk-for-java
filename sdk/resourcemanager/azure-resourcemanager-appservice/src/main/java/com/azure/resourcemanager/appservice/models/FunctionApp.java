@@ -23,7 +23,8 @@ import java.util.Map;
 public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<FunctionApp.Update>,
     SupportsListingPrivateLinkResource,
     SupportsListingPrivateEndpointConnection,
-    SupportsUpdatingPrivateEndpointConnection {
+    SupportsUpdatingPrivateEndpointConnection,
+    SupportsOneDeploy {
 
     /** @return the entry point to deployment slot management API under the function app */
     FunctionDeploymentSlots deploymentSlots();

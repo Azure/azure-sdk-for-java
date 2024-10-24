@@ -113,7 +113,6 @@ public final class FirewallPolicyNatRuleCollection extends FirewallPolicyRuleCol
      */
     @Override
     public void validate() {
-        super.validate();
         if (action() != null) {
             action().validate();
         }

@@ -5,55 +5,61 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.RunbookAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
-/** The properties of the create webhook operation. */
+/**
+ * The properties of the create webhook operation.
+ */
 @Fluent
-public final class WebhookCreateOrUpdateProperties {
+public final class WebhookCreateOrUpdateProperties implements JsonSerializable<WebhookCreateOrUpdateProperties> {
     /*
      * Gets or sets the value of the enabled flag of webhook.
      */
-    @JsonProperty(value = "isEnabled")
     private Boolean isEnabled;
 
     /*
      * Gets or sets the uri.
      */
-    @JsonProperty(value = "uri")
     private String uri;
 
     /*
      * Gets or sets the expiry time.
      */
-    @JsonProperty(value = "expiryTime")
     private OffsetDateTime expiryTime;
 
     /*
      * Gets or sets the parameters of the job.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> parameters;
 
     /*
      * Gets or sets the runbook.
      */
-    @JsonProperty(value = "runbook")
     private RunbookAssociationProperty runbook;
 
     /*
      * Gets or sets the name of the hybrid worker group the webhook job will run on.
      */
-    @JsonProperty(value = "runOn")
     private String runOn;
 
     /**
+     * Creates an instance of WebhookCreateOrUpdateProperties class.
+     */
+    public WebhookCreateOrUpdateProperties() {
+    }
+
+    /**
      * Get the isEnabled property: Gets or sets the value of the enabled flag of webhook.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -62,7 +68,7 @@ public final class WebhookCreateOrUpdateProperties {
 
     /**
      * Set the isEnabled property: Gets or sets the value of the enabled flag of webhook.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the WebhookCreateOrUpdateProperties object itself.
      */
@@ -73,7 +79,7 @@ public final class WebhookCreateOrUpdateProperties {
 
     /**
      * Get the uri property: Gets or sets the uri.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -82,7 +88,7 @@ public final class WebhookCreateOrUpdateProperties {
 
     /**
      * Set the uri property: Gets or sets the uri.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the WebhookCreateOrUpdateProperties object itself.
      */
@@ -93,7 +99,7 @@ public final class WebhookCreateOrUpdateProperties {
 
     /**
      * Get the expiryTime property: Gets or sets the expiry time.
-     *
+     * 
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
@@ -102,7 +108,7 @@ public final class WebhookCreateOrUpdateProperties {
 
     /**
      * Set the expiryTime property: Gets or sets the expiry time.
-     *
+     * 
      * @param expiryTime the expiryTime value to set.
      * @return the WebhookCreateOrUpdateProperties object itself.
      */
@@ -113,7 +119,7 @@ public final class WebhookCreateOrUpdateProperties {
 
     /**
      * Get the parameters property: Gets or sets the parameters of the job.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
@@ -122,7 +128,7 @@ public final class WebhookCreateOrUpdateProperties {
 
     /**
      * Set the parameters property: Gets or sets the parameters of the job.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the WebhookCreateOrUpdateProperties object itself.
      */
@@ -133,7 +139,7 @@ public final class WebhookCreateOrUpdateProperties {
 
     /**
      * Get the runbook property: Gets or sets the runbook.
-     *
+     * 
      * @return the runbook value.
      */
     public RunbookAssociationProperty runbook() {
@@ -142,7 +148,7 @@ public final class WebhookCreateOrUpdateProperties {
 
     /**
      * Set the runbook property: Gets or sets the runbook.
-     *
+     * 
      * @param runbook the runbook value to set.
      * @return the WebhookCreateOrUpdateProperties object itself.
      */
@@ -153,7 +159,7 @@ public final class WebhookCreateOrUpdateProperties {
 
     /**
      * Get the runOn property: Gets or sets the name of the hybrid worker group the webhook job will run on.
-     *
+     * 
      * @return the runOn value.
      */
     public String runOn() {
@@ -162,7 +168,7 @@ public final class WebhookCreateOrUpdateProperties {
 
     /**
      * Set the runOn property: Gets or sets the name of the hybrid worker group the webhook job will run on.
-     *
+     * 
      * @param runOn the runOn value to set.
      * @return the WebhookCreateOrUpdateProperties object itself.
      */
@@ -173,12 +179,67 @@ public final class WebhookCreateOrUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (runbook() != null) {
             runbook().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeStringField("expiryTime",
+            this.expiryTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiryTime));
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("runbook", this.runbook);
+        jsonWriter.writeStringField("runOn", this.runOn);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebhookCreateOrUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebhookCreateOrUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebhookCreateOrUpdateProperties.
+     */
+    public static WebhookCreateOrUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebhookCreateOrUpdateProperties deserializedWebhookCreateOrUpdateProperties
+                = new WebhookCreateOrUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedWebhookCreateOrUpdateProperties.isEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("uri".equals(fieldName)) {
+                    deserializedWebhookCreateOrUpdateProperties.uri = reader.getString();
+                } else if ("expiryTime".equals(fieldName)) {
+                    deserializedWebhookCreateOrUpdateProperties.expiryTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, String> parameters = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWebhookCreateOrUpdateProperties.parameters = parameters;
+                } else if ("runbook".equals(fieldName)) {
+                    deserializedWebhookCreateOrUpdateProperties.runbook = RunbookAssociationProperty.fromJson(reader);
+                } else if ("runOn".equals(fieldName)) {
+                    deserializedWebhookCreateOrUpdateProperties.runOn = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebhookCreateOrUpdateProperties;
+        });
     }
 }

@@ -86,7 +86,7 @@ public interface FrontendsInterfacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of frontend Subresource of Traffic Controller.
+     * @return the {@link SyncPoller} for polling of frontend Sub Resource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FrontendInner>, FrontendInner> beginCreateOrUpdate(String resourceGroupName,
@@ -103,7 +103,7 @@ public interface FrontendsInterfacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of frontend Subresource of Traffic Controller.
+     * @return the {@link SyncPoller} for polling of frontend Sub Resource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FrontendInner>, FrontendInner> beginCreateOrUpdate(String resourceGroupName,
@@ -119,7 +119,7 @@ public interface FrontendsInterfacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return frontend Subresource of Traffic Controller.
+     * @return frontend Sub Resource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     FrontendInner createOrUpdate(String resourceGroupName, String trafficControllerName, String frontendName,
@@ -136,7 +136,7 @@ public interface FrontendsInterfacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return frontend Subresource of Traffic Controller.
+     * @return frontend Sub Resource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     FrontendInner createOrUpdate(String resourceGroupName, String trafficControllerName, String frontendName,
@@ -153,7 +153,7 @@ public interface FrontendsInterfacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return frontend Subresource of Traffic Controller along with {@link Response}.
+     * @return frontend Sub Resource of Traffic Controller along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<FrontendInner> updateWithResponse(String resourceGroupName, String trafficControllerName,
@@ -169,7 +169,7 @@ public interface FrontendsInterfacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return frontend Subresource of Traffic Controller.
+     * @return frontend Sub Resource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     FrontendInner update(String resourceGroupName, String trafficControllerName, String frontendName,

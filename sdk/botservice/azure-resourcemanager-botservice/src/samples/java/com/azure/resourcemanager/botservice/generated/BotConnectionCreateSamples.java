@@ -8,33 +8,33 @@ import com.azure.resourcemanager.botservice.models.ConnectionSettingParameter;
 import com.azure.resourcemanager.botservice.models.ConnectionSettingProperties;
 import java.util.Arrays;
 
-/** Samples for BotConnection Create. */
+/**
+ * Samples for BotConnection Create.
+ */
 public final class BotConnectionCreateSamples {
     /*
-     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/PutConnection.json
+     * x-ms-original-file:
+     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/PutConnection.
+     * json
      */
     /**
      * Sample code: Create Connection Setting.
-     *
+     * 
      * @param manager Entry point to BotServiceManager.
      */
     public static void createConnectionSetting(com.azure.resourcemanager.botservice.BotServiceManager manager) {
-        manager
-            .botConnections()
+        manager.botConnections()
             .define("sampleConnection")
             .withRegion("West US")
             .withExistingBotService("OneResourceGroupName", "samplebotname")
             .withProperties(
-                new ConnectionSettingProperties()
-                    .withClientId("sampleclientid")
-                    .withClientSecret("samplesecret")
+                new ConnectionSettingProperties().withClientId("sampleclientid")
+                    .withClientSecret("fakeTokenPlaceholder")
                     .withScopes("samplescope")
                     .withServiceProviderId("serviceproviderid")
-                    .withParameters(
-                        Arrays
-                            .asList(
-                                new ConnectionSettingParameter().withKey("key1").withValue("value1"),
-                                new ConnectionSettingParameter().withKey("key2").withValue("value2"))))
+                    .withParameters(Arrays.asList(
+                        new ConnectionSettingParameter().withKey("fakeTokenPlaceholder").withValue("value1"),
+                        new ConnectionSettingParameter().withKey("fakeTokenPlaceholder").withValue("value2"))))
             .withEtag("etag1")
             .create();
     }

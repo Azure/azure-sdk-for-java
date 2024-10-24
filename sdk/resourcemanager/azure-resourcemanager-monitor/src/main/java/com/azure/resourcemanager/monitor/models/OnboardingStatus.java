@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,7 +42,6 @@ public final class OnboardingStatus extends ExpandableStringEnum<OnboardingStatu
      * @param name a name to look for.
      * @return the corresponding OnboardingStatus.
      */
-    @JsonCreator
     public static OnboardingStatus fromString(String name) {
         return fromString(name, OnboardingStatus.class);
     }

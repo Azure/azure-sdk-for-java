@@ -29,8 +29,9 @@ public final class DataFlowDebugSessionsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.dataFlowDebugSessions()
-            .deleteWithResponse("ccotgqgevie", "yhowvnzwhypj",
-                new DeleteDataFlowDebugSessionRequest().withSessionId("palpt"), com.azure.core.util.Context.NONE);
+            .deleteWithResponse("xfos", "wzhmlklocyjpmbt",
+                new DeleteDataFlowDebugSessionRequest().withSessionId("xomhkfkvdmjjiqjv"),
+                com.azure.core.util.Context.NONE);
 
     }
 }

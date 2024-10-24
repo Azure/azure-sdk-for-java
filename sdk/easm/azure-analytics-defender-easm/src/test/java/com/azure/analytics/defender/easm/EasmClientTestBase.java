@@ -9,7 +9,6 @@ package com.azure.analytics.defender.easm;
 // See https://aka.ms/azsdk/dpg/java/tests for guide on adding a test.
 
 import com.azure.core.credential.AccessToken;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
@@ -18,13 +17,12 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import reactor.core.publisher.Mono;
 
 public class EasmClientTestBase extends TestProxyTestBase {
     private final String sanitizedRequestUri =  "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/REDACTED/workspaces/REDACTED/";
@@ -41,7 +39,7 @@ public class EasmClientTestBase extends TestProxyTestBase {
         EasmClientBuilder easmClientbuilder =
                 new EasmClientBuilder()
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/REDACTED/workspaces/REDACTED"))
-                        .httpClient(HttpClient.createDefault())
+                        .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             easmClientbuilder

@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AssetJobOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssetJobOutput model =
-            BinaryData.fromString("{\"mode\":\"Upload\",\"uri\":\"lkiexhajlfnthiq\"}").toObject(AssetJobOutput.class);
-        Assertions.assertEquals(OutputDeliveryMode.UPLOAD, model.mode());
-        Assertions.assertEquals("lkiexhajlfnthiq", model.uri());
+        AssetJobOutput model
+            = BinaryData.fromString("{\"uri\":\"mwgsghq\",\"mode\":\"ReadWriteMount\"}").toObject(AssetJobOutput.class);
+        Assertions.assertEquals("mwgsghq", model.uri());
+        Assertions.assertEquals(OutputDeliveryMode.READ_WRITE_MOUNT, model.mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssetJobOutput model = new AssetJobOutput().withMode(OutputDeliveryMode.UPLOAD).withUri("lkiexhajlfnthiq");
+        AssetJobOutput model = new AssetJobOutput().withUri("mwgsghq").withMode(OutputDeliveryMode.READ_WRITE_MOUNT);
         model = BinaryData.fromObject(model).toObject(AssetJobOutput.class);
-        Assertions.assertEquals(OutputDeliveryMode.UPLOAD, model.mode());
-        Assertions.assertEquals("lkiexhajlfnthiq", model.uri());
+        Assertions.assertEquals("mwgsghq", model.uri());
+        Assertions.assertEquals(OutputDeliveryMode.READ_WRITE_MOUNT, model.mode());
     }
 }

@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class WebPubSubTlsSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WebPubSubTlsSettings model =
-            BinaryData.fromString("{\"clientCertEnabled\":true}").toObject(WebPubSubTlsSettings.class);
+        WebPubSubTlsSettings model
+            = BinaryData.fromString("{\"clientCertEnabled\":true}").toObject(WebPubSubTlsSettings.class);
         Assertions.assertEquals(true, model.clientCertEnabled());
     }
 

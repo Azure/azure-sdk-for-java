@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class UriFolderJobOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UriFolderJobOutput model =
-            BinaryData
-                .fromString(
-                    "{\"jobOutputType\":\"uri_folder\",\"mode\":\"ReadWriteMount\",\"uri\":\"caatsdohzniucbda\",\"description\":\"b\"}")
-                .toObject(UriFolderJobOutput.class);
-        Assertions.assertEquals("b", model.description());
-        Assertions.assertEquals(OutputDeliveryMode.READ_WRITE_MOUNT, model.mode());
-        Assertions.assertEquals("caatsdohzniucbda", model.uri());
+        UriFolderJobOutput model = BinaryData
+            .fromString(
+                "{\"jobOutputType\":\"uri_folder\",\"uri\":\"mzc\",\"mode\":\"Upload\",\"description\":\"pypimrxi\"}")
+            .toObject(UriFolderJobOutput.class);
+        Assertions.assertEquals("pypimrxi", model.description());
+        Assertions.assertEquals("mzc", model.uri());
+        Assertions.assertEquals(OutputDeliveryMode.UPLOAD, model.mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UriFolderJobOutput model =
-            new UriFolderJobOutput()
-                .withDescription("b")
-                .withMode(OutputDeliveryMode.READ_WRITE_MOUNT)
-                .withUri("caatsdohzniucbda");
+        UriFolderJobOutput model
+            = new UriFolderJobOutput().withDescription("pypimrxi").withUri("mzc").withMode(OutputDeliveryMode.UPLOAD);
         model = BinaryData.fromObject(model).toObject(UriFolderJobOutput.class);
-        Assertions.assertEquals("b", model.description());
-        Assertions.assertEquals(OutputDeliveryMode.READ_WRITE_MOUNT, model.mode());
-        Assertions.assertEquals("caatsdohzniucbda", model.uri());
+        Assertions.assertEquals("pypimrxi", model.description());
+        Assertions.assertEquals("mzc", model.uri());
+        Assertions.assertEquals(OutputDeliveryMode.UPLOAD, model.mode());
     }
 }

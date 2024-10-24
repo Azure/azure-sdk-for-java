@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enum to determine identity framework. */
+/**
+ * Enum to determine identity framework.
+ */
 public final class IdentityConfigurationType extends ExpandableStringEnum<IdentityConfigurationType> {
-    /** Static value Managed for IdentityConfigurationType. */
+    /**
+     * Static value Managed for IdentityConfigurationType.
+     */
     public static final IdentityConfigurationType MANAGED = fromString("Managed");
 
-    /** Static value AMLToken for IdentityConfigurationType. */
+    /**
+     * Static value AMLToken for IdentityConfigurationType.
+     */
     public static final IdentityConfigurationType AMLTOKEN = fromString("AMLToken");
 
-    /** Static value UserIdentity for IdentityConfigurationType. */
+    /**
+     * Static value UserIdentity for IdentityConfigurationType.
+     */
     public static final IdentityConfigurationType USER_IDENTITY = fromString("UserIdentity");
 
     /**
      * Creates a new instance of IdentityConfigurationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class IdentityConfigurationType extends ExpandableStringEnum<Identi
 
     /**
      * Creates or finds a IdentityConfigurationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IdentityConfigurationType.
      */
-    @JsonCreator
     public static IdentityConfigurationType fromString(String name) {
         return fromString(name, IdentityConfigurationType.class);
     }
 
     /**
      * Gets known IdentityConfigurationType values.
-     *
+     * 
      * @return known IdentityConfigurationType values.
      */
     public static Collection<IdentityConfigurationType> values() {

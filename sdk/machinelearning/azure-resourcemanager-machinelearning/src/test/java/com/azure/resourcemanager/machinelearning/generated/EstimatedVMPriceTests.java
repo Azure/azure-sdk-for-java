@@ -13,25 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class EstimatedVMPriceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EstimatedVMPrice model =
-            BinaryData
-                .fromString("{\"retailPrice\":57.931778810567735,\"osType\":\"Linux\",\"vmTier\":\"LowPriority\"}")
-                .toObject(EstimatedVMPrice.class);
-        Assertions.assertEquals(57.931778810567735, model.retailPrice());
-        Assertions.assertEquals(VMPriceOSType.LINUX, model.osType());
-        Assertions.assertEquals(VMTier.LOW_PRIORITY, model.vmTier());
+        EstimatedVMPrice model = BinaryData
+            .fromString("{\"retailPrice\":17.81756965941649,\"osType\":\"Windows\",\"vmTier\":\"Standard\"}")
+            .toObject(EstimatedVMPrice.class);
+        Assertions.assertEquals(17.81756965941649, model.retailPrice());
+        Assertions.assertEquals(VMPriceOSType.WINDOWS, model.osType());
+        Assertions.assertEquals(VMTier.STANDARD, model.vmTier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EstimatedVMPrice model =
-            new EstimatedVMPrice()
-                .withRetailPrice(57.931778810567735)
-                .withOsType(VMPriceOSType.LINUX)
-                .withVmTier(VMTier.LOW_PRIORITY);
+        EstimatedVMPrice model = new EstimatedVMPrice().withRetailPrice(17.81756965941649)
+            .withOsType(VMPriceOSType.WINDOWS)
+            .withVmTier(VMTier.STANDARD);
         model = BinaryData.fromObject(model).toObject(EstimatedVMPrice.class);
-        Assertions.assertEquals(57.931778810567735, model.retailPrice());
-        Assertions.assertEquals(VMPriceOSType.LINUX, model.osType());
-        Assertions.assertEquals(VMTier.LOW_PRIORITY, model.vmTier());
+        Assertions.assertEquals(17.81756965941649, model.retailPrice());
+        Assertions.assertEquals(VMPriceOSType.WINDOWS, model.osType());
+        Assertions.assertEquals(VMTier.STANDARD, model.vmTier());
     }
 }

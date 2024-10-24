@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DedicatedCapacityUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DedicatedCapacityUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"sku\":{\"name\":\"k\",\"tier\":\"Premium\",\"capacity\":832798449},\"tags\":{\"ukxgaud\":\"rtfw\",\"h\":\"cs\"},\"properties\":{\"administration\":{\"members\":[\"ejhkry\",\"tnapczwlokjyemkk\"]},\"mode\":\"Gen2\",\"tenantId\":\"joxzjnchgejspodm\",\"friendlyName\":\"lzydehojwyahux\"}}")
-                .toObject(DedicatedCapacityUpdateParameters.class);
+        DedicatedCapacityUpdateParameters model = BinaryData.fromString(
+            "{\"sku\":{\"name\":\"k\",\"tier\":\"Premium\",\"capacity\":832798449},\"tags\":{\"ukxgaud\":\"rtfw\",\"h\":\"cs\"},\"properties\":{\"administration\":{\"members\":[\"ejhkry\",\"tnapczwlokjyemkk\"]},\"mode\":\"Gen2\",\"tenantId\":\"joxzjnchgejspodm\",\"friendlyName\":\"lzydehojwyahux\"}}")
+            .toObject(DedicatedCapacityUpdateParameters.class);
         Assertions.assertEquals("k", model.sku().name());
         Assertions.assertEquals(CapacitySkuTier.PREMIUM, model.sku().tier());
         Assertions.assertEquals(832798449, model.sku().capacity());
@@ -33,13 +31,12 @@ public final class DedicatedCapacityUpdateParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DedicatedCapacityUpdateParameters model =
-            new DedicatedCapacityUpdateParameters()
-                .withSku(new CapacitySku().withName("k").withTier(CapacitySkuTier.PREMIUM).withCapacity(832798449))
-                .withTags(mapOf("ukxgaud", "rtfw", "h", "cs"))
-                .withAdministration(
-                    new DedicatedCapacityAdministrators().withMembers(Arrays.asList("ejhkry", "tnapczwlokjyemkk")))
-                .withMode(Mode.GEN2);
+        DedicatedCapacityUpdateParameters model = new DedicatedCapacityUpdateParameters()
+            .withSku(new CapacitySku().withName("k").withTier(CapacitySkuTier.PREMIUM).withCapacity(832798449))
+            .withTags(mapOf("ukxgaud", "rtfw", "h", "cs"))
+            .withAdministration(
+                new DedicatedCapacityAdministrators().withMembers(Arrays.asList("ejhkry", "tnapczwlokjyemkk")))
+            .withMode(Mode.GEN2);
         model = BinaryData.fromObject(model).toObject(DedicatedCapacityUpdateParameters.class);
         Assertions.assertEquals("k", model.sku().name());
         Assertions.assertEquals(CapacitySkuTier.PREMIUM, model.sku().tier());
@@ -49,6 +46,7 @@ public final class DedicatedCapacityUpdateParametersTests {
         Assertions.assertEquals(Mode.GEN2, model.mode());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

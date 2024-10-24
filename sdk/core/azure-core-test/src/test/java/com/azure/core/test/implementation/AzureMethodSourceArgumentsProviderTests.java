@@ -36,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -162,9 +163,9 @@ public class AzureMethodSourceArgumentsProviderTests {
         throws Exception {
         Object actual = invokeSupplierMethod(context, sourceSupplier);
 
-        assertTrue(actual instanceof Stream);
+        Stream<?> actualStream = assertInstanceOf(Stream.class, actual);
 
-        Iterator<?> actualIterator = ((Stream<?>) actual).iterator();
+        Iterator<?> actualIterator = actualStream.iterator();
         Iterator<Arguments> expectedIterator = expected.iterator();
 
         while (actualIterator.hasNext()) {
@@ -173,8 +174,8 @@ public class AzureMethodSourceArgumentsProviderTests {
             Object actualNext = actualIterator.next();
             Arguments expectedNext = expectedIterator.next();
 
-            assertTrue(actualNext instanceof Arguments);
-            assertArrayEquals(expectedNext.get(), ((Arguments) actualNext).get());
+            Arguments actualNextArguments = assertInstanceOf(Arguments.class, actualNext);
+            assertArrayEquals(expectedNext.get(), actualNextArguments.get());
         }
 
         assertFalse(expectedIterator.hasNext());

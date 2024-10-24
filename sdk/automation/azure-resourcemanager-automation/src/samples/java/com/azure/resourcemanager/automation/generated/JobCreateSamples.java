@@ -8,27 +8,30 @@ import com.azure.resourcemanager.automation.models.RunbookAssociationProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Job Create. */
+/**
+ * Samples for Job Create.
+ */
 public final class JobCreateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/createJob.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/createJob.json
      */
     /**
      * Sample code: Create job.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createJob(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .jobs()
+        manager.jobs()
             .define("foo")
             .withExistingAutomationAccount("mygroup", "ContoseAutomationAccount")
             .withRunbook(new RunbookAssociationProperty().withName("TestRunbook"))
-            .withParameters(mapOf("key01", "value01", "key02", "value02"))
+            .withParameters(mapOf("key01", "fakeTokenPlaceholder", "key02", "fakeTokenPlaceholder"))
             .withRunOn("")
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

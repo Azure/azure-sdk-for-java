@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IntegrationAccountAgreements. */
+/**
+ * Resource collection API of IntegrationAccountAgreements.
+ */
 public interface IntegrationAccountAgreements {
     /**
      * Gets a list of integration account agreements.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface IntegrationAccountAgreements {
 
     /**
      * Gets a list of integration account agreements.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param top The number of items to be included in the result.
@@ -35,12 +37,12 @@ public interface IntegrationAccountAgreements {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of integration account agreements as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<IntegrationAccountAgreement> list(
-        String resourceGroupName, String integrationAccountName, Integer top, String filter, Context context);
+    PagedIterable<IntegrationAccountAgreement> list(String resourceGroupName, String integrationAccountName,
+        Integer top, String filter, Context context);
 
     /**
      * Gets an integration account agreement.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param agreementName The integration account agreement name.
@@ -50,12 +52,12 @@ public interface IntegrationAccountAgreements {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an integration account agreement along with {@link Response}.
      */
-    Response<IntegrationAccountAgreement> getWithResponse(
-        String resourceGroupName, String integrationAccountName, String agreementName, Context context);
+    Response<IntegrationAccountAgreement> getWithResponse(String resourceGroupName, String integrationAccountName,
+        String agreementName, Context context);
 
     /**
      * Gets an integration account agreement.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param agreementName The integration account agreement name.
@@ -68,7 +70,7 @@ public interface IntegrationAccountAgreements {
 
     /**
      * Deletes an integration account agreement.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param agreementName The integration account agreement name.
@@ -78,12 +80,12 @@ public interface IntegrationAccountAgreements {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String integrationAccountName, String agreementName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String integrationAccountName, String agreementName,
+        Context context);
 
     /**
      * Deletes an integration account agreement.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param agreementName The integration account agreement name.
@@ -95,45 +97,39 @@ public interface IntegrationAccountAgreements {
 
     /**
      * Get the content callback url.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param agreementName The integration account agreement name.
-     * @param listContentCallbackUrl The callback url parameters.
+     * @param listContentCallbackUrl The listContentCallbackUrl parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the content callback url along with {@link Response}.
      */
-    Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        String agreementName,
-        GetCallbackUrlParameters listContentCallbackUrl,
+    Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(String resourceGroupName,
+        String integrationAccountName, String agreementName, GetCallbackUrlParameters listContentCallbackUrl,
         Context context);
 
     /**
      * Get the content callback url.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param agreementName The integration account agreement name.
-     * @param listContentCallbackUrl The callback url parameters.
+     * @param listContentCallbackUrl The listContentCallbackUrl parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the content callback url.
      */
-    WorkflowTriggerCallbackUrl listContentCallbackUrl(
-        String resourceGroupName,
-        String integrationAccountName,
-        String agreementName,
-        GetCallbackUrlParameters listContentCallbackUrl);
+    WorkflowTriggerCallbackUrl listContentCallbackUrl(String resourceGroupName, String integrationAccountName,
+        String agreementName, GetCallbackUrlParameters listContentCallbackUrl);
 
     /**
      * Gets an integration account agreement.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -144,7 +140,7 @@ public interface IntegrationAccountAgreements {
 
     /**
      * Gets an integration account agreement.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -156,7 +152,7 @@ public interface IntegrationAccountAgreements {
 
     /**
      * Deletes an integration account agreement.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -166,7 +162,7 @@ public interface IntegrationAccountAgreements {
 
     /**
      * Deletes an integration account agreement.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -178,7 +174,7 @@ public interface IntegrationAccountAgreements {
 
     /**
      * Begins definition for a new IntegrationAccountAgreement resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new IntegrationAccountAgreement definition.
      */

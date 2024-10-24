@@ -67,7 +67,7 @@ public final class SkusClientImpl implements SkusClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceSkuListResult>> listByLocation(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("locationName") String locationName, @HeaderParam("accept") String accept, Context context);
+            @PathParam("locationName") String locationName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -75,7 +75,7 @@ public final class SkusClientImpl implements SkusClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceSkuListResult>> listByLocationNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**

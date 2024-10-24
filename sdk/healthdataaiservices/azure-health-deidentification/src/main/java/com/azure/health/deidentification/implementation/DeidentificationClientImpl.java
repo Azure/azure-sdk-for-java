@@ -173,7 +173,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{name}")
         @ExpectedResponses({ 200 })
@@ -183,7 +183,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/jobs/{name}")
         @ExpectedResponses({ 200, 201 })
@@ -193,8 +193,8 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData resource,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData resource, RequestOptions requestOptions, Context context);
 
         @Put("/jobs/{name}")
         @ExpectedResponses({ 200, 201 })
@@ -204,8 +204,8 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData resource,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData resource, RequestOptions requestOptions, Context context);
 
         @Get("/jobs")
         @ExpectedResponses({ 200 })
@@ -214,7 +214,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listJobs(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/jobs")
@@ -224,7 +224,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listJobsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{name}/documents")
@@ -235,7 +235,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listJobDocuments(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{name}/documents")
         @ExpectedResponses({ 200 })
@@ -245,7 +245,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listJobDocumentsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{name}:cancel")
         @ExpectedResponses({ 200 })
@@ -255,7 +255,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> cancelJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{name}:cancel")
         @ExpectedResponses({ 200 })
@@ -265,7 +265,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> cancelJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/jobs/{name}")
         @ExpectedResponses({ 204 })
@@ -275,7 +275,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/jobs/{name}")
         @ExpectedResponses({ 204 })
@@ -285,7 +285,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/deid")
         @ExpectedResponses({ 200 })
@@ -294,8 +294,9 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> deidentify(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/deid")
         @ExpectedResponses({ 200 })
@@ -304,8 +305,9 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> deidentifySync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -314,7 +316,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listJobsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -324,7 +326,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listJobsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -334,7 +336,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listJobDocumentsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -344,7 +346,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listJobDocumentsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
     }
 
@@ -354,7 +356,8 @@ public final class DeidentificationClientImpl {
      * Resource read operation template.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -395,7 +398,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -403,8 +407,9 @@ public final class DeidentificationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a job containing a batch of documents to de-identify along with {@link Response} on successful completion
-     * of {@link Mono}.
+     * @return a de-identification job.
+     * 
+     * Resource read operation template along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getJobWithResponseAsync(String name, RequestOptions requestOptions) {
@@ -419,7 +424,8 @@ public final class DeidentificationClientImpl {
      * Resource read operation template.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -460,7 +466,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -468,7 +475,9 @@ public final class DeidentificationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a job containing a batch of documents to de-identify along with {@link Response}.
+     * @return a de-identification job.
+     * 
+     * Resource read operation template along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getJobWithResponse(String name, RequestOptions requestOptions) {
@@ -483,7 +492,8 @@ public final class DeidentificationClientImpl {
      * Long-running resource create or replace operation template.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -524,11 +534,13 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -569,7 +581,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param resource The resource instance.
@@ -584,9 +597,10 @@ public final class DeidentificationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BinaryData>> createJobWithResponseAsync(String name, BinaryData resource,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), name, accept, resource, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, contentType, accept, resource, requestOptions, context));
     }
 
     /**
@@ -595,7 +609,8 @@ public final class DeidentificationClientImpl {
      * Long-running resource create or replace operation template.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -636,11 +651,13 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -681,7 +698,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param resource The resource instance.
@@ -695,9 +713,10 @@ public final class DeidentificationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createJobWithResponse(String name, BinaryData resource,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept, resource,
-            requestOptions, Context.NONE);
+        return service.createJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, contentType,
+            accept, resource, requestOptions, Context.NONE);
     }
 
     /**
@@ -706,7 +725,8 @@ public final class DeidentificationClientImpl {
      * Long-running resource create or replace operation template.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -747,11 +767,13 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -792,7 +814,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param resource The resource instance.
@@ -824,7 +847,8 @@ public final class DeidentificationClientImpl {
      * Long-running resource create or replace operation template.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -865,11 +889,13 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -910,7 +936,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param resource The resource instance.
@@ -942,7 +969,8 @@ public final class DeidentificationClientImpl {
      * Long-running resource create or replace operation template.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -983,11 +1011,13 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -1028,7 +1058,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param resource The resource instance.
@@ -1061,7 +1092,8 @@ public final class DeidentificationClientImpl {
      * Long-running resource create or replace operation template.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -1102,11 +1134,13 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -1147,7 +1181,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param resource The resource instance.
@@ -1188,7 +1223,8 @@ public final class DeidentificationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -1229,7 +1265,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1263,7 +1300,8 @@ public final class DeidentificationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -1304,7 +1342,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1356,7 +1395,8 @@ public final class DeidentificationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -1397,7 +1437,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1429,7 +1470,8 @@ public final class DeidentificationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -1470,7 +1512,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1522,7 +1565,8 @@ public final class DeidentificationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     input (Required): {
@@ -1544,7 +1588,8 @@ public final class DeidentificationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1580,7 +1625,8 @@ public final class DeidentificationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     input (Required): {
@@ -1602,7 +1648,8 @@ public final class DeidentificationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1655,7 +1702,8 @@ public final class DeidentificationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     input (Required): {
@@ -1677,7 +1725,8 @@ public final class DeidentificationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1710,7 +1759,8 @@ public final class DeidentificationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     input (Required): {
@@ -1732,7 +1782,8 @@ public final class DeidentificationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1782,7 +1833,8 @@ public final class DeidentificationClientImpl {
      * If the job is already complete, this will have no effect.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -1823,7 +1875,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1852,7 +1905,8 @@ public final class DeidentificationClientImpl {
      * If the job is already complete, this will have no effect.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -1893,7 +1947,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1956,18 +2011,21 @@ public final class DeidentificationClientImpl {
      * A remote procedure call (RPC) operation.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     inputText: String (Required)
      *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     dataType: String(Plaintext) (Optional)
      *     redactionFormat: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     outputText: String (Optional)
      *     taggerResult (Optional): {
@@ -1988,7 +2046,8 @@ public final class DeidentificationClientImpl {
      *         etag: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Request body for de-identification operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2001,9 +2060,10 @@ public final class DeidentificationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deidentifyWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deidentify(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, body, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -2012,18 +2072,21 @@ public final class DeidentificationClientImpl {
      * A remote procedure call (RPC) operation.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     inputText: String (Required)
      *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     dataType: String(Plaintext) (Optional)
      *     redactionFormat: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     outputText: String (Optional)
      *     taggerResult (Optional): {
@@ -2044,7 +2107,8 @@ public final class DeidentificationClientImpl {
      *         etag: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Request body for de-identification operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2056,9 +2120,10 @@ public final class DeidentificationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deidentifyWithResponse(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.deidentifySync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, body,
-            requestOptions, Context.NONE);
+        return service.deidentifySync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
+            body, requestOptions, Context.NONE);
     }
 
     /**
@@ -2067,7 +2132,8 @@ public final class DeidentificationClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -2108,7 +2174,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2135,7 +2202,8 @@ public final class DeidentificationClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     sourceLocation (Required): {
@@ -2176,7 +2244,8 @@ public final class DeidentificationClientImpl {
      *         bytesProcessed: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2201,7 +2270,8 @@ public final class DeidentificationClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     input (Required): {
@@ -2223,7 +2293,8 @@ public final class DeidentificationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2251,7 +2322,8 @@ public final class DeidentificationClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     input (Required): {
@@ -2273,7 +2345,8 @@ public final class DeidentificationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

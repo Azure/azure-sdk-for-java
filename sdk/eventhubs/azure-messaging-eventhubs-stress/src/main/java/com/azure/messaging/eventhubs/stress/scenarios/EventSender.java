@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.time.Duration;
+
 import static com.azure.messaging.eventhubs.stress.util.TestUtils.blockingWait;
 import static com.azure.messaging.eventhubs.stress.util.TestUtils.createMessagePayload;
 import static com.azure.messaging.eventhubs.stress.util.TestUtils.getBuilder;
@@ -44,7 +46,14 @@ public class EventSender extends EventHubsScenario {
 
         toClose(Mono.just(client)
                 .repeat()
-                .flatMap(i -> singleRun(), sendConcurrency)
+                .flatMap(i -> {
+                    final Duration idleDuration = options.getIdleDuration();
+                    if (idleDuration.isZero()) {
+                        return singleRun();
+                    } else {
+                        return singleRun().then(Mono.delay(idleDuration));
+                    }
+                }, sendConcurrency)
                 .take(options.getTestDuration())
                 .parallel(sendConcurrency, 1)
                 .runOn(Schedulers.boundedElastic())

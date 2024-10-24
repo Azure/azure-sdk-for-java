@@ -19,8 +19,12 @@ public final class DiagnosticSettingsCategoryGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getsTheDiagnosticSetting(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getDiagnosticSettingsCategories().getWithResponse(
-            "subscriptions/1a66ce04-b633-4a0b-b2bc-a912ec8986a6/resourcegroups/viruela1/providers/microsoft.logic/workflows/viruela6",
-            "WorkflowRuntime", com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getDiagnosticSettingsCategories()
+            .getWithResponse(
+                "subscriptions/1a66ce04-b633-4a0b-b2bc-a912ec8986a6/resourcegroups/viruela1/providers/microsoft.logic/workflows/viruela6",
+                "WorkflowRuntime", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,28 +5,45 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The desired maximum forecast horizon in units of time-series frequency. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "mode")
-@JsonTypeName("Custom")
+/**
+ * The desired maximum forecast horizon in units of time-series frequency.
+ */
 @Fluent
 public final class CustomForecastHorizon extends ForecastHorizon {
     /*
+     * [Required] Set forecast horizon value selection mode.
+     */
+    private ForecastHorizonMode mode = ForecastHorizonMode.CUSTOM;
+
+    /*
      * [Required] Forecast horizon value.
      */
-    @JsonProperty(value = "value", required = true)
     private int value;
 
-    /** Creates an instance of CustomForecastHorizon class. */
+    /**
+     * Creates an instance of CustomForecastHorizon class.
+     */
     public CustomForecastHorizon() {
     }
 
     /**
+     * Get the mode property: [Required] Set forecast horizon value selection mode.
+     * 
+     * @return the mode value.
+     */
+    @Override
+    public ForecastHorizonMode mode() {
+        return this.mode;
+    }
+
+    /**
      * Get the value property: [Required] Forecast horizon value.
-     *
+     * 
      * @return the value value.
      */
     public int value() {
@@ -35,7 +52,7 @@ public final class CustomForecastHorizon extends ForecastHorizon {
 
     /**
      * Set the value property: [Required] Forecast horizon value.
-     *
+     * 
      * @param value the value value to set.
      * @return the CustomForecastHorizon object itself.
      */
@@ -46,11 +63,51 @@ public final class CustomForecastHorizon extends ForecastHorizon {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("value", this.value);
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomForecastHorizon from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomForecastHorizon if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomForecastHorizon.
+     */
+    public static CustomForecastHorizon fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomForecastHorizon deserializedCustomForecastHorizon = new CustomForecastHorizon();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedCustomForecastHorizon.value = reader.getInt();
+                } else if ("mode".equals(fieldName)) {
+                    deserializedCustomForecastHorizon.mode = ForecastHorizonMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomForecastHorizon;
+        });
     }
 }

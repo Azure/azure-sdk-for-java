@@ -28,7 +28,7 @@ public final class IntegrationRuntimesSyncCredentialsWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.integrationRuntimes()
-            .syncCredentialsWithResponse("fmidkdywppt", "ssvmdoxxcvug", "ryk", com.azure.core.util.Context.NONE);
+            .syncCredentialsWithResponse("oxgrvsavoq", "squwkuszl", "ognledhvlleny", com.azure.core.util.Context.NONE);
 
     }
 }

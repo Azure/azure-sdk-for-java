@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+
 import java.io.IOException;
 
 /**
@@ -37,7 +38,7 @@ public final class ComponentDocumentModelDetails implements JsonSerializable<Com
 
     /**
      * Creates an instance of ComponentDocumentModelDetails class.
-     * 
+     *
      * @param modelId the modelId value to set.
      */
     @Generated
@@ -47,7 +48,7 @@ public final class ComponentDocumentModelDetails implements JsonSerializable<Com
 
     /**
      * Get the docType property: Document type.
-     * 
+     *
      * @return the docType value.
      */
     @Generated
@@ -57,7 +58,7 @@ public final class ComponentDocumentModelDetails implements JsonSerializable<Com
 
     /**
      * Set the docType property: Document type.
-     * 
+     *
      * @param docType the docType value to set.
      * @return the ComponentDocumentModelDetails object itself.
      */
@@ -69,7 +70,7 @@ public final class ComponentDocumentModelDetails implements JsonSerializable<Com
 
     /**
      * Get the modelId property: Document model to use for analyzing documents with specified type.
-     * 
+     *
      * @return the modelId value.
      */
     @Generated
@@ -79,7 +80,7 @@ public final class ComponentDocumentModelDetails implements JsonSerializable<Com
 
     /**
      * Get the maxDocumentsToAnalyze property: Maximum number of documents of specified type to analyze. Default=all.
-     * 
+     *
      * @return the maxDocumentsToAnalyze value.
      */
     @Generated
@@ -89,7 +90,7 @@ public final class ComponentDocumentModelDetails implements JsonSerializable<Com
 
     /**
      * Set the maxDocumentsToAnalyze property: Maximum number of documents of specified type to analyze. Default=all.
-     * 
+     *
      * @param maxDocumentsToAnalyze the maxDocumentsToAnalyze value to set.
      * @return the ComponentDocumentModelDetails object itself.
      */
@@ -114,7 +115,7 @@ public final class ComponentDocumentModelDetails implements JsonSerializable<Com
 
     /**
      * Reads an instance of ComponentDocumentModelDetails from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ComponentDocumentModelDetails if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.

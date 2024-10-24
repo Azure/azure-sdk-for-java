@@ -5,44 +5,50 @@
 package com.azure.resourcemanager.iotcentral.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.iotcentral.fluent.models.AppProperties;
 import com.azure.resourcemanager.iotcentral.fluent.models.PrivateEndpointConnectionInner;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The description of the IoT Central application. */
+/**
+ * The description of the IoT Central application.
+ */
 @Fluent
-public final class AppPatch {
+public final class AppPatch implements JsonSerializable<AppPatch> {
     /*
      * Instance tags
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * A valid instance SKU.
      */
-    @JsonProperty(value = "sku")
     private AppSkuInfo sku;
 
     /*
      * The common properties of an IoT Central application.
      */
-    @JsonProperty(value = "properties")
     private AppProperties innerProperties;
 
     /*
      * The managed identities for the IoT Central application.
      */
-    @JsonProperty(value = "identity")
     private SystemAssignedServiceIdentity identity;
 
     /**
+     * Creates an instance of AppPatch class.
+     */
+    public AppPatch() {
+    }
+
+    /**
      * Get the tags property: Instance tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -51,7 +57,7 @@ public final class AppPatch {
 
     /**
      * Set the tags property: Instance tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the AppPatch object itself.
      */
@@ -62,7 +68,7 @@ public final class AppPatch {
 
     /**
      * Get the sku property: A valid instance SKU.
-     *
+     * 
      * @return the sku value.
      */
     public AppSkuInfo sku() {
@@ -71,7 +77,7 @@ public final class AppPatch {
 
     /**
      * Set the sku property: A valid instance SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the AppPatch object itself.
      */
@@ -82,7 +88,7 @@ public final class AppPatch {
 
     /**
      * Get the innerProperties property: The common properties of an IoT Central application.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AppProperties innerProperties() {
@@ -91,7 +97,7 @@ public final class AppPatch {
 
     /**
      * Get the identity property: The managed identities for the IoT Central application.
-     *
+     * 
      * @return the identity value.
      */
     public SystemAssignedServiceIdentity identity() {
@@ -100,7 +106,7 @@ public final class AppPatch {
 
     /**
      * Set the identity property: The managed identities for the IoT Central application.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the AppPatch object itself.
      */
@@ -111,7 +117,7 @@ public final class AppPatch {
 
     /**
      * Get the provisioningState property: The provisioning state of the application.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -120,7 +126,7 @@ public final class AppPatch {
 
     /**
      * Get the applicationId property: The ID of the application.
-     *
+     * 
      * @return the applicationId value.
      */
     public String applicationId() {
@@ -129,7 +135,7 @@ public final class AppPatch {
 
     /**
      * Get the displayName property: The display name of the application.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -138,7 +144,7 @@ public final class AppPatch {
 
     /**
      * Set the displayName property: The display name of the application.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the AppPatch object itself.
      */
@@ -152,7 +158,7 @@ public final class AppPatch {
 
     /**
      * Get the subdomain property: The subdomain of the application.
-     *
+     * 
      * @return the subdomain value.
      */
     public String subdomain() {
@@ -161,7 +167,7 @@ public final class AppPatch {
 
     /**
      * Set the subdomain property: The subdomain of the application.
-     *
+     * 
      * @param subdomain the subdomain value to set.
      * @return the AppPatch object itself.
      */
@@ -177,7 +183,7 @@ public final class AppPatch {
      * Get the template property: The ID of the application template, which is a blueprint that defines the
      * characteristics and behaviors of an application. Optional; if not specified, defaults to a blank blueprint and
      * allows the application to be defined from scratch.
-     *
+     * 
      * @return the template value.
      */
     public String template() {
@@ -188,7 +194,7 @@ public final class AppPatch {
      * Set the template property: The ID of the application template, which is a blueprint that defines the
      * characteristics and behaviors of an application. Optional; if not specified, defaults to a blank blueprint and
      * allows the application to be defined from scratch.
-     *
+     * 
      * @param template the template value to set.
      * @return the AppPatch object itself.
      */
@@ -202,7 +208,7 @@ public final class AppPatch {
 
     /**
      * Get the state property: The current state of the application.
-     *
+     * 
      * @return the state value.
      */
     public AppState state() {
@@ -211,7 +217,7 @@ public final class AppPatch {
 
     /**
      * Get the publicNetworkAccess property: Whether requests from the public network are allowed.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -220,7 +226,7 @@ public final class AppPatch {
 
     /**
      * Set the publicNetworkAccess property: Whether requests from the public network are allowed.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the AppPatch object itself.
      */
@@ -234,7 +240,7 @@ public final class AppPatch {
 
     /**
      * Get the networkRuleSets property: Network Rule Set Properties of this IoT Central application.
-     *
+     * 
      * @return the networkRuleSets value.
      */
     public NetworkRuleSets networkRuleSets() {
@@ -243,7 +249,7 @@ public final class AppPatch {
 
     /**
      * Set the networkRuleSets property: Network Rule Set Properties of this IoT Central application.
-     *
+     * 
      * @param networkRuleSets the networkRuleSets value to set.
      * @return the AppPatch object itself.
      */
@@ -258,7 +264,7 @@ public final class AppPatch {
     /**
      * Get the privateEndpointConnections property: Private endpoint connections created on this IoT Central
      * application.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -267,7 +273,7 @@ public final class AppPatch {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -280,5 +286,51 @@ public final class AppPatch {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppPatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppPatch if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the AppPatch.
+     */
+    public static AppPatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppPatch deserializedAppPatch = new AppPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAppPatch.tags = tags;
+                } else if ("sku".equals(fieldName)) {
+                    deserializedAppPatch.sku = AppSkuInfo.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAppPatch.innerProperties = AppProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedAppPatch.identity = SystemAssignedServiceIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppPatch;
+        });
     }
 }

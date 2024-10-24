@@ -5,34 +5,47 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AutomationRulePropertyArrayConditionSupportedArrayType. */
+/**
+ * Defines values for AutomationRulePropertyArrayConditionSupportedArrayType.
+ */
 public final class AutomationRulePropertyArrayConditionSupportedArrayType
     extends ExpandableStringEnum<AutomationRulePropertyArrayConditionSupportedArrayType> {
-    /** Static value CustomDetails for AutomationRulePropertyArrayConditionSupportedArrayType. */
-    public static final AutomationRulePropertyArrayConditionSupportedArrayType CUSTOM_DETAILS =
-        fromString("CustomDetails");
+    /**
+     * Static value CustomDetails for AutomationRulePropertyArrayConditionSupportedArrayType.
+     */
+    public static final AutomationRulePropertyArrayConditionSupportedArrayType CUSTOM_DETAILS
+        = fromString("CustomDetails");
 
-    /** Static value CustomDetailValues for AutomationRulePropertyArrayConditionSupportedArrayType. */
-    public static final AutomationRulePropertyArrayConditionSupportedArrayType CUSTOM_DETAIL_VALUES =
-        fromString("CustomDetailValues");
+    /**
+     * Static value CustomDetailValues for AutomationRulePropertyArrayConditionSupportedArrayType.
+     */
+    public static final AutomationRulePropertyArrayConditionSupportedArrayType CUSTOM_DETAIL_VALUES
+        = fromString("CustomDetailValues");
+
+    /**
+     * Creates a new instance of AutomationRulePropertyArrayConditionSupportedArrayType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AutomationRulePropertyArrayConditionSupportedArrayType() {
+    }
 
     /**
      * Creates or finds a AutomationRulePropertyArrayConditionSupportedArrayType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AutomationRulePropertyArrayConditionSupportedArrayType.
      */
-    @JsonCreator
     public static AutomationRulePropertyArrayConditionSupportedArrayType fromString(String name) {
         return fromString(name, AutomationRulePropertyArrayConditionSupportedArrayType.class);
     }
 
     /**
      * Gets known AutomationRulePropertyArrayConditionSupportedArrayType values.
-     *
+     * 
      * @return known AutomationRulePropertyArrayConditionSupportedArrayType values.
      */
     public static Collection<AutomationRulePropertyArrayConditionSupportedArrayType> values() {

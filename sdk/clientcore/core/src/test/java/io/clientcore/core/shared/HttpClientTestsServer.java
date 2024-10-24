@@ -86,7 +86,7 @@ public class HttpClientTestsServer {
                 || (delete && path.startsWith("/delete"))
                 || (patch && path.startsWith("/patch"))
                 || (get && path.startsWith("/get"))) {
-                // Stub that will return a response with a body that contains the URL string as-is.
+                // Stub that will return a response with a body that contains the URI string as-is.
                 sendSimpleHttpBinResponse(req, resp, new String(requestBody, StandardCharsets.UTF_8),
                     "application/json");
             } else if (head && path.startsWith("/voideagerreadoom")) {
@@ -188,9 +188,9 @@ public class HttpClientTestsServer {
         response.flushBuffer();
     }
 
-    private static void sendBytesResponse(String urlPath, Response resp)
+    private static void sendBytesResponse(String uriPath, Response resp)
         throws IOException {
-        int bodySize = Integer.parseInt(urlPath.split("/", 3)[2]);
+        int bodySize = Integer.parseInt(uriPath.split("/", 3)[2]);
         setBaseHttpHeaders(resp);
         resp.addHeader("Content-Type", ContentType.APPLICATION_OCTET_STREAM);
         resp.setContentLength(bodySize);
@@ -208,7 +208,7 @@ public class HttpClientTestsServer {
                                                   String requestString, String contentType) throws IOException {
         HttpBinJSON responseBody = new HttpBinJSON();
 
-        responseBody.url(cleanseUrl(req));
+        responseBody.uri(cleanseUri(req));
         responseBody.data(requestString);
 
         if (req.getHeaderNames().hasMoreElements()) {
@@ -262,7 +262,7 @@ public class HttpClientTestsServer {
         return queryParamsMap;
     }
 
-    private static String cleanseUrl(HttpServletRequest req) {
+    private static String cleanseUri(HttpServletRequest req) {
         StringBuilder builder = new StringBuilder();
         builder.append(req.getScheme())
             .append("://")

@@ -14,7 +14,7 @@ import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
 import io.clientcore.core.implementation.http.serializer.HttpResponseBodyDecoder;
 import io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData;
-import io.clientcore.core.implementation.util.Base64Url;
+import io.clientcore.core.implementation.util.Base64Uri;
 import io.clientcore.core.implementation.util.DateTimeRfc1123;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.serializer.ObjectSerializer;
@@ -213,13 +213,13 @@ public class HttpResponseBodyDecoderTests {
     }
 
     @Test
-    public void decodeListBase64UrlResponse() {
+    public void decodeListBase64UriResponse() {
         ParameterizedType parameterizedType = mockParameterizedType(List.class, byte[].class);
-        HttpResponseDecodeData decodeData = new MockHttpResponseDecodeData(200, parameterizedType, Base64Url.class,
+        HttpResponseDecodeData decodeData = new MockHttpResponseDecodeData(200, parameterizedType, Base64Uri.class,
             true);
 
-        List<Base64Url> base64Urls = Arrays.asList(new Base64Url("base"), new Base64Url("64"));
-        Response<?> response = new MockHttpResponse(GET_REQUEST, 200, base64Urls);
+        List<Base64Uri> base64Uris = Arrays.asList(new Base64Uri("base"), new Base64Uri("64"));
+        Response<?> response = new MockHttpResponse(GET_REQUEST, 200, base64Uris);
 
         BinaryData body = response.getBody();
         Object actual = HttpResponseBodyDecoder.decodeByteArray(body, response, SERIALIZER, decodeData);
@@ -230,8 +230,8 @@ public class HttpResponseBodyDecoderTests {
         List<byte[]> decoded = (List<byte[]>) actual;
 
         assertEquals(2, decoded.size());
-        assertArraysEqual(base64Urls.get(0).decodedBytes(), decoded.get(0));
-        assertArraysEqual(base64Urls.get(1).decodedBytes(), decoded.get(1));
+        assertArraysEqual(base64Uris.get(0).decodedBytes(), decoded.get(0));
+        assertArraysEqual(base64Uris.get(1).decodedBytes(), decoded.get(1));
     }
 
     @Test

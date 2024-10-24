@@ -13,30 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterConfigurationsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterConfigurationsInner model =
-            BinaryData
-                .fromString(
-                    "{\"configurations\":{\"yhrfouyftaakcpw\":{\"xrslpm\":\"gx\",\"qsluicp\":\"twuoegrpkhjwni\",\"modfvuefywsbpfvm\":\"ggkzzlvmbmpa\"},\"smocmbq\":{\"ksmond\":\"zvqtmnubexkp\",\"gkopkwhojvpajqgx\":\"mquxvypo\"},\"uejrjxgc\":{\"zapvhelx\":\"vmkcx\",\"tddckcb\":\"rgly\"}}}")
-                .toObject(ClusterConfigurationsInner.class);
-        Assertions.assertEquals("gx", model.configurations().get("yhrfouyftaakcpw").get("xrslpm"));
+        ClusterConfigurationsInner model = BinaryData.fromString(
+            "{\"configurations\":{\"lpichk\":{\"bdbutauvf\":\"qlpqwcciuq\",\"afnn\":\"tkuwhhmhykojo\"},\"qnzarrwl\":{\"novvqfovljxy\":\"mkcdyhbpkkpwdre\",\"tgadgvraeaen\":\"suwsyrsnds\"}}}")
+            .toObject(ClusterConfigurationsInner.class);
+        Assertions.assertEquals("qlpqwcciuq", model.configurations().get("lpichk").get("bdbutauvf"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterConfigurationsInner model =
-            new ClusterConfigurationsInner()
-                .withConfigurations(
-                    mapOf(
-                        "yhrfouyftaakcpw",
-                        mapOf("xrslpm", "gx", "qsluicp", "twuoegrpkhjwni", "modfvuefywsbpfvm", "ggkzzlvmbmpa"),
-                        "smocmbq",
-                        mapOf("ksmond", "zvqtmnubexkp", "gkopkwhojvpajqgx", "mquxvypo"),
-                        "uejrjxgc",
-                        mapOf("zapvhelx", "vmkcx", "tddckcb", "rgly")));
+        ClusterConfigurationsInner model = new ClusterConfigurationsInner()
+            .withConfigurations(mapOf("lpichk", mapOf("bdbutauvf", "qlpqwcciuq", "afnn", "tkuwhhmhykojo"), "qnzarrwl",
+                mapOf("novvqfovljxy", "mkcdyhbpkkpwdre", "tgadgvraeaen", "suwsyrsnds")));
         model = BinaryData.fromObject(model).toObject(ClusterConfigurationsInner.class);
-        Assertions.assertEquals("gx", model.configurations().get("yhrfouyftaakcpw").get("xrslpm"));
+        Assertions.assertEquals("qlpqwcciuq", model.configurations().get("lpichk").get("bdbutauvf"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

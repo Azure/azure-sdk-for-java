@@ -5,43 +5,42 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Get Data Plane read only token request definition.
  */
 @Fluent
-public final class UserAccessPolicy {
+public final class UserAccessPolicy implements JsonSerializable<UserAccessPolicy> {
     /*
      * The string with permissions for Data Plane access. Currently only 'r' is supported which grants read only access.
      */
-    @JsonProperty(value = "permissions")
     private String permissions;
 
     /*
      * The resource path to get access relative to factory. Currently only empty string is supported which corresponds
      * to the factory resource.
      */
-    @JsonProperty(value = "accessResourcePath")
     private String accessResourcePath;
 
     /*
      * The name of the profile. Currently only the default is supported. The default value is DefaultProfile.
      */
-    @JsonProperty(value = "profileName")
     private String profileName;
 
     /*
      * Start time for the token. If not specified the current time will be used.
      */
-    @JsonProperty(value = "startTime")
     private String startTime;
 
     /*
      * Expiration time for the token. Maximum duration for the token is eight hours and by default the token will expire
      * in eight hours.
      */
-    @JsonProperty(value = "expireTime")
     private String expireTime;
 
     /**
@@ -164,5 +163,53 @@ public final class UserAccessPolicy {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("permissions", this.permissions);
+        jsonWriter.writeStringField("accessResourcePath", this.accessResourcePath);
+        jsonWriter.writeStringField("profileName", this.profileName);
+        jsonWriter.writeStringField("startTime", this.startTime);
+        jsonWriter.writeStringField("expireTime", this.expireTime);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserAccessPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserAccessPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserAccessPolicy.
+     */
+    public static UserAccessPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserAccessPolicy deserializedUserAccessPolicy = new UserAccessPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("permissions".equals(fieldName)) {
+                    deserializedUserAccessPolicy.permissions = reader.getString();
+                } else if ("accessResourcePath".equals(fieldName)) {
+                    deserializedUserAccessPolicy.accessResourcePath = reader.getString();
+                } else if ("profileName".equals(fieldName)) {
+                    deserializedUserAccessPolicy.profileName = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedUserAccessPolicy.startTime = reader.getString();
+                } else if ("expireTime".equals(fieldName)) {
+                    deserializedUserAccessPolicy.expireTime = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserAccessPolicy;
+        });
     }
 }

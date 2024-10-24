@@ -8,11 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.Actions;
 import com.azure.resourcemanager.monitor.models.AlertSeverity;
 import com.azure.resourcemanager.monitor.models.Kind;
 import com.azure.resourcemanager.monitor.models.ScheduledQueryRuleCriteria;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -25,29 +28,40 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     /*
      * Indicates the type of scheduled query rule. The default is LogAlert.
      */
-    @JsonProperty(value = "kind")
     private Kind kind;
 
     /*
      * The etag field is *not* required. If it is provided in the response body, it must also be provided as a header
      * per the normal etag convention. Entity tags are used for comparing two or more entities from the same requested
-     * resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match
-     * (section 14.26), and If-Range (section 14.27) header fields.
+     * resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section
+     * 14.26), and If-Range (section 14.27) header fields.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * SystemData of ScheduledQueryRule.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * The rule properties of the resource.
      */
-    @JsonProperty(value = "properties", required = true)
     private ScheduledQueryRuleProperties innerProperties = new ScheduledQueryRuleProperties();
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of ScheduledQueryRuleResourceInner class.
@@ -77,9 +91,9 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
 
     /**
      * Get the etag property: The etag field is *not* required. If it is provided in the response body, it must also be
-     * provided as a header per the normal etag convention. Entity tags are used for comparing two or more entities
-     * from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section
-     * 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
+     * provided as a header per the normal etag convention. Entity tags are used for comparing two or more entities from
+     * the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24),
+     * If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
      * 
      * @return the etag value.
      */
@@ -103,6 +117,36 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
      */
     private ScheduledQueryRuleProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -499,8 +543,8 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     }
 
     /**
-     * Get the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or
-     * not. The default is true. Relevant only for rules of the kind LogAlert.
+     * Get the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or not.
+     * The default is true. Relevant only for rules of the kind LogAlert.
      * 
      * @return the autoMitigate value.
      */
@@ -509,8 +553,8 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     }
 
     /**
-     * Set the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or
-     * not. The default is true. Relevant only for rules of the kind LogAlert.
+     * Set the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or not.
+     * The default is true. Relevant only for rules of the kind LogAlert.
      * 
      * @param autoMitigate the autoMitigate value to set.
      * @return the ScheduledQueryRuleResourceInner object itself.
@@ -530,12 +574,72 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model ScheduledQueryRuleResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ScheduledQueryRuleResourceInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScheduledQueryRuleResourceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduledQueryRuleResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduledQueryRuleResourceInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScheduledQueryRuleResourceInner.
+     */
+    public static ScheduledQueryRuleResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduledQueryRuleResourceInner deserializedScheduledQueryRuleResourceInner
+                = new ScheduledQueryRuleResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedScheduledQueryRuleResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedScheduledQueryRuleResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedScheduledQueryRuleResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedScheduledQueryRuleResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedScheduledQueryRuleResourceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedScheduledQueryRuleResourceInner.innerProperties
+                        = ScheduledQueryRuleProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedScheduledQueryRuleResourceInner.kind = Kind.fromString(reader.getString());
+                } else if ("etag".equals(fieldName)) {
+                    deserializedScheduledQueryRuleResourceInner.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedScheduledQueryRuleResourceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduledQueryRuleResourceInner;
+        });
+    }
 }

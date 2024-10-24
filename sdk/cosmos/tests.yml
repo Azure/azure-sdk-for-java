@@ -6,6 +6,7 @@ extends:
     stages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
+          UseFederatedAuth: false
           CloudConfig:
             Cosmos_Public:
               SubscriptionConfigurations:
@@ -29,7 +30,7 @@ extends:
               groupId: com.azure
             - name: azure-cosmos-benchmark
               groupId: com.azure
-          TimeoutInMinutes: 180
+          TimeoutInMinutes: 210
           MaxParallel: 20
           PreSteps:
             - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
@@ -42,6 +43,7 @@ extends:
 
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
+          UseFederatedAuth: false
           TestName: 'Spring_Data_Cosmos_Integration'
           CloudConfig:
             Public:
@@ -71,6 +73,7 @@ extends:
 
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
+          UseFederatedAuth: false
           TestName: 'Kafka_Cosmos_Integration'
           CloudConfig:
             Public:

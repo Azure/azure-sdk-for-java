@@ -8,11 +8,30 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of JobStreams. */
+/**
+ * Resource collection API of JobStreams.
+ */
 public interface JobStreams {
     /**
      * Retrieve the job stream identified by job stream id.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobName The job name.
+     * @param jobStreamId The job stream id.
+     * @param clientRequestId Identifies this specific client request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the job stream along with {@link Response}.
+     */
+    Response<JobStream> getWithResponse(String resourceGroupName, String automationAccountName, String jobName,
+        String jobStreamId, String clientRequestId, Context context);
+
+    /**
+     * Retrieve the job stream identified by job stream id.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
@@ -25,30 +44,8 @@ public interface JobStreams {
     JobStream get(String resourceGroupName, String automationAccountName, String jobName, String jobStreamId);
 
     /**
-     * Retrieve the job stream identified by job stream id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobName The job name.
-     * @param jobStreamId The job stream id.
-     * @param clientRequestId Identifies this specific client request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job stream along with {@link Response}.
-     */
-    Response<JobStream> getWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String jobName,
-        String jobStreamId,
-        String clientRequestId,
-        Context context);
-
-    /**
      * Retrieve a list of jobs streams identified by job name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
@@ -61,7 +58,7 @@ public interface JobStreams {
 
     /**
      * Retrieve a list of jobs streams identified by job name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
@@ -73,11 +70,6 @@ public interface JobStreams {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list job stream operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<JobStream> listByJob(
-        String resourceGroupName,
-        String automationAccountName,
-        String jobName,
-        String filter,
-        String clientRequestId,
-        Context context);
+    PagedIterable<JobStream> listByJob(String resourceGroupName, String automationAccountName, String jobName,
+        String filter, String clientRequestId, Context context);
 }

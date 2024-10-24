@@ -10,5 +10,3 @@ extends:
       - name: azure-resourcemanager-datafactory
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerdatafactory
-    Clouds: 'Public'
-    UseFederatedAuth: true

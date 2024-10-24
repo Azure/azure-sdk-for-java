@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * CDC policy recurrence details.
  */
 @Fluent
-public final class MapperPolicyRecurrence {
+public final class MapperPolicyRecurrence implements JsonSerializable<MapperPolicyRecurrence> {
     /*
      * Frequency of period in terms of 'Hour', 'Minute' or 'Second'.
      */
-    @JsonProperty(value = "frequency")
     private FrequencyType frequency;
 
     /*
      * Actual interval value as per chosen frequency.
      */
-    @JsonProperty(value = "interval")
     private Integer interval;
 
     /**
@@ -76,5 +78,44 @@ public final class MapperPolicyRecurrence {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("frequency", this.frequency == null ? null : this.frequency.toString());
+        jsonWriter.writeNumberField("interval", this.interval);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MapperPolicyRecurrence from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MapperPolicyRecurrence if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MapperPolicyRecurrence.
+     */
+    public static MapperPolicyRecurrence fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MapperPolicyRecurrence deserializedMapperPolicyRecurrence = new MapperPolicyRecurrence();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("frequency".equals(fieldName)) {
+                    deserializedMapperPolicyRecurrence.frequency = FrequencyType.fromString(reader.getString());
+                } else if ("interval".equals(fieldName)) {
+                    deserializedMapperPolicyRecurrence.interval = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMapperPolicyRecurrence;
+        });
     }
 }

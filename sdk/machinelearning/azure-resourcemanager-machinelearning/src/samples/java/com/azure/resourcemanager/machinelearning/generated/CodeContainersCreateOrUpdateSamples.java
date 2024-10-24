@@ -8,29 +8,31 @@ import com.azure.resourcemanager.machinelearning.models.CodeContainerProperties;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for CodeContainers CreateOrUpdate. */
+/**
+ * Samples for CodeContainers CreateOrUpdate.
+ */
 public final class CodeContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/CodeContainer/createOrUpdate.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Workspace/CodeContainer/createOrUpdate.json
      */
     /**
-     * Sample code: CreateOrUpdate Code Container.
-     *
+     * Sample code: CreateOrUpdate Workspace Code Container.
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
-    public static void createOrUpdateCodeContainer(
-        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .codeContainers()
+    public static void
+        createOrUpdateWorkspaceCodeContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
+        manager.codeContainers()
             .define("testContainer")
             .withExistingWorkspace("testrg123", "testworkspace")
-            .withProperties(
-                new CodeContainerProperties()
-                    .withDescription("string")
-                    .withTags(mapOf("tag1", "value1", "tag2", "value2")))
+            .withProperties(new CodeContainerProperties().withDescription("string")
+                .withTags(mapOf("tag1", "value1", "tag2", "value2")))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Parameters of a script block.
  */
 @Fluent
-public final class ScriptActivityParameter {
+public final class ScriptActivityParameter implements JsonSerializable<ScriptActivityParameter> {
     /*
      * The name of the parameter. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "name")
     private Object name;
 
     /*
      * The type of the parameter.
      */
-    @JsonProperty(value = "type")
     private ScriptActivityParameterType type;
 
     /*
      * The value of the parameter. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "value")
     private Object value;
 
     /*
      * The direction of the parameter.
      */
-    @JsonProperty(value = "direction")
     private ScriptActivityParameterDirection direction;
 
     /*
      * The size of the output direction parameter.
      */
-    @JsonProperty(value = "size")
     private Integer size;
 
     /**
@@ -154,5 +153,55 @@ public final class ScriptActivityParameter {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("name", this.name);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeUntypedField("value", this.value);
+        jsonWriter.writeStringField("direction", this.direction == null ? null : this.direction.toString());
+        jsonWriter.writeNumberField("size", this.size);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScriptActivityParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScriptActivityParameter if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScriptActivityParameter.
+     */
+    public static ScriptActivityParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScriptActivityParameter deserializedScriptActivityParameter = new ScriptActivityParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedScriptActivityParameter.name = reader.readUntyped();
+                } else if ("type".equals(fieldName)) {
+                    deserializedScriptActivityParameter.type
+                        = ScriptActivityParameterType.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedScriptActivityParameter.value = reader.readUntyped();
+                } else if ("direction".equals(fieldName)) {
+                    deserializedScriptActivityParameter.direction
+                        = ScriptActivityParameterDirection.fromString(reader.getString());
+                } else if ("size".equals(fieldName)) {
+                    deserializedScriptActivityParameter.size = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScriptActivityParameter;
+        });
     }
 }

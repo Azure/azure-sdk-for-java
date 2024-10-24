@@ -11,14 +11,14 @@ public final class AzureDataLakeStoreLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureDataLakeStoreLocation model = BinaryData.fromString(
-            "{\"type\":\"AzureDataLakeStoreLocation\",\"folderPath\":\"dataenninafhxrzfrm\",\"fileName\":\"datatiucwv\",\"\":{\"rcqxgcbvzarmqc\":\"datalukh\",\"stsinvag\":\"datapo\",\"hqwhitxnmxgnmguz\":\"datavjyhdrxbrdvc\",\"kbd\":\"datauwvorbalkjn\"}}")
+            "{\"type\":\"AzureDataLakeStoreLocation\",\"folderPath\":\"datamfwsxafofu\",\"fileName\":\"datarimm\",\"\":{\"mvhzfovanyrvaprt\":\"datawdehk\",\"fyaqandmymnqo\":\"dataelgwewi\",\"movsfbpbvz\":\"dataj\"}}")
             .toObject(AzureDataLakeStoreLocation.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureDataLakeStoreLocation model
-            = new AzureDataLakeStoreLocation().withFolderPath("dataenninafhxrzfrm").withFileName("datatiucwv");
+            = new AzureDataLakeStoreLocation().withFolderPath("datamfwsxafofu").withFileName("datarimm");
         model = BinaryData.fromObject(model).toObject(AzureDataLakeStoreLocation.class);
     }
 }

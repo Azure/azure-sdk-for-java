@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.devspaces.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ControllerUpdateParametersProperties model. */
+/**
+ * The ControllerUpdateParametersProperties model.
+ */
 @Fluent
-public final class ControllerUpdateParametersProperties {
+public final class ControllerUpdateParametersProperties
+    implements JsonSerializable<ControllerUpdateParametersProperties> {
     /*
      * Credentials of the target container host (base64).
      */
-    @JsonProperty(value = "targetContainerHostCredentialsBase64")
     private String targetContainerHostCredentialsBase64;
 
-    /** Creates an instance of ControllerUpdateParametersProperties class. */
+    /**
+     * Creates an instance of ControllerUpdateParametersProperties class.
+     */
     public ControllerUpdateParametersProperties() {
     }
 
     /**
      * Get the targetContainerHostCredentialsBase64 property: Credentials of the target container host (base64).
-     *
+     * 
      * @return the targetContainerHostCredentialsBase64 value.
      */
     public String targetContainerHostCredentialsBase64() {
@@ -31,21 +39,59 @@ public final class ControllerUpdateParametersProperties {
 
     /**
      * Set the targetContainerHostCredentialsBase64 property: Credentials of the target container host (base64).
-     *
+     * 
      * @param targetContainerHostCredentialsBase64 the targetContainerHostCredentialsBase64 value to set.
      * @return the ControllerUpdateParametersProperties object itself.
      */
-    public ControllerUpdateParametersProperties withTargetContainerHostCredentialsBase64(
-        String targetContainerHostCredentialsBase64) {
+    public ControllerUpdateParametersProperties
+        withTargetContainerHostCredentialsBase64(String targetContainerHostCredentialsBase64) {
         this.targetContainerHostCredentialsBase64 = targetContainerHostCredentialsBase64;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetContainerHostCredentialsBase64", this.targetContainerHostCredentialsBase64);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ControllerUpdateParametersProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ControllerUpdateParametersProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ControllerUpdateParametersProperties.
+     */
+    public static ControllerUpdateParametersProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ControllerUpdateParametersProperties deserializedControllerUpdateParametersProperties
+                = new ControllerUpdateParametersProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetContainerHostCredentialsBase64".equals(fieldName)) {
+                    deserializedControllerUpdateParametersProperties.targetContainerHostCredentialsBase64
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedControllerUpdateParametersProperties;
+        });
     }
 }
