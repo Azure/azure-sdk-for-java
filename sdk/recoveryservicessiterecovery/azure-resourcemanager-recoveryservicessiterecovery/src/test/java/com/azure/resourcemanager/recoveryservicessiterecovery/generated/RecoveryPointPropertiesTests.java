@@ -22,9 +22,10 @@ public final class RecoveryPointPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPointProperties model = new RecoveryPointProperties()
-            .withRecoveryPointTime(OffsetDateTime.parse("2021-04-01T22:39:22Z")).withRecoveryPointType("jviylwdshfs")
-            .withProviderSpecificDetails(new ProviderSpecificRecoveryPointDetails());
+        RecoveryPointProperties model
+            = new RecoveryPointProperties().withRecoveryPointTime(OffsetDateTime.parse("2021-04-01T22:39:22Z"))
+                .withRecoveryPointType("jviylwdshfs")
+                .withProviderSpecificDetails(new ProviderSpecificRecoveryPointDetails());
         model = BinaryData.fromObject(model).toObject(RecoveryPointProperties.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-04-01T22:39:22Z"), model.recoveryPointTime());
         Assertions.assertEquals("jviylwdshfs", model.recoveryPointType());
