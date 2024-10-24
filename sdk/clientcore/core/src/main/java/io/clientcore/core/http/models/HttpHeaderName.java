@@ -440,4 +440,9 @@ public final class HttpHeaderName implements ExpandableEnum<String> {
      * {@code WWW-Authenticate}/{@code www-authenticate}
      */
     public static final HttpHeaderName WWW_AUTHENTICATE = fromString("WWW-Authenticate");
+
+    /**
+     * {@code Proxy-Authenticate}/{@code proxy-authenticate}
+     */
+    public static final HttpHeaderName PROXY_AUTHENTICATE = fromString("Proxy-Authenticate");
 }
