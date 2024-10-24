@@ -32,8 +32,8 @@ public final class OncoPhenotypeResults {
      */
     @JsonCreator
     private OncoPhenotypeResults(
-            @JsonProperty(value = "patients", required = true) List<OncoPhenotypePatientResult> patients,
-            @JsonProperty(value = "modelVersion", required = true) String modelVersion) {
+        @JsonProperty(value = "patients", required = true) List<OncoPhenotypePatientResult> patients,
+        @JsonProperty(value = "modelVersion", required = true) String modelVersion) {
         this.patients = patients;
         this.modelVersion = modelVersion;
     }

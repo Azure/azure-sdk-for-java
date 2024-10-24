@@ -42,9 +42,8 @@ public final class ClinicalTrialResearchFacility {
      * @param countryOrRegion the countryOrRegion value to set.
      */
     @JsonCreator
-    public ClinicalTrialResearchFacility(
-            @JsonProperty(value = "name", required = true) String name,
-            @JsonProperty(value = "countryOrRegion", required = true) String countryOrRegion) {
+    public ClinicalTrialResearchFacility(@JsonProperty(value = "name", required = true) String name,
+        @JsonProperty(value = "countryOrRegion", required = true) String countryOrRegion) {
         this.name = name;
         this.countryOrRegion = countryOrRegion;
     }

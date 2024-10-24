@@ -40,7 +40,8 @@ public final class OncoPhenotypeInferenceType extends ExpandableStringEnum<OncoP
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public OncoPhenotypeInferenceType() {}
+    public OncoPhenotypeInferenceType() {
+    }
 
     /**
      * Creates or finds a OncoPhenotypeInferenceType from its string representation.

@@ -31,7 +31,8 @@ public final class JobStatus extends ExpandableStringEnum<JobStatus> {
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public JobStatus() {}
+    public JobStatus() {
+    }
 
     /**
      * Creates or finds a JobStatus from its string representation.

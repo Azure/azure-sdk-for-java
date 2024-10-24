@@ -39,7 +39,8 @@ public final class OncoPhenotypeModelConfiguration {
     private Boolean checkForCancerCase;
 
     /** Creates an instance of OncoPhenotypeModelConfiguration class. */
-    public OncoPhenotypeModelConfiguration() {}
+    public OncoPhenotypeModelConfiguration() {
+    }
 
     /**
      * Get the verbose property: An indication whether the model should produce verbose output.

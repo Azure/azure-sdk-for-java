@@ -25,7 +25,8 @@ public final class AgeUnit extends ExpandableStringEnum<AgeUnit> {
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public AgeUnit() {}
+    public AgeUnit() {
+    }
 
     /**
      * Creates or finds a AgeUnit from its string representation.

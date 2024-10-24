@@ -22,7 +22,8 @@ import com.azure.health.insights.cancerprofiling.models.OncoPhenotypeResult;
 /** Initializes a new instance of the asynchronous CancerProfilingClient type. */
 @ServiceClient(builder = CancerProfilingClientBuilder.class, isAsync = true)
 public final class CancerProfilingAsyncClient {
-    @Generated private final CancerProfilingClientImpl serviceClient;
+    @Generated
+    private final CancerProfilingClientImpl serviceClient;
 
     /**
      * Initializes an instance of CancerProfilingAsyncClient class.
@@ -154,8 +155,8 @@ public final class CancerProfilingAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginInferCancerProfile(
-            BinaryData oncoPhenotypeData, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginInferCancerProfile(BinaryData oncoPhenotypeData,
+        RequestOptions requestOptions) {
         return this.serviceClient.beginInferCancerProfileAsync(oncoPhenotypeData, requestOptions);
     }
 
@@ -175,11 +176,11 @@ public final class CancerProfilingAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OncoPhenotypeResult, OncoPhenotypeResult> beginInferCancerProfile(
-            OncoPhenotypeData oncoPhenotypeData) {
+    public PollerFlux<OncoPhenotypeResult, OncoPhenotypeResult>
+        beginInferCancerProfile(OncoPhenotypeData oncoPhenotypeData) {
         // Generated convenience method for beginInferCancerProfileWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginInferCancerProfileWithModelAsync(
-                BinaryData.fromObject(oncoPhenotypeData), requestOptions);
+        return serviceClient.beginInferCancerProfileWithModelAsync(BinaryData.fromObject(oncoPhenotypeData),
+            requestOptions);
     }
 }

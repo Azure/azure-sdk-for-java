@@ -29,7 +29,8 @@ public final class ClinicalTrials {
     private List<ClinicalTrialRegistryFilter> registryFilters;
 
     /** Creates an instance of ClinicalTrials class. */
-    public ClinicalTrials() {}
+    public ClinicalTrials() {
+    }
 
     /**
      * Get the customTrials property: A list of clinical trials.

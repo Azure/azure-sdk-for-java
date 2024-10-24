@@ -25,7 +25,8 @@ public final class DocumentContentSourceType extends ExpandableStringEnum<Docume
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public DocumentContentSourceType() {}
+    public DocumentContentSourceType() {
+    }
 
     /**
      * Creates or finds a DocumentContentSourceType from its string representation.

@@ -31,9 +31,8 @@ public final class OncoPhenotypePatientResult {
      * @param inferences the inferences value to set.
      */
     @JsonCreator
-    private OncoPhenotypePatientResult(
-            @JsonProperty(value = "id", required = true) String id,
-            @JsonProperty(value = "inferences", required = true) List<OncoPhenotypeInference> inferences) {
+    private OncoPhenotypePatientResult(@JsonProperty(value = "id", required = true) String id,
+        @JsonProperty(value = "inferences", required = true) List<OncoPhenotypeInference> inferences) {
         this.id = id;
         this.inferences = inferences;
     }

@@ -36,7 +36,8 @@ public final class TrialMatcherInferenceEvidence {
     private Double importance;
 
     /** Creates an instance of TrialMatcherInferenceEvidence class. */
-    private TrialMatcherInferenceEvidence() {}
+    private TrialMatcherInferenceEvidence() {
+    }
 
     /**
      * Get the eligibilityCriteriaEvidence property: A piece of evidence from the eligibility criteria text of a

@@ -29,7 +29,8 @@ public final class ContactDetails {
     private String phone;
 
     /** Creates an instance of ContactDetails class. */
-    public ContactDetails() {}
+    public ContactDetails() {
+    }
 
     /**
      * Get the name property: The person's name.

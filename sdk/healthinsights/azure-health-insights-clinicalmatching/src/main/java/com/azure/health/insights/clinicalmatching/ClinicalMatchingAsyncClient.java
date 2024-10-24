@@ -22,7 +22,8 @@ import com.azure.health.insights.clinicalmatching.models.TrialMatcherResult;
 /** Initializes a new instance of the asynchronous ClinicalMatchingClient type. */
 @ServiceClient(builder = ClinicalMatchingClientBuilder.class, isAsync = true)
 public final class ClinicalMatchingAsyncClient {
-    @Generated private final ClinicalMatchingClientImpl serviceClient;
+    @Generated
+    private final ClinicalMatchingClientImpl serviceClient;
 
     /**
      * Initializes an instance of ClinicalMatchingAsyncClient class.
@@ -290,8 +291,8 @@ public final class ClinicalMatchingAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginMatchTrials(
-            BinaryData trialMatcherData, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginMatchTrials(BinaryData trialMatcherData,
+        RequestOptions requestOptions) {
         return this.serviceClient.beginMatchTrialsAsync(trialMatcherData, requestOptions);
     }
 

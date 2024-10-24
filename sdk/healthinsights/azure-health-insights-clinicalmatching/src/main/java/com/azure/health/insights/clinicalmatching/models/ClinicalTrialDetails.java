@@ -42,9 +42,8 @@ public final class ClinicalTrialDetails {
      * @param metadata the metadata value to set.
      */
     @JsonCreator
-    public ClinicalTrialDetails(
-            @JsonProperty(value = "id", required = true) String id,
-            @JsonProperty(value = "metadata", required = true) ClinicalTrialMetadata metadata) {
+    public ClinicalTrialDetails(@JsonProperty(value = "id", required = true) String id,
+        @JsonProperty(value = "metadata", required = true) ClinicalTrialMetadata metadata) {
         this.id = id;
         this.metadata = metadata;
     }

@@ -100,7 +100,8 @@ public final class ClinicalTrialRegistryFilter {
     private List<GeographicArea> facilityAreas;
 
     /** Creates an instance of ClinicalTrialRegistryFilter class. */
-    public ClinicalTrialRegistryFilter() {}
+    public ClinicalTrialRegistryFilter() {
+    }
 
     /**
      * Get the conditions property: Trials with any of the given medical conditions will be included in the selection
@@ -165,8 +166,8 @@ public final class ClinicalTrialRegistryFilter {
      * @param recruitmentStatuses the recruitmentStatuses value to set.
      * @return the ClinicalTrialRegistryFilter object itself.
      */
-    public ClinicalTrialRegistryFilter setRecruitmentStatuses(
-            List<ClinicalTrialRecruitmentStatus> recruitmentStatuses) {
+    public ClinicalTrialRegistryFilter
+        setRecruitmentStatuses(List<ClinicalTrialRecruitmentStatus> recruitmentStatuses) {
         this.recruitmentStatuses = recruitmentStatuses;
         return this;
     }

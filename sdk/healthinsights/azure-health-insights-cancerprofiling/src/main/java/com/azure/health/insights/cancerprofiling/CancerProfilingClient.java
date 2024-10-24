@@ -21,7 +21,8 @@ import com.azure.health.insights.cancerprofiling.models.OncoPhenotypeResult;
 /** Initializes a new instance of the synchronous CancerProfilingClient type. */
 @ServiceClient(builder = CancerProfilingClientBuilder.class)
 public final class CancerProfilingClient {
-    @Generated private final CancerProfilingAsyncClient client;
+    @Generated
+    private final CancerProfilingAsyncClient client;
 
     /**
      * Initializes an instance of CancerProfilingClient class.
@@ -153,8 +154,8 @@ public final class CancerProfilingClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginInferCancerProfile(
-            BinaryData oncoPhenotypeData, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginInferCancerProfile(BinaryData oncoPhenotypeData,
+        RequestOptions requestOptions) {
         return this.client.beginInferCancerProfile(oncoPhenotypeData, requestOptions).getSyncPoller();
     }
 
@@ -174,8 +175,8 @@ public final class CancerProfilingClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OncoPhenotypeResult, OncoPhenotypeResult> beginInferCancerProfile(
-            OncoPhenotypeData oncoPhenotypeData) {
+    public SyncPoller<OncoPhenotypeResult, OncoPhenotypeResult>
+        beginInferCancerProfile(OncoPhenotypeData oncoPhenotypeData) {
         // Generated convenience method for beginInferCancerProfileWithModel
         return client.beginInferCancerProfile(oncoPhenotypeData).getSyncPoller();
     }

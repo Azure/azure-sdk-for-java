@@ -28,7 +28,8 @@ public final class DocumentType extends ExpandableStringEnum<DocumentType> {
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public DocumentType() {}
+    public DocumentType() {
+    }
 
     /**
      * Creates or finds a DocumentType from its string representation.

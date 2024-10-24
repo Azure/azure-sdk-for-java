@@ -56,7 +56,8 @@ public final class OncoPhenotypeResult {
     private OncoPhenotypeResults results;
 
     /** Creates an instance of OncoPhenotypeResult class. */
-    private OncoPhenotypeResult() {}
+    private OncoPhenotypeResult() {
+    }
 
     /**
      * Get the jobId property: A processing job identifier.

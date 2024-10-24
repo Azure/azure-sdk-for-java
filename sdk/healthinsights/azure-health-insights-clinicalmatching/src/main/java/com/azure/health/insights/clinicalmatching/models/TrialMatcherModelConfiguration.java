@@ -39,7 +39,7 @@ public final class TrialMatcherModelConfiguration {
      */
     @JsonCreator
     public TrialMatcherModelConfiguration(
-            @JsonProperty(value = "clinicalTrials", required = true) ClinicalTrials clinicalTrials) {
+        @JsonProperty(value = "clinicalTrials", required = true) ClinicalTrials clinicalTrials) {
         this.clinicalTrials = clinicalTrials;
     }
 

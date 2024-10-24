@@ -31,7 +31,8 @@ public final class PatientInfo {
     private List<ClinicalCodedElement> clinicalInfo;
 
     /** Creates an instance of PatientInfo class. */
-    public PatientInfo() {}
+    public PatientInfo() {
+    }
 
     /**
      * Get the sex property: The patient's sex.

@@ -56,7 +56,8 @@ public final class TrialMatcherResult {
     private TrialMatcherResults results;
 
     /** Creates an instance of TrialMatcherResult class. */
-    private TrialMatcherResult() {}
+    private TrialMatcherResult() {
+    }
 
     /**
      * Get the jobId property: A processing job identifier.

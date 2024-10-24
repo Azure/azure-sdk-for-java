@@ -56,10 +56,9 @@ public final class PatientDocument {
      * @param content the content value to set.
      */
     @JsonCreator
-    public PatientDocument(
-            @JsonProperty(value = "type", required = true) DocumentType type,
-            @JsonProperty(value = "id", required = true) String id,
-            @JsonProperty(value = "content", required = true) DocumentContent content) {
+    public PatientDocument(@JsonProperty(value = "type", required = true) DocumentType type,
+        @JsonProperty(value = "id", required = true) String id,
+        @JsonProperty(value = "content", required = true) DocumentContent content) {
         this.type = type;
         this.id = id;
         this.content = content;

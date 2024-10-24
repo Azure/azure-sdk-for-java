@@ -55,9 +55,8 @@ public final class OncoPhenotypeInference {
      * @param value the value value to set.
      */
     @JsonCreator
-    private OncoPhenotypeInference(
-            @JsonProperty(value = "type", required = true) OncoPhenotypeInferenceType type,
-            @JsonProperty(value = "value", required = true) String value) {
+    private OncoPhenotypeInference(@JsonProperty(value = "type", required = true) OncoPhenotypeInferenceType type,
+        @JsonProperty(value = "value", required = true) String value) {
         this.type = type;
         this.value = value;
     }

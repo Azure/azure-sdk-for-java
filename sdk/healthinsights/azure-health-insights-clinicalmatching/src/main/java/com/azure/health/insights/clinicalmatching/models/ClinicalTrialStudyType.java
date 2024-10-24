@@ -28,7 +28,8 @@ public final class ClinicalTrialStudyType extends ExpandableStringEnum<ClinicalT
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public ClinicalTrialStudyType() {}
+    public ClinicalTrialStudyType() {
+    }
 
     /**
      * Creates or finds a ClinicalTrialStudyType from its string representation.

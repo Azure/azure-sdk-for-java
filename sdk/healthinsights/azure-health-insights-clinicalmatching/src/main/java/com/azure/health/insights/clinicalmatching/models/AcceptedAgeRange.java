@@ -23,7 +23,8 @@ public final class AcceptedAgeRange {
     private AcceptedAge maximumAge;
 
     /** Creates an instance of AcceptedAgeRange class. */
-    public AcceptedAgeRange() {}
+    public AcceptedAgeRange() {
+    }
 
     /**
      * Get the minimumAge property: A person's age, given as a number (value) and a unit (e.g. years, months).

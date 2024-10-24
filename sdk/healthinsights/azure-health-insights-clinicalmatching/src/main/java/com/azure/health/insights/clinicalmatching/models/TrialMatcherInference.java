@@ -67,9 +67,8 @@ public final class TrialMatcherInference {
      * @param value the value value to set.
      */
     @JsonCreator
-    private TrialMatcherInference(
-            @JsonProperty(value = "type", required = true) TrialMatcherInferenceType type,
-            @JsonProperty(value = "value", required = true) String value) {
+    private TrialMatcherInference(@JsonProperty(value = "type", required = true) TrialMatcherInferenceType type,
+        @JsonProperty(value = "value", required = true) String value) {
         this.type = type;
         this.value = value;
     }

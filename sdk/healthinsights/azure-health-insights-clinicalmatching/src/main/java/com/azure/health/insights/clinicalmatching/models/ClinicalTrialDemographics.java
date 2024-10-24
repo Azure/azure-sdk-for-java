@@ -23,7 +23,8 @@ public final class ClinicalTrialDemographics {
     private AcceptedAgeRange acceptedAgeRange;
 
     /** Creates an instance of ClinicalTrialDemographics class. */
-    public ClinicalTrialDemographics() {}
+    public ClinicalTrialDemographics() {
+    }
 
     /**
      * Get the acceptedSex property: Indication of the sex of people who may participate in the clinical trial.

@@ -40,10 +40,9 @@ public final class GeographicArea {
      * @param properties the properties value to set.
      */
     @JsonCreator
-    public GeographicArea(
-            @JsonProperty(value = "type", required = true) GeoJsonType type,
-            @JsonProperty(value = "geometry", required = true) AreaGeometry geometry,
-            @JsonProperty(value = "properties", required = true) AreaProperties properties) {
+    public GeographicArea(@JsonProperty(value = "type", required = true) GeoJsonType type,
+        @JsonProperty(value = "geometry", required = true) AreaGeometry geometry,
+        @JsonProperty(value = "properties", required = true) AreaProperties properties) {
         this.type = type;
         this.geometry = geometry;
         this.properties = properties;

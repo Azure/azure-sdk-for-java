@@ -30,9 +30,8 @@ public final class AreaProperties {
      * @param radius the radius value to set.
      */
     @JsonCreator
-    public AreaProperties(
-            @JsonProperty(value = "subType", required = true) GeoJsonPropertiesSubType subType,
-            @JsonProperty(value = "radius", required = true) double radius) {
+    public AreaProperties(@JsonProperty(value = "subType", required = true) GeoJsonPropertiesSubType subType,
+        @JsonProperty(value = "radius", required = true) double radius) {
         this.subType = subType;
         this.radius = radius;
     }

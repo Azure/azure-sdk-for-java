@@ -57,9 +57,8 @@ public final class ExtendedClinicalCodedElement {
      * @param code the code value to set.
      */
     @JsonCreator
-    private ExtendedClinicalCodedElement(
-            @JsonProperty(value = "system", required = true) String system,
-            @JsonProperty(value = "code", required = true) String code) {
+    private ExtendedClinicalCodedElement(@JsonProperty(value = "system", required = true) String system,
+        @JsonProperty(value = "code", required = true) String code) {
         this.system = system;
         this.code = code;
     }

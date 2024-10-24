@@ -40,7 +40,8 @@ public final class ClinicalDocumentType extends ExpandableStringEnum<ClinicalDoc
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public ClinicalDocumentType() {}
+    public ClinicalDocumentType() {
+    }
 
     /**
      * Creates or finds a ClinicalDocumentType from its string representation.

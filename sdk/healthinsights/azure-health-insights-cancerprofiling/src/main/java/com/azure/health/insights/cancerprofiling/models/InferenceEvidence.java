@@ -30,7 +30,8 @@ public final class InferenceEvidence {
     private Double importance;
 
     /** Creates an instance of InferenceEvidence class. */
-    private InferenceEvidence() {}
+    private InferenceEvidence() {
+    }
 
     /**
      * Get the patientDataEvidence property: A piece of evidence from a clinical note (text document).

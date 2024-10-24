@@ -8,7 +8,5 @@ module com.azure.health.insights.cancerprofiling {
     exports com.azure.health.insights.cancerprofiling;
     exports com.azure.health.insights.cancerprofiling.models;
 
-    opens com.azure.health.insights.cancerprofiling.models to
-            com.azure.core,
-            com.fasterxml.jackson.databind;
+    opens com.azure.health.insights.cancerprofiling.models to com.azure.core, com.fasterxml.jackson.databind;
 }

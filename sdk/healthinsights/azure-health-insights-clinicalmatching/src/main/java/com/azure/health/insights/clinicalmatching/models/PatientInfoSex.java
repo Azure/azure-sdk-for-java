@@ -25,7 +25,8 @@ public final class PatientInfoSex extends ExpandableStringEnum<PatientInfoSex> {
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public PatientInfoSex() {}
+    public PatientInfoSex() {
+    }
 
     /**
      * Creates or finds a PatientInfoSex from its string representation.

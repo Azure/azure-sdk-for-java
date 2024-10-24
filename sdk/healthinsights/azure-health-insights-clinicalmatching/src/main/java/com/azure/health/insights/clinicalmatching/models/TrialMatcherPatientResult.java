@@ -37,9 +37,8 @@ public final class TrialMatcherPatientResult {
      * @param inferences the inferences value to set.
      */
     @JsonCreator
-    private TrialMatcherPatientResult(
-            @JsonProperty(value = "id", required = true) String id,
-            @JsonProperty(value = "inferences", required = true) List<TrialMatcherInference> inferences) {
+    private TrialMatcherPatientResult(@JsonProperty(value = "id", required = true) String id,
+        @JsonProperty(value = "inferences", required = true) List<TrialMatcherInference> inferences) {
         this.id = id;
         this.inferences = inferences;
     }

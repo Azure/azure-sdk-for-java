@@ -19,7 +19,8 @@ public final class TrialMatcherInferenceType extends ExpandableStringEnum<TrialM
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public TrialMatcherInferenceType() {}
+    public TrialMatcherInferenceType() {
+    }
 
     /**
      * Creates or finds a TrialMatcherInferenceType from its string representation.

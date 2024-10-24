@@ -39,8 +39,8 @@ public final class TrialMatcherResults {
      */
     @JsonCreator
     private TrialMatcherResults(
-            @JsonProperty(value = "patients", required = true) List<TrialMatcherPatientResult> patients,
-            @JsonProperty(value = "modelVersion", required = true) String modelVersion) {
+        @JsonProperty(value = "patients", required = true) List<TrialMatcherPatientResult> patients,
+        @JsonProperty(value = "modelVersion", required = true) String modelVersion) {
         this.patients = patients;
         this.modelVersion = modelVersion;
     }

@@ -8,7 +8,5 @@ module com.azure.health.insights.clinicalmatching {
     exports com.azure.health.insights.clinicalmatching;
     exports com.azure.health.insights.clinicalmatching.models;
 
-    opens com.azure.health.insights.clinicalmatching.models to
-            com.azure.core,
-            com.fasterxml.jackson.databind;
+    opens com.azure.health.insights.clinicalmatching.models to com.azure.core, com.fasterxml.jackson.databind;
 }

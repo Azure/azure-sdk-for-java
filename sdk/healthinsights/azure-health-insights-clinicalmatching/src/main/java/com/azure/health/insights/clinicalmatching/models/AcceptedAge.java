@@ -30,9 +30,8 @@ public final class AcceptedAge {
      * @param value the value value to set.
      */
     @JsonCreator
-    public AcceptedAge(
-            @JsonProperty(value = "unit", required = true) AgeUnit unit,
-            @JsonProperty(value = "value", required = true) double value) {
+    public AcceptedAge(@JsonProperty(value = "unit", required = true) AgeUnit unit,
+        @JsonProperty(value = "value", required = true) double value) {
         this.unit = unit;
         this.value = value;
     }

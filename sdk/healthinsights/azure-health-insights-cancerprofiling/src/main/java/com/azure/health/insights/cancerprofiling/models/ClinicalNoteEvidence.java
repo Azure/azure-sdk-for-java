@@ -43,10 +43,9 @@ public final class ClinicalNoteEvidence {
      * @param length the length value to set.
      */
     @JsonCreator
-    private ClinicalNoteEvidence(
-            @JsonProperty(value = "id", required = true) String id,
-            @JsonProperty(value = "offset", required = true) int offset,
-            @JsonProperty(value = "length", required = true) int length) {
+    private ClinicalNoteEvidence(@JsonProperty(value = "id", required = true) String id,
+        @JsonProperty(value = "offset", required = true) int offset,
+        @JsonProperty(value = "length", required = true) int length) {
         this.id = id;
         this.offset = offset;
         this.length = length;

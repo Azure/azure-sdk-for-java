@@ -109,13 +109,8 @@ public final class CancerProfilingClientImpl {
      * @param serviceVersion Service version.
      */
     public CancerProfilingClientImpl(String endpoint, CancerProfilingServiceVersion serviceVersion) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint,
-                serviceVersion);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
@@ -126,8 +121,8 @@ public final class CancerProfilingClientImpl {
      *     https://westus2.api.cognitive.microsoft.com).
      * @param serviceVersion Service version.
      */
-    public CancerProfilingClientImpl(
-            HttpPipeline httpPipeline, String endpoint, CancerProfilingServiceVersion serviceVersion) {
+    public CancerProfilingClientImpl(HttpPipeline httpPipeline, String endpoint,
+        CancerProfilingServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
@@ -140,17 +135,14 @@ public final class CancerProfilingClientImpl {
      *     https://westus2.api.cognitive.microsoft.com).
      * @param serviceVersion Service version.
      */
-    public CancerProfilingClientImpl(
-            HttpPipeline httpPipeline,
-            SerializerAdapter serializerAdapter,
-            String endpoint,
-            CancerProfilingServiceVersion serviceVersion) {
+    public CancerProfilingClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        CancerProfilingServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
-        this.service =
-                RestProxy.create(CancerProfilingClientService.class, this.httpPipeline, this.getSerializerAdapter());
+        this.service
+            = RestProxy.create(CancerProfilingClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
@@ -161,24 +153,15 @@ public final class CancerProfilingClientImpl {
     @ServiceInterface(name = "CancerProfilingClien")
     public interface CancerProfilingClientService {
         @Post("/oncophenotype/jobs")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> inferCancerProfile(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData oncoPhenotypeData,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> inferCancerProfile(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData oncoPhenotypeData, RequestOptions requestOptions,
+            Context context);
     }
 
     /**
@@ -301,22 +284,15 @@ public final class CancerProfilingClientImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> inferCancerProfileWithResponseAsync(
-            BinaryData oncoPhenotypeData, RequestOptions requestOptions) {
+    private Mono<Response<BinaryData>> inferCancerProfileWithResponseAsync(BinaryData oncoPhenotypeData,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.setHeader("repeatability-request-id", UUID.randomUUID().toString());
-        requestOptionsLocal.setHeader(
-                "repeatability-first-sent", DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
-        return FluxUtil.withContext(
-                context ->
-                        service.inferCancerProfile(
-                                this.getEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                accept,
-                                oncoPhenotypeData,
-                                requestOptionsLocal,
-                                context));
+        requestOptionsLocal.setHeader("repeatability-first-sent",
+            DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
+        return FluxUtil.withContext(context -> service.inferCancerProfile(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), accept, oncoPhenotypeData, requestOptionsLocal, context));
     }
 
     /**
@@ -438,20 +414,16 @@ public final class CancerProfilingClientImpl {
      * @return the {@link PollerFlux} for polling of the response for the Onco Phenotype request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginInferCancerProfileAsync(
-            BinaryData oncoPhenotypeData, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.inferCancerProfileWithResponseAsync(oncoPhenotypeData, requestOptions),
-                new DefaultPollingStrategy<>(
-                        this.getHttpPipeline(),
-                        "{endpoint}/healthinsights".replace("{endpoint}", this.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginInferCancerProfileAsync(BinaryData oncoPhenotypeData,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.inferCancerProfileWithResponseAsync(oncoPhenotypeData, requestOptions),
+            new DefaultPollingStrategy<>(this.getHttpPipeline(),
+                "{endpoint}/healthinsights".replace("{endpoint}", this.getEndpoint()), null,
+                requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -573,8 +545,8 @@ public final class CancerProfilingClientImpl {
      * @return the {@link SyncPoller} for polling of the response for the Onco Phenotype request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginInferCancerProfile(
-            BinaryData oncoPhenotypeData, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginInferCancerProfile(BinaryData oncoPhenotypeData,
+        RequestOptions requestOptions) {
         return this.beginInferCancerProfileAsync(oncoPhenotypeData, requestOptions).getSyncPoller();
     }
 
@@ -697,20 +669,17 @@ public final class CancerProfilingClientImpl {
      * @return the {@link PollerFlux} for polling of the response for the Onco Phenotype request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OncoPhenotypeResult, OncoPhenotypeResult> beginInferCancerProfileWithModelAsync(
-            BinaryData oncoPhenotypeData, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.inferCancerProfileWithResponseAsync(oncoPhenotypeData, requestOptions),
-                new DefaultPollingStrategy<>(
-                        this.getHttpPipeline(),
-                        "{endpoint}/healthinsights".replace("{endpoint}", this.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
-                TypeReference.createInstance(OncoPhenotypeResult.class),
-                TypeReference.createInstance(OncoPhenotypeResult.class));
+    public PollerFlux<OncoPhenotypeResult, OncoPhenotypeResult>
+        beginInferCancerProfileWithModelAsync(BinaryData oncoPhenotypeData, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.inferCancerProfileWithResponseAsync(oncoPhenotypeData, requestOptions),
+            new DefaultPollingStrategy<>(this.getHttpPipeline(),
+                "{endpoint}/healthinsights".replace("{endpoint}", this.getEndpoint()), null,
+                requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE),
+            TypeReference.createInstance(OncoPhenotypeResult.class),
+            TypeReference.createInstance(OncoPhenotypeResult.class));
     }
 
     /**
@@ -832,8 +801,8 @@ public final class CancerProfilingClientImpl {
      * @return the {@link SyncPoller} for polling of the response for the Onco Phenotype request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OncoPhenotypeResult, OncoPhenotypeResult> beginInferCancerProfileWithModel(
-            BinaryData oncoPhenotypeData, RequestOptions requestOptions) {
+    public SyncPoller<OncoPhenotypeResult, OncoPhenotypeResult>
+        beginInferCancerProfileWithModel(BinaryData oncoPhenotypeData, RequestOptions requestOptions) {
         return this.beginInferCancerProfileWithModelAsync(oncoPhenotypeData, requestOptions).getSyncPoller();
     }
 }

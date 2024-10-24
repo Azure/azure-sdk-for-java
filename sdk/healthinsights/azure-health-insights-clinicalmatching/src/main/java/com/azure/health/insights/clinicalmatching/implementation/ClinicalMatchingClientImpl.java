@@ -109,13 +109,8 @@ public final class ClinicalMatchingClientImpl {
      * @param serviceVersion Service version.
      */
     public ClinicalMatchingClientImpl(String endpoint, ClinicalMatchingServiceVersion serviceVersion) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint,
-                serviceVersion);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
@@ -126,8 +121,8 @@ public final class ClinicalMatchingClientImpl {
      *     https://westus2.api.cognitive.microsoft.com).
      * @param serviceVersion Service version.
      */
-    public ClinicalMatchingClientImpl(
-            HttpPipeline httpPipeline, String endpoint, ClinicalMatchingServiceVersion serviceVersion) {
+    public ClinicalMatchingClientImpl(HttpPipeline httpPipeline, String endpoint,
+        ClinicalMatchingServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
@@ -140,17 +135,14 @@ public final class ClinicalMatchingClientImpl {
      *     https://westus2.api.cognitive.microsoft.com).
      * @param serviceVersion Service version.
      */
-    public ClinicalMatchingClientImpl(
-            HttpPipeline httpPipeline,
-            SerializerAdapter serializerAdapter,
-            String endpoint,
-            ClinicalMatchingServiceVersion serviceVersion) {
+    public ClinicalMatchingClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        ClinicalMatchingServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
-        this.service =
-                RestProxy.create(ClinicalMatchingClientService.class, this.httpPipeline, this.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ClinicalMatchingClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
@@ -161,24 +153,14 @@ public final class ClinicalMatchingClientImpl {
     @ServiceInterface(name = "ClinicalMatchingClie")
     public interface ClinicalMatchingClientService {
         @Post("/trialmatcher/jobs")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> matchTrials(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData trialMatcherData,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> matchTrials(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData trialMatcherData, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -437,22 +419,15 @@ public final class ClinicalMatchingClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> matchTrialsWithResponseAsync(
-            BinaryData trialMatcherData, RequestOptions requestOptions) {
+    private Mono<Response<BinaryData>> matchTrialsWithResponseAsync(BinaryData trialMatcherData,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.setHeader("repeatability-request-id", UUID.randomUUID().toString());
-        requestOptionsLocal.setHeader(
-                "repeatability-first-sent", DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
-        return FluxUtil.withContext(
-                context ->
-                        service.matchTrials(
-                                this.getEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                accept,
-                                trialMatcherData,
-                                requestOptionsLocal,
-                                context));
+        requestOptionsLocal.setHeader("repeatability-first-sent",
+            DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
+        return FluxUtil.withContext(context -> service.matchTrials(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), accept, trialMatcherData, requestOptionsLocal, context));
     }
 
     /**
@@ -710,20 +685,16 @@ public final class ClinicalMatchingClientImpl {
      * @return the {@link PollerFlux} for polling of the response for the Trial Matcher request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginMatchTrialsAsync(
-            BinaryData trialMatcherData, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.matchTrialsWithResponseAsync(trialMatcherData, requestOptions),
-                new DefaultPollingStrategy<>(
-                        this.getHttpPipeline(),
-                        "{endpoint}/healthinsights".replace("{endpoint}", this.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginMatchTrialsAsync(BinaryData trialMatcherData,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.matchTrialsWithResponseAsync(trialMatcherData, requestOptions),
+            new DefaultPollingStrategy<>(this.getHttpPipeline(),
+                "{endpoint}/healthinsights".replace("{endpoint}", this.getEndpoint()), null,
+                requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -981,8 +952,8 @@ public final class ClinicalMatchingClientImpl {
      * @return the {@link SyncPoller} for polling of the response for the Trial Matcher request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginMatchTrials(
-            BinaryData trialMatcherData, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginMatchTrials(BinaryData trialMatcherData,
+        RequestOptions requestOptions) {
         return this.beginMatchTrialsAsync(trialMatcherData, requestOptions).getSyncPoller();
     }
 
@@ -1241,20 +1212,17 @@ public final class ClinicalMatchingClientImpl {
      * @return the {@link PollerFlux} for polling of the response for the Trial Matcher request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<TrialMatcherResult, TrialMatcherResult> beginMatchTrialsWithModelAsync(
-            BinaryData trialMatcherData, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.matchTrialsWithResponseAsync(trialMatcherData, requestOptions),
-                new DefaultPollingStrategy<>(
-                        this.getHttpPipeline(),
-                        "{endpoint}/healthinsights".replace("{endpoint}", this.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
-                TypeReference.createInstance(TrialMatcherResult.class),
-                TypeReference.createInstance(TrialMatcherResult.class));
+    public PollerFlux<TrialMatcherResult, TrialMatcherResult>
+        beginMatchTrialsWithModelAsync(BinaryData trialMatcherData, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.matchTrialsWithResponseAsync(trialMatcherData, requestOptions),
+            new DefaultPollingStrategy<>(this.getHttpPipeline(),
+                "{endpoint}/healthinsights".replace("{endpoint}", this.getEndpoint()), null,
+                requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE),
+            TypeReference.createInstance(TrialMatcherResult.class),
+            TypeReference.createInstance(TrialMatcherResult.class));
     }
 
     /**
@@ -1512,8 +1480,8 @@ public final class ClinicalMatchingClientImpl {
      * @return the {@link SyncPoller} for polling of the response for the Trial Matcher request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TrialMatcherResult, TrialMatcherResult> beginMatchTrialsWithModel(
-            BinaryData trialMatcherData, RequestOptions requestOptions) {
+    public SyncPoller<TrialMatcherResult, TrialMatcherResult> beginMatchTrialsWithModel(BinaryData trialMatcherData,
+        RequestOptions requestOptions) {
         return this.beginMatchTrialsWithModelAsync(trialMatcherData, requestOptions).getSyncPoller();
     }
 }

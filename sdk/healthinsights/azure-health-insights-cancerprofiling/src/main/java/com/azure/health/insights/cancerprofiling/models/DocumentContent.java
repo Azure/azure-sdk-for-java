@@ -32,9 +32,8 @@ public final class DocumentContent {
      * @param value the value value to set.
      */
     @JsonCreator
-    public DocumentContent(
-            @JsonProperty(value = "sourceType", required = true) DocumentContentSourceType sourceType,
-            @JsonProperty(value = "value", required = true) String value) {
+    public DocumentContent(@JsonProperty(value = "sourceType", required = true) DocumentContentSourceType sourceType,
+        @JsonProperty(value = "value", required = true) String value) {
         this.sourceType = sourceType;
         this.value = value;
     }

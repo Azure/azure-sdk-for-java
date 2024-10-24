@@ -19,7 +19,8 @@ public final class GeoJsonPropertiesSubType extends ExpandableStringEnum<GeoJson
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public GeoJsonPropertiesSubType() {}
+    public GeoJsonPropertiesSubType() {
+    }
 
     /**
      * Creates or finds a GeoJsonPropertiesSubType from its string representation.

@@ -32,9 +32,8 @@ public final class AreaGeometry {
      * @param coordinates the coordinates value to set.
      */
     @JsonCreator
-    public AreaGeometry(
-            @JsonProperty(value = "type", required = true) GeoJsonGeometryType type,
-            @JsonProperty(value = "coordinates", required = true) List<Double> coordinates) {
+    public AreaGeometry(@JsonProperty(value = "type", required = true) GeoJsonGeometryType type,
+        @JsonProperty(value = "coordinates", required = true) List<Double> coordinates) {
         this.type = type;
         this.coordinates = coordinates;
     }

@@ -19,7 +19,8 @@ public final class GeoJsonGeometryType extends ExpandableStringEnum<GeoJsonGeome
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public GeoJsonGeometryType() {}
+    public GeoJsonGeometryType() {
+    }
 
     /**
      * Creates or finds a GeoJsonGeometryType from its string representation.
