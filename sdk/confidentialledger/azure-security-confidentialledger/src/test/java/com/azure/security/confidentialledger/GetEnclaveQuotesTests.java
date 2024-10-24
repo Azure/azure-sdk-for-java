@@ -24,7 +24,7 @@ public final class GetEnclaveQuotesTests extends ConfidentialLedgerClientTestBas
         JsonNode responseBodyJson = null;
 
         responseBodyJson = objectMapper.readTree(parsedResponse.toBytes());
-        
+
         JsonNode enclaveQuotes = responseBodyJson.get("enclaveQuotes");
         String enclaveQuotesKey = enclaveQuotes.fields().next().getKey();
         Assertions.assertEquals(enclaveQuotes.get(enclaveQuotesKey).get("quoteVersion").asText(), "OE_SGX_v1");
