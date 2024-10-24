@@ -18,9 +18,9 @@ import java.util.Map;
 /**
  * Class to enable Azure Monitor for OpenTelemetry autoconfiguration.
  */
-public final class AzureMonitorExporter {
+public final class AzureMonitorAutoconfigure {
 
-    private AzureMonitorExporter() {
+    private AzureMonitorAutoconfigure() {
     }
 
     /**

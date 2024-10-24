@@ -3,7 +3,7 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation;
 
-import com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorExporter;
+import com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorAutoconfigure;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
 import io.opentelemetry.sdk.autoconfigure.spi.logs.ConfigurableLogRecordExporterProvider;
 import io.opentelemetry.sdk.common.CompletableResultCode;
@@ -20,7 +20,7 @@ public final class AzureMonitorLogRecordExporterProvider implements Configurable
             return AzureMonitorLogRecordExporterProvider.MarkerLogRecordExporter.INSTANCE;
         }
         throw new IllegalStateException(
-            getName() + " currently only supports usage via " + AzureMonitorExporter.class.getName());
+            getName() + " currently only supports usage via " + AzureMonitorAutoconfigure.class.getName());
     }
 
     @Override

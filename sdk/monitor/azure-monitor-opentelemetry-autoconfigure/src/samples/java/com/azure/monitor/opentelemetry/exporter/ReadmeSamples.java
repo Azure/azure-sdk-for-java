@@ -38,7 +38,7 @@ public class ReadmeSamples {
         // This should be done just once when application starts up
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        AzureMonitorExporter.customize(sdkBuilder, "{connection-string}");
+        AzureMonitorAutoconfigure.customize(sdkBuilder, "{connection-string}");
 
         OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 
@@ -70,7 +70,7 @@ public class ReadmeSamples {
     public void exporterAndOpenTelemetryAutoconfigurationEnvVariable() {
         // BEGIN: readme-sample-autoconfigure-env-variable
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-        AzureMonitorExporter.customize(sdkBuilder);
+        AzureMonitorAutoconfigure.customize(sdkBuilder);
         OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
         // END: readme-sample-autoconfigure-env-variable
     }
@@ -81,7 +81,7 @@ public class ReadmeSamples {
     public void exporterAndOpenTelemetryAutoconfiguration() {
         // BEGIN: readme-sample-autoconfigure
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-        AzureMonitorExporter.customize(sdkBuilder, "{connection-string}");
+        AzureMonitorAutoconfigure.customize(sdkBuilder, "{connection-string}");
         OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
         // END: readme-sample-autoconfigure
     }
@@ -94,7 +94,7 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-create-span
         AutoConfiguredOpenTelemetrySdkBuilder otelSdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        AzureMonitorExporter.customize(otelSdkBuilder, "{connection-string}");
+        AzureMonitorAutoconfigure.customize(otelSdkBuilder, "{connection-string}");
 
         OpenTelemetry openTelemetry = otelSdkBuilder.build().getOpenTelemetrySdk();
         Tracer tracer = openTelemetry.getTracer("Sample");
@@ -123,7 +123,7 @@ public class ReadmeSamples {
     public void spanProcessor() {
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        AzureMonitorExporter.customize(sdkBuilder);
+        AzureMonitorAutoconfigure.customize(sdkBuilder);
 
         SpanProcessor spanProcessor = new SpanProcessor() {
 
