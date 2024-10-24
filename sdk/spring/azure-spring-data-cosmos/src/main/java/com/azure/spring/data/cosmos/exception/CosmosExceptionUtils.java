@@ -5,6 +5,7 @@ package com.azure.spring.data.cosmos.exception;
 import com.azure.cosmos.CosmosException;
 import com.azure.spring.data.cosmos.common.CosmosUtils;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.util.ObjectUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
@@ -29,6 +30,7 @@ public class CosmosExceptionUtils {
      * @param <T> type class of Mono
      * @return Mono instance
      * @throws CosmosAccessException for operations on cosmos db
+     * @throws DataAccessException for operations on cosmos db
      */
     public static <T> Mono<T> exceptionHandler(String message, Throwable throwable,
                                                ResponseDiagnosticsProcessor responseDiagnosticsProcessor) {
@@ -37,9 +39,14 @@ public class CosmosExceptionUtils {
         }
         //  Unwrap the exception in case if it is a reactive exception
         final Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
-        if (unwrappedThrowable instanceof CosmosException) {
-            CosmosException cosmosException = (CosmosException) unwrappedThrowable;
+        if (unwrappedThrowable instanceof CosmosException cosmosException) {
             CosmosUtils.fillAndProcessCosmosExceptionDiagnostics(responseDiagnosticsProcessor, cosmosException);
+
+            // Figure out what type of CosmosException it is and create a CosmosException to wrap and return it
+            // Maybe extend CosmosAccessException to create subclasses
+            // Figure out type by StatusCode
+            // Add comments to CosmosException and HttpConstants mentioning usage in spring and need to update
+
         }
         throw new CosmosAccessException(message, unwrappedThrowable);
     }
