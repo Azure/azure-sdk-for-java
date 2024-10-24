@@ -189,39 +189,14 @@ public final class BridgeInternal {
         boolean useEtagAsContinuation,
         boolean isNoChangesResponse,
         CosmosDiagnostics cosmosDiagnostics) {
-        FeedResponse<T> feedResponseWithQueryMetrics = ModelBridgeInternal.createFeedResponseWithQueryMetrics(
-            results,
+        return createFeedResponseWithQueryMetrics(results,
             headers,
             queryMetricsMap,
             diagnosticsContext,
             useEtagAsContinuation,
             isNoChangesResponse,
+            cosmosDiagnostics,
             null);
-
-        ClientSideRequestStatistics requestStatistics;
-        if (cosmosDiagnostics != null) {
-            requestStatistics = cosmosDiagnostics.clientSideRequestStatistics();
-            ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
-                ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
-            if (requestStatistics != null) {
-                diagnosticsAccessor.addClientSideDiagnosticsToFeed(
-                    feedResponseWithQueryMetrics.getCosmosDiagnostics(),
-                    Collections.singletonList(requestStatistics));
-            } else {
-                diagnosticsAccessor.addClientSideDiagnosticsToFeed(feedResponseWithQueryMetrics.getCosmosDiagnostics(),
-                    cosmosDiagnostics.getFeedResponseDiagnostics()
-                        .getClientSideRequestStatistics());
-            }
-
-            if (cosmosDiagnostics.getDiagnosticsContext() != null) {
-                diagnosticsAccessor.setDiagnosticsContext(
-                    feedResponseWithQueryMetrics.getCosmosDiagnostics(),
-                    cosmosDiagnostics.getDiagnosticsContext()
-                );
-            }
-        }
-
-        return feedResponseWithQueryMetrics;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

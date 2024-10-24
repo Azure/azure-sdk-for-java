@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.{CosmosException, spark}
+import com.azure.cosmos.CosmosException
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.models.FeedResponse
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
@@ -16,7 +16,6 @@ import scala.util.control.Breaks
 import scala.concurrent.{Await, ExecutionContext, Future}
 import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, OperationCancelledException}
 
-import scala.concurrent.duration.FiniteDuration
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
