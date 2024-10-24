@@ -447,10 +447,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
 
         Subnet subnet = network.subnets().get(subnetName);
         Assertions.assertNotNull(subnet.addressPrefix());
-        Assertions.assertEquals(1, subnet.addressPrefixes().size());
-        // test service behavior, they will return either addressPrefix or addressPrefixes, not both
-        Assertions.assertNotNull(subnet.innerModel().addressPrefix());
-        Assertions.assertTrue(CoreUtils.isNullOrEmpty(subnet.innerModel().addressPrefixes()));
+        Assertions.assertTrue(CoreUtils.isNullOrEmpty(subnet.addressPrefixes()));
 
         // update withAddressPrefixes
         network.update().updateSubnet(subnetName)
@@ -463,10 +460,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
 
         Assertions.assertEquals(2, subnet.addressPrefixes().size());
         Assertions.assertTrue(subnet.addressPrefixes().contains("10.0.0.8/29"));
-        Assertions.assertNotNull(subnet.addressPrefix());
-        // test service behavior, they will return either addressPrefix or addressPrefixes, not both
-        Assertions.assertEquals(2, subnet.innerModel().addressPrefixes().size());
-        Assertions.assertNull(subnet.innerModel().addressPrefix());
+        Assertions.assertNull(subnet.addressPrefix());
 
         // update withAddressPrefix
         network.update().updateSubnet(subnetName)
@@ -478,9 +472,6 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
         subnet = network.subnets().get(subnetName);
 
         Assertions.assertEquals("10.0.0.0/29", subnet.addressPrefix());
-        Assertions.assertEquals(1, subnet.addressPrefixes().size());
-        // test service behavior, they will return either addressPrefix or addressPrefixes, not both
-        Assertions.assertNotNull(subnet.innerModel().addressPrefix());
         Assertions.assertTrue(CoreUtils.isNullOrEmpty(subnet.innerModel().addressPrefixes()));
     }
 

@@ -25,15 +25,22 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
      */
     Collection<NicIpConfiguration> listNetworkInterfaceIPConfigurations();
 
-    /** @return available private IP addresses within this network */
+    /**
+     * List available private IP addresses within this subnet.
+     * <pre>Starting IPs of the address prefixes are not returned, due to:
+     * 1. They are usually reserved by platform(e.g. for gateway usage).
+     * 2. For backward-compatibility.</pre>
+     *
+     * @return available private IP addresses within this network
+     */
     Set<String> listAvailablePrivateIPAddresses();
 
     /** @return number of network interface IP configurations associated with this subnet */
     int networkInterfaceIPConfigurationCount();
 
     /**
-     * Gets the address space prefix(or one of the prefixes, if this subnet has multiple ones), in CIDR notation, assigned to this subnet.
-     * <p>Use {@link Subnet#addressPrefixes()} if this subnet has multiple prefixes.</p>
+     * Gets the address space prefix, in CIDR notation, assigned to this subnet.
+     * <p>Use {@link Subnet#addressPrefixes} if this subnet has multiple prefixes.</p>
      *
      * @return the address space prefix(or one of the prefixes, if this subnet has multiple ones), in CIDR notation, assigned to this subnet
      * @see Subnet#addressPrefixes
@@ -41,9 +48,11 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
     String addressPrefix();
 
     /**
-     * Gets address space prefixes, in CIDR notation, assigned to this subnet
+     * Gets address space prefixes, in CIDR notation, assigned to this subnet.
+     * <p>Use {@link Subnet#addressPrefix} if this subnet is created/updated using that property.</p>
      *
      * @return address space prefixes, in CIDR notation, assigned to this subnet
+     * @see Subnet#addressPrefix
      */
     List<String> addressPrefixes();
 

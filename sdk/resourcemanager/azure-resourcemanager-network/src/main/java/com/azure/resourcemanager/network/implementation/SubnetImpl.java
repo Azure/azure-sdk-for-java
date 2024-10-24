@@ -61,23 +61,15 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
 
     @Override
     public String addressPrefix() {
-        if (!CoreUtils.isNullOrEmpty(this.innerModel().addressPrefixes())) {
-            return this.innerModel().addressPrefixes().iterator().next();
-        }
         return this.innerModel().addressPrefix();
     }
 
     @Override
     public List<String> addressPrefixes() {
         if (CoreUtils.isNullOrEmpty(this.innerModel().addressPrefixes())) {
-            if (CoreUtils.isNullOrEmpty(this.innerModel().addressPrefix())) {
-                // shouldn't happen, just in case
-                return Collections.emptyList();
-            } else {
-                return Collections.singletonList(this.innerModel().addressPrefix());
-            }
+            return Collections.emptyList();
         }
-        return new ArrayList<>(this.innerModel().addressPrefixes());
+        return Collections.unmodifiableList(this.innerModel().addressPrefixes());
     }
 
     @Override
@@ -292,28 +284,21 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
 
     @Override
     public Set<String> listAvailablePrivateIPAddresses() {
-        // According to our test, when doing "checkIpAddressAvailability", backend knows about which subnet the "startIp"
-        // belongs to, thus we only need to use one of the address prefixes.
-        String cidr = this.addressPrefixes().iterator().next();
-        Set<String> ipAddresses = new TreeSet<>();
-        if (cidr == null) {
-            return ipAddresses; // Should never happen, but just in case
+        Set<String> result = Collections.emptySet();
+        if (!CoreUtils.isNullOrEmpty(this.addressPrefixes())) {
+            for (String cidr : this.addressPrefixes()) {
+                // According to our test, when doing "checkIpAddressAvailability", backend knows about which subnet the "startIp"
+                // belongs to, thus we only need to use one of the address prefixes.
+                Set<String> availableIps = listAvailablePrivateIPAddresses(cidr);
+                if (!CoreUtils.isNullOrEmpty(availableIps)) {
+                    result = availableIps;
+                    break;
+                }
+            }
+        } else {
+            result = listAvailablePrivateIPAddresses(this.addressPrefix());
         }
-        String takenIPAddress = cidr.split("/")[0];
-
-        IpAddressAvailabilityResultInner result =
-            this
-                .parent()
-                .manager()
-                .serviceClient()
-                .getVirtualNetworks()
-                .checkIpAddressAvailability(this.parent().resourceGroupName(), this.parent().name(), takenIPAddress);
-        if (result == null || result.availableIpAddresses() == null) {
-            return ipAddresses;
-        }
-
-        ipAddresses.addAll(result.availableIpAddresses());
-        return ipAddresses;
+        return result;
     }
 
     @Override
@@ -371,5 +356,30 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
             this.innerModel().withNatGateway(new SubResource().withId(resourceId));
         }
         return this;
+    }
+
+    private Set<String> listAvailablePrivateIPAddresses(String cidr) {
+        Set<String> ipAddresses = new TreeSet<>();
+        if (cidr == null) {
+            return ipAddresses;
+        }
+        String takenIPAddress = cidr.split("/")[0];
+
+        IpAddressAvailabilityResultInner result =
+            this
+                .parent()
+                .manager()
+                .serviceClient()
+                .getVirtualNetworks()
+                .checkIpAddressAvailability(this.parent().resourceGroupName(), this.parent().name(), takenIPAddress);
+        if (result == null
+            // there's a case when user doesn't have the permission to query, result.availableIpAddresses() will be null
+            || result.availableIpAddresses() == null
+        ) {
+            return ipAddresses;
+        }
+
+        ipAddresses.addAll(result.availableIpAddresses());
+        return ipAddresses;
     }
 }
