@@ -14,7 +14,8 @@ import java.util.List;
 /** The List WorkspaceQuotasByVMFamily operation response. */
 @Immutable
 public final class ListWorkspaceQuotas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListWorkspaceQuotas.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ListWorkspaceQuotas.class);
 
     /*
      * The list of Workspace Quotas by VM Family
