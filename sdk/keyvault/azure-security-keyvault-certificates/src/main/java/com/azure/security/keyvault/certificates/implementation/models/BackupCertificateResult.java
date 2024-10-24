@@ -12,7 +12,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** The backup certificate result, containing the backup blob. */
+/**
+ * The backup certificate result, containing the backup blob.
+ */
 @Immutable
 public final class BackupCertificateResult implements JsonSerializable<BackupCertificateResult> {
     /*
@@ -20,13 +22,15 @@ public final class BackupCertificateResult implements JsonSerializable<BackupCer
      */
     private Base64Url value;
 
-    /** Creates an instance of BackupCertificateResult class. */
+    /**
+     * Creates an instance of BackupCertificateResult class.
+     */
     public BackupCertificateResult() {
     }
 
     /**
      * Get the value property: The backup blob containing the backed up certificate.
-     *
+     * 
      * @return the value value.
      */
     public byte[] getValue() {
@@ -36,6 +40,9 @@ public final class BackupCertificateResult implements JsonSerializable<BackupCer
         return this.value.decodedBytes();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -44,10 +51,10 @@ public final class BackupCertificateResult implements JsonSerializable<BackupCer
 
     /**
      * Reads an instance of BackupCertificateResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of BackupCertificateResult if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
+     * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the BackupCertificateResult.
      */
     public static BackupCertificateResult fromJson(JsonReader jsonReader) throws IOException {

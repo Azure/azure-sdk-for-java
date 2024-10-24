@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** Properties of the key backing a certificate. */
+/**
+ * Properties of the key backing a certificate.
+ */
 @Fluent
 public final class SecretProperties implements JsonSerializable<SecretProperties> {
     /*
@@ -19,13 +21,15 @@ public final class SecretProperties implements JsonSerializable<SecretProperties
      */
     private String contentType;
 
-    /** Creates an instance of SecretProperties class. */
+    /**
+     * Creates an instance of SecretProperties class.
+     */
     public SecretProperties() {
     }
 
     /**
      * Get the contentType property: The media type (MIME type).
-     *
+     * 
      * @return the contentType value.
      */
     public String getContentType() {
@@ -34,7 +38,7 @@ public final class SecretProperties implements JsonSerializable<SecretProperties
 
     /**
      * Set the contentType property: The media type (MIME type).
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the SecretProperties object itself.
      */
@@ -43,6 +47,9 @@ public final class SecretProperties implements JsonSerializable<SecretProperties
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -52,10 +59,10 @@ public final class SecretProperties implements JsonSerializable<SecretProperties
 
     /**
      * Reads an instance of SecretProperties from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of SecretProperties if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SecretProperties.
      */
     public static SecretProperties fromJson(JsonReader jsonReader) throws IOException {

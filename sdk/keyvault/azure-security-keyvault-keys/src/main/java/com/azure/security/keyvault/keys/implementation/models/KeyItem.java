@@ -12,7 +12,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Map;
 
-/** The key item containing key metadata. */
+/**
+ * The key item containing key metadata.
+ */
 @Fluent
 public class KeyItem implements JsonSerializable<KeyItem> {
     /*
@@ -36,13 +38,15 @@ public class KeyItem implements JsonSerializable<KeyItem> {
      */
     private Boolean managed;
 
-    /** Creates an instance of KeyItem class. */
+    /**
+     * Creates an instance of KeyItem class.
+     */
     public KeyItem() {
     }
 
     /**
      * Get the kid property: Key identifier.
-     *
+     * 
      * @return the kid value.
      */
     public String getKid() {
@@ -51,7 +55,7 @@ public class KeyItem implements JsonSerializable<KeyItem> {
 
     /**
      * Set the kid property: Key identifier.
-     *
+     * 
      * @param kid the kid value to set.
      * @return the KeyItem object itself.
      */
@@ -62,7 +66,7 @@ public class KeyItem implements JsonSerializable<KeyItem> {
 
     /**
      * Get the attributes property: The key management attributes.
-     *
+     * 
      * @return the attributes value.
      */
     public KeyAttributes getAttributes() {
@@ -71,7 +75,7 @@ public class KeyItem implements JsonSerializable<KeyItem> {
 
     /**
      * Set the attributes property: The key management attributes.
-     *
+     * 
      * @param attributes the attributes value to set.
      * @return the KeyItem object itself.
      */
@@ -82,7 +86,7 @@ public class KeyItem implements JsonSerializable<KeyItem> {
 
     /**
      * Get the tags property: Application specific metadata in the form of key-value pairs.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -91,7 +95,7 @@ public class KeyItem implements JsonSerializable<KeyItem> {
 
     /**
      * Set the tags property: Application specific metadata in the form of key-value pairs.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the KeyItem object itself.
      */
@@ -103,7 +107,7 @@ public class KeyItem implements JsonSerializable<KeyItem> {
     /**
      * Get the managed property: True if the key's lifetime is managed by key vault. If this is a key backing a
      * certificate, then managed will be true.
-     *
+     * 
      * @return the managed value.
      */
     public Boolean isManaged() {
@@ -113,7 +117,7 @@ public class KeyItem implements JsonSerializable<KeyItem> {
     /**
      * Set the managed property: True if the key's lifetime is managed by key vault. If this is a key backing a
      * certificate, then managed will be true.
-     *
+     * 
      * @param managed the managed value to set.
      * @return the KeyItem object itself.
      */
@@ -122,6 +126,9 @@ public class KeyItem implements JsonSerializable<KeyItem> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -133,10 +140,10 @@ public class KeyItem implements JsonSerializable<KeyItem> {
 
     /**
      * Reads an instance of KeyItem from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyItem if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     *     JSON null.
+     * JSON null.
      * @throws IOException If an error occurs while reading the KeyItem.
      */
     public static KeyItem fromJson(JsonReader jsonReader) throws IOException {

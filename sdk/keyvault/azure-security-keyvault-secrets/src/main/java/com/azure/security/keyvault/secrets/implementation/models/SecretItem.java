@@ -12,7 +12,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Map;
 
-/** The secret item containing secret metadata. */
+/**
+ * The secret item containing secret metadata.
+ */
 @Fluent
 public class SecretItem implements JsonSerializable<SecretItem> {
     /*
@@ -41,13 +43,15 @@ public class SecretItem implements JsonSerializable<SecretItem> {
      */
     private Boolean managed;
 
-    /** Creates an instance of SecretItem class. */
+    /**
+     * Creates an instance of SecretItem class.
+     */
     public SecretItem() {
     }
 
     /**
      * Get the id property: Secret identifier.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -56,7 +60,7 @@ public class SecretItem implements JsonSerializable<SecretItem> {
 
     /**
      * Set the id property: Secret identifier.
-     *
+     * 
      * @param id the id value to set.
      * @return the SecretItem object itself.
      */
@@ -67,7 +71,7 @@ public class SecretItem implements JsonSerializable<SecretItem> {
 
     /**
      * Get the attributes property: The secret management attributes.
-     *
+     * 
      * @return the attributes value.
      */
     public SecretAttributes getAttributes() {
@@ -76,7 +80,7 @@ public class SecretItem implements JsonSerializable<SecretItem> {
 
     /**
      * Set the attributes property: The secret management attributes.
-     *
+     * 
      * @param attributes the attributes value to set.
      * @return the SecretItem object itself.
      */
@@ -87,7 +91,7 @@ public class SecretItem implements JsonSerializable<SecretItem> {
 
     /**
      * Get the tags property: Application specific metadata in the form of key-value pairs.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -96,7 +100,7 @@ public class SecretItem implements JsonSerializable<SecretItem> {
 
     /**
      * Set the tags property: Application specific metadata in the form of key-value pairs.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the SecretItem object itself.
      */
@@ -107,7 +111,7 @@ public class SecretItem implements JsonSerializable<SecretItem> {
 
     /**
      * Get the contentType property: Type of the secret value such as a password.
-     *
+     * 
      * @return the contentType value.
      */
     public String getContentType() {
@@ -116,7 +120,7 @@ public class SecretItem implements JsonSerializable<SecretItem> {
 
     /**
      * Set the contentType property: Type of the secret value such as a password.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the SecretItem object itself.
      */
@@ -128,7 +132,7 @@ public class SecretItem implements JsonSerializable<SecretItem> {
     /**
      * Get the managed property: True if the secret's lifetime is managed by key vault. If this is a key backing a
      * certificate, then managed will be true.
-     *
+     * 
      * @return the managed value.
      */
     public Boolean isManaged() {
@@ -138,7 +142,7 @@ public class SecretItem implements JsonSerializable<SecretItem> {
     /**
      * Set the managed property: True if the secret's lifetime is managed by key vault. If this is a key backing a
      * certificate, then managed will be true.
-     *
+     * 
      * @param managed the managed value to set.
      * @return the SecretItem object itself.
      */
@@ -147,6 +151,9 @@ public class SecretItem implements JsonSerializable<SecretItem> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -159,10 +166,10 @@ public class SecretItem implements JsonSerializable<SecretItem> {
 
     /**
      * Reads an instance of SecretItem from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of SecretItem if the JsonReader was pointing to an instance of it, or null if it was pointing
-     *     to JSON null.
+     * to JSON null.
      * @throws IOException If an error occurs while reading the SecretItem.
      */
     public static SecretItem fromJson(JsonReader jsonReader) throws IOException {

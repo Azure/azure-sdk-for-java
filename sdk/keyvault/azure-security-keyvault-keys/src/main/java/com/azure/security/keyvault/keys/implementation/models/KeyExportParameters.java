@@ -11,9 +11,10 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.keys.models.KeyExportEncryptionAlgorithm;
 import java.io.IOException;
-import java.util.Objects;
 
-/** The export key parameters. */
+/**
+ * The export key parameters.
+ */
 @Fluent
 public final class KeyExportParameters implements JsonSerializable<KeyExportParameters> {
     /*
@@ -31,14 +32,16 @@ public final class KeyExportParameters implements JsonSerializable<KeyExportPara
      */
     private KeyExportEncryptionAlgorithm enc;
 
-    /** Creates an instance of KeyExportParameters class. */
+    /**
+     * Creates an instance of KeyExportParameters class.
+     */
     public KeyExportParameters() {
     }
 
     /**
      * Get the wrappingKey property: The export key encryption Json web key. This key MUST be a RSA key that supports
      * encryption.
-     *
+     * 
      * @return the wrappingKey value.
      */
     public JsonWebKey getWrappingKey() {
@@ -48,7 +51,7 @@ public final class KeyExportParameters implements JsonSerializable<KeyExportPara
     /**
      * Set the wrappingKey property: The export key encryption Json web key. This key MUST be a RSA key that supports
      * encryption.
-     *
+     * 
      * @param wrappingKey the wrappingKey value to set.
      * @return the KeyExportParameters object itself.
      */
@@ -60,7 +63,7 @@ public final class KeyExportParameters implements JsonSerializable<KeyExportPara
     /**
      * Get the wrappingKid property: The export key encryption key identifier. This key MUST be a RSA key that supports
      * encryption.
-     *
+     * 
      * @return the wrappingKid value.
      */
     public String getWrappingKid() {
@@ -70,7 +73,7 @@ public final class KeyExportParameters implements JsonSerializable<KeyExportPara
     /**
      * Set the wrappingKid property: The export key encryption key identifier. This key MUST be a RSA key that supports
      * encryption.
-     *
+     * 
      * @param wrappingKid the wrappingKid value to set.
      * @return the KeyExportParameters object itself.
      */
@@ -81,7 +84,7 @@ public final class KeyExportParameters implements JsonSerializable<KeyExportPara
 
     /**
      * Get the enc property: The encryption algorithm to use to protected the exported key material.
-     *
+     * 
      * @return the enc value.
      */
     public KeyExportEncryptionAlgorithm getEnc() {
@@ -90,7 +93,7 @@ public final class KeyExportParameters implements JsonSerializable<KeyExportPara
 
     /**
      * Set the enc property: The encryption algorithm to use to protected the exported key material.
-     *
+     * 
      * @param enc the enc value to set.
      * @return the KeyExportParameters object itself.
      */
@@ -99,21 +102,24 @@ public final class KeyExportParameters implements JsonSerializable<KeyExportPara
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("wrappingKey", this.wrappingKey);
         jsonWriter.writeStringField("wrappingKid", this.wrappingKid);
-        jsonWriter.writeStringField("enc", Objects.toString(this.enc, null));
+        jsonWriter.writeStringField("enc", this.enc == null ? null : this.enc.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of KeyExportParameters from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyExportParameters if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the KeyExportParameters.
      */
     public static KeyExportParameters fromJson(JsonReader jsonReader) throws IOException {

@@ -64,41 +64,51 @@ import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the CertificateClient type. */
+/**
+ * Initializes a new instance of the CertificateClient type.
+ */
 public final class CertificateClientImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CertificateClientService service;
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -107,7 +117,7 @@ public final class CertificateClientImpl {
 
     /**
      * Initializes an instance of CertificateClient client.
-     *
+     * 
      * @param apiVersion Api Version.
      */
     public CertificateClientImpl(String apiVersion) {
@@ -117,7 +127,7 @@ public final class CertificateClientImpl {
 
     /**
      * Initializes an instance of CertificateClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param apiVersion Api Version.
      */
@@ -127,7 +137,7 @@ public final class CertificateClientImpl {
 
     /**
      * Initializes an instance of CertificateClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param apiVersion Api Version.
@@ -603,13 +613,13 @@ public final class CertificateClientImpl {
 
     /**
      * List certificates in a specified key vault
-     *
-     * <p>The GetCertificates operation returns the set of certificates resources in the specified key vault. This
+     * 
+     * The GetCertificates operation returns the set of certificates resources in the specified key vault. This
      * operation requires the certificates/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param includePending Specifies whether to include certificates which are not completely provisioned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -629,13 +639,13 @@ public final class CertificateClientImpl {
 
     /**
      * List certificates in a specified key vault
-     *
-     * <p>The GetCertificates operation returns the set of certificates resources in the specified key vault. This
+     * 
+     * The GetCertificates operation returns the set of certificates resources in the specified key vault. This
      * operation requires the certificates/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param includePending Specifies whether to include certificates which are not completely provisioned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -654,13 +664,13 @@ public final class CertificateClientImpl {
 
     /**
      * List certificates in a specified key vault
-     *
-     * <p>The GetCertificates operation returns the set of certificates resources in the specified key vault. This
+     * 
+     * The GetCertificates operation returns the set of certificates resources in the specified key vault. This
      * operation requires the certificates/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param includePending Specifies whether to include certificates which are not completely provisioned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -676,13 +686,13 @@ public final class CertificateClientImpl {
 
     /**
      * List certificates in a specified key vault
-     *
-     * <p>The GetCertificates operation returns the set of certificates resources in the specified key vault. This
+     * 
+     * The GetCertificates operation returns the set of certificates resources in the specified key vault. This
      * operation requires the certificates/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param includePending Specifies whether to include certificates which are not completely provisioned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -699,13 +709,13 @@ public final class CertificateClientImpl {
 
     /**
      * List certificates in a specified key vault
-     *
-     * <p>The GetCertificates operation returns the set of certificates resources in the specified key vault. This
+     * 
+     * The GetCertificates operation returns the set of certificates resources in the specified key vault. This
      * operation requires the certificates/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param includePending Specifies whether to include certificates which are not completely provisioned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -724,13 +734,13 @@ public final class CertificateClientImpl {
 
     /**
      * List certificates in a specified key vault
-     *
-     * <p>The GetCertificates operation returns the set of certificates resources in the specified key vault. This
+     * 
+     * The GetCertificates operation returns the set of certificates resources in the specified key vault. This
      * operation requires the certificates/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param includePending Specifies whether to include certificates which are not completely provisioned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -750,13 +760,13 @@ public final class CertificateClientImpl {
 
     /**
      * List certificates in a specified key vault
-     *
-     * <p>The GetCertificates operation returns the set of certificates resources in the specified key vault. This
+     * 
+     * The GetCertificates operation returns the set of certificates resources in the specified key vault. This
      * operation requires the certificates/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param includePending Specifies whether to include certificates which are not completely provisioned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -773,13 +783,13 @@ public final class CertificateClientImpl {
 
     /**
      * List certificates in a specified key vault
-     *
-     * <p>The GetCertificates operation returns the set of certificates resources in the specified key vault. This
+     * 
+     * The GetCertificates operation returns the set of certificates resources in the specified key vault. This
      * operation requires the certificates/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param includePending Specifies whether to include certificates which are not completely provisioned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -796,34 +806,33 @@ public final class CertificateClientImpl {
 
     /**
      * Deletes a certificate from a specified key vault.
-     *
-     * <p>Deletes all versions of a certificate object along with its associated policy. Delete certificate cannot be
-     * used to remove individual versions of a certificate object. This operation requires the certificates/delete
+     * 
+     * Deletes all versions of a certificate object along with its associated policy. Delete certificate cannot be used
+     * to remove individual versions of a certificate object. This operation requires the certificates/delete
      * permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on
-     *     when it will be purged along with {@link Response} on successful completion of {@link Mono}.
+     * when it will be purged along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedCertificateBundle>> deleteCertificateWithResponseAsync(String vaultBaseUrl,
         String certificateName) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.deleteCertificate(vaultBaseUrl, certificateName, this.getApiVersion(), accept, context));
+        return FluxUtil
+            .withContext(context -> deleteCertificateWithResponseAsync(vaultBaseUrl, certificateName, context));
     }
 
     /**
      * Deletes a certificate from a specified key vault.
-     *
-     * <p>Deletes all versions of a certificate object along with its associated policy. Delete certificate cannot be
-     * used to remove individual versions of a certificate object. This operation requires the certificates/delete
+     * 
+     * Deletes all versions of a certificate object along with its associated policy. Delete certificate cannot be used
+     * to remove individual versions of a certificate object. This operation requires the certificates/delete
      * permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param context The context to associate with this operation.
@@ -831,7 +840,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on
-     *     when it will be purged along with {@link Response} on successful completion of {@link Mono}.
+     * when it will be purged along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedCertificateBundle>> deleteCertificateWithResponseAsync(String vaultBaseUrl,
@@ -842,18 +851,18 @@ public final class CertificateClientImpl {
 
     /**
      * Deletes a certificate from a specified key vault.
-     *
-     * <p>Deletes all versions of a certificate object along with its associated policy. Delete certificate cannot be
-     * used to remove individual versions of a certificate object. This operation requires the certificates/delete
+     * 
+     * Deletes all versions of a certificate object along with its associated policy. Delete certificate cannot be used
+     * to remove individual versions of a certificate object. This operation requires the certificates/delete
      * permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on
-     *     when it will be purged on successful completion of {@link Mono}.
+     * when it will be purged on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedCertificateBundle> deleteCertificateAsync(String vaultBaseUrl, String certificateName) {
@@ -863,11 +872,11 @@ public final class CertificateClientImpl {
 
     /**
      * Deletes a certificate from a specified key vault.
-     *
-     * <p>Deletes all versions of a certificate object along with its associated policy. Delete certificate cannot be
-     * used to remove individual versions of a certificate object. This operation requires the certificates/delete
+     * 
+     * Deletes all versions of a certificate object along with its associated policy. Delete certificate cannot be used
+     * to remove individual versions of a certificate object. This operation requires the certificates/delete
      * permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param context The context to associate with this operation.
@@ -875,7 +884,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on
-     *     when it will be purged on successful completion of {@link Mono}.
+     * when it will be purged on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedCertificateBundle> deleteCertificateAsync(String vaultBaseUrl, String certificateName,
@@ -886,11 +895,11 @@ public final class CertificateClientImpl {
 
     /**
      * Deletes a certificate from a specified key vault.
-     *
-     * <p>Deletes all versions of a certificate object along with its associated policy. Delete certificate cannot be
-     * used to remove individual versions of a certificate object. This operation requires the certificates/delete
+     * 
+     * Deletes all versions of a certificate object along with its associated policy. Delete certificate cannot be used
+     * to remove individual versions of a certificate object. This operation requires the certificates/delete
      * permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param context The context to associate with this operation.
@@ -898,7 +907,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on
-     *     when it will be purged along with {@link Response}.
+     * when it will be purged along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedCertificateBundle> deleteCertificateWithResponse(String vaultBaseUrl, String certificateName,
@@ -909,18 +918,18 @@ public final class CertificateClientImpl {
 
     /**
      * Deletes a certificate from a specified key vault.
-     *
-     * <p>Deletes all versions of a certificate object along with its associated policy. Delete certificate cannot be
-     * used to remove individual versions of a certificate object. This operation requires the certificates/delete
+     * 
+     * Deletes all versions of a certificate object along with its associated policy. Delete certificate cannot be used
+     * to remove individual versions of a certificate object. This operation requires the certificates/delete
      * permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on
-     *     when it will be purged.
+     * when it will be purged.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeletedCertificateBundle deleteCertificate(String vaultBaseUrl, String certificateName) {
@@ -929,39 +938,38 @@ public final class CertificateClientImpl {
 
     /**
      * Sets the certificate contacts for the specified key vault.
-     *
-     * <p>Sets the certificate contacts for the specified key vault. This operation requires the
+     * 
+     * Sets the certificate contacts for the specified key vault. This operation requires the
      * certificates/managecontacts permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param contacts The contacts for the key vault certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the contacts for the vault certificates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the contacts for the vault certificates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Contacts>> setCertificateContactsWithResponseAsync(String vaultBaseUrl, Contacts contacts) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.setCertificateContacts(vaultBaseUrl, this.getApiVersion(), contacts, accept, context));
+        return FluxUtil
+            .withContext(context -> setCertificateContactsWithResponseAsync(vaultBaseUrl, contacts, context));
     }
 
     /**
      * Sets the certificate contacts for the specified key vault.
-     *
-     * <p>Sets the certificate contacts for the specified key vault. This operation requires the
+     * 
+     * Sets the certificate contacts for the specified key vault. This operation requires the
      * certificates/managecontacts permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param contacts The contacts for the key vault certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the contacts for the vault certificates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the contacts for the vault certificates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Contacts>> setCertificateContactsWithResponseAsync(String vaultBaseUrl, Contacts contacts,
@@ -972,10 +980,10 @@ public final class CertificateClientImpl {
 
     /**
      * Sets the certificate contacts for the specified key vault.
-     *
-     * <p>Sets the certificate contacts for the specified key vault. This operation requires the
+     * 
+     * Sets the certificate contacts for the specified key vault. This operation requires the
      * certificates/managecontacts permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param contacts The contacts for the key vault certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -991,10 +999,10 @@ public final class CertificateClientImpl {
 
     /**
      * Sets the certificate contacts for the specified key vault.
-     *
-     * <p>Sets the certificate contacts for the specified key vault. This operation requires the
+     * 
+     * Sets the certificate contacts for the specified key vault. This operation requires the
      * certificates/managecontacts permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param contacts The contacts for the key vault certificate.
      * @param context The context to associate with this operation.
@@ -1011,10 +1019,10 @@ public final class CertificateClientImpl {
 
     /**
      * Sets the certificate contacts for the specified key vault.
-     *
-     * <p>Sets the certificate contacts for the specified key vault. This operation requires the
+     * 
+     * Sets the certificate contacts for the specified key vault. This operation requires the
      * certificates/managecontacts permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param contacts The contacts for the key vault certificate.
      * @param context The context to associate with this operation.
@@ -1032,10 +1040,10 @@ public final class CertificateClientImpl {
 
     /**
      * Sets the certificate contacts for the specified key vault.
-     *
-     * <p>Sets the certificate contacts for the specified key vault. This operation requires the
+     * 
+     * Sets the certificate contacts for the specified key vault. This operation requires the
      * certificates/managecontacts permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param contacts The contacts for the key vault certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1050,37 +1058,35 @@ public final class CertificateClientImpl {
 
     /**
      * Lists the certificate contacts for a specified key vault.
-     *
-     * <p>The GetCertificateContacts operation returns the set of certificate contact resources in the specified key
-     * vault. This operation requires the certificates/managecontacts permission.
-     *
+     * 
+     * The GetCertificateContacts operation returns the set of certificate contact resources in the specified key vault.
+     * This operation requires the certificates/managecontacts permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the contacts for the vault certificates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the contacts for the vault certificates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Contacts>> getCertificateContactsWithResponseAsync(String vaultBaseUrl) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.getCertificateContacts(vaultBaseUrl, this.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getCertificateContactsWithResponseAsync(vaultBaseUrl, context));
     }
 
     /**
      * Lists the certificate contacts for a specified key vault.
-     *
-     * <p>The GetCertificateContacts operation returns the set of certificate contact resources in the specified key
-     * vault. This operation requires the certificates/managecontacts permission.
-     *
+     * 
+     * The GetCertificateContacts operation returns the set of certificate contact resources in the specified key vault.
+     * This operation requires the certificates/managecontacts permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the contacts for the vault certificates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the contacts for the vault certificates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Contacts>> getCertificateContactsWithResponseAsync(String vaultBaseUrl, Context context) {
@@ -1090,10 +1096,10 @@ public final class CertificateClientImpl {
 
     /**
      * Lists the certificate contacts for a specified key vault.
-     *
-     * <p>The GetCertificateContacts operation returns the set of certificate contact resources in the specified key
-     * vault. This operation requires the certificates/managecontacts permission.
-     *
+     * 
+     * The GetCertificateContacts operation returns the set of certificate contact resources in the specified key vault.
+     * This operation requires the certificates/managecontacts permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1107,10 +1113,10 @@ public final class CertificateClientImpl {
 
     /**
      * Lists the certificate contacts for a specified key vault.
-     *
-     * <p>The GetCertificateContacts operation returns the set of certificate contact resources in the specified key
-     * vault. This operation requires the certificates/managecontacts permission.
-     *
+     * 
+     * The GetCertificateContacts operation returns the set of certificate contact resources in the specified key vault.
+     * This operation requires the certificates/managecontacts permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1126,10 +1132,10 @@ public final class CertificateClientImpl {
 
     /**
      * Lists the certificate contacts for a specified key vault.
-     *
-     * <p>The GetCertificateContacts operation returns the set of certificate contact resources in the specified key
-     * vault. This operation requires the certificates/managecontacts permission.
-     *
+     * 
+     * The GetCertificateContacts operation returns the set of certificate contact resources in the specified key vault.
+     * This operation requires the certificates/managecontacts permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1145,10 +1151,10 @@ public final class CertificateClientImpl {
 
     /**
      * Lists the certificate contacts for a specified key vault.
-     *
-     * <p>The GetCertificateContacts operation returns the set of certificate contact resources in the specified key
-     * vault. This operation requires the certificates/managecontacts permission.
-     *
+     * 
+     * The GetCertificateContacts operation returns the set of certificate contact resources in the specified key vault.
+     * This operation requires the certificates/managecontacts permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1162,37 +1168,35 @@ public final class CertificateClientImpl {
 
     /**
      * Deletes the certificate contacts for a specified key vault.
-     *
-     * <p>Deletes the certificate contacts for a specified key vault certificate. This operation requires the
+     * 
+     * Deletes the certificate contacts for a specified key vault certificate. This operation requires the
      * certificates/managecontacts permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the contacts for the vault certificates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the contacts for the vault certificates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Contacts>> deleteCertificateContactsWithResponseAsync(String vaultBaseUrl) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.deleteCertificateContacts(vaultBaseUrl, this.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> deleteCertificateContactsWithResponseAsync(vaultBaseUrl, context));
     }
 
     /**
      * Deletes the certificate contacts for a specified key vault.
-     *
-     * <p>Deletes the certificate contacts for a specified key vault certificate. This operation requires the
+     * 
+     * Deletes the certificate contacts for a specified key vault certificate. This operation requires the
      * certificates/managecontacts permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the contacts for the vault certificates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the contacts for the vault certificates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Contacts>> deleteCertificateContactsWithResponseAsync(String vaultBaseUrl, Context context) {
@@ -1202,10 +1206,10 @@ public final class CertificateClientImpl {
 
     /**
      * Deletes the certificate contacts for a specified key vault.
-     *
-     * <p>Deletes the certificate contacts for a specified key vault certificate. This operation requires the
+     * 
+     * Deletes the certificate contacts for a specified key vault certificate. This operation requires the
      * certificates/managecontacts permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1220,10 +1224,10 @@ public final class CertificateClientImpl {
 
     /**
      * Deletes the certificate contacts for a specified key vault.
-     *
-     * <p>Deletes the certificate contacts for a specified key vault certificate. This operation requires the
+     * 
+     * Deletes the certificate contacts for a specified key vault certificate. This operation requires the
      * certificates/managecontacts permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1239,10 +1243,10 @@ public final class CertificateClientImpl {
 
     /**
      * Deletes the certificate contacts for a specified key vault.
-     *
-     * <p>Deletes the certificate contacts for a specified key vault certificate. This operation requires the
+     * 
+     * Deletes the certificate contacts for a specified key vault certificate. This operation requires the
      * certificates/managecontacts permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1258,10 +1262,10 @@ public final class CertificateClientImpl {
 
     /**
      * Deletes the certificate contacts for a specified key vault.
-     *
-     * <p>Deletes the certificate contacts for a specified key vault certificate. This operation requires the
+     * 
+     * Deletes the certificate contacts for a specified key vault certificate. This operation requires the
      * certificates/managecontacts permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1275,18 +1279,18 @@ public final class CertificateClientImpl {
 
     /**
      * List certificate issuers for a specified key vault.
-     *
-     * <p>The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key
-     * vault. This operation requires the certificates/manageissuers/getissuers permission.
-     *
+     * 
+     * The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault.
+     * This operation requires the certificates/manageissuers/getissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the certificate issuer list result along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the certificate issuer list result along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<CertificateIssuerItem>> getCertificateIssuersSinglePageAsync(String vaultBaseUrl,
@@ -1300,19 +1304,19 @@ public final class CertificateClientImpl {
 
     /**
      * List certificate issuers for a specified key vault.
-     *
-     * <p>The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key
-     * vault. This operation requires the certificates/manageissuers/getissuers permission.
-     *
+     * 
+     * The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault.
+     * This operation requires the certificates/manageissuers/getissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the certificate issuer list result along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the certificate issuer list result along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<CertificateIssuerItem>> getCertificateIssuersSinglePageAsync(String vaultBaseUrl,
@@ -1325,13 +1329,13 @@ public final class CertificateClientImpl {
 
     /**
      * List certificate issuers for a specified key vault.
-     *
-     * <p>The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key
-     * vault. This operation requires the certificates/manageissuers/getissuers permission.
-     *
+     * 
+     * The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault.
+     * This operation requires the certificates/manageissuers/getissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1345,13 +1349,13 @@ public final class CertificateClientImpl {
 
     /**
      * List certificate issuers for a specified key vault.
-     *
-     * <p>The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key
-     * vault. This operation requires the certificates/manageissuers/getissuers permission.
-     *
+     * 
+     * The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault.
+     * This operation requires the certificates/manageissuers/getissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1367,13 +1371,13 @@ public final class CertificateClientImpl {
 
     /**
      * List certificate issuers for a specified key vault.
-     *
-     * <p>The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key
-     * vault. This operation requires the certificates/manageissuers/getissuers permission.
-     *
+     * 
+     * The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault.
+     * This operation requires the certificates/manageissuers/getissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1391,13 +1395,13 @@ public final class CertificateClientImpl {
 
     /**
      * List certificate issuers for a specified key vault.
-     *
-     * <p>The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key
-     * vault. This operation requires the certificates/manageissuers/getissuers permission.
-     *
+     * 
+     * The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault.
+     * This operation requires the certificates/manageissuers/getissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1416,13 +1420,13 @@ public final class CertificateClientImpl {
 
     /**
      * List certificate issuers for a specified key vault.
-     *
-     * <p>The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key
-     * vault. This operation requires the certificates/manageissuers/getissuers permission.
-     *
+     * 
+     * The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault.
+     * This operation requires the certificates/manageissuers/getissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1436,13 +1440,13 @@ public final class CertificateClientImpl {
 
     /**
      * List certificate issuers for a specified key vault.
-     *
-     * <p>The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key
-     * vault. This operation requires the certificates/manageissuers/getissuers permission.
-     *
+     * 
+     * The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault.
+     * This operation requires the certificates/manageissuers/getissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1458,13 +1462,13 @@ public final class CertificateClientImpl {
 
     /**
      * Sets the specified certificate issuer.
-     *
-     * <p>The SetCertificateIssuer operation adds or updates the specified certificate issuer. This operation requires
-     * the certificates/setissuers permission.
-     *
+     * 
+     * The SetCertificateIssuer operation adds or updates the specified certificate issuer. This operation requires the
+     * certificates/setissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer. The value you provide may be copied globally for the purpose of running
-     *     the service. The value provided should not include personally identifiable or sensitive information.
+     * the service. The value provided should not include personally identifiable or sensitive information.
      * @param provider The issuer provider.
      * @param credentials The credentials to be used for the issuer.
      * @param organizationDetails Details of the organization as provided to the issuer.
@@ -1472,32 +1476,26 @@ public final class CertificateClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the issuer for Key Vault certificate along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the issuer for Key Vault certificate along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IssuerBundle>> setCertificateIssuerWithResponseAsync(String vaultBaseUrl, String issuerName,
         String provider, IssuerCredentials credentials, OrganizationDetails organizationDetails,
         IssuerAttributes attributes) {
-        final String accept = "application/json";
-        CertificateIssuerSetParameters parameter = new CertificateIssuerSetParameters();
-        parameter.setProvider(provider);
-        parameter.setCredentials(credentials);
-        parameter.setOrganizationDetails(organizationDetails);
-        parameter.setAttributes(attributes);
-        return FluxUtil.withContext(context -> service.setCertificateIssuer(vaultBaseUrl, issuerName,
-            this.getApiVersion(), parameter, accept, context));
+        return FluxUtil.withContext(context -> setCertificateIssuerWithResponseAsync(vaultBaseUrl, issuerName, provider,
+            credentials, organizationDetails, attributes, context));
     }
 
     /**
      * Sets the specified certificate issuer.
-     *
-     * <p>The SetCertificateIssuer operation adds or updates the specified certificate issuer. This operation requires
-     * the certificates/setissuers permission.
-     *
+     * 
+     * The SetCertificateIssuer operation adds or updates the specified certificate issuer. This operation requires the
+     * certificates/setissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer. The value you provide may be copied globally for the purpose of running
-     *     the service. The value provided should not include personally identifiable or sensitive information.
+     * the service. The value provided should not include personally identifiable or sensitive information.
      * @param provider The issuer provider.
      * @param credentials The credentials to be used for the issuer.
      * @param organizationDetails Details of the organization as provided to the issuer.
@@ -1506,8 +1504,8 @@ public final class CertificateClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the issuer for Key Vault certificate along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the issuer for Key Vault certificate along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IssuerBundle>> setCertificateIssuerWithResponseAsync(String vaultBaseUrl, String issuerName,
@@ -1524,13 +1522,13 @@ public final class CertificateClientImpl {
 
     /**
      * Sets the specified certificate issuer.
-     *
-     * <p>The SetCertificateIssuer operation adds or updates the specified certificate issuer. This operation requires
-     * the certificates/setissuers permission.
-     *
+     * 
+     * The SetCertificateIssuer operation adds or updates the specified certificate issuer. This operation requires the
+     * certificates/setissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer. The value you provide may be copied globally for the purpose of running
-     *     the service. The value provided should not include personally identifiable or sensitive information.
+     * the service. The value provided should not include personally identifiable or sensitive information.
      * @param provider The issuer provider.
      * @param credentials The credentials to be used for the issuer.
      * @param organizationDetails Details of the organization as provided to the issuer.
@@ -1549,13 +1547,13 @@ public final class CertificateClientImpl {
 
     /**
      * Sets the specified certificate issuer.
-     *
-     * <p>The SetCertificateIssuer operation adds or updates the specified certificate issuer. This operation requires
-     * the certificates/setissuers permission.
-     *
+     * 
+     * The SetCertificateIssuer operation adds or updates the specified certificate issuer. This operation requires the
+     * certificates/setissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer. The value you provide may be copied globally for the purpose of running
-     *     the service. The value provided should not include personally identifiable or sensitive information.
+     * the service. The value provided should not include personally identifiable or sensitive information.
      * @param provider The issuer provider.
      * @param credentials The credentials to be used for the issuer.
      * @param organizationDetails Details of the organization as provided to the issuer.
@@ -1576,13 +1574,13 @@ public final class CertificateClientImpl {
 
     /**
      * Sets the specified certificate issuer.
-     *
-     * <p>The SetCertificateIssuer operation adds or updates the specified certificate issuer. This operation requires
-     * the certificates/setissuers permission.
-     *
+     * 
+     * The SetCertificateIssuer operation adds or updates the specified certificate issuer. This operation requires the
+     * certificates/setissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer. The value you provide may be copied globally for the purpose of running
-     *     the service. The value provided should not include personally identifiable or sensitive information.
+     * the service. The value provided should not include personally identifiable or sensitive information.
      * @param provider The issuer provider.
      * @param credentials The credentials to be used for the issuer.
      * @param organizationDetails Details of the organization as provided to the issuer.
@@ -1609,13 +1607,13 @@ public final class CertificateClientImpl {
 
     /**
      * Sets the specified certificate issuer.
-     *
-     * <p>The SetCertificateIssuer operation adds or updates the specified certificate issuer. This operation requires
-     * the certificates/setissuers permission.
-     *
+     * 
+     * The SetCertificateIssuer operation adds or updates the specified certificate issuer. This operation requires the
+     * certificates/setissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer. The value you provide may be copied globally for the purpose of running
-     *     the service. The value provided should not include personally identifiable or sensitive information.
+     * the service. The value provided should not include personally identifiable or sensitive information.
      * @param provider The issuer provider.
      * @param credentials The credentials to be used for the issuer.
      * @param organizationDetails Details of the organization as provided to the issuer.
@@ -1634,10 +1632,10 @@ public final class CertificateClientImpl {
 
     /**
      * Updates the specified certificate issuer.
-     *
-     * <p>The UpdateCertificateIssuer operation performs an update on the specified certificate issuer entity. This
+     * 
+     * The UpdateCertificateIssuer operation performs an update on the specified certificate issuer entity. This
      * operation requires the certificates/setissuers permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer.
      * @param provider The issuer provider.
@@ -1647,29 +1645,23 @@ public final class CertificateClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the issuer for Key Vault certificate along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the issuer for Key Vault certificate along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IssuerBundle>> updateCertificateIssuerWithResponseAsync(String vaultBaseUrl, String issuerName,
         String provider, IssuerCredentials credentials, OrganizationDetails organizationDetails,
         IssuerAttributes attributes) {
-        final String accept = "application/json";
-        CertificateIssuerUpdateParameters parameter = new CertificateIssuerUpdateParameters();
-        parameter.setProvider(provider);
-        parameter.setCredentials(credentials);
-        parameter.setOrganizationDetails(organizationDetails);
-        parameter.setAttributes(attributes);
-        return FluxUtil.withContext(context -> service.updateCertificateIssuer(vaultBaseUrl, issuerName,
-            this.getApiVersion(), parameter, accept, context));
+        return FluxUtil.withContext(context -> updateCertificateIssuerWithResponseAsync(vaultBaseUrl, issuerName,
+            provider, credentials, organizationDetails, attributes, context));
     }
 
     /**
      * Updates the specified certificate issuer.
-     *
-     * <p>The UpdateCertificateIssuer operation performs an update on the specified certificate issuer entity. This
+     * 
+     * The UpdateCertificateIssuer operation performs an update on the specified certificate issuer entity. This
      * operation requires the certificates/setissuers permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer.
      * @param provider The issuer provider.
@@ -1680,8 +1672,8 @@ public final class CertificateClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the issuer for Key Vault certificate along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the issuer for Key Vault certificate along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IssuerBundle>> updateCertificateIssuerWithResponseAsync(String vaultBaseUrl, String issuerName,
@@ -1699,10 +1691,10 @@ public final class CertificateClientImpl {
 
     /**
      * Updates the specified certificate issuer.
-     *
-     * <p>The UpdateCertificateIssuer operation performs an update on the specified certificate issuer entity. This
+     * 
+     * The UpdateCertificateIssuer operation performs an update on the specified certificate issuer entity. This
      * operation requires the certificates/setissuers permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer.
      * @param provider The issuer provider.
@@ -1723,10 +1715,10 @@ public final class CertificateClientImpl {
 
     /**
      * Updates the specified certificate issuer.
-     *
-     * <p>The UpdateCertificateIssuer operation performs an update on the specified certificate issuer entity. This
+     * 
+     * The UpdateCertificateIssuer operation performs an update on the specified certificate issuer entity. This
      * operation requires the certificates/setissuers permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer.
      * @param provider The issuer provider.
@@ -1749,10 +1741,10 @@ public final class CertificateClientImpl {
 
     /**
      * Updates the specified certificate issuer.
-     *
-     * <p>The UpdateCertificateIssuer operation performs an update on the specified certificate issuer entity. This
+     * 
+     * The UpdateCertificateIssuer operation performs an update on the specified certificate issuer entity. This
      * operation requires the certificates/setissuers permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer.
      * @param provider The issuer provider.
@@ -1781,10 +1773,10 @@ public final class CertificateClientImpl {
 
     /**
      * Updates the specified certificate issuer.
-     *
-     * <p>The UpdateCertificateIssuer operation performs an update on the specified certificate issuer entity. This
+     * 
+     * The UpdateCertificateIssuer operation performs an update on the specified certificate issuer entity. This
      * operation requires the certificates/setissuers permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer.
      * @param provider The issuer provider.
@@ -1805,39 +1797,38 @@ public final class CertificateClientImpl {
 
     /**
      * Lists the specified certificate issuer.
-     *
-     * <p>The GetCertificateIssuer operation returns the specified certificate issuer resources in the specified key
-     * vault. This operation requires the certificates/manageissuers/getissuers permission.
-     *
+     * 
+     * The GetCertificateIssuer operation returns the specified certificate issuer resources in the specified key vault.
+     * This operation requires the certificates/manageissuers/getissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the issuer for Key Vault certificate along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the issuer for Key Vault certificate along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IssuerBundle>> getCertificateIssuerWithResponseAsync(String vaultBaseUrl, String issuerName) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.getCertificateIssuer(vaultBaseUrl, issuerName, this.getApiVersion(), accept, context));
+        return FluxUtil
+            .withContext(context -> getCertificateIssuerWithResponseAsync(vaultBaseUrl, issuerName, context));
     }
 
     /**
      * Lists the specified certificate issuer.
-     *
-     * <p>The GetCertificateIssuer operation returns the specified certificate issuer resources in the specified key
-     * vault. This operation requires the certificates/manageissuers/getissuers permission.
-     *
+     * 
+     * The GetCertificateIssuer operation returns the specified certificate issuer resources in the specified key vault.
+     * This operation requires the certificates/manageissuers/getissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the issuer for Key Vault certificate along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the issuer for Key Vault certificate along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IssuerBundle>> getCertificateIssuerWithResponseAsync(String vaultBaseUrl, String issuerName,
@@ -1848,10 +1839,10 @@ public final class CertificateClientImpl {
 
     /**
      * Lists the specified certificate issuer.
-     *
-     * <p>The GetCertificateIssuer operation returns the specified certificate issuer resources in the specified key
-     * vault. This operation requires the certificates/manageissuers/getissuers permission.
-     *
+     * 
+     * The GetCertificateIssuer operation returns the specified certificate issuer resources in the specified key vault.
+     * This operation requires the certificates/manageissuers/getissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1867,10 +1858,10 @@ public final class CertificateClientImpl {
 
     /**
      * Lists the specified certificate issuer.
-     *
-     * <p>The GetCertificateIssuer operation returns the specified certificate issuer resources in the specified key
-     * vault. This operation requires the certificates/manageissuers/getissuers permission.
-     *
+     * 
+     * The GetCertificateIssuer operation returns the specified certificate issuer resources in the specified key vault.
+     * This operation requires the certificates/manageissuers/getissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer.
      * @param context The context to associate with this operation.
@@ -1887,10 +1878,10 @@ public final class CertificateClientImpl {
 
     /**
      * Lists the specified certificate issuer.
-     *
-     * <p>The GetCertificateIssuer operation returns the specified certificate issuer resources in the specified key
-     * vault. This operation requires the certificates/manageissuers/getissuers permission.
-     *
+     * 
+     * The GetCertificateIssuer operation returns the specified certificate issuer resources in the specified key vault.
+     * This operation requires the certificates/manageissuers/getissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer.
      * @param context The context to associate with this operation.
@@ -1908,10 +1899,10 @@ public final class CertificateClientImpl {
 
     /**
      * Lists the specified certificate issuer.
-     *
-     * <p>The GetCertificateIssuer operation returns the specified certificate issuer resources in the specified key
-     * vault. This operation requires the certificates/manageissuers/getissuers permission.
-     *
+     * 
+     * The GetCertificateIssuer operation returns the specified certificate issuer resources in the specified key vault.
+     * This operation requires the certificates/manageissuers/getissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1926,40 +1917,39 @@ public final class CertificateClientImpl {
 
     /**
      * Deletes the specified certificate issuer.
-     *
-     * <p>The DeleteCertificateIssuer operation permanently removes the specified certificate issuer from the vault.
-     * This operation requires the certificates/manageissuers/deleteissuers permission.
-     *
+     * 
+     * The DeleteCertificateIssuer operation permanently removes the specified certificate issuer from the vault. This
+     * operation requires the certificates/manageissuers/deleteissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the issuer for Key Vault certificate along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the issuer for Key Vault certificate along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IssuerBundle>> deleteCertificateIssuerWithResponseAsync(String vaultBaseUrl,
         String issuerName) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteCertificateIssuer(vaultBaseUrl, issuerName,
-            this.getApiVersion(), accept, context));
+        return FluxUtil
+            .withContext(context -> deleteCertificateIssuerWithResponseAsync(vaultBaseUrl, issuerName, context));
     }
 
     /**
      * Deletes the specified certificate issuer.
-     *
-     * <p>The DeleteCertificateIssuer operation permanently removes the specified certificate issuer from the vault.
-     * This operation requires the certificates/manageissuers/deleteissuers permission.
-     *
+     * 
+     * The DeleteCertificateIssuer operation permanently removes the specified certificate issuer from the vault. This
+     * operation requires the certificates/manageissuers/deleteissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the issuer for Key Vault certificate along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the issuer for Key Vault certificate along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IssuerBundle>> deleteCertificateIssuerWithResponseAsync(String vaultBaseUrl, String issuerName,
@@ -1970,10 +1960,10 @@ public final class CertificateClientImpl {
 
     /**
      * Deletes the specified certificate issuer.
-     *
-     * <p>The DeleteCertificateIssuer operation permanently removes the specified certificate issuer from the vault.
-     * This operation requires the certificates/manageissuers/deleteissuers permission.
-     *
+     * 
+     * The DeleteCertificateIssuer operation permanently removes the specified certificate issuer from the vault. This
+     * operation requires the certificates/manageissuers/deleteissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1989,10 +1979,10 @@ public final class CertificateClientImpl {
 
     /**
      * Deletes the specified certificate issuer.
-     *
-     * <p>The DeleteCertificateIssuer operation permanently removes the specified certificate issuer from the vault.
-     * This operation requires the certificates/manageissuers/deleteissuers permission.
-     *
+     * 
+     * The DeleteCertificateIssuer operation permanently removes the specified certificate issuer from the vault. This
+     * operation requires the certificates/manageissuers/deleteissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer.
      * @param context The context to associate with this operation.
@@ -2009,10 +1999,10 @@ public final class CertificateClientImpl {
 
     /**
      * Deletes the specified certificate issuer.
-     *
-     * <p>The DeleteCertificateIssuer operation permanently removes the specified certificate issuer from the vault.
-     * This operation requires the certificates/manageissuers/deleteissuers permission.
-     *
+     * 
+     * The DeleteCertificateIssuer operation permanently removes the specified certificate issuer from the vault. This
+     * operation requires the certificates/manageissuers/deleteissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer.
      * @param context The context to associate with this operation.
@@ -2030,10 +2020,10 @@ public final class CertificateClientImpl {
 
     /**
      * Deletes the specified certificate issuer.
-     *
-     * <p>The DeleteCertificateIssuer operation permanently removes the specified certificate issuer from the vault.
-     * This operation requires the certificates/manageissuers/deleteissuers permission.
-     *
+     * 
+     * The DeleteCertificateIssuer operation permanently removes the specified certificate issuer from the vault. This
+     * operation requires the certificates/manageissuers/deleteissuers permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param issuerName The name of the issuer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2048,14 +2038,13 @@ public final class CertificateClientImpl {
 
     /**
      * Creates a new certificate.
-     *
-     * <p>If this is the first version, the certificate resource is created. This operation requires the
+     * 
+     * If this is the first version, the certificate resource is created. This operation requires the
      * certificates/create permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate. The value you provide may be copied globally for the purpose
-     *     of running the service. The value provided should not include personally identifiable or sensitive
-     *     information.
+     * of running the service. The value provided should not include personally identifiable or sensitive information.
      * @param certificatePolicy The management policy for the certificate.
      * @param certificateAttributes The attributes of the certificate (optional).
      * @param tags Application specific metadata in the form of key-value pairs.
@@ -2063,31 +2052,25 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate operation is returned in case of asynchronous requests along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateOperation>> createCertificateWithResponseAsync(String vaultBaseUrl,
         String certificateName, CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes,
         Map<String, String> tags) {
-        final String accept = "application/json";
-        CertificateCreateParameters parameters = new CertificateCreateParameters();
-        parameters.setCertificatePolicy(certificatePolicy);
-        parameters.setCertificateAttributes(certificateAttributes);
-        parameters.setTags(tags);
-        return FluxUtil.withContext(context -> service.createCertificate(vaultBaseUrl, certificateName,
-            this.getApiVersion(), parameters, accept, context));
+        return FluxUtil.withContext(context -> createCertificateWithResponseAsync(vaultBaseUrl, certificateName,
+            certificatePolicy, certificateAttributes, tags, context));
     }
 
     /**
      * Creates a new certificate.
-     *
-     * <p>If this is the first version, the certificate resource is created. This operation requires the
+     * 
+     * If this is the first version, the certificate resource is created. This operation requires the
      * certificates/create permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate. The value you provide may be copied globally for the purpose
-     *     of running the service. The value provided should not include personally identifiable or sensitive
-     *     information.
+     * of running the service. The value provided should not include personally identifiable or sensitive information.
      * @param certificatePolicy The management policy for the certificate.
      * @param certificateAttributes The attributes of the certificate (optional).
      * @param tags Application specific metadata in the form of key-value pairs.
@@ -2096,7 +2079,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate operation is returned in case of asynchronous requests along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateOperation>> createCertificateWithResponseAsync(String vaultBaseUrl,
@@ -2113,22 +2096,21 @@ public final class CertificateClientImpl {
 
     /**
      * Creates a new certificate.
-     *
-     * <p>If this is the first version, the certificate resource is created. This operation requires the
+     * 
+     * If this is the first version, the certificate resource is created. This operation requires the
      * certificates/create permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate. The value you provide may be copied globally for the purpose
-     *     of running the service. The value provided should not include personally identifiable or sensitive
-     *     information.
+     * of running the service. The value provided should not include personally identifiable or sensitive information.
      * @param certificatePolicy The management policy for the certificate.
      * @param certificateAttributes The attributes of the certificate (optional).
      * @param tags Application specific metadata in the form of key-value pairs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate operation is returned in case of asynchronous requests on successful completion of {@link
-     *     Mono}.
+     * @return a certificate operation is returned in case of asynchronous requests on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateOperation> createCertificateAsync(String vaultBaseUrl, String certificateName,
@@ -2139,14 +2121,13 @@ public final class CertificateClientImpl {
 
     /**
      * Creates a new certificate.
-     *
-     * <p>If this is the first version, the certificate resource is created. This operation requires the
+     * 
+     * If this is the first version, the certificate resource is created. This operation requires the
      * certificates/create permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate. The value you provide may be copied globally for the purpose
-     *     of running the service. The value provided should not include personally identifiable or sensitive
-     *     information.
+     * of running the service. The value provided should not include personally identifiable or sensitive information.
      * @param certificatePolicy The management policy for the certificate.
      * @param certificateAttributes The attributes of the certificate (optional).
      * @param tags Application specific metadata in the form of key-value pairs.
@@ -2154,8 +2135,8 @@ public final class CertificateClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate operation is returned in case of asynchronous requests on successful completion of {@link
-     *     Mono}.
+     * @return a certificate operation is returned in case of asynchronous requests on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateOperation> createCertificateAsync(String vaultBaseUrl, String certificateName,
@@ -2167,14 +2148,13 @@ public final class CertificateClientImpl {
 
     /**
      * Creates a new certificate.
-     *
-     * <p>If this is the first version, the certificate resource is created. This operation requires the
+     * 
+     * If this is the first version, the certificate resource is created. This operation requires the
      * certificates/create permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate. The value you provide may be copied globally for the purpose
-     *     of running the service. The value provided should not include personally identifiable or sensitive
-     *     information.
+     * of running the service. The value provided should not include personally identifiable or sensitive information.
      * @param certificatePolicy The management policy for the certificate.
      * @param certificateAttributes The attributes of the certificate (optional).
      * @param tags Application specific metadata in the form of key-value pairs.
@@ -2199,14 +2179,13 @@ public final class CertificateClientImpl {
 
     /**
      * Creates a new certificate.
-     *
-     * <p>If this is the first version, the certificate resource is created. This operation requires the
+     * 
+     * If this is the first version, the certificate resource is created. This operation requires the
      * certificates/create permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate. The value you provide may be copied globally for the purpose
-     *     of running the service. The value provided should not include personally identifiable or sensitive
-     *     information.
+     * of running the service. The value provided should not include personally identifiable or sensitive information.
      * @param certificatePolicy The management policy for the certificate.
      * @param certificateAttributes The attributes of the certificate (optional).
      * @param tags Application specific metadata in the form of key-value pairs.
@@ -2224,18 +2203,17 @@ public final class CertificateClientImpl {
 
     /**
      * Imports a certificate into a specified key vault.
-     *
-     * <p>Imports an existing valid certificate, containing a private key, into Azure Key Vault. This operation requires
+     * 
+     * Imports an existing valid certificate, containing a private key, into Azure Key Vault. This operation requires
      * the certificates/import permission. The certificate to be imported can be in either PFX or PEM format. If the
      * certificate is in PEM format the PEM file must contain the key as well as x509 certificates. Key Vault will only
      * accept a key in PKCS#8 format.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate. The value you provide may be copied globally for the purpose
-     *     of running the service. The value provided should not include personally identifiable or sensitive
-     *     information.
+     * of running the service. The value provided should not include personally identifiable or sensitive information.
      * @param base64EncodedCertificate Base64 encoded representation of the certificate object to import. This
-     *     certificate needs to contain the private key.
+     * certificate needs to contain the private key.
      * @param password If the private key in base64EncodedCertificate is encrypted, the password used for encryption.
      * @param certificatePolicy The management policy for the certificate.
      * @param certificateAttributes The attributes of the certificate (optional).
@@ -2244,37 +2222,29 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate bundle consists of a certificate (X509) plus its attributes along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateBundle>> importCertificateWithResponseAsync(String vaultBaseUrl,
         String certificateName, String base64EncodedCertificate, String password, CertificatePolicy certificatePolicy,
         CertificateAttributes certificateAttributes, Map<String, String> tags) {
-        final String accept = "application/json";
-        CertificateImportParameters parameters = new CertificateImportParameters();
-        parameters.setBase64EncodedCertificate(base64EncodedCertificate);
-        parameters.setPassword(password);
-        parameters.setCertificatePolicy(certificatePolicy);
-        parameters.setCertificateAttributes(certificateAttributes);
-        parameters.setTags(tags);
-        return FluxUtil.withContext(context -> service.importCertificate(vaultBaseUrl, certificateName,
-            this.getApiVersion(), parameters, accept, context));
+        return FluxUtil.withContext(context -> importCertificateWithResponseAsync(vaultBaseUrl, certificateName,
+            base64EncodedCertificate, password, certificatePolicy, certificateAttributes, tags, context));
     }
 
     /**
      * Imports a certificate into a specified key vault.
-     *
-     * <p>Imports an existing valid certificate, containing a private key, into Azure Key Vault. This operation requires
+     * 
+     * Imports an existing valid certificate, containing a private key, into Azure Key Vault. This operation requires
      * the certificates/import permission. The certificate to be imported can be in either PFX or PEM format. If the
      * certificate is in PEM format the PEM file must contain the key as well as x509 certificates. Key Vault will only
      * accept a key in PKCS#8 format.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate. The value you provide may be copied globally for the purpose
-     *     of running the service. The value provided should not include personally identifiable or sensitive
-     *     information.
+     * of running the service. The value provided should not include personally identifiable or sensitive information.
      * @param base64EncodedCertificate Base64 encoded representation of the certificate object to import. This
-     *     certificate needs to contain the private key.
+     * certificate needs to contain the private key.
      * @param password If the private key in base64EncodedCertificate is encrypted, the password used for encryption.
      * @param certificatePolicy The management policy for the certificate.
      * @param certificateAttributes The attributes of the certificate (optional).
@@ -2284,7 +2254,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate bundle consists of a certificate (X509) plus its attributes along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateBundle>> importCertificateWithResponseAsync(String vaultBaseUrl,
@@ -2303,18 +2273,17 @@ public final class CertificateClientImpl {
 
     /**
      * Imports a certificate into a specified key vault.
-     *
-     * <p>Imports an existing valid certificate, containing a private key, into Azure Key Vault. This operation requires
+     * 
+     * Imports an existing valid certificate, containing a private key, into Azure Key Vault. This operation requires
      * the certificates/import permission. The certificate to be imported can be in either PFX or PEM format. If the
      * certificate is in PEM format the PEM file must contain the key as well as x509 certificates. Key Vault will only
      * accept a key in PKCS#8 format.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate. The value you provide may be copied globally for the purpose
-     *     of running the service. The value provided should not include personally identifiable or sensitive
-     *     information.
+     * of running the service. The value provided should not include personally identifiable or sensitive information.
      * @param base64EncodedCertificate Base64 encoded representation of the certificate object to import. This
-     *     certificate needs to contain the private key.
+     * certificate needs to contain the private key.
      * @param password If the private key in base64EncodedCertificate is encrypted, the password used for encryption.
      * @param certificatePolicy The management policy for the certificate.
      * @param certificateAttributes The attributes of the certificate (optional).
@@ -2323,7 +2292,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate bundle consists of a certificate (X509) plus its attributes on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateBundle> importCertificateAsync(String vaultBaseUrl, String certificateName,
@@ -2335,18 +2304,17 @@ public final class CertificateClientImpl {
 
     /**
      * Imports a certificate into a specified key vault.
-     *
-     * <p>Imports an existing valid certificate, containing a private key, into Azure Key Vault. This operation requires
+     * 
+     * Imports an existing valid certificate, containing a private key, into Azure Key Vault. This operation requires
      * the certificates/import permission. The certificate to be imported can be in either PFX or PEM format. If the
      * certificate is in PEM format the PEM file must contain the key as well as x509 certificates. Key Vault will only
      * accept a key in PKCS#8 format.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate. The value you provide may be copied globally for the purpose
-     *     of running the service. The value provided should not include personally identifiable or sensitive
-     *     information.
+     * of running the service. The value provided should not include personally identifiable or sensitive information.
      * @param base64EncodedCertificate Base64 encoded representation of the certificate object to import. This
-     *     certificate needs to contain the private key.
+     * certificate needs to contain the private key.
      * @param password If the private key in base64EncodedCertificate is encrypted, the password used for encryption.
      * @param certificatePolicy The management policy for the certificate.
      * @param certificateAttributes The attributes of the certificate (optional).
@@ -2356,7 +2324,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate bundle consists of a certificate (X509) plus its attributes on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateBundle> importCertificateAsync(String vaultBaseUrl, String certificateName,
@@ -2368,18 +2336,17 @@ public final class CertificateClientImpl {
 
     /**
      * Imports a certificate into a specified key vault.
-     *
-     * <p>Imports an existing valid certificate, containing a private key, into Azure Key Vault. This operation requires
+     * 
+     * Imports an existing valid certificate, containing a private key, into Azure Key Vault. This operation requires
      * the certificates/import permission. The certificate to be imported can be in either PFX or PEM format. If the
      * certificate is in PEM format the PEM file must contain the key as well as x509 certificates. Key Vault will only
      * accept a key in PKCS#8 format.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate. The value you provide may be copied globally for the purpose
-     *     of running the service. The value provided should not include personally identifiable or sensitive
-     *     information.
+     * of running the service. The value provided should not include personally identifiable or sensitive information.
      * @param base64EncodedCertificate Base64 encoded representation of the certificate object to import. This
-     *     certificate needs to contain the private key.
+     * certificate needs to contain the private key.
      * @param password If the private key in base64EncodedCertificate is encrypted, the password used for encryption.
      * @param certificatePolicy The management policy for the certificate.
      * @param certificateAttributes The attributes of the certificate (optional).
@@ -2407,18 +2374,17 @@ public final class CertificateClientImpl {
 
     /**
      * Imports a certificate into a specified key vault.
-     *
-     * <p>Imports an existing valid certificate, containing a private key, into Azure Key Vault. This operation requires
+     * 
+     * Imports an existing valid certificate, containing a private key, into Azure Key Vault. This operation requires
      * the certificates/import permission. The certificate to be imported can be in either PFX or PEM format. If the
      * certificate is in PEM format the PEM file must contain the key as well as x509 certificates. Key Vault will only
      * accept a key in PKCS#8 format.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate. The value you provide may be copied globally for the purpose
-     *     of running the service. The value provided should not include personally identifiable or sensitive
-     *     information.
+     * of running the service. The value provided should not include personally identifiable or sensitive information.
      * @param base64EncodedCertificate Base64 encoded representation of the certificate object to import. This
-     *     certificate needs to contain the private key.
+     * certificate needs to contain the private key.
      * @param password If the private key in base64EncodedCertificate is encrypted, the password used for encryption.
      * @param certificatePolicy The management policy for the certificate.
      * @param certificateAttributes The attributes of the certificate (optional).
@@ -2438,14 +2404,14 @@ public final class CertificateClientImpl {
 
     /**
      * List the versions of a certificate.
-     *
-     * <p>The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
+     * 
+     * The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
      * operation requires the certificates/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2464,14 +2430,14 @@ public final class CertificateClientImpl {
 
     /**
      * List the versions of a certificate.
-     *
-     * <p>The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
+     * 
+     * The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
      * operation requires the certificates/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -2490,14 +2456,14 @@ public final class CertificateClientImpl {
 
     /**
      * List the versions of a certificate.
-     *
-     * <p>The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
+     * 
+     * The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
      * operation requires the certificates/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2512,14 +2478,14 @@ public final class CertificateClientImpl {
 
     /**
      * List the versions of a certificate.
-     *
-     * <p>The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
+     * 
+     * The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
      * operation requires the certificates/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -2536,14 +2502,14 @@ public final class CertificateClientImpl {
 
     /**
      * List the versions of a certificate.
-     *
-     * <p>The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
+     * 
+     * The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
      * operation requires the certificates/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2561,14 +2527,14 @@ public final class CertificateClientImpl {
 
     /**
      * List the versions of a certificate.
-     *
-     * <p>The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
+     * 
+     * The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
      * operation requires the certificates/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -2587,14 +2553,14 @@ public final class CertificateClientImpl {
 
     /**
      * List the versions of a certificate.
-     *
-     * <p>The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
+     * 
+     * The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
      * operation requires the certificates/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2610,14 +2576,14 @@ public final class CertificateClientImpl {
 
     /**
      * List the versions of a certificate.
-     *
-     * <p>The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
+     * 
+     * The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
      * operation requires the certificates/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -2634,10 +2600,10 @@ public final class CertificateClientImpl {
 
     /**
      * Lists the policy for a certificate.
-     *
-     * <p>The GetCertificatePolicy operation returns the specified certificate policy resources in the specified key
-     * vault. This operation requires the certificates/get permission.
-     *
+     * 
+     * The GetCertificatePolicy operation returns the specified certificate policy resources in the specified key vault.
+     * This operation requires the certificates/get permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in a given key vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2648,17 +2614,16 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificatePolicy>> getCertificatePolicyWithResponseAsync(String vaultBaseUrl,
         String certificateName) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getCertificatePolicy(vaultBaseUrl, certificateName,
-            this.getApiVersion(), accept, context));
+        return FluxUtil
+            .withContext(context -> getCertificatePolicyWithResponseAsync(vaultBaseUrl, certificateName, context));
     }
 
     /**
      * Lists the policy for a certificate.
-     *
-     * <p>The GetCertificatePolicy operation returns the specified certificate policy resources in the specified key
-     * vault. This operation requires the certificates/get permission.
-     *
+     * 
+     * The GetCertificatePolicy operation returns the specified certificate policy resources in the specified key vault.
+     * This operation requires the certificates/get permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in a given key vault.
      * @param context The context to associate with this operation.
@@ -2676,10 +2641,10 @@ public final class CertificateClientImpl {
 
     /**
      * Lists the policy for a certificate.
-     *
-     * <p>The GetCertificatePolicy operation returns the specified certificate policy resources in the specified key
-     * vault. This operation requires the certificates/get permission.
-     *
+     * 
+     * The GetCertificatePolicy operation returns the specified certificate policy resources in the specified key vault.
+     * This operation requires the certificates/get permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in a given key vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2695,10 +2660,10 @@ public final class CertificateClientImpl {
 
     /**
      * Lists the policy for a certificate.
-     *
-     * <p>The GetCertificatePolicy operation returns the specified certificate policy resources in the specified key
-     * vault. This operation requires the certificates/get permission.
-     *
+     * 
+     * The GetCertificatePolicy operation returns the specified certificate policy resources in the specified key vault.
+     * This operation requires the certificates/get permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in a given key vault.
      * @param context The context to associate with this operation.
@@ -2716,10 +2681,10 @@ public final class CertificateClientImpl {
 
     /**
      * Lists the policy for a certificate.
-     *
-     * <p>The GetCertificatePolicy operation returns the specified certificate policy resources in the specified key
-     * vault. This operation requires the certificates/get permission.
-     *
+     * 
+     * The GetCertificatePolicy operation returns the specified certificate policy resources in the specified key vault.
+     * This operation requires the certificates/get permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in a given key vault.
      * @param context The context to associate with this operation.
@@ -2737,10 +2702,10 @@ public final class CertificateClientImpl {
 
     /**
      * Lists the policy for a certificate.
-     *
-     * <p>The GetCertificatePolicy operation returns the specified certificate policy resources in the specified key
-     * vault. This operation requires the certificates/get permission.
-     *
+     * 
+     * The GetCertificatePolicy operation returns the specified certificate policy resources in the specified key vault.
+     * This operation requires the certificates/get permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in a given key vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2755,10 +2720,10 @@ public final class CertificateClientImpl {
 
     /**
      * Updates the policy for a certificate.
-     *
-     * <p>Set specified members in the certificate policy. Leave others as null. This operation requires the
+     * 
+     * Set specified members in the certificate policy. Leave others as null. This operation requires the
      * certificates/update permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in the given vault.
      * @param certificatePolicy The policy for the certificate.
@@ -2770,17 +2735,16 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificatePolicy>> updateCertificatePolicyWithResponseAsync(String vaultBaseUrl,
         String certificateName, CertificatePolicy certificatePolicy) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateCertificatePolicy(vaultBaseUrl, certificateName,
-            this.getApiVersion(), certificatePolicy, accept, context));
+        return FluxUtil.withContext(context -> updateCertificatePolicyWithResponseAsync(vaultBaseUrl, certificateName,
+            certificatePolicy, context));
     }
 
     /**
      * Updates the policy for a certificate.
-     *
-     * <p>Set specified members in the certificate policy. Leave others as null. This operation requires the
+     * 
+     * Set specified members in the certificate policy. Leave others as null. This operation requires the
      * certificates/update permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in the given vault.
      * @param certificatePolicy The policy for the certificate.
@@ -2800,10 +2764,10 @@ public final class CertificateClientImpl {
 
     /**
      * Updates the policy for a certificate.
-     *
-     * <p>Set specified members in the certificate policy. Leave others as null. This operation requires the
+     * 
+     * Set specified members in the certificate policy. Leave others as null. This operation requires the
      * certificates/update permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in the given vault.
      * @param certificatePolicy The policy for the certificate.
@@ -2821,10 +2785,10 @@ public final class CertificateClientImpl {
 
     /**
      * Updates the policy for a certificate.
-     *
-     * <p>Set specified members in the certificate policy. Leave others as null. This operation requires the
+     * 
+     * Set specified members in the certificate policy. Leave others as null. This operation requires the
      * certificates/update permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in the given vault.
      * @param certificatePolicy The policy for the certificate.
@@ -2843,10 +2807,10 @@ public final class CertificateClientImpl {
 
     /**
      * Updates the policy for a certificate.
-     *
-     * <p>Set specified members in the certificate policy. Leave others as null. This operation requires the
+     * 
+     * Set specified members in the certificate policy. Leave others as null. This operation requires the
      * certificates/update permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in the given vault.
      * @param certificatePolicy The policy for the certificate.
@@ -2866,10 +2830,10 @@ public final class CertificateClientImpl {
 
     /**
      * Updates the policy for a certificate.
-     *
-     * <p>Set specified members in the certificate policy. Leave others as null. This operation requires the
+     * 
+     * Set specified members in the certificate policy. Leave others as null. This operation requires the
      * certificates/update permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in the given vault.
      * @param certificatePolicy The policy for the certificate.
@@ -2887,10 +2851,10 @@ public final class CertificateClientImpl {
 
     /**
      * Updates the specified attributes associated with the given certificate.
-     *
-     * <p>The UpdateCertificate operation applies the specified update on the given certificate; the only elements
-     * updated are the certificate's attributes. This operation requires the certificates/update permission.
-     *
+     * 
+     * The UpdateCertificate operation applies the specified update on the given certificate; the only elements updated
+     * are the certificate's attributes. This operation requires the certificates/update permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in the given key vault.
      * @param certificateVersion The version of the certificate.
@@ -2901,27 +2865,22 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate bundle consists of a certificate (X509) plus its attributes along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateBundle>> updateCertificateWithResponseAsync(String vaultBaseUrl,
         String certificateName, String certificateVersion, CertificatePolicy certificatePolicy,
         CertificateAttributes certificateAttributes, Map<String, String> tags) {
-        final String accept = "application/json";
-        CertificateUpdateParameters parameters = new CertificateUpdateParameters();
-        parameters.setCertificatePolicy(certificatePolicy);
-        parameters.setCertificateAttributes(certificateAttributes);
-        parameters.setTags(tags);
-        return FluxUtil.withContext(context -> service.updateCertificate(vaultBaseUrl, certificateName,
-            certificateVersion, this.getApiVersion(), parameters, accept, context));
+        return FluxUtil.withContext(context -> updateCertificateWithResponseAsync(vaultBaseUrl, certificateName,
+            certificateVersion, certificatePolicy, certificateAttributes, tags, context));
     }
 
     /**
      * Updates the specified attributes associated with the given certificate.
-     *
-     * <p>The UpdateCertificate operation applies the specified update on the given certificate; the only elements
-     * updated are the certificate's attributes. This operation requires the certificates/update permission.
-     *
+     * 
+     * The UpdateCertificate operation applies the specified update on the given certificate; the only elements updated
+     * are the certificate's attributes. This operation requires the certificates/update permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in the given key vault.
      * @param certificateVersion The version of the certificate.
@@ -2933,7 +2892,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate bundle consists of a certificate (X509) plus its attributes along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateBundle>> updateCertificateWithResponseAsync(String vaultBaseUrl,
@@ -2950,10 +2909,10 @@ public final class CertificateClientImpl {
 
     /**
      * Updates the specified attributes associated with the given certificate.
-     *
-     * <p>The UpdateCertificate operation applies the specified update on the given certificate; the only elements
-     * updated are the certificate's attributes. This operation requires the certificates/update permission.
-     *
+     * 
+     * The UpdateCertificate operation applies the specified update on the given certificate; the only elements updated
+     * are the certificate's attributes. This operation requires the certificates/update permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in the given key vault.
      * @param certificateVersion The version of the certificate.
@@ -2964,7 +2923,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate bundle consists of a certificate (X509) plus its attributes on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateBundle> updateCertificateAsync(String vaultBaseUrl, String certificateName,
@@ -2976,10 +2935,10 @@ public final class CertificateClientImpl {
 
     /**
      * Updates the specified attributes associated with the given certificate.
-     *
-     * <p>The UpdateCertificate operation applies the specified update on the given certificate; the only elements
-     * updated are the certificate's attributes. This operation requires the certificates/update permission.
-     *
+     * 
+     * The UpdateCertificate operation applies the specified update on the given certificate; the only elements updated
+     * are the certificate's attributes. This operation requires the certificates/update permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in the given key vault.
      * @param certificateVersion The version of the certificate.
@@ -2991,7 +2950,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate bundle consists of a certificate (X509) plus its attributes on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateBundle> updateCertificateAsync(String vaultBaseUrl, String certificateName,
@@ -3003,10 +2962,10 @@ public final class CertificateClientImpl {
 
     /**
      * Updates the specified attributes associated with the given certificate.
-     *
-     * <p>The UpdateCertificate operation applies the specified update on the given certificate; the only elements
-     * updated are the certificate's attributes. This operation requires the certificates/update permission.
-     *
+     * 
+     * The UpdateCertificate operation applies the specified update on the given certificate; the only elements updated
+     * are the certificate's attributes. This operation requires the certificates/update permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in the given key vault.
      * @param certificateVersion The version of the certificate.
@@ -3034,10 +2993,10 @@ public final class CertificateClientImpl {
 
     /**
      * Updates the specified attributes associated with the given certificate.
-     *
-     * <p>The UpdateCertificate operation applies the specified update on the given certificate; the only elements
-     * updated are the certificate's attributes. This operation requires the certificates/update permission.
-     *
+     * 
+     * The UpdateCertificate operation applies the specified update on the given certificate; the only elements updated
+     * are the certificate's attributes. This operation requires the certificates/update permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in the given key vault.
      * @param certificateVersion The version of the certificate.
@@ -3058,42 +3017,41 @@ public final class CertificateClientImpl {
 
     /**
      * Gets information about a certificate.
-     *
-     * <p>Gets information about a specific certificate. This operation requires the certificates/get permission.
-     *
+     * 
+     * Gets information about a specific certificate. This operation requires the certificates/get permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in the given vault.
      * @param certificateVersion The version of the certificate. This URI fragment is optional. If not specified, the
-     *     latest version of the certificate is returned.
+     * latest version of the certificate is returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a specific certificate along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about a specific certificate along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateBundle>> getCertificateWithResponseAsync(String vaultBaseUrl,
         String certificateName, String certificateVersion) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getCertificate(vaultBaseUrl, certificateName, certificateVersion,
-            this.getApiVersion(), accept, context));
+        return FluxUtil.withContext(
+            context -> getCertificateWithResponseAsync(vaultBaseUrl, certificateName, certificateVersion, context));
     }
 
     /**
      * Gets information about a certificate.
-     *
-     * <p>Gets information about a specific certificate. This operation requires the certificates/get permission.
-     *
+     * 
+     * Gets information about a specific certificate. This operation requires the certificates/get permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in the given vault.
      * @param certificateVersion The version of the certificate. This URI fragment is optional. If not specified, the
-     *     latest version of the certificate is returned.
+     * latest version of the certificate is returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a specific certificate along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about a specific certificate along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateBundle>> getCertificateWithResponseAsync(String vaultBaseUrl,
@@ -3105,13 +3063,13 @@ public final class CertificateClientImpl {
 
     /**
      * Gets information about a certificate.
-     *
-     * <p>Gets information about a specific certificate. This operation requires the certificates/get permission.
-     *
+     * 
+     * Gets information about a specific certificate. This operation requires the certificates/get permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in the given vault.
      * @param certificateVersion The version of the certificate. This URI fragment is optional. If not specified, the
-     *     latest version of the certificate is returned.
+     * latest version of the certificate is returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3126,13 +3084,13 @@ public final class CertificateClientImpl {
 
     /**
      * Gets information about a certificate.
-     *
-     * <p>Gets information about a specific certificate. This operation requires the certificates/get permission.
-     *
+     * 
+     * Gets information about a specific certificate. This operation requires the certificates/get permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in the given vault.
      * @param certificateVersion The version of the certificate. This URI fragment is optional. If not specified, the
-     *     latest version of the certificate is returned.
+     * latest version of the certificate is returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -3148,13 +3106,13 @@ public final class CertificateClientImpl {
 
     /**
      * Gets information about a certificate.
-     *
-     * <p>Gets information about a specific certificate. This operation requires the certificates/get permission.
-     *
+     * 
+     * Gets information about a specific certificate. This operation requires the certificates/get permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in the given vault.
      * @param certificateVersion The version of the certificate. This URI fragment is optional. If not specified, the
-     *     latest version of the certificate is returned.
+     * latest version of the certificate is returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -3171,13 +3129,13 @@ public final class CertificateClientImpl {
 
     /**
      * Gets information about a certificate.
-     *
-     * <p>Gets information about a specific certificate. This operation requires the certificates/get permission.
-     *
+     * 
+     * Gets information about a specific certificate. This operation requires the certificates/get permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate in the given vault.
      * @param certificateVersion The version of the certificate. This URI fragment is optional. If not specified, the
-     *     latest version of the certificate is returned.
+     * latest version of the certificate is returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3190,10 +3148,10 @@ public final class CertificateClientImpl {
 
     /**
      * Updates a certificate operation.
-     *
-     * <p>Updates a certificate creation operation that is already in progress. This operation requires the
+     * 
+     * Updates a certificate creation operation that is already in progress. This operation requires the
      * certificates/update permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param cancellationRequested Indicates if cancellation was requested on the certificate operation.
@@ -3201,24 +3159,21 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate operation is returned in case of asynchronous requests along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateOperation>> updateCertificateOperationWithResponseAsync(String vaultBaseUrl,
         String certificateName, boolean cancellationRequested) {
-        final String accept = "application/json";
-        CertificateOperationUpdateParameter certificateOperation = new CertificateOperationUpdateParameter();
-        certificateOperation.setCancellationRequested(cancellationRequested);
-        return FluxUtil.withContext(context -> service.updateCertificateOperation(vaultBaseUrl, certificateName,
-            this.getApiVersion(), certificateOperation, accept, context));
+        return FluxUtil.withContext(context -> updateCertificateOperationWithResponseAsync(vaultBaseUrl,
+            certificateName, cancellationRequested, context));
     }
 
     /**
      * Updates a certificate operation.
-     *
-     * <p>Updates a certificate creation operation that is already in progress. This operation requires the
+     * 
+     * Updates a certificate creation operation that is already in progress. This operation requires the
      * certificates/update permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param cancellationRequested Indicates if cancellation was requested on the certificate operation.
@@ -3227,7 +3182,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate operation is returned in case of asynchronous requests along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateOperation>> updateCertificateOperationWithResponseAsync(String vaultBaseUrl,
@@ -3241,18 +3196,18 @@ public final class CertificateClientImpl {
 
     /**
      * Updates a certificate operation.
-     *
-     * <p>Updates a certificate creation operation that is already in progress. This operation requires the
+     * 
+     * Updates a certificate creation operation that is already in progress. This operation requires the
      * certificates/update permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param cancellationRequested Indicates if cancellation was requested on the certificate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate operation is returned in case of asynchronous requests on successful completion of {@link
-     *     Mono}.
+     * @return a certificate operation is returned in case of asynchronous requests on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateOperation> updateCertificateOperationAsync(String vaultBaseUrl, String certificateName,
@@ -3263,10 +3218,10 @@ public final class CertificateClientImpl {
 
     /**
      * Updates a certificate operation.
-     *
-     * <p>Updates a certificate creation operation that is already in progress. This operation requires the
+     * 
+     * Updates a certificate creation operation that is already in progress. This operation requires the
      * certificates/update permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param cancellationRequested Indicates if cancellation was requested on the certificate operation.
@@ -3274,8 +3229,8 @@ public final class CertificateClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate operation is returned in case of asynchronous requests on successful completion of {@link
-     *     Mono}.
+     * @return a certificate operation is returned in case of asynchronous requests on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateOperation> updateCertificateOperationAsync(String vaultBaseUrl, String certificateName,
@@ -3286,10 +3241,10 @@ public final class CertificateClientImpl {
 
     /**
      * Updates a certificate operation.
-     *
-     * <p>Updates a certificate creation operation that is already in progress. This operation requires the
+     * 
+     * Updates a certificate creation operation that is already in progress. This operation requires the
      * certificates/update permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param cancellationRequested Indicates if cancellation was requested on the certificate operation.
@@ -3311,10 +3266,10 @@ public final class CertificateClientImpl {
 
     /**
      * Updates a certificate operation.
-     *
-     * <p>Updates a certificate creation operation that is already in progress. This operation requires the
+     * 
+     * Updates a certificate creation operation that is already in progress. This operation requires the
      * certificates/update permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param cancellationRequested Indicates if cancellation was requested on the certificate operation.
@@ -3332,32 +3287,31 @@ public final class CertificateClientImpl {
 
     /**
      * Gets the creation operation of a certificate.
-     *
-     * <p>Gets the creation operation associated with a specified certificate. This operation requires the
-     * certificates/get permission.
-     *
+     * 
+     * Gets the creation operation associated with a specified certificate. This operation requires the certificates/get
+     * permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the creation operation associated with a specified certificate along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateOperation>> getCertificateOperationWithResponseAsync(String vaultBaseUrl,
         String certificateName) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getCertificateOperation(vaultBaseUrl, certificateName,
-            this.getApiVersion(), accept, context));
+        return FluxUtil
+            .withContext(context -> getCertificateOperationWithResponseAsync(vaultBaseUrl, certificateName, context));
     }
 
     /**
      * Gets the creation operation of a certificate.
-     *
-     * <p>Gets the creation operation associated with a specified certificate. This operation requires the
-     * certificates/get permission.
-     *
+     * 
+     * Gets the creation operation associated with a specified certificate. This operation requires the certificates/get
+     * permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param context The context to associate with this operation.
@@ -3365,7 +3319,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the creation operation associated with a specified certificate along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateOperation>> getCertificateOperationWithResponseAsync(String vaultBaseUrl,
@@ -3376,10 +3330,10 @@ public final class CertificateClientImpl {
 
     /**
      * Gets the creation operation of a certificate.
-     *
-     * <p>Gets the creation operation associated with a specified certificate. This operation requires the
-     * certificates/get permission.
-     *
+     * 
+     * Gets the creation operation associated with a specified certificate. This operation requires the certificates/get
+     * permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3395,10 +3349,10 @@ public final class CertificateClientImpl {
 
     /**
      * Gets the creation operation of a certificate.
-     *
-     * <p>Gets the creation operation associated with a specified certificate. This operation requires the
-     * certificates/get permission.
-     *
+     * 
+     * Gets the creation operation associated with a specified certificate. This operation requires the certificates/get
+     * permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param context The context to associate with this operation.
@@ -3416,10 +3370,10 @@ public final class CertificateClientImpl {
 
     /**
      * Gets the creation operation of a certificate.
-     *
-     * <p>Gets the creation operation associated with a specified certificate. This operation requires the
-     * certificates/get permission.
-     *
+     * 
+     * Gets the creation operation associated with a specified certificate. This operation requires the certificates/get
+     * permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param context The context to associate with this operation.
@@ -3438,10 +3392,10 @@ public final class CertificateClientImpl {
 
     /**
      * Gets the creation operation of a certificate.
-     *
-     * <p>Gets the creation operation associated with a specified certificate. This operation requires the
-     * certificates/get permission.
-     *
+     * 
+     * Gets the creation operation associated with a specified certificate. This operation requires the certificates/get
+     * permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3456,32 +3410,31 @@ public final class CertificateClientImpl {
 
     /**
      * Deletes the creation operation for a specific certificate.
-     *
-     * <p>Deletes the creation operation for a specified certificate that is in the process of being created. The
+     * 
+     * Deletes the creation operation for a specified certificate that is in the process of being created. The
      * certificate is no longer created. This operation requires the certificates/update permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate operation is returned in case of asynchronous requests along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateOperation>> deleteCertificateOperationWithResponseAsync(String vaultBaseUrl,
         String certificateName) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteCertificateOperation(vaultBaseUrl, certificateName,
-            this.getApiVersion(), accept, context));
+        return FluxUtil.withContext(
+            context -> deleteCertificateOperationWithResponseAsync(vaultBaseUrl, certificateName, context));
     }
 
     /**
      * Deletes the creation operation for a specific certificate.
-     *
-     * <p>Deletes the creation operation for a specified certificate that is in the process of being created. The
+     * 
+     * Deletes the creation operation for a specified certificate that is in the process of being created. The
      * certificate is no longer created. This operation requires the certificates/update permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param context The context to associate with this operation.
@@ -3489,7 +3442,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate operation is returned in case of asynchronous requests along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateOperation>> deleteCertificateOperationWithResponseAsync(String vaultBaseUrl,
@@ -3500,17 +3453,17 @@ public final class CertificateClientImpl {
 
     /**
      * Deletes the creation operation for a specific certificate.
-     *
-     * <p>Deletes the creation operation for a specified certificate that is in the process of being created. The
+     * 
+     * Deletes the creation operation for a specified certificate that is in the process of being created. The
      * certificate is no longer created. This operation requires the certificates/update permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate operation is returned in case of asynchronous requests on successful completion of {@link
-     *     Mono}.
+     * @return a certificate operation is returned in case of asynchronous requests on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateOperation> deleteCertificateOperationAsync(String vaultBaseUrl, String certificateName) {
@@ -3520,18 +3473,18 @@ public final class CertificateClientImpl {
 
     /**
      * Deletes the creation operation for a specific certificate.
-     *
-     * <p>Deletes the creation operation for a specified certificate that is in the process of being created. The
+     * 
+     * Deletes the creation operation for a specified certificate that is in the process of being created. The
      * certificate is no longer created. This operation requires the certificates/update permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate operation is returned in case of asynchronous requests on successful completion of {@link
-     *     Mono}.
+     * @return a certificate operation is returned in case of asynchronous requests on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateOperation> deleteCertificateOperationAsync(String vaultBaseUrl, String certificateName,
@@ -3542,10 +3495,10 @@ public final class CertificateClientImpl {
 
     /**
      * Deletes the creation operation for a specific certificate.
-     *
-     * <p>Deletes the creation operation for a specified certificate that is in the process of being created. The
+     * 
+     * Deletes the creation operation for a specified certificate that is in the process of being created. The
      * certificate is no longer created. This operation requires the certificates/update permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param context The context to associate with this operation.
@@ -3564,10 +3517,10 @@ public final class CertificateClientImpl {
 
     /**
      * Deletes the creation operation for a specific certificate.
-     *
-     * <p>Deletes the creation operation for a specified certificate that is in the process of being created. The
+     * 
+     * Deletes the creation operation for a specified certificate that is in the process of being created. The
      * certificate is no longer created. This operation requires the certificates/update permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3582,10 +3535,10 @@ public final class CertificateClientImpl {
 
     /**
      * Merges a certificate or a certificate chain with a key pair existing on the server.
-     *
-     * <p>The MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair
+     * 
+     * The MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair
      * currently available in the service. This operation requires the certificates/create permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param x509Certificates The certificate or the certificate chain to merge.
@@ -3595,27 +3548,22 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate bundle consists of a certificate (X509) plus its attributes along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateBundle>> mergeCertificateWithResponseAsync(String vaultBaseUrl,
         String certificateName, List<byte[]> x509Certificates, CertificateAttributes certificateAttributes,
         Map<String, String> tags) {
-        final String accept = "application/json";
-        CertificateMergeParameters parameters = new CertificateMergeParameters();
-        parameters.setX509Certificates(x509Certificates);
-        parameters.setCertificateAttributes(certificateAttributes);
-        parameters.setTags(tags);
-        return FluxUtil.withContext(context -> service.mergeCertificate(vaultBaseUrl, certificateName,
-            this.getApiVersion(), parameters, accept, context));
+        return FluxUtil.withContext(context -> mergeCertificateWithResponseAsync(vaultBaseUrl, certificateName,
+            x509Certificates, certificateAttributes, tags, context));
     }
 
     /**
      * Merges a certificate or a certificate chain with a key pair existing on the server.
-     *
-     * <p>The MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair
+     * 
+     * The MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair
      * currently available in the service. This operation requires the certificates/create permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param x509Certificates The certificate or the certificate chain to merge.
@@ -3626,7 +3574,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate bundle consists of a certificate (X509) plus its attributes along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateBundle>> mergeCertificateWithResponseAsync(String vaultBaseUrl,
@@ -3643,10 +3591,10 @@ public final class CertificateClientImpl {
 
     /**
      * Merges a certificate or a certificate chain with a key pair existing on the server.
-     *
-     * <p>The MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair
+     * 
+     * The MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair
      * currently available in the service. This operation requires the certificates/create permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param x509Certificates The certificate or the certificate chain to merge.
@@ -3656,7 +3604,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate bundle consists of a certificate (X509) plus its attributes on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateBundle> mergeCertificateAsync(String vaultBaseUrl, String certificateName,
@@ -3667,10 +3615,10 @@ public final class CertificateClientImpl {
 
     /**
      * Merges a certificate or a certificate chain with a key pair existing on the server.
-     *
-     * <p>The MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair
+     * 
+     * The MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair
      * currently available in the service. This operation requires the certificates/create permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param x509Certificates The certificate or the certificate chain to merge.
@@ -3681,7 +3629,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate bundle consists of a certificate (X509) plus its attributes on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateBundle> mergeCertificateAsync(String vaultBaseUrl, String certificateName,
@@ -3693,10 +3641,10 @@ public final class CertificateClientImpl {
 
     /**
      * Merges a certificate or a certificate chain with a key pair existing on the server.
-     *
-     * <p>The MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair
+     * 
+     * The MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair
      * currently available in the service. This operation requires the certificates/create permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param x509Certificates The certificate or the certificate chain to merge.
@@ -3723,10 +3671,10 @@ public final class CertificateClientImpl {
 
     /**
      * Merges a certificate or a certificate chain with a key pair existing on the server.
-     *
-     * <p>The MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair
+     * 
+     * The MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair
      * currently available in the service. This operation requires the certificates/create permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param x509Certificates The certificate or the certificate chain to merge.
@@ -3746,32 +3694,31 @@ public final class CertificateClientImpl {
 
     /**
      * Backs up the specified certificate.
-     *
-     * <p>Requests that a backup of the specified certificate be downloaded to the client. All versions of the
-     * certificate will be downloaded. This operation requires the certificates/backup permission.
-     *
+     * 
+     * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate
+     * will be downloaded. This operation requires the certificates/backup permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the backup certificate result, containing the backup blob along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BackupCertificateResult>> backupCertificateWithResponseAsync(String vaultBaseUrl,
         String certificateName) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.backupCertificate(vaultBaseUrl, certificateName, this.getApiVersion(), accept, context));
+        return FluxUtil
+            .withContext(context -> backupCertificateWithResponseAsync(vaultBaseUrl, certificateName, context));
     }
 
     /**
      * Backs up the specified certificate.
-     *
-     * <p>Requests that a backup of the specified certificate be downloaded to the client. All versions of the
-     * certificate will be downloaded. This operation requires the certificates/backup permission.
-     *
+     * 
+     * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate
+     * will be downloaded. This operation requires the certificates/backup permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param context The context to associate with this operation.
@@ -3779,7 +3726,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the backup certificate result, containing the backup blob along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BackupCertificateResult>> backupCertificateWithResponseAsync(String vaultBaseUrl,
@@ -3790,10 +3737,10 @@ public final class CertificateClientImpl {
 
     /**
      * Backs up the specified certificate.
-     *
-     * <p>Requests that a backup of the specified certificate be downloaded to the client. All versions of the
-     * certificate will be downloaded. This operation requires the certificates/backup permission.
-     *
+     * 
+     * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate
+     * will be downloaded. This operation requires the certificates/backup permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3809,10 +3756,10 @@ public final class CertificateClientImpl {
 
     /**
      * Backs up the specified certificate.
-     *
-     * <p>Requests that a backup of the specified certificate be downloaded to the client. All versions of the
-     * certificate will be downloaded. This operation requires the certificates/backup permission.
-     *
+     * 
+     * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate
+     * will be downloaded. This operation requires the certificates/backup permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param context The context to associate with this operation.
@@ -3830,10 +3777,10 @@ public final class CertificateClientImpl {
 
     /**
      * Backs up the specified certificate.
-     *
-     * <p>Requests that a backup of the specified certificate be downloaded to the client. All versions of the
-     * certificate will be downloaded. This operation requires the certificates/backup permission.
-     *
+     * 
+     * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate
+     * will be downloaded. This operation requires the certificates/backup permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param context The context to associate with this operation.
@@ -3851,10 +3798,10 @@ public final class CertificateClientImpl {
 
     /**
      * Backs up the specified certificate.
-     *
-     * <p>Requests that a backup of the specified certificate be downloaded to the client. All versions of the
-     * certificate will be downloaded. This operation requires the certificates/backup permission.
-     *
+     * 
+     * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate
+     * will be downloaded. This operation requires the certificates/backup permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3869,34 +3816,31 @@ public final class CertificateClientImpl {
 
     /**
      * Restores a backed up certificate to a vault.
-     *
-     * <p>Restores a backed up certificate, and all its versions, to a vault. This operation requires the
+     * 
+     * Restores a backed up certificate, and all its versions, to a vault. This operation requires the
      * certificates/restore permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateBundleBackup The backup blob associated with a certificate bundle.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate bundle consists of a certificate (X509) plus its attributes along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateBundle>> restoreCertificateWithResponseAsync(String vaultBaseUrl,
         byte[] certificateBundleBackup) {
-        final String accept = "application/json";
-        CertificateRestoreParameters parameters = new CertificateRestoreParameters();
-        parameters.setCertificateBundleBackup(certificateBundleBackup);
         return FluxUtil.withContext(
-            context -> service.restoreCertificate(vaultBaseUrl, this.getApiVersion(), parameters, accept, context));
+            context -> restoreCertificateWithResponseAsync(vaultBaseUrl, certificateBundleBackup, context));
     }
 
     /**
      * Restores a backed up certificate to a vault.
-     *
-     * <p>Restores a backed up certificate, and all its versions, to a vault. This operation requires the
+     * 
+     * Restores a backed up certificate, and all its versions, to a vault. This operation requires the
      * certificates/restore permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateBundleBackup The backup blob associated with a certificate bundle.
      * @param context The context to associate with this operation.
@@ -3904,7 +3848,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate bundle consists of a certificate (X509) plus its attributes along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateBundle>> restoreCertificateWithResponseAsync(String vaultBaseUrl,
@@ -3917,17 +3861,17 @@ public final class CertificateClientImpl {
 
     /**
      * Restores a backed up certificate to a vault.
-     *
-     * <p>Restores a backed up certificate, and all its versions, to a vault. This operation requires the
+     * 
+     * Restores a backed up certificate, and all its versions, to a vault. This operation requires the
      * certificates/restore permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateBundleBackup The backup blob associated with a certificate bundle.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate bundle consists of a certificate (X509) plus its attributes on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateBundle> restoreCertificateAsync(String vaultBaseUrl, byte[] certificateBundleBackup) {
@@ -3937,10 +3881,10 @@ public final class CertificateClientImpl {
 
     /**
      * Restores a backed up certificate to a vault.
-     *
-     * <p>Restores a backed up certificate, and all its versions, to a vault. This operation requires the
+     * 
+     * Restores a backed up certificate, and all its versions, to a vault. This operation requires the
      * certificates/restore permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateBundleBackup The backup blob associated with a certificate bundle.
      * @param context The context to associate with this operation.
@@ -3948,7 +3892,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate bundle consists of a certificate (X509) plus its attributes on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateBundle> restoreCertificateAsync(String vaultBaseUrl, byte[] certificateBundleBackup,
@@ -3959,10 +3903,10 @@ public final class CertificateClientImpl {
 
     /**
      * Restores a backed up certificate to a vault.
-     *
-     * <p>Restores a backed up certificate, and all its versions, to a vault. This operation requires the
+     * 
+     * Restores a backed up certificate, and all its versions, to a vault. This operation requires the
      * certificates/restore permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateBundleBackup The backup blob associated with a certificate bundle.
      * @param context The context to associate with this operation.
@@ -3982,10 +3926,10 @@ public final class CertificateClientImpl {
 
     /**
      * Restores a backed up certificate to a vault.
-     *
-     * <p>Restores a backed up certificate, and all its versions, to a vault. This operation requires the
+     * 
+     * Restores a backed up certificate, and all its versions, to a vault. This operation requires the
      * certificates/restore permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateBundleBackup The backup blob associated with a certificate bundle.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4000,20 +3944,20 @@ public final class CertificateClientImpl {
 
     /**
      * Lists the deleted certificates in the specified vault currently available for recovery.
-     *
-     * <p>The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted
-     * state and ready for recovery or purging. This operation includes deletion-specific information. This operation
-     * requires the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
-     *
+     * 
+     * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state
+     * and ready for recovery or purging. This operation includes deletion-specific information. This operation requires
+     * the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param includePending Specifies whether to include certificates which are not completely provisioned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of certificates that have been deleted in this vault along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeletedCertificateItem>> getDeletedCertificatesSinglePageAsync(String vaultBaseUrl,
@@ -4028,21 +3972,21 @@ public final class CertificateClientImpl {
 
     /**
      * Lists the deleted certificates in the specified vault currently available for recovery.
-     *
-     * <p>The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted
-     * state and ready for recovery or purging. This operation includes deletion-specific information. This operation
-     * requires the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
-     *
+     * 
+     * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state
+     * and ready for recovery or purging. This operation includes deletion-specific information. This operation requires
+     * the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param includePending Specifies whether to include certificates which are not completely provisioned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of certificates that have been deleted in this vault along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeletedCertificateItem>> getDeletedCertificatesSinglePageAsync(String vaultBaseUrl,
@@ -4056,14 +4000,14 @@ public final class CertificateClientImpl {
 
     /**
      * Lists the deleted certificates in the specified vault currently available for recovery.
-     *
-     * <p>The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted
-     * state and ready for recovery or purging. This operation includes deletion-specific information. This operation
-     * requires the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
-     *
+     * 
+     * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state
+     * and ready for recovery or purging. This operation includes deletion-specific information. This operation requires
+     * the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param includePending Specifies whether to include certificates which are not completely provisioned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -4079,14 +4023,14 @@ public final class CertificateClientImpl {
 
     /**
      * Lists the deleted certificates in the specified vault currently available for recovery.
-     *
-     * <p>The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted
-     * state and ready for recovery or purging. This operation includes deletion-specific information. This operation
-     * requires the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
-     *
+     * 
+     * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state
+     * and ready for recovery or purging. This operation includes deletion-specific information. This operation requires
+     * the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param includePending Specifies whether to include certificates which are not completely provisioned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4104,14 +4048,14 @@ public final class CertificateClientImpl {
 
     /**
      * Lists the deleted certificates in the specified vault currently available for recovery.
-     *
-     * <p>The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted
-     * state and ready for recovery or purging. This operation includes deletion-specific information. This operation
-     * requires the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
-     *
+     * 
+     * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state
+     * and ready for recovery or purging. This operation includes deletion-specific information. This operation requires
+     * the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param includePending Specifies whether to include certificates which are not completely provisioned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -4130,14 +4074,14 @@ public final class CertificateClientImpl {
 
     /**
      * Lists the deleted certificates in the specified vault currently available for recovery.
-     *
-     * <p>The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted
-     * state and ready for recovery or purging. This operation includes deletion-specific information. This operation
-     * requires the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
-     *
+     * 
+     * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state
+     * and ready for recovery or purging. This operation includes deletion-specific information. This operation requires
+     * the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param includePending Specifies whether to include certificates which are not completely provisioned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4157,20 +4101,20 @@ public final class CertificateClientImpl {
 
     /**
      * Lists the deleted certificates in the specified vault currently available for recovery.
-     *
-     * <p>The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted
-     * state and ready for recovery or purging. This operation includes deletion-specific information. This operation
-     * requires the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
-     *
+     * 
+     * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state
+     * and ready for recovery or purging. This operation includes deletion-specific information. This operation requires
+     * the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param includePending Specifies whether to include certificates which are not completely provisioned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of certificates that have been deleted in this vault as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of certificates that have been deleted in this vault as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedCertificateItem> getDeletedCertificates(String vaultBaseUrl, Integer maxresults,
@@ -4182,21 +4126,21 @@ public final class CertificateClientImpl {
 
     /**
      * Lists the deleted certificates in the specified vault currently available for recovery.
-     *
-     * <p>The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted
-     * state and ready for recovery or purging. This operation includes deletion-specific information. This operation
-     * requires the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
-     *
+     * 
+     * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state
+     * and ready for recovery or purging. This operation includes deletion-specific information. This operation requires
+     * the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param includePending Specifies whether to include certificates which are not completely provisioned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of certificates that have been deleted in this vault as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of certificates that have been deleted in this vault as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedCertificateItem> getDeletedCertificates(String vaultBaseUrl, Integer maxresults,
@@ -4208,34 +4152,33 @@ public final class CertificateClientImpl {
 
     /**
      * Retrieves information about the specified deleted certificate.
-     *
-     * <p>The GetDeletedCertificate operation retrieves the deleted certificate information plus its attributes, such as
+     * 
+     * The GetDeletedCertificate operation retrieves the deleted certificate information plus its attributes, such as
      * retention interval, scheduled permanent deletion and the current deletion recovery level. This operation requires
      * the certificates/get permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on
-     *     when it will be purged along with {@link Response} on successful completion of {@link Mono}.
+     * when it will be purged along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedCertificateBundle>> getDeletedCertificateWithResponseAsync(String vaultBaseUrl,
         String certificateName) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getDeletedCertificate(vaultBaseUrl, certificateName,
-            this.getApiVersion(), accept, context));
+        return FluxUtil
+            .withContext(context -> getDeletedCertificateWithResponseAsync(vaultBaseUrl, certificateName, context));
     }
 
     /**
      * Retrieves information about the specified deleted certificate.
-     *
-     * <p>The GetDeletedCertificate operation retrieves the deleted certificate information plus its attributes, such as
+     * 
+     * The GetDeletedCertificate operation retrieves the deleted certificate information plus its attributes, such as
      * retention interval, scheduled permanent deletion and the current deletion recovery level. This operation requires
      * the certificates/get permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param context The context to associate with this operation.
@@ -4243,7 +4186,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on
-     *     when it will be purged along with {@link Response} on successful completion of {@link Mono}.
+     * when it will be purged along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedCertificateBundle>> getDeletedCertificateWithResponseAsync(String vaultBaseUrl,
@@ -4254,18 +4197,18 @@ public final class CertificateClientImpl {
 
     /**
      * Retrieves information about the specified deleted certificate.
-     *
-     * <p>The GetDeletedCertificate operation retrieves the deleted certificate information plus its attributes, such as
+     * 
+     * The GetDeletedCertificate operation retrieves the deleted certificate information plus its attributes, such as
      * retention interval, scheduled permanent deletion and the current deletion recovery level. This operation requires
      * the certificates/get permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on
-     *     when it will be purged on successful completion of {@link Mono}.
+     * when it will be purged on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedCertificateBundle> getDeletedCertificateAsync(String vaultBaseUrl, String certificateName) {
@@ -4275,11 +4218,11 @@ public final class CertificateClientImpl {
 
     /**
      * Retrieves information about the specified deleted certificate.
-     *
-     * <p>The GetDeletedCertificate operation retrieves the deleted certificate information plus its attributes, such as
+     * 
+     * The GetDeletedCertificate operation retrieves the deleted certificate information plus its attributes, such as
      * retention interval, scheduled permanent deletion and the current deletion recovery level. This operation requires
      * the certificates/get permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param context The context to associate with this operation.
@@ -4287,7 +4230,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on
-     *     when it will be purged on successful completion of {@link Mono}.
+     * when it will be purged on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedCertificateBundle> getDeletedCertificateAsync(String vaultBaseUrl, String certificateName,
@@ -4298,11 +4241,11 @@ public final class CertificateClientImpl {
 
     /**
      * Retrieves information about the specified deleted certificate.
-     *
-     * <p>The GetDeletedCertificate operation retrieves the deleted certificate information plus its attributes, such as
+     * 
+     * The GetDeletedCertificate operation retrieves the deleted certificate information plus its attributes, such as
      * retention interval, scheduled permanent deletion and the current deletion recovery level. This operation requires
      * the certificates/get permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param context The context to associate with this operation.
@@ -4310,7 +4253,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on
-     *     when it will be purged along with {@link Response}.
+     * when it will be purged along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedCertificateBundle> getDeletedCertificateWithResponse(String vaultBaseUrl,
@@ -4321,18 +4264,18 @@ public final class CertificateClientImpl {
 
     /**
      * Retrieves information about the specified deleted certificate.
-     *
-     * <p>The GetDeletedCertificate operation retrieves the deleted certificate information plus its attributes, such as
+     * 
+     * The GetDeletedCertificate operation retrieves the deleted certificate information plus its attributes, such as
      * retention interval, scheduled permanent deletion and the current deletion recovery level. This operation requires
      * the certificates/get permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on
-     *     when it will be purged.
+     * when it will be purged.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeletedCertificateBundle getDeletedCertificate(String vaultBaseUrl, String certificateName) {
@@ -4341,11 +4284,11 @@ public final class CertificateClientImpl {
 
     /**
      * Permanently deletes the specified deleted certificate.
-     *
-     * <p>The PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without
+     * 
+     * The PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without
      * possibility for recovery. The operation is not available if the recovery level does not specify 'Purgeable'. This
      * operation requires the certificate/purge permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4355,18 +4298,17 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> purgeDeletedCertificateWithResponseAsync(String vaultBaseUrl, String certificateName) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.purgeDeletedCertificate(vaultBaseUrl, certificateName,
-            this.getApiVersion(), accept, context));
+        return FluxUtil
+            .withContext(context -> purgeDeletedCertificateWithResponseAsync(vaultBaseUrl, certificateName, context));
     }
 
     /**
      * Permanently deletes the specified deleted certificate.
-     *
-     * <p>The PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without
+     * 
+     * The PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without
      * possibility for recovery. The operation is not available if the recovery level does not specify 'Purgeable'. This
      * operation requires the certificate/purge permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param context The context to associate with this operation.
@@ -4384,11 +4326,11 @@ public final class CertificateClientImpl {
 
     /**
      * Permanently deletes the specified deleted certificate.
-     *
-     * <p>The PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without
+     * 
+     * The PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without
      * possibility for recovery. The operation is not available if the recovery level does not specify 'Purgeable'. This
      * operation requires the certificate/purge permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4403,11 +4345,11 @@ public final class CertificateClientImpl {
 
     /**
      * Permanently deletes the specified deleted certificate.
-     *
-     * <p>The PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without
+     * 
+     * The PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without
      * possibility for recovery. The operation is not available if the recovery level does not specify 'Purgeable'. This
      * operation requires the certificate/purge permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param context The context to associate with this operation.
@@ -4424,11 +4366,11 @@ public final class CertificateClientImpl {
 
     /**
      * Permanently deletes the specified deleted certificate.
-     *
-     * <p>The PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without
+     * 
+     * The PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without
      * possibility for recovery. The operation is not available if the recovery level does not specify 'Purgeable'. This
      * operation requires the certificate/purge permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @param context The context to associate with this operation.
@@ -4447,11 +4389,11 @@ public final class CertificateClientImpl {
 
     /**
      * Permanently deletes the specified deleted certificate.
-     *
-     * <p>The PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without
+     * 
+     * The PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without
      * possibility for recovery. The operation is not available if the recovery level does not specify 'Purgeable'. This
      * operation requires the certificate/purge permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4465,34 +4407,33 @@ public final class CertificateClientImpl {
 
     /**
      * Recovers the deleted certificate back to its current version under /certificates.
-     *
-     * <p>The RecoverDeletedCertificate operation performs the reversal of the Delete operation. The operation is
+     * 
+     * The RecoverDeletedCertificate operation performs the reversal of the Delete operation. The operation is
      * applicable in vaults enabled for soft-delete, and must be issued during the retention interval (available in the
      * deleted certificate's attributes). This operation requires the certificates/recover permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the deleted certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate bundle consists of a certificate (X509) plus its attributes along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateBundle>> recoverDeletedCertificateWithResponseAsync(String vaultBaseUrl,
         String certificateName) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.recoverDeletedCertificate(vaultBaseUrl, certificateName,
-            this.getApiVersion(), accept, context));
+        return FluxUtil
+            .withContext(context -> recoverDeletedCertificateWithResponseAsync(vaultBaseUrl, certificateName, context));
     }
 
     /**
      * Recovers the deleted certificate back to its current version under /certificates.
-     *
-     * <p>The RecoverDeletedCertificate operation performs the reversal of the Delete operation. The operation is
+     * 
+     * The RecoverDeletedCertificate operation performs the reversal of the Delete operation. The operation is
      * applicable in vaults enabled for soft-delete, and must be issued during the retention interval (available in the
      * deleted certificate's attributes). This operation requires the certificates/recover permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the deleted certificate.
      * @param context The context to associate with this operation.
@@ -4500,7 +4441,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate bundle consists of a certificate (X509) plus its attributes along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateBundle>> recoverDeletedCertificateWithResponseAsync(String vaultBaseUrl,
@@ -4511,18 +4452,18 @@ public final class CertificateClientImpl {
 
     /**
      * Recovers the deleted certificate back to its current version under /certificates.
-     *
-     * <p>The RecoverDeletedCertificate operation performs the reversal of the Delete operation. The operation is
+     * 
+     * The RecoverDeletedCertificate operation performs the reversal of the Delete operation. The operation is
      * applicable in vaults enabled for soft-delete, and must be issued during the retention interval (available in the
      * deleted certificate's attributes). This operation requires the certificates/recover permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the deleted certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate bundle consists of a certificate (X509) plus its attributes on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateBundle> recoverDeletedCertificateAsync(String vaultBaseUrl, String certificateName) {
@@ -4532,11 +4473,11 @@ public final class CertificateClientImpl {
 
     /**
      * Recovers the deleted certificate back to its current version under /certificates.
-     *
-     * <p>The RecoverDeletedCertificate operation performs the reversal of the Delete operation. The operation is
+     * 
+     * The RecoverDeletedCertificate operation performs the reversal of the Delete operation. The operation is
      * applicable in vaults enabled for soft-delete, and must be issued during the retention interval (available in the
      * deleted certificate's attributes). This operation requires the certificates/recover permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the deleted certificate.
      * @param context The context to associate with this operation.
@@ -4544,7 +4485,7 @@ public final class CertificateClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a certificate bundle consists of a certificate (X509) plus its attributes on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateBundle> recoverDeletedCertificateAsync(String vaultBaseUrl, String certificateName,
@@ -4555,11 +4496,11 @@ public final class CertificateClientImpl {
 
     /**
      * Recovers the deleted certificate back to its current version under /certificates.
-     *
-     * <p>The RecoverDeletedCertificate operation performs the reversal of the Delete operation. The operation is
+     * 
+     * The RecoverDeletedCertificate operation performs the reversal of the Delete operation. The operation is
      * applicable in vaults enabled for soft-delete, and must be issued during the retention interval (available in the
      * deleted certificate's attributes). This operation requires the certificates/recover permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the deleted certificate.
      * @param context The context to associate with this operation.
@@ -4578,11 +4519,11 @@ public final class CertificateClientImpl {
 
     /**
      * Recovers the deleted certificate back to its current version under /certificates.
-     *
-     * <p>The RecoverDeletedCertificate operation performs the reversal of the Delete operation. The operation is
+     * 
+     * The RecoverDeletedCertificate operation performs the reversal of the Delete operation. The operation is
      * applicable in vaults enabled for soft-delete, and must be issued during the retention interval (available in the
      * deleted certificate's attributes). This operation requires the certificates/recover permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param certificateName The name of the deleted certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4597,9 +4538,8 @@ public final class CertificateClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -4617,9 +4557,8 @@ public final class CertificateClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4638,9 +4577,8 @@ public final class CertificateClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -4658,9 +4596,8 @@ public final class CertificateClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4679,15 +4616,14 @@ public final class CertificateClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the certificate issuer list result along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the certificate issuer list result along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<CertificateIssuerItem>> getCertificateIssuersNextSinglePageAsync(String nextLink,
@@ -4701,16 +4637,15 @@ public final class CertificateClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the certificate issuer list result along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the certificate issuer list result along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<CertificateIssuerItem>> getCertificateIssuersNextSinglePageAsync(String nextLink,
@@ -4723,9 +4658,8 @@ public final class CertificateClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -4744,9 +4678,8 @@ public final class CertificateClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4766,9 +4699,8 @@ public final class CertificateClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -4787,9 +4719,8 @@ public final class CertificateClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4808,9 +4739,8 @@ public final class CertificateClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -4828,9 +4758,8 @@ public final class CertificateClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4850,15 +4779,14 @@ public final class CertificateClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of certificates that have been deleted in this vault along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeletedCertificateItem>> getDeletedCertificatesNextSinglePageAsync(String nextLink,
@@ -4872,16 +4800,15 @@ public final class CertificateClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of certificates that have been deleted in this vault along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeletedCertificateItem>> getDeletedCertificatesNextSinglePageAsync(String nextLink,
@@ -4894,9 +4821,8 @@ public final class CertificateClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -4915,9 +4841,8 @@ public final class CertificateClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -13,9 +13,10 @@ import com.azure.security.keyvault.certificates.models.CertificateKeyUsage;
 import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
-/** Properties of the X509 component of a certificate. */
+/**
+ * Properties of the X509 component of a certificate.
+ */
 @Fluent
 public final class X509CertificateProperties implements JsonSerializable<X509CertificateProperties> {
     /*
@@ -43,13 +44,15 @@ public final class X509CertificateProperties implements JsonSerializable<X509Cer
      */
     private Integer validityInMonths;
 
-    /** Creates an instance of X509CertificateProperties class. */
+    /**
+     * Creates an instance of X509CertificateProperties class.
+     */
     public X509CertificateProperties() {
     }
 
     /**
      * Get the subject property: The subject name. Should be a valid X509 distinguished Name.
-     *
+     * 
      * @return the subject value.
      */
     public String getSubject() {
@@ -58,7 +61,7 @@ public final class X509CertificateProperties implements JsonSerializable<X509Cer
 
     /**
      * Set the subject property: The subject name. Should be a valid X509 distinguished Name.
-     *
+     * 
      * @param subject the subject value to set.
      * @return the X509CertificateProperties object itself.
      */
@@ -69,7 +72,7 @@ public final class X509CertificateProperties implements JsonSerializable<X509Cer
 
     /**
      * Get the ekus property: The enhanced key usage.
-     *
+     * 
      * @return the ekus value.
      */
     public List<String> getEkus() {
@@ -78,7 +81,7 @@ public final class X509CertificateProperties implements JsonSerializable<X509Cer
 
     /**
      * Set the ekus property: The enhanced key usage.
-     *
+     * 
      * @param ekus the ekus value to set.
      * @return the X509CertificateProperties object itself.
      */
@@ -89,7 +92,7 @@ public final class X509CertificateProperties implements JsonSerializable<X509Cer
 
     /**
      * Get the subjectAlternativeNames property: The subject alternative names.
-     *
+     * 
      * @return the subjectAlternativeNames value.
      */
     public SubjectAlternativeNames getSubjectAlternativeNames() {
@@ -98,7 +101,7 @@ public final class X509CertificateProperties implements JsonSerializable<X509Cer
 
     /**
      * Set the subjectAlternativeNames property: The subject alternative names.
-     *
+     * 
      * @param subjectAlternativeNames the subjectAlternativeNames value to set.
      * @return the X509CertificateProperties object itself.
      */
@@ -109,7 +112,7 @@ public final class X509CertificateProperties implements JsonSerializable<X509Cer
 
     /**
      * Get the keyUsage property: Defines how the certificate's key may be used.
-     *
+     * 
      * @return the keyUsage value.
      */
     public List<CertificateKeyUsage> getKeyUsage() {
@@ -118,7 +121,7 @@ public final class X509CertificateProperties implements JsonSerializable<X509Cer
 
     /**
      * Set the keyUsage property: Defines how the certificate's key may be used.
-     *
+     * 
      * @param keyUsage the keyUsage value to set.
      * @return the X509CertificateProperties object itself.
      */
@@ -129,7 +132,7 @@ public final class X509CertificateProperties implements JsonSerializable<X509Cer
 
     /**
      * Get the validityInMonths property: The duration that the certificate is valid in months.
-     *
+     * 
      * @return the validityInMonths value.
      */
     public Integer getValidityInMonths() {
@@ -138,7 +141,7 @@ public final class X509CertificateProperties implements JsonSerializable<X509Cer
 
     /**
      * Set the validityInMonths property: The duration that the certificate is valid in months.
-     *
+     * 
      * @param validityInMonths the validityInMonths value to set.
      * @return the X509CertificateProperties object itself.
      */
@@ -147,6 +150,9 @@ public final class X509CertificateProperties implements JsonSerializable<X509Cer
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -154,17 +160,17 @@ public final class X509CertificateProperties implements JsonSerializable<X509Cer
         jsonWriter.writeArrayField("ekus", this.ekus, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("sans", this.subjectAlternativeNames);
         jsonWriter.writeArrayField("key_usage", this.keyUsage,
-            (writer, element) -> writer.writeString(Objects.toString(element, null)));
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeNumberField("validity_months", this.validityInMonths);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of X509CertificateProperties from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of X509CertificateProperties if the JsonReader was pointing to an instance of it, or null if
-     *     it was pointing to JSON null.
+     * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the X509CertificateProperties.
      */
     public static X509CertificateProperties fromJson(JsonReader jsonReader) throws IOException {
