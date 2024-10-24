@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.frontdoor;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
@@ -27,7 +28,9 @@ import com.azure.resourcemanager.frontdoor.models.LoadBalancingSettingsModel;
 import com.azure.resourcemanager.frontdoor.models.RoutingRule;
 import com.azure.resourcemanager.frontdoor.models.RoutingRuleEnabledState;
 import com.azure.resourcemanager.frontdoor.models.SessionAffinityEnabledState;
+import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Test;
@@ -47,18 +50,30 @@ public class FrontDoorTests extends TestProxyTestBase {
     @Test
     @LiveOnly
     public void frontDoorTest() {
+        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+
+        ResourceManager resourceManager = ResourceManager
+            .configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile)
+            .withDefaultSubscription();
+
         StorageManager storageManager = StorageManager
-            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .authenticate(credential, profile);
 
         FrontDoorManager manager = FrontDoorManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         resourceGroupName = "rg" + randomPadding();
         String saName = "sa" + randomPadding();
         fdName = "fd" + randomPadding();
 
-        storageManager.resourceManager().resourceGroups().define(resourceGroupName)
+        resourceManager.resourceGroups().define(resourceGroupName)
             .withRegion(REGION)
             .create();
 
@@ -135,7 +150,7 @@ public class FrontDoorTests extends TestProxyTestBase {
                 .create();
             // @embedmeEnd
         } finally {
-            storageManager.resourceManager().resourceGroups().beginDeleteByName(resourceGroupName);
+            resourceManager.resourceGroups().beginDeleteByName(resourceGroupName);
         }
     }
 
