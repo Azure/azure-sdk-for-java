@@ -207,8 +207,10 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("createdDateTime",
             this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
-        jsonWriter.writeStringField("lastUpdatedDateTime", this.lastUpdatedDateTime == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedDateTime));
+        jsonWriter.writeStringField("lastUpdatedDateTime",
+            this.lastUpdatedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedDateTime));
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("resourceLocation", this.resourceLocation);
         jsonWriter.writeNumberField("percentCompleted", this.percentCompleted);
@@ -277,7 +279,11 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
                     reader.skipChildren();
                 }
             }
-            if (operationIdFound && statusFound && createdDateTimeFound && lastUpdatedDateTimeFound && kindFound
+            if (operationIdFound
+                && statusFound
+                && createdDateTimeFound
+                && lastUpdatedDateTimeFound
+                && kindFound
                 && resourceLocationFound) {
                 OperationSummary deserializedOperationSummary = new OperationSummary(operationId, status,
                     createdDateTime, lastUpdatedDateTime, kind, resourceLocation);

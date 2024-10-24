@@ -534,8 +534,11 @@ public final class CustomModelsImpl {
         ContentType contentType, Boolean includeTextDetails, List<String> pages, Flux<ByteBuffer> fileStream,
         Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeDocument(this.client.getEndpoint(), this.client.getApiVersion(),
                 modelId, includeTextDetails, pagesConverted, contentType, fileStream, contentLength, accept, context));
@@ -565,8 +568,11 @@ public final class CustomModelsImpl {
         ContentType contentType, Boolean includeTextDetails, List<String> pages, Flux<ByteBuffer> fileStream,
         Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeDocument(this.client.getEndpoint(), this.client.getApiVersion(), modelId,
             includeTextDetails, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -696,8 +702,11 @@ public final class CustomModelsImpl {
         ContentType contentType, Boolean includeTextDetails, List<String> pages, BinaryData fileStream,
         Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeDocument(this.client.getEndpoint(), this.client.getApiVersion(),
                 modelId, includeTextDetails, pagesConverted, contentType, fileStream, contentLength, accept, context));
@@ -727,8 +736,11 @@ public final class CustomModelsImpl {
         ContentType contentType, Boolean includeTextDetails, List<String> pages, BinaryData fileStream,
         Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeDocument(this.client.getEndpoint(), this.client.getApiVersion(), modelId,
             includeTextDetails, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -855,8 +867,11 @@ public final class CustomModelsImpl {
     public Mono<ResponseBase<CustomModelsAnalyzeDocumentHeaders, Void>> analyzeDocumentWithResponseAsync(UUID modelId,
         Boolean includeTextDetails, List<String> pages, SourcePath fileStream) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil.withContext(context -> service.analyzeDocument(this.client.getEndpoint(),
             this.client.getApiVersion(), modelId, includeTextDetails, pagesConverted, fileStream, accept, context));
     }
@@ -882,8 +897,11 @@ public final class CustomModelsImpl {
     public Mono<ResponseBase<CustomModelsAnalyzeDocumentHeaders, Void>> analyzeDocumentWithResponseAsync(UUID modelId,
         Boolean includeTextDetails, List<String> pages, SourcePath fileStream, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeDocument(this.client.getEndpoint(), this.client.getApiVersion(), modelId,
             includeTextDetails, pagesConverted, fileStream, accept, context);
     }

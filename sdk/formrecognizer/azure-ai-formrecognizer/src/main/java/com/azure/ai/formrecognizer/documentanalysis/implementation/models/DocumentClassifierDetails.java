@@ -152,8 +152,10 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
         jsonWriter.writeStringField("apiVersion", this.apiVersion);
         jsonWriter.writeMapField("docTypes", this.docTypes, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeStringField("expirationDateTime", this.expirationDateTime == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
+        jsonWriter.writeStringField("expirationDateTime",
+            this.expirationDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
         return jsonWriter.writeEndObject();
     }
 

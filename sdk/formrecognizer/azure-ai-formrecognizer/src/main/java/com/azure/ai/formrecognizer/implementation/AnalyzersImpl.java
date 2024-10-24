@@ -279,8 +279,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages,
         Flux<ByteBuffer> fileStream, Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeBusinessCard(this.client.getEndpoint(), this.client.getApiVersion(),
                 includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context));
@@ -310,8 +313,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages,
         Flux<ByteBuffer> fileStream, Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeBusinessCard(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -441,8 +447,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream,
         Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeBusinessCard(this.client.getEndpoint(), this.client.getApiVersion(),
                 includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context));
@@ -472,8 +481,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream,
         Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeBusinessCard(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -600,8 +612,11 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeBusinessCardHeaders, Void>> analyzeBusinessCardWithResponseAsync(
         Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil.withContext(context -> service.analyzeBusinessCard(this.client.getEndpoint(),
             this.client.getApiVersion(), includeTextDetails, locale, pagesConverted, fileStream, accept, context));
     }
@@ -627,8 +642,11 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeBusinessCardHeaders, Void>> analyzeBusinessCardWithResponseAsync(
         Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeBusinessCard(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, fileStream, accept, context);
     }
@@ -842,8 +860,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages,
         Flux<ByteBuffer> fileStream, Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeInvoice(this.client.getEndpoint(), this.client.getApiVersion(),
                 includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context));
@@ -873,8 +894,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages,
         Flux<ByteBuffer> fileStream, Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeInvoice(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -1004,8 +1028,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream,
         Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeInvoice(this.client.getEndpoint(), this.client.getApiVersion(),
                 includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context));
@@ -1035,8 +1062,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream,
         Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeInvoice(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -1163,8 +1193,11 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeInvoiceHeaders, Void>> analyzeInvoiceWithResponseAsync(
         Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil.withContext(context -> service.analyzeInvoice(this.client.getEndpoint(),
             this.client.getApiVersion(), includeTextDetails, locale, pagesConverted, fileStream, accept, context));
     }
@@ -1190,8 +1223,11 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeInvoiceHeaders, Void>> analyzeInvoiceWithResponseAsync(
         Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeInvoice(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, fileStream, accept, context);
     }
@@ -1402,8 +1438,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, List<String> pages, Flux<ByteBuffer> fileStream,
         Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeIdDocument(this.client.getEndpoint(), this.client.getApiVersion(),
                 includeTextDetails, pagesConverted, contentType, fileStream, contentLength, accept, context));
@@ -1431,8 +1470,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, List<String> pages, Flux<ByteBuffer> fileStream,
         Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeIdDocument(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -1551,8 +1593,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, List<String> pages, BinaryData fileStream,
         Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeIdDocument(this.client.getEndpoint(), this.client.getApiVersion(),
                 includeTextDetails, pagesConverted, contentType, fileStream, contentLength, accept, context));
@@ -1580,8 +1625,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, List<String> pages, BinaryData fileStream,
         Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeIdDocument(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -1696,8 +1744,11 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeIdDocumentHeaders, Void>>
         analyzeIdDocumentWithResponseAsync(Boolean includeTextDetails, List<String> pages, SourcePath fileStream) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil.withContext(context -> service.analyzeIdDocument(this.client.getEndpoint(),
             this.client.getApiVersion(), includeTextDetails, pagesConverted, fileStream, accept, context));
     }
@@ -1721,8 +1772,11 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeIdDocumentHeaders, Void>> analyzeIdDocumentWithResponseAsync(
         Boolean includeTextDetails, List<String> pages, SourcePath fileStream, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeIdDocument(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             pagesConverted, fileStream, accept, context);
     }
@@ -1926,8 +1980,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages,
         Flux<ByteBuffer> fileStream, Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeReceipt(this.client.getEndpoint(), this.client.getApiVersion(),
                 includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context));
@@ -1957,8 +2014,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages,
         Flux<ByteBuffer> fileStream, Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeReceipt(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -2088,8 +2148,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream,
         Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeReceipt(this.client.getEndpoint(), this.client.getApiVersion(),
                 includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context));
@@ -2119,8 +2182,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream,
         Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeReceipt(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -2247,8 +2313,11 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeReceiptHeaders, Void>> analyzeReceiptWithResponseAsync(
         Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil.withContext(context -> service.analyzeReceipt(this.client.getEndpoint(),
             this.client.getApiVersion(), includeTextDetails, locale, pagesConverted, fileStream, accept, context));
     }
@@ -2274,8 +2343,11 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeReceiptHeaders, Void>> analyzeReceiptWithResponseAsync(
         Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeReceipt(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, fileStream, accept, context);
     }
@@ -2502,8 +2574,11 @@ public final class AnalyzersImpl {
         ContentType contentType, List<String> pages, Language language, ReadingOrder readingOrder,
         Flux<ByteBuffer> fileStream, Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeLayout(this.client.getEndpoint(), this.client.getApiVersion(),
                 pagesConverted, language, readingOrder, contentType, fileStream, contentLength, accept, context));
@@ -2547,8 +2622,11 @@ public final class AnalyzersImpl {
         ContentType contentType, List<String> pages, Language language, ReadingOrder readingOrder,
         Flux<ByteBuffer> fileStream, Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeLayout(this.client.getEndpoint(), this.client.getApiVersion(), pagesConverted, language,
             readingOrder, contentType, fileStream, contentLength, accept, context);
     }
@@ -2747,8 +2825,11 @@ public final class AnalyzersImpl {
         ContentType contentType, List<String> pages, Language language, ReadingOrder readingOrder,
         BinaryData fileStream, Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeLayout(this.client.getEndpoint(), this.client.getApiVersion(),
                 pagesConverted, language, readingOrder, contentType, fileStream, contentLength, accept, context));
@@ -2792,8 +2873,11 @@ public final class AnalyzersImpl {
         ContentType contentType, List<String> pages, Language language, ReadingOrder readingOrder,
         BinaryData fileStream, Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeLayout(this.client.getEndpoint(), this.client.getApiVersion(), pagesConverted, language,
             readingOrder, contentType, fileStream, contentLength, accept, context);
     }
@@ -2989,8 +3073,11 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeLayoutHeaders, Void>> analyzeLayoutWithResponseAsync(List<String> pages,
         Language language, ReadingOrder readingOrder, SourcePath fileStream) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil.withContext(context -> service.analyzeLayout(this.client.getEndpoint(),
             this.client.getApiVersion(), pagesConverted, language, readingOrder, fileStream, accept, context));
     }
@@ -3030,8 +3117,11 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeLayoutHeaders, Void>> analyzeLayoutWithResponseAsync(List<String> pages,
         Language language, ReadingOrder readingOrder, SourcePath fileStream, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeLayout(this.client.getEndpoint(), this.client.getApiVersion(), pagesConverted, language,
             readingOrder, fileStream, accept, context);
     }

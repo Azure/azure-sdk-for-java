@@ -12,13 +12,15 @@ import com.azure.ai.formrecognizer.models.SelectionMarkState;
 public final class FormSelectionMarkHelper {
     private static FormSelectionMarkAccessor accessor;
 
-    private FormSelectionMarkHelper() { }
+    private FormSelectionMarkHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link FormSelectionMark} instance.
      */
     public interface FormSelectionMarkAccessor {
         void setConfidence(FormSelectionMark selectionMark, float confidence);
+
         void setState(FormSelectionMark selectionMark, SelectionMarkState state);
     }
 

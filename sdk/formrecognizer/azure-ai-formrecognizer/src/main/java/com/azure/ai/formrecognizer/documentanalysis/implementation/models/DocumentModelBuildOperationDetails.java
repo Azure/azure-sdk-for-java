@@ -103,8 +103,10 @@ public final class DocumentModelBuildOperationDetails extends OperationDetails {
         jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
         jsonWriter.writeStringField("createdDateTime",
             getCreatedDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedDateTime()));
-        jsonWriter.writeStringField("lastUpdatedDateTime", getLastUpdatedDateTime() == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastUpdatedDateTime()));
+        jsonWriter.writeStringField("lastUpdatedDateTime",
+            getLastUpdatedDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastUpdatedDateTime()));
         jsonWriter.writeStringField("resourceLocation", getResourceLocation());
         jsonWriter.writeNumberField("percentCompleted", getPercentCompleted());
         jsonWriter.writeStringField("apiVersion", getApiVersion());
@@ -183,7 +185,10 @@ public final class DocumentModelBuildOperationDetails extends OperationDetails {
                     reader.skipChildren();
                 }
             }
-            if (operationIdFound && statusFound && createdDateTimeFound && lastUpdatedDateTimeFound
+            if (operationIdFound
+                && statusFound
+                && createdDateTimeFound
+                && lastUpdatedDateTimeFound
                 && resourceLocationFound) {
                 DocumentModelBuildOperationDetails deserializedDocumentModelBuildOperationDetails
                     = new DocumentModelBuildOperationDetails(operationId, status, createdDateTime, lastUpdatedDateTime,

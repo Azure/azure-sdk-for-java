@@ -133,8 +133,10 @@ public final class CopyAuthorization implements JsonSerializable<CopyAuthorizati
         jsonWriter.writeStringField("targetModelId", this.targetModelId);
         jsonWriter.writeStringField("targetModelLocation", this.targetModelLocation);
         jsonWriter.writeStringField("accessToken", this.accessToken);
-        jsonWriter.writeStringField("expirationDateTime", this.expirationDateTime == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
+        jsonWriter.writeStringField("expirationDateTime",
+            this.expirationDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
         return jsonWriter.writeEndObject();
     }
 
@@ -188,8 +190,12 @@ public final class CopyAuthorization implements JsonSerializable<CopyAuthorizati
                     reader.skipChildren();
                 }
             }
-            if (targetResourceIdFound && targetResourceRegionFound && targetModelIdFound && targetModelLocationFound
-                && accessTokenFound && expirationDateTimeFound) {
+            if (targetResourceIdFound
+                && targetResourceRegionFound
+                && targetModelIdFound
+                && targetModelLocationFound
+                && accessTokenFound
+                && expirationDateTimeFound) {
                 return new CopyAuthorization(targetResourceId, targetResourceRegion, targetModelId, targetModelLocation,
                     accessToken, expirationDateTime);
             }

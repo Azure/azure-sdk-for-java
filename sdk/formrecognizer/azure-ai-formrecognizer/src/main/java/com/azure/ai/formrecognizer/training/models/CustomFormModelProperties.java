@@ -18,14 +18,15 @@ public final class CustomFormModelProperties {
     }
 
     static {
-        CustomFormModelPropertiesHelper.setAccessor(
-            new CustomFormModelPropertiesHelper.CustomFormModelPropertiesAccessor() {
+        CustomFormModelPropertiesHelper
+            .setAccessor(new CustomFormModelPropertiesHelper.CustomFormModelPropertiesAccessor() {
                 @Override
                 public void setIsComposed(CustomFormModelProperties formModelProperties, boolean isComposed) {
                     formModelProperties.setIsComposed(isComposed);
                 }
             });
     }
+
     /**
      * Is this model composed?
      *

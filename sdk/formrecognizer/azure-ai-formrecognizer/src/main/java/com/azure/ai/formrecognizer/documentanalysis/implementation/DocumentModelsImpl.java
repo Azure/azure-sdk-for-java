@@ -320,8 +320,11 @@ public final class DocumentModelsImpl {
         String modelId, String pages, String locale, StringIndexType stringIndexType,
         List<DocumentAnalysisFeature> features, AnalyzeDocumentRequest analyzeRequest) {
         final String accept = "application/json";
-        String featuresConverted = (features == null) ? null : features.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String featuresConverted = (features == null)
+            ? null
+            : features.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil.withContext(context -> service.analyzeDocument(this.client.getEndpoint(), modelId, pages,
             locale, stringIndexType, this.client.getApiVersion(), featuresConverted, analyzeRequest, accept, context));
     }
@@ -347,8 +350,11 @@ public final class DocumentModelsImpl {
         String modelId, String pages, String locale, StringIndexType stringIndexType,
         List<DocumentAnalysisFeature> features, AnalyzeDocumentRequest analyzeRequest, Context context) {
         final String accept = "application/json";
-        String featuresConverted = (features == null) ? null : features.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String featuresConverted = (features == null)
+            ? null
+            : features.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeDocument(this.client.getEndpoint(), modelId, pages, locale, stringIndexType,
             this.client.getApiVersion(), featuresConverted, analyzeRequest, accept, context);
     }
@@ -374,8 +380,11 @@ public final class DocumentModelsImpl {
         String pages, String locale, StringIndexType stringIndexType, List<DocumentAnalysisFeature> features,
         AnalyzeDocumentRequest analyzeRequest, Context context) {
         final String accept = "application/json";
-        String featuresConverted = (features == null) ? null : features.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String featuresConverted = (features == null)
+            ? null
+            : features.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeDocumentSync(this.client.getEndpoint(), modelId, pages, locale, stringIndexType,
             this.client.getApiVersion(), featuresConverted, analyzeRequest, accept, context);
     }
@@ -516,8 +525,11 @@ public final class DocumentModelsImpl {
         String modelId, ContentType contentType, String pages, String locale, StringIndexType stringIndexType,
         List<DocumentAnalysisFeature> features, Flux<ByteBuffer> analyzeRequest, Long contentLength) {
         final String accept = "application/json";
-        String featuresConverted = (features == null) ? null : features.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String featuresConverted = (features == null)
+            ? null
+            : features.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil.withContext(context -> service.analyzeDocument(this.client.getEndpoint(), modelId, pages,
             locale, stringIndexType, this.client.getApiVersion(), featuresConverted, contentType, analyzeRequest,
             contentLength, accept, context));
@@ -546,8 +558,11 @@ public final class DocumentModelsImpl {
         String modelId, ContentType contentType, String pages, String locale, StringIndexType stringIndexType,
         List<DocumentAnalysisFeature> features, Flux<ByteBuffer> analyzeRequest, Long contentLength, Context context) {
         final String accept = "application/json";
-        String featuresConverted = (features == null) ? null : features.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String featuresConverted = (features == null)
+            ? null
+            : features.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeDocument(this.client.getEndpoint(), modelId, pages, locale, stringIndexType,
             this.client.getApiVersion(), featuresConverted, contentType, analyzeRequest, contentLength, accept,
             context);
@@ -636,8 +651,11 @@ public final class DocumentModelsImpl {
         String modelId, ContentType contentType, String pages, String locale, StringIndexType stringIndexType,
         List<DocumentAnalysisFeature> features, BinaryData analyzeRequest, Long contentLength) {
         final String accept = "application/json";
-        String featuresConverted = (features == null) ? null : features.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String featuresConverted = (features == null)
+            ? null
+            : features.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil.withContext(context -> service.analyzeDocument(this.client.getEndpoint(), modelId, pages,
             locale, stringIndexType, this.client.getApiVersion(), featuresConverted, contentType, analyzeRequest,
             contentLength, accept, context));
@@ -666,8 +684,11 @@ public final class DocumentModelsImpl {
         String modelId, ContentType contentType, String pages, String locale, StringIndexType stringIndexType,
         List<DocumentAnalysisFeature> features, BinaryData analyzeRequest, Long contentLength, Context context) {
         final String accept = "application/json";
-        String featuresConverted = (features == null) ? null : features.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String featuresConverted = (features == null)
+            ? null
+            : features.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeDocument(this.client.getEndpoint(), modelId, pages, locale, stringIndexType,
             this.client.getApiVersion(), featuresConverted, contentType, analyzeRequest, contentLength, accept,
             context);
@@ -696,8 +717,11 @@ public final class DocumentModelsImpl {
         ContentType contentType, String pages, String locale, StringIndexType stringIndexType,
         List<DocumentAnalysisFeature> features, BinaryData analyzeRequest, Long contentLength, Context context) {
         final String accept = "application/json";
-        String featuresConverted = (features == null) ? null : features.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String featuresConverted = (features == null)
+            ? null
+            : features.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeDocumentSync(this.client.getEndpoint(), modelId, pages, locale, stringIndexType,
             this.client.getApiVersion(), featuresConverted, contentType, analyzeRequest, contentLength, accept,
             context);
@@ -845,8 +869,11 @@ public final class DocumentModelsImpl {
         String modelId, String pages, String locale, StringIndexType stringIndexType,
         List<DocumentAnalysisFeature> features, String analyzeRequest) {
         final String accept = "application/json";
-        String featuresConverted = (features == null) ? null : features.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String featuresConverted = (features == null)
+            ? null
+            : features.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil.withContext(context -> service.analyzeDocument(this.client.getEndpoint(), modelId, pages,
             locale, stringIndexType, this.client.getApiVersion(), featuresConverted, analyzeRequest, accept, context));
     }
@@ -872,8 +899,11 @@ public final class DocumentModelsImpl {
         String modelId, String pages, String locale, StringIndexType stringIndexType,
         List<DocumentAnalysisFeature> features, String analyzeRequest, Context context) {
         final String accept = "application/json";
-        String featuresConverted = (features == null) ? null : features.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String featuresConverted = (features == null)
+            ? null
+            : features.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeDocument(this.client.getEndpoint(), modelId, pages, locale, stringIndexType,
             this.client.getApiVersion(), featuresConverted, analyzeRequest, accept, context);
     }
@@ -899,8 +929,11 @@ public final class DocumentModelsImpl {
         String pages, String locale, StringIndexType stringIndexType, List<DocumentAnalysisFeature> features,
         String analyzeRequest, Context context) {
         final String accept = "application/json";
-        String featuresConverted = (features == null) ? null : features.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String featuresConverted = (features == null)
+            ? null
+            : features.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeDocumentSync(this.client.getEndpoint(), modelId, pages, locale, stringIndexType,
             this.client.getApiVersion(), featuresConverted, analyzeRequest, accept, context);
     }

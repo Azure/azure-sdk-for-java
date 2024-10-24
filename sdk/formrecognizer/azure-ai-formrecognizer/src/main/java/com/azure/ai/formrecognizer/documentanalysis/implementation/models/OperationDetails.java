@@ -216,8 +216,10 @@ public class OperationDetails implements JsonSerializable<OperationDetails> {
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("createdDateTime",
             this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
-        jsonWriter.writeStringField("lastUpdatedDateTime", this.lastUpdatedDateTime == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedDateTime));
+        jsonWriter.writeStringField("lastUpdatedDateTime",
+            this.lastUpdatedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedDateTime));
         jsonWriter.writeStringField("resourceLocation", this.resourceLocation);
         jsonWriter.writeNumberField("percentCompleted", this.percentCompleted);
         jsonWriter.writeStringField("apiVersion", this.apiVersion);
@@ -316,7 +318,10 @@ public class OperationDetails implements JsonSerializable<OperationDetails> {
                     reader.skipChildren();
                 }
             }
-            if (operationIdFound && statusFound && createdDateTimeFound && lastUpdatedDateTimeFound
+            if (operationIdFound
+                && statusFound
+                && createdDateTimeFound
+                && lastUpdatedDateTimeFound
                 && resourceLocationFound) {
                 OperationDetails deserializedOperationDetails
                     = new OperationDetails(operationId, status, createdDateTime, lastUpdatedDateTime, resourceLocation);

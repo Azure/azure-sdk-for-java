@@ -104,8 +104,10 @@ public final class ModelsSummary implements JsonSerializable<ModelsSummary> {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("count", this.count);
         jsonWriter.writeIntField("limit", this.limit);
-        jsonWriter.writeStringField("lastUpdatedDateTime", this.lastUpdatedDateTime == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedDateTime));
+        jsonWriter.writeStringField("lastUpdatedDateTime",
+            this.lastUpdatedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedDateTime));
         return jsonWriter.writeEndObject();
     }
 

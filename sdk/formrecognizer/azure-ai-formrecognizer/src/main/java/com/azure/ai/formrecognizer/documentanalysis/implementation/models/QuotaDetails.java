@@ -80,8 +80,10 @@ public final class QuotaDetails implements JsonSerializable<QuotaDetails> {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("used", this.used);
         jsonWriter.writeIntField("quota", this.quota);
-        jsonWriter.writeStringField("quotaResetDateTime", this.quotaResetDateTime == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.quotaResetDateTime));
+        jsonWriter.writeStringField("quotaResetDateTime",
+            this.quotaResetDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.quotaResetDateTime));
         return jsonWriter.writeEndObject();
     }
 
