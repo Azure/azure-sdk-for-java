@@ -25,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class EncryptedBlobOutputStreamTests extends BlobCryptographyTestBase {
     private static final String KEY_ID = "keyId";
     private EncryptedBlobClient bec; // encrypted client
-    private EncryptedBlobAsyncClient beac; // encrypted async client
     private BlobContainerClient cc;
 
     @Override
@@ -39,11 +38,6 @@ public class EncryptedBlobOutputStreamTests extends BlobCryptographyTestBase {
         cc.create();
 
         String blobName = generateBlobName();
-
-        beac = getEncryptedClientBuilder(fakeKey, null, ENV.getPrimaryAccount().getCredential(),
-            cc.getBlobContainerUrl())
-            .blobName(blobName)
-            .buildEncryptedBlobAsyncClient();
 
         bec = getEncryptedClientBuilder(fakeKey, null, ENV.getPrimaryAccount().getCredential(),
             cc.getBlobContainerUrl())
@@ -112,7 +106,7 @@ public class EncryptedBlobOutputStreamTests extends BlobCryptographyTestBase {
     @Test
     public void encryptedBlobOutputStreamOverwrite() throws IOException {
         byte[] randomData = getRandomByteArray(10 * Constants.MB);
-        beac.upload(DATA.getDefaultFlux(), null).block();
+        bec.upload(DATA.getDefaultInputStream());
 
         try (OutputStream outputStream = bec.getBlobOutputStream(true)) {
             outputStream.write(randomData);
