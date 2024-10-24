@@ -4,10 +4,13 @@
 package com.azure.analytics.purview.sharing;
 
 import com.azure.analytics.purview.sharing.models.BlobStorageArtifact;
+import com.azure.analytics.purview.sharing.models.BlobStorageArtifactProperties;
 import com.azure.analytics.purview.sharing.models.InPlaceSentShare;
+import com.azure.analytics.purview.sharing.models.InPlaceSentShareProperties;
 import com.azure.analytics.purview.sharing.models.ReferenceNameType;
 import com.azure.analytics.purview.sharing.models.SentShare;
 import com.azure.analytics.purview.sharing.models.ServiceInvitation;
+import com.azure.analytics.purview.sharing.models.ServiceInvitationProperties;
 import com.azure.analytics.purview.sharing.models.StorageAccountPath;
 import com.azure.analytics.purview.sharing.models.StoreReference;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -74,7 +77,8 @@ class PurviewShareTestBase extends TestProxyTestBase {
         String sentShareId = uuid.toString();
 
         InPlaceSentShare sentShare = new InPlaceSentShare()
-                .setDisplayName(testResourceNamer.randomName("sentshare", 26)).setDescription("A sample share");
+            .setProperties(new InPlaceSentShareProperties().setDisplayName(testResourceNamer.randomName("sentshare", 26))
+                .setDescription("A sample share"));
 
         StoreReference storeReference = new StoreReference().setReferenceName(this.providerStorageAccountResourceId)
                 .setType(ReferenceNameType.ARM_RESOURCE_REFERENCE);
@@ -85,9 +89,10 @@ class PurviewShareTestBase extends TestProxyTestBase {
         List<StorageAccountPath> paths = new ArrayList<>();
         paths.add(storageAccountPath);
 
-        BlobStorageArtifact artifact = new BlobStorageArtifact().setStoreReference(storeReference).setPaths(paths);
+        BlobStorageArtifact artifact = new BlobStorageArtifact().setStoreReference(storeReference)
+            .setProperties(new BlobStorageArtifactProperties().setPaths(paths));
 
-        sentShare.setArtifact(artifact);
+        sentShare.getProperties().setArtifact(artifact);
 
         RequestOptions requestOptions = new RequestOptions();
         SyncPoller<BinaryData, BinaryData> response = setPlaybackSyncPollerPollInterval(
@@ -108,9 +113,9 @@ class PurviewShareTestBase extends TestProxyTestBase {
 
         String invitationId = sentShareInvitationId.toString();
 
-        ServiceInvitation sentShareInvitation = new ServiceInvitation()
-                .setTargetActiveDirectoryId(UUID.fromString(this.targetActiveDirectoryId))
-                .setTargetObjectId(UUID.fromString(this.targetObjectId));
+        ServiceInvitation sentShareInvitation = new ServiceInvitation().setProperties(new ServiceInvitationProperties()
+            .setTargetActiveDirectoryId(UUID.fromString(this.targetActiveDirectoryId))
+            .setTargetObjectId(UUID.fromString(this.targetObjectId)));
 
         return sentSharesClient.createSentShareInvitationWithResponse(sentShareId.toString(), invitationId,
                 BinaryData.fromObject(sentShareInvitation), new RequestOptions());

@@ -10,11 +10,11 @@ import com.azure.ai.inference.models.ChatMessageContentItem;
 import com.azure.ai.inference.models.ChatMessageImageContentItem;
 import com.azure.ai.inference.models.ChatMessageImageUrl;
 import com.azure.ai.inference.models.ChatMessageTextContentItem;
-import com.azure.ai.inference.models.ChatRequestMessage;
 import com.azure.ai.inference.models.ChatRequestAssistantMessage;
-import com.azure.ai.inference.models.ChatRequestUserMessage;
+import com.azure.ai.inference.models.ChatRequestMessage;
 import com.azure.ai.inference.models.ChatRequestSystemMessage;
 import com.azure.ai.inference.models.ChatRequestToolMessage;
+import com.azure.ai.inference.models.ChatRequestUserMessage;
 import com.azure.ai.inference.models.CompletionsFinishReason;
 import com.azure.ai.inference.models.CompletionsUsage;
 import com.azure.ai.inference.models.FunctionCall;
@@ -23,7 +23,6 @@ import com.azure.ai.inference.models.StreamingChatChoiceUpdate;
 import com.azure.ai.inference.models.StreamingChatCompletionsUpdate;
 import com.azure.ai.inference.models.StreamingChatResponseToolCallUpdate;
 import com.azure.core.http.HttpClient;
-
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -32,8 +31,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -45,9 +42,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.azure.ai.inference.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase {
@@ -203,7 +200,7 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
             StreamingChatChoiceUpdate choice = chatCompletions.getChoice();
             if (choice.getFinishReason() != null) {
                 finishReason = choice.getFinishReason();
-                assertSame(finishReason, CompletionsFinishReason.TOOL_CALLS);
+                assertSame(CompletionsFinishReason.TOOL_CALLS, finishReason);
             }
             List<StreamingChatResponseToolCallUpdate> toolCalls = choice.getDelta().getToolCalls();
             // We take the functionName when it's available, and we aggregate the arguments.
@@ -262,7 +259,7 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
                 new ChatCompletionsOptions(followUpMessages));
 
             StringBuilder finalResult = new StringBuilder();
-            CompletionsFinishReason finalFinishReason = null;
+            CompletionsFinishReason finalFinishReason;
             for (StreamingChatCompletionsUpdate chatCompletions : followUpChatCompletionsStream) {
                 if (chatCompletions.getChoices().isEmpty()) {
                     continue;
@@ -270,7 +267,7 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
                 StreamingChatChoiceUpdate choice = chatCompletions.getChoice();
                 if (choice.getFinishReason() != null) {
                     finalFinishReason = choice.getFinishReason();
-                    assertSame(finalFinishReason, CompletionsFinishReason.STOPPED);
+                    assertSame(CompletionsFinishReason.STOPPED, finalFinishReason);
                 }
                 if (choice.getDelta().getContent() != null) {
                     finalResult.append(choice.getDelta().getContent());
@@ -293,11 +290,8 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
     }
 
     public static final class FunctionArguments implements JsonSerializable<FunctionArguments> {
-        @JsonProperty(value = "location_name")
-        private String locationName;
-
-        @JsonProperty(value = "date")
-        private String date;
+        private final String locationName;
+        private final String date;
 
         private FunctionArguments(String location,  String date) {
             this.locationName = location;
@@ -333,11 +327,8 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
     }
 
     private static final class FutureTemperatureParameters implements JsonSerializable<FutureTemperatureParameters> {
-        @JsonProperty(value = "type")
-        private String type = "object";
-
-        @JsonProperty(value = "properties")
-        private FutureTemperatureProperties properties;
+        private final String type;
+        private final FutureTemperatureProperties properties;
 
         private FutureTemperatureParameters() {
             this.type = "object";
@@ -352,7 +343,7 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
         @Override
         public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
             jsonWriter.writeStartObject();
-            jsonWriter.writeStringField("type", this.type == null ? null : this.type);
+            jsonWriter.writeStringField("type", this.type);
             jsonWriter.writeJsonField("properties", this.properties);
             return jsonWriter.writeEndObject();
         }
@@ -378,22 +369,14 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
     }
 
     private static final class FutureTemperatureProperties implements JsonSerializable<FutureTemperatureProperties> {
-        private String unitString = "Temperature unit. Can be either Celsius or Fahrenheit. Defaults to Celsius.";
-        @JsonProperty(value = "unit")
-        StringField unit = new StringField(unitString);
-
-        private String locationString = "The name of the location to get the future temperature for.";
-        @JsonProperty(value = "location_name")
-        StringField locationName = new StringField(locationString);
-
-        private String dateString = "The date to get the future temperature for. The format is YYYY-MM-DD.";
-        @JsonProperty(value = "date")
-        StringField date = new StringField(dateString);
+        StringField unit;
+        StringField locationName;
+        StringField date;
 
         private FutureTemperatureProperties() {
-            this.unit = new StringField(unitString);
-            this.locationName = new StringField(locationString);
-            this.date = new StringField(dateString);
+            this.unit = new StringField("Temperature unit. Can be either Celsius or Fahrenheit. Defaults to Celsius.");
+            this.locationName = new StringField("The name of the location to get the future temperature for.");
+            this.date = new StringField("The date to get the future temperature for. The format is YYYY-MM-DD.");
         }
 
         private FutureTemperatureProperties(StringField unit, StringField locationName, StringField date) {
@@ -435,21 +418,16 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
     }
 
     private static class StringField implements JsonSerializable<StringField> {
-        @JsonProperty(value = "type")
-        private final String type = "string";
+        private final String description;
 
-        @JsonProperty(value = "description")
-        private String description;
-
-        @JsonCreator
-        StringField(@JsonProperty(value = "description") String description) {
+        StringField(String description) {
             this.description = description;
         }
 
         @Override
         public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
             jsonWriter.writeStartObject();
-            jsonWriter.writeStringField("type", this.type);
+            jsonWriter.writeStringField("type", "string");
             jsonWriter.writeStringField("description", this.description);
             return jsonWriter.writeEndObject();
         }

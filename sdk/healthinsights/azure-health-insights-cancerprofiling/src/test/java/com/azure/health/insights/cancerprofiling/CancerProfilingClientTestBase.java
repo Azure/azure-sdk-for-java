@@ -50,8 +50,7 @@ public class CancerProfilingClientTestBase extends TestProxyTestBase {
         File requestFile = new File(
             CancerProfilingClientTestBase.class.getResource("/CancerProfilingClientTest.request.json").getPath());
         try {
-            BinaryData requestBody = BinaryData.fromFile(requestFile.toPath());
-            return requestBody;
+            return BinaryData.fromFile(requestFile.toPath());
         } catch (Exception e) {
             e.printStackTrace();
         }
