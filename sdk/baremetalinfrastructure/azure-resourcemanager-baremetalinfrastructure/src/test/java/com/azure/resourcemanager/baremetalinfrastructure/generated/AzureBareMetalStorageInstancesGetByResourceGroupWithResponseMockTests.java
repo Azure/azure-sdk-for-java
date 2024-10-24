@@ -31,40 +31,28 @@ public final class AzureBareMetalStorageInstancesGetByResourceGroupWithResponseM
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"azureBareMetalStorageInstanceUniqueIdentifier\":\"unmmq\",\"storageProperties\":{\"provisioningState\":\"Creating\",\"offeringType\":\"konocu\",\"storageType\":\"klyaxuconu\",\"generation\":\"zf\",\"hardwareType\":\"eyp\",\"workloadType\":\"rmjmwvvjektc\",\"storageBillingProperties\":{\"billingMode\":\"nhwlrsffrzpwvl\",\"azureBareMetalStorageInstanceSize\":\"q\"}}},\"location\":\"iqylihkaetck\",\"tags\":{\"jf\":\"civfsnkymuctq\",\"fuwutttxf\":\"ebrjcxe\",\"hfnljkyq\":\"jrbirphxepcyv\"},\"id\":\"j\",\"name\":\"uujqgidokgjljyo\",\"type\":\"gvcl\"}";
+        String responseStr
+            = "{\"properties\":{\"azureBareMetalStorageInstanceUniqueIdentifier\":\"unmmq\",\"storageProperties\":{\"provisioningState\":\"Creating\",\"offeringType\":\"konocu\",\"storageType\":\"klyaxuconu\",\"generation\":\"zf\",\"hardwareType\":\"eyp\",\"workloadType\":\"rmjmwvvjektc\",\"storageBillingProperties\":{\"billingMode\":\"nhwlrsffrzpwvl\",\"azureBareMetalStorageInstanceSize\":\"q\"}}},\"location\":\"iqylihkaetck\",\"tags\":{\"jf\":\"civfsnkymuctq\",\"fuwutttxf\":\"ebrjcxe\",\"hfnljkyq\":\"jrbirphxepcyv\"},\"id\":\"j\",\"name\":\"uujqgidokgjljyo\",\"type\":\"gvcl\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        BareMetalInfrastructureManager manager =
-            BareMetalInfrastructureManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        BareMetalInfrastructureManager manager = BareMetalInfrastructureManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AzureBareMetalStorageInstance response =
-            manager
-                .azureBareMetalStorageInstances()
-                .getByResourceGroupWithResponse("qnwvlrya", "w", com.azure.core.util.Context.NONE)
-                .getValue();
+        AzureBareMetalStorageInstance response = manager.azureBareMetalStorageInstances()
+            .getByResourceGroupWithResponse("qnwvlrya", "w", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("iqylihkaetck", response.location());
         Assertions.assertEquals("civfsnkymuctq", response.tags().get("jf"));
@@ -75,10 +63,9 @@ public final class AzureBareMetalStorageInstancesGetByResourceGroupWithResponseM
         Assertions.assertEquals("zf", response.storageProperties().generation());
         Assertions.assertEquals("eyp", response.storageProperties().hardwareType());
         Assertions.assertEquals("rmjmwvvjektc", response.storageProperties().workloadType());
-        Assertions
-            .assertEquals("nhwlrsffrzpwvl", response.storageProperties().storageBillingProperties().billingMode());
-        Assertions
-            .assertEquals(
-                "q", response.storageProperties().storageBillingProperties().azureBareMetalStorageInstanceSize());
+        Assertions.assertEquals("nhwlrsffrzpwvl",
+            response.storageProperties().storageBillingProperties().billingMode());
+        Assertions.assertEquals("q",
+            response.storageProperties().storageBillingProperties().azureBareMetalStorageInstanceSize());
     }
 }
