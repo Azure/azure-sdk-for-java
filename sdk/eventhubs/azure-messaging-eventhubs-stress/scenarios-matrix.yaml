@@ -3,6 +3,7 @@ matrix:
   senderTestClass: EventSender
   testDurationMin: 15
   messageSizeInBytes: 1024
+  useV2: [ true, false ]
   scenarios:
     processor:
       sendRate: 38500
@@ -12,15 +13,6 @@ matrix:
       processorBatchSize: 128
       processorInstancesCount: 1
       processorFailureRatio: 0
-    processorV2:
-      sendRate: 38500
-      sendBatchSize: 385
-      sendConcurrency: 15
-      receiverTestClass: EventProcessor
-      processorBatchSize: 128
-      processorInstancesCount: 1
-      processorFailureRatio: 0
-      useV2: true
     forwarder:
       sendRate: 20000
       sendBatchSize: 50
@@ -29,15 +21,6 @@ matrix:
       processorBatchSize: 128
       processorInstancesCount: 2
       processorFailureRatio: 0.000003125
-    forwarderV2:
-      sendRate: 20000
-      sendBatchSize: 50
-      sendConcurrency: 10
-      receiverTestClass: EventForwarder
-      processorBatchSize: 128
-      processorInstancesCount: 2
-      processorFailureRatio: 0.000003125
-      useV2: true
     idleSender:
       sendRate: 5000
       sendBatchSize: 25
@@ -47,13 +30,3 @@ matrix:
       processorInstancesCount: 1
       processorFailureRatio: 0
       idleDurationMinutes: 40
-    idleSenderV2:
-      sendRate: 5000
-      sendBatchSize: 25
-      sendConcurrency: 5
-      receiverTestClass: EventProcessor
-      processorBatchSize: 32
-      processorInstancesCount: 1
-      processorFailureRatio: 0
-      idleDurationMinutes: 40
-      useV2: true
