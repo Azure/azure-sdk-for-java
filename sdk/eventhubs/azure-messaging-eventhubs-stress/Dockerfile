@@ -27,7 +27,7 @@ RUN --mount=type=cache,target=/root/.m2 \
  mvn -f /stress-eh/sdk/core/azure-core-test/pom.xml clean install ${SKIP_CHECKS} && \
  mvn -f /stress-eh/sdk/core/azure-core-amqp/pom.xml clean install ${SKIP_CHECKS} && \
  mvn -f /stress-eh/sdk/core/azure-core-http-netty/pom.xml clean install ${SKIP_CHECKS} && \
- mvn -f /stress-eh/sdk/monitor/azure-monitor-opentelemetry-exporter/pom.xml clean install ${SKIP_CHECKS} && \
+ mvn -f /stress-eh/sdk/monitor/azure-monitor-opentelemetry-autoconfigure/pom.xml clean install ${SKIP_CHECKS} && \
  mvn -f /stress-eh/sdk/eventhubs/azure-messaging-eventhubs/pom.xml clean install ${SKIP_CHECKS} && \
  mvn -f /stress-eh/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/pom.xml clean install ${SKIP_CHECKS} && \
  mvn -f /stress-eh/sdk/eventhubs/azure-messaging-eventhubs-stress/pom.xml clean install ${SKIP_CHECKS}

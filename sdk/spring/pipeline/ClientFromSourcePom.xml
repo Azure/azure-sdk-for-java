@@ -15,7 +15,7 @@
     <module>../../eventhubs/azure-messaging-eventhubs-stress/pom.xml</module>
     <module>../../eventhubs/azure-messaging-eventhubs-track2-perf/pom.xml</module>
     <module>../../eventhubs/azure-messaging-eventhubs/pom.xml</module>
-    <module>../../monitor/azure-monitor-opentelemetry-exporter/pom.xml</module>
+    <module>../../monitor/azure-monitor-opentelemetry-autoconfigure/pom.xml</module>
     <module>../../parents/azure-perf-test-parent/pom.xml</module>
     <module>../../parents/azure-sdk-parent/pom.xml</module>
     <module>../../servicebus/azure-messaging-servicebus-stress/pom.xml</module>

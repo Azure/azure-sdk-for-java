@@ -50,6 +50,7 @@ com.microsoft.sqlserver:mssql-jdbc;10.2.3.jre8
 com.microsoft.azure:spring-data-cosmosdb;2.3.0
 com.microsoft.azure:azure-functions-maven-plugin;1.30.0
 com.microsoft.azure.functions:azure-functions-java-library;2.2.0
+com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.31
 com.mysql:mysql-connector-j;9.0.0
 com.squareup.okhttp3:mockwebserver;4.12.0
 com.squareup.okhttp3:okhttp;4.12.0
