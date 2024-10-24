@@ -13,10 +13,9 @@ import org.junit.jupiter.api.Test;
 public final class FacetRequestOptionsTests {
     @Test
     public void testDeserialize() {
-        FacetRequestOptions model =
-            BinaryData
-                .fromString("{\"sortBy\":\"ufo\",\"sortOrder\":\"asc\",\"filter\":\"wifsq\",\"$top\":1701108276}")
-                .toObject(FacetRequestOptions.class);
+        FacetRequestOptions model = BinaryData
+            .fromString("{\"sortBy\":\"ufo\",\"sortOrder\":\"asc\",\"filter\":\"wifsq\",\"$top\":1701108276}")
+            .toObject(FacetRequestOptions.class);
         Assertions.assertEquals("ufo", model.sortBy());
         Assertions.assertEquals(FacetSortOrder.ASC, model.sortOrder());
         Assertions.assertEquals("wifsq", model.filter());
@@ -25,12 +24,10 @@ public final class FacetRequestOptionsTests {
 
     @Test
     public void testSerialize() {
-        FacetRequestOptions model =
-            new FacetRequestOptions()
-                .withSortBy("ufo")
-                .withSortOrder(FacetSortOrder.ASC)
-                .withFilter("wifsq")
-                .withTop(1701108276);
+        FacetRequestOptions model = new FacetRequestOptions().withSortBy("ufo")
+            .withSortOrder(FacetSortOrder.ASC)
+            .withFilter("wifsq")
+            .withTop(1701108276);
         model = BinaryData.fromObject(model).toObject(FacetRequestOptions.class);
         Assertions.assertEquals("ufo", model.sortBy());
         Assertions.assertEquals(FacetSortOrder.ASC, model.sortOrder());
