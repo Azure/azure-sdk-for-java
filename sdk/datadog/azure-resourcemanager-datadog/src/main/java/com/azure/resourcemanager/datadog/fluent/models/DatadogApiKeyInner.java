@@ -126,9 +126,8 @@ public final class DatadogApiKeyInner {
      */
     public void validate() {
         if (key() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property key in model DatadogApiKeyInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property key in model DatadogApiKeyInner"));
         }
     }
 

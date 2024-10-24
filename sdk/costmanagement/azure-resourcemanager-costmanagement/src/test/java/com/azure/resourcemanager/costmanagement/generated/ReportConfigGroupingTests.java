@@ -12,18 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ReportConfigGroupingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReportConfigGrouping model =
-            BinaryData
-                .fromString("{\"type\":\"TagKey\",\"name\":\"rzafbljjgpbtoqcj\"}")
-                .toObject(ReportConfigGrouping.class);
+        ReportConfigGrouping model = BinaryData.fromString("{\"type\":\"TagKey\",\"name\":\"rzafbljjgpbtoqcj\"}")
+            .toObject(ReportConfigGrouping.class);
         Assertions.assertEquals(QueryColumnType.TAG_KEY, model.type());
         Assertions.assertEquals("rzafbljjgpbtoqcj", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReportConfigGrouping model =
-            new ReportConfigGrouping().withType(QueryColumnType.TAG_KEY).withName("rzafbljjgpbtoqcj");
+        ReportConfigGrouping model
+            = new ReportConfigGrouping().withType(QueryColumnType.TAG_KEY).withName("rzafbljjgpbtoqcj");
         model = BinaryData.fromObject(model).toObject(ReportConfigGrouping.class);
         Assertions.assertEquals(QueryColumnType.TAG_KEY, model.type());
         Assertions.assertEquals("rzafbljjgpbtoqcj", model.name());

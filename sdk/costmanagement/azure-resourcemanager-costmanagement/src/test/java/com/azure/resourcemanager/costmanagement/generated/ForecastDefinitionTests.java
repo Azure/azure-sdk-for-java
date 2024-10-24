@@ -25,11 +25,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ForecastDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ForecastDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"Usage\",\"timeframe\":\"Custom\",\"timePeriod\":{\"from\":\"2021-06-07T11:11Z\",\"to\":\"2021-03-08T00:26:17Z\"},\"dataset\":{\"granularity\":\"Daily\",\"configuration\":{\"columns\":[\"bovpl\",\"zbhvgyuguosv\",\"kfssxqukkf\",\"l\"]},\"aggregation\":{\"xnkjzkdesl\":{\"name\":\"PreTaxCost\",\"function\":\"Sum\"}},\"filter\":{\"and\":[],\"or\":[]}},\"includeActualCost\":false,\"includeFreshPartialCost\":false}")
-                .toObject(ForecastDefinition.class);
+        ForecastDefinition model = BinaryData.fromString(
+            "{\"type\":\"Usage\",\"timeframe\":\"Custom\",\"timePeriod\":{\"from\":\"2021-06-07T11:11Z\",\"to\":\"2021-03-08T00:26:17Z\"},\"dataset\":{\"granularity\":\"Daily\",\"configuration\":{\"columns\":[\"bovpl\",\"zbhvgyuguosv\",\"kfssxqukkf\",\"l\"]},\"aggregation\":{\"xnkjzkdesl\":{\"name\":\"PreTaxCost\",\"function\":\"Sum\"}},\"filter\":{\"and\":[],\"or\":[]}},\"includeActualCost\":false,\"includeFreshPartialCost\":false}")
+            .toObject(ForecastDefinition.class);
         Assertions.assertEquals(ForecastType.USAGE, model.type());
         Assertions.assertEquals(ForecastTimeframe.CUSTOM, model.timeframe());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-07T11:11Z"), model.timePeriod().from());
@@ -44,29 +42,18 @@ public final class ForecastDefinitionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ForecastDefinition model =
-            new ForecastDefinition()
-                .withType(ForecastType.USAGE)
-                .withTimeframe(ForecastTimeframe.CUSTOM)
-                .withTimePeriod(
-                    new ForecastTimePeriod()
-                        .withFrom(OffsetDateTime.parse("2021-06-07T11:11Z"))
-                        .withTo(OffsetDateTime.parse("2021-03-08T00:26:17Z")))
-                .withDataset(
-                    new ForecastDataset()
-                        .withGranularity(GranularityType.DAILY)
-                        .withConfiguration(
-                            new ForecastDatasetConfiguration()
-                                .withColumns(Arrays.asList("bovpl", "zbhvgyuguosv", "kfssxqukkf", "l")))
-                        .withAggregation(
-                            mapOf(
-                                "xnkjzkdesl",
-                                new ForecastAggregation()
-                                    .withName(FunctionName.PRE_TAX_COST)
-                                    .withFunction(FunctionType.SUM)))
-                        .withFilter(new ForecastFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())))
-                .withIncludeActualCost(false)
-                .withIncludeFreshPartialCost(false);
+        ForecastDefinition model = new ForecastDefinition().withType(ForecastType.USAGE)
+            .withTimeframe(ForecastTimeframe.CUSTOM)
+            .withTimePeriod(new ForecastTimePeriod().withFrom(OffsetDateTime.parse("2021-06-07T11:11Z"))
+                .withTo(OffsetDateTime.parse("2021-03-08T00:26:17Z")))
+            .withDataset(new ForecastDataset().withGranularity(GranularityType.DAILY)
+                .withConfiguration(new ForecastDatasetConfiguration()
+                    .withColumns(Arrays.asList("bovpl", "zbhvgyuguosv", "kfssxqukkf", "l")))
+                .withAggregation(mapOf("xnkjzkdesl",
+                    new ForecastAggregation().withName(FunctionName.PRE_TAX_COST).withFunction(FunctionType.SUM)))
+                .withFilter(new ForecastFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())))
+            .withIncludeActualCost(false)
+            .withIncludeFreshPartialCost(false);
         model = BinaryData.fromObject(model).toObject(ForecastDefinition.class);
         Assertions.assertEquals(ForecastType.USAGE, model.type());
         Assertions.assertEquals(ForecastTimeframe.CUSTOM, model.timeframe());

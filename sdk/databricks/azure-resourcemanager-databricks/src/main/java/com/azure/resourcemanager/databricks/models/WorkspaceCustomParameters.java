@@ -189,8 +189,8 @@ public final class WorkspaceCustomParameters {
      * @param customPrivateSubnetName the customPrivateSubnetName value to set.
      * @return the WorkspaceCustomParameters object itself.
      */
-    public WorkspaceCustomParameters withCustomPrivateSubnetName(
-        WorkspaceCustomStringParameter customPrivateSubnetName) {
+    public WorkspaceCustomParameters
+        withCustomPrivateSubnetName(WorkspaceCustomStringParameter customPrivateSubnetName) {
         this.customPrivateSubnetName = customPrivateSubnetName;
         return this;
     }
@@ -232,8 +232,8 @@ public final class WorkspaceCustomParameters {
      * @param loadBalancerBackendPoolName the loadBalancerBackendPoolName value to set.
      * @return the WorkspaceCustomParameters object itself.
      */
-    public WorkspaceCustomParameters withLoadBalancerBackendPoolName(
-        WorkspaceCustomStringParameter loadBalancerBackendPoolName) {
+    public WorkspaceCustomParameters
+        withLoadBalancerBackendPoolName(WorkspaceCustomStringParameter loadBalancerBackendPoolName) {
         this.loadBalancerBackendPoolName = loadBalancerBackendPoolName;
         return this;
     }
@@ -361,8 +361,8 @@ public final class WorkspaceCustomParameters {
      * @param requireInfrastructureEncryption the requireInfrastructureEncryption value to set.
      * @return the WorkspaceCustomParameters object itself.
      */
-    public WorkspaceCustomParameters withRequireInfrastructureEncryption(
-        WorkspaceCustomBooleanParameter requireInfrastructureEncryption) {
+    public WorkspaceCustomParameters
+        withRequireInfrastructureEncryption(WorkspaceCustomBooleanParameter requireInfrastructureEncryption) {
         this.requireInfrastructureEncryption = requireInfrastructureEncryption;
         return this;
     }

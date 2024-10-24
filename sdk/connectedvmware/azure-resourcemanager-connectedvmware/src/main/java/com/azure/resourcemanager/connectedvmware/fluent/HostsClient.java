@@ -46,8 +46,8 @@ public interface HostsClient {
      * @return the {@link SyncPoller} for polling of define the host.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<HostModelInner>, HostModelInner> beginCreate(
-        String resourceGroupName, String hostname, HostModelInner body, Context context);
+    SyncPoller<PollResult<HostModelInner>, HostModelInner> beginCreate(String resourceGroupName, String hostname,
+        HostModelInner body, Context context);
 
     /**
      * Implements host PUT method.
@@ -127,8 +127,8 @@ public interface HostsClient {
      * @return define the host along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HostModelInner> updateWithResponse(
-        String resourceGroupName, String hostname, ResourcePatch body, Context context);
+    Response<HostModelInner> updateWithResponse(String resourceGroupName, String hostname, ResourcePatch body,
+        Context context);
 
     /**
      * Updates a host.
@@ -175,8 +175,8 @@ public interface HostsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String hostname, Boolean force, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hostname, Boolean force,
+        Context context);
 
     /**
      * Deletes an host.

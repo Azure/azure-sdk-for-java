@@ -34,37 +34,27 @@ public final class ScheduledActionsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"j\",\"fileDestination\":{\"fileFormats\":[]},\"notification\":{\"to\":[],\"language\":\"fnmdxotn\",\"message\":\"dgug\",\"regionalFormat\":\"zihgrkyu\",\"subject\":\"zabs\"},\"notificationEmail\":\"fpphoj\",\"schedule\":{\"frequency\":\"Monthly\",\"hourOfDay\":782057398,\"daysOfWeek\":[],\"weeksOfMonth\":[],\"dayOfMonth\":1922509434,\"startDate\":\"2021-07-27T14:52:36Z\",\"endDate\":\"2020-12-27T00:09:12Z\"},\"scope\":\"czbgomfgbeg\",\"status\":\"Expired\",\"viewId\":\"gleohi\"},\"eTag\":\"tnluankrr\",\"kind\":\"InsightAlert\",\"id\":\"ebtijvacvbmqzbqq\",\"name\":\"lajrnwxacevehj\",\"type\":\"uyxoaf\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"displayName\":\"j\",\"fileDestination\":{\"fileFormats\":[]},\"notification\":{\"to\":[],\"language\":\"fnmdxotn\",\"message\":\"dgug\",\"regionalFormat\":\"zihgrkyu\",\"subject\":\"zabs\"},\"notificationEmail\":\"fpphoj\",\"schedule\":{\"frequency\":\"Monthly\",\"hourOfDay\":782057398,\"daysOfWeek\":[],\"weeksOfMonth\":[],\"dayOfMonth\":1922509434,\"startDate\":\"2021-07-27T14:52:36Z\",\"endDate\":\"2020-12-27T00:09:12Z\"},\"scope\":\"czbgomfgbeg\",\"status\":\"Expired\",\"viewId\":\"gleohi\"},\"eTag\":\"tnluankrr\",\"kind\":\"InsightAlert\",\"id\":\"ebtijvacvbmqzbqq\",\"name\":\"lajrnwxacevehj\",\"type\":\"uyxoaf\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CostManagementManager manager =
-            CostManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CostManagementManager manager = CostManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ScheduledAction> response =
-            manager.scheduledActions().list("mkyoqufdvruzsl", com.azure.core.util.Context.NONE);
+        PagedIterable<ScheduledAction> response
+            = manager.scheduledActions().list("mkyoqufdvruzsl", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ScheduledActionKind.INSIGHT_ALERT, response.iterator().next().kind());
         Assertions.assertEquals("j", response.iterator().next().displayName());
@@ -76,12 +66,10 @@ public final class ScheduledActionsListMockTests {
         Assertions.assertEquals(ScheduleFrequency.MONTHLY, response.iterator().next().schedule().frequency());
         Assertions.assertEquals(782057398, response.iterator().next().schedule().hourOfDay());
         Assertions.assertEquals(1922509434, response.iterator().next().schedule().dayOfMonth());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-07-27T14:52:36Z"), response.iterator().next().schedule().startDate());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2020-12-27T00:09:12Z"), response.iterator().next().schedule().endDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-27T14:52:36Z"),
+            response.iterator().next().schedule().startDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-27T00:09:12Z"),
+            response.iterator().next().schedule().endDate());
         Assertions.assertEquals("czbgomfgbeg", response.iterator().next().scope());
         Assertions.assertEquals(ScheduledActionStatus.EXPIRED, response.iterator().next().status());
         Assertions.assertEquals("gleohi", response.iterator().next().viewId());

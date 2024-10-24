@@ -63,7 +63,6 @@ public final class ContainerRepository {
     private final HttpPipeline httpPipeline;
     private final String registryLoginServer;
 
-
     /**
      * Creates a {@link ContainerRepository} that sends requests to the given repository in the container registry
      * service at {@code endpoint}. Each service call goes through the {@code pipeline}.
@@ -133,8 +132,8 @@ public final class ContainerRepository {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(Context context) {
         try {
-            Response<DeleteRepositoryResult> response =
-                this.serviceClient.deleteRepositoryWithResponse(repositoryName, context);
+            Response<DeleteRepositoryResult> response
+                = this.serviceClient.deleteRepositoryWithResponse(repositoryName, context);
             return UtilsImpl.deleteResponseToSuccess(response);
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
@@ -309,26 +308,27 @@ public final class ContainerRepository {
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ArtifactManifestProperties> listManifestProperties(ArtifactManifestOrder order, Context context) {
+    public PagedIterable<ArtifactManifestProperties> listManifestProperties(ArtifactManifestOrder order,
+        Context context) {
         return this.listManifestPropertiesSync(order, context);
     }
 
-    private PagedIterable<ArtifactManifestProperties> listManifestPropertiesSync(ArtifactManifestOrder order, Context context) {
-        return new PagedIterable<>(
-            (pageSize) -> listManifestPropertiesSinglePageSync(pageSize, order, context),
+    private PagedIterable<ArtifactManifestProperties> listManifestPropertiesSync(ArtifactManifestOrder order,
+        Context context) {
+        return new PagedIterable<>((pageSize) -> listManifestPropertiesSinglePageSync(pageSize, order, context),
             (token, pageSize) -> listManifestPropertiesNextSinglePageSync(token, context));
     }
 
-    private PagedResponse<ArtifactManifestProperties> listManifestPropertiesSinglePageSync(Integer pageSize, ArtifactManifestOrder order, Context context) {
+    private PagedResponse<ArtifactManifestProperties> listManifestPropertiesSinglePageSync(Integer pageSize,
+        ArtifactManifestOrder order, Context context) {
         if (pageSize != null && pageSize < 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'pageSize' cannot be negative."));
         }
 
         final String orderString = order == ArtifactManifestOrder.NONE ? null : order.toString();
         try {
-            PagedResponse<ManifestAttributesBase> res =
-                this.serviceClient.getManifestsSinglePage(repositoryName, null, pageSize, orderString,
-                    context);
+            PagedResponse<ManifestAttributesBase> res
+                = this.serviceClient.getManifestsSinglePage(repositoryName, null, pageSize, orderString, context);
 
             return UtilsImpl.getPagedResponseWithContinuationToken(res,
                 baseArtifacts -> UtilsImpl.mapManifestsProperties(baseArtifacts, repositoryName, registryLoginServer));
@@ -337,10 +337,11 @@ public final class ContainerRepository {
         }
     }
 
-    private PagedResponse<ArtifactManifestProperties> listManifestPropertiesNextSinglePageSync(String nextLink, Context context) {
+    private PagedResponse<ArtifactManifestProperties> listManifestPropertiesNextSinglePageSync(String nextLink,
+        Context context) {
         try {
-            PagedResponse<ManifestAttributesBase> res = this.serviceClient.getManifestsNextSinglePage(nextLink,
-                context);
+            PagedResponse<ManifestAttributesBase> res
+                = this.serviceClient.getManifestsNextSinglePage(nextLink, context);
             return UtilsImpl.getPagedResponseWithContinuationToken(res,
                 baseArtifacts -> UtilsImpl.mapManifestsProperties(baseArtifacts, repositoryName, registryLoginServer));
         } catch (AcrErrorsException exception) {
@@ -371,7 +372,8 @@ public final class ContainerRepository {
      * @throws NullPointerException thrown if the {@code repositoryProperties} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ContainerRepositoryProperties> updatePropertiesWithResponse(ContainerRepositoryProperties repositoryProperties, Context context) {
+    public Response<ContainerRepositoryProperties>
+        updatePropertiesWithResponse(ContainerRepositoryProperties repositoryProperties, Context context) {
         return this.updatePropertiesWithResponseSync(repositoryProperties, context);
     }
 
@@ -401,19 +403,19 @@ public final class ContainerRepository {
         return this.updatePropertiesWithResponse(repositoryProperties, Context.NONE).getValue();
     }
 
-    private Response<ContainerRepositoryProperties> updatePropertiesWithResponseSync(ContainerRepositoryProperties repositoryProperties, Context context) {
+    private Response<ContainerRepositoryProperties>
+        updatePropertiesWithResponseSync(ContainerRepositoryProperties repositoryProperties, Context context) {
         Objects.requireNonNull(repositoryProperties, "'repositoryProperties' cannot be null");
 
-        RepositoryWriteableProperties writableProperties = new RepositoryWriteableProperties()
-            .setDeleteEnabled(repositoryProperties.isDeleteEnabled())
-            .setListEnabled(repositoryProperties.isListEnabled())
-            .setWriteEnabled(repositoryProperties.isWriteEnabled())
-            .setReadEnabled(repositoryProperties.isReadEnabled());
-//          .setTeleportEnabled(repositoryProperties.isTeleportEnabled());
+        RepositoryWriteableProperties writableProperties
+            = new RepositoryWriteableProperties().setDeleteEnabled(repositoryProperties.isDeleteEnabled())
+                .setListEnabled(repositoryProperties.isListEnabled())
+                .setWriteEnabled(repositoryProperties.isWriteEnabled())
+                .setReadEnabled(repositoryProperties.isReadEnabled());
+        //          .setTeleportEnabled(repositoryProperties.isTeleportEnabled());
 
         try {
-            return this.serviceClient.updatePropertiesWithResponse(repositoryName, writableProperties,
-                context);
+            return this.serviceClient.updatePropertiesWithResponse(repositoryName, writableProperties, context);
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }

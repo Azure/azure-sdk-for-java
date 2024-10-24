@@ -12,8 +12,7 @@ public final class BenefitUtilizationSummaryImpl implements BenefitUtilizationSu
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    BenefitUtilizationSummaryImpl(
-        BenefitUtilizationSummaryInner innerObject,
+    BenefitUtilizationSummaryImpl(BenefitUtilizationSummaryInner innerObject,
         com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

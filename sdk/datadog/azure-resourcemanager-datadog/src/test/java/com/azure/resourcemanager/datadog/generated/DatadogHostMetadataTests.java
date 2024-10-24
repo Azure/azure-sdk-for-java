@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DatadogHostMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatadogHostMetadata model =
-            BinaryData
-                .fromString(
-                    "{\"agentVersion\":\"mbmbexppbh\",\"installMethod\":{\"tool\":\"rolfpfp\",\"toolVersion\":\"lgbquxig\",\"installerVersion\":\"jgzjaoyfhrtx\"},\"logsAgent\":{\"transport\":\"erkujys\"}}")
-                .toObject(DatadogHostMetadata.class);
+        DatadogHostMetadata model = BinaryData.fromString(
+            "{\"agentVersion\":\"mbmbexppbh\",\"installMethod\":{\"tool\":\"rolfpfp\",\"toolVersion\":\"lgbquxig\",\"installerVersion\":\"jgzjaoyfhrtx\"},\"logsAgent\":{\"transport\":\"erkujys\"}}")
+            .toObject(DatadogHostMetadata.class);
         Assertions.assertEquals("mbmbexppbh", model.agentVersion());
         Assertions.assertEquals("rolfpfp", model.installMethod().tool());
         Assertions.assertEquals("lgbquxig", model.installMethod().toolVersion());
@@ -27,15 +25,11 @@ public final class DatadogHostMetadataTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatadogHostMetadata model =
-            new DatadogHostMetadata()
-                .withAgentVersion("mbmbexppbh")
-                .withInstallMethod(
-                    new DatadogInstallMethod()
-                        .withTool("rolfpfp")
-                        .withToolVersion("lgbquxig")
-                        .withInstallerVersion("jgzjaoyfhrtx"))
-                .withLogsAgent(new DatadogLogsAgent().withTransport("erkujys"));
+        DatadogHostMetadata model = new DatadogHostMetadata().withAgentVersion("mbmbexppbh")
+            .withInstallMethod(new DatadogInstallMethod().withTool("rolfpfp")
+                .withToolVersion("lgbquxig")
+                .withInstallerVersion("jgzjaoyfhrtx"))
+            .withLogsAgent(new DatadogLogsAgent().withTransport("erkujys"));
         model = BinaryData.fromObject(model).toObject(DatadogHostMetadata.class);
         Assertions.assertEquals("mbmbexppbh", model.agentVersion());
         Assertions.assertEquals("rolfpfp", model.installMethod().tool());

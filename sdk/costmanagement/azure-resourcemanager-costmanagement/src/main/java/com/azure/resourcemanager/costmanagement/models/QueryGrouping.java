@@ -74,14 +74,12 @@ public final class QueryGrouping {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model QueryGrouping"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model QueryGrouping"));
         }
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model QueryGrouping"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model QueryGrouping"));
         }
     }
 

@@ -108,8 +108,8 @@ public interface ScheduledActionsClient {
      * @return scheduled action definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScheduledActionInner> createOrUpdateWithResponse(
-        String name, ScheduledActionInner scheduledAction, String ifMatch, Context context);
+    Response<ScheduledActionInner> createOrUpdateWithResponse(String name, ScheduledActionInner scheduledAction,
+        String ifMatch, Context context);
 
     /**
      * Create or update a private scheduled action.
@@ -203,8 +203,8 @@ public interface ScheduledActionsClient {
      * @return scheduled action definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScheduledActionInner> createOrUpdateByScopeWithResponse(
-        String scope, String name, ScheduledActionInner scheduledAction, String ifMatch, Context context);
+    Response<ScheduledActionInner> createOrUpdateByScopeWithResponse(String scope, String name,
+        ScheduledActionInner scheduledAction, String ifMatch, Context context);
 
     /**
      * Create or update a shared scheduled action within the given scope.
@@ -439,8 +439,8 @@ public interface ScheduledActionsClient {
      * @return the check availability result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
+    Response<CheckNameAvailabilityResponseInner>
+        checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
 
     /**
      * Checks availability and correctness of the name for a scheduled action.
@@ -481,8 +481,8 @@ public interface ScheduledActionsClient {
      * @return the check availability result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityByScopeWithResponse(
-        String scope, CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
+    Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityByScopeWithResponse(String scope,
+        CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
 
     /**
      * Checks availability and correctness of the name for a scheduled action within the given scope.
@@ -510,6 +510,6 @@ public interface ScheduledActionsClient {
      * @return the check availability result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameAvailabilityResponseInner checkNameAvailabilityByScope(
-        String scope, CheckNameAvailabilityRequest checkNameAvailabilityRequest);
+    CheckNameAvailabilityResponseInner checkNameAvailabilityByScope(String scope,
+        CheckNameAvailabilityRequest checkNameAvailabilityRequest);
 }

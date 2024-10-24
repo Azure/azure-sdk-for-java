@@ -100,18 +100,14 @@ public final class DataExportDetails {
      */
     public void validate() {
         if (transferConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property transferConfiguration in model DataExportDetails"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property transferConfiguration in model DataExportDetails"));
         } else {
             transferConfiguration().validate();
         }
         if (accountDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property accountDetails in model DataExportDetails"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property accountDetails in model DataExportDetails"));
         } else {
             accountDetails().validate();
         }

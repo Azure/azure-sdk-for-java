@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourcePoolsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourcePoolsList model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"pnddhsgcbacphejk\",\"value\":[{\"properties\":{\"uuid\":\"nqgoulzndli\",\"vCenterId\":\"yqkgfg\",\"moRefId\":\"madgakeqsrxyb\",\"inventoryItemId\":\"qedqytbciqfoufl\",\"moName\":\"nkzsmodmglou\",\"cpuSharesLevel\":\"b\",\"cpuReservationMHz\":3504538577144527643,\"cpuLimitMHz\":9064339058448952534,\"memSharesLevel\":\"qktapspwgcuert\",\"memReservationMB\":7020809285560485144,\"memLimitMB\":6338655194328976084,\"memOverallUsageGB\":4689863445512368729,\"memCapacityGB\":1046762399333359388,\"cpuOverallUsageMHz\":6432231641159211987,\"cpuCapacityMHz\":2979857989241942,\"customResourceName\":\"gmbmbexppbh\",\"datastoreIds\":[\"rolfpfp\",\"algbquxigjyjg\"],\"networkIds\":[\"o\",\"fhrtxilnerkujysv\",\"eju\",\"fqawrlyxw\"],\"statuses\":[{\"type\":\"rbnwbxgjvtbvpy\",\"status\":\"zdn\",\"reason\":\"jq\",\"message\":\"hmuouqfprwzwbn\",\"severity\":\"itnwuizgazxufi\",\"lastUpdatedAt\":\"2021-07-05T04:35:30Z\"}],\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"type\":\"hr\",\"name\":\"dfvzwdzuhty\"},\"kind\":\"sdkf\",\"location\":\"hwxmnteiwa\",\"tags\":{\"jcmmxdcufufsrp\":\"km\",\"sgfyccsnew\":\"mzidnsezcxtb\",\"oosflnr\":\"dwzjeiach\",\"vypyqrimzinpv\":\"sfqpteehz\"},\"id\":\"wjdk\",\"name\":\"rsoodqxhcrmnoh\",\"type\":\"t\"},{\"properties\":{\"uuid\":\"whdsoifiyip\",\"vCenterId\":\"sqwpgrjb\",\"moRefId\":\"orcjxvsnby\",\"inventoryItemId\":\"abnmocpcyshu\",\"moName\":\"afbljjgpbtoqcjmk\",\"cpuSharesLevel\":\"a\",\"cpuReservationMHz\":1289808063070531024,\"cpuLimitMHz\":8304735873585257815,\"memSharesLevel\":\"jzyulpk\",\"memReservationMB\":5292140963008321434,\"memLimitMB\":5090033425355731207,\"memOverallUsageGB\":5301305904738744047,\"memCapacityGB\":7860487098364913435,\"cpuOverallUsageMHz\":425051225083018289,\"cpuCapacityMHz\":3011777543730351640,\"customResourceName\":\"zloc\",\"datastoreIds\":[\"paierh\"],\"networkIds\":[\"sglumma\",\"tjaodxobnb\"],\"statuses\":[{\"type\":\"pxokajionp\",\"status\":\"ex\",\"reason\":\"txgcpodgmaajr\",\"message\":\"djwzrlov\",\"severity\":\"lwhijcoejctbzaq\",\"lastUpdatedAt\":\"2021-02-04T17:33:10Z\"}],\"provisioningState\":\"Provisioning\"},\"extendedLocation\":{\"type\":\"bfkgukdkex\",\"name\":\"pofm\"},\"kind\":\"c\",\"location\":\"jpgd\",\"tags\":{\"j\":\"c\",\"hd\":\"hvpmoue\",\"bzv\":\"xibqeojnx\",\"pzaoqvuhr\":\"dntwndeicbtw\"},\"id\":\"cffcyddglmj\",\"name\":\"hjq\",\"type\":\"wpyeicxmqciwqvh\"}]}")
-                .toObject(ResourcePoolsList.class);
+        ResourcePoolsList model = BinaryData.fromString(
+            "{\"nextLink\":\"pnddhsgcbacphejk\",\"value\":[{\"properties\":{\"uuid\":\"nqgoulzndli\",\"vCenterId\":\"yqkgfg\",\"moRefId\":\"madgakeqsrxyb\",\"inventoryItemId\":\"qedqytbciqfoufl\",\"moName\":\"nkzsmodmglou\",\"cpuSharesLevel\":\"b\",\"cpuReservationMHz\":3504538577144527643,\"cpuLimitMHz\":9064339058448952534,\"memSharesLevel\":\"qktapspwgcuert\",\"memReservationMB\":7020809285560485144,\"memLimitMB\":6338655194328976084,\"memOverallUsageGB\":4689863445512368729,\"memCapacityGB\":1046762399333359388,\"cpuOverallUsageMHz\":6432231641159211987,\"cpuCapacityMHz\":2979857989241942,\"customResourceName\":\"gmbmbexppbh\",\"datastoreIds\":[\"rolfpfp\",\"algbquxigjyjg\"],\"networkIds\":[\"o\",\"fhrtxilnerkujysv\",\"eju\",\"fqawrlyxw\"],\"statuses\":[{\"type\":\"rbnwbxgjvtbvpy\",\"status\":\"zdn\",\"reason\":\"jq\",\"message\":\"hmuouqfprwzwbn\",\"severity\":\"itnwuizgazxufi\",\"lastUpdatedAt\":\"2021-07-05T04:35:30Z\"}],\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"type\":\"hr\",\"name\":\"dfvzwdzuhty\"},\"kind\":\"sdkf\",\"location\":\"hwxmnteiwa\",\"tags\":{\"jcmmxdcufufsrp\":\"km\",\"sgfyccsnew\":\"mzidnsezcxtb\",\"oosflnr\":\"dwzjeiach\",\"vypyqrimzinpv\":\"sfqpteehz\"},\"id\":\"wjdk\",\"name\":\"rsoodqxhcrmnoh\",\"type\":\"t\"},{\"properties\":{\"uuid\":\"whdsoifiyip\",\"vCenterId\":\"sqwpgrjb\",\"moRefId\":\"orcjxvsnby\",\"inventoryItemId\":\"abnmocpcyshu\",\"moName\":\"afbljjgpbtoqcjmk\",\"cpuSharesLevel\":\"a\",\"cpuReservationMHz\":1289808063070531024,\"cpuLimitMHz\":8304735873585257815,\"memSharesLevel\":\"jzyulpk\",\"memReservationMB\":5292140963008321434,\"memLimitMB\":5090033425355731207,\"memOverallUsageGB\":5301305904738744047,\"memCapacityGB\":7860487098364913435,\"cpuOverallUsageMHz\":425051225083018289,\"cpuCapacityMHz\":3011777543730351640,\"customResourceName\":\"zloc\",\"datastoreIds\":[\"paierh\"],\"networkIds\":[\"sglumma\",\"tjaodxobnb\"],\"statuses\":[{\"type\":\"pxokajionp\",\"status\":\"ex\",\"reason\":\"txgcpodgmaajr\",\"message\":\"djwzrlov\",\"severity\":\"lwhijcoejctbzaq\",\"lastUpdatedAt\":\"2021-02-04T17:33:10Z\"}],\"provisioningState\":\"Provisioning\"},\"extendedLocation\":{\"type\":\"bfkgukdkex\",\"name\":\"pofm\"},\"kind\":\"c\",\"location\":\"jpgd\",\"tags\":{\"j\":\"c\",\"hd\":\"hvpmoue\",\"bzv\":\"xibqeojnx\",\"pzaoqvuhr\":\"dntwndeicbtw\"},\"id\":\"cffcyddglmj\",\"name\":\"hjq\",\"type\":\"wpyeicxmqciwqvh\"}]}")
+            .toObject(ResourcePoolsList.class);
         Assertions.assertEquals("pnddhsgcbacphejk", model.nextLink());
         Assertions.assertEquals("hwxmnteiwa", model.value().get(0).location());
         Assertions.assertEquals("km", model.value().get(0).tags().get("jcmmxdcufufsrp"));
@@ -34,38 +32,23 @@ public final class ResourcePoolsListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourcePoolsList model =
-            new ResourcePoolsList()
-                .withNextLink("pnddhsgcbacphejk")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ResourcePoolInner()
-                                .withLocation("hwxmnteiwa")
-                                .withTags(
-                                    mapOf(
-                                        "jcmmxdcufufsrp",
-                                        "km",
-                                        "sgfyccsnew",
-                                        "mzidnsezcxtb",
-                                        "oosflnr",
-                                        "dwzjeiach",
-                                        "vypyqrimzinpv",
-                                        "sfqpteehz"))
-                                .withExtendedLocation(new ExtendedLocation().withType("hr").withName("dfvzwdzuhty"))
-                                .withKind("sdkf")
-                                .withVCenterId("yqkgfg")
-                                .withMoRefId("madgakeqsrxyb")
-                                .withInventoryItemId("qedqytbciqfoufl"),
-                            new ResourcePoolInner()
-                                .withLocation("jpgd")
-                                .withTags(
-                                    mapOf("j", "c", "hd", "hvpmoue", "bzv", "xibqeojnx", "pzaoqvuhr", "dntwndeicbtw"))
-                                .withExtendedLocation(new ExtendedLocation().withType("bfkgukdkex").withName("pofm"))
-                                .withKind("c")
-                                .withVCenterId("sqwpgrjb")
-                                .withMoRefId("orcjxvsnby")
-                                .withInventoryItemId("abnmocpcyshu")));
+        ResourcePoolsList model = new ResourcePoolsList().withNextLink("pnddhsgcbacphejk")
+            .withValue(Arrays.asList(
+                new ResourcePoolInner().withLocation("hwxmnteiwa")
+                    .withTags(mapOf("jcmmxdcufufsrp", "km", "sgfyccsnew", "mzidnsezcxtb", "oosflnr", "dwzjeiach",
+                        "vypyqrimzinpv", "sfqpteehz"))
+                    .withExtendedLocation(new ExtendedLocation().withType("hr").withName("dfvzwdzuhty"))
+                    .withKind("sdkf")
+                    .withVCenterId("yqkgfg")
+                    .withMoRefId("madgakeqsrxyb")
+                    .withInventoryItemId("qedqytbciqfoufl"),
+                new ResourcePoolInner().withLocation("jpgd")
+                    .withTags(mapOf("j", "c", "hd", "hvpmoue", "bzv", "xibqeojnx", "pzaoqvuhr", "dntwndeicbtw"))
+                    .withExtendedLocation(new ExtendedLocation().withType("bfkgukdkex").withName("pofm"))
+                    .withKind("c")
+                    .withVCenterId("sqwpgrjb")
+                    .withMoRefId("orcjxvsnby")
+                    .withInventoryItemId("abnmocpcyshu")));
         model = BinaryData.fromObject(model).toObject(ResourcePoolsList.class);
         Assertions.assertEquals("pnddhsgcbacphejk", model.nextLink());
         Assertions.assertEquals("hwxmnteiwa", model.value().get(0).location());
