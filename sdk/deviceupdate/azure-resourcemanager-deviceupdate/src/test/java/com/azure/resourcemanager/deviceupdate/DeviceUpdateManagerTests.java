@@ -37,17 +37,15 @@ public class DeviceUpdateManagerTests extends TestProxyTestBase {
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         resourceManager = ResourceManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile)
-            .withDefaultSubscription();
+            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile).withDefaultSubscription();
 
         deviceUpdateManager = DeviceUpdateManager
             .configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
-
+        
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
         testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);

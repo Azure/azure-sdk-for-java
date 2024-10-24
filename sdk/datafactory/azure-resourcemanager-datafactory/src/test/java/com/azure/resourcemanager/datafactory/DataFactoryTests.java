@@ -59,8 +59,7 @@ public class DataFactoryTests extends TestProxyTestBase {
 
         ResourceManager resourceManager = ResourceManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile)
-            .withDefaultSubscription();
+            .authenticate(credential, profile).withDefaultSubscription();
 
         StorageManager storageManager = StorageManager
             .configure()
@@ -72,7 +71,7 @@ public class DataFactoryTests extends TestProxyTestBase {
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
-
+        
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
         boolean testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
         if (testEnv) {
