@@ -75,7 +75,7 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
         resourceManager = ResourceManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile).withDefaultSubscription();
-        
+
         networkManager = NetworkManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
@@ -99,7 +99,7 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
     @Override
     protected void afterTest() {
         if (!testEnv) {
-            networkManager.resourceManager().resourceGroups().beginDeleteByName(resourceGroupName);
+            resourceManager.resourceGroups().beginDeleteByName(resourceGroupName);
         }
     }
 
