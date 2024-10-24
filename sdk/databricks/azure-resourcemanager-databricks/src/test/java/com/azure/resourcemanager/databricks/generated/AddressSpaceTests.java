@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AddressSpaceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AddressSpace model =
-            BinaryData.fromString("{\"addressPrefixes\":[\"kevle\",\"gz\"]}").toObject(AddressSpace.class);
+        AddressSpace model
+            = BinaryData.fromString("{\"addressPrefixes\":[\"kevle\",\"gz\"]}").toObject(AddressSpace.class);
         Assertions.assertEquals("kevle", model.addressPrefixes().get(0));
     }
 

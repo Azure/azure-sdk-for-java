@@ -13,10 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspaceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceUpdate model =
-            BinaryData
-                .fromString("{\"tags\":{\"gjvtbv\":\"b\",\"uouq\":\"ysszdnrujqguh\"}}")
-                .toObject(WorkspaceUpdate.class);
+        WorkspaceUpdate model = BinaryData.fromString("{\"tags\":{\"gjvtbv\":\"b\",\"uouq\":\"ysszdnrujqguh\"}}")
+            .toObject(WorkspaceUpdate.class);
         Assertions.assertEquals("b", model.tags().get("gjvtbv"));
     }
 

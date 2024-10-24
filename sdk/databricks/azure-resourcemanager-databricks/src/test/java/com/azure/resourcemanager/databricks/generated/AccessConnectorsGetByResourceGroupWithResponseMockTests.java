@@ -31,40 +31,28 @@ public final class AccessConnectorsGetByResourceGroupWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"identity\":{\"principalId\":\"e4e4c164-c3f2-4d3d-8803-68a3058fe6c2\",\"tenantId\":\"5a2065cf-a1ec-4c78-9372-c03f5528d465\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Creating\"},\"location\":\"alm\",\"tags\":{\"aygdvwvgpioh\":\"d\",\"udxepxgyqagv\":\"wxrt\",\"wi\":\"vmnpkukghimdblx\"},\"id\":\"fnjhfjxwmszkkfo\",\"name\":\"rey\",\"type\":\"kzikfjawneaivxwc\"}";
+        String responseStr
+            = "{\"identity\":{\"principalId\":\"e4e4c164-c3f2-4d3d-8803-68a3058fe6c2\",\"tenantId\":\"5a2065cf-a1ec-4c78-9372-c03f5528d465\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Creating\"},\"location\":\"alm\",\"tags\":{\"aygdvwvgpioh\":\"d\",\"udxepxgyqagv\":\"wxrt\",\"wi\":\"vmnpkukghimdblx\"},\"id\":\"fnjhfjxwmszkkfo\",\"name\":\"rey\",\"type\":\"kzikfjawneaivxwc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AzureDatabricksManager manager =
-            AzureDatabricksManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureDatabricksManager manager = AzureDatabricksManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AccessConnector response =
-            manager
-                .accessConnectors()
-                .getByResourceGroupWithResponse("rhyrnxxmueed", "drd", com.azure.core.util.Context.NONE)
-                .getValue();
+        AccessConnector response = manager.accessConnectors()
+            .getByResourceGroupWithResponse("rhyrnxxmueed", "drd", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("alm", response.location());
         Assertions.assertEquals("d", response.tags().get("aygdvwvgpioh"));
