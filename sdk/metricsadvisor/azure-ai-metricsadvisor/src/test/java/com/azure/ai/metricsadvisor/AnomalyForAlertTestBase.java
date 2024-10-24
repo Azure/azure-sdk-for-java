@@ -16,8 +16,7 @@ public abstract class AnomalyForAlertTestBase extends MetricsAdvisorClientTestBa
     // Pre-configured test resource.
     protected static class ListAnomaliesForAlertInput {
         static final ListAnomaliesForAlertInput INSTANCE = new ListAnomaliesForAlertInput();
-        final ListAnomaliesAlertedOptions options = new ListAnomaliesAlertedOptions()
-            .setMaxPageSize(10);
+        final ListAnomaliesAlertedOptions options = new ListAnomaliesAlertedOptions().setMaxPageSize(10);
         final String alertConfigurationId = ALERT_CONFIG_ID;
         final String alertId = "175434e3400";
     }
