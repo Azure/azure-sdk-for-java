@@ -11,7 +11,8 @@ import org.testng.annotations.Test;
 
 public class JsonNodeStorePayloadTests {
     @Test(groups = {"unit"})
-    @Ignore("Need to figure out a way to reload the class")
+    @Ignore("fallbackCharsetDecoder will only be initialized during the first time when JsonNodeStorePayload loaded," +
+        " need to figure out a way to reload the class")
     public void parsingBytesWithInvalidUT8Bytes() {
         // the hex string represents an json with invalid UTF-8 characters
         // json_obj = {

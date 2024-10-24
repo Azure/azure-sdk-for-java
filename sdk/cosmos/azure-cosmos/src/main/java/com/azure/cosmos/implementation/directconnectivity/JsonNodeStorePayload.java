@@ -40,7 +40,7 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
             return Utils.getSimpleObjectMapper().readTree(bytes);
         } catch (IOException e) {
             if (fallbackCharsetDecoder != null) {
-                logger.warn("Unable to parse JSON, fallback to use customized charset encoder.", e);
+                logger.warn("Unable to parse JSON, fallback to use customized charset decoder.", e);
                 return fromJsonWithFallbackCharsetDecoder(bytes);
             } else {
                 throw new IllegalStateException("Unable to parse JSON.", e);
@@ -89,6 +89,9 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
                 charsetDecoder.onMalformedInput(CodingErrorAction.IGNORE);
                 break;
             default:
+                logger.warn(
+                    "Will use default error action for malformed input config {}",
+                    Configs.getCharsetDecoderErrorActionOnMalformedInput());
                 break;
         }
 
@@ -101,6 +104,9 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
                 charsetDecoder.onUnmappableCharacter(CodingErrorAction.IGNORE);
                 break;
             default:
+                logger.warn(
+                    "Will use default error action for unmapped character config {}",
+                    Configs.getCharsetDecoderErrorActionOnUnmappedCharacter());
                 break;
         }
 
