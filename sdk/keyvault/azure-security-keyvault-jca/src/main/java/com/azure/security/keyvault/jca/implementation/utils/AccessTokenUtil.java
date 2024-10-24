@@ -144,7 +144,7 @@ public final class AccessTokenUtil {
 
         if (body != null) {
             try {
-                result = JsonConverterUtil.fromJson(AccessToken.class, body);
+                result = JsonConverterUtil.fromJson(AccessToken::fromJson, body);
             } catch (IOException e) {
                 LOGGER.log(WARNING, "Failed to parse access token response.", e);
             }
@@ -188,7 +188,7 @@ public final class AccessTokenUtil {
 
         if (body != null) {
             try {
-                result = JsonConverterUtil.fromJson(AccessToken.class, body);
+                result = JsonConverterUtil.fromJson(AccessToken::fromJson, body);
             } catch (IOException e) {
                 LOGGER.log(WARNING, "Failed to parse access token response.", e);
             }
@@ -233,7 +233,7 @@ public final class AccessTokenUtil {
 
         if (body != null) {
             try {
-                result = JsonConverterUtil.fromJson(AccessToken.class, body);
+                result = JsonConverterUtil.fromJson(AccessToken::fromJson, body);
             } catch (IOException e) {
                 LOGGER.log(WARNING, "Failed to parse access token response.", e);
             }

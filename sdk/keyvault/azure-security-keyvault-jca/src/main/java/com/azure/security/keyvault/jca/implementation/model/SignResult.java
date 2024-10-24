@@ -7,7 +7,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.security.keyvault.jca.implementation.utils.Base64Url;
 
 import java.io.IOException;
 
@@ -82,7 +81,13 @@ public class SignResult implements JsonSerializable<SignResult> {
                 if ("kid".equals(fieldName)) {
                     deserializedSignResult.kid = reader.getString();
                 } else if ("value".equals(fieldName)) {
-                    deserializedSignResult.value = new Base64Url(reader.getString()).toString();
+                    String value = reader.getString();
+
+                    if (value != null) {
+                        deserializedSignResult.value = unquote(value);
+                    } else {
+                        deserializedSignResult.value = null;
+                    }
                 } else {
                     reader.skipChildren();
                 }
@@ -90,5 +95,22 @@ public class SignResult implements JsonSerializable<SignResult> {
 
             return deserializedSignResult;
         });
+    }
+
+    private static String unquote(String string) {
+        if (string != null && !string.isEmpty()) {
+            final char firstCharacter = string.charAt(0);
+
+            if (firstCharacter == '\"' || firstCharacter == '\'') {
+                final int base64UrlStringLength = string.length();
+                final char lastCharacter = string.charAt(base64UrlStringLength - 1);
+
+                if (lastCharacter == firstCharacter) {
+                    return string.substring(1, base64UrlStringLength - 1);
+                }
+            }
+        }
+
+        return string;
     }
 }

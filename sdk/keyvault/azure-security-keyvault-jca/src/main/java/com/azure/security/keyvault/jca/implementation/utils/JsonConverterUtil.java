@@ -7,10 +7,10 @@ import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
+import com.azure.json.ReadValueCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
 import static java.util.logging.Level.WARNING;
@@ -27,7 +27,7 @@ public final class JsonConverterUtil {
     /**
      * Deserializes the {@code json} as an instance of {@link JsonSerializable}.
      *
-     * @param jsonSerializable The {@link JsonSerializable} represented by the {@code json}.
+     * @param deserializationFunction The deserialization function.
      * @param json The JSON being deserialized.
      *
      * @return An instance of {@code jsonSerializable} based on the {@code json}.
@@ -36,22 +36,17 @@ public final class JsonConverterUtil {
      * @throws IllegalStateException If the {@code jsonSerializable} does not have a static {@code fromJson} method.
      * @throws Error If an error occurs during deserialization.
      */
-    @SuppressWarnings("unchecked")
-    public static <T extends JsonSerializable<T>> T fromJson(Class<T> jsonSerializable, String json)
-        throws IOException {
+    public static <T extends JsonSerializable<T>> T fromJson(ReadValueCallback<JsonReader, T> deserializationFunction,
+                                                             String json) throws IOException {
 
-        LOGGER.entering("JsonConverterUtil", "fromJson", new Object[] { jsonSerializable, json });
+        LOGGER.entering("JsonConverterUtil", "fromJson", new Object[] { deserializationFunction, json });
 
         try (JsonReader jsonReader = JsonProviders.createReader(json)) {
-            T deserialized = (T) jsonSerializable.getMethod("fromJson", JsonReader.class).invoke(null, jsonReader);
+            T deserialized = deserializationFunction.read(jsonReader);
 
             LOGGER.exiting("JsonConverterUtil", "fromJson", deserialized);
 
             return deserialized;
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            LOGGER.throwing("JsonConverterUtil", "fromJson", e);
-
-            throw new RuntimeException(e);
         }
     }
 

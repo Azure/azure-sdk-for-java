@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.jca.implementation.utils;
 
+import com.azure.json.ReadValueCallback;
 import com.azure.security.keyvault.jca.implementation.model.CertificateBundle;
 import org.junit.jupiter.api.Test;
 
@@ -17,12 +18,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class JsonConverterUtilTest {
     /**
-     * Test the {@link JsonConverterUtil#fromJson(Class, String)} method.
+     * Test the {@link JsonConverterUtil#fromJson(ReadValueCallback, String)} method.
      */
     @Test
     public void testFromJson() throws IOException {
         String string = "{ \"cer\": \"cer\" }";
-        CertificateBundle bundle = JsonConverterUtil.fromJson(CertificateBundle.class, string);
+        CertificateBundle bundle = JsonConverterUtil.fromJson(CertificateBundle::fromJson, string);
 
         assertNotNull(bundle);
         assertEquals("cer", bundle.getCer());

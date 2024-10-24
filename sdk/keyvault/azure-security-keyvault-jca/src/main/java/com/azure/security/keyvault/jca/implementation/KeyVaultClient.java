@@ -230,7 +230,7 @@ public class KeyVaultClient {
 
             if (response != null) {
                 try {
-                    certificateListResult = JsonConverterUtil.fromJson(CertificateListResult.class, response);
+                    certificateListResult = JsonConverterUtil.fromJson(CertificateListResult::fromJson, response);
                 } catch (IOException e) {
                     LOGGER.log(WARNING, "Failed to parse certificate list response", e);
                 }
@@ -274,7 +274,7 @@ public class KeyVaultClient {
 
         if (response != null) {
             try {
-                result = JsonConverterUtil.fromJson(CertificateBundle.class, response);
+                result = JsonConverterUtil.fromJson(CertificateBundle::fromJson, response);
             } catch (IOException e) {
                 LOGGER.log(WARNING, "Failed to parse certificate bundle response", e);
             }
@@ -384,7 +384,7 @@ public class KeyVaultClient {
         String contentType = null;
 
         try {
-            secretBundle = JsonConverterUtil.fromJson(SecretBundle.class, body);
+            secretBundle = JsonConverterUtil.fromJson(SecretBundle::fromJson, body);
             contentType = secretBundle.getContentType();
         } catch (IOException e) {
             LOGGER.log(WARNING, "Failed to parse secret bundle response.", e);
@@ -442,7 +442,7 @@ public class KeyVaultClient {
 
         if (response != null) {
             try {
-                result = JsonConverterUtil.fromJson(SignResult.class, response);
+                result = JsonConverterUtil.fromJson(SignResult::fromJson, response);
             } catch (IOException e) {
                 LOGGER.log(WARNING, "Failed to parse sign result response.", e);
             }
