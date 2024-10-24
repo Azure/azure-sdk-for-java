@@ -85,8 +85,8 @@ public interface SpacecraftsClient {
      * @return the specified spacecraft in a specified resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SpacecraftInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String spacecraftName, Context context);
+    Response<SpacecraftInner> getByResourceGroupWithResponse(String resourceGroupName, String spacecraftName,
+        Context context);
 
     /**
      * Gets the specified spacecraft in a specified resource group.
@@ -113,8 +113,8 @@ public interface SpacecraftsClient {
      * @return the {@link SyncPoller} for polling of customer creates a spacecraft resource to schedule a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SpacecraftInner>, SpacecraftInner> beginCreateOrUpdate(
-        String resourceGroupName, String spacecraftName, SpacecraftInner parameters);
+    SyncPoller<PollResult<SpacecraftInner>, SpacecraftInner> beginCreateOrUpdate(String resourceGroupName,
+        String spacecraftName, SpacecraftInner parameters);
 
     /**
      * Creates or updates a spacecraft resource.
@@ -129,8 +129,8 @@ public interface SpacecraftsClient {
      * @return the {@link SyncPoller} for polling of customer creates a spacecraft resource to schedule a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SpacecraftInner>, SpacecraftInner> beginCreateOrUpdate(
-        String resourceGroupName, String spacecraftName, SpacecraftInner parameters, Context context);
+    SyncPoller<PollResult<SpacecraftInner>, SpacecraftInner> beginCreateOrUpdate(String resourceGroupName,
+        String spacecraftName, SpacecraftInner parameters, Context context);
 
     /**
      * Creates or updates a spacecraft resource.
@@ -159,8 +159,8 @@ public interface SpacecraftsClient {
      * @return customer creates a spacecraft resource to schedule a contact.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SpacecraftInner createOrUpdate(
-        String resourceGroupName, String spacecraftName, SpacecraftInner parameters, Context context);
+    SpacecraftInner createOrUpdate(String resourceGroupName, String spacecraftName, SpacecraftInner parameters,
+        Context context);
 
     /**
      * Deletes a specified spacecraft resource.
@@ -226,8 +226,8 @@ public interface SpacecraftsClient {
      * @return the {@link SyncPoller} for polling of customer creates a spacecraft resource to schedule a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SpacecraftInner>, SpacecraftInner> beginUpdateTags(
-        String resourceGroupName, String spacecraftName, TagsObject parameters);
+    SyncPoller<PollResult<SpacecraftInner>, SpacecraftInner> beginUpdateTags(String resourceGroupName,
+        String spacecraftName, TagsObject parameters);
 
     /**
      * Updates the specified spacecraft tags.
@@ -242,8 +242,8 @@ public interface SpacecraftsClient {
      * @return the {@link SyncPoller} for polling of customer creates a spacecraft resource to schedule a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SpacecraftInner>, SpacecraftInner> beginUpdateTags(
-        String resourceGroupName, String spacecraftName, TagsObject parameters, Context context);
+    SyncPoller<PollResult<SpacecraftInner>, SpacecraftInner> beginUpdateTags(String resourceGroupName,
+        String spacecraftName, TagsObject parameters, Context context);
 
     /**
      * Updates the specified spacecraft tags.
@@ -287,8 +287,8 @@ public interface SpacecraftsClient {
      * @return response for the ListAvailableContacts API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AvailableContactsInner> listAvailableContacts(
-        String resourceGroupName, String spacecraftName, ContactParameters parameters);
+    PagedIterable<AvailableContactsInner> listAvailableContacts(String resourceGroupName, String spacecraftName,
+        ContactParameters parameters);
 
     /**
      * Returns list of available contacts. A contact is available if the spacecraft is visible from the ground station
@@ -304,6 +304,6 @@ public interface SpacecraftsClient {
      * @return response for the ListAvailableContacts API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AvailableContactsInner> listAvailableContacts(
-        String resourceGroupName, String spacecraftName, ContactParameters parameters, Context context);
+    PagedIterable<AvailableContactsInner> listAvailableContacts(String resourceGroupName, String spacecraftName,
+        ContactParameters parameters, Context context);
 }

@@ -210,9 +210,8 @@ public final class SpacecraftInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model SpacecraftInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model SpacecraftInner"));
         } else {
             innerProperties().validate();
         }
