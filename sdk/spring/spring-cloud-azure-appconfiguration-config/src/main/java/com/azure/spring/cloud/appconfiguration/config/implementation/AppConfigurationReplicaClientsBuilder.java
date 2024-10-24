@@ -11,8 +11,11 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.properties.bind.Bindable;
+import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.convert.DurationStyle;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
@@ -25,7 +28,7 @@ import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
-import com.azure.identity.ManagedIdentityCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.spring.cloud.appconfiguration.config.ConfigurationClientCustomizer;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
@@ -75,8 +78,6 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
     private final ConfigurationClientBuilderFactory clientFactory;
 
-    private Environment env;
-
     private boolean isDev = false;
 
     private boolean isKeyVaultConfigured = false;
@@ -85,11 +86,24 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
     private final int defaultMaxRetries;
 
+    private final AzureAppConfigurationProperties properties;
+
     public AppConfigurationReplicaClientsBuilder(int defaultMaxRetries, ConfigurationClientBuilderFactory clientFactory,
         boolean credentialConfigured) {
         this.defaultMaxRetries = defaultMaxRetries;
         this.clientFactory = clientFactory;
         this.credentialConfigured = credentialConfigured;
+
+        this.properties = null;
+    }
+
+    public AppConfigurationReplicaClientsBuilder(AzureAppConfigurationProperties properties,
+                                                 ConfigurationClientBuilderFactory clientFactory) {
+        this.properties = properties;
+        this.clientFactory = clientFactory;
+
+        this.credentialConfigured = true; // can use AzureAppConfigurationProperties instead
+        this.defaultMaxRetries = 3;// can use AzureAppConfigurationProperties instead
     }
 
     /**
@@ -134,22 +148,22 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
         List<AppConfigurationReplicaClient> clients = new ArrayList<>();
         // Single client or Multiple?
         // If single call buildClient
-        int hasSingleConnectionString = StringUtils.hasText(configStore.getConnectionString()) ? 1 : 0;
-        int hasMultiEndpoints = configStore.getEndpoints().size() > 0 ? 1 : 0;
-        int hasMultiConnectionString = configStore.getConnectionStrings().size() > 0 ? 1 : 0;
+//        int hasSingleConnectionString = StringUtils.hasText(configStore.getConnectionString()) ? 1 : 0;
+//        int hasMultiEndpoints = configStore.getEndpoints().size() > 0 ? 1 : 0;
+//        int hasMultiConnectionString = configStore.getConnectionStrings().size() > 0 ? 1 : 0;
 
-        if (hasSingleConnectionString + hasMultiEndpoints + hasMultiConnectionString > 1) {
-            throw new IllegalArgumentException(
-                "More than 1 connection method was set for connecting to App Configuration.");
-        }
+//        if (hasSingleConnectionString + hasMultiEndpoints + hasMultiConnectionString > 1) {
+//            throw new IllegalArgumentException(
+//                "More than 1 connection method was set for connecting to App Configuration.");
+//        }
 
-        boolean connectionStringIsPresent = configStore.getConnectionString() != null
-            || configStore.getConnectionStrings().size() > 0;
-
-        if (credentialConfigured && connectionStringIsPresent) {
-            throw new IllegalArgumentException(
-                "More than 1 connection method was set for connecting to App Configuration.");
-        }
+//        boolean connectionStringIsPresent = configStore.getConnectionString() != null
+//            || configStore.getConnectionStrings().size() > 0;
+//
+//        if (credentialConfigured && connectionStringIsPresent) {
+//            throw new IllegalArgumentException(
+//                "More than 1 connection method was set for connecting to App Configuration.");
+//        }
 
         List<String> connectionStrings = configStore.getConnectionStrings();
         List<String> endpoints = configStore.getEndpoints();
@@ -167,22 +181,13 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
                 clientFactory.setConnectionStringProvider(new ConnectionStringConnector(connectionString));
                 String endpoint = getEndpointFromConnectionString(connectionString);
                 LOGGER.debug("Connecting to " + endpoint + " using Connecting String.");
-                ConfigurationClientBuilder builder = createBuilderInstance().connectionString(connectionString);
-
+                ConfigurationClientBuilder builder = clientFactory.build();
                 clients.add(modifyAndBuildClient(builder, endpoint, connectionStrings.size() - 1));
             }
         } else {
             for (String endpoint : endpoints) {
-                ConfigurationClientBuilder builder = this.createBuilderInstance();
-                if (!credentialConfigured) {
-                    // System Assigned Identity. Needs to be checked last as all of the above should
-                    // have an Endpoint.
-                    LOGGER.debug("Connecting to {} using Azure System Assigned Identity.", endpoint);
-                    builder.credential(new ManagedIdentityCredentialBuilder().build());
-                }
-
+                ConfigurationClientBuilder builder = clientFactory.build();
                 builder.endpoint(endpoint);
-
                 clients.add(modifyAndBuildClient(builder, endpoint, endpoints.size() - 1));
             }
         }
@@ -190,25 +195,22 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
     }
 
     public AppConfigurationReplicaClient buildClient(String failoverEndpoint, ConfigStore configStore) {
-
         if (StringUtils.hasText(configStore.getConnectionString())) {
-            ConnectionString connectionString = new ConnectionString(configStore.getConnectionString());
-            connectionString.setUri(failoverEndpoint);
-            ConfigurationClientBuilder builder = createBuilderInstance().connectionString(connectionString.toString());
+//            ConnectionString connectionString = new ConnectionString(configStore.getConnectionString());
+//            connectionString.setUri(failoverEndpoint);
+            clientFactory.setConnectionStringProvider(new ConnectionStringConnector(configStore.getConnectionString()));
+            ConfigurationClientBuilder builder = clientFactory.build();
             return modifyAndBuildClient(builder, failoverEndpoint, 0);
         } else if (configStore.getConnectionStrings().size() > 0) {
-            ConnectionString connectionString = new ConnectionString(configStore.getConnectionStrings().get(0));
-            connectionString.setUri(failoverEndpoint);
-            ConfigurationClientBuilder builder = createBuilderInstance().connectionString(connectionString.toString());
+//            ConnectionString connectionString = new ConnectionString(configStore.getConnectionStrings().get(0));
+//            connectionString.setUri(failoverEndpoint);
+            clientFactory.setConnectionStringProvider(new ConnectionStringConnector(configStore.getConnectionStrings().get(0)));
+            ConfigurationClientBuilder builder = clientFactory.build();
             return modifyAndBuildClient(builder, failoverEndpoint, 0);
         } else {
-            ConfigurationClientBuilder builder = createBuilderInstance();
-            if (!credentialConfigured) {
-                // System Assigned Identity. Needs to be checked last as all of the above should
-                // have an Endpoint.
-                LOGGER.debug("Connecting to {} using Azure System Assigned Identity.", failoverEndpoint);
-                builder.credential(new ManagedIdentityCredentialBuilder().build());
-            }
+            ConfigurationClientBuilder builder = clientFactory.build();
+//            builder.credential(new DefaultAzureCredentialBuilder().build());
+
             builder.endpoint(failoverEndpoint);
             return modifyAndBuildClient(builder, failoverEndpoint, 0);
         }
@@ -220,9 +222,9 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
             Configuration.getGlobalConfiguration());
         builder.addPolicy(new BaseAppConfigurationPolicy(tracingInfo));
 
-        if (clientProvider != null) {
-            clientProvider.customize(builder, endpoint);
-        }
+//        if (clientProvider != null) {
+//            clientProvider.customize(builder, endpoint);
+//        }
         return new AppConfigurationReplicaClient(endpoint, builder.buildClient(), tracingInfo);
     }
 
@@ -230,35 +232,36 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
     public void setEnvironment(Environment environment) {
         for (String profile : environment.getActiveProfiles()) {
             if ("dev".equalsIgnoreCase(profile)) {
+                // TODO (mametcal) this no longer works
                 this.isDev = true;
                 break;
             }
         }
-        this.env = environment;
     }
 
     protected ConfigurationClientBuilder createBuilderInstance() {
+        // TODO (mametcal) Need global properties to work.
         RetryStrategy retryStatagy = null;
 
-        String mode = env.getProperty(AzureGlobalProperties.PREFIX + "." + RETRY_MODE_PROPERTY_NAME);
-        String modeService = env.getProperty(AzureAppConfigurationProperties.PREFIX + "." + RETRY_MODE_PROPERTY_NAME);
+        //String mode = env.getProperty(AzureGlobalProperties.PREFIX + "." + RETRY_MODE_PROPERTY_NAME);
+        //String modeService = env.getProperty(AzureAppConfigurationProperties.PREFIX + "." + RETRY_MODE_PROPERTY_NAME);
 
-        if ("exponential".equals(mode) || "exponential".equals(modeService) || (mode == null && modeService == null)) {
-            Function<String, Integer> checkPropertyInt = parameter -> (Integer.parseInt(parameter));
-            Function<String, Duration> checkPropertyDuration = parameter -> (DurationStyle.detectAndParse(parameter));
+        //if ("exponential".equals(mode) || "exponential".equals(modeService) || (mode == null && modeService == null)) {
+        Function<String, Integer> checkPropertyInt = parameter -> (Integer.parseInt(parameter));
+        Function<String, Duration> checkPropertyDuration = parameter -> (DurationStyle.detectAndParse(parameter));
 
-            int retries = checkProperty(MAX_RETRIES_PROPERTY_NAME, defaultMaxRetries,
-                " isn't a valid integer, using default value.", checkPropertyInt);
+        int retries = checkProperty(MAX_RETRIES_PROPERTY_NAME, defaultMaxRetries,
+            " isn't a valid integer, using default value.", checkPropertyInt);
 
-            Duration baseDelay = checkProperty(BASE_DELAY_PROPERTY_NAME, DEFAULT_MIN_RETRY_POLICY,
-                " isn't a valid Duration, using default value.", checkPropertyDuration);
-            Duration maxDelay = checkProperty(MAX_DELAY_PROPERTY_NAME, DEFAULT_MAX_RETRY_POLICY,
-                " isn't a valid Duration, using default value.", checkPropertyDuration);
+        Duration baseDelay = checkProperty(BASE_DELAY_PROPERTY_NAME, DEFAULT_MIN_RETRY_POLICY,
+            " isn't a valid Duration, using default value.", checkPropertyDuration);
+        Duration maxDelay = checkProperty(MAX_DELAY_PROPERTY_NAME, DEFAULT_MAX_RETRY_POLICY,
+            " isn't a valid Duration, using default value.", checkPropertyDuration);
 
-            retryStatagy = new ExponentialBackoff(retries, baseDelay, maxDelay);
-        }
+        retryStatagy = new ExponentialBackoff(retries, baseDelay, maxDelay);
+        //}
 
-        ConfigurationClientBuilder builder = clientFactory.build();
+        ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
 
         if (retryStatagy != null) {
             builder.retryPolicy(new RetryPolicy(retryStatagy));
@@ -322,7 +325,6 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
         private final String secret;
 
-        @SuppressWarnings("deprecation")
         ConnectionString(String connectionString) {
             if (CoreUtils.isNullOrEmpty(connectionString)) {
                 throw new IllegalArgumentException("'connectionString' cannot be null or empty.");
@@ -358,7 +360,6 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
             }
         }
 
-        @SuppressWarnings("deprecation")
         protected ConnectionString setUri(String uri) {
             try {
                 this.baseUri = new URL(uri);

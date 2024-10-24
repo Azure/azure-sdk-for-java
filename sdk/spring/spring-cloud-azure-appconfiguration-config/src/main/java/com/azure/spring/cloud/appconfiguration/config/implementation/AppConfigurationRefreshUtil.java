@@ -110,12 +110,6 @@ class AppConfigurationRefreshUtil {
         return eventData;
     }
 
-    static boolean checkStoreAfterRefreshFailed(AppConfigurationReplicaClient client,
-        AppConfigurationReplicaClientFactory clientFactory, FeatureFlagStore featureStore) {
-        return refreshStoreCheck(client, clientFactory.findOriginForEndpoint(client.getEndpoint()))
-            || refreshStoreFeatureFlagCheck(featureStore, client);
-    }
-
     /**
      * This is for a <b>refresh fail only</b>.
      *
@@ -123,7 +117,7 @@ class AppConfigurationRefreshUtil {
      * @param originEndpoint config store origin endpoint
      * @return A refresh should be triggered.
      */
-    private static boolean refreshStoreCheck(AppConfigurationReplicaClient client, String originEndpoint) {
+    static boolean refreshStoreCheck(AppConfigurationReplicaClient client, String originEndpoint) {
         RefreshEventData eventData = new RefreshEventData();
         if (StateHolder.getLoadState(originEndpoint)) {
             refreshWithoutTime(client, StateHolder.getState(originEndpoint).getWatchKeys(), eventData);
@@ -138,12 +132,12 @@ class AppConfigurationRefreshUtil {
      * @param client Client checking for refresh
      * @return true if a refresh should be triggered.
      */
-    private static boolean refreshStoreFeatureFlagCheck(FeatureFlagStore featureStore,
+    static boolean refreshStoreFeatureFlagCheck(Boolean featureStoreEnabled,
         AppConfigurationReplicaClient client) {
         RefreshEventData eventData = new RefreshEventData();
         String endpoint = client.getEndpoint();
 
-        if (featureStore.getEnabled() && StateHolder.getStateFeatureFlag(endpoint) != null) {
+        if (featureStoreEnabled && StateHolder.getStateFeatureFlag(endpoint) != null) {
             refreshWithoutTimeFeatureFlags(client, StateHolder.getStateFeatureFlag(endpoint), eventData);
         } else {
             LOGGER.debug("Skipping feature flag refresh check for " + endpoint);

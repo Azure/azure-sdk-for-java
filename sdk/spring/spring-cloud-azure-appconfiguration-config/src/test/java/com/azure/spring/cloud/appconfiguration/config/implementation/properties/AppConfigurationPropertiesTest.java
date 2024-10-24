@@ -2,35 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation.properties;
 
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationReplicaClientsBuilder.ENDPOINT_ERR_MSG;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.CONN_STRING_PROP;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.CONN_STRING_PROP_NEW;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FAIL_FAST_PROP;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.KEY_PROP;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.LABEL_PROP;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.REFRESH_INTERVAL_PROP;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.STORE_ENDPOINT_PROP;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_CONN_STRING;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_ENDPOINT;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_ENDPOINT_GEO;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.propPair;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.test.context.runner.ApplicationContextRunner;
-
-import com.azure.spring.cloud.appconfiguration.config.implementation.config.AppConfigurationBootstrapConfiguration;
-import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 
 public class AppConfigurationPropertiesTest {
 
@@ -43,29 +26,21 @@ public class AppConfigurationPropertiesTest {
     private static final String VALID_KEY = "/application/";
 
     private static final String ILLEGAL_LABELS = "*,my-label";
+    
+    private AppConfigurationProperties properties;
 
-    @InjectMocks
-    private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AppConfigurationBootstrapConfiguration.class,
-            AzureGlobalPropertiesAutoConfiguration.class))
-        .withPropertyValues("spring.cloud.azure.appconfiguration.endpoint=https://test-appconfig.azconfig.io");
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.openMocks(this);
-    }
-
-    @AfterEach
-    public void cleanup() throws Exception {
-        MockitoAnnotations.openMocks(this).close();
+        properties = new AppConfigurationProperties();
+        properties.setStores(List.of(new ConfigStore()));
     }
 
     @Test
     public void validInputShouldCreatePropertiesBean() {
-        this.contextRunner
-            .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING))
-            .withPropertyValues(propPair(FAIL_FAST_PROP, "false"))
-            .run(context -> assertThat(context).hasSingleBean(AppConfigurationProperties.class));
+        ConfigStore store = properties.getStores().get(0);
+        store.setConnectionString(TEST_CONN_STRING);
+        store.validateAndInit();
     }
 
     @Test
@@ -84,55 +59,54 @@ public class AppConfigurationPropertiesTest {
     }
 
     private void testConnStringFields(String connString) {
-        this.contextRunner
-            .withPropertyValues(propPair(CONN_STRING_PROP, connString))
-            .run(context -> assertThat(context).getFailure().hasStackTraceContaining(ENDPOINT_ERR_MSG));
+        ConfigStore store = properties.getStores().get(0);
+        store.setConnectionString(connString);
+        IllegalStateException e = assertThrows(IllegalStateException.class, () -> properties.validateAndInit());
+        assertEquals("Connection string does not follow format Endpoint=([^;]+);Id=([^;]+);Secret=([^;]+).", e.getMessage());
     }
 
     @Test
     public void asteriskShouldNotBeIncludedInTheLabels() {
-        this.contextRunner
-            .withPropertyValues(
-                propPair(CONN_STRING_PROP, TEST_CONN_STRING),
-                propPair(KEY_PROP, VALID_KEY),
-                propPair(LABEL_PROP, ILLEGAL_LABELS))
-            .run(context -> assertThat(context)
-                .getFailure()
-                .hasStackTraceContaining("LabelFilter must not contain asterisk(*)"));
+        ConfigStore store = properties.getStores().get(0);
+        store.setConnectionString(TEST_CONN_STRING);
+        AppConfigurationKeyValueSelector select = new AppConfigurationKeyValueSelector();
+        select.setKeyFilter(VALID_KEY);
+        select.setLabelFilter(ILLEGAL_LABELS);
+        store.setSelects(List.of(select));
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> properties.validateAndInit());
+        assertEquals("LabelFilter must not contain asterisk(*)", e.getMessage());
     }
 
     @Test
     public void storeNameCanBeInitIfConnectionStringConfigured() {
-        this.contextRunner
-            .withPropertyValues(
-                propPair(CONN_STRING_PROP, TEST_CONN_STRING),
-                propPair(STORE_ENDPOINT_PROP, ""))
-            .withPropertyValues(propPair(FAIL_FAST_PROP, "false"))
-            .run(context -> {
-                AppConfigurationProperties properties = context.getBean(AppConfigurationProperties.class);
-                assertThat(properties.getStores()).isNotNull();
-                assertThat(properties.getStores().size()).isEqualTo(1);
-                assertThat(properties.getStores().get(0).getEndpoint()).isEqualTo("https://fake.test.config.io");
-            });
+        ConfigStore store = properties.getStores().get(0);
+        store.setConnectionString(TEST_CONN_STRING);
+        store.setEndpoint("");
+        store.validateAndInit();
+        assertEquals(1, properties.getStores().size());
+        assertEquals("https://fake.test.config.io", properties.getStores().get(0).getEndpoint());
     }
 
     @Test
     public void duplicateConnectionStringIsNotAllowed() {
-        this.contextRunner
-            .withPropertyValues(
-                propPair(CONN_STRING_PROP, TEST_CONN_STRING),
-                propPair(CONN_STRING_PROP_NEW, TEST_CONN_STRING))
-            .run(context -> assertThat(context)
-                .getFailure()
-                .hasStackTraceContaining("Duplicate store name exists"));
+        properties = new AppConfigurationProperties();
+        properties.setStores(List.of(new ConfigStore(), new ConfigStore()));
+        
+        ConfigStore store = properties.getStores().get(0);
+        store.setConnectionString(TEST_CONN_STRING);
+        ConfigStore newStore = properties.getStores().get(1);
+        newStore.setConnectionString(TEST_CONN_STRING);
+        
+        java.lang.IllegalArgumentException e = assertThrows(java.lang.IllegalArgumentException.class, () -> properties.validateAndInit());
+        assertEquals("Duplicate store name exists.", e.getMessage());
     }
 
     @Test
     public void minValidWatchTime() {
-        this.contextRunner
-            .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING))
-            .withPropertyValues(propPair(REFRESH_INTERVAL_PROP, "1s"))
-            .run(context -> assertThat(context).hasSingleBean(AppConfigurationProperties.class));
+        ConfigStore store = properties.getStores().get(0);
+        store.setConnectionString(TEST_CONN_STRING);
+        properties.setRefreshInterval(Duration.ofSeconds(1));
+        properties.validateAndInit();
     }
 
     @Test

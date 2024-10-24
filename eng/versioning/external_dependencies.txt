@@ -546,6 +546,7 @@ springboot3_org.springframework:spring-webmvc;6.1.11
 springboot3_org.testcontainers:testcontainers;1.19.8
 springboot3_org.testcontainers:junit-jupiter;1.19.8
 springboot3_org.testcontainers:azure;1.19.8
+springboot3_jakarta.annotation:jakarta.annotation-api;3.0.0
 
 # Java 7 support
 

@@ -32,8 +32,6 @@ public final class ConfigStore {
     // Label values separated by comma in the Azure Config Service, can be empty
     private List<AppConfigurationKeyValueSelector> selects = new ArrayList<>();
 
-    private boolean failFast = true;
-
     private FeatureFlagStore featureFlags = new FeatureFlagStore();
 
     private boolean enabled = true;
@@ -98,20 +96,6 @@ public final class ConfigStore {
      */
     public void setConnectionStrings(List<String> connectionStrings) {
         this.connectionStrings = connectionStrings;
-    }
-
-    /**
-     * @return the failFast
-     */
-    public boolean isFailFast() {
-        return failFast;
-    }
-
-    /**
-     * @param failFast the failFast to set
-     */
-    public void setFailFast(boolean failFast) {
-        this.failFast = failFast;
     }
 
     /**
