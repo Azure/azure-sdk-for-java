@@ -3,7 +3,7 @@
 
 package io.clientcore.http.stress.util;
 
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
+import com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorExporterBuilder;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.http.stress.StressOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;

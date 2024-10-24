@@ -5,7 +5,7 @@ package com.azure.storage.stress;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporter;
+import com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorExporter;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;

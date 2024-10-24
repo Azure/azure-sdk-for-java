@@ -1,1 +1,1 @@
-com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorMetricExporterProvider
+com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorMetricExporterProvider

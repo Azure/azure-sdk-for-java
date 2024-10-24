@@ -5,7 +5,7 @@ package com.azure.sdk.template.stress.util;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporter;
+import com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorExporter;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.sdk.template.stress.StressOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;
