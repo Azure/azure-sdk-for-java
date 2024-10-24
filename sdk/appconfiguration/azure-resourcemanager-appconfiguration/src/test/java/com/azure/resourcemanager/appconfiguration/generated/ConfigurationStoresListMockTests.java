@@ -34,37 +34,27 @@ public final class ConfigurationStoresListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{},\"principalId\":\"cuh\",\"tenantId\":\"tcty\"},\"properties\":{\"provisioningState\":\"Creating\",\"creationDate\":\"2021-09-08T21:14:09Z\",\"endpoint\":\"vplwzbhv\",\"encryption\":{},\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Disabled\",\"disableLocalAuth\":true,\"softDeleteRetentionInDays\":1013735837,\"enablePurgeProtection\":false,\"createMode\":\"Recover\"},\"sku\":{\"name\":\"ukkfplgmgs\"},\"location\":\"kjz\",\"tags\":{\"i\":\"slpvlop\"},\"id\":\"ighxpk\",\"name\":\"wzbaiue\",\"type\":\"baumnyqupedeoj\"}]}";
+        String responseStr
+            = "{\"value\":[{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{},\"principalId\":\"cuh\",\"tenantId\":\"tcty\"},\"properties\":{\"provisioningState\":\"Creating\",\"creationDate\":\"2021-09-08T21:14:09Z\",\"endpoint\":\"vplwzbhv\",\"encryption\":{},\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Disabled\",\"disableLocalAuth\":true,\"softDeleteRetentionInDays\":1013735837,\"enablePurgeProtection\":false,\"createMode\":\"Recover\"},\"sku\":{\"name\":\"ukkfplgmgs\"},\"location\":\"kjz\",\"tags\":{\"i\":\"slpvlop\"},\"id\":\"ighxpk\",\"name\":\"wzbaiue\",\"type\":\"baumnyqupedeoj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AppConfigurationManager manager =
-            AppConfigurationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AppConfigurationManager manager = AppConfigurationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ConfigurationStore> response =
-            manager.configurationStores().list("gnxytxhpzxbz", com.azure.core.util.Context.NONE);
+        PagedIterable<ConfigurationStore> response
+            = manager.configurationStores().list("gnxytxhpzxbz", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("kjz", response.iterator().next().location());
         Assertions.assertEquals("slpvlop", response.iterator().next().tags().get("i"));
