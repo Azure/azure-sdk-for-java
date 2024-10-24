@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 
-/** Provides status details for long running operations. */
+/** Provides status details for long-running operations. */
 @Immutable
 public final class PollResult implements JsonSerializable<PollResult> {
     private final String operationId;
@@ -53,6 +53,14 @@ public final class PollResult implements JsonSerializable<PollResult> {
             .writeEndObject();
     }
 
+    /**
+     * Deserializes an instance of {@link PollResult} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link PollResult}, or null if the {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
     public static PollResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String operationId = null;
