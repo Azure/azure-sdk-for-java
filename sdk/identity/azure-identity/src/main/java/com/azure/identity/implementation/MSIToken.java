@@ -34,11 +34,7 @@ public final class MSIToken extends AccessToken {
     private static final DateTimeFormatter DTF_WINDOWS = DateTimeFormatter.ofPattern("M/d/yyyy h:mm:ss a XXX")
         .withLocale(Locale.US);
 
-    private String accessToken;
-
-    private String expiresOn;
-
-    private String expiresIn;
+    private final String accessToken;
 
     /**
      * Creates an access token instance.
@@ -51,8 +47,6 @@ public final class MSIToken extends AccessToken {
         super(token, EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn)),
             inferManagedIdentityRefreshInValue(EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn))));
         this.accessToken = token;
-        this.expiresOn = expiresOn;
-        this.expiresIn = expiresIn;
     }
 
     @Override
@@ -90,12 +84,13 @@ public final class MSIToken extends AccessToken {
         // expiresOn = timestamp of refresh expressed as seconds since epoch.
 
         // if we have an expiresOn, we'll use it. Otherwise, we use expiresIn.
-        String dateToParse = CoreUtils.isNullOrEmpty(expiresOn) ? expiresIn : expiresOn;
+        boolean isExpiresOn = !CoreUtils.isNullOrEmpty(expiresOn);
+        String dateToParse = isExpiresOn ? expiresOn : expiresIn;
 
         try {
             long seconds = Long.parseLong(dateToParse);
             // we have an expiresOn, so no parsing required.
-            if (!CoreUtils.isNullOrEmpty(expiresOn)) {
+            if (isExpiresOn) {
                 return seconds;
             } else {
                 // otherwise we need the OffsetDateTime representing now plus the expiresIn duration.

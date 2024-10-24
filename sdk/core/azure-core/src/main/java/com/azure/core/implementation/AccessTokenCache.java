@@ -254,9 +254,8 @@ public final class AccessTokenCache {
         return !(this.tokenRequestContext != null
             && (this.tokenRequestContext.getClaims() == null
                 ? tokenRequestContext.getClaims() == null
-                : (tokenRequestContext.getClaims() == null
-                    ? false
-                    : tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
+                : (tokenRequestContext.getClaims() != null
+                    && tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
             && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes()));
     }
 
@@ -290,7 +289,18 @@ public final class AccessTokenCache {
             return logBuilder;
         }
 
-        Duration tte = Duration.between(now, cache.getExpiresAt());
+        // Call Duration.between with the 'cache.getExpiresAt' as the start Temporal and 'now' as the end Temporal as
+        // some TokenCredential implementations may use 'OffsetDateTime.MAX' as the expiration time. When comparing the
+        // time between now and 'OffsetDateTime.MAX', depending on the Java version, it may attempt to change the end
+        // Temporal's time zone to match the start Temporal's time zone. Since 'OffsetDateTime.MAX' uses the most
+        // minimal time zone offset, if the now time is using anything before that it will result in
+        // 'OffsetDateTime.MAX' needing to roll over its time to the next day which results in the 'year' value being
+        // incremented to a value outside the 'year' bounds allowed by OffsetDateTime.
+        //
+        // Changing to having the 'cache.getExpiresAt' means it is impossible for this rollover to occur as the start
+        // Temporal doesn't have its time zone modified. But it now means the time between value is inverted, so the
+        // result is 'negated()' to maintain current behaviors.
+        Duration tte = Duration.between(cache.getExpiresAt(), now).negated();
         return logBuilder.addKeyValue("expiresAt", cache.getExpiresAt())
             .addKeyValue("tteSeconds", String.valueOf(tte.abs().getSeconds()))
             .addKeyValue("retryAfterSeconds", REFRESH_DELAY_STRING)
