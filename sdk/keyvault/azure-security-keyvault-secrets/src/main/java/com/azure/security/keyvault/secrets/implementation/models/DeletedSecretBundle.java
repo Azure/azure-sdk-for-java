@@ -35,18 +35,6 @@ public final class DeletedSecretBundle extends SecretBundle {
      */
     private Long deletedDate;
 
-    /*
-     * True if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed
-     * will be true.
-     */
-    private Boolean managed;
-
-    /*
-     * If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV
-     * certificate.
-     */
-    private String kid;
-
     /**
      * Creates an instance of DeletedSecretBundle class.
      */
@@ -95,28 +83,6 @@ public final class DeletedSecretBundle extends SecretBundle {
             return null;
         }
         return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.deletedDate), ZoneOffset.UTC);
-    }
-
-    /**
-     * Get the managed property: True if the secret's lifetime is managed by key vault. If this is a secret backing a
-     * certificate, then managed will be true.
-     * 
-     * @return the managed value.
-     */
-    @Override
-    public Boolean isManaged() {
-        return this.managed;
-    }
-
-    /**
-     * Get the kid property: If this is a secret backing a KV certificate, then this field specifies the corresponding
-     * key backing the KV certificate.
-     * 
-     * @return the kid value.
-     */
-    @Override
-    public String getKid() {
-        return this.kid;
     }
 
     /**
@@ -206,9 +172,9 @@ public final class DeletedSecretBundle extends SecretBundle {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedDeletedSecretBundle.setTags(tags);
                 } else if ("kid".equals(fieldName)) {
-                    deserializedDeletedSecretBundle.kid = reader.getString();
+                    deserializedDeletedSecretBundle.setKid(reader.getString());
                 } else if ("managed".equals(fieldName)) {
-                    deserializedDeletedSecretBundle.managed = reader.getNullable(JsonReader::getBoolean);
+                    deserializedDeletedSecretBundle.setManaged(reader.getNullable(JsonReader::getBoolean));
                 } else if ("recoveryId".equals(fieldName)) {
                     deserializedDeletedSecretBundle.recoveryId = reader.getString();
                 } else if ("scheduledPurgeDate".equals(fieldName)) {

@@ -142,12 +142,8 @@ public class Attributes implements JsonSerializable<Attributes> {
      * @param created the created value to set.
      * @return the Attributes object itself.
      */
-    Attributes setCreated(OffsetDateTime created) {
-        if (created == null) {
-            this.created = null;
-        } else {
-            this.created = created.toEpochSecond();
-        }
+    Attributes setCreated(Long created) {
+        this.created = created;
         return this;
     }
 
@@ -169,12 +165,8 @@ public class Attributes implements JsonSerializable<Attributes> {
      * @param updated the updated value to set.
      * @return the Attributes object itself.
      */
-    Attributes setUpdated(OffsetDateTime updated) {
-        if (updated == null) {
-            this.updated = null;
-        } else {
-            this.updated = updated.toEpochSecond();
-        }
+    Attributes setUpdated(Long updated) {
+        this.updated = updated;
         return this;
     }
 
