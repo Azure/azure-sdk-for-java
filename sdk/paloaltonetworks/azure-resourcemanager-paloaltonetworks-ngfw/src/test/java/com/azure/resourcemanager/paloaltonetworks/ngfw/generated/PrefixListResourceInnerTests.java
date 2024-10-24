@@ -24,7 +24,9 @@ public final class PrefixListResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrefixListResourceInner model = new PrefixListResourceInner().withDescription("exaoguya")
-            .withPrefixList(Arrays.asList("ids")).withEtag("ultxijjumfq").withAuditComment("z");
+            .withPrefixList(Arrays.asList("ids"))
+            .withEtag("ultxijjumfq")
+            .withAuditComment("z");
         model = BinaryData.fromObject(model).toObject(PrefixListResourceInner.class);
         Assertions.assertEquals("exaoguya", model.description());
         Assertions.assertEquals("ids", model.prefixList().get(0));
