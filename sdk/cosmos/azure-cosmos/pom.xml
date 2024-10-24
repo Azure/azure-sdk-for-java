@@ -47,6 +47,9 @@ Licensed under the MIT License.
     <maven.test.skip>${cosmos.test.e2e.skip}</maven.test.skip>
     <jacoco.skip>true</jacoco.skip> <!-- tests are ran from azure-cosmos-tests -->
     <doclintMissingInclusion>-</doclintMissingInclusion>
+
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>

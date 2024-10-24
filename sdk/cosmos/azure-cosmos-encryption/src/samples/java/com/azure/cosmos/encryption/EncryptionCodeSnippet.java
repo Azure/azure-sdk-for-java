@@ -43,7 +43,7 @@ public class EncryptionCodeSnippet {
         CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer =
             cosmosEncryptionAsyncDatabase.getCosmosEncryptionAsyncContainer("myCol");
 
-        createClientEncryptionKey(cosmosEncryptionAsyncDatabase);//create client encryption key to be store on database
+        createClientEncryptionKey(cosmosEncryptionAsyncDatabase); //create client encryption key to be store on database
 
         Pojo originalItem = new Pojo();
         originalItem.id = UUID.randomUUID().toString();
@@ -148,7 +148,7 @@ public class EncryptionCodeSnippet {
         // To use key vault please use KeyEncryptionKeyClient from azure-security-keyvault-keys
 
         private final String keyId;
-        public SimpleKeyEncryptionKey(String keyId) {
+        SimpleKeyEncryptionKey(String keyId) {
             this.keyId = keyId;
         }
 

@@ -44,6 +44,9 @@ Licensed under the MIT License.
 
     <!-- TODO: Remove this once all Javadoc warnings and errors are resolved -->
     <doclintMissingInclusion>-</doclintMissingInclusion>
+
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>
