@@ -161,15 +161,9 @@ public interface BmcKeySet {
 
     /** The entirety of the BmcKeySet definition. */
     interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithExtendedLocation,
-            DefinitionStages.WithAzureGroupId,
-            DefinitionStages.WithExpiration,
-            DefinitionStages.WithPrivilegeLevel,
-            DefinitionStages.WithUserList,
-            DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithParentResource,
+        DefinitionStages.WithExtendedLocation, DefinitionStages.WithAzureGroupId, DefinitionStages.WithExpiration,
+        DefinitionStages.WithPrivilegeLevel, DefinitionStages.WithUserList, DefinitionStages.WithCreate {
     }
 
     /** The BmcKeySet definition stages. */

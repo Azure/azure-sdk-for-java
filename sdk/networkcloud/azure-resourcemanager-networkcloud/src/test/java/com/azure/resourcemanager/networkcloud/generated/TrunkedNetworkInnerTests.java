@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TrunkedNetworkInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrunkedNetworkInner model =
-            BinaryData
-                .fromString(
-                    "{\"extendedLocation\":{\"name\":\"ddyvvjskgfmo\",\"type\":\"wa\"},\"properties\":{\"associatedResourceIds\":[\"gat\",\"eaahhvjhhn\",\"kzyb\",\"jjidjk\"],\"clusterId\":\"xkyxvxevblbj\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"jlageu\",\"hybridAksClustersAssociatedIds\":[\"xuns\",\"jbnkpp\",\"ynenlsvxeizz\",\"wklnsrmffeyc\"],\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"piymerteea\",\"isolationDomainIds\":[\"xqiekkkzddrtk\"],\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"mxvavrefdee\",\"vecuijpx\"],\"vlans\":[921543828288140521]},\"location\":\"prtujwsawdd\",\"tags\":{\"itvtzeexavo\":\"abxvi\",\"dmdqb\":\"tfgle\",\"cbslhhx\":\"pypqtgsfj\"},\"id\":\"db\",\"name\":\"vodhtn\",\"type\":\"irudh\"}")
-                .toObject(TrunkedNetworkInner.class);
+        TrunkedNetworkInner model = BinaryData.fromString(
+            "{\"extendedLocation\":{\"name\":\"ddyvvjskgfmo\",\"type\":\"wa\"},\"properties\":{\"associatedResourceIds\":[\"gat\",\"eaahhvjhhn\",\"kzyb\",\"jjidjk\"],\"clusterId\":\"xkyxvxevblbj\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"jlageu\",\"hybridAksClustersAssociatedIds\":[\"xuns\",\"jbnkpp\",\"ynenlsvxeizz\",\"wklnsrmffeyc\"],\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"piymerteea\",\"isolationDomainIds\":[\"xqiekkkzddrtk\"],\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"mxvavrefdee\",\"vecuijpx\"],\"vlans\":[921543828288140521]},\"location\":\"prtujwsawdd\",\"tags\":{\"itvtzeexavo\":\"abxvi\",\"dmdqb\":\"tfgle\",\"cbslhhx\":\"pypqtgsfj\"},\"id\":\"db\",\"name\":\"vodhtn\",\"type\":\"irudh\"}")
+            .toObject(TrunkedNetworkInner.class);
         Assertions.assertEquals("prtujwsawdd", model.location());
         Assertions.assertEquals("abxvi", model.tags().get("itvtzeexavo"));
         Assertions.assertEquals("ddyvvjskgfmo", model.extendedLocation().name());
@@ -33,15 +31,13 @@ public final class TrunkedNetworkInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrunkedNetworkInner model =
-            new TrunkedNetworkInner()
-                .withLocation("prtujwsawdd")
-                .withTags(mapOf("itvtzeexavo", "abxvi", "dmdqb", "tfgle", "cbslhhx", "pypqtgsfj"))
-                .withExtendedLocation(new ExtendedLocation().withName("ddyvvjskgfmo").withType("wa"))
-                .withHybridAksPluginType(HybridAksPluginType.OSDEVICE)
-                .withInterfaceName("piymerteea")
-                .withIsolationDomainIds(Arrays.asList("xqiekkkzddrtk"))
-                .withVlans(Arrays.asList(921543828288140521L));
+        TrunkedNetworkInner model = new TrunkedNetworkInner().withLocation("prtujwsawdd")
+            .withTags(mapOf("itvtzeexavo", "abxvi", "dmdqb", "tfgle", "cbslhhx", "pypqtgsfj"))
+            .withExtendedLocation(new ExtendedLocation().withName("ddyvvjskgfmo").withType("wa"))
+            .withHybridAksPluginType(HybridAksPluginType.OSDEVICE)
+            .withInterfaceName("piymerteea")
+            .withIsolationDomainIds(Arrays.asList("xqiekkkzddrtk"))
+            .withVlans(Arrays.asList(921543828288140521L));
         model = BinaryData.fromObject(model).toObject(TrunkedNetworkInner.class);
         Assertions.assertEquals("prtujwsawdd", model.location());
         Assertions.assertEquals("abxvi", model.tags().get("itvtzeexavo"));

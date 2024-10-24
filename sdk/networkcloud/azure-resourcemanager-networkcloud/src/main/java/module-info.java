@@ -10,10 +10,6 @@ module com.azure.resourcemanager.networkcloud {
     exports com.azure.resourcemanager.networkcloud.fluent.models;
     exports com.azure.resourcemanager.networkcloud.models;
 
-    opens com.azure.resourcemanager.networkcloud.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.networkcloud.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.networkcloud.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.networkcloud.models to com.azure.core, com.fasterxml.jackson.databind;
 }
