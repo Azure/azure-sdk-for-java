@@ -1,0 +1,2630 @@
+{
+  "homepages": [],
+  "source_base_path": "D:/a/_work/1/a/docfx_project",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/CONTRIBUTING.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/CONTRIBUTING.html",
+          "hash": "pQnFRHYgLg2CqlCqps001Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/advisor.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/advisor.html",
+          "hash": "Z74bW+hNEBFIQj8fNF+49g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/agrifood.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/agrifood.html",
+          "hash": "MmJX2cv5Vllv12M18Q6e3A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/alertsmanagement.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/alertsmanagement.html",
+          "hash": "TpjS2X0YWqtr4RIZUwevag=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/apicenter.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/apicenter.html",
+          "hash": "IDTYuonxx73wBftY7gAOyA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/apimanagement.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/apimanagement.html",
+          "hash": "yJrJjBr1L9mK03PR94k9wQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/appcomplianceautomation.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/appcomplianceautomation.html",
+          "hash": "2YSF9eDZTqINCidN9WKiAw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/appconfiguration.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/appconfiguration.html",
+          "hash": "yPBlQ4PqaF8EpeadJKqkcg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/applicationinsights.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/applicationinsights.html",
+          "hash": "to2yWYz+BkIXx6RvicYwpg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/appplatform.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/appplatform.html",
+          "hash": "UDq81XbpVLPeNdTDrW5fuQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/appservice.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/appservice.html",
+          "hash": "JNszWQ1O9tTLQq36eZnWaQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/arcdata.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/arcdata.html",
+          "hash": "Qn+or1jEKuWpZxmFvcrbdA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/astro.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/astro.html",
+          "hash": "DyCK7jm/ljVGfu4COir+mg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/attestation.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/attestation.html",
+          "hash": "3DqFJJxBlwgid5eY11gFaQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/authorization.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/authorization.html",
+          "hash": "65CNxYRJD24sPn+snMbR7A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/automanage.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/automanage.html",
+          "hash": "uwKvFE48mw9Ip89wfVvujg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/automation.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/automation.html",
+          "hash": "Z2uX+BSLJ4oAwlRglytomA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/autosuggest.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/autosuggest.html",
+          "hash": "3XHaGGYhNGQUV0u4iJSDtQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/azureanalytics.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/azureanalytics.html",
+          "hash": "gzr+3L+tAA3UuTSqmMXCGA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/azurestack.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/azurestack.html",
+          "hash": "juTFRe34ypuco/mCkjRqhQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/azurestackhci.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/azurestackhci.html",
+          "hash": "KvjwDHdc1Vi0LhrS/5zJJw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/azurevmwaresolution.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/azurevmwaresolution.html",
+          "hash": "n6bv4nicqYVIZVkEYpIYMg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/baremetalinfrastructure.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/baremetalinfrastructure.html",
+          "hash": "KC0afeLqHkd7sqCrEJVDIg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/batch.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/batch.html",
+          "hash": "NVPsNicGgK4QZbMjzBXSaQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/batchai.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/batchai.html",
+          "hash": "2odxSrupZ/NDcLu6X0CfVA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/billing.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/billing.html",
+          "hash": "6EdZlaIer7MtVg/7bV1qFA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/billingbenefits.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/billingbenefits.html",
+          "hash": "xBib4WpIxUQ6rofpOKsO1w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/billofmaterials.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/billofmaterials.html",
+          "hash": "BizqUks1VfpKaHvWTcjcEg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/botservice.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/botservice.html",
+          "hash": "TF7hvINwNSDcG+QsuV9GNg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/changeanalysis.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/changeanalysis.html",
+          "hash": "Nr3SOaWyXVwObh+IFWs7yw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/chaos.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/chaos.html",
+          "hash": "20kquzn345w3x0m5RRhFcA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/cognitiveservices.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/cognitiveservices.html",
+          "hash": "jn9QWJhHGgpuIn0nStR0Qw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/commerce.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/commerce.html",
+          "hash": "lCM9hJHb9rPvJ2bd8PTRpQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/communication.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/communication.html",
+          "hash": "LxR6PiaSCwdZt1WTI1V+WA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/compute.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/compute.html",
+          "hash": "gBLMzKcohWrBd9vgPJOQDA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/computefleet.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/computefleet.html",
+          "hash": "U9IIBgqviwcaIgVyR8kO/Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/computeschedule.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/computeschedule.html",
+          "hash": "AcUniJKiDMC0BS0HG9j05w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/confidentialledger.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/confidentialledger.html",
+          "hash": "hLwFEXxXOEbVwq5k3s54fg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/confluent.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/confluent.html",
+          "hash": "yefQiYznu5C4aAuI6R4OiQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/connectedvmware.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/connectedvmware.html",
+          "hash": "btdjxCdaWJmxvBzywMCNZg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/consumption.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/consumption.html",
+          "hash": "Hi4DPPdDKuiP04kmf1JOig=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/containerapps.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/containerapps.html",
+          "hash": "Fl/lqJQhtVBk3kbGzGe9fw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/containerinstances.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/containerinstances.html",
+          "hash": "lSEg0yYTl9PpKHeacrvQ4g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/containerorchestratorruntime.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/containerorchestratorruntime.html",
+          "hash": "tHcjCdJmIxla/Gske1vzRQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/containerregistry.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/containerregistry.html",
+          "hash": "jKehsTFAtfGg3YqPvJJ1wA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/containerservice.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/containerservice.html",
+          "hash": "sPfLoXZdIlw7Rh+F4g04xw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/containerservicefleet.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/containerservicefleet.html",
+          "hash": "BYqse6YsCdItngUj+oEI1Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/contentdeliverynetwork.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/contentdeliverynetwork.html",
+          "hash": "GMn+AYWoUfUbz/L0tn1BDQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/cosmosdb.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/cosmosdb.html",
+          "hash": "fSc5UnJaaqJ3gKcsKcLpVg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/cosmosdbforpostgresql.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/cosmosdbforpostgresql.html",
+          "hash": "ePiw0Gq+IVNEJr9pRdE0Ew=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/costmanagement.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/costmanagement.html",
+          "hash": "arw9yhknj3iVT/O7RYS5LA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/customerinsights.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/customerinsights.html",
+          "hash": "XNd6W3+pPH3IDLOQpVRdCQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/customimagesearch.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/customimagesearch.html",
+          "hash": "+6mpqHeEwEVanzv3nZRd5Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/customsearch.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/customsearch.html",
+          "hash": "SRQdlvBGYeDeQ2P1qI0e0Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/databasemigrationservice.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/databasemigrationservice.html",
+          "hash": "0UBp/yRuy5sGlQZBu+oxaQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/databox.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/databox.html",
+          "hash": "MrWVh6OUPGy5gWBdZA2H0A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/databoxedge.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/databoxedge.html",
+          "hash": "7YX+pACtcktpR+hjiDQcrg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/databricks.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/databricks.html",
+          "hash": "j2A0gulPXLL1bA5s9HQ7SA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/datadog.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/datadog.html",
+          "hash": "qLz05mnRtjSan+JxDIOskA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/dataexplorer.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/dataexplorer.html",
+          "hash": "DN5qG8I6qUu0zoQRdcw39Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/datafactory.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/datafactory.html",
+          "hash": "5A/MYKjS+xh+KG44yIARPg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/datalakeanalytics.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/datalakeanalytics.html",
+          "hash": "b2EVQRensveJXl1l8KQGCA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/datalakestore.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/datalakestore.html",
+          "hash": "ECrhv3Ilp+NdxToHs7gtqg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/dataprotection.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/dataprotection.html",
+          "hash": "7oYZf8hc0ISMRaBdsKgmdg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/defendereasm.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/defendereasm.html",
+          "hash": "b6z0Cmtk3vlFNQHN65J5Rg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/delegatednetwork.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/delegatednetwork.html",
+          "hash": "EVKuYwveEyIrVtB1qciCmQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/deploymentmanager.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/deploymentmanager.html",
+          "hash": "NT7LJiLRBBRYTO7G4qFbLA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/desktopvirtualization.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/desktopvirtualization.html",
+          "hash": "39H/6BT8jvZNJ87du3fZRg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/devcenter.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/devcenter.html",
+          "hash": "e9FpgIlWi3M5ELxKZ/DhiA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/devhub.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/devhub.html",
+          "hash": "G7T9osL/6fMPKes7hyZ51A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/devopsinfrastructure.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/devopsinfrastructure.html",
+          "hash": "xfUSa1DTDVcQbmigEDxgBw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/devspaces.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/devspaces.html",
+          "hash": "PCFxGkUAJLqw+e7m3l+yug=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/devtestlabs.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/devtestlabs.html",
+          "hash": "ZXpigik6NHVY9pHJLMGzIA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/dns.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/dns.html",
+          "hash": "V0uEZAEw5G8kyqMX3nE3xQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/dnsresolver.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/dnsresolver.html",
+          "hash": "3N0ucw3nSeyI5QCwMjKMKg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/dynatrace.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/dynatrace.html",
+          "hash": "3LSLDh258dLZW64MRCjRjA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/edgeorder.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/edgeorder.html",
+          "hash": "hoj5TJXdwFiWeh5sAKi3cQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/edgezones.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/edgezones.html",
+          "hash": "JQCSN5uML4n8oO5SB16pqw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/education.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/education.html",
+          "hash": "Ukixew82h25X0kFKeHfb1g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/elastic.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/elastic.html",
+          "hash": "rpVplFOA4OoCY+udj8uJOQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/elasticsan.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/elasticsan.html",
+          "hash": "Dr2RFRODDppghywmFosCZg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/entitysearch.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/entitysearch.html",
+          "hash": "O1hYV3NU1a+jb+FANMxOEQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/eventgrid.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/eventgrid.html",
+          "hash": "YZttUdYXsghdD+o9TppgCw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/eventhubs.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/eventhubs.html",
+          "hash": "AbKt559/CrcZv1qItTw2xA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/extendedlocation.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/extendedlocation.html",
+          "hash": "l2qBzi7cJLR2j8oi8BLmjA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/fabric.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/fabric.html",
+          "hash": "UoAo/vt6ndJaglbptUYwCg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/farmbeats.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/farmbeats.html",
+          "hash": "VUA/cSAWi+6vldMEjn+SZg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/fluidrelay.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/fluidrelay.html",
+          "hash": "xMsh+YifQtguu/wSx184qw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/frontdoor.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/frontdoor.html",
+          "hash": "DXzQ+/zCk3mkccnV3PBd3w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/grafana.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/grafana.html",
+          "hash": "H5i5ChMJxSh7wjb/cT0WjQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/graphservices.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/graphservices.html",
+          "hash": "saHrCCLpYD1nQcpZD3SqSA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/hanaonazure.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/hanaonazure.html",
+          "hash": "oEMv/zYuK40YtH8AoeufZA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/hardwaresecuritymodule.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/hardwaresecuritymodule.html",
+          "hash": "0YFm94TlVgvycYEgm2a6iQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/hdinsight.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/hdinsight.html",
+          "hash": "i4kjVLL9Bp1Mscyo2ivAIg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/hdinsightcontainers.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/hdinsightcontainers.html",
+          "hash": "G32FZVyVlV1iOcSU8me/nA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/healthbot.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/healthbot.html",
+          "hash": "aSNOwowR/bIJI/4LN3pEcA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/healthcareapis.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/healthcareapis.html",
+          "hash": "p92z/RkLp+6TQtCJdv3S7A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/healthdataaiservices.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/healthdataaiservices.html",
+          "hash": "Jn2XaL3J4gqNfwiFqdMCwQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/healthdeidentification.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/healthdeidentification.html",
+          "hash": "NQy4AUZG2E5qa4p1Ik7ggQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/hybridcompute.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/hybridcompute.html",
+          "hash": "ixr9YNI3PQXNHQbMtliIXg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/hybridconnectivity.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/hybridconnectivity.html",
+          "hash": "HfCBr1kzpNMLw6xyb4ERIA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/hybridkubernetes.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/hybridkubernetes.html",
+          "hash": "ZYTnXyTxUeT17lpBPumY7g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/hybridnetwork.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/hybridnetwork.html",
+          "hash": "X/yROGTdGUSv4Za1nzU49g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/identity.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/identity.html",
+          "hash": "p+Xt5cuk/jrd9oFOMe5ftQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/imagebuilder.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/imagebuilder.html",
+          "hash": "JXWiKq2KgP8WdxHIzuz0HQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/imagesearch.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/imagesearch.html",
+          "hash": "LdWu3X1xhJWDYMOfoqYCIA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html",
+          "hash": "R1AOksReFrpuqafji92RYQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/informaticadatamanagement.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/informaticadatamanagement.html",
+          "hash": "2lRAcDC1Z1HCgr8Fabfzjg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/internetanalyzer.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/internetanalyzer.html",
+          "hash": "3Qqvroa9c1X9CaP2ZX3ITA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/iot.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/iot.html",
+          "hash": "iH1cAMeiG6PFb0BFY0tMJQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/iotoperations.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/iotoperations.html",
+          "hash": "ukhjcWORjUiK0kukI5B1hQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/keyvault.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/keyvault.html",
+          "hash": "cKcPfLPnWriGquhAADOjHA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/kubernetesconfiguration.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/kubernetesconfiguration.html",
+          "hash": "Mo/Ar23ORZqocqu0sBY+tg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/labservices.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/labservices.html",
+          "hash": "ESluFfH2jScy83oGncCxow=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/largeinstance.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/largeinstance.html",
+          "hash": "CVH6hc1Zr4rpnb6BqXXPcA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/loadtesting.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/loadtesting.html",
+          "hash": "qydGejAKTdxarJUKcvI62g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/loganalytics.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/loganalytics.html",
+          "hash": "gX/aUaItSEjiuXDukN8PzA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/logicapps.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/logicapps.html",
+          "hash": "0uVR7btPnSxos0cEUXjMHA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/logz.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/logz.html",
+          "hash": "pEeiwrixqbgtbUc+suCxCw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/machinelearning.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/machinelearning.html",
+          "hash": "MfxVb8qZVk22u7ylQk0/RA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/maintenance.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/maintenance.html",
+          "hash": "Y1GG520VNrH21MtbMRwoRA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/managedapplications.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/managedapplications.html",
+          "hash": "K7EN+bq+TIvES4BIDSHS8g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/managednetworkfabric.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/managednetworkfabric.html",
+          "hash": "42CTnkQmXQ64nYXdeGBlqw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/managedserviceidentity.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/managedserviceidentity.html",
+          "hash": "1QwUgxrfpxvF4ifEgTUYtA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/managementgroups.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/managementgroups.html",
+          "hash": "eKXbvdHsIqfhqOFkdrkI1A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/maps.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/maps.html",
+          "hash": "37AlbSZdiwsE2JdvKxS02w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/mariadb.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/mariadb.html",
+          "hash": "1jonvGV6xS2RcnNdkaHIhQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/marketplaceordering.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/marketplaceordering.html",
+          "hash": "em6+skVjqbmhcuHlwteH6w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/mediaservices.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/mediaservices.html",
+          "hash": "Fowh8SyBTAkGkZP7v+Da9Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/messaging.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/messaging.html",
+          "hash": "+vP7NzISYwM7KZ1SFQiFzw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/metricsadvisor.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/metricsadvisor.html",
+          "hash": "novQFStNExnZzbKKNlkwiQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/migration.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/migration.html",
+          "hash": "xgDTynIxcmXsFxpH7A2ORg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/mixedreality.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/mixedreality.html",
+          "hash": "wYS5oMeQbPiJ1yFTcRdXcQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/mobilenetwork.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/mobilenetwork.html",
+          "hash": "JQtB19KCgu0OD5NuXGf7dg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/mongocluster.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/mongocluster.html",
+          "hash": "lZZf0rSePFSe5XmcvIWf4g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/monitor.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/monitor.html",
+          "hash": "lWJCkowZSO0TzKynyRGrkQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/mysql.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/mysql.html",
+          "hash": "0Quzy4JscU4CXk0nbCI0PA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/netappfiles.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/netappfiles.html",
+          "hash": "7lqVS8s0GFizAAsikwnfQg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/network.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/network.html",
+          "hash": "Ulb4N0Q+TXCaIsPJTaa/yA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/networkanalytics.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/networkanalytics.html",
+          "hash": "ChqJ2QuVvsN4QrQfXqKdfA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/networkfunction.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/networkfunction.html",
+          "hash": "IwtI+Kx3xcSakAu38ETfbQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/newrelicobservability.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/newrelicobservability.html",
+          "hash": "Nv8uGBdJkEmTF6fgM/RqrA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/newssearch.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/newssearch.html",
+          "hash": "DYpKN9Mue6q0mTWkWqeQ7g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/nginx.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/nginx.html",
+          "hash": "vcI/lus5cbgGJuqT5p8Fgg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/notificationhubs.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/notificationhubs.html",
+          "hash": "wr+iJISQdKVCtIrxGGJ/eA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/openenergyplatform.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/openenergyplatform.html",
+          "hash": "w1pJFS4gxWTu5FHb77j+lQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/operationsmanagement.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/operationsmanagement.html",
+          "hash": "wnrgFAmYmkAQgg0twcjggA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/operatornexus-networkcloud.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/operatornexus-networkcloud.html",
+          "hash": "aVCtX0ahzH0RyzB/KxEpGg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/oracledatabase.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/oracledatabase.html",
+          "hash": "PYb6PmerxLq4/WI1ziGdFw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/orbital.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/orbital.html",
+          "hash": "qkTEXn7DfMEBNdllM42Dkw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/other.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/other.html",
+          "hash": "gXdThTQa0q+DeGsyOe6nTw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/paloaltonetworks.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/paloaltonetworks.html",
+          "hash": "xTOGSoiACvGI6DG/5cbY9Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/peering.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/peering.html",
+          "hash": "cgRz8IF6O9gmZYsD/bL0jg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/playwrighttesting.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/playwrighttesting.html",
+          "hash": "y5/6y7Uocjt7IFraZM4v1g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/policyinsights.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/policyinsights.html",
+          "hash": "/6XKa8MfKXTXDQAInBHvZw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/postgresql.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/postgresql.html",
+          "hash": "Xp7/dZIljwy2gk6JxiLrrQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/powerbidedicated.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/powerbidedicated.html",
+          "hash": "3wnaKweuGKr/rr1YC1R2HQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/privatedns.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/privatedns.html",
+          "hash": "n7k2VnKpVMS1HB9epHGSbQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/providerhub.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/providerhub.html",
+          "hash": "u6Pw9gCEr7U9VotEMJ17CA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/purview.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/purview.html",
+          "hash": "/TcGVoGfUBby5TB8mCATaA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/quantum.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/quantum.html",
+          "hash": "9CmYfZU3aDFWQlW20xVSpg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/quantumjobs.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/quantumjobs.html",
+          "hash": "Fa1rKPDYWrJgM3ptOLuI9g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/qumulo.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/qumulo.html",
+          "hash": "DqC92iwoJGKHBM+PxqJBJg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/quota.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/quota.html",
+          "hash": "lRAl+2rYVoKNeRkJHQ+byg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/recoveryservices.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/recoveryservices.html",
+          "hash": "VLlrYm3ssnZDqN6kbdSBHQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/redhatopenshift.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/redhatopenshift.html",
+          "hash": "19eZE/bVOV8dOT0jNYHzqA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/redis.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/redis.html",
+          "hash": "cNFUsUZHmqjeAkiVcEb9XA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/relay.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/relay.html",
+          "hash": "QAQrIr3ddx+RxWFXVNQSfg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/reservations.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/reservations.html",
+          "hash": "mBoZ+Rt2f6tcSZ4XsSlGzg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/resourceconnector.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceconnector.html",
+          "hash": "wAL3yHTAeU9Xrh6l4l6J3Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/resourcegraph.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourcegraph.html",
+          "hash": "1c9dsKpxn7UuRxpoOnmo4g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/resourcehealth.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourcehealth.html",
+          "hash": "OYl+6BL8uv2bKYbx2YbSnA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/resourcemover.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourcemover.html",
+          "hash": "fTlDRa2A5Uc0hODamlqsqg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/resources.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/resources.html",
+          "hash": "DXslPvAnaC3w8kePm1H1LA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/schemaregistry.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/schemaregistry.html",
+          "hash": "BYu4ki638uxH4EqtDQ5IIQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/search.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/search.html",
+          "hash": "nzyvubpYw1795wVEWthLNQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/security.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/security.html",
+          "hash": "MjfD/ebxYPlsYCAndHCHTQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/securitydevops.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/securitydevops.html",
+          "hash": "NHHc2145lYkLbIW/i60YRw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/securityinsights.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/securityinsights.html",
+          "hash": "eLS02s4GAk3fv9rePk6MwQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/selfhelp.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/selfhelp.html",
+          "hash": "UUeF8myUkQTNahrs16lCfA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/servicebus.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/servicebus.html",
+          "hash": "CzPvN0zr4emOzeaVr4gqmA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/servicefabric.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/servicefabric.html",
+          "hash": "jvjvuwzTtHNxGh1VhMxRuw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/servicefabricmanagedclusters.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/servicefabricmanagedclusters.html",
+          "hash": "RPmEyRNy/u7gRHojyqY5kQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/servicelinker.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/servicelinker.html",
+          "hash": "NgNvBJ8Aia3t5P5KYc80ZQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/servicenetworking.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/servicenetworking.html",
+          "hash": "zZPG8+kob0mIPNtwpD0n7Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/signalr.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/signalr.html",
+          "hash": "XW01u5IlZ3o1ZFEqvX/MEw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/sphere.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/sphere.html",
+          "hash": "GfSxlPrsKuyQRcKGiK+qeA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/spring.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/spring.html",
+          "hash": "7/rk0AWIzQgJUZZViF1G2g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/springappdiscovery.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/springappdiscovery.html",
+          "hash": "vg87mz3AKpVwG49T1gVOhg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/springboot.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/springboot.html",
+          "hash": "CWZwqYeJp/Ka9PFfUwNbNA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/springcloud.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/springcloud.html",
+          "hash": "g8T6sDObPHNK0ohxhtD5sA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/sql.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/sql.html",
+          "hash": "0IciXm350ZLgZ7GEkSE9/g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/sqlvirtualmachine.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/sqlvirtualmachine.html",
+          "hash": "mZ0I+GCKls4R7pdDX0pWUQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/standbypool.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/standbypool.html",
+          "hash": "Krnc9dFPb7ZCQow2mnHJDQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/storage-queues.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/storage-queues.html",
+          "hash": "S9gRfDxx6hevj/MheijYJg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/storage.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/storage.html",
+          "hash": "0kO2I/Vhez5ZaSZZZCB1zg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/streamanalytics.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/streamanalytics.html",
+          "hash": "SzlJcFpM7ebPiQAqmUI/wQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/subscriptions.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/subscriptions.html",
+          "hash": "L0qdDFWmvyqetpJYUpSkIA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/support.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/support.html",
+          "hash": "1y50AXHpYZ2jI9bakhXpbQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/synapse.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/synapse.html",
+          "hash": "DmGFjQ8GkOwWaEAU1t7W1g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/systemcentervirtualmachinemanager.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/systemcentervirtualmachinemanager.html",
+          "hash": "RAOlI5MAdWQF0kA8wpjz7g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/tables.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/tables.html",
+          "hash": "K9S6cHE7PCXeO/HkYae0GA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "jWhf984Y88C2uRl8q++qbQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/trafficmanager.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/trafficmanager.html",
+          "hash": "dk6+6NGPB27TrVqOOt4mgw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/trustedsigning.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/trustedsigning.html",
+          "hash": "FoljrOoDD/zM/H+IwVdJwQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/videoanalyzer.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/videoanalyzer.html",
+          "hash": "2FBDnYfv0UOLgaMjRVZgQQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/videosearch.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/videosearch.html",
+          "hash": "H3OWYcbrLR2HdzvtxM7y4A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/visualsearch.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/visualsearch.html",
+          "hash": "F39dnurOoyP9S24ZAo9Y2Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/vmwaresolutionbycloudsimple.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/vmwaresolutionbycloudsimple.html",
+          "hash": "4HzAtdjSEdKnC2nzcPX6kA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/voiceservices.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/voiceservices.html",
+          "hash": "VrF1OrCZOdmFdoZKvwcAPQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/webpubsub.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/webpubsub.html",
+          "hash": "NxZiPV+YcqxOo47h9HpiXQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/websearch.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/websearch.html",
+          "hash": "u99HoQ3+D7ZNuIs+8aTkxg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/workloads.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/workloads.html",
+          "hash": "1YlIVBpXefUt2m3d55Rxwg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "07svJNtM7pkLheU2rZFvPQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "DfMa3MZ0QjYugN6PK5JcYQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot build incrementally because last build info is missing.",
+        "incrementalPhase": "build",
+        "total_file_count": 0,
+        "skipped_file_count": 0,
+        "full_build_reason_code": "NoAvailableBuildCache"
+      },
+      "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 213,
+          "skipped_file_count": 0
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: last post processor info is null.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
