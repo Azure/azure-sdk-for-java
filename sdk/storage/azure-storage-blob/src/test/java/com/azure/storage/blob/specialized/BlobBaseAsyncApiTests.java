@@ -548,29 +548,21 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
         t.put("foo", "bar");
 
         Mono<BlobQueryAsyncResponse> response = bc.setTags(t)
-            .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match)))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                BlobRequestConditions bac = new BlobRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified)
-                    .setTagsConditions(tags);
+            .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match), BlobTestBase::convertNulls))
+                .flatMap(conditions -> {
+                    BlobRequestConditions bac = new BlobRequestConditions()
+                        .setLeaseId(conditions.get(0))
+                        .setIfMatch(conditions.get(1))
+                        .setIfNoneMatch(noneMatch)
+                        .setIfModifiedSince(modified)
+                        .setIfUnmodifiedSince(unmodified)
+                        .setTagsConditions(tags);
 
-                String expression = "SELECT * from BlobStorage";
-                BlobQueryOptions optionsOs = new BlobQueryOptions(expression)
-                    .setRequestConditions(bac);
-                return bc.queryWithResponse(optionsOs);
-            });
+                    String expression = "SELECT * from BlobStorage";
+                    BlobQueryOptions optionsOs = new BlobQueryOptions(expression)
+                        .setRequestConditions(bac);
+                    return bc.queryWithResponse(optionsOs);
+                });
 
         liveTestScenarioWithRetry(() ->
             StepVerifier.create(response)
@@ -595,26 +587,22 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
     public void queryACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                             String leaseID, String tags) {
         Mono<BlobQueryAsyncResponse> response = Mono.zip(setupBlobLeaseCondition(bc, leaseID),
-            setupBlobMatchCondition(bc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                BlobRequestConditions bac = new BlobRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified)
-                    .setTagsConditions(tags);
+            setupBlobMatchCondition(bc, noneMatch), BlobTestBase::convertNulls)
+                .flatMap(conditions -> {
+                    BlobRequestConditions bac = new BlobRequestConditions()
+                        .setLeaseId(leaseID)
+                        .setIfMatch(match)
+                        .setIfNoneMatch(conditions.get(1))
+                        .setIfModifiedSince(modified)
+                        .setIfUnmodifiedSince(unmodified)
+                        .setTagsConditions(tags);
 
-                String expression = "SELECT * from BlobStorage";
-                BlobQueryOptions optionsOs = new BlobQueryOptions(expression)
-                    .setRequestConditions(bac);
+                    String expression = "SELECT * from BlobStorage";
+                    BlobQueryOptions optionsOs = new BlobQueryOptions(expression)
+                        .setRequestConditions(bac);
 
-                return bc.queryWithResponse(optionsOs);
-            });
+                    return bc.queryWithResponse(optionsOs);
+                });
 
         StepVerifier.create(response)
             .verifyError(BlobStorageException.class);

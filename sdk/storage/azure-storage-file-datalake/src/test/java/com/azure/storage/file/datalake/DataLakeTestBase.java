@@ -51,6 +51,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -546,8 +547,22 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return Objects.equals(RECEIVED_ETAG, match) ? pc.getProperties().getETag() : match;
     }
 
-    protected Mono<String> setupPathMatchConditionAsync(DataLakePathAsyncClient pac, String match) {
-        return Objects.equals(RECEIVED_ETAG, match) ? pac.getProperties().map(PathProperties::getETag) : Mono.just(match == null ? "null" : match);
+    protected Mono<String> setupPathMatchCondition(DataLakePathAsyncClient pac, String match) {
+        if (Objects.equals(match, RECEIVED_ETAG)) {
+            return pac.getProperties().map(PathProperties::getETag);
+        } else {
+            return Mono.justOrEmpty(match).defaultIfEmpty("null");
+        }
+    }
+
+    protected static List<String> convertNulls(String... conditions) {
+        return Arrays.stream(conditions)
+            .map(condition -> "null".equals(condition) ? null : condition)
+            .collect(Collectors.toList());
+    }
+
+    protected static String convertNull(String condition) {
+        return "null".equals(condition) ? null : condition;
     }
 
     /**
@@ -573,7 +588,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? responseLeaseId : leaseID;
     }
 
-    protected Mono<String> setupPathLeaseConditionAsync(DataLakePathAsyncClient pac, String leaseID) {
+    protected Mono<String> setupPathLeaseCondition(DataLakePathAsyncClient pac, String leaseID) {
         Mono<String> responseLeaseId = null;
 
         if (Objects.equals(RECEIVED_LEASE_ID, leaseID) || Objects.equals(GARBAGE_LEASE_ID, leaseID)) {
@@ -582,7 +597,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
                     : createLeaseAsyncClient((DataLakeDirectoryAsyncClient) pac).acquireLease(-1);
         }
         if (responseLeaseId == null) {
-            return Mono.just(leaseID == null ? "null" : leaseID);
+            return Mono.justOrEmpty(leaseID).defaultIfEmpty("null");
         }
 
         return responseLeaseId.map(returnedLeaseId -> Objects.equals(RECEIVED_LEASE_ID, leaseID)
