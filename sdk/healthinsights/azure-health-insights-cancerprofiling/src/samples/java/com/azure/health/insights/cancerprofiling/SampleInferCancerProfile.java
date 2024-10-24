@@ -15,6 +15,7 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.health.insights.cancerprofiling.models.ClinicalCodedElement;
+import com.azure.health.insights.cancerprofiling.models.OncoPhenotypeResult;
 import com.azure.health.insights.cancerprofiling.models.PatientRecord;
 import com.azure.health.insights.cancerprofiling.models.PatientDocument;
 import com.azure.health.insights.cancerprofiling.models.ClinicalDocumentType;
@@ -24,7 +25,6 @@ import com.azure.health.insights.cancerprofiling.models.DocumentContent;
 import com.azure.health.insights.cancerprofiling.models.OncoPhenotypeResults;
 import com.azure.health.insights.cancerprofiling.models.OncoPhenotypeModelConfiguration;
 import com.azure.health.insights.cancerprofiling.models.OncoPhenotypeData;
-import com.azure.health.insights.cancerprofiling.models.OncoPhenotypeResult;
 import com.azure.health.insights.cancerprofiling.models.ClinicalNoteEvidence;
 
 
@@ -36,7 +36,7 @@ public class SampleInferCancerProfile {
 
         CancerProfilingAsyncClient asyncClient = new CancerProfilingClientBuilder()
             .endpoint(endpoint)
-            .serviceVersion(CancerProfilingServiceVersion.getLatest())
+            .serviceVersion(AzureHealthInsightsServiceVersion.getLatest())
             .credential(new AzureKeyCredential(apiKey))
             .buildAsyncClient();
         // END: com.azure.health.insights.cancerprofiling.buildasyncclient
@@ -149,17 +149,17 @@ public class SampleInferCancerProfile {
         OncoPhenotypeData oncoPhenotypeData = new OncoPhenotypeData(Arrays.asList(patient1));
         oncoPhenotypeData.setConfiguration(configuration);
 
-        PollerFlux<OncoPhenotypeResult, OncoPhenotypeResult> asyncPoller = asyncClient.beginInferCancerProfile(oncoPhenotypeData);
+        PollerFlux<OncoPhenotypeResult, OncoPhenotypeResults> asyncPoller = asyncClient.beginInferCancerProfile(oncoPhenotypeData);
         // END: com.azure.health.insights.cancerprofiling.infercancerprofile
         asyncPoller
-            .takeUntil(isComplete)
+            .takeUntil(IS_COMPLETE)
             .subscribe(completedResult -> {
                 System.out.println("Completed poll response, status: " + completedResult.getStatus());
                 printResults(completedResult.getValue());
-                latch.countDown();
+                LATCH.countDown();
             });
 
-        latch.await();
+        LATCH.await();
     }
 
     private static void printResults(OncoPhenotypeResult result) {
@@ -182,10 +182,9 @@ public class SampleInferCancerProfile {
         });
     }
 
-    private static Predicate<AsyncPollResponse<OncoPhenotypeResult, OncoPhenotypeResult>> isComplete = response -> {
-        return response.getStatus() != LongRunningOperationStatus.IN_PROGRESS
-            && response.getStatus() != LongRunningOperationStatus.NOT_STARTED;
-    };
+    private static final Predicate<AsyncPollResponse<OncoPhenotypeResult, OncoPhenotypeResults>> IS_COMPLETE
+        = response -> response.getStatus() != LongRunningOperationStatus.IN_PROGRESS
+        && response.getStatus() != LongRunningOperationStatus.NOT_STARTED;
 
-    private static CountDownLatch latch = new CountDownLatch(1);
+    private static final CountDownLatch LATCH = new CountDownLatch(1);
 }

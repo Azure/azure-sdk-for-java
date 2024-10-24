@@ -15,15 +15,12 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.confidentialledger.ConfidentialLedgerEnvironment;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClient;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClientBuilder;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
 class ConfidentialLedgerCertificateClientTestBase extends TestProxyTestBase {
-    protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
     protected ConfidentialLedgerCertificateClient confidentialLedgerCertificateClient;
 
     @Override

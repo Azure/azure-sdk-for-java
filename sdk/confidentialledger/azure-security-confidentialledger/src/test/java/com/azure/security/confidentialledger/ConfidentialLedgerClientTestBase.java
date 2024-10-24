@@ -22,10 +22,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.json.models.JsonElement;
+import com.azure.json.models.JsonObject;
+import com.azure.json.models.JsonString;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClient;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClientBuilder;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import org.junit.jupiter.api.Assertions;
@@ -48,8 +49,6 @@ class ConfidentialLedgerClientTestBase extends TestProxyTestBase {
     protected static final String COLLECTION_ID = "collectionId";
     protected static final BinaryData BINARY_DATA =
         BinaryData.fromString("{\"contents\":\"New ledger entry contents.\"}");
-
-    protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     protected ConfidentialLedgerClient confidentialLedgerClient;
     protected ConfidentialLedgerClientBuilder confidentialLedgerClientBuilder;
@@ -81,16 +80,9 @@ class ConfidentialLedgerClientTestBase extends TestProxyTestBase {
         Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerCertificateClient
             .getLedgerIdentityWithResponse(ConfidentialLedgerEnvironment.getConfidentialLedgerName(), null);
         BinaryData identityResponse = ledgerIdentityWithResponse.getValue();
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode jsonNode = null;
-        try {
-            jsonNode = mapper.readTree(identityResponse.toBytes());
-        } catch (IOException ex) {
-            LOGGER.log(LogLevel.VERBOSE, () -> "Caught IO exception", ex);
-            Assertions.fail();
-        }
 
-        String ledgerTlsCertificate = jsonNode.get("ledgerTlsCertificate").asText();
+        JsonObject jsonObject = identityResponse.toObject(JsonObject.class);
+        String ledgerTlsCertificate = ((JsonString) jsonObject.getProperty("ledgerTlsCertificate")).getValue();
         String body = ledgerTlsCertificate.replace("\n", "").replace("\r", "");
         if (getTestMode() == TestMode.RECORD) {
             interceptorManager.setProxyRecordingOptions(new TestProxyRecordingOptions()
@@ -161,11 +153,11 @@ class ConfidentialLedgerClientTestBase extends TestProxyTestBase {
         // Assert
         assertEquals(200, response.getStatusCode());
 
-        JsonNode jsonNode = OBJECT_MAPPER.readTree(response.getValue().toBytes());
-        JsonNode collectionIdNode = jsonNode.get("collectionId");
+        JsonObject jsonObject = response.getValue().toObject(JsonObject.class);
+        JsonElement collectionIdNode = jsonObject.getProperty("collectionId");
 
         assertNotNull(collectionIdNode);
-        assertEquals("subledger:0", collectionIdNode.asText());
+        assertEquals("subledger:0", ((JsonString) collectionIdNode).getValue());
 
         String transactionId = response.getHeaders()
             .get(HttpHeaderName.fromString("x-ms-ccf-transaction-id"))
