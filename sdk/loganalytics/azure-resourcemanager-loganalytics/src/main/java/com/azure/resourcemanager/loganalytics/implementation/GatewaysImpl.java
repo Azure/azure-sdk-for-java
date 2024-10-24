@@ -17,14 +17,14 @@ public final class GatewaysImpl implements Gateways {
 
     private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    public GatewaysImpl(
-        GatewaysClient innerClient, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
+    public GatewaysImpl(GatewaysClient innerClient,
+        com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String gatewayId, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String gatewayId,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, gatewayId, context);
     }
 

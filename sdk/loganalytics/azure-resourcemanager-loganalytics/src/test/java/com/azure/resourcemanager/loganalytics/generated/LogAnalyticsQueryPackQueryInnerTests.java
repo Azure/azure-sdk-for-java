@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LogAnalyticsQueryPackQueryInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogAnalyticsQueryPackQueryInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"id\":\"qwpgrjbzn\",\"displayName\":\"rcjxvsnbyxqabn\",\"timeCreated\":\"2021-06-16T16:14:14Z\",\"timeModified\":\"2020-12-28T20:56:17Z\",\"author\":\"shurzafbljjgpbto\",\"description\":\"jmkljavbqidtqajz\",\"body\":\"ulpkudjkrl\",\"related\":{\"categories\":[\"hfepgzgqex\"],\"resourceTypes\":[\"c\",\"scpai\",\"rhhbcs\",\"l\"],\"solutions\":[\"a\",\"tjaodxobnb\"]},\"tags\":{\"mexgstxgcp\":[\"pxokajionp\"]},\"properties\":\"datagmaajrm\"},\"id\":\"jwzrl\",\"name\":\"mcl\",\"type\":\"ijcoejctb\"}")
-                .toObject(LogAnalyticsQueryPackQueryInner.class);
+        LogAnalyticsQueryPackQueryInner model = BinaryData.fromString(
+            "{\"properties\":{\"id\":\"qwpgrjbzn\",\"displayName\":\"rcjxvsnbyxqabn\",\"timeCreated\":\"2021-06-16T16:14:14Z\",\"timeModified\":\"2020-12-28T20:56:17Z\",\"author\":\"shurzafbljjgpbto\",\"description\":\"jmkljavbqidtqajz\",\"body\":\"ulpkudjkrl\",\"related\":{\"categories\":[\"hfepgzgqex\"],\"resourceTypes\":[\"c\",\"scpai\",\"rhhbcs\",\"l\"],\"solutions\":[\"a\",\"tjaodxobnb\"]},\"tags\":{\"mexgstxgcp\":[\"pxokajionp\"]},\"properties\":\"datagmaajrm\"},\"id\":\"jwzrl\",\"name\":\"mcl\",\"type\":\"ijcoejctb\"}")
+            .toObject(LogAnalyticsQueryPackQueryInner.class);
         Assertions.assertEquals("rcjxvsnbyxqabn", model.displayName());
         Assertions.assertEquals("jmkljavbqidtqajz", model.description());
         Assertions.assertEquals("ulpkudjkrl", model.body());
@@ -31,18 +29,14 @@ public final class LogAnalyticsQueryPackQueryInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogAnalyticsQueryPackQueryInner model =
-            new LogAnalyticsQueryPackQueryInner()
-                .withDisplayName("rcjxvsnbyxqabn")
-                .withDescription("jmkljavbqidtqajz")
-                .withBody("ulpkudjkrl")
-                .withRelated(
-                    new LogAnalyticsQueryPackQueryPropertiesRelated()
-                        .withCategories(Arrays.asList("hfepgzgqex"))
-                        .withResourceTypes(Arrays.asList("c", "scpai", "rhhbcs", "l"))
-                        .withSolutions(Arrays.asList("a", "tjaodxobnb")))
-                .withTags(mapOf("mexgstxgcp", Arrays.asList("pxokajionp")))
-                .withProperties("datagmaajrm");
+        LogAnalyticsQueryPackQueryInner model = new LogAnalyticsQueryPackQueryInner().withDisplayName("rcjxvsnbyxqabn")
+            .withDescription("jmkljavbqidtqajz")
+            .withBody("ulpkudjkrl")
+            .withRelated(new LogAnalyticsQueryPackQueryPropertiesRelated().withCategories(Arrays.asList("hfepgzgqex"))
+                .withResourceTypes(Arrays.asList("c", "scpai", "rhhbcs", "l"))
+                .withSolutions(Arrays.asList("a", "tjaodxobnb")))
+            .withTags(mapOf("mexgstxgcp", Arrays.asList("pxokajionp")))
+            .withProperties("datagmaajrm");
         model = BinaryData.fromObject(model).toObject(LogAnalyticsQueryPackQueryInner.class);
         Assertions.assertEquals("rcjxvsnbyxqabn", model.displayName());
         Assertions.assertEquals("jmkljavbqidtqajz", model.description());

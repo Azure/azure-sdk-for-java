@@ -27,12 +27,8 @@ public interface StorageInsightConfigsClient {
      * @return the top level storage insight resource container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StorageInsightInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String storageInsightName,
-        StorageInsightInner parameters,
-        Context context);
+    Response<StorageInsightInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String storageInsightName, StorageInsightInner parameters, Context context);
 
     /**
      * Create or update a storage insight.
@@ -47,8 +43,8 @@ public interface StorageInsightConfigsClient {
      * @return the top level storage insight resource container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StorageInsightInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String storageInsightName, StorageInsightInner parameters);
+    StorageInsightInner createOrUpdate(String resourceGroupName, String workspaceName, String storageInsightName,
+        StorageInsightInner parameters);
 
     /**
      * Gets a storage insight instance.
@@ -63,8 +59,8 @@ public interface StorageInsightConfigsClient {
      * @return a storage insight instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StorageInsightInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String storageInsightName, Context context);
+    Response<StorageInsightInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String storageInsightName, Context context);
 
     /**
      * Gets a storage insight instance.
@@ -93,8 +89,8 @@ public interface StorageInsightConfigsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String storageInsightName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String storageInsightName,
+        Context context);
 
     /**
      * Deletes a storageInsightsConfigs resource.
