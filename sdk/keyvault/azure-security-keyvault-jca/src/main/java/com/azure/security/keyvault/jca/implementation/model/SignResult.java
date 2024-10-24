@@ -81,13 +81,7 @@ public class SignResult implements JsonSerializable<SignResult> {
                 if ("kid".equals(fieldName)) {
                     deserializedSignResult.kid = reader.getString();
                 } else if ("value".equals(fieldName)) {
-                    String value = reader.getString();
-
-                    if (value != null) {
-                        deserializedSignResult.value = unquote(value);
-                    } else {
-                        deserializedSignResult.value = null;
-                    }
+                    deserializedSignResult.value = unquote(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

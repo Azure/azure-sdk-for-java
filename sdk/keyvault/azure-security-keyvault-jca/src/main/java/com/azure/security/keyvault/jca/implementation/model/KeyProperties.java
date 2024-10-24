@@ -87,9 +87,9 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
                 reader.nextToken();
 
                 if ("exportable".equals(fieldName)) {
-                    deserializedKeyProperties.exportable = reader.getNullable(JsonReader::getBoolean);
+                    deserializedKeyProperties.exportable = reader.getBoolean();
                 } else if ("kty".equals(fieldName)) {
-                    deserializedKeyProperties.kty = reader.getNullable(JsonReader::getString);
+                    deserializedKeyProperties.kty = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
