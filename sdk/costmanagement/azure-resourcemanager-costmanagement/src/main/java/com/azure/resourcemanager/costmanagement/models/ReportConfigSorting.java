@@ -74,9 +74,8 @@ public final class ReportConfigSorting {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ReportConfigSorting"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model ReportConfigSorting"));
         }
     }
 

@@ -215,19 +215,16 @@ public final class ScheduleProperties {
      */
     public void validate() {
         if (frequency() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property frequency in model ScheduleProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property frequency in model ScheduleProperties"));
         }
         if (startDate() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property startDate in model ScheduleProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property startDate in model ScheduleProperties"));
         }
         if (endDate() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property endDate in model ScheduleProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property endDate in model ScheduleProperties"));
         }
     }
 

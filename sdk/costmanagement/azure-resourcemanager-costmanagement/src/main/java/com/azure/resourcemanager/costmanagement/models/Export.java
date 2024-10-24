@@ -103,11 +103,13 @@ public interface Export {
     /** The entirety of the Export definition. */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithScope, DefinitionStages.WithCreate {
     }
+
     /** The Export definition stages. */
     interface DefinitionStages {
         /** The first stage of the Export definition. */
         interface Blank extends WithScope {
         }
+
         /** The stage of the Export definition allowing to specify parent resource. */
         interface WithScope {
             /**
@@ -132,18 +134,14 @@ public interface Export {
              */
             WithCreate withExistingScope(String scope);
         }
+
         /**
          * The stage of the Export definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithEtag,
-                DefinitionStages.WithSchedule,
-                DefinitionStages.WithFormat,
-                DefinitionStages.WithDeliveryInfo,
-                DefinitionStages.WithDefinition,
-                DefinitionStages.WithRunHistory,
-                DefinitionStages.WithPartitionData {
+        interface WithCreate extends DefinitionStages.WithEtag, DefinitionStages.WithSchedule,
+            DefinitionStages.WithFormat, DefinitionStages.WithDeliveryInfo, DefinitionStages.WithDefinition,
+            DefinitionStages.WithRunHistory, DefinitionStages.WithPartitionData {
             /**
              * Executes the create request.
              *
@@ -159,6 +157,7 @@ public interface Export {
              */
             Export create(Context context);
         }
+
         /** The stage of the Export definition allowing to specify etag. */
         interface WithEtag {
             /**
@@ -171,6 +170,7 @@ public interface Export {
              */
             WithCreate withEtag(String etag);
         }
+
         /** The stage of the Export definition allowing to specify schedule. */
         interface WithSchedule {
             /**
@@ -181,6 +181,7 @@ public interface Export {
              */
             WithCreate withSchedule(ExportSchedule schedule);
         }
+
         /** The stage of the Export definition allowing to specify format. */
         interface WithFormat {
             /**
@@ -192,6 +193,7 @@ public interface Export {
              */
             WithCreate withFormat(FormatType format);
         }
+
         /** The stage of the Export definition allowing to specify deliveryInfo. */
         interface WithDeliveryInfo {
             /**
@@ -202,6 +204,7 @@ public interface Export {
              */
             WithCreate withDeliveryInfo(ExportDeliveryInfo deliveryInfo);
         }
+
         /** The stage of the Export definition allowing to specify definition. */
         interface WithDefinition {
             /**
@@ -212,6 +215,7 @@ public interface Export {
              */
             WithCreate withDefinition(ExportDefinition definition);
         }
+
         /** The stage of the Export definition allowing to specify runHistory. */
         interface WithRunHistory {
             /**
@@ -222,6 +226,7 @@ public interface Export {
              */
             WithCreate withRunHistory(ExportExecutionListResultInner runHistory);
         }
+
         /** The stage of the Export definition allowing to specify partitionData. */
         interface WithPartitionData {
             /**
@@ -237,6 +242,7 @@ public interface Export {
             WithCreate withPartitionData(Boolean partitionData);
         }
     }
+
     /**
      * Begins update for the Export resource.
      *
@@ -245,14 +251,9 @@ public interface Export {
     Export.Update update();
 
     /** The template for Export update. */
-    interface Update
-        extends UpdateStages.WithEtag,
-            UpdateStages.WithSchedule,
-            UpdateStages.WithFormat,
-            UpdateStages.WithDeliveryInfo,
-            UpdateStages.WithDefinition,
-            UpdateStages.WithRunHistory,
-            UpdateStages.WithPartitionData {
+    interface Update extends UpdateStages.WithEtag, UpdateStages.WithSchedule, UpdateStages.WithFormat,
+        UpdateStages.WithDeliveryInfo, UpdateStages.WithDefinition, UpdateStages.WithRunHistory,
+        UpdateStages.WithPartitionData {
         /**
          * Executes the update request.
          *
@@ -268,6 +269,7 @@ public interface Export {
          */
         Export apply(Context context);
     }
+
     /** The Export update stages. */
     interface UpdateStages {
         /** The stage of the Export update allowing to specify etag. */
@@ -282,6 +284,7 @@ public interface Export {
              */
             Update withEtag(String etag);
         }
+
         /** The stage of the Export update allowing to specify schedule. */
         interface WithSchedule {
             /**
@@ -292,6 +295,7 @@ public interface Export {
              */
             Update withSchedule(ExportSchedule schedule);
         }
+
         /** The stage of the Export update allowing to specify format. */
         interface WithFormat {
             /**
@@ -303,6 +307,7 @@ public interface Export {
              */
             Update withFormat(FormatType format);
         }
+
         /** The stage of the Export update allowing to specify deliveryInfo. */
         interface WithDeliveryInfo {
             /**
@@ -313,6 +318,7 @@ public interface Export {
              */
             Update withDeliveryInfo(ExportDeliveryInfo deliveryInfo);
         }
+
         /** The stage of the Export update allowing to specify definition. */
         interface WithDefinition {
             /**
@@ -323,6 +329,7 @@ public interface Export {
              */
             Update withDefinition(ExportDefinition definition);
         }
+
         /** The stage of the Export update allowing to specify runHistory. */
         interface WithRunHistory {
             /**
@@ -333,6 +340,7 @@ public interface Export {
              */
             Update withRunHistory(ExportExecutionListResultInner runHistory);
         }
+
         /** The stage of the Export update allowing to specify partitionData. */
         interface WithPartitionData {
             /**
@@ -348,6 +356,7 @@ public interface Export {
             Update withPartitionData(Boolean partitionData);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

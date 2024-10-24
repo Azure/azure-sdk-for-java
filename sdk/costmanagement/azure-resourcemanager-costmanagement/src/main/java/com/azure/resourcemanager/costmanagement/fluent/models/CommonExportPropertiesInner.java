@@ -177,18 +177,14 @@ public class CommonExportPropertiesInner {
      */
     public void validate() {
         if (deliveryInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property deliveryInfo in model CommonExportPropertiesInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property deliveryInfo in model CommonExportPropertiesInner"));
         } else {
             deliveryInfo().validate();
         }
         if (definition() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property definition in model CommonExportPropertiesInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property definition in model CommonExportPropertiesInner"));
         } else {
             definition().validate();
         }
