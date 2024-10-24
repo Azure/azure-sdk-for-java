@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.data.redis;
 
+import com.azure.spring.cloud.autoconfigure.implementation.context.SpringTokenCredentialProviderContextProviderAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.data.redis.lettuce.AzureRedisCredentials;
 import io.lettuce.core.RedisCredentials;
@@ -18,7 +19,8 @@ class AzureLettucePasswordlessAutoConfigurationTest {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withBean(AzureGlobalProperties.class, () -> new AzureGlobalProperties())
-        .withConfiguration(AutoConfigurations.of(AzureLettucePasswordlessAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureLettucePasswordlessAutoConfiguration.class,
+            SpringTokenCredentialProviderContextProviderAutoConfiguration.class));
 
     @Test
     void configureWithoutSpringDataLettuceConnection() {

@@ -70,7 +70,7 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
                     DatabaseType.POSTGRESQL,
                     false,
                     connectionString,
-                    PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING,
+                    PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING + ".spring.datasource.azure",
                     PUBLIC_AUTHORITY_HOST_STRING,
                     POSTGRESQL_USER_AGENT,
                     AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
@@ -96,7 +96,7 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
                     false,
                     connectionString,
                     PUBLIC_AUTHORITY_HOST_STRING,
-                    AUTHPROPERTY_CREDENTIAL_BEAN_NAME,
+                    AUTHPROPERTY_CREDENTIAL_BEAN_NAME + ".spring.datasource.azure",
                     AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
                     POSTGRESQL_USER_AGENT,
                     POSTGRESQL_ASSUME_MIN_SERVER_VERSION

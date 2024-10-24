@@ -82,7 +82,7 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
                     DatabaseType.MYSQL,
                     false,
                     connectionString,
-                    PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING,
+                    PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING + ".spring.datasource.azure",
                     PUBLIC_AUTHORITY_HOST_STRING,
                     AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
                     MYSQL_USER_AGENT
@@ -109,7 +109,7 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
                     false,
                     connectionString,
                     PUBLIC_AUTHORITY_HOST_STRING,
-                    AUTHPROPERTY_CREDENTIAL_BEAN_NAME,
+                    AUTHPROPERTY_CREDENTIAL_BEAN_NAME + ".spring.datasource.azure",
                     AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
                     MYSQL_USER_AGENT
                 );

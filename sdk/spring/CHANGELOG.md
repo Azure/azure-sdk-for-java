@@ -5,6 +5,13 @@
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
+#### Features Added
+- Support to configure token credential bean name. [#41977](https://github.com/Azure/azure-sdk-for-java/issues/41977).
+
+#### Bugs Fixed
+- Fix primitive type prop (isManagedIdentityEnabled) copy issue. [#41977](https://github.com/Azure/azure-sdk-for-java/issues/41977).
+- Fix to support multiple JDBC datasource prop passwordless. [#41977](https://github.com/Azure/azure-sdk-for-java/issues/41977).
+
 #### Breaking Changes
 - Change the default Service Bus JMS connection factory to `JmsPoolConnectionFactory` from `CachingConnectionFactory`. Set `spring.jms.cache.enabled=true` to continue using `CachingConnectionFactory` [#42306](https://github.com/Azure/azure-sdk-for-java/pull/42306).
 

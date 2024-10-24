@@ -47,6 +47,11 @@ public class TokenCredentialConfigurationProperties implements TokenCredentialOp
      */
     private boolean managedIdentityEnabled = false;
 
+    /**
+     * Custom Get the custom {@link com.azure.core.credential.TokenCredential} bean name, it's used for Service builder factory or passwordless authentication.
+     */
+    private String tokenCredentialBeanName;
+
     @Override
     public String getClientId() {
         return clientId;
@@ -104,6 +109,15 @@ public class TokenCredentialConfigurationProperties implements TokenCredentialOp
     @Override
     public boolean isManagedIdentityEnabled() {
         return managedIdentityEnabled;
+    }
+
+    @Override
+    public String getTokenCredentialBeanName() {
+        return tokenCredentialBeanName;
+    }
+
+    public void setTokenCredentialBeanName(String tokenCredentialBeanName) {
+        this.tokenCredentialBeanName = tokenCredentialBeanName;
     }
 
     public void setManagedIdentityEnabled(boolean managedIdentityEnabled) {

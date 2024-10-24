@@ -5,6 +5,7 @@ com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.AadB2cR
 com.azure.spring.cloud.autoconfigure.implementation.redis.AzureRedisAutoConfiguration
 com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration
 com.azure.spring.cloud.autoconfigure.implementation.context.AzureTokenCredentialAutoConfiguration
+com.azure.spring.cloud.autoconfigure.implementation.context.SpringTokenCredentialProviderContextProviderAutoConfiguration
 com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationAutoConfiguration
 com.azure.spring.cloud.autoconfigure.implementation.cosmos.AzureCosmosAutoConfiguration
 com.azure.spring.cloud.autoconfigure.implementation.eventhubs.AzureEventHubsAutoConfiguration

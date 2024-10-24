@@ -7,6 +7,7 @@ import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import com.azure.identity.extensions.jdbc.mysql.AzureMysqlAuthenticationPlugin;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureTokenCredentialAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.context.SpringTokenCredentialProviderContextProviderAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
 import com.azure.spring.cloud.autoconfigure.implementation.passwordless.properties.AzureJdbcPasswordlessProperties;
@@ -35,7 +36,8 @@ class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
             DataSourceProperties.class,
             AzureJdbcPasswordlessProperties.class,
             AzureGlobalPropertiesAutoConfiguration.class,
-            AzureTokenCredentialAutoConfiguration.class));
+            AzureTokenCredentialAutoConfiguration.class,
+            SpringTokenCredentialProviderContextProviderAutoConfiguration.class));
 
     @Test
     void mySqlAuthPluginNotOnClassPath() {
@@ -73,7 +75,7 @@ class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
                     String expectedJdbcUrl = enhanceJdbcUrl(
                         DatabaseType.MYSQL,
                         MYSQL_CONNECTION_STRING,
-                        PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING,
+                        PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING + ".spring.datasource.azure",
                         PUBLIC_AUTHORITY_HOST_STRING,
                         MYSQL_USER_AGENT,
                         AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName()

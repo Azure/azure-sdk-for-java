@@ -76,6 +76,21 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
         }
     }
 
+    @Override
+    protected void configureCredential(T builder) {
+        // skip to avoid overriding the parent builder's credentials.
+    }
+
+    @Override
+    protected void configureConnectionString(T builder) {
+        // skip to avoid overriding the parent builder's credentials.
+    }
+
+    @Override
+    protected void configureDefaultCredential(T builder) {
+        // skip to avoid overriding the parent builder's credentials.
+    }
+
     protected boolean isShareServiceBusClientBuilder() {
         return shareServiceBusClientBuilder;
     }

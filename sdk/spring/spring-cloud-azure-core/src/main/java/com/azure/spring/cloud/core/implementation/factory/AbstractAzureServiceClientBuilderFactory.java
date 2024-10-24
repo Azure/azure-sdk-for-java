@@ -207,7 +207,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     }
 
     /**
-     * Configure the connection string to the builder. It will try to resolve a connection string from the
+     * Configure the connection string to the builder if the credential is not yet configured. It will try to resolve a connection string from the
      * {@link AzureProperties}, if it is a {@link ConnectionStringProvider} instance. If no connection string found from
      * the {@link AzureProperties}, it will check if any {@link ServiceConnectionStringProvider} is provided and get the
      * connection string from the provider if set. If a connection string is resolved successfully, the
@@ -216,6 +216,10 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      * @param builder The service client builder.
      */
     protected void configureConnectionString(T builder) {
+        if (credentialConfigured) {
+            return;
+        }
+
         AzureProperties azureProperties = getAzureProperties();
 
         // connection string set to properties will advantage the one from connection string provider

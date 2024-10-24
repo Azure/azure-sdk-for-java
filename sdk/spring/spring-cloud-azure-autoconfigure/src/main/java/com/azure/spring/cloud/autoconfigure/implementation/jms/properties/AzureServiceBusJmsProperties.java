@@ -194,7 +194,7 @@ public class AzureServiceBusJmsProperties implements InitializingBean, Passwordl
             }
         } else {
             if (!StringUtils.hasText(connectionString)) {
-                throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' should be provided.");
+                throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' should be provided, otherwise you should provide a bean 'StaticConnectionStringProvider<AzureServiceType.ServiceBus>'.");
             }
         }
 
