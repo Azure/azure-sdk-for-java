@@ -40,6 +40,8 @@
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
       --add-opens com.azure.iot.modelsrepository/com.azure.iot.modelsrepository=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>
