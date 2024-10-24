@@ -63,8 +63,8 @@ public interface WorkflowsClient {
      * @return a list of workflows within a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkflowInner> listByResourceGroup(
-        String resourceGroupName, String managedClusterResource, Context context);
+    PagedIterable<WorkflowInner> listByResourceGroup(String resourceGroupName, String managedClusterResource,
+        Context context);
 
     /**
      * Gets a workflow.
@@ -78,8 +78,8 @@ public interface WorkflowsClient {
      * @return a workflow along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkflowInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String workflowName, Context context);
+    Response<WorkflowInner> getByResourceGroupWithResponse(String resourceGroupName, String workflowName,
+        Context context);
 
     /**
      * Gets a workflow.
@@ -107,8 +107,8 @@ public interface WorkflowsClient {
      * @return workflow along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkflowInner> createOrUpdateWithResponse(
-        String resourceGroupName, String workflowName, WorkflowInner parameters, Context context);
+    Response<WorkflowInner> createOrUpdateWithResponse(String resourceGroupName, String workflowName,
+        WorkflowInner parameters, Context context);
 
     /**
      * Creates or updates a workflow.
@@ -136,8 +136,8 @@ public interface WorkflowsClient {
      * @return delete response if content must be provided on delete operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeleteWorkflowResponseInner> deleteWithResponse(
-        String resourceGroupName, String workflowName, Context context);
+    Response<DeleteWorkflowResponseInner> deleteWithResponse(String resourceGroupName, String workflowName,
+        Context context);
 
     /**
      * Deletes a workflow.
@@ -165,8 +165,8 @@ public interface WorkflowsClient {
      * @return workflow along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkflowInner> updateTagsWithResponse(
-        String resourceGroupName, String workflowName, TagsObject parameters, Context context);
+    Response<WorkflowInner> updateTagsWithResponse(String resourceGroupName, String workflowName, TagsObject parameters,
+        Context context);
 
     /**
      * Updates tags on a workflow.

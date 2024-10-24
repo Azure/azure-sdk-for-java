@@ -15,52 +15,24 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkflowListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkflowListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{},\"location\":\"rwfndiod\",\"tags\":{\"ryo\":\"lwejdpv\",\"hbcryffdfdosyge\":\"psoacctazakljl\",\"rzevdphlxaol\":\"paojakhmsbzjh\"},\"id\":\"hqtrgqjbpf\",\"name\":\"fsinzgvfcjrwzoxx\",\"type\":\"tfell\"},{\"properties\":{},\"location\":\"tonpe\",\"tags\":{\"ypininm\":\"jkjlxofpdvhpfx\",\"po\":\"yhuybbkpod\",\"ognarxzxtheotus\":\"ginuvamih\"},\"id\":\"vyevcciqi\",\"name\":\"nhungbw\",\"type\":\"zrnf\"},{\"properties\":{},\"location\":\"spemvtzfk\",\"tags\":{\"aeqjhqjbasvms\":\"bljofxqeof\",\"gsntnbybkzgcwr\":\"jqul\",\"skcqvkocrcjd\":\"clxxwrljdo\"},\"id\":\"wtnhxbnjbiksqr\",\"name\":\"lssai\",\"type\":\"qpjwnzlljfm\"}],\"nextLink\":\"eebvmgxsab\"}")
-                .toObject(WorkflowListResult.class);
+        WorkflowListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{},\"location\":\"rwfndiod\",\"tags\":{\"ryo\":\"lwejdpv\",\"hbcryffdfdosyge\":\"psoacctazakljl\",\"rzevdphlxaol\":\"paojakhmsbzjh\"},\"id\":\"hqtrgqjbpf\",\"name\":\"fsinzgvfcjrwzoxx\",\"type\":\"tfell\"},{\"properties\":{},\"location\":\"tonpe\",\"tags\":{\"ypininm\":\"jkjlxofpdvhpfx\",\"po\":\"yhuybbkpod\",\"ognarxzxtheotus\":\"ginuvamih\"},\"id\":\"vyevcciqi\",\"name\":\"nhungbw\",\"type\":\"zrnf\"},{\"properties\":{},\"location\":\"spemvtzfk\",\"tags\":{\"aeqjhqjbasvms\":\"bljofxqeof\",\"gsntnbybkzgcwr\":\"jqul\",\"skcqvkocrcjd\":\"clxxwrljdo\"},\"id\":\"wtnhxbnjbiksqr\",\"name\":\"lssai\",\"type\":\"qpjwnzlljfm\"}],\"nextLink\":\"eebvmgxsab\"}")
+            .toObject(WorkflowListResult.class);
         Assertions.assertEquals("rwfndiod", model.value().get(0).location());
         Assertions.assertEquals("lwejdpv", model.value().get(0).tags().get("ryo"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkflowListResult model =
-            new WorkflowListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new WorkflowInner()
-                                .withLocation("rwfndiod")
-                                .withTags(
-                                    mapOf(
-                                        "ryo",
-                                        "lwejdpv",
-                                        "hbcryffdfdosyge",
-                                        "psoacctazakljl",
-                                        "rzevdphlxaol",
-                                        "paojakhmsbzjh")),
-                            new WorkflowInner()
-                                .withLocation("tonpe")
-                                .withTags(
-                                    mapOf(
-                                        "ypininm",
-                                        "jkjlxofpdvhpfx",
-                                        "po",
-                                        "yhuybbkpod",
-                                        "ognarxzxtheotus",
-                                        "ginuvamih")),
-                            new WorkflowInner()
-                                .withLocation("spemvtzfk")
-                                .withTags(
-                                    mapOf(
-                                        "aeqjhqjbasvms",
-                                        "bljofxqeof",
-                                        "gsntnbybkzgcwr",
-                                        "jqul",
-                                        "skcqvkocrcjd",
-                                        "clxxwrljdo"))));
+        WorkflowListResult model = new WorkflowListResult().withValue(Arrays.asList(
+            new WorkflowInner().withLocation("rwfndiod")
+                .withTags(
+                    mapOf("ryo", "lwejdpv", "hbcryffdfdosyge", "psoacctazakljl", "rzevdphlxaol", "paojakhmsbzjh")),
+            new WorkflowInner().withLocation("tonpe")
+                .withTags(mapOf("ypininm", "jkjlxofpdvhpfx", "po", "yhuybbkpod", "ognarxzxtheotus", "ginuvamih")),
+            new WorkflowInner().withLocation("spemvtzfk")
+                .withTags(
+                    mapOf("aeqjhqjbasvms", "bljofxqeof", "gsntnbybkzgcwr", "jqul", "skcqvkocrcjd", "clxxwrljdo"))));
         model = BinaryData.fromObject(model).toObject(WorkflowListResult.class);
         Assertions.assertEquals("rwfndiod", model.value().get(0).location());
         Assertions.assertEquals("lwejdpv", model.value().get(0).tags().get("ryo"));
