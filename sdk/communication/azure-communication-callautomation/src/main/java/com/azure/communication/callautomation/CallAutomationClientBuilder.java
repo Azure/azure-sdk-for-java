@@ -8,6 +8,7 @@ import com.azure.communication.callautomation.implementation.AzureCommunicationC
 import com.azure.communication.callautomation.implementation.CustomBearerTokenAuthenticationPolicy;
 import com.azure.communication.callautomation.implementation.CustomHmacAuthenticationPolicy;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -85,6 +86,7 @@ public final class CallAutomationClientBuilder implements
     private RetryPolicy retryPolicy;
     private RetryOptions retryOptions;
     private CommunicationUserIdentifier sourceIdentity;
+    private MicrosoftTeamsAppIdentifier oPSSourceIdentity;
 
     /**
      * Public default constructor
@@ -186,6 +188,16 @@ public final class CallAutomationClientBuilder implements
      */
     public CallAutomationClientBuilder sourceIdentity(CommunicationUserIdentifier sourceIdentity) {
         this.sourceIdentity = sourceIdentity;
+        return this;
+    }
+
+    /**
+     * Set One Phone System Source Identity used to create call
+     * @param oPSSourceIdentity {@link MicrosoftTeamsAppIdentifier} to used to create call.
+     * @return {@link CallAutomationClientBuilder} object.
+     */
+    public CallAutomationClientBuilder oPSSourceIdentity(MicrosoftTeamsAppIdentifier oPSSourceIdentity) {
+        this.oPSSourceIdentity = oPSSourceIdentity;
         return this;
     }
 
@@ -323,7 +335,7 @@ public final class CallAutomationClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CallAutomationAsyncClient buildAsyncClient() {
-        return new CallAutomationAsyncClient(createServiceImpl(), sourceIdentity, new CallAutomationEventProcessor());
+        return new CallAutomationAsyncClient(createServiceImpl(), sourceIdentity, oPSSourceIdentity, new CallAutomationEventProcessor());
     }
 
     /**

@@ -16,8 +16,13 @@ import com.azure.communication.callautomation.implementation.models.AddParticipa
 import com.azure.communication.callautomation.implementation.models.CallConnectionPropertiesInternal;
 import com.azure.communication.callautomation.implementation.models.CallConnectionStateModelInternal;
 import com.azure.communication.callautomation.implementation.models.CallParticipantInternal;
+import com.azure.communication.callautomation.implementation.models.CommunicationCloudEnvironmentModel;
+import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
+import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModelKind;
 import com.azure.communication.callautomation.implementation.models.GetParticipantsResponseInternal;
 import com.azure.communication.callautomation.implementation.models.DialogStateResponse;
+import com.azure.communication.callautomation.implementation.models.MicrosoftTeamsAppIdentifierModel;
+import com.azure.communication.callautomation.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.callautomation.models.MediaStreamingAudioChannel;
 import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.callautomation.models.MediaStreamingContent;
@@ -55,6 +60,8 @@ public class CallAutomationUnitTestBase {
     static final String DATA_SUBSCRIPTION_ID = "dataSubscriptionId";
     static final String DIALOG_ID = "dialogId";
     static final String BOT_APP_ID = "botAppId";
+    static final String MICROSOFT_TEAMS_APP_ID = "28:acs:redacted";
+    static final String PHONE_NUMBER = "+18001234567";
 
     static final MediaStreamingOptions MEDIA_STREAMING_CONFIGURATION = new MediaStreamingOptions(
         "https://websocket.url.com",
@@ -87,6 +94,31 @@ public class CallAutomationUnitTestBase {
             .setSourceDisplayName(callerDisplayName)
             .setTargets(new ArrayList<>(Collections.singletonList(ModelGenerator.generateUserIdentifierModel(targetId)))
             );
+
+        return serializeObject(result);
+    }
+
+    public static String generateOPSCallProperties(String callConnectionId, String serverCallId,
+                                                String targetId, String connectionState,
+                                                String callbackUri, String opsSourceId) {
+        CallConnectionPropertiesInternal result = new CallConnectionPropertiesInternal()
+            .setCallConnectionId(callConnectionId)
+            .setServerCallId(serverCallId)
+            .setCallbackUri(callbackUri)
+            .setCallConnectionState(CallConnectionStateModelInternal.fromString(connectionState))
+            .setSource(new CommunicationIdentifierModel()
+                .setRawId(opsSourceId)
+                .setKind(CommunicationIdentifierModelKind.MICROSOFT_TEAMS_APP)
+                .setMicrosoftTeamsApp(new MicrosoftTeamsAppIdentifierModel()
+                    .setAppId(opsSourceId)
+                    .setCloud(CommunicationCloudEnvironmentModel.PUBLIC)
+                ))
+            .setTargets(new ArrayList<>(Collections.singletonList(new CommunicationIdentifierModel()
+                .setRawId("+4:"+ targetId)
+                .setKind(CommunicationIdentifierModelKind.PHONE_NUMBER)
+                .setPhoneNumber(new PhoneNumberIdentifierModel()
+                    .setValue(targetId)
+                ))));
 
         return serializeObject(result);
     }
