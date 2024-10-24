@@ -45,15 +45,8 @@ public interface PoliciesClient {
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyInner> list(
-        String resourceGroupName,
-        String labName,
-        String policySetName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<PolicyInner> list(String resourceGroupName, String labName, String policySetName, String expand,
+        String filter, Integer top, String orderby, Context context);
 
     /**
      * Get policy.
@@ -70,8 +63,8 @@ public interface PoliciesClient {
      * @return policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyInner> getWithResponse(
-        String resourceGroupName, String labName, String policySetName, String name, String expand, Context context);
+    Response<PolicyInner> getWithResponse(String resourceGroupName, String labName, String policySetName, String name,
+        String expand, Context context);
 
     /**
      * Get policy.
@@ -103,13 +96,8 @@ public interface PoliciesClient {
      * @return a Policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String policySetName,
-        String name,
-        PolicyInner policy,
-        Context context);
+    Response<PolicyInner> createOrUpdateWithResponse(String resourceGroupName, String labName, String policySetName,
+        String name, PolicyInner policy, Context context);
 
     /**
      * Create or replace an existing policy.
@@ -125,8 +113,8 @@ public interface PoliciesClient {
      * @return a Policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyInner createOrUpdate(
-        String resourceGroupName, String labName, String policySetName, String name, PolicyInner policy);
+    PolicyInner createOrUpdate(String resourceGroupName, String labName, String policySetName, String name,
+        PolicyInner policy);
 
     /**
      * Delete policy.
@@ -142,8 +130,8 @@ public interface PoliciesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String labName, String policySetName, String name, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String labName, String policySetName, String name,
+        Context context);
 
     /**
      * Delete policy.
@@ -174,13 +162,8 @@ public interface PoliciesClient {
      * @return a Policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyInner> updateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String policySetName,
-        String name,
-        PolicyFragment policy,
-        Context context);
+    Response<PolicyInner> updateWithResponse(String resourceGroupName, String labName, String policySetName,
+        String name, PolicyFragment policy, Context context);
 
     /**
      * Allows modifying tags of policies. All other properties will be ignored.
@@ -196,6 +179,6 @@ public interface PoliciesClient {
      * @return a Policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyInner update(
-        String resourceGroupName, String labName, String policySetName, String name, PolicyFragment policy);
+    PolicyInner update(String resourceGroupName, String labName, String policySetName, String name,
+        PolicyFragment policy);
 }

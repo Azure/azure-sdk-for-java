@@ -59,8 +59,8 @@ public interface Labs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Lab> listByResourceGroup(
-        String resourceGroupName, String expand, String filter, Integer top, String orderby, Context context);
+    PagedIterable<Lab> listByResourceGroup(String resourceGroupName, String expand, String filter, Integer top,
+        String orderby, Context context);
 
     /**
      * Get lab.
@@ -144,8 +144,8 @@ public interface Labs {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void createEnvironment(
-        String resourceGroupName, String name, LabVirtualMachineCreationParameter labVirtualMachineCreationParameter);
+    void createEnvironment(String resourceGroupName, String name,
+        LabVirtualMachineCreationParameter labVirtualMachineCreationParameter);
 
     /**
      * Create virtual machines in a lab. This operation can take a while to complete.
@@ -158,11 +158,8 @@ public interface Labs {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void createEnvironment(
-        String resourceGroupName,
-        String name,
-        LabVirtualMachineCreationParameter labVirtualMachineCreationParameter,
-        Context context);
+    void createEnvironment(String resourceGroupName, String name,
+        LabVirtualMachineCreationParameter labVirtualMachineCreationParameter, Context context);
 
     /**
      * Exports the lab resource usage into a storage account This operation can take a while to complete.
@@ -174,8 +171,8 @@ public interface Labs {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void exportResourceUsage(
-        String resourceGroupName, String name, ExportResourceUsageParameters exportResourceUsageParameters);
+    void exportResourceUsage(String resourceGroupName, String name,
+        ExportResourceUsageParameters exportResourceUsageParameters);
 
     /**
      * Exports the lab resource usage into a storage account This operation can take a while to complete.
@@ -188,11 +185,8 @@ public interface Labs {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void exportResourceUsage(
-        String resourceGroupName,
-        String name,
-        ExportResourceUsageParameters exportResourceUsageParameters,
-        Context context);
+    void exportResourceUsage(String resourceGroupName, String name,
+        ExportResourceUsageParameters exportResourceUsageParameters, Context context);
 
     /**
      * Generate a URI for uploading custom disk images to a Lab.
@@ -206,8 +200,8 @@ public interface Labs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body for generating an upload URI along with {@link Response}.
      */
-    Response<GenerateUploadUriResponse> generateUploadUriWithResponse(
-        String resourceGroupName, String name, GenerateUploadUriParameter generateUploadUriParameter, Context context);
+    Response<GenerateUploadUriResponse> generateUploadUriWithResponse(String resourceGroupName, String name,
+        GenerateUploadUriParameter generateUploadUriParameter, Context context);
 
     /**
      * Generate a URI for uploading custom disk images to a Lab.
@@ -220,8 +214,8 @@ public interface Labs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body for generating an upload URI.
      */
-    GenerateUploadUriResponse generateUploadUri(
-        String resourceGroupName, String name, GenerateUploadUriParameter generateUploadUriParameter);
+    GenerateUploadUriResponse generateUploadUri(String resourceGroupName, String name,
+        GenerateUploadUriParameter generateUploadUriParameter);
 
     /**
      * Import a virtual machine into a different lab. This operation can take a while to complete.
@@ -234,8 +228,8 @@ public interface Labs {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void importVirtualMachine(
-        String resourceGroupName, String name, ImportLabVirtualMachineRequest importLabVirtualMachineRequest);
+    void importVirtualMachine(String resourceGroupName, String name,
+        ImportLabVirtualMachineRequest importLabVirtualMachineRequest);
 
     /**
      * Import a virtual machine into a different lab. This operation can take a while to complete.
@@ -249,11 +243,8 @@ public interface Labs {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void importVirtualMachine(
-        String resourceGroupName,
-        String name,
-        ImportLabVirtualMachineRequest importLabVirtualMachineRequest,
-        Context context);
+    void importVirtualMachine(String resourceGroupName, String name,
+        ImportLabVirtualMachineRequest importLabVirtualMachineRequest, Context context);
 
     /**
      * List disk images available for custom image creation.
