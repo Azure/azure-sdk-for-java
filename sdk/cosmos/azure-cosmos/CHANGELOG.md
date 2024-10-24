@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue with `queryChangeFeed` when using hierarchical partition keys - See [PR 42515](https://github.com/Azure/azure-sdk-for-java/pull/42515)
 
 #### Other Changes
 

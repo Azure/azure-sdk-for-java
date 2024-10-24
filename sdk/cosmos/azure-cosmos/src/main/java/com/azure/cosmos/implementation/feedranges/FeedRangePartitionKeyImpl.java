@@ -155,9 +155,6 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
             request,
             "Argument 'request' must not be null");
 
-        request.getHeaders().put(
-            HttpConstants.HttpHeaders.PARTITION_KEY,
-            this.partitionKey.toJson());
         request.setPartitionKeyInternal(this.partitionKey);
 
         MetadataDiagnosticsContext metadataDiagnosticsCtx =
@@ -165,10 +162,9 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
 
         return this
             .getNormalizedEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono)
-            .map(effectiveRange -> {
-                request.setEffectiveRange(effectiveRange);
-                request.setHasFeedRangeFilteringBeenApplied(true);
-                return request;
+            .flatMap(effectiveRange -> {
+                FeedRangeEpkImpl feedRangeEpkImpl = new FeedRangeEpkImpl(effectiveRange);
+                return feedRangeEpkImpl.populateFeedRangeFilteringHeaders(routingMapProvider, request, collectionResolutionMono);
             });
     }
 
