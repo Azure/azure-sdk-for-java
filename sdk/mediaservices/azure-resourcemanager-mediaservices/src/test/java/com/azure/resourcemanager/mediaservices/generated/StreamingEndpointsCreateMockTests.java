@@ -36,56 +36,44 @@ public final class StreamingEndpointsCreateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"description\":\"uygdhgaqipirp\",\"scaleUnits\":779964189,\"availabilitySetName\":\"qofu\",\"accessControl\":{},\"maxCacheAge\":5746310488025921747,\"customHostNames\":[\"whc\"],\"hostName\":\"pibkephuu\",\"cdnEnabled\":false,\"cdnProvider\":\"t\",\"cdnProfile\":\"oyin\",\"provisioningState\":\"Succeeded\",\"resourceState\":\"Starting\",\"crossSiteAccessPolicies\":{\"clientAccessPolicy\":\"cvcrrp\",\"crossDomainPolicy\":\"ttbst\"},\"freeTrialEndTime\":\"2021-10-12T17:16:27Z\",\"created\":\"2021-03-11T12:48:52Z\",\"lastModified\":\"2021-09-27T05:41:57Z\"},\"sku\":{\"name\":\"fkoxmlghktuidvr\",\"capacity\":1891751992},\"location\":\"lpdwwexymzvlazi\",\"tags\":{\"ziven\":\"pwvqsgnyyu\",\"vpkpatlb\":\"rpmey\",\"gsksrfhf\":\"jp\"},\"id\":\"olmk\",\"name\":\"bnxwc\",\"type\":\"ommpvfqaw\"}";
+        String responseStr
+            = "{\"properties\":{\"description\":\"uygdhgaqipirp\",\"scaleUnits\":779964189,\"availabilitySetName\":\"qofu\",\"accessControl\":{},\"maxCacheAge\":5746310488025921747,\"customHostNames\":[\"whc\"],\"hostName\":\"pibkephuu\",\"cdnEnabled\":false,\"cdnProvider\":\"t\",\"cdnProfile\":\"oyin\",\"provisioningState\":\"Succeeded\",\"resourceState\":\"Starting\",\"crossSiteAccessPolicies\":{\"clientAccessPolicy\":\"cvcrrp\",\"crossDomainPolicy\":\"ttbst\"},\"freeTrialEndTime\":\"2021-10-12T17:16:27Z\",\"created\":\"2021-03-11T12:48:52Z\",\"lastModified\":\"2021-09-27T05:41:57Z\"},\"sku\":{\"name\":\"fkoxmlghktuidvr\",\"capacity\":1891751992},\"location\":\"lpdwwexymzvlazi\",\"tags\":{\"ziven\":\"pwvqsgnyyu\",\"vpkpatlb\":\"rpmey\",\"gsksrfhf\":\"jp\"},\"id\":\"olmk\",\"name\":\"bnxwc\",\"type\":\"ommpvfqaw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MediaServicesManager manager =
-            MediaServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MediaServicesManager manager = MediaServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        StreamingEndpoint response =
-            manager
-                .streamingEndpoints()
-                .define("rzdcgdzbenribcaw")
-                .withRegion("yvk")
-                .withExistingMediaservice("q", "jxcx")
-                .withTags(mapOf("tod", "rocxnehvs"))
-                .withSku(new ArmStreamingEndpointCurrentSku().withCapacity(2000870713))
-                .withDescription("qd")
-                .withScaleUnits(1373265486)
-                .withAvailabilitySetName("wflj")
-                .withAccessControl(new StreamingEndpointAccessControl())
-                .withMaxCacheAge(1040471271589317610L)
-                .withCustomHostNames(Arrays.asList("mzwcjjncqt", "z"))
-                .withCdnEnabled(false)
-                .withCdnProvider("bxn")
-                .withCdnProfile("ebwgga")
-                .withCrossSiteAccessPolicies(
-                    new CrossSiteAccessPolicies().withClientAccessPolicy("x").withCrossDomainPolicy("qzasunwqrjzfrgqh"))
-                .withAutoStart(true)
-                .create();
+        StreamingEndpoint response = manager.streamingEndpoints()
+            .define("rzdcgdzbenribcaw")
+            .withRegion("yvk")
+            .withExistingMediaservice("q", "jxcx")
+            .withTags(mapOf("tod", "rocxnehvs"))
+            .withSku(new ArmStreamingEndpointCurrentSku().withCapacity(2000870713))
+            .withDescription("qd")
+            .withScaleUnits(1373265486)
+            .withAvailabilitySetName("wflj")
+            .withAccessControl(new StreamingEndpointAccessControl())
+            .withMaxCacheAge(1040471271589317610L)
+            .withCustomHostNames(Arrays.asList("mzwcjjncqt", "z"))
+            .withCdnEnabled(false)
+            .withCdnProvider("bxn")
+            .withCdnProfile("ebwgga")
+            .withCrossSiteAccessPolicies(
+                new CrossSiteAccessPolicies().withClientAccessPolicy("x").withCrossDomainPolicy("qzasunwqrjzfrgqh"))
+            .withAutoStart(true)
+            .create();
 
         Assertions.assertEquals("lpdwwexymzvlazi", response.location());
         Assertions.assertEquals("pwvqsgnyyu", response.tags().get("ziven"));

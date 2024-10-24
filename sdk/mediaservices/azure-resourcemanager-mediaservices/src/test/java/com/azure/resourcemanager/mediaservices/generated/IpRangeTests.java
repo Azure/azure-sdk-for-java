@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IpRangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpRange model =
-            BinaryData
-                .fromString("{\"name\":\"pzbchck\",\"address\":\"zqioxiysuii\",\"subnetPrefixLength\":1822288960}")
-                .toObject(IpRange.class);
+        IpRange model = BinaryData
+            .fromString("{\"name\":\"pzbchck\",\"address\":\"zqioxiysuii\",\"subnetPrefixLength\":1822288960}")
+            .toObject(IpRange.class);
         Assertions.assertEquals("pzbchck", model.name());
         Assertions.assertEquals("zqioxiysuii", model.address());
         Assertions.assertEquals(1822288960, model.subnetPrefixLength());

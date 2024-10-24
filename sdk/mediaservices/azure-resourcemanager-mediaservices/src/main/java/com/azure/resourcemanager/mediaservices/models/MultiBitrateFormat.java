@@ -24,8 +24,7 @@ import java.util.List;
 @JsonTypeName("#Microsoft.Media.MultiBitrateFormat")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.Mp4Format", value = Mp4Format.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.TransportStreamFormat", value = TransportStreamFormat.class)
-})
+    @JsonSubTypes.Type(name = "#Microsoft.Media.TransportStreamFormat", value = TransportStreamFormat.class) })
 @Fluent
 public class MultiBitrateFormat extends Format {
     /*

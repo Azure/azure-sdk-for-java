@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AsyncOperationResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AsyncOperationResultInner model =
-            BinaryData
-                .fromString("{\"name\":\"hmouwqlgzrfze\",\"status\":\"InProgress\"}")
+        AsyncOperationResultInner model
+            = BinaryData.fromString("{\"name\":\"hmouwqlgzrfze\",\"status\":\"InProgress\"}")
                 .toObject(AsyncOperationResultInner.class);
         Assertions.assertEquals("hmouwqlgzrfze", model.name());
         Assertions.assertEquals(AsyncOperationStatus.IN_PROGRESS, model.status());
@@ -22,8 +21,8 @@ public final class AsyncOperationResultInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AsyncOperationResultInner model =
-            new AsyncOperationResultInner().withName("hmouwqlgzrfze").withStatus(AsyncOperationStatus.IN_PROGRESS);
+        AsyncOperationResultInner model
+            = new AsyncOperationResultInner().withName("hmouwqlgzrfze").withStatus(AsyncOperationStatus.IN_PROGRESS);
         model = BinaryData.fromObject(model).toObject(AsyncOperationResultInner.class);
         Assertions.assertEquals("hmouwqlgzrfze", model.name());
         Assertions.assertEquals(AsyncOperationStatus.IN_PROGRESS, model.status());
