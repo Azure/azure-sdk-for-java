@@ -47,16 +47,22 @@ public final class ManagedPrivateEndpointsCreateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        DashboardManager manager = DashboardManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        DashboardManager manager = DashboardManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ManagedPrivateEndpointModel response = manager.managedPrivateEndpoints().define("hzceuojgjrwjue")
-            .withRegion("jriplrbpbewtghf").withExistingGrafana("cjooxdjebwpucwwf", "ovbvmeueciv")
+        ManagedPrivateEndpointModel response = manager.managedPrivateEndpoints()
+            .define("hzceuojgjrwjue")
+            .withRegion("jriplrbpbewtghf")
+            .withExistingGrafana("cjooxdjebwpucwwf", "ovbvmeueciv")
             .withTags(mapOf("wxzvlvqhjkb", "c", "iebwwaloayqcgwrt", "gibtnm", "zg", "j"))
-            .withPrivateLinkResourceId("cdytdxw").withPrivateLinkResourceRegion("xnrj")
-            .withGroupIds(Arrays.asList("qwgxhniskx", "bkpyc", "klwndnhjdauwhv", "l")).withRequestMessage("btdhxujznbm")
-            .withPrivateLinkServiceUrl("upjm").create();
+            .withPrivateLinkResourceId("cdytdxw")
+            .withPrivateLinkResourceRegion("xnrj")
+            .withGroupIds(Arrays.asList("qwgxhniskx", "bkpyc", "klwndnhjdauwhv", "l"))
+            .withRequestMessage("btdhxujznbm")
+            .withPrivateLinkServiceUrl("upjm")
+            .create();
 
         Assertions.assertEquals("xdjzlmwlxk", response.location());
         Assertions.assertEquals("fhzovawjvzunluth", response.tags().get("n"));

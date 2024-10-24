@@ -50,8 +50,8 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
 
     public Response<ManagedPrivateEndpointModel> getWithResponse(String resourceGroupName, String workspaceName,
         String managedPrivateEndpointName, Context context) {
-        Response<ManagedPrivateEndpointModelInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            workspaceName, managedPrivateEndpointName, context);
+        Response<ManagedPrivateEndpointModelInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, workspaceName, managedPrivateEndpointName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ManagedPrivateEndpointModelImpl(inner.getValue(), this.manager()));
