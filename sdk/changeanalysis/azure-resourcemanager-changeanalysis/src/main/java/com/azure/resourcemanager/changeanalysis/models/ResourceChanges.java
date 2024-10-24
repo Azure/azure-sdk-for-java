@@ -40,6 +40,6 @@ public interface ResourceChanges {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of detected changes as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Change> list(
-        String resourceId, OffsetDateTime startTime, OffsetDateTime endTime, String skipToken, Context context);
+    PagedIterable<Change> list(String resourceId, OffsetDateTime startTime, OffsetDateTime endTime, String skipToken,
+        Context context);
 }
