@@ -35,56 +35,40 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"privateEndpoint\":{\"id\":\"wmqtibx\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"dt\",\"actionsRequired\":\"cttadi\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"mrsieekp\"]},\"location\":\"aapm\",\"etag\":\"qmeqwigpibudqwyx\",\"id\":\"beybpmzznrtffyaq\",\"name\":\"tmhheioqa\",\"type\":\"hvseufuqyrx\"}";
+        String responseStr
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"wmqtibx\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"dt\",\"actionsRequired\":\"cttadi\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"mrsieekp\"]},\"location\":\"aapm\",\"etag\":\"qmeqwigpibudqwyx\",\"id\":\"beybpmzznrtffyaq\",\"name\":\"tmhheioqa\",\"type\":\"hvseufuqyrx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CognitiveServicesManager manager =
-            CognitiveServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CognitiveServicesManager manager = CognitiveServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PrivateEndpointConnection response =
-            manager
-                .privateEndpointConnections()
+        PrivateEndpointConnection response
+            = manager.privateEndpointConnections()
                 .define("tpwb")
                 .withExistingAccount("qtgdqohmcwsl", "riz")
                 .withRegion("ohguuf")
-                .withProperties(
-                    new PrivateEndpointConnectionProperties()
-                        .withPrivateEndpoint(new PrivateEndpoint())
-                        .withPrivateLinkServiceConnectionState(
-                            new PrivateLinkServiceConnectionState()
-                                .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                                .withDescription("izakak")
-                                .withActionsRequired("kjpdnjzhajo"))
-                        .withGroupIds(Arrays.asList("muoyxprimr", "opteecj", "eislstvasylwx", "zaum")))
+                .withProperties(new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
+                    .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                        .withDescription("izakak")
+                        .withActionsRequired("kjpdnjzhajo"))
+                    .withGroupIds(Arrays.asList("muoyxprimr", "opteecj", "eislstvasylwx", "zaum")))
                 .create();
 
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.REJECTED,
-                response.properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
+            response.properties().privateLinkServiceConnectionState().status());
         Assertions.assertEquals("dt", response.properties().privateLinkServiceConnectionState().description());
         Assertions.assertEquals("cttadi", response.properties().privateLinkServiceConnectionState().actionsRequired());
         Assertions.assertEquals("mrsieekp", response.properties().groupIds().get(0));

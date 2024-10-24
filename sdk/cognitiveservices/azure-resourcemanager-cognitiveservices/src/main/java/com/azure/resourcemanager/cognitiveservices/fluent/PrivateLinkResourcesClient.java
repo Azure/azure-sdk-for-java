@@ -25,8 +25,8 @@ public interface PrivateLinkResourcesClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourceListResultInner> listWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<PrivateLinkResourceListResultInner> listWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Gets the private link resources that need to be created for a Cognitive Services account.

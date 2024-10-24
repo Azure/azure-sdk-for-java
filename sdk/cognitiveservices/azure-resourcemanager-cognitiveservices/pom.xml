@@ -47,6 +47,7 @@
     <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
     <revapi.skip>true</revapi.skip>
     <doclintMissingInclusion>-</doclintMissingInclusion>
+    <spotless.skip>false</spotless.skip>
   </properties>
   <dependencies>
     <dependency>

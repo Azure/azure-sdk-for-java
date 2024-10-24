@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuAvailabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuAvailability model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"tfhvpesapskrdqmh\",\"type\":\"dhtldwkyz\",\"skuName\":\"utknc\",\"skuAvailable\":true,\"reason\":\"svlxotogtwrup\",\"message\":\"xvnmicykvceov\"}")
-                .toObject(SkuAvailability.class);
+        SkuAvailability model = BinaryData.fromString(
+            "{\"kind\":\"tfhvpesapskrdqmh\",\"type\":\"dhtldwkyz\",\"skuName\":\"utknc\",\"skuAvailable\":true,\"reason\":\"svlxotogtwrup\",\"message\":\"xvnmicykvceov\"}")
+            .toObject(SkuAvailability.class);
         Assertions.assertEquals("tfhvpesapskrdqmh", model.kind());
         Assertions.assertEquals("dhtldwkyz", model.type());
         Assertions.assertEquals("utknc", model.skuName());
@@ -26,14 +24,12 @@ public final class SkuAvailabilityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuAvailability model =
-            new SkuAvailability()
-                .withKind("tfhvpesapskrdqmh")
-                .withType("dhtldwkyz")
-                .withSkuName("utknc")
-                .withSkuAvailable(true)
-                .withReason("svlxotogtwrup")
-                .withMessage("xvnmicykvceov");
+        SkuAvailability model = new SkuAvailability().withKind("tfhvpesapskrdqmh")
+            .withType("dhtldwkyz")
+            .withSkuName("utknc")
+            .withSkuAvailable(true)
+            .withReason("svlxotogtwrup")
+            .withMessage("xvnmicykvceov");
         model = BinaryData.fromObject(model).toObject(SkuAvailability.class);
         Assertions.assertEquals("tfhvpesapskrdqmh", model.kind());
         Assertions.assertEquals("dhtldwkyz", model.type());
