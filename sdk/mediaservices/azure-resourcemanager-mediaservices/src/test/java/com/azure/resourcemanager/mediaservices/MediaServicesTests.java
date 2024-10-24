@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.mediaservices;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
@@ -24,6 +25,8 @@ import com.azure.resourcemanager.mediaservices.models.MediaService;
 import com.azure.resourcemanager.mediaservices.models.StorageAccountType;
 import com.azure.resourcemanager.mediaservices.models.Transform;
 import com.azure.resourcemanager.mediaservices.models.TransformOutput;
+import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
@@ -47,20 +50,30 @@ public class MediaServicesTests extends TestProxyTestBase {
     @Test
     @LiveOnly
     public void mediaServicesTest() {
+        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+
+        ResourceManager resourceManager = ResourceManager
+            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile)
+            .withDefaultSubscription();
+
         StorageManager storageManager = StorageManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .authenticate(credential, profile);
 
         MediaServicesManager manager = MediaServicesManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .authenticate(credential, profile);
 
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
         boolean testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
         if (testEnv) {
             resourceGroup = testResourceGroup;
         } else {
-            storageManager.resourceManager().resourceGroups().define(resourceGroup)
+            resourceManager.resourceGroups().define(resourceGroup)
                 .withRegion(REGION)
                 .create();
         }
@@ -131,7 +144,7 @@ public class MediaServicesTests extends TestProxyTestBase {
             storageManager.storageAccounts().deleteById(storageAccount.id());
         } finally {
             if (!testEnv) {
-                storageManager.resourceManager().resourceGroups().beginDeleteByName(resourceGroup);
+                resourceManager.resourceGroups().beginDeleteByName(resourceGroup);
             }
         }
     }
