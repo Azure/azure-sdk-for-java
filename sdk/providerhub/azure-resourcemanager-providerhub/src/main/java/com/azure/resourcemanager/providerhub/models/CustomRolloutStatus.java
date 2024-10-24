@@ -77,14 +77,11 @@ public class CustomRolloutStatus {
      */
     public void validate() {
         if (failedOrSkippedRegions() != null) {
-            failedOrSkippedRegions()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            failedOrSkippedRegions().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }
