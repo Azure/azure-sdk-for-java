@@ -19,8 +19,7 @@ public final class ApiManagementOperationsImpl implements ApiManagementOperation
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public ApiManagementOperationsImpl(
-        ApiManagementOperationsClient innerClient,
+    public ApiManagementOperationsImpl(ApiManagementOperationsClient innerClient,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;

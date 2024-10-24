@@ -20,11 +20,7 @@ public final class ProductsGetResponse extends ResponseBase<ProductsGetHeaders, 
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ProductsGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        ProductContractInner value,
+    public ProductsGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, ProductContractInner value,
         ProductsGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }

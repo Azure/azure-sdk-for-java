@@ -41,8 +41,8 @@ public final class MyWorkbookManagedIdentity {
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the MyWorkbookManagedIdentity object itself.
      */
-    public MyWorkbookManagedIdentity withUserAssignedIdentities(
-        MyWorkbookUserAssignedIdentities userAssignedIdentities) {
+    public MyWorkbookManagedIdentity
+        withUserAssignedIdentities(MyWorkbookUserAssignedIdentities userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }

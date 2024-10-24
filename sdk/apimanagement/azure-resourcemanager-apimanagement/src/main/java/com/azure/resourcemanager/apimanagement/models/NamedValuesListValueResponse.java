@@ -21,12 +21,8 @@ public final class NamedValuesListValueResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public NamedValuesListValueResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        NamedValueSecretContractInner value,
-        NamedValuesListValueHeaders headers) {
+    public NamedValuesListValueResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        NamedValueSecretContractInner value, NamedValuesListValueHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

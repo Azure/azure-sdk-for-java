@@ -21,12 +21,8 @@ public final class PolicyFragmentsGetResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public PolicyFragmentsGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        PolicyFragmentContractInner value,
-        PolicyFragmentsGetHeaders headers) {
+    public PolicyFragmentsGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        PolicyFragmentContractInner value, PolicyFragmentsGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

@@ -204,8 +204,8 @@ public class ApiContractProperties extends ApiEntityBaseContract {
 
     /** {@inheritDoc} */
     @Override
-    public ApiContractProperties withSubscriptionKeyParameterNames(
-        SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
+    public ApiContractProperties
+        withSubscriptionKeyParameterNames(SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
         super.withSubscriptionKeyParameterNames(subscriptionKeyParameterNames);
         return this;
     }
@@ -296,9 +296,8 @@ public class ApiContractProperties extends ApiEntityBaseContract {
     public void validate() {
         super.validate();
         if (path() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property path in model ApiContractProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property path in model ApiContractProperties"));
         }
         if (apiVersionSet() != null) {
             apiVersionSet().validate();

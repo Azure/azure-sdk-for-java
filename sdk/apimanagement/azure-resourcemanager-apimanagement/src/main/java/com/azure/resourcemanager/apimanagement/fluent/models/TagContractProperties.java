@@ -48,10 +48,8 @@ public final class TagContractProperties {
      */
     public void validate() {
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model TagContractProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property displayName in model TagContractProperties"));
         }
     }
 

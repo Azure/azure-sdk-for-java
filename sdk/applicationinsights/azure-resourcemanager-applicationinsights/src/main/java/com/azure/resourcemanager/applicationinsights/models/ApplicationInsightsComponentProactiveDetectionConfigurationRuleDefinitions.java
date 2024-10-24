@@ -97,8 +97,8 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationRu
      * @param displayName the displayName value to set.
      * @return the ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions object itself.
      */
-    public ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions withDisplayName(
-        String displayName) {
+    public ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions
+        withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -118,8 +118,8 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationRu
      * @param description the description value to set.
      * @return the ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions object itself.
      */
-    public ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions withDescription(
-        String description) {
+    public ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions
+        withDescription(String description) {
         this.description = description;
         return this;
     }
@@ -179,8 +179,8 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationRu
      * @param isEnabledByDefault the isEnabledByDefault value to set.
      * @return the ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions object itself.
      */
-    public ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions withIsEnabledByDefault(
-        Boolean isEnabledByDefault) {
+    public ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions
+        withIsEnabledByDefault(Boolean isEnabledByDefault) {
         this.isEnabledByDefault = isEnabledByDefault;
         return this;
     }
@@ -200,8 +200,8 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationRu
      * @param isInPreview the isInPreview value to set.
      * @return the ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions object itself.
      */
-    public ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions withIsInPreview(
-        Boolean isInPreview) {
+    public ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions
+        withIsInPreview(Boolean isInPreview) {
         this.isInPreview = isInPreview;
         return this;
     }
@@ -223,8 +223,8 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationRu
      * @param supportsEmailNotifications the supportsEmailNotifications value to set.
      * @return the ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions object itself.
      */
-    public ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions withSupportsEmailNotifications(
-        Boolean supportsEmailNotifications) {
+    public ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions
+        withSupportsEmailNotifications(Boolean supportsEmailNotifications) {
         this.supportsEmailNotifications = supportsEmailNotifications;
         return this;
     }

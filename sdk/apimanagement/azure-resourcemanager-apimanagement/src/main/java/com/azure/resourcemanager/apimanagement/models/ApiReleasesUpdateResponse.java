@@ -20,12 +20,8 @@ public final class ApiReleasesUpdateResponse extends ResponseBase<ApiReleasesUpd
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ApiReleasesUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        ApiReleaseContractInner value,
-        ApiReleasesUpdateHeaders headers) {
+    public ApiReleasesUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        ApiReleaseContractInner value, ApiReleasesUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

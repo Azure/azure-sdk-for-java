@@ -126,10 +126,8 @@ public final class NamedValueCreateContractProperties extends NamedValueEntityBa
     public void validate() {
         super.validate();
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model NamedValueCreateContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property displayName in model NamedValueCreateContractProperties"));
         }
         if (keyVault() != null) {
             keyVault().validate();

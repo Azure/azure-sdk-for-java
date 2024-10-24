@@ -133,14 +133,9 @@ public interface ProductContract {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithDisplayName,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithTerms,
-                DefinitionStages.WithSubscriptionRequired,
-                DefinitionStages.WithApprovalRequired,
-                DefinitionStages.WithSubscriptionsLimit,
-                DefinitionStages.WithState,
-                DefinitionStages.WithIfMatch {
+            extends DefinitionStages.WithDisplayName, DefinitionStages.WithDescription, DefinitionStages.WithTerms,
+            DefinitionStages.WithSubscriptionRequired, DefinitionStages.WithApprovalRequired,
+            DefinitionStages.WithSubscriptionsLimit, DefinitionStages.WithState, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -283,15 +278,9 @@ public interface ProductContract {
     ProductContract.Update update();
 
     /** The template for ProductContract update. */
-    interface Update
-        extends UpdateStages.WithDisplayName,
-            UpdateStages.WithDescription,
-            UpdateStages.WithTerms,
-            UpdateStages.WithSubscriptionRequired,
-            UpdateStages.WithApprovalRequired,
-            UpdateStages.WithSubscriptionsLimit,
-            UpdateStages.WithState,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithDisplayName, UpdateStages.WithDescription, UpdateStages.WithTerms,
+        UpdateStages.WithSubscriptionRequired, UpdateStages.WithApprovalRequired, UpdateStages.WithSubscriptionsLimit,
+        UpdateStages.WithState, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

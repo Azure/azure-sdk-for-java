@@ -21,8 +21,8 @@ public interface SignInSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the SignInSettings.
      */
-    SignInSettingsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    SignInSettingsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the SignInSettings.
@@ -74,12 +74,8 @@ public interface SignInSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String ifMatch,
-        PortalSigninSettingsInner parameters,
-        Context context);
+    Response<Void> updateWithResponse(String resourceGroupName, String serviceName, String ifMatch,
+        PortalSigninSettingsInner parameters, Context context);
 
     /**
      * Update Sign-In settings.
@@ -108,12 +104,8 @@ public interface SignInSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sign-In settings for the Developer Portal along with {@link Response}.
      */
-    Response<PortalSigninSettings> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        PortalSigninSettingsInner parameters,
-        String ifMatch,
-        Context context);
+    Response<PortalSigninSettings> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        PortalSigninSettingsInner parameters, String ifMatch, Context context);
 
     /**
      * Create or Update Sign-In settings.
@@ -126,6 +118,6 @@ public interface SignInSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sign-In settings for the Developer Portal.
      */
-    PortalSigninSettings createOrUpdate(
-        String resourceGroupName, String serviceName, PortalSigninSettingsInner parameters);
+    PortalSigninSettings createOrUpdate(String resourceGroupName, String serviceName,
+        PortalSigninSettingsInner parameters);
 }

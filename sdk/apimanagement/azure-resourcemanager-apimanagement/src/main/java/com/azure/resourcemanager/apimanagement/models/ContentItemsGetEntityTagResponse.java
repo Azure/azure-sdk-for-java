@@ -19,11 +19,7 @@ public final class ContentItemsGetEntityTagResponse extends ResponseBase<Content
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ContentItemsGetEntityTagResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        Void value,
+    public ContentItemsGetEntityTagResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value,
         ContentItemsGetEntityTagHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }

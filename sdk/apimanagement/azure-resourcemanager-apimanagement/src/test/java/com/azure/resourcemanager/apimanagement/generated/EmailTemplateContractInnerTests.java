@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class EmailTemplateContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EmailTemplateContractInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"subject\":\"rsltt\",\"body\":\"yhcdjwsuoardnag\",\"title\":\"pufpbpgnrholhu\",\"description\":\"fwxi\",\"isDefault\":true,\"parameters\":[{\"name\":\"l\",\"title\":\"j\",\"description\":\"xslwhd\"},{\"name\":\"vhtbbzjhfvh\",\"title\":\"zb\",\"description\":\"cqzgihotjecohmx\"},{\"name\":\"lrrskap\",\"title\":\"wie\",\"description\":\"uyader\"},{\"name\":\"fokyks\",\"title\":\"myc\",\"description\":\"r\"}]},\"id\":\"kcxzz\",\"name\":\"nuif\",\"type\":\"rsejegprkj\"}")
-                .toObject(EmailTemplateContractInner.class);
+        EmailTemplateContractInner model = BinaryData.fromString(
+            "{\"properties\":{\"subject\":\"rsltt\",\"body\":\"yhcdjwsuoardnag\",\"title\":\"pufpbpgnrholhu\",\"description\":\"fwxi\",\"isDefault\":true,\"parameters\":[{\"name\":\"l\",\"title\":\"j\",\"description\":\"xslwhd\"},{\"name\":\"vhtbbzjhfvh\",\"title\":\"zb\",\"description\":\"cqzgihotjecohmx\"},{\"name\":\"lrrskap\",\"title\":\"wie\",\"description\":\"uyader\"},{\"name\":\"fokyks\",\"title\":\"myc\",\"description\":\"r\"}]},\"id\":\"kcxzz\",\"name\":\"nuif\",\"type\":\"rsejegprkj\"}")
+            .toObject(EmailTemplateContractInner.class);
         Assertions.assertEquals("rsltt", model.subject());
         Assertions.assertEquals("yhcdjwsuoardnag", model.body());
         Assertions.assertEquals("pufpbpgnrholhu", model.title());
@@ -29,31 +27,21 @@ public final class EmailTemplateContractInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EmailTemplateContractInner model =
-            new EmailTemplateContractInner()
-                .withSubject("rsltt")
-                .withBody("yhcdjwsuoardnag")
-                .withTitle("pufpbpgnrholhu")
-                .withDescription("fwxi")
-                .withParameters(
-                    Arrays
-                        .asList(
-                            new EmailTemplateParametersContractProperties()
-                                .withName("l")
-                                .withTitle("j")
-                                .withDescription("xslwhd"),
-                            new EmailTemplateParametersContractProperties()
-                                .withName("vhtbbzjhfvh")
-                                .withTitle("zb")
-                                .withDescription("cqzgihotjecohmx"),
-                            new EmailTemplateParametersContractProperties()
-                                .withName("lrrskap")
-                                .withTitle("wie")
-                                .withDescription("uyader"),
-                            new EmailTemplateParametersContractProperties()
-                                .withName("fokyks")
-                                .withTitle("myc")
-                                .withDescription("r")));
+        EmailTemplateContractInner model = new EmailTemplateContractInner().withSubject("rsltt")
+            .withBody("yhcdjwsuoardnag")
+            .withTitle("pufpbpgnrholhu")
+            .withDescription("fwxi")
+            .withParameters(Arrays.asList(
+                new EmailTemplateParametersContractProperties().withName("l").withTitle("j").withDescription("xslwhd"),
+                new EmailTemplateParametersContractProperties().withName("vhtbbzjhfvh")
+                    .withTitle("zb")
+                    .withDescription("cqzgihotjecohmx"),
+                new EmailTemplateParametersContractProperties().withName("lrrskap")
+                    .withTitle("wie")
+                    .withDescription("uyader"),
+                new EmailTemplateParametersContractProperties().withName("fokyks")
+                    .withTitle("myc")
+                    .withDescription("r")));
         model = BinaryData.fromObject(model).toObject(EmailTemplateContractInner.class);
         Assertions.assertEquals("rsltt", model.subject());
         Assertions.assertEquals("yhcdjwsuoardnag", model.body());

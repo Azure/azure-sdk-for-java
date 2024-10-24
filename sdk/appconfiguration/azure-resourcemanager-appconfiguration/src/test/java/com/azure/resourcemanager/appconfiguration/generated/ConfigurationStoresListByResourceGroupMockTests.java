@@ -34,43 +34,32 @@ public final class ConfigurationStoresListByResourceGroupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"identity\":{\"type\":\"SystemAssigned,"
-                + " UserAssigned\",\"userAssignedIdentities\":{},\"principalId\":\"apskrdqm\",\"tenantId\":\"jdhtldwkyzxu\"},\"properties\":{\"provisioningState\":\"Creating\",\"creationDate\":\"2021-06-12T03:44:06Z\",\"endpoint\":\"cwsvlxotog\",\"encryption\":{},\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\",\"disableLocalAuth\":false,\"softDeleteRetentionInDays\":1364621442,\"enablePurgeProtection\":false,\"createMode\":\"Default\"},\"sku\":{\"name\":\"vce\"},\"location\":\"eil\",\"tags\":{\"jfcn\":\"oty\",\"x\":\"bkc\",\"nv\":\"hbttkphyw\",\"qnermclfplphoxu\":\"t\"},\"id\":\"crpab\",\"name\":\"ye\",\"type\":\"sbj\"}]}";
+        String responseStr = "{\"value\":[{\"identity\":{\"type\":\"SystemAssigned,"
+            + " UserAssigned\",\"userAssignedIdentities\":{},\"principalId\":\"apskrdqm\",\"tenantId\":\"jdhtldwkyzxu\"},\"properties\":{\"provisioningState\":\"Creating\",\"creationDate\":\"2021-06-12T03:44:06Z\",\"endpoint\":\"cwsvlxotog\",\"encryption\":{},\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\",\"disableLocalAuth\":false,\"softDeleteRetentionInDays\":1364621442,\"enablePurgeProtection\":false,\"createMode\":\"Default\"},\"sku\":{\"name\":\"vce\"},\"location\":\"eil\",\"tags\":{\"jfcn\":\"oty\",\"x\":\"bkc\",\"nv\":\"hbttkphyw\",\"qnermclfplphoxu\":\"t\"},\"id\":\"crpab\",\"name\":\"ye\",\"type\":\"sbj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AppConfigurationManager manager =
-            AppConfigurationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AppConfigurationManager manager = AppConfigurationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ConfigurationStore> response =
-            manager.configurationStores().listByResourceGroup("a", "ckhsmtxpsieb", com.azure.core.util.Context.NONE);
+        PagedIterable<ConfigurationStore> response
+            = manager.configurationStores().listByResourceGroup("a", "ckhsmtxpsieb", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("eil", response.iterator().next().location());
         Assertions.assertEquals("oty", response.iterator().next().tags().get("jfcn"));
-        Assertions
-            .assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            response.iterator().next().identity().type());
         Assertions.assertEquals("vce", response.iterator().next().sku().name());
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.iterator().next().publicNetworkAccess());
         Assertions.assertEquals(false, response.iterator().next().disableLocalAuth());

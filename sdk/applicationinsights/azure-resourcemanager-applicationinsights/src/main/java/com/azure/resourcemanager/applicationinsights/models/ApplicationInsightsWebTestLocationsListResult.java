@@ -38,8 +38,8 @@ public final class ApplicationInsightsWebTestLocationsListResult {
      * @param value the value value to set.
      * @return the ApplicationInsightsWebTestLocationsListResult object itself.
      */
-    public ApplicationInsightsWebTestLocationsListResult withValue(
-        List<ApplicationInsightsComponentWebTestLocationInner> value) {
+    public ApplicationInsightsWebTestLocationsListResult
+        withValue(List<ApplicationInsightsComponentWebTestLocationInner> value) {
         this.value = value;
         return this;
     }
@@ -51,10 +51,8 @@ public final class ApplicationInsightsWebTestLocationsListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model ApplicationInsightsWebTestLocationsListResult"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model ApplicationInsightsWebTestLocationsListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

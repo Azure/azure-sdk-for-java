@@ -39,8 +39,8 @@ public final class LiveTokensClientImpl implements LiveTokensClient {
      * @param client the instance of the service client containing this operation class.
      */
     LiveTokensClientImpl(ApplicationInsightsManagementClientImpl client) {
-        this.service =
-            RestProxy.create(LiveTokensService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(LiveTokensService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -51,16 +51,13 @@ public final class LiveTokensClientImpl implements LiveTokensClient {
     @Host("{$host}")
     @ServiceInterface(name = "ApplicationInsightsM")
     public interface LiveTokensService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/{resourceUri}/providers/Microsoft.Insights/generatelivetoken")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LiveTokenResponseInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<LiveTokenResponseInner>> get(@HostParam("$host") String endpoint,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -75,10 +72,8 @@ public final class LiveTokensClientImpl implements LiveTokensClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LiveTokenResponseInner>> getWithResponseAsync(String resourceUri) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -103,10 +98,8 @@ public final class LiveTokensClientImpl implements LiveTokensClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LiveTokenResponseInner>> getWithResponseAsync(String resourceUri, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));

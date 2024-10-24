@@ -53,14 +53,8 @@ public interface CertificatesClient {
      * @return paged Certificates list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CertificateContractInner> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean isKeyVaultRefreshFailed,
-        Context context);
+    PagedIterable<CertificateContractInner> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Boolean isKeyVaultRefreshFailed, Context context);
 
     /**
      * Gets the entity state (Etag) version of the certificate specified by its identifier.
@@ -76,8 +70,8 @@ public interface CertificatesClient {
      * @return the entity state (Etag) version of the certificate specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificatesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String certificateId, Context context);
+    CertificatesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String certificateId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the certificate specified by its identifier.
@@ -107,8 +101,8 @@ public interface CertificatesClient {
      * @return the details of the certificate specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificatesGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String certificateId, Context context);
+    CertificatesGetResponse getWithResponse(String resourceGroupName, String serviceName, String certificateId,
+        Context context);
 
     /**
      * Gets the details of the certificate specified by its identifier.
@@ -141,13 +135,8 @@ public interface CertificatesClient {
      * @return certificate details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificatesCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String certificateId,
-        CertificateCreateOrUpdateParameters parameters,
-        String ifMatch,
-        Context context);
+    CertificatesCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String certificateId, CertificateCreateOrUpdateParameters parameters, String ifMatch, Context context);
 
     /**
      * Creates or updates the certificate being used for authentication with the backend.
@@ -163,10 +152,7 @@ public interface CertificatesClient {
      * @return certificate details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String certificateId,
+    CertificateContractInner createOrUpdate(String resourceGroupName, String serviceName, String certificateId,
         CertificateCreateOrUpdateParameters parameters);
 
     /**
@@ -185,8 +171,8 @@ public interface CertificatesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String certificateId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String certificateId,
+        String ifMatch, Context context);
 
     /**
      * Deletes specific certificate.
@@ -218,8 +204,8 @@ public interface CertificatesClient {
      * @return certificate details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificatesRefreshSecretResponse refreshSecretWithResponse(
-        String resourceGroupName, String serviceName, String certificateId, Context context);
+    CertificatesRefreshSecretResponse refreshSecretWithResponse(String resourceGroupName, String serviceName,
+        String certificateId, Context context);
 
     /**
      * From KeyVault, Refresh the certificate being used for authentication with the backend.

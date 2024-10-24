@@ -33,14 +33,9 @@ public interface FavoritesClient {
      * @return a list of favorites defined within an Application Insights component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<ApplicationInsightsComponentFavoriteInner>> listWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        FavoriteType favoriteType,
-        FavoriteSourceType sourceType,
-        Boolean canFetchContent,
-        List<String> tags,
-        Context context);
+    Response<List<ApplicationInsightsComponentFavoriteInner>> listWithResponse(String resourceGroupName,
+        String resourceName, FavoriteType favoriteType, FavoriteSourceType sourceType, Boolean canFetchContent,
+        List<String> tags, Context context);
 
     /**
      * Gets a list of favorites defined within an Application Insights component.
@@ -69,8 +64,8 @@ public interface FavoritesClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInsightsComponentFavoriteInner> getWithResponse(
-        String resourceGroupName, String resourceName, String favoriteId, Context context);
+    Response<ApplicationInsightsComponentFavoriteInner> getWithResponse(String resourceGroupName, String resourceName,
+        String favoriteId, Context context);
 
     /**
      * Get a single favorite by its FavoriteId, defined within an Application Insights component.
@@ -102,12 +97,8 @@ public interface FavoritesClient {
      *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInsightsComponentFavoriteInner> addWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String favoriteId,
-        ApplicationInsightsComponentFavoriteInner favoriteProperties,
-        Context context);
+    Response<ApplicationInsightsComponentFavoriteInner> addWithResponse(String resourceGroupName, String resourceName,
+        String favoriteId, ApplicationInsightsComponentFavoriteInner favoriteProperties, Context context);
 
     /**
      * Adds a new favorites to an Application Insights component.
@@ -123,10 +114,7 @@ public interface FavoritesClient {
      * @return properties that define a favorite that is associated to an Application Insights component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInsightsComponentFavoriteInner add(
-        String resourceGroupName,
-        String resourceName,
-        String favoriteId,
+    ApplicationInsightsComponentFavoriteInner add(String resourceGroupName, String resourceName, String favoriteId,
         ApplicationInsightsComponentFavoriteInner favoriteProperties);
 
     /**
@@ -144,11 +132,8 @@ public interface FavoritesClient {
      *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInsightsComponentFavoriteInner> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String favoriteId,
-        ApplicationInsightsComponentFavoriteInner favoriteProperties,
+    Response<ApplicationInsightsComponentFavoriteInner> updateWithResponse(String resourceGroupName,
+        String resourceName, String favoriteId, ApplicationInsightsComponentFavoriteInner favoriteProperties,
         Context context);
 
     /**
@@ -164,10 +149,7 @@ public interface FavoritesClient {
      * @return properties that define a favorite that is associated to an Application Insights component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInsightsComponentFavoriteInner update(
-        String resourceGroupName,
-        String resourceName,
-        String favoriteId,
+    ApplicationInsightsComponentFavoriteInner update(String resourceGroupName, String resourceName, String favoriteId,
         ApplicationInsightsComponentFavoriteInner favoriteProperties);
 
     /**
@@ -183,8 +165,8 @@ public interface FavoritesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String favoriteId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String favoriteId,
+        Context context);
 
     /**
      * Remove a favorite that is associated to an Application Insights component.

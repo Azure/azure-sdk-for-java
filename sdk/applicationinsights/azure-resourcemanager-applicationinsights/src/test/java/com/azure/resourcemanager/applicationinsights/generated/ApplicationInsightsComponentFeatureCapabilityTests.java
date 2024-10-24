@@ -10,11 +10,9 @@ import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsC
 public final class ApplicationInsightsComponentFeatureCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationInsightsComponentFeatureCapability model =
-            BinaryData
-                .fromString(
-                    "{\"Name\":\"vkmijcmmxdcuf\",\"Description\":\"srp\",\"Value\":\"zidnsezcxtbzsgfy\",\"Unit\":\"sne\",\"MeterId\":\"dwzjeiach\",\"MeterRateFrequency\":\"osfln\"}")
-                .toObject(ApplicationInsightsComponentFeatureCapability.class);
+        ApplicationInsightsComponentFeatureCapability model = BinaryData.fromString(
+            "{\"Name\":\"vkmijcmmxdcuf\",\"Description\":\"srp\",\"Value\":\"zidnsezcxtbzsgfy\",\"Unit\":\"sne\",\"MeterId\":\"dwzjeiach\",\"MeterRateFrequency\":\"osfln\"}")
+            .toObject(ApplicationInsightsComponentFeatureCapability.class);
     }
 
     @org.junit.jupiter.api.Test

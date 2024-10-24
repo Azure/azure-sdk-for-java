@@ -30,8 +30,8 @@ public interface QuotaByCounterKeysClient {
      * @return paged Quota Counter list representation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<QuotaCounterCollectionInner> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, String quotaCounterKey, Context context);
+    Response<QuotaCounterCollectionInner> listByServiceWithResponse(String resourceGroupName, String serviceName,
+        String quotaCounterKey, Context context);
 
     /**
      * Lists a collection of current quota counter periods associated with the counter-key configured in the policy on
@@ -69,12 +69,8 @@ public interface QuotaByCounterKeysClient {
      * @return paged Quota Counter list representation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<QuotaCounterCollectionInner> updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String quotaCounterKey,
-        QuotaCounterValueUpdateContract parameters,
-        Context context);
+    Response<QuotaCounterCollectionInner> updateWithResponse(String resourceGroupName, String serviceName,
+        String quotaCounterKey, QuotaCounterValueUpdateContract parameters, Context context);
 
     /**
      * Updates all the quota counter values specified with the existing quota counter key to a value in the specified
@@ -93,9 +89,6 @@ public interface QuotaByCounterKeysClient {
      * @return paged Quota Counter list representation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    QuotaCounterCollectionInner update(
-        String resourceGroupName,
-        String serviceName,
-        String quotaCounterKey,
+    QuotaCounterCollectionInner update(String resourceGroupName, String serviceName, String quotaCounterKey,
         QuotaCounterValueUpdateContract parameters);
 }

@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkItemCreateConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkItemCreateConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"ConnectorId\":\"wzrlovmclwhij\",\"ConnectorDataConfiguration\":\"ejctbzaqsqsycb\",\"ValidateOnly\":true,\"WorkItemProperties\":{\"c\":\"ukdkexxppofmxa\",\"toc\":\"jpgd\",\"hvpmoue\":\"j\"}}")
-                .toObject(WorkItemCreateConfiguration.class);
+        WorkItemCreateConfiguration model = BinaryData.fromString(
+            "{\"ConnectorId\":\"wzrlovmclwhij\",\"ConnectorDataConfiguration\":\"ejctbzaqsqsycb\",\"ValidateOnly\":true,\"WorkItemProperties\":{\"c\":\"ukdkexxppofmxa\",\"toc\":\"jpgd\",\"hvpmoue\":\"j\"}}")
+            .toObject(WorkItemCreateConfiguration.class);
         Assertions.assertEquals("wzrlovmclwhij", model.connectorId());
         Assertions.assertEquals("ejctbzaqsqsycb", model.connectorDataConfiguration());
         Assertions.assertEquals(true, model.validateOnly());
@@ -26,12 +24,10 @@ public final class WorkItemCreateConfigurationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkItemCreateConfiguration model =
-            new WorkItemCreateConfiguration()
-                .withConnectorId("wzrlovmclwhij")
-                .withConnectorDataConfiguration("ejctbzaqsqsycb")
-                .withValidateOnly(true)
-                .withWorkItemProperties(mapOf("c", "ukdkexxppofmxa", "toc", "jpgd", "hvpmoue", "j"));
+        WorkItemCreateConfiguration model = new WorkItemCreateConfiguration().withConnectorId("wzrlovmclwhij")
+            .withConnectorDataConfiguration("ejctbzaqsqsycb")
+            .withValidateOnly(true)
+            .withWorkItemProperties(mapOf("c", "ukdkexxppofmxa", "toc", "jpgd", "hvpmoue", "j"));
         model = BinaryData.fromObject(model).toObject(WorkItemCreateConfiguration.class);
         Assertions.assertEquals("wzrlovmclwhij", model.connectorId());
         Assertions.assertEquals("ejctbzaqsqsycb", model.connectorDataConfiguration());

@@ -22,8 +22,8 @@ public interface ProductPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy configuration at the Product level along with {@link Response}.
      */
-    Response<PolicyCollection> listByProductWithResponse(
-        String resourceGroupName, String serviceName, String productId, Context context);
+    Response<PolicyCollection> listByProductWithResponse(String resourceGroupName, String serviceName, String productId,
+        Context context);
 
     /**
      * Get the policy configuration at the Product level.
@@ -51,8 +51,8 @@ public interface ProductPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ETag of the policy configuration at the Product level.
      */
-    ProductPoliciesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String productId, PolicyIdName policyId, Context context);
+    ProductPoliciesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String productId, PolicyIdName policyId, Context context);
 
     /**
      * Get the ETag of the policy configuration at the Product level.
@@ -81,13 +81,8 @@ public interface ProductPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy configuration at the Product level.
      */
-    Response<PolicyContract> getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
-        PolicyExportFormat format,
-        Context context);
+    Response<PolicyContract> getWithResponse(String resourceGroupName, String serviceName, String productId,
+        PolicyIdName policyId, PolicyExportFormat format, Context context);
 
     /**
      * Get the policy configuration at the Product level.
@@ -118,14 +113,8 @@ public interface ProductPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return policy Contract details.
      */
-    Response<PolicyContract> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters,
-        String ifMatch,
-        Context context);
+    Response<PolicyContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName, String productId,
+        PolicyIdName policyId, PolicyContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates or updates policy configuration for the Product.
@@ -140,11 +129,7 @@ public interface ProductPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return policy Contract details.
      */
-    PolicyContract createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
+    PolicyContract createOrUpdate(String resourceGroupName, String serviceName, String productId, PolicyIdName policyId,
         PolicyContractInner parameters);
 
     /**
@@ -162,13 +147,8 @@ public interface ProductPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String productId,
+        PolicyIdName policyId, String ifMatch, Context context);
 
     /**
      * Deletes the policy configuration at the Product.

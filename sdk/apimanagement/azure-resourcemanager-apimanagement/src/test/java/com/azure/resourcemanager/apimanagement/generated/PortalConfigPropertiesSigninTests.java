@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class PortalConfigPropertiesSigninTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PortalConfigPropertiesSignin model =
-            BinaryData.fromString("{\"require\":false}").toObject(PortalConfigPropertiesSignin.class);
+        PortalConfigPropertiesSignin model
+            = BinaryData.fromString("{\"require\":false}").toObject(PortalConfigPropertiesSignin.class);
         Assertions.assertEquals(false, model.require());
     }
 
