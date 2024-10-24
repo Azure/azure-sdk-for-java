@@ -10,10 +10,6 @@ module com.azure.resourcemanager.graphservices {
     exports com.azure.resourcemanager.graphservices.fluent.models;
     exports com.azure.resourcemanager.graphservices.models;
 
-    opens com.azure.resourcemanager.graphservices.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.graphservices.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.graphservices.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.graphservices.models to com.azure.core, com.fasterxml.jackson.databind;
 }
