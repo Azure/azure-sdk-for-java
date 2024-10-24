@@ -47,14 +47,16 @@ public final class ResourceProvidersPutKubernetesVersionsMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridContainerServiceManager manager = HybridContainerServiceManager.configure().withHttpClient(httpClient)
+        HybridContainerServiceManager manager = HybridContainerServiceManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        KubernetesVersionProfile response = manager.resourceProviders().putKubernetesVersions("yhgbijtjivfx",
-            new KubernetesVersionProfileInner().withExtendedLocation(
-                new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("ibsystawf")),
-            com.azure.core.util.Context.NONE);
+        KubernetesVersionProfile response = manager.resourceProviders()
+            .putKubernetesVersions("yhgbijtjivfx",
+                new KubernetesVersionProfileInner().withExtendedLocation(
+                    new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("ibsystawf")),
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, response.extendedLocation().type());
         Assertions.assertEquals("iin", response.extendedLocation().name());
