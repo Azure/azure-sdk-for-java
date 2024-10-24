@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GitRepositoryPatchDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GitRepositoryPatchDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"url\":\"g\",\"timeoutInSeconds\":4370992711496638122,\"syncIntervalInSeconds\":1393626472136421682,\"repositoryRef\":{\"branch\":\"pwhonowkg\",\"tag\":\"wankixzbi\",\"semver\":\"eputtmrywnuzoqf\",\"commit\":\"yqzrnkcqvyxlw\"},\"sshKnownHosts\":\"lsicohoqqnwv\",\"httpsUser\":\"yav\",\"httpsCACert\":\"heun\",\"localAuthRef\":\"qhgyxzkonocukok\"}")
-                .toObject(GitRepositoryPatchDefinition.class);
+        GitRepositoryPatchDefinition model = BinaryData.fromString(
+            "{\"url\":\"g\",\"timeoutInSeconds\":4370992711496638122,\"syncIntervalInSeconds\":1393626472136421682,\"repositoryRef\":{\"branch\":\"pwhonowkg\",\"tag\":\"wankixzbi\",\"semver\":\"eputtmrywnuzoqf\",\"commit\":\"yqzrnkcqvyxlw\"},\"sshKnownHosts\":\"lsicohoqqnwv\",\"httpsUser\":\"yav\",\"httpsCACert\":\"heun\",\"localAuthRef\":\"qhgyxzkonocukok\"}")
+            .toObject(GitRepositoryPatchDefinition.class);
         Assertions.assertEquals("g", model.url());
         Assertions.assertEquals(4370992711496638122L, model.timeoutInSeconds());
         Assertions.assertEquals(1393626472136421682L, model.syncIntervalInSeconds());
@@ -32,21 +30,17 @@ public final class GitRepositoryPatchDefinitionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GitRepositoryPatchDefinition model =
-            new GitRepositoryPatchDefinition()
-                .withUrl("g")
-                .withTimeoutInSeconds(4370992711496638122L)
-                .withSyncIntervalInSeconds(1393626472136421682L)
-                .withRepositoryRef(
-                    new RepositoryRefDefinition()
-                        .withBranch("pwhonowkg")
-                        .withTag("wankixzbi")
-                        .withSemver("eputtmrywnuzoqf")
-                        .withCommit("yqzrnkcqvyxlw"))
-                .withSshKnownHosts("lsicohoqqnwv")
-                .withHttpsUser("yav")
-                .withHttpsCACert("heun")
-                .withLocalAuthRef("qhgyxzkonocukok");
+        GitRepositoryPatchDefinition model = new GitRepositoryPatchDefinition().withUrl("g")
+            .withTimeoutInSeconds(4370992711496638122L)
+            .withSyncIntervalInSeconds(1393626472136421682L)
+            .withRepositoryRef(new RepositoryRefDefinition().withBranch("pwhonowkg")
+                .withTag("wankixzbi")
+                .withSemver("eputtmrywnuzoqf")
+                .withCommit("yqzrnkcqvyxlw"))
+            .withSshKnownHosts("lsicohoqqnwv")
+            .withHttpsUser("yav")
+            .withHttpsCACert("heun")
+            .withLocalAuthRef("qhgyxzkonocukok");
         model = BinaryData.fromObject(model).toObject(GitRepositoryPatchDefinition.class);
         Assertions.assertEquals("g", model.url());
         Assertions.assertEquals(4370992711496638122L, model.timeoutInSeconds());
