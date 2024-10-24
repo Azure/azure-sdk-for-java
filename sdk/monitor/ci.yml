@@ -60,10 +60,10 @@ extends:
         groupId: com.azure
         safeName: azuremonitoringestion
         releaseInBatch: ${{ parameters.release_azuremonitoringestion }}
-      - name: azure-monitor-opentelemetry-exporter
+      - name: azure-monitor-opentelemetry-autoconfigure
         groupId: com.azure
-        safeName: azuremonitoropentelemetryexporter
-        releaseInBatch: ${{ parameters.release_azuremonitoropentelemetryexporter }}
+        safeName: azuremonitoropentelemetryautoconfigure
+        releaseInBatch: ${{ parameters.release_azuremonitoropentelemetryautoconfigure }}
       - name: azure-monitor-query
         groupId: com.azure
         safeName: azuremonitorquery
