@@ -173,28 +173,23 @@ public final class ApplicationDefinitionImpl
     }
 
     public ApplicationDefinition create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationDefinitions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, applicationDefinitionName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationDefinitions()
+            .createOrUpdateWithResponse(resourceGroupName, applicationDefinitionName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApplicationDefinition create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationDefinitions()
-                .createOrUpdateWithResponse(resourceGroupName, applicationDefinitionName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationDefinitions()
+            .createOrUpdateWithResponse(resourceGroupName, applicationDefinitionName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ApplicationDefinitionImpl(
-        String name, com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager) {
+    ApplicationDefinitionImpl(String name,
+        com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager) {
         this.innerObject = new ApplicationDefinitionInner();
         this.serviceManager = serviceManager;
         this.applicationDefinitionName = name;
@@ -206,27 +201,22 @@ public final class ApplicationDefinitionImpl
     }
 
     public ApplicationDefinition apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationDefinitions()
-                .updateWithResponse(resourceGroupName, applicationDefinitionName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationDefinitions()
+            .updateWithResponse(resourceGroupName, applicationDefinitionName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApplicationDefinition apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationDefinitions()
-                .updateWithResponse(resourceGroupName, applicationDefinitionName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationDefinitions()
+            .updateWithResponse(resourceGroupName, applicationDefinitionName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    ApplicationDefinitionImpl(
-        ApplicationDefinitionInner innerObject,
+    ApplicationDefinitionImpl(ApplicationDefinitionInner innerObject,
         com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -235,22 +225,18 @@ public final class ApplicationDefinitionImpl
     }
 
     public ApplicationDefinition refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationDefinitions()
-                .getByResourceGroupWithResponse(resourceGroupName, applicationDefinitionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationDefinitions()
+            .getByResourceGroupWithResponse(resourceGroupName, applicationDefinitionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApplicationDefinition refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationDefinitions()
-                .getByResourceGroupWithResponse(resourceGroupName, applicationDefinitionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationDefinitions()
+            .getByResourceGroupWithResponse(resourceGroupName, applicationDefinitionName, context)
+            .getValue();
         return this;
     }
 
