@@ -13,7 +13,6 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.digitaltwins.models.CheckNameRequest;
 import com.azure.resourcemanager.digitaltwins.models.CheckNameResult;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsDescription;
