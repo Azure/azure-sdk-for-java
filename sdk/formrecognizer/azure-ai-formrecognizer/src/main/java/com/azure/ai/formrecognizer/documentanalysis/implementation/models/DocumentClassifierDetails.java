@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -143,6 +144,9 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
         return this.docTypes;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -188,8 +192,8 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
                     classifierId = reader.getString();
                     classifierIdFound = true;
                 } else if ("createdDateTime".equals(fieldName)) {
-                    createdDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                     createdDateTimeFound = true;
                 } else if ("apiVersion".equals(fieldName)) {
                     apiVersion = reader.getString();
@@ -200,8 +204,8 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("expirationDateTime".equals(fieldName)) {
-                    expirationDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    expirationDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
