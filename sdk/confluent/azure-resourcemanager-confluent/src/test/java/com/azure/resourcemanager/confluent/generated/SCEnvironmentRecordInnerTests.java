@@ -27,9 +27,14 @@ public final class SCEnvironmentRecordInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SCEnvironmentRecordInner model = new SCEnvironmentRecordInner().withKind("lyzrpzbchckqqzqi").withId("iysui")
-            .withName("abikns").withMetadata(new SCMetadataEntity().withSelf("ked").withResourceName("trwyhqmib")
-                .withCreatedTimestamp("hwit").withUpdatedTimestamp("ypyynpcdpumnzg").withDeletedTimestamp("z"));
+        SCEnvironmentRecordInner model = new SCEnvironmentRecordInner().withKind("lyzrpzbchckqqzqi")
+            .withId("iysui")
+            .withName("abikns")
+            .withMetadata(new SCMetadataEntity().withSelf("ked")
+                .withResourceName("trwyhqmib")
+                .withCreatedTimestamp("hwit")
+                .withUpdatedTimestamp("ypyynpcdpumnzg")
+                .withDeletedTimestamp("z"));
         model = BinaryData.fromObject(model).toObject(SCEnvironmentRecordInner.class);
         Assertions.assertEquals("lyzrpzbchckqqzqi", model.kind());
         Assertions.assertEquals("iysui", model.id());
