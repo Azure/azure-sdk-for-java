@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Supported `addressPrefixes` for `Subnet`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
